@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-concurrent-processes",
+  "meta": {
+    "titre": "Concurrent Processes: sharing resources without chaos",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "mutual exclusion, synchronisation and deadlock",
+    "duree_estimee_min": 40,
+    "tags": [
+      "concurrent processes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-concurrent-processes-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Two agents at a mobile-money kiosk in Yaounde share one notebook that records the cash in the till. If both read the same balance, one adds a deposit while the other deducts a withdrawal, and each writes his own result, the notebook is wrong whichever agent writes last. Operating systems face exactly this problem whenever several processes use the same file, printer or variable. Examiners ask you to define the vocabulary, to explain why mutual exclusion is needed, to use a semaphore and to say how one process can alert another."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A process is a program in execution, with its own memory, program counter and registers.",
+        "The operating system switches the CPU between processes, so that their instructions can be interleaved in time.",
+        "A shared resource is a variable, a file or a device that more than one process can use."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Concurrency, critical sections and semaphores",
+      "contenu_markdown": "### Concurrency\n**Concurrent processes** are processes that are in progress during the same period, so that their executions overlap in time. On one CPU the operating system interleaves them by switching quickly from one to another; on several CPUs they can truly run at the same instant, which is called **parallel** execution. Concurrency creates two needs: processes **compete** for shared resources (a file, a printer, a variable in shared memory) and they must **cooperate** by exchanging information and by waiting for one another (synchronisation).\n\n### Race condition\nA **race condition** exists when the final result depends on the order in which the instructions of several processes are interleaved. The scheduler chooses that order, so a program may give a correct answer on one run and a wrong answer on the next.\n\n### Critical section and mutual exclusion\nThe **critical section** of a process is the part of its code that uses a shared resource. **Mutual exclusion** means that at most one process is inside its critical section at any moment. A correct solution must also respect two other requirements:\n- **progress**: a process that is outside its critical section must not prevent others from entering;\n- **bounded waiting**: a process that wants to enter must not wait for ever while others enter again and again.\n\n### Semaphores\nA **semaphore** is an integer variable that can be used only through two indivisible (atomic) operations, introduced by Dijkstra:\n- `wait(S)` (also called P): if S > 0, decrease S by 1 and continue; otherwise the process is blocked and placed in the waiting queue of S;\n- `signal(S)` (also called V): if a process is waiting on S, let one waiting process continue; otherwise increase S by 1.\n\nA **binary semaphore** (initial value 1) works as a lock. The pattern for mutual exclusion is:\n\n```\nwait(S)\n    critical section\nsignal(S)\n```\n\nA **counting semaphore** with initial value N controls N identical resources, for example N printers.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Tracing a counting semaphore",
+          "quand_utiliser": "Use when a question gives an initial value and a list of wait and signal operations.",
+          "contenu_markdown": "Keep three things in a table after every operation: the value of S, the processes running, and the processes blocked. Apply the rules of the course exactly: a `wait` on S = 0 blocks the caller without changing S; a `signal` with a waiting process hands the resource to the first waiting process and leaves S unchanged; a `signal` with nobody waiting adds 1 to S. A semaphore that starts at N lets N processes in; the (N+1)th must wait."
+        },
+        {
+          "nom": "Deadlock and starvation",
+          "quand_utiliser": "Use when processes wait for one another for ever, or when a question asks how to prevent it.",
+          "contenu_markdown": "A **deadlock** is a situation in which each process of a set waits for a resource held by another process of the set, so none can ever continue. Four conditions must hold together (the Coffman conditions):\n1. **mutual exclusion**: a resource can be used by only one process at a time;\n2. **hold and wait**: a process holds a resource while waiting for another;\n3. **no preemption**: a resource cannot be taken from the process that holds it;\n4. **circular wait**: a closed chain of processes exists, each waiting for a resource held by the next.\n\nPrevention means making one condition impossible. A common rule is to number the resources and require every process to request them in increasing order, which makes circular wait impossible. **Starvation** is different: the system keeps working, but one process is never served because others are always chosen before it."
+        },
+        {
+          "nom": "How one process alerts another",
+          "quand_utiliser": "Use when a question asks which mechanism one process should use to attract the attention of another.",
+          "contenu_markdown": "| Mechanism | How it works | Typical use |\n|---|---|---|\n| Interrupt | an event makes the CPU suspend the running work after the current instruction, save its state, run an interrupt handler, then resume | an urgent event such as a timer or a device that is ready |\n| Signal | a short software notification sent to a process, which runs a handler for it or, for most signals, may ignore it; it carries no data except its type | tell a process that an event has happened and let it react |\n| Message passing | send and receive operations carry data from one process to another | processes that must exchange information |\n| Polling | the process itself tests a flag or a device again and again | simple cases; the repeated testing wastes CPU time |\n| Shared memory or pipe | a common memory area, or a one-way channel from a writer to a reader | large amounts of data; shared memory needs mutual exclusion |"
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Two processes share the variable `balance`, which holds the cash of a till: 10 000 FCFA. Process P1 adds a deposit of 5 000 FCFA. Process P2 subtracts a withdrawal of 2 000 FCFA. Each process runs three steps: LOAD the balance into a private register, COMPUTE the new value in the register, STORE the register in `balance`.\n\n(a) Show how the final balance can be wrong. (b) Say which final values are possible. (c) Correct the program with a binary semaphore.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the shared resource and the critical section.",
+          "justification": "The critical section is the code that uses the shared variable; here it is the three steps LOAD, COMPUTE, STORE of each process.",
+          "resultat_markdown": "Shared variable: `balance`. Critical section of P1 and of P2: LOAD, COMPUTE, STORE."
+        },
+        {
+          "numero": 2,
+          "action": "Find the correct result when the processes do not overlap.",
+          "justification": "This gives the value against which every interleaving is judged.",
+          "resultat_markdown": "10 000 + 5 000 - 2 000 = **13 000 FCFA**."
+        },
+        {
+          "numero": 3,
+          "action": "Build a bad interleaving.",
+          "justification": "A race appears when both processes load the old value before either stores.",
+          "resultat_markdown": "P1 LOAD (register 10 000), P2 LOAD (register 10 000), P1 STORE (balance becomes 15 000), P2 STORE (register 8 000 overwrites balance): final balance **8 000 FCFA**. The deposit is lost."
+        },
+        {
+          "numero": 4,
+          "action": "List the possible results.",
+          "justification": "The six steps can be interleaved in 20 different orders (choose 3 positions out of 6 for P1). Running all 20 orders by program gives only three different final values.",
+          "resultat_markdown": "The final balance is **8 000**, **13 000** or **15 000 FCFA**. Only 13 000 is correct, so the program has a race condition."
+        },
+        {
+          "numero": 5,
+          "action": "Protect the critical section with a binary semaphore.",
+          "justification": "A semaphore with initial value 1 lets only one process in; the other is blocked at wait until the first signals.",
+          "resultat_markdown": "```\nS = 1\nwait(S)  LOAD, COMPUTE, STORE  signal(S)      (in each of P1 and P2)\n```\nThe two critical sections can no longer overlap, so only two orders are possible and both give 13 000 FCFA."
+        }
+      ],
+      "conclusion_markdown": "(a) Both processes load 10 000. P1 stores 15 000, then P2 stores 8 000 and overwrites it: the deposit is lost (a race condition).\n\n(b) The final value may be 8 000, 13 000 or 15 000 FCFA; only 13 000 FCFA is correct.\n\n(c) Put `wait(S)` before and `signal(S)` after the three steps of each process, with S initially 1. Mutual exclusion is then guaranteed and the balance is always 13 000 FCFA."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"Concurrent processes are processes whose instructions are executed at the same instant on several CPUs.\"",
+          "pourquoi_faux": "That describes parallel execution. Concurrency only requires that the executions overlap in time, which can be obtained on one CPU by interleaving.",
+          "correction_markdown": "Concurrent processes are in progress during the same period. They may be interleaved on one CPU or run in parallel on several."
+        },
+        {
+          "erreur_markdown": "\"Deadlock and starvation are two names for the same problem.\"",
+          "pourquoi_faux": "In a deadlock the processes of a set wait for one another and none can continue. In starvation the system works but one process is never chosen.",
+          "correction_markdown": "Define them separately: deadlock needs a circular wait; starvation is unfair, endless postponement of one process."
+        },
+        {
+          "erreur_markdown": "\"Mutual exclusion means that only one process of the system may run at a time.\"",
+          "pourquoi_faux": "Mutual exclusion concerns only the critical section. Outside it the processes run concurrently.",
+          "correction_markdown": "At most one process may be inside its critical section on a given shared resource at any moment."
+        },
+        {
+          "erreur_markdown": "Writing `signal(S)` first and `wait(S)` after the critical section.",
+          "pourquoi_faux": "With S = 1, signal first raises S to 2, so two processes can pass wait together and the critical section is no longer protected.",
+          "correction_markdown": "The correct order is wait(S), critical section, signal(S)."
+        },
+        {
+          "erreur_markdown": "\"Polling is always the best way to alert a process because it needs no special support.\"",
+          "pourquoi_faux": "Polling keeps the CPU busy testing a condition that is usually false, which wastes processor time.",
+          "correction_markdown": "Polling is acceptable for simple cases; an interrupt or a signal lets the process work until it is really notified."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Define the terms critical section and mutual exclusion.\n(b) Write the three parts, in the correct order, of the code that protects a critical section with a binary semaphore S.",
+          "solution_markdown": "(a) The **critical section** is the part of a process's code that uses a shared resource. **Mutual exclusion** means that at most one process is in its critical section at any moment.\n\n(b) **wait(S)**, then the critical section, then **signal(S)**, with S initially equal to 1."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Processes P and Q use two files, F and G. P locks F, then requests G, then releases both. Q locks G, then requests F, then releases both.\n\n(a) Explain how these processes can reach a deadlock.\n(b) Name the Coffman condition that describes the closed chain of waiting.\n(c) Give a rule that prevents the deadlock and show that it works.",
+          "solution_markdown": "(a) P locks F and Q locks G. P then waits for G, held by Q, and Q waits for F, held by P. Neither can continue, so there is a deadlock. (Exploring every ordering by program confirms that this blocked state can be reached.)\n\n(b) **Circular wait**.\n\n(c) Require both processes to request the files in the same order, F first and then G. If P holds F, Q cannot take G before F, so Q waits for F while holding nothing and P can take G and finish. A closed chain of waiting can no longer form, so **the deadlock is prevented** (checked by program for all orderings)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A counting semaphore S starts at 2 and controls two printers. Four processes A, B, C and D execute wait(S) in this order. Then A, B, C and D execute signal(S) in this order. Use the rules of the course. For each of the eight operations give what happens to the process and the value of S afterwards.",
+          "solution_markdown": "| Operation | What happens | S afterwards |\n|---|---|---|\n| A wait | A continues | 1 |\n| B wait | B continues | 0 |\n| C wait | C is blocked | 0 |\n| D wait | D is blocked | 0 |\n| A signal | C is released (first in the queue) | 0 |\n| B signal | D is released | 0 |\n| C signal | nobody is waiting | 1 |\n| D signal | nobody is waiting | 2 |\n\n**S ends at 2**, its initial value, because every wait has been matched by a signal. At most two processes were ever using a printer at the same time."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Concurrent processes overlap in time; on one CPU they are interleaved, on several CPUs they may run in parallel.",
+        "A race condition occurs when the result depends on the order of interleaving; the cure is mutual exclusion of the critical sections.",
+        "A semaphore is used only through the atomic operations wait and signal; the pattern is wait(S), critical section, signal(S), with S = 1 for a binary semaphore.",
+        "A deadlock needs four conditions together: mutual exclusion, hold and wait, no preemption and circular wait; breaking one prevents it.",
+        "Starvation is not deadlock: the system keeps working but one process is postponed for ever.",
+        "To alert another process: an interrupt or a signal notifies it, a message carries data, polling keeps testing and wastes CPU time."
+      ]
+    }
+  ]
+}

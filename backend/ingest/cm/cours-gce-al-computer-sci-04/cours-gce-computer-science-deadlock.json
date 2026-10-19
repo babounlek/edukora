@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-computer-science-deadlock",
+  "meta": {
+    "titre": "Deadlock: conditions, graphs, prevention, avoidance and recovery",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Deadlock in process management",
+    "duree_estimee_min": 35,
+    "tags": [
+      "deadlock"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-deadlock-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Picture two minibuses meeting nose to nose on a one-lane track on a hillside near Bamenda: the driver of each waits for the other to reverse, so neither can move. An operating system falls into the same trap when two jobs each hold something that the other needs. A print job may hold the printer and wait for the scanner while a scan job holds the scanner and waits for the printer. Examiners ask you to define deadlock, to name the conditions that make it possible, to read a resource allocation graph and to compare prevention, avoidance and recovery. This course trains each of these questions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A process is a program in execution, and the operating system allocates resources such as printers, files and memory to processes.",
+        "Some resources can be used by only one process at a time; the other processes that want them must wait.",
+        "A process that cannot obtain the resource it has requested is blocked until the resource is released."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Deadlock: meaning, necessary conditions, graphs and handling",
+      "contenu_markdown": "### Meaning\nA **deadlock** is a permanent blocked state in which every process of a set is waiting for a resource that is held by another process of the same set. No process can continue, so none ever releases what it holds.\n\n### The four necessary conditions\nDeadlock can occur only if all four conditions hold together (the Coffman conditions).\n\n| Condition | Meaning |\n|---|---|\n| Mutual exclusion | a resource can be used by only one process at a time |\n| Hold and wait | a process keeps the resources it has while it waits for more |\n| No preemption | a resource is given up only by the process that holds it, never taken away |\n| Circular wait | there is a closed chain of processes, each waiting for a resource held by the next |\n\n### Resource allocation graph\nProcesses are drawn as circles and resources as squares. An arrow from a resource to a process (`R -> P`) means that R is allocated to P; an arrow from a process to a resource (`P -> R`) means that P is requesting R. If every resource has a single instance, a cycle means deadlock. If a resource has several instances, a cycle is necessary but not sufficient.\n\n### Handling deadlock\n| Strategy | Idea | Example |\n|---|---|---|\n| Prevention | make one of the four conditions impossible by a rule fixed in advance | a process must request all its resources before it starts (no hold and wait); resources are numbered and must be requested in increasing order (no circular wait); the system may take a resource back (preemption) |\n| Avoidance | grant a request only if the system stays in a **safe state**, using the maximum need declared by each process | the banker's algorithm |\n| Detection and recovery | allow deadlock, look for a cycle from time to time, then recover | end the processes involved, all at once or one at a time, or preempt resources from a victim process and roll it back |\n| Ignoring | do nothing when deadlock is rare and prevention costs too much | restart the system if it freezes |\n\nMutual exclusion usually cannot be removed for a resource such as a printer, so prevention aims at the other three conditions. A state is **safe** if there is an order of the processes (a safe sequence) in which each one can obtain what it still needs and finish. An unsafe state is not yet a deadlock, but deadlock becomes possible. Prevention lowers resource utilisation and can cause starvation; avoidance needs the maximum demands in advance.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Banker's algorithm: safety check",
+          "quand_utiliser": "Use when a table of allocations and maximum needs is given and you must say whether the state is safe.",
+          "contenu_markdown": "1. Compute **Need = Max - Allocation** for every process.\n2. Compute **Available = Total - sum of all Allocations** for each resource type; set Work = Available.\n3. Find a process not yet finished whose Need is less than or equal to Work in every resource type. If none exists, stop: the state is unsafe (if some processes are unfinished).\n4. Pretend that process finishes: Work = Work + its Allocation. Write it in the safe sequence and repeat from step 3.\n5. If every process has been placed in the sequence, the state is safe.\n\nTo test a **request**, first check Request <= Need and Request <= Available, then grant it only on paper (add it to Allocation, subtract it from Available) and run the safety check. Real grant only if the new state is safe; otherwise the process waits."
+        },
+        {
+          "nom": "Describing or drawing a deadlock graph",
+          "quand_utiliser": "Use when a question asks you to draw a resource allocation graph in which given processes are deadlocked.",
+          "contenu_markdown": "1. One circle per process and one square per resource, all with single instances.\n2. For each statement \"P holds R\", draw an arrow from R to P.\n3. For each statement \"P requests R\", draw an arrow from P to R.\n4. Follow the arrows: a closed loop proves deadlock.\n\nFor two processes A and B and resources X and Y, the arrows `X -> A`, `A -> Y`, `Y -> B`, `B -> X` form a cycle. For three processes in a ring, each holds one resource and requests the resource held by the next process: three assignment arrows and three request arrows, six in all. Label every arrow and state the cycle in words under the drawing."
+        },
+        {
+          "nom": "Circular wait in code",
+          "quand_utiliser": "Use when a question shows two routines that lock resources and asks why they can freeze, or how to cure it.",
+          "contenu_markdown": "```c\n/* Example of logic, not a complete program: lock() waits until the resource is free. */\nvoid job_one(void)\n{\n    lock(&printer);\n    lock(&scanner);\n    /* ... use both ... */\n    unlock(&scanner);\n    unlock(&printer);\n}\n\nvoid job_two(void)\n{\n    lock(&scanner);     /* opposite order: circular wait is possible */\n    lock(&printer);\n    unlock(&printer);\n    unlock(&scanner);\n}\n```\nIf `job_one` holds the printer and `job_two` holds the scanner, each waits for the other for ever. The cure is to make `job_two` lock the printer first, so that all jobs request resources in the same order and no cycle can form. This code is an example of logic; it was not compiled. Its behaviour was checked by a Python program that tried every possible interleaving of the two jobs: the opposite orders can deadlock and the common order never does."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A system has 9 units of resource type X and 6 units of resource type Y. Four processes have these allocations and maximum needs.\n\n| Process | Allocation X | Allocation Y | Max X | Max Y |\n|---|---|---|---|---|\n| P1 | 2 | 1 | 6 | 3 |\n| P2 | 1 | 2 | 3 | 4 |\n| P3 | 3 | 1 | 4 | 2 |\n| P4 | 1 | 0 | 2 | 1 |\n\nUse the banker's algorithm to decide whether the system is in a safe state and, if it is, give a safe sequence.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the available resources.",
+          "justification": "Available = Total - sum of the Allocation column, for each resource type separately.",
+          "resultat_markdown": "X: 9 - (2 + 1 + 3 + 1) = 9 - 7 = 2. Y: 6 - (1 + 2 + 1 + 0) = 6 - 4 = 2. Available = (2, 2)."
+        },
+        {
+          "numero": 2,
+          "action": "Compute the Need matrix.",
+          "justification": "Need = Max - Allocation tells how much more each process can still ask for.",
+          "resultat_markdown": "| Process | Need X | Need Y |\n|---|---|---|\n| P1 | 6 - 2 = 4 | 3 - 1 = 2 |\n| P2 | 3 - 1 = 2 | 4 - 2 = 2 |\n| P3 | 4 - 3 = 1 | 2 - 1 = 1 |\n| P4 | 2 - 1 = 1 | 1 - 0 = 1 |"
+        },
+        {
+          "numero": 3,
+          "action": "Start with Work = (2, 2) and look for a process whose Need fits.",
+          "justification": "P1 needs (4, 2) and 4 is greater than 2, so P1 cannot be chosen; P2 needs (2, 2), which fits. P2 can finish and then returns its allocation (1, 2).",
+          "resultat_markdown": "Safe sequence so far: P2. Work = (2, 2) + (1, 2) = (3, 4)."
+        },
+        {
+          "numero": 4,
+          "action": "Look again with Work = (3, 4).",
+          "justification": "P1 still needs 4 of X and only 3 are free; P3 needs (1, 1), which fits, so P3 finishes and returns (3, 1).",
+          "resultat_markdown": "Sequence: P2, P3. Work = (3, 4) + (3, 1) = (6, 5)."
+        },
+        {
+          "numero": 5,
+          "action": "Continue with Work = (6, 5).",
+          "justification": "P1 needs (4, 2), which fits; it finishes and returns (2, 1). P4 needs (1, 1), which fits with Work = (8, 6); it returns (1, 0).",
+          "resultat_markdown": "Sequence: P2, P3, P1, P4. Final Work = (8, 6) + (1, 0) = (9, 6)."
+        },
+        {
+          "numero": 6,
+          "action": "Check the result and decide.",
+          "justification": "Once every process has finished and returned its resources, Work must equal the Total, because no resource is lost.",
+          "resultat_markdown": "(9, 6) equals Total = (9, 6). Every process was placed in the sequence."
+        }
+      ],
+      "conclusion_markdown": "**The state is safe; one safe sequence is P2, P3, P1, P4.** The sequence is not unique (P4 could also go before P1), but one sequence is enough to prove safety. Safe does not mean that the processes will never wait; it means that the operating system can always find an order in which every process finishes. The numbers were recomputed with a small program."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A cycle in a resource allocation graph always means deadlock.",
+          "pourquoi_faux": "A cycle proves deadlock only when every resource has a single instance. With several instances, a process outside the cycle may release an instance that breaks the wait.",
+          "correction_markdown": "Say: a cycle is a necessary condition; it is sufficient only for single-instance resources."
+        },
+        {
+          "erreur_markdown": "An unsafe state is the same thing as a deadlock.",
+          "pourquoi_faux": "In an unsafe state no safe sequence exists, but the processes may still finish if they do not all ask for their maximum at the same time. Deadlock is possible, not certain.",
+          "correction_markdown": "Say that avoidance keeps the system out of unsafe states so that deadlock cannot occur."
+        },
+        {
+          "erreur_markdown": "Deadlock is when a process waits a long time for the CPU.",
+          "pourquoi_faux": "A long wait in the ready queue is a delay or starvation, and the process can still be served later. In deadlock the wait is permanent because the processes wait for each other.",
+          "correction_markdown": "Define deadlock as a permanent wait of a set of processes, each for a resource held by another one of the set."
+        },
+        {
+          "erreur_markdown": "To prevent deadlock, let two jobs use the printer at the same time (remove mutual exclusion).",
+          "pourquoi_faux": "Output of two jobs would be mixed. For resources that cannot be shared, mutual exclusion cannot be removed, so prevention works on hold and wait, no preemption or circular wait.",
+          "correction_markdown": "Give a prevention rule on one of the other three conditions, for example requesting all resources before starting."
+        },
+        {
+          "erreur_markdown": "Prevention and avoidance are the same.",
+          "pourquoi_faux": "Prevention uses a fixed rule that makes one condition impossible whatever the requests are; avoidance uses advance information about the maximum needs and tests every request.",
+          "correction_markdown": "Contrast: prevention = a rule against one condition; avoidance = a safety test at every request."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "For each situation, name the necessary condition for deadlock that it illustrates.\n\n(a) A log file can be written by only one program at a time.\n(b) A job keeps the scanner it already has while it waits for the printer.\n(c) The operating system is not allowed to take the printer from a job that is half way through printing.\n(d) Job A waits for a resource held by B, B waits for one held by C, and C waits for one held by A.\n(e) Which of the four conditions is made impossible if every job must request the scanner before the printer?",
+          "solution_markdown": "(a) **Mutual exclusion.** (b) **Hold and wait**: the job holds one resource and waits for another. (c) **No preemption**. (d) **Circular wait**: the chain of waiting is closed. (e) **Circular wait**: with a fixed order of requests, a job that holds the printer never waits for the scanner, so no closed chain can form."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A system has 10 identical tape drives. Three processes hold 3, 2 and 2 drives (P1, P2, P3) and can ask for at most 9, 4 and 7 drives in all.\n\n(a) Is the state safe? Give a safe sequence.\n(b) Suppose P1 now asks for one more drive and the system grants it at once. Is the new state safe? Should the request have been granted?",
+          "solution_markdown": "(a) Available = 10 - (3 + 2 + 2) = 3. Need = Max - Allocation: P1 6, P2 2, P3 5. Only P2 fits (2 <= 3); after it ends Work = 3 + 2 = 5. P3 needs 5, which fits, and Work = 5 + 2 = 7. P1 needs 6 <= 7. **Safe sequence: P2, P3, P1.**\n\n(b) After the grant, P1 holds 4, so Available = 2 and the needs are P1 5, P2 2, P3 5. P2 fits (2 <= 2) and returns 2, so Work = 4. Now P1 needs 5 and P3 needs 5, both more than 4: no process can go on. **The new state is unsafe, so the request should have been refused (P1 waits).**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A system has 9 units of resource A and 6 units of resource B. The current allocations and maximum needs of three processes are:\n\n| Process | Allocation (A, B) | Max (A, B) |\n|---|---|---|\n| P1 | (2, 2) | (3, 3) |\n| P2 | (0, 1) | (1, 3) |\n| P3 | (1, 2) | (5, 3) |\n\n(a) Show that the present state is safe.\n(b) P2 requests one unit of B, that is (0, 1). Use the banker's algorithm to decide whether the request is granted.\n(c) How would a system that uses detection and recovery treat the same request?",
+          "solution_markdown": "(a) Available = (9 - 3, 6 - 5) = (6, 1). Need: P1 (1, 1), P2 (1, 2), P3 (4, 1). P1 fits (1 <= 6 and 1 <= 1); Work = (8, 3). P2 needs (1, 2), which fits; Work = (8, 4). P3 needs (4, 1), which fits. **Safe sequence: P1, P2, P3.**\n\n(b) Check the request: (0, 1) <= Need of P2 (1, 2) and (0, 1) <= Available (6, 1). Pretend to grant it: Available = (6, 0); P2 now holds (0, 2) and needs (1, 1). The needs are P1 (1, 1), P2 (1, 1), P3 (4, 1). Every process needs at least 1 unit of B and none is free, so no process can be chosen: the state is unsafe. **The request is not granted; P2 waits.**\n\n(c) It would simply grant the request, because it makes no safety test. It would search for a cycle from time to time and, if processes were deadlocked, it would end a process or preempt resources to recover."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Deadlock is a permanent wait of a set of processes, each waiting for a resource held by another process of the set.",
+        "The four necessary conditions are mutual exclusion, hold and wait, no preemption and circular wait; all four must hold together, so removing one prevents deadlock.",
+        "In a resource allocation graph, `R -> P` means allocated and `P -> R` means requested; a cycle is deadlock for single-instance resources and only a warning sign otherwise.",
+        "Prevention uses a fixed rule against one condition (for example request everything before starting, or request in a fixed order); avoidance tests each request with the banker's algorithm; detection allows deadlock and then recovers.",
+        "Banker's method: Need = Max - Allocation, Available = Total - sum of Allocations, then find a process whose Need fits in Work, add its Allocation to Work and repeat.",
+        "Recovery means ending processes (all, or one at a time) or preempting resources from a victim and rolling it back."
+      ]
+    }
+  ]
+}

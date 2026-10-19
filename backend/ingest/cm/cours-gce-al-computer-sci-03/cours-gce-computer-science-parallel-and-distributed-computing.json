@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-computer-science-parallel-and-distributed-computing",
+  "meta": {
+    "titre": "Parallel and Distributed Computing: Flynn's classes, speed-up and networked systems",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Parallel and distributed architectures",
+    "duree_estimee_min": 35,
+    "tags": [
+      "parallel and distributed computing"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-parallel-and-distributed-computing-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A telephone company in Yaounde must process a very large number of call records every night. One processor would take hours, so the work is divided between many processors, or between many computers, that work together. Parallel computing and distributed computing are two ways of doing this, and they are often confused. Examiners ask which architecture a situation needs, what the classes of parallel machine mean, and what is gained and what is difficult."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A processor executes instructions one after another on data held in memory.",
+        "A multi-core processor has several processing cores on one chip.",
+        "Computers linked in a network exchange data by sending messages to each other."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parallel and distributed computing: definitions, classes and limits",
+      "contenu_markdown": "### Definitions\n- **Parallel computing**: several processors or cores of one machine, usually sharing memory, carry out parts of the same job at the same time so that it finishes sooner.\n- **Distributed computing**: several separate computers, each with its own memory, are linked by a network and cooperate on a task by exchanging messages. They may be in different towns or countries.\n\n### Flynn's classification of architectures\nMachines are classed by the number of instruction streams and data streams they handle at the same time.\n\n| Class | Instruction streams | Data streams | Meaning |\n|---|---|---|---|\n| SISD | one | one | One processor executes one instruction at a time on one data item (a simple single-core machine). |\n| SIMD | one | many | One instruction is applied to many data items at once, for example brightening every pixel of a block. Vector processors and graphics processors work largely in this way. |\n| MISD | many | one | Several different instructions work on the same data stream. It is rarely built in practice. |\n| MIMD | many | many | Each processor runs its own instructions on its own data. Multi-core processors and clusters belong here. |\n\nToday's machines for general computation are SISD, SIMD or MIMD; MISD is hardly used, so it is the usual answer to \"which class is not used\".\n\n### Benefits\n- Shorter running time for suitable problems, and the ability to treat problems too large for one machine.\n- Scalability: more processors or computers can be added.\n- Reliability in a distributed system: if one computer fails, the others can continue.\n\n### Difficulties\n- The problem must be split, and some parts must stay sequential, which limits the speed-up.\n- Tasks must synchronise and communicate; this costs time.\n- A **race condition** occurs when the result depends on the order in which tasks update shared data.\n- A **deadlock** occurs when tasks each wait for a resource held by another, so none can continue.\n- In distributed systems the network adds delay (latency), failures and security risks.\n\nSpeed-up is $S = \\dfrac{T_1}{T_p}$, the time on one processor divided by the time on $p$ processors, and efficiency is $E = \\dfrac{S}{p}$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Choosing between parallel, cluster, grid and cloud",
+          "quand_utiliser": "Use when a short scenario asks which kind of system fits.",
+          "contenu_markdown": "| System | Typical description |\n|---|---|\n| Parallel machine | Several cores or processors inside one computer working on one job. |\n| Cluster | Several computers close together, often in one room, linked by a fast network and managed as one system. |\n| Grid | Computers in different places, often belonging to different owners, pooling spare capacity for a large shared task. |\n| Cloud | Computing power and storage rented as a service over the Internet from remote data centres. |\n\nWhen a user wants data processed at the same time on powerful machines spread over several countries, the answer is a distributed system, and a grid is the typical name."
+        },
+        {
+          "nom": "Amdahl's law (limits of speed-up)",
+          "quand_utiliser": "Use when a question gives the share of a program that can run in parallel and a number of processors.",
+          "contenu_markdown": "If a fraction $P$ of the running time can be shared equally among $N$ processors and the rest is sequential, then\n\n$$S = \\frac{1}{(1-P) + \\frac{P}{N}}$$\n\nEven with unlimited processors, $S$ cannot exceed $\\dfrac{1}{1-P}$, because the sequential part never gets shorter. Communication and synchronisation make the real speed-up smaller still."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A school in Buea processes the result slips of its students with a program that takes 120 s on one processor. Of this time, 30 s are sequential (reading the files and printing a summary) and 90 s can be shared equally among any number of processors.\n\n(a) Find the running time and the speed-up with 6 processors. (b) Find the efficiency. (c) Find the greatest speed-up that could ever be reached. (d) Give two reasons why the real speed-up would be smaller than the value in (a).",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Separate the sequential and the parallel parts.",
+          "justification": "Only the parallel part gets shorter when processors are added.",
+          "resultat_markdown": "Sequential part: 30 s. Parallel part on one processor: 90 s."
+        },
+        {
+          "numero": 2,
+          "action": "Compute the time with 6 processors.",
+          "justification": "The parallel 90 s is shared equally by 6 processors, and the sequential 30 s is unchanged.",
+          "resultat_markdown": "$T_6 = 30 + \\dfrac{90}{6} = 30 + 15 = 45\\ \\text{s}$"
+        },
+        {
+          "numero": 3,
+          "action": "Compute the speed-up.",
+          "justification": "Speed-up is the time on one processor divided by the time on six.",
+          "resultat_markdown": "$S = \\dfrac{120}{45} = 2.67$ (to 3 significant figures)"
+        },
+        {
+          "numero": 4,
+          "action": "Compute the efficiency.",
+          "justification": "Efficiency compares the speed-up with the ideal speed-up, which would equal the number of processors.",
+          "resultat_markdown": "$E = \\dfrac{S}{6} = \\dfrac{8/3}{6} = \\dfrac{4}{9} = 0.444$, that is 44.4 %"
+        },
+        {
+          "numero": 5,
+          "action": "Find the limit of the speed-up.",
+          "justification": "With unlimited processors the parallel part tends to 0 s, so only the 30 s sequential part remains.",
+          "resultat_markdown": "$S_{max} = \\dfrac{120}{30} = 4$"
+        },
+        {
+          "numero": 6,
+          "action": "Give the reasons for a smaller real speed-up.",
+          "justification": "The model ignores the cost of organising the processors.",
+          "resultat_markdown": "Communication and synchronisation between processors take time; the 90 s may not be shared perfectly equally, so some processors wait for others."
+        }
+      ],
+      "conclusion_markdown": "With 6 processors the running time is 45 s, the speed-up is about 2.67 and the efficiency about 44.4 %. No number of processors can give a speed-up above 4, because 30 s of the work is sequential. All values were recalculated by script.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"Parallel computing and distributed computing are the same: both mean computers connected through the Internet.\"",
+          "pourquoi_faux": "Parallel computing normally means several processors or cores in one machine sharing memory. Distributed computing uses separate computers with their own memory that communicate by messages.",
+          "correction_markdown": "Parallel: processors working together inside one system on one job. Distributed: separate networked computers cooperating by passing messages."
+        },
+        {
+          "erreur_markdown": "\"With 10 processors a program always runs 10 times faster.\"",
+          "pourquoi_faux": "A part of every program is sequential, and processors also lose time communicating and synchronising. This is the content of Amdahl's law.",
+          "correction_markdown": "The speed-up is at most $\\dfrac{1}{(1-P)+P/N}$ and is smaller in practice; with $P = 0.9$ and 10 processors it is only about 5.3."
+        },
+        {
+          "erreur_markdown": "\"A laptop with four cores running four different programs on different data is an SISD machine.\"",
+          "pourquoi_faux": "SISD means one instruction stream and one data stream. Four cores that each follow their own instructions on their own data are many instruction streams and many data streams.",
+          "correction_markdown": "That machine belongs to the MIMD class."
+        },
+        {
+          "erreur_markdown": "\"Parallel tasks never interfere with each other, so no special care is needed.\"",
+          "pourquoi_faux": "Tasks that share data can produce different results depending on the order of updates (race condition), or wait for each other forever (deadlock).",
+          "correction_markdown": "Shared data must be protected, and the order of access to resources must be controlled, for example by synchronisation."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the Flynn class of each machine.\n\n(i) A single-core processor that executes one instruction at a time on one value at a time.\n\n(ii) A graphics unit that adds the same brightness value to every pixel of a block at once.\n\n(iii) Four cores that run four different programs on four different sets of data.\n\n(iv) Which class is rarely used for ordinary computation?",
+          "solution_markdown": "(i) **SISD**: one instruction stream and one data stream.\n\n(ii) **SIMD**: one instruction is applied to many data items.\n\n(iii) **MIMD**: several instruction streams and several data streams.\n\n(iv) **MISD**: several different instructions on the same data stream is rarely built in practice."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A job takes 200 s on one processor. 90 % of the time (180 s) can be shared equally among processors; 10 % (20 s) is sequential.\n\n(a) Find the running time, the speed-up and the efficiency with 10 processors. (b) Find the running time and the speed-up with 20 processors. (c) State the greatest possible speed-up. (d) Does doubling the processors from 10 to 20 double the speed-up?",
+          "solution_markdown": "(a) $T_{10} = 20 + \\dfrac{180}{10} = 38\\ \\text{s}$. $S = \\dfrac{200}{38} = $ **5.26**. $E = \\dfrac{5.26}{10} = $ **52.6 %**.\n\n(b) $T_{20} = 20 + \\dfrac{180}{20} = 29\\ \\text{s}$. $S = \\dfrac{200}{29} = $ **6.90**.\n\n(c) $S_{max} = \\dfrac{200}{20} = $ **10**.\n\n(d) **No**: 6.90 is far from 2 x 5.26 = 10.5, because the 20 s sequential part does not shrink."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A research team has 5 000 000 records of data stored equally on four computers in four towns. Each computer processes 50 000 records per second. Assume the data does not have to be moved. Sending the partial results to one computer and combining them takes 5 s in total. For comparison, one machine holding all the records would process them at the same rate.\n\n(a) Find the time of the distributed solution and the time of the single machine. (b) Find the speed-up and the efficiency. (c) Give two advantages and two difficulties of the distributed solution.",
+          "solution_markdown": "(a) Each computer treats 5 000 000 / 4 = 1 250 000 records in 1 250 000 / 50 000 = 25 s, all at the same time. Adding 5 s to combine the results gives **30 s**. The single machine needs 5 000 000 / 50 000 = **100 s**.\n\n(b) $S = \\dfrac{100}{30} = $ **3.33** and $E = \\dfrac{3.33}{4} = $ **83.3 %**.\n\n(c) Advantages: the work finishes sooner; the system can grow by adding computers; if one computer fails the others still hold their part of the data. Difficulties: communication over the network takes time and can fail; the work must be split and the results combined correctly; security of data travelling between towns; coordination (synchronisation) is harder to program and test."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Parallel computing: several processors or cores, usually in one machine with shared memory, work on one job at the same time. Distributed computing: separate networked computers with their own memory cooperate by sending messages.",
+        "Flynn's classes: SISD (one instruction stream, one data stream), SIMD (one instruction on many data), MISD (many instructions on one data stream, rarely used), MIMD (many and many, for example multi-core machines and clusters).",
+        "Speed-up is $S = T_1 / T_p$ and efficiency is $E = S / p$; the sequential part limits the speed-up (Amdahl's law).",
+        "Benefits: speed, size of problems, scalability, reliability. Difficulties: splitting, synchronisation, race conditions, deadlock, network delay and security.",
+        "A situation with data processed at the same time on powerful machines in several parts of the world points to a distributed system (a grid)."
+      ]
+    }
+  ]
+}

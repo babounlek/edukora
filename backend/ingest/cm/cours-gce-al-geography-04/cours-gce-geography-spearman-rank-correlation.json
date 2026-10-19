@@ -1,0 +1,159 @@
+{
+ "cours_id": "cours-gce-geography-spearman-rank-correlation",
+ "meta": {
+  "titre": "Spearman Rank Correlation: ranking data, calculating Rs and interpreting it",
+  "matiere": "Geography",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Statistical techniques in geography",
+  "duree_estimee_min": 40,
+  "tags": [
+   "spearman rank correlation"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-geography-2026-p3-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Geography past paper (Cameroon)",
+  "epreuve_source": "gce-al-geography-2026-p3-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-geography-spearman-rank-correlation-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A student wants to know whether noise, rents or crop yields change with distance from the centre of a town, such as Yaounde or Douala. Looking at the figures alone does not give a clear answer, and the Spearman rank correlation turns paired data into a single number between -1 and +1. In the practical paper you may have to complete a table of ranks, calculate the coefficient with the formula and say what it means. This course gives a step-by-step method so you do not lose marks on the arithmetic."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "To rank data is to put values in order, giving 1 to the smallest (or largest), 2 to the next and so on.",
+    "Paired data are two measurements taken on the same set of places or items.",
+    "Squaring a negative number gives a positive number.",
+    "A hypothesis is a statement tested with data; the null hypothesis says there is no relationship."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Spearman rank correlation: formula, method and interpretation",
+   "contenu_markdown": "### When and why to use it\nThe Spearman rank correlation coefficient, $R_s$, measures the strength and direction of the relationship between two sets of paired data, such as distance from the city centre and land value. It is used when the data can be ranked, when the sample is small or when the relationship is not necessarily a straight line.\n\n### The formula\n$$\nR_s = 1 - \\frac{6\\sum d^2}{n^3 - n}\n$$\n\nwhere $d$ is the difference between the two ranks of each item and $n$ is the number of pairs. Note that $n^3 - n = n(n^2 - 1)$.\n\n### Method\n| Step | What to do |\n|---|---|\n| 1 | List the paired data and rank each column separately. Rank both from the same end (for example, 1 for the smallest value in both). |\n| 2 | Where two values are equal, give each the average of the ranks they occupy (values sharing ranks 4 and 5 both get 4.5). |\n| 3 | Find $d$ = rank 1 minus rank 2 for every pair. The $d$ values must add up to zero, which is a check. |\n| 4 | Square each $d$ and add them to get $\\sum d^2$. |\n| 5 | Substitute in the formula and calculate $R_s$. The answer must lie between -1 and +1. |\n\n### Interpreting the result\n- $R_s$ close to +1: strong positive relationship (as one variable rises the other rises). Close to -1: strong negative relationship. Close to 0: little or no relationship.\n- To test significance, state the null hypothesis (there is no relationship between the two variables), then compare the size of $R_s$ (ignoring the sign) with the critical value for $n$ at the stated significance level, usually 5 per cent. If it equals or exceeds the critical value, reject the null hypothesis: the relationship is significant. If it is smaller, it may be due to chance.\n- A significant result shows association, not proof that one variable causes the other.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Completing the working table",
+     "quand_utiliser": "When a table has missing ranks, d or d squared and you must fill in the gaps before calculating.",
+     "contenu_markdown": "Rank each column from the same end, copy the given ranks, then compute $d$ and $d^2$ for each row. Check that the $d$ values sum to zero, add the squares to get $\\sum d^2$, then substitute. Show every step; method marks are given even if one number is wrong."
+    },
+    {
+     "nom": "Interpreting and testing the coefficient",
+     "quand_utiliser": "When a question asks what $R_s$ means or whether the relationship is significant.",
+     "contenu_markdown": "Describe the direction (sign) and the strength (size). If a critical value is given, compare the size of $R_s$ with it and state whether the null hypothesis is rejected. Then explain the result in geographical terms and note that correlation does not prove cause."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "A student collects data for eight plots along a road leading out of a town centre. Distance from the centre (km): 0.5, 1.2, 2.0, 3.1, 4.5, 6.0, 7.4, 9.0. Land value index: 95, 80, 85, 60, 50, 55, 30, 20. Use the Spearman rank correlation to measure the relationship between distance and land value, and interpret it.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Rank both columns from the smallest value (rank 1).",
+     "justification": "Both variables must be ranked the same way.",
+     "resultat_markdown": "Distance ranks: 1, 2, 3, 4, 5, 6, 7, 8. Land value ranks: 8, 6, 7, 5, 3, 4, 2, 1."
+    },
+    {
+     "numero": 2,
+     "action": "Find the differences d (distance rank minus value rank).",
+     "justification": "The differences measure how far the two rankings disagree.",
+     "resultat_markdown": "$d$ = -7, -4, -4, -1, 2, 2, 5, 7. Check: the sum is 0."
+    },
+    {
+     "numero": 3,
+     "action": "Square the differences and add them.",
+     "justification": "Squaring removes signs.",
+     "resultat_markdown": "$d^2$ = 49, 16, 16, 1, 4, 4, 25, 49, so $\\sum d^2 = 164$."
+    },
+    {
+     "numero": 4,
+     "action": "Substitute in the formula.",
+     "justification": "Here $n = 8$ and $n^3 - n = 512 - 8 = 504$.",
+     "resultat_markdown": "$R_s = 1 - \\frac{6 \\times 164}{504} = 1 - \\frac{984}{504} = 1 - 1.952 = -0.95$."
+    },
+    {
+     "numero": 5,
+     "action": "Interpret the result.",
+     "justification": "Give the direction and strength and link to geography.",
+     "resultat_markdown": "-0.95 is close to -1: a very strong negative relationship. Land value falls with distance from the centre, as expected because accessibility and competition for sites are greatest in the centre."
+    }
+   ],
+   "conclusion_markdown": "**$R_s = -0.95$**, a very strong negative correlation between distance from the town centre and land value. Compared with a critical value for $n = 8$ at the 5 per cent level, such a value would be significant, so the null hypothesis of no relationship would be rejected. The result shows association; the cause is the high demand for accessible central sites."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Ranking one column with 1 for the largest value and the other with 1 for the smallest.",
+     "pourquoi_faux": "Mixed ranking reverses the sign of the answer, so a negative relationship appears positive or the reverse.",
+     "correction_markdown": "Rank both columns from the same end and say which end you used."
+    },
+    {
+     "erreur_markdown": "Writing $R_s = \\frac{6\\sum d^2}{n^3 - n}$ and forgetting to subtract from 1.",
+     "pourquoi_faux": "The fraction alone is not the coefficient. Forgetting the 1 gives a small value that wrongly suggests a weak relationship (0.17 instead of 0.83 for the data of exercise 1).",
+     "correction_markdown": "Compute the fraction, then subtract it from 1: $R_s = 1 - \\text{fraction}$."
+    },
+    {
+     "erreur_markdown": "Giving two equal values consecutive ranks, for example 4 and 5.",
+     "pourquoi_faux": "Equal values should share the rank equally; otherwise the order within the tie is arbitrary.",
+     "correction_markdown": "Give both the average of the ranks they occupy: values sharing ranks 4 and 5 each get 4.5."
+    },
+    {
+     "erreur_markdown": "Using $n^3 - n$ as $n^2 - n$ or as $(n - 1)^3$.",
+     "pourquoi_faux": "The denominator is $n^3 - n$ exactly. For $n = 8$ it is 504.",
+     "correction_markdown": "Cube $n$ first, then subtract $n$."
+    },
+    {
+     "erreur_markdown": "\"The correlation is 0.9, so distance causes the change.\"",
+     "pourquoi_faux": "A strong correlation shows association, not cause. Other factors may explain the pattern.",
+     "correction_markdown": "Write that the variables are strongly associated, then give a geographical explanation."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Six towns are ranked for population (X) and for number of services (Y). Ranks for X: 1, 2, 3, 4, 5, 6. Ranks for Y: 2, 1, 4, 3, 6, 5. Calculate $R_s$ and describe the relationship.",
+     "solution_markdown": "$d$ = -1, 1, -1, 1, -1, 1; $d^2$ = 1 each, so $\\sum d^2 = 6$. With $n = 6$, $n^3 - n = 210$. $R_s = 1 - \\frac{6 \\times 6}{210} = 1 - 0.171 = 0.83$. **$R_s = 0.83$**, a strong positive relationship: towns with higher population ranks tend to have higher service ranks."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Eight villages are at distances of 2, 5, 8, 11, 14, 17, 20 and 23 km from a health centre. Clinic visits per year per 100 people are 80, 70, 74, 55, 55, 40, 30 and 22 respectively. (a) Rank the data (smallest value = rank 1, ties shared). (b) Calculate $R_s$. (c) Suppose the critical value in the table supplied is 0.74 at the 5 per cent level for these data. What conclusion do you reach?",
+     "solution_markdown": "(a) Distance ranks 1 to 8. Visits ranks: 8, 6, 7, 4.5, 4.5, 3, 2, 1 (the two values of 55 share ranks 4 and 5). (b) $d$ = -7, -4, -4, -0.5, 0.5, 3, 5, 7 (sum 0); $d^2$ = 49, 16, 16, 0.25, 0.25, 9, 25, 49, so $\\sum d^2 = 164.5$. $R_s = 1 - \\frac{6 \\times 164.5}{504} = 1 - \\frac{987}{504} = 1 - 1.958 = -0.96$. (c) The size 0.96 is greater than 0.74, so the null hypothesis is rejected: **there is a significant strong negative relationship; attendance falls as distance from the health centre increases.**"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "For ten sites, the ranks of one variable are 1 to 10 in order and the ranks of the other are 3, 1, 2, 6, 4, 5, 9, 7, 10, 8. (a) Calculate $R_s$. (b) Suppose the critical value for $n = 10$ is 0.65. State and justify your conclusion. (c) Give two limitations of the result.",
+     "solution_markdown": "(a) Differences (first rank minus second): -2, 1, 1, -2, 1, 1, -2, 1, -1, 2 (sum 0). Squares: 4, 1, 1, 4, 1, 1, 4, 1, 1, 4, so $\\sum d^2 = 22$. $n^3 - n = 990$. $R_s = 1 - \\frac{6 \\times 22}{990} = 1 - \\frac{132}{990} = 1 - 0.133 = 0.87$. (b) 0.87 is greater than 0.65, so **the relationship is significant and strongly positive**; the null hypothesis is rejected. (c) Award marks for two of: the sample of ten is small; ranking loses the size of the differences between values; correlation shows association, not cause; other factors may influence the variables; the result applies only to the sites sampled."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "The formula is $R_s = 1 - \\frac{6\\sum d^2}{n^3 - n}$, where $d$ is the difference in ranks and $n$ is the number of pairs.",
+    "Rank both variables from the same end; equal values share the average rank; the $d$ values must add up to zero.",
+    "$R_s$ lies between -1 and +1: near +1 strong positive, near -1 strong negative, near 0 no relationship.",
+    "To test significance, compare the size of $R_s$ with the critical value for $n$; if it is equal or larger, reject the null hypothesis.",
+    "A correlation shows association, not cause; always add a geographical explanation."
+   ]
+  }
+ ]
+}

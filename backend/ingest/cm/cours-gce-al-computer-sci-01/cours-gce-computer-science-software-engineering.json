@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-software-engineering",
+  "meta": {
+    "titre": "Software Engineering: life cycle, design tools and program errors",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Software development life cycle",
+    "duree_estimee_min": 35,
+    "tags": [
+      "software engineering"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-software-engineering-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school in Buea asks a small company for a program that records fees and prints receipts. If the programmers start typing code at once, they may build the wrong thing, or a program that gives a wrong total and nobody notices until parents complain. Software engineering is the set of organised stages, tools and checks that avoid this. At the GCE you must name the stages, choose the right diagram for a job, explain code reuse and distinguish the kinds of program error with examples."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A program is a set of instructions in a programming language, translated into machine code by a compiler or an interpreter.",
+        "An algorithm is a finite sequence of steps that solves a problem, and it can be shown as pseudocode or as a flowchart.",
+        "The client orders the software, the users work with it every day and the developers build it."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Software engineering: life cycle, design tools, code reuse and program errors",
+      "contenu_markdown": "### The stages of the software development life cycle\n| Stage | Question answered | Result |\n|---|---|---|\n| 1. Feasibility study | Is the project worth doing (technical, economic, operational)? | feasibility report |\n| 2. Requirements analysis | What must the system do? | requirements specification agreed with the client |\n| 3. Design | How will it do it? | structure, data design, interface, algorithms |\n| 4. Implementation | Writing the code | working program |\n| 5. Testing | Does it meet the requirements without errors? | test report, corrections |\n| 6. Installation | Putting it into use (direct, parallel or phased changeover) | system in use |\n| 7. Maintenance | Keeping it useful after delivery | corrected and improved versions |\n\nModels organise these stages. The **waterfall** model finishes each stage before the next one starts. **Prototyping** and **iterative** models build a working version early and improve it with the user's feedback. **Agile** methods work in short cycles with frequent contact with the client.\n\n### Which diagram for which job\n- **Data flow diagram (DFD)**: how data moves between external entities, processes and data stores.\n- **Use case diagram (UML)**: what each kind of user can do with the system.\n- **Entity-relationship (E-R) diagram**: the entities, attributes and relationships of the data, used to design a database.\n- **Flowchart**: the step-by-step logic of one algorithm.\n\n### Code reuse\nReuse means building on code that already exists and is tested: functions and procedures called from many places, libraries and modules, classes extended by inheritance, ready-made components and frameworks, and open-source code used within its licence. It saves time and reduces errors. Writing the same routine again from nothing in every project is the opposite of reuse.\n\n### Kinds of program error\n| Error | Meaning | When it shows | Example |\n|---|---|---|---|\n| Syntax | breaks the grammar of the language | the translator reports it (at compile time, or when the interpreter reads the line) | a missing semicolon or a misspelt keyword |\n| Runtime | the instruction is valid but cannot be executed with the data | the program stops while running | division by zero, an array index out of range |\n| Logic | the program runs normally but gives wrong results | only by comparing the output with the expected result | the wrong operator or a wrong condition |",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Answering a question on types of error",
+          "quand_utiliser": "Use for describe, explain or give examples questions on errors and tools.",
+          "contenu_markdown": "When asked to \"describe\" or \"explain\" types of error, give for each one: its name, a one-line definition, when and how it is found, and a specific example in a few words of code or a situation. Three bare names earn few marks; an example that really belongs to the type earns the rest.\n\nThe same discipline applies to a question on diagrams: name the diagram, say what it shows and tie it to the stage where it is used."
+        },
+        {
+          "nom": "Testing a program",
+          "quand_utiliser": "Use when asked how a program should be tested or what test data to choose.",
+          "contenu_markdown": "**Levels of testing**: unit testing checks one module alone; integration testing checks modules working together; system testing checks the whole system against the requirements; acceptance testing is done by the client with real data.\n\n**Test data**: normal data (valid values), boundary data (values at the edges of what is allowed, and just outside), and erroneous data (invalid values that must be rejected). **Black-box** testing looks only at inputs and outputs; **white-box** testing uses knowledge of the code and tries to run every path.\n\nTesting can show that errors exist; it can never prove that none remain."
+        },
+        {
+          "nom": "Maintenance and documentation",
+          "quand_utiliser": "Use for questions on what happens after delivery.",
+          "contenu_markdown": "**Maintenance** has three main kinds. Corrective maintenance fixes errors found after delivery; adaptive maintenance changes the software for a new environment or new rule; perfective maintenance adds features or improves performance. **Documentation** is written throughout: the technical documentation is for the programmers who will maintain the system, and the user guide is for the people who use it."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A programmer writes three versions of the statement that computes the average of three integer marks `m1`, `m2` and `m3` (C-style code):\n\n```text\nA:  average = (m1 + m2 + m3) / 3\nB:  average = (m1 + m2 + m3) / count;     /* count was never changed from its initial value 0 */\nC:  average = m1 + m2 + m3 / 3;\n```\n\nName the type of error in each version, explain how each would be found, and suggest test data that would expose the error in version C.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Check the grammar of each line.",
+          "justification": "A syntax error is a break of the rules of the language and is detected by the translator, so it is the first thing to look for. Line A has no semicolon at its end.",
+          "resultat_markdown": "Version A has a **syntax error** (missing semicolon)."
+        },
+        {
+          "numero": 2,
+          "action": "Ask whether the remaining lines are valid but can fail on certain data.",
+          "justification": "In B the grammar is correct, but count is 0 so the division cannot be carried out; the failure happens only while the program is running.",
+          "resultat_markdown": "Version B has a **runtime error** (division by zero): the translator accepts it, the program stops or crashes when the statement is executed."
+        },
+        {
+          "numero": 3,
+          "action": "Examine the line that is valid and runs normally.",
+          "justification": "In C the grammar is correct and the division is possible. Division is done before addition, so only m3 is divided by 3. The program gives an answer, but not the intended one.",
+          "resultat_markdown": "Version C has a **logic error** (operator precedence); the correction is the brackets of version A."
+        },
+        {
+          "numero": 4,
+          "action": "Choose test data with an answer that is known in advance.",
+          "justification": "A logic error is found only by comparing the result with the expected one, so the expected value must be worked out by hand. Marks 12, 15 and 9 have the average 36 / 3 = 12.",
+          "resultat_markdown": "Version C gives 12 + 15 + 9 / 3 = 12 + 15 + 3 = 30, not 12."
+        },
+        {
+          "numero": 5,
+          "action": "Interpret the result.",
+          "justification": "An average can never be higher than the highest mark, and 30 is higher than 15. A second test, 10, 10 and 10, expects 10 but version C gives 23.",
+          "resultat_markdown": "The two tests expose the error; after correcting with brackets both give the expected values."
+        }
+      ],
+      "conclusion_markdown": "**A: syntax error, reported by the translator without any test data. B: runtime error, found when the statement is executed. C: logic error, found only by testing with known answers (12, 15, 9 gives 30 instead of 12).** The code is an example of the logic; the results were verified with a small program that imitates integer arithmetic."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A syntax error is an error that appears when the user runs the program.",
+          "pourquoi_faux": "Syntax errors break the rules of the language and are reported by the translator (compiler or interpreter); they are not caused by the user's data.",
+          "correction_markdown": "Say that a syntax error is a grammar mistake in the source code, found by the translator."
+        },
+        {
+          "erreur_markdown": "Every error that stops the program is a syntax error.",
+          "pourquoi_faux": "A program with valid grammar can still stop, for example on a division by zero; that is a runtime error. A logic error does not stop the program at all.",
+          "correction_markdown": "Classify by cause: grammar (syntax), impossible operation on the data (runtime), wrong result from correct grammar (logic)."
+        },
+        {
+          "erreur_markdown": "The software passed all the tests, so it has no errors.",
+          "pourquoi_faux": "Tests only cover the cases that were tried; they can reveal errors but cannot prove that none remain.",
+          "correction_markdown": "Say that testing reduces the risk and shows the presence of errors, and that normal, boundary and erroneous data should all be used."
+        },
+        {
+          "erreur_markdown": "Using a flowchart to design the tables of a database.",
+          "pourquoi_faux": "A flowchart shows the logic of an algorithm; the entities and relationships of data are modelled with an E-R diagram.",
+          "correction_markdown": "Use an E-R diagram for the data and a flowchart or pseudocode for an algorithm."
+        },
+        {
+          "erreur_markdown": "Maintenance means only fixing the bugs that users report.",
+          "pourquoi_faux": "Maintenance also covers adapting the software to new conditions and improving it.",
+          "correction_markdown": "List corrective, adaptive and perfective maintenance with one example each."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The following activities took place in the building of a fee-management program: (i) the team writes the code in Pascal, (ii) the client and the analysts agree on the list of things the system must do, (iii) a year after delivery an error in the receipt totals is repaired, (iv) the team decides whether the project is affordable, (v) the program is checked with test data, (vi) the data structures and algorithms are planned. Put the activities in the order of the life cycle and name the stage of each.",
+          "solution_markdown": "Order and stages: (iv) feasibility study; (ii) requirements analysis; (vi) design; (i) implementation; (v) testing; (iii) maintenance (a corrective change, after installation).\n\n**Order: iv, ii, vi, i, v, iii.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A function accepts an examination mark only if it is a whole number from 0 to 20 inclusive. Give one value of each type of test data (normal, boundary, erroneous) and the expected result for each, and explain why boundary values are chosen.",
+          "solution_markdown": "Normal: 14, accepted. Boundary: 0 and 20 are accepted and the values just outside the range, -1 and 21, are rejected. Erroneous: the text abc (not a number), rejected with an error message.\n\nBoundary values are used because mistakes in conditions (for example writing a strict inequality where the limit should be included) show up exactly at the edges.\n\n**Expected: 14, 0 and 20 accepted; -1, 21 and abc rejected.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A clinic in Bamenda replaces its paper records by a new patient-record system. (a) Compare direct changeover and parallel running and recommend one, with reasons. (b) Classify as corrective, adaptive or perfective: (i) a fix for a wrong total on printed bills, (ii) an update after the health authority changes the format of a report, (iii) a faster search for patient names requested by the nurses. (c) Recommend a development model (waterfall or agile) for this project and justify.",
+          "solution_markdown": "(a) Direct changeover: the old system is stopped and the new one starts at once; it is cheap and fast, but a fault in the new system leaves no fallback. Parallel running: both run together for a period and their outputs are compared; it costs double work but is safe. For patient records, where errors are serious, parallel running is the better recommendation.\n\n(b) (i) corrective; (ii) adaptive; (iii) perfective.\n\n(c) Accept either model with sound reasons: waterfall suits clearly fixed and well-documented requirements; agile suits requirements that staff will refine as they see working versions, with early feedback from nurses and doctors.\n\n**Answers: parallel running recommended; (b) corrective, adaptive, perfective.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The life cycle is: feasibility study, requirements analysis, design, implementation, testing, installation, maintenance; waterfall, prototyping and agile are ways of organising it.",
+        "Choose the tool by the job: DFD for data movement, use case diagram for user functions, E-R diagram for data design, flowchart for the logic of an algorithm.",
+        "Code reuse means building on existing tested code (subprograms, libraries, inheritance, components); rewriting from nothing is not reuse.",
+        "Syntax errors break the grammar and are found by the translator; runtime errors stop the program on certain data; logic errors give wrong results without any message.",
+        "Test with normal, boundary and erroneous data; testing shows the presence of errors, not their absence.",
+        "Maintenance after delivery is corrective, adaptive or perfective."
+      ]
+    }
+  ]
+}

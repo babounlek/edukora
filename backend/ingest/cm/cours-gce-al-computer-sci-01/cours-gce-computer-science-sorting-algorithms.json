@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-computer-science-sorting-algorithms",
+  "meta": {
+    "titre": "Sorting Algorithms: bubble, selection, insertion and merge sort",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Sorting and searching",
+    "duree_estimee_min": 40,
+    "tags": [
+      "sorting algorithms"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-sorting-algorithms-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A teacher in Limbe has forty answer scripts and must rank the pupils from the highest mark to the lowest. Some teachers pick the best script again and again, others slot each new script into a pile that is already in order, others keep swapping neighbours that are in the wrong order. These three habits are the selection, insertion and bubble sorts. The GCE asks you to recognise a sort from its description, to trace it pass by pass, to compare its efficiency and to search a sorted list by halving it."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "An array stores items in numbered cells that are reached by their index.",
+        "The basic operations of sorting are comparing two values and swapping two cells, which needs a temporary variable.",
+        "Text is put in alphabetical order by comparing letters from the left, so Buea comes before Limbe."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sorting algorithms: how each one works, passes and efficiency",
+      "contenu_markdown": "### The three simple sorts\n| Algorithm | What one pass does | Best case | Worst case | Stable |\n|---|---|---|---|---|\n| Bubble sort | compares neighbouring cells and swaps them if out of order; after pass k the k largest values are in their final cells at the end | $O(n)$ if the sort stops after a pass with no swap | $O(n^2)$ | yes |\n| Selection sort | finds the smallest value of the unsorted part and swaps it with the first cell of that part | $O(n^2)$ | $O(n^2)$, but at most n - 1 swaps | no, in the usual swap version |\n| Insertion sort | takes the next value of the unsorted part and inserts it into the sorted part, shifting larger values one cell to the right | $O(n)$ | $O(n^2)$ | yes |\n\nA sort is **stable** when equal values keep their original relative order. Selection sort and insertion sort split the array, at every pass, into a sorted part and an unsorted part, and the sorted part grows by one item per pass (bubble sort also builds a sorted tail at the end, but it is recognised by its swaps of neighbours). They differ in the work: selection sort searches the unsorted part for its smallest value, while insertion sort takes the next value as it comes and shifts to find its place. Insertion sort is quick on data that is nearly in order.\n\n### Divide-and-conquer sorts\n- **Merge sort** splits the list into two halves, sorts each half in the same way, then merges the two sorted halves by repeatedly taking the smaller front value. It is $O(n \\log n)$ in every case, stable, and needs extra memory of size n.\n- **Quick sort** chooses a pivot, moves smaller values before it and larger values after it, then sorts both sides in the same way. It is $O(n \\log n)$ on average, $O(n^2)$ when the pivots are badly chosen, and usually works in place.\n\n### Binary search on a sorted array\nKeep two limits, low and high (at first 1 and n). Compute `mid = (low + high) div 2`, the integer part. If the cell is the target, stop; if the target is larger, set low to mid + 1; if smaller, set high to mid - 1. The search fails when low is greater than high. Each stage halves the range, so at most $\\lfloor \\log_2 n \\rfloor + 1$ stages are needed.\n\n### What examiners want\nWhen a question says \"after each pass\", write the whole array after every pass. A pass of bubble sort is one scan along the array; a pass of selection or insertion sort handles one more item.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Tracing a sort pass by pass",
+          "quand_utiliser": "Use when the question asks for the array after each pass.",
+          "contenu_markdown": "Tracing method for any simple sort:\n1. Copy the starting array.\n2. Run one complete pass following the rule of the algorithm, noting the swaps or shifts.\n3. Write the full array at the end of the pass.\n4. Continue until the array is in order; for bubble sort, one extra pass with no swap confirms it.\nEqual values must never be moved past each other by a stable sort: mark them (first, second) to check."
+        },
+        {
+          "nom": "Binary search stages",
+          "quand_utiliser": "Use when asked to show ranges or to search a sorted array.",
+          "contenu_markdown": "For a \"show the ranges\" question on binary search, write one line per stage with low, high, mid and the value found at mid, then say which half is kept. Give the positions numbered from 1, as in the array of the question, and take the integer part of the middle: for low = 4 and high = 5 the middle is 4, not 4.5."
+        },
+        {
+          "nom": "From pseudocode to Pascal",
+          "quand_utiliser": "Use when asked to write or read the code of a sort.",
+          "contenu_markdown": "Insertion sort in Pascal, an example of the logic (check the syntax of your own compiler):\n\n```pascal\ntype List = array[0..100] of integer;\n\nprocedure InsertionSort(var a: List; n: integer);\nvar i, j, key: integer;\nbegin\n  for i := 2 to n do\n  begin\n    key := a[i];\n    j := i - 1;\n    while (j >= 1) and (a[j] > key) do\n    begin\n      a[j + 1] := a[j];\n      j := j - 1\n    end;\n    a[j + 1] := key\n  end\nend;\n```\nPascal does not guarantee that the second part of `and` is skipped when the first is false, so the array starts at index 0 to make the read of `a[0]` harmless."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A pupil sorts the scores `[8, 4, 6, 4, 2]` into ascending order by insertion sort. Show the array after each pass, count the comparisons between two scores, and state whether the two equal scores 4 keep their original order.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Start with the first value as the sorted part.",
+          "justification": "Insertion sort treats the first cell as an already sorted part of one item; the other four cells are unsorted.",
+          "resultat_markdown": "Sorted: [8]. Unsorted: [4, 6, 4, 2]."
+        },
+        {
+          "numero": 2,
+          "action": "Pass 1: insert 4.",
+          "justification": "4 is compared with 8; 8 is greater, so it shifts right and 4 goes to the front. One comparison.",
+          "resultat_markdown": "[4, 8, 6, 4, 2]"
+        },
+        {
+          "numero": 3,
+          "action": "Pass 2: insert 6.",
+          "justification": "6 is compared with 8 (shift) and with 4 (4 is not greater, stop). Two comparisons.",
+          "resultat_markdown": "[4, 6, 8, 4, 2]"
+        },
+        {
+          "numero": 4,
+          "action": "Pass 3: insert the second 4.",
+          "justification": "It is compared with 8 (shift), 6 (shift) and the first 4. The first 4 is not greater than it, so the loop stops and the second 4 goes just after the first. Three comparisons.",
+          "resultat_markdown": "[4, 4, 6, 8, 2]"
+        },
+        {
+          "numero": 5,
+          "action": "Pass 4: insert 2 and total the comparisons.",
+          "justification": "2 is smaller than 8, 6, 4 and 4, so all four shift right and 2 reaches the front. Four comparisons, so $1 + 2 + 3 + 4 = 10$ in all.",
+          "resultat_markdown": "[2, 4, 4, 6, 8]"
+        }
+      ],
+      "conclusion_markdown": "**The final array is [2, 4, 4, 6, 8], reached with 10 comparisons; the two 4s keep their original order, because a value is shifted only when it is strictly greater than the one being inserted, so insertion sort is stable.** Each pass was checked with a small program."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "After the first pass of bubble sort the array is sorted.",
+          "pourquoi_faux": "One pass only carries the largest value to the end; the other values are still partly out of order.",
+          "correction_markdown": "After pass k, the k largest values are in place at the end. Continue until a pass makes no swap."
+        },
+        {
+          "erreur_markdown": "Selection sort and insertion sort are the same because both keep a sorted part.",
+          "pourquoi_faux": "Selection sort looks through the unsorted part for the smallest value and swaps it into place; insertion sort takes the next value and shifts larger values to make room.",
+          "correction_markdown": "Describe the action of one pass: search and swap for selection, shift and insert for insertion."
+        },
+        {
+          "erreur_markdown": "Binary search can be used on any list; for positions 1 to 4 the middle is 2.5.",
+          "pourquoi_faux": "Binary search requires a sorted array, and a position must be a whole number: the integer part of the calculation is used.",
+          "correction_markdown": "Sort first, then use `mid = (low + high) div 2`; here (1 + 4) div 2 = 2."
+        },
+        {
+          "erreur_markdown": "`a[j] := a[j+1]; a[j+1] := a[j];` to swap two cells.",
+          "pourquoi_faux": "The first assignment overwrites a[j], so the second copies the same value back and one value is lost.",
+          "correction_markdown": "Use a temporary variable: `temp := a[j]; a[j] := a[j+1]; a[j+1] := temp;`"
+        },
+        {
+          "erreur_markdown": "Writing only the final sorted array when the question asks for the contents after each pass.",
+          "pourquoi_faux": "The marks are for the intermediate states, which show that the algorithm was followed.",
+          "correction_markdown": "Write the full array at the end of every pass."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Apply bubble sort to `[5, 1, 4, 2]`, comparing neighbours from the left and stopping after a pass in which no swap occurs. Write the array at the end of each pass and give the number of comparisons.",
+          "solution_markdown": "Pass 1 compares (5,1), (5,4), (5,2) and swaps each time: [1, 4, 2, 5]. Pass 2 compares (1,4) and (4,2) and swaps only the second pair: [1, 2, 4, 5]. Pass 3 compares (1,2) with no swap, so the sort stops: [1, 2, 4, 5].\n\nComparisons: 3 + 2 + 1 = 6.\n\n**Array after each pass: [1, 4, 2, 5], [1, 2, 4, 5], [1, 2, 4, 5]; 6 comparisons.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Sort the towns `[Kribi, Bafoussam, Garoua, Edea, Ebolowa]` alphabetically with selection sort, giving the array after each pass. Then show the stages of a binary search for Garoua in the sorted array, numbering positions from 1.",
+          "solution_markdown": "Pass 1: the smallest is Bafoussam; swap with the first cell: [Bafoussam, Kribi, Garoua, Edea, Ebolowa]. Pass 2: the smallest of the rest is Ebolowa; swap with cell 2: [Bafoussam, Ebolowa, Garoua, Edea, Kribi]. Pass 3: the smallest of the rest is Edea; swap with cell 3: [Bafoussam, Ebolowa, Edea, Garoua, Kribi]. Pass 4: Garoua is already in place, no swap. Ebolowa comes before Edea because b comes before d.\n\nBinary search: low = 1, high = 5, mid = 3, Edea comes before Garoua, so low = 4. Then low = 4, high = 5, mid = (4 + 5) div 2 = 4, the value is Garoua: found.\n\n**Sorted array: [Bafoussam, Ebolowa, Edea, Garoua, Kribi]; Garoua found at position 4 after 2 stages.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Merge sort is applied to `[12, 5, 9, 1, 7, 3, 11, 2]`. (a) Show the successive splits and merges. (b) How many levels of splitting are there and how many values are handled at each level of merging? (c) For 1024 values, compare the order of magnitude of the work of merge sort with that of a quadratic sort.",
+          "solution_markdown": "(a) Splits: [12, 5, 9, 1 | 7, 3, 11, 2], then [12, 5 | 9, 1 | 7, 3 | 11, 2], then single values. Merges: [5, 12], [1, 9], [3, 7], [2, 11]; then [1, 5, 9, 12] and [2, 3, 7, 11]; then [1, 2, 3, 5, 7, 9, 11, 12].\n\n(b) The sizes are 8, 4, 2, 1, so 3 levels of splitting, which is $\\log_2 8$. Each level of merging handles all 8 values, so the work is about $8 \\times 3 = 24$ steps.\n\n(c) For n = 1024, $n \\log_2 n = 1024 \\times 10 = 10240$ while $n^2 = 1\\,048\\,576$, about 102 times more.\n\n**Answers: 3 levels, 8 values per level, sorted result [1, 2, 3, 5, 7, 9, 11, 12]; about 10 240 against 1 048 576 steps.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Bubble sort swaps out-of-order neighbours and floats the largest values to the end; selection sort swaps the smallest of the unsorted part into place; insertion sort inserts the next value into the sorted part by shifting.",
+        "Simple sorts are $O(n^2)$ in the worst case; bubble sort with a no-swap stop and insertion sort are $O(n)$ on data already in order; merge sort is $O(n \\log n)$ always; quick sort is $O(n \\log n)$ on average and $O(n^2)$ at worst.",
+        "A stable sort keeps equal values in their original order; bubble, insertion and merge sorts are stable, the usual selection sort is not.",
+        "Binary search needs a sorted array; use the integer part of $(low + high)/2$ and halve the range each stage.",
+        "In a trace question, write the whole array after each pass and follow the pass rule exactly."
+      ]
+    }
+  ]
+}

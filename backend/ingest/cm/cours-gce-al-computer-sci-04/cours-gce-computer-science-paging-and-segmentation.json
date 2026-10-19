@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-computer-science-paging-and-segmentation",
+  "meta": {
+    "titre": "Paging and Segmentation: frames, pages, segments and address translation",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Memory management: paging, segmentation and demand paging",
+    "duree_estimee_min": 40,
+    "tags": [
+      "paging and segmentation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-paging-and-segmentation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A phone or a laptop in daily use often has more programs open than its main memory could hold if each of them were loaded completely. The operating system copes by cutting programs into pieces and keeping in memory only the pieces that are needed. Examiners ask you to define page, frame and segment, to compare paging with segmentation, to explain demand paging and the page fault, and sometimes to translate an address or count page faults. This course gives you the vocabulary and the method for each of these questions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Main memory (RAM) holds the programs and data that the CPU is using, while the disk is much larger but much slower.",
+        "N address bits can identify 2^N memory locations, and 2^10 = 1024 bytes is called 1 KiB in this course.",
+        "Internal fragmentation is wasted space inside an allocated block; external fragmentation is free space broken into small separated holes."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Paging, segmentation and demand paging in memory management",
+      "contenu_markdown": "### Terms\n- **Page**: a fixed-size block of the logical (virtual) address space of a process.\n- **Frame**: a fixed-size block of physical memory, the same size as a page; a page is loaded into a frame.\n- **Segment**: a variable-size block of the logical address space that matches a logical unit of the program, such as the main code, a procedure, the data or the stack.\n\n### Paging\nA **page table** gives the frame that holds each page. A logical address is a pair (page number, offset). With a page size of $2^{k}$ bytes the offset uses k bits, and the physical address is **frame number x page size + offset**. The pages of one process may sit in frames that are not next to each other. There is no external fragmentation, but the last page of a process is rarely full, which wastes space inside it (internal fragmentation). The programmer does not see the pages.\n\n### Segmentation\nA **segment table** stores for each segment its **base** (start in physical memory) and its **limit** (length). A logical address is (segment number, offset). If the offset is not less than the limit the hardware raises an addressing error (a trap); otherwise physical address = base + offset. Segments have different sizes, so free memory breaks into small separate holes (external fragmentation). Segments follow the logical structure of the program, which makes sharing and protecting a code segment natural.\n\n| Feature | Paging | Segmentation |\n|---|---|---|\n| Size of a block | fixed | variable |\n| Division made by | the system, whatever the program contains | the logical structure of the program |\n| Table entry | frame number | base and limit |\n| Fragmentation | internal | external |\n| Seen by the programmer | no | yes |\n\n### Demand paging\nIn plain paged or segmented allocation the whole program is placed in memory before it runs. In **demand paging** a page is loaded only when it is first referenced. A reference to a page that is not in a frame causes a **page fault**: the operating system finds the page on disk, loads it into a free frame, updates the page table and restarts the instruction. A program can then be larger than the physical memory (virtual memory).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Translating an address",
+          "quand_utiliser": "Use whenever a page table or segment table and a logical address are given.",
+          "contenu_markdown": "**Paging**: page = address divided by page size (whole part); offset = remainder; look up the frame; physical = frame x page size + offset. If the table says the page is not in memory, a page fault occurs.\n\n**Segmentation**: read (segment, offset); if offset >= limit, report an addressing error; otherwise physical = base + offset.\n\n**Bits**: a logical address of n bits with pages of $2^{k}$ bytes has k offset bits and n - k bits for the page number, so up to $2^{n-k}$ pages.\n\n```c\n/* Example of logic: paging with 1024-byte pages (not compiled; checked by a Python translation). */\nint translate(int logical, int page_table[])\n{\n    int page   = logical / 1024;\n    int offset = logical % 1024;\n    int frame  = page_table[page];\n    return frame * 1024 + offset;\n}\n```\nWith the page table `{5, 2, 9, 7, 0}`, `translate(3500, ...)` gives 7596."
+        },
+        {
+          "nom": "Page faults and page replacement",
+          "quand_utiliser": "Use when a question asks what happens when no frame is free or asks you to count page faults.",
+          "contenu_markdown": "When a page fault occurs and every frame is in use, a **replacement algorithm** chooses a victim page to remove. **FIFO** removes the page that has been in memory longest. **LRU** (least recently used) removes the page not used for the longest time. To count faults, write the reference string, update the frames after each reference and mark every reference to a page that is not in a frame as a fault. A page fault is a normal event that the operating system handles; it is not a program error. If the system spends more time moving pages than running programs it is said to be **thrashing**."
+        },
+        {
+          "nom": "Answering a \"distinguish between\" question",
+          "quand_utiliser": "Use for questions that compare paging with segmentation, or demand paging with the basic schemes.",
+          "contenu_markdown": "Choose three or four criteria and give both sides for each one, for example block size, how the blocks are chosen, the content of the table, the kind of fragmentation and whether the whole program must be loaded. A list of two separate definitions earns fewer marks than a point-by-point comparison."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A computer uses 16-bit logical addresses and pages of 1 KiB (1024 bytes). Physical memory has 32 frames of the same size. The first entries of the page table of a process are:\n\n| Page | Frame |\n|---|---|\n| 0 | 5 |\n| 1 | 2 |\n| 2 | 9 |\n| 3 | 7 |\n| 4 | 0 |\n\n(a) How many bits give the page number and how many give the offset?\n(b) Translate logical address 3500 into a physical address and check your answer in binary.\n(c) The process uses logical address 5200 and the table has no entry for that page in memory. What happens?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the sizes of the two fields.",
+          "justification": "A page of 1024 bytes is $2^{10}$ bytes, so 10 bits are needed for the offset; the other bits of the 16-bit address give the page number.",
+          "resultat_markdown": "Offset: 10 bits. Page number: 16 - 10 = 6 bits, so up to 64 pages."
+        },
+        {
+          "numero": 2,
+          "action": "Split the logical address 3500.",
+          "justification": "Whole division by the page size gives the page number, and the remainder is the offset.",
+          "resultat_markdown": "3500 = 3 x 1024 + 428, so page 3, offset 428."
+        },
+        {
+          "numero": 3,
+          "action": "Look up the page table.",
+          "justification": "The table gives the frame that holds the page.",
+          "resultat_markdown": "Page 3 is in frame 7."
+        },
+        {
+          "numero": 4,
+          "action": "Build the physical address.",
+          "justification": "Physical address = frame number x page size + offset.",
+          "resultat_markdown": "7 x 1024 + 428 = 7168 + 428 = 7596."
+        },
+        {
+          "numero": 5,
+          "action": "Check in binary.",
+          "justification": "Physical memory has 32 frames, so the frame number has 5 bits, followed by the same 10-bit offset.",
+          "resultat_markdown": "Page 3 = 000011 and offset 428 = 0110101100. Frame 7 = 00111, so physical address = 00111 0110101100, which is 7596 in decimal. The offset is unchanged, as it must be."
+        },
+        {
+          "numero": 6,
+          "action": "Study address 5200.",
+          "justification": "5200 = 5 x 1024 + 80, so it is in page 5, offset 80. A page that is not in a frame gives a page fault.",
+          "resultat_markdown": "In a demand-paged system the operating system loads page 5 from disk into a frame, updates the table and restarts the instruction. The program is not stopped."
+        }
+      ],
+      "conclusion_markdown": "**Offset 10 bits and page number 6 bits; logical address 3500 maps to physical address 7596; address 5200 causes a page fault, which the operating system handles by loading the page.** The same logic is shown in the short C function above, which is an example of logic checked with a Python translation and not compiled."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A frame is a block of the logical address space and a page is a block of physical memory.",
+          "pourquoi_faux": "The roles are reversed. Pages belong to the logical (virtual) address space of the process; frames belong to physical memory.",
+          "correction_markdown": "Pages are loaded into frames; both have the same size."
+        },
+        {
+          "erreur_markdown": "Paging wastes no memory at all.",
+          "pourquoi_faux": "Paging has no external fragmentation, but the last page of a process is usually only partly used. For example a 10000-byte process with 4096-byte pages needs 3 pages, 12288 bytes, so 2288 bytes are wasted inside the last page.",
+          "correction_markdown": "Say that paging suffers internal fragmentation and segmentation suffers external fragmentation."
+        },
+        {
+          "erreur_markdown": "Segments are blocks of equal size, like pages.",
+          "pourquoi_faux": "Segments follow the logical units of the program and have different lengths, which is why each segment table entry needs a limit.",
+          "correction_markdown": "Segments have variable sizes; pages have a fixed size."
+        },
+        {
+          "erreur_markdown": "A page fault is an error that stops the program.",
+          "pourquoi_faux": "In demand paging a page fault is normal: the page is simply not yet in a frame, and the operating system loads it and restarts the instruction. An offset beyond a segment limit is the real addressing error.",
+          "correction_markdown": "Describe the steps the operating system takes after a page fault."
+        },
+        {
+          "erreur_markdown": "Demand paging loads the whole program first and then removes pages it does not need.",
+          "pourquoi_faux": "In demand paging pages are brought in only when they are referenced, so the whole program is never required in memory.",
+          "correction_markdown": "State that pages are loaded on first reference."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A system uses pages of 4096 bytes.\n\n(a) Find the page number and the offset of logical address 9000.\n(b) How many pages does a process of 20000 bytes need, and how many bytes are wasted in its last page?",
+          "solution_markdown": "(a) 9000 = 2 x 4096 + 808, so **page 2, offset 808**.\n\n(b) 20000 / 4096 = 4.88, so 5 pages are needed (5 x 4096 = 20480). The wasted space is 20480 - 20000 = **480 bytes**, which is internal fragmentation."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A segmented system has this segment table.\n\n| Segment | Base | Limit |\n|---|---|---|\n| 0 | 1000 | 400 |\n| 1 | 5000 | 1200 |\n| 2 | 3200 | 600 |\n\nTranslate the logical addresses (1, 800), (2, 650) and (0, 399). State what happens when an address cannot be translated, and why this protects other segments.",
+          "solution_markdown": "(1, 800): the offset 800 is less than the limit 1200, so physical address = 5000 + 800 = **5800**.\n\n(2, 650): the offset 650 is not less than the limit 600, so the address is outside the segment: **addressing error (trap)**.\n\n(0, 399): 399 is less than 400, so physical address = 1000 + 399 = **1399**.\n\nThe limit check stops a program from reading or writing beyond the end of its own segment, so it cannot damage the memory of other segments. The operating system handles the trap, normally by ending the faulty program."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A process makes these page references, in order: 2 3 2 1 5 2 4 5 3 2 5 2. Three frames are available and all are empty at the start.\n\n(a) Count the page faults with FIFO replacement and with LRU replacement.\n(b) Which algorithm is better for this string?\n(c) A system has 24-bit logical addresses and pages of 2 KiB. How many entries can the page table have?",
+          "solution_markdown": "(a) FIFO (oldest page on the left):\n\n| Page referenced | Frames after the reference | Page fault? |\n|---|---|---|\n| 2 | 2 | yes |\n| 3 | 2 3 | yes |\n| 2 | 2 3 | no |\n| 1 | 2 3 1 | yes |\n| 5 | 3 1 5 | yes |\n| 2 | 1 5 2 | yes |\n| 4 | 5 2 4 | yes |\n| 5 | 5 2 4 | no |\n| 3 | 2 4 3 | yes |\n| 2 | 2 4 3 | no |\n| 5 | 4 3 5 | yes |\n| 2 | 3 5 2 | yes |\n\nFIFO: **9 page faults**.\n\nLRU (least recently used page on the left):\n\n| Page referenced | Frames after the reference | Page fault? |\n|---|---|---|\n| 2 | 2 | yes |\n| 3 | 2 3 | yes |\n| 2 | 3 2 | no |\n| 1 | 3 2 1 | yes |\n| 5 | 2 1 5 | yes |\n| 2 | 1 5 2 | no |\n| 4 | 5 2 4 | yes |\n| 5 | 2 4 5 | no |\n| 3 | 4 5 3 | yes |\n| 2 | 5 3 2 | yes |\n| 5 | 3 2 5 | no |\n| 2 | 3 5 2 | no |\n\nLRU: **7 page faults**.\n\n(b) LRU is better here, with 7 faults against 9, because it keeps the pages 2 and 5 that are used again and again, while FIFO removes a page only because it is old.\n\n(c) 2 KiB = $2^{11}$ bytes, so the offset has 11 bits and the page number has 24 - 11 = 13 bits. The table can have $2^{13}$ = **8192 entries**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A page is a fixed-size block of the logical address space; a frame is a block of physical memory of the same size; a segment is a variable-size block that follows a logical unit of the program.",
+        "Paging: physical address = frame number x page size + offset; it has internal fragmentation but no external fragmentation, and the programmer does not see it.",
+        "Segmentation: the table gives base and limit; an offset not less than the limit is an addressing error; physical address = base + offset; it suffers external fragmentation.",
+        "Compare paging and segmentation point by point: block size, how blocks are chosen, table contents, fragmentation and visibility to the programmer.",
+        "Demand paging loads a page only when it is referenced; a page fault makes the operating system fetch the page, update the table and restart the instruction.",
+        "When no frame is free a replacement algorithm such as FIFO or LRU chooses the victim page; count faults by tracing the frames after every reference."
+      ]
+    }
+  ]
+}

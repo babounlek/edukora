@@ -1,0 +1,153 @@
+{
+  "cours_id": "cours-gce-computer-science-object-oriented-programming",
+  "meta": {
+    "titre": "Object-Oriented Programming: classes, objects, inheritance and polymorphism",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Object-oriented concepts and their benefits",
+    "duree_estimee_min": 35,
+    "tags": [
+      "object-oriented programming"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-object-oriented-programming-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A mobile-money agent in Bamenda deals with several kinds of account: ordinary, savings and business. They share most behaviours, such as depositing and withdrawing, but each kind has a few rules of its own. Object-oriented programming models such things as objects that carry their own data and their own actions, so the common part is written once and each kind adds only what is special. Paper 1 asks short questions on the vocabulary (object, class, inheritance, polymorphism) and on what each feature gives the programmer, such as reuse and safer code."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A variable stores a value, and a procedure or function groups instructions under one name.",
+        "A record (structure) groups several fields, possibly of different types, under one name.",
+        "A large program is easier to maintain when it is split into small parts that each do one job."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Objects, classes and the main features of object-oriented programming",
+      "contenu_markdown": "### Vocabulary\n| Term | Meaning |\n|---|---|\n| Class | A template that defines the attributes (data) and the methods (actions) shared by a kind of object. |\n| Object | An instance of a class: one actual item with its own values for the attributes. It bundles data and the methods that act on that data. |\n| Attribute | A piece of data stored in each object, for example the balance of an account. |\n| Method | A procedure or function that belongs to a class and works on the data of an object. |\n| Constructor | A special method that runs when an object is created and gives its attributes their first values. |\n\n### The main features\n- **Encapsulation**: the attributes and the methods are bundled in one unit, and the attributes are hidden (private). Other parts of the program reach them only through public methods, which form the interface. This is information hiding. It protects data from invalid changes, and the inside of a class can be rewritten without breaking the programs that use it.\n- **Abstraction**: only the features needed for the job are shown and the detail is hidden. A class is an abstraction of a real thing.\n- **Inheritance**: a new class (subclass, derived class) takes the attributes and methods of an existing class (superclass, base class) and may add new ones or change inherited ones. Code is written once and reused.\n- **Polymorphism** (many forms): one operation name works on objects of different types, and each type responds in its own way. Two forms are common. *Overriding*: a subclass redefines an inherited method, and the version that runs depends on the real type of the object. *Overloading*: the same name is given several definitions with different parameter types, for example giving the operator `+` a meaning for a new type such as an amount of money, so an existing operation is applied to new data types.\n\n### Object-oriented and procedural programming\nIn procedural programming the data and the procedures are separate, and procedures are called on the data. In object-oriented programming each object owns its data and its methods, which models real things more naturally and makes large programs easier to maintain.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Which feature supports reuse?",
+          "quand_utiliser": "Use when a question asks which feature helps programmers reuse existing code, or which does least.",
+          "contenu_markdown": "Inheritance is the feature that builds new classes directly from existing ones, so it is the most direct support for reuse. A finished class can also be used again in many programs. Polymorphism lets code written for a superclass work with subclasses added later. Encapsulation protects data and hides detail; it helps a class to be moved into another program safely, but it does not create new classes from old ones, so it contributes less directly to reuse than inheritance. When you compare options, ask: does this feature let me make something new from existing code?"
+        },
+        {
+          "nom": "Defining an object and a class",
+          "quand_utiliser": "Use for a question that begins with define, state or what is.",
+          "contenu_markdown": "Give the category, then what it contains. *An object is an instance of a class that combines data (attributes) with the methods that operate on that data.* *A class is a template from which objects are created.* Then add one short example: `Account` is a class, and the account of one customer is an object. Do not say that a class and an object are the same."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A mobile-money company models its accounts. Class `Account` has a hidden attribute `balance` (in FCFA), a method `deposit(amount)` and a method `withdraw(amount)` that refuses a withdrawal larger than the balance. Class `SavingsAccount` inherits from `Account` and overrides `withdraw` so that the balance never falls below 10 000 FCFA. A program creates one `Account` and one `SavingsAccount`, each opened with 70 000 FCFA, and asks each of them to withdraw 65 000 FCFA.\n\n(a) Name the object-oriented features used. (b) Write the logic of the two classes. (c) State the balance of each object afterwards and explain why the same request gives different results.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the class, its attributes and its methods.",
+          "justification": "A class collects the data and the actions common to all accounts.",
+          "resultat_markdown": "Class `Account`: attribute `balance`; methods `deposit`, `withdraw`, `balance`. Each customer account is an object of this class."
+        },
+        {
+          "numero": 2,
+          "action": "Hide the attribute behind methods.",
+          "justification": "Encapsulation: other code must not set the balance directly, otherwise a negative balance could be written. Only `deposit` and `withdraw` change it, and `withdraw` checks the amount first.",
+          "resultat_markdown": "```\nclass Account:\n    def __init__(self, opening):\n        self._balance = opening          # hidden attribute\n    def balance(self):\n        return self._balance\n    def deposit(self, amount):\n        self._balance = self._balance + amount\n    def withdraw(self, amount):\n        if amount <= self._balance:\n            self._balance = self._balance - amount\n            return True\n        return False\n```"
+        },
+        {
+          "numero": 3,
+          "action": "Create the subclass.",
+          "justification": "Inheritance: `SavingsAccount` already has the constructor, `deposit` and `balance` from `Account`, so none of them is rewritten. In a language with access levels the attribute is declared protected so that the subclass can use it.",
+          "resultat_markdown": "`class SavingsAccount(Account)` with the new constant `MINIMUM = 10000`."
+        },
+        {
+          "numero": 4,
+          "action": "Override the method that must behave differently.",
+          "justification": "The rule for savings accounts differs, so `withdraw` is redefined with the same name and the same parameter: it accepts the withdrawal only if the balance afterwards is at least 10 000.",
+          "resultat_markdown": "```\nclass SavingsAccount(Account):           # inherits from Account\n    MINIMUM = 10000\n    def withdraw(self, amount):          # overrides the inherited method\n        if self._balance - amount >= SavingsAccount.MINIMUM:\n            self._balance = self._balance - amount\n            return True\n        return False\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Send the same message to both objects.",
+          "justification": "Polymorphism: the call `withdraw(65000)` is identical, and the version run depends on the type of the object. For `Account`: 65 000 is less than 70 000, so the balance becomes 70 000 - 65 000 = 5 000. For `SavingsAccount`: 70 000 - 65 000 = 5 000, which is below 10 000, so the request is refused.",
+          "resultat_markdown": "| Object | Request accepted? | Balance afterwards |\n|---|---|---|\n| `Account` | yes | 5 000 FCFA |\n| `SavingsAccount` | no | 70 000 FCFA |"
+        }
+      ],
+      "conclusion_markdown": "Encapsulation protects the balance, inheritance lets `SavingsAccount` reuse `Account`, and polymorphism (overriding) makes the identical call `withdraw(65000)` give 5 000 FCFA for the ordinary account and a refusal (70 000 FCFA unchanged) for the savings account. The code is an example of the logic, written in Python style, and it was run to check the results.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"A class and an object are the same thing, so `Account` is an object.\"",
+          "pourquoi_faux": "A class is only a template. Objects are the individual items created from it, each with its own attribute values.",
+          "correction_markdown": "`Account` is a class; the account of Achu with 70 000 FCFA is an object (an instance) of that class. Many objects can come from one class."
+        },
+        {
+          "erreur_markdown": "\"Encapsulation means that all attributes are public so that every part of the program can reach them easily.\"",
+          "pourquoi_faux": "It is the opposite. Encapsulation hides the attributes and allows access only through public methods, which protects the data.",
+          "correction_markdown": "Encapsulation bundles data and methods and hides the data (information hiding); outside code uses the interface of public methods."
+        },
+        {
+          "erreur_markdown": "\"Overriding and overloading are the same: both mean writing the same method name twice.\"",
+          "pourquoi_faux": "Overriding is done in a subclass: the same name and parameters replace an inherited method. Overloading gives one name several definitions with different parameter lists or types, often in the same class.",
+          "correction_markdown": "Say which one is meant: a subclass that redefines an inherited method is overriding; an operator or method name with several versions for different parameter types is overloading."
+        },
+        {
+          "erreur_markdown": "\"In inheritance the superclass inherits from the subclass.\"",
+          "pourquoi_faux": "The direction is reversed. The more specific class takes over the features of the more general class.",
+          "correction_markdown": "The subclass (derived class) inherits attributes and methods from the superclass (base class) and may add or override some."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the object-oriented feature that is described in each case.\n\n(i) A class `Teacher` is created from a class `Person` and adds one attribute, `subject`.\n\n(ii) The attribute `mark` of a `Student` object can be changed only by a method that rejects values above 20.\n\n(iii) The request `area()` is sent to a circle object and to a rectangle object, and each computes the area in its own way.",
+          "solution_markdown": "(i) **Inheritance**: `Teacher` takes what `Person` has and adds to it, so the code of `Person` is reused.\n\n(ii) **Encapsulation** (information hiding): the data is protected and reached only through a method that checks it.\n\n(iii) **Polymorphism** (overriding): the same method name gives a different behaviour for each type of object."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Class `Taxi` has an attribute `rate` (FCFA per km) and a method `fare(km)` that returns `rate * km`. Class `ShareTaxi` inherits from `Taxi`, adds an attribute `passengers`, and overrides `fare(km)` so that it returns the cost of one passenger: the full fare divided by the number of passengers.\n\n(a) Which method is overridden? (b) A `Taxi` with rate 150 and a `ShareTaxi` with rate 150 and 4 passengers each travel 8 km. Give the value returned by `fare(8)` for each. (c) Give the value for the `ShareTaxi` if there are 5 passengers. (d) Name the feature that allows one loop to call `fare` on a mixed list of both kinds.",
+          "solution_markdown": "(a) **`fare`** is overridden; the constructor part and the attribute `rate` are inherited.\n\n(b) `Taxi`: 150 x 8 = 1 200, so **1 200 FCFA**. `ShareTaxi` with 4 passengers: 1 200 / 4 = **300 FCFA** per passenger.\n\n(c) 1 200 / 5 = **240 FCFA**.\n\n(d) **Polymorphism**: the same call `fare(8)` runs the version that belongs to the real type of each object.\n\nThe values were checked by running the logic."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A college program must keep `Student` and `Teacher` objects. Both have a name and a method `describe()` that returns a text line. Propose a class design in which a superclass `Person` holds what is common, `Student` adds a form and `Teacher` adds a subject. `describe()` must return the name for a plain `Person`, the name followed by ` - ` and the form for a `Student`, and the name followed by ` teaches ` and the subject for a `Teacher`.\n\n(a) State what each subclass inherits and what it overrides. (b) Give the three lines produced for `Student(\"Ayuk\", \"Upper Sixth\")`, `Teacher(\"Mrs Tabi\", \"Computer Science\")` and `Person(\"Mr Fon\")`. (c) Explain why adding a class `Bursar` later does not force a change in the loop that prints the lines.",
+          "solution_markdown": "(a) Both subclasses **inherit** the attribute `name` and the constructor part of `Person`. `Student` adds `form`, `Teacher` adds `subject`, and both **override** `describe()`, each calling the version of `Person` and adding its own text.\n\n```\nclass Person:\n    def __init__(self, name):\n        self.name = name\n    def describe(self):\n        return self.name\n\nclass Student(Person):\n    def __init__(self, name, form):\n        Person.__init__(self, name)\n        self.form = form\n    def describe(self):\n        return Person.describe(self) + \" - \" + self.form\n\nclass Teacher(Person):\n    def __init__(self, name, subject):\n        Person.__init__(self, name)\n        self.subject = subject\n    def describe(self):\n        return Person.describe(self) + \" teaches \" + self.subject\n```\n\n(b) The lines are:\n\n- **Ayuk - Upper Sixth**\n- **Mrs Tabi teaches Computer Science**\n- **Mr Fon**\n\n(c) The loop only sends the message `describe()` to each object. Because of **polymorphism**, a new subclass `Bursar` that overrides `describe()` works with the same loop without any change, and the code of `Person` is reused through **inheritance**. This is why object-oriented programs are easy to extend. The code is an example of the logic and was run to check the three lines."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A class is a template; an object is an instance of a class that combines attributes (data) and methods (actions).",
+        "Encapsulation bundles data with methods and hides the data behind a public interface (information hiding).",
+        "Inheritance lets a subclass reuse and extend a superclass; it is the most direct support for software reuse.",
+        "Polymorphism means one operation name works on different types: overriding replaces an inherited method, overloading gives one name several definitions for different parameter types.",
+        "Define an object by category plus content (an instance of a class with attributes and methods), and never confuse it with a class."
+      ]
+    }
+  ]
+}

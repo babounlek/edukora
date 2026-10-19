@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-binary-number-representation",
+  "meta": {
+    "titre": "Binary Number Representation: integers, fixed point and floating point",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Representation of numbers in binary",
+    "duree_estimee_min": 40,
+    "tags": [
+      "binary number representation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-binary-number-representation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A phone shows a credit of 2 500 FCFA, a temperature of 28.5 degrees, and a debt as a negative amount. Inside the machine each of these is only a pattern of 0s and 1s, and the same pattern means different numbers depending on the representation chosen. Examiners ask how a given pattern is read as unsigned, signed, fixed-point or floating-point, which representation has only one zero, and how to write a number in a given form. Knowing the rule for each form, especially two's complement, lets you answer without guessing."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Binary is base 2: the place values of a byte are 128, 64, 32, 16, 8, 4, 2, 1 from left to right.",
+        "Hexadecimal is base 16 and uses the digits 0 to 9 and A to F, where A to F stand for 10 to 15.",
+        "A bit is a binary digit and a byte is 8 bits."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Representing integers: unsigned, sign and magnitude, one's complement and two's complement",
+      "contenu_markdown": "### Four ways to store integers in n bits\n| Representation | How the sign is shown | Range for 8 bits | Zeros |\n|---|---|---|---|\n| Unsigned | no sign | 0 to 255 | one |\n| Sign and magnitude | leftmost bit is the sign (0 positive, 1 negative); the other bits give the size | -127 to +127 | two: 00000000 and 10000000 |\n| One's complement | a negative number is the positive pattern with every bit inverted | -127 to +127 | two: 00000000 and 11111111 |\n| Two's complement | the leftmost bit has the negative weight $-2^{n-1}$ (-128 for 8 bits) | -128 to +127 | one |\n\nTwo's complement has only one representation of zero, which is one reason why it is the usual choice in computers. Its range is $-2^{n-1}$ to $2^{n-1}-1$, so it holds one more negative number than positive.\n\n### Two's complement in practice\n- **Reading** a pattern: add the place values, counting the leftmost bit as negative. Example: 11000101 = -128 + 64 + 4 + 1 = -59.\n- **Negating** a number: invert every bit, then add 1. Example: 37 is 00100101; inverted 11011010; add 1 to get 11011011, which is -37.\n- **Subtracting**: add the negative. The same adder circuit then serves for addition and subtraction.\n- **Overflow**: if the true result lies outside the range (for example two positive numbers whose sum needs the sign bit), the stored result is wrong. A carry out of the leftmost place is simply dropped.\n\n### Hexadecimal\nHexadecimal is a short way to write bit patterns: group the bits in fours **from the right** (pad with 0s on the left) and replace each group by one hex digit. For example 1011 0100 is B4.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Fixed-point numbers",
+          "quand_utiliser": "Use when a pattern has a fixed number of bits after the binary point.",
+          "contenu_markdown": "The binary point is not stored; its position is fixed by agreement. The pattern is read as an integer and divided by $2^k$, where $k$ is the number of bits after the point. If the number is signed in two's complement, the leftmost bit keeps its negative weight.\n\nWith 4 bits after the point, the place values after it are $\\frac12, \\frac14, \\frac18, \\frac1{16}$. A fixed-point format has a constant step (resolution) of $\\frac1{2^k}$ and a limited range; adding bits after the point gives more precision, adding bits before it gives a larger range."
+        },
+        {
+          "nom": "Floating-point numbers",
+          "quand_utiliser": "Use when a question gives a mantissa and an exponent.",
+          "contenu_markdown": "Value = mantissa $\\times\\ 2^{\\text{exponent}}$. In the usual exam format the mantissa is a two's complement fraction with the binary point just after its sign bit, so an 8-bit mantissa has the place values $-1, \\frac12, \\frac14, \\dots, \\frac1{128}$. The exponent is a two's complement integer.\n\nA number is **normalised** when the first two bits of the mantissa differ (01... for positive, 10... for negative). To normalise, shift the mantissa left until they differ and subtract 1 from the exponent for each shift; the value does not change, and the precision is greatest.\n\nMore bits in the mantissa give greater precision; more bits in the exponent give a greater range. Many decimal fractions, such as 0.1, cannot be stored exactly in binary, so rounding errors appear."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "(a) Write -37 as an 8-bit two's complement integer. (b) Use two's complement to add 52 and -37 in 8 bits and give the denary result. (c) The 12-bit pattern `0101 1010 0010` is given. Write it in hexadecimal. (d) Find its denary value if it is an unsigned fixed-point number with 4 bits after the binary point. (e) Find its denary value if the first 8 bits are a normalised two's complement mantissa and the last 4 bits a two's complement exponent.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write 37 in 8 bits, invert, add 1.",
+          "justification": "This is the method of negation in two's complement.",
+          "resultat_markdown": "37 = 00100101; inverted: 11011010; add 1: **11011011**. Check: -128 + 64 + 16 + 8 + 2 + 1 = -37."
+        },
+        {
+          "numero": 2,
+          "action": "Add 52 = 00110100 to the pattern of -37.",
+          "justification": "Subtraction is addition of the negative; a carry out of the 8th place is dropped.",
+          "resultat_markdown": "00110100 + 11011011 = 1 00001111. Drop the carry: 00001111 = **15** (= 52 - 37)."
+        },
+        {
+          "numero": 3,
+          "action": "Group the 12 bits in fours.",
+          "justification": "One hex digit stands for four bits.",
+          "resultat_markdown": "0101 = 5, 1010 = A, 0010 = 2, so the hexadecimal form is **5A2**."
+        },
+        {
+          "numero": 4,
+          "action": "Read the pattern as an integer, then divide by 2^4 = 16.",
+          "justification": "With 4 bits after the binary point the pattern equals the integer value divided by 16.",
+          "resultat_markdown": "5A2 in hex = 5 x 256 + 10 x 16 + 2 = 1442; 1442 / 16 = **90.125**. Check: 0101 1010.0010 = 90 + 0.125."
+        },
+        {
+          "numero": 5,
+          "action": "Split into mantissa and exponent.",
+          "justification": "The first 8 bits are the mantissa, the last 4 bits the exponent.",
+          "resultat_markdown": "Mantissa 01011010; exponent 0010 = +2. The mantissa starts with 01, so it is already normalised."
+        },
+        {
+          "numero": 6,
+          "action": "Evaluate the mantissa and apply the exponent.",
+          "justification": "The binary point is after the sign bit, so the mantissa is 0.1011010 in binary.",
+          "resultat_markdown": "0.1011010 = 0.5 + 0.125 + 0.0625 + 0.015625 = 0.703125; then 0.703125 x 2^2 = **2.8125**."
+        }
+      ],
+      "conclusion_markdown": "-37 is 11011011; 52 + (-37) gives 00001111 = 15; the 12-bit pattern is 5A2 in hexadecimal, 90.125 as an unsigned fixed-point number and 2.8125 as a normalised floating-point number. Every conversion was recalculated by script.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"-37 in two's complement is 10100101: put 1 in the sign bit and write 37 after it.\"",
+          "pourquoi_faux": "That pattern is the sign and magnitude form of -37, not the two's complement form. In two's complement the magnitude is not simply copied after the sign bit.",
+          "correction_markdown": "Two's complement: invert 00100101 and add 1 to obtain 11011011. (Sign and magnitude for -37 would be 10100101.)"
+        },
+        {
+          "erreur_markdown": "\"To negate 37 invert the bits only: 11011010 is -37.\"",
+          "pourquoi_faux": "Inverting alone gives the one's complement. In two's complement 11011010 is -38, because -128 + 64 + 16 + 8 + 2 = -38.",
+          "correction_markdown": "After inverting, add 1: 11011010 + 1 = 11011011 = -37."
+        },
+        {
+          "erreur_markdown": "\"An 8-bit two's complement integer ranges from -127 to +127.\"",
+          "pourquoi_faux": "That range belongs to sign and magnitude and to one's complement. In two's complement 10000000 is a valid number, -128.",
+          "correction_markdown": "The range is -128 to +127, that is $-2^{7}$ to $2^{7}-1$."
+        },
+        {
+          "erreur_markdown": "\"The mantissa 01011010 and exponent 0010 give 90 x 2^2 = 360, because 01011010 = 90.\"",
+          "pourquoi_faux": "The mantissa is a fraction with the binary point after the sign bit, not an integer.",
+          "correction_markdown": "01011010 means 0.1011010 in binary = 0.703125, and 0.703125 x 4 = 2.8125."
+        },
+        {
+          "erreur_markdown": "\"The 6-bit pattern 101101 is grouped from the left as 1011 | 01, so it is B1 in hexadecimal.\"",
+          "pourquoi_faux": "Groups of four must start from the right-hand end, with 0s added on the left.",
+          "correction_markdown": "Group as 0010 | 1101 to obtain 2D, which is 45 in denary."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Write 45 in 8-bit binary and in hexadecimal. (b) Write -45 as an 8-bit two's complement integer. (c) Find the denary value of the two's complement pattern 11000101.",
+          "solution_markdown": "(a) 45 = 32 + 8 + 4 + 1 = **00101101**, which is **2D** in hexadecimal.\n\n(b) Invert 00101101 to get 11010010, then add 1: **11010011**. Check: -128 + 64 + 16 + 2 + 1 = -45.\n\n(c) 11000101 = -128 + 64 + 4 + 1 = **-59**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) The 12-bit pattern `0010 1101 1000` is an unsigned fixed-point number with 4 bits after the binary point. Give its hexadecimal form and its denary value. (b) The 8-bit pattern `1101 0100` is a two's complement fixed-point number with 3 bits after the binary point. Find its denary value.",
+          "solution_markdown": "(a) The hexadecimal form is **2D8**. The integer value is 2 x 256 + 13 x 16 + 8 = 728, and 728 / 16 = **45.5**.\n\n(b) As a two's complement integer 11010100 = -128 + 64 + 16 + 4 = -44. Dividing by $2^3 = 8$ gives -44 / 8 = **-5.5**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A floating-point format has an 8-bit two's complement mantissa (binary point after the sign bit) and a 4-bit two's complement exponent.\n\n(a) Show that the mantissa 01101100 with the exponent 0011 represents 6.75. (b) Give the normalised representation of -6.75 with the exponent 0011. (c) A number is stored with the mantissa 11100110 and the exponent 0101. Find its value, then write it in normalised form and check that the value is unchanged.",
+          "solution_markdown": "(a) 0.1101100 = 0.5 + 0.25 + 0.0625 + 0.03125 = 0.84375; the exponent 0011 is +3, so the value is 0.84375 x 8 = **6.75**.\n\n(b) Negate the mantissa 01101100: invert to 10010011, add 1 to get **10010100** with the exponent **0011**. It starts with 10, so it is normalised. Check: 10010100 = -128 + 16 + 4 = -108, and -108 / 128 = -0.84375; times 8 gives -6.75.\n\n(c) 11100110 = -128 + 64 + 32 + 4 + 2 = -26, so the mantissa is -26 / 128 = -0.203125. The exponent is +5, so the value is -0.203125 x 32 = **-6.5**. The first two bits are 11, so it is not normalised. Shift left twice: 11100110 to 11001100 to **10011000**, which starts with 10, and reduce the exponent by 2 to get 0011. Check: 10011000 = -104, -104 / 128 = -0.8125, and -0.8125 x 8 = -6.5."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Unsigned, sign and magnitude, one's complement and two's complement are the four integer forms; only unsigned and two's complement (and not the other two) avoid a double zero.",
+        "Two's complement: the leftmost bit has weight $-2^{n-1}$, the range is $-2^{n-1}$ to $2^{n-1}-1$, and negation is invert then add 1.",
+        "Hexadecimal: group bits in fours from the right; 1011 0100 is B4.",
+        "Fixed point: read the pattern as an integer and divide by $2^k$, with $k$ the number of bits after the binary point.",
+        "Floating point: value = mantissa x $2^{\\text{exponent}}$; the mantissa is a fraction with the binary point after the sign bit; normalised means the first two bits differ; more mantissa bits give precision, more exponent bits give range."
+      ]
+    }
+  ]
+}

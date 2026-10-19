@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-processor-instruction-sets",
+  "meta": {
+    "titre": "Processor Instruction Sets: instruction formats, addressing modes and RISC versus CISC",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Computer architecture: the processor and its instructions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "processor instruction sets"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-processor-instruction-sets-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Whether it is a game on a phone bought in a Yaounde market or a school register on a desktop computer, every program is finally a long series of binary instructions that the processor decodes one by one. The designer of a processor must decide how many bits describe the operation and how many describe the data, and that choice limits how many operations and how much memory an instruction can reach. Examiners test this with short bit-counting questions and with questions on assembly language and on the families of processors."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A bit is a binary digit; n bits can form 2^n different patterns.",
+        "The processor fetches an instruction from main memory, decodes it and executes it; this is repeated for each instruction.",
+        "The program counter (PC) holds the address of the next instruction and the accumulator (ACC) holds the result of arithmetic and logic operations."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Instruction formats, instruction sets and assembly language",
+      "contenu_markdown": "### Instruction format\nA machine code instruction is a pattern of bits made of an **op-code** (which operation to perform) and one or more **operands** (the data, a register, or a memory address). In a fixed-length format the sizes of all fields add up to the instruction length.\n- With $k$ op-code bits, at most $2^{k}$ different operations can be coded. For $n$ operations the minimum is $k=\\lceil \\log_2 n\\rceil$ (round up, never down).\n- An operand field of $m$ bits can hold $2^{m}$ different addresses, numbered $0$ to $2^{m}-1$. The highest address is $2^{m}-1$.\n\n### The instruction set\nThe instruction set is the complete list of instructions that a processor can execute. Typical groups are listed in the table; the mnemonics (short names) differ from one processor to another, and those used here are only illustrative.\n\n| Group | Examples | Job |\n|---|---|---|\n| Data transfer | LDA, STA, MOV | copy data between memory and registers |\n| Arithmetic | ADD, SUB | calculate |\n| Logic and shift | AND, OR, NOT, SHL | work on bit patterns |\n| Comparison and branch | CMP, JMP, BNZ | change the order of execution |\n| Input and output | IN, OUT | exchange data with devices |\n| Control | HLT | stop the program |\n\n### Assembly language and machine code\nMachine code is the binary form that the processor executes directly. Assembly language gives each machine instruction a mnemonic, usually one assembly instruction for one machine instruction, and an **assembler** translates it into machine code. It is a low-level language tied to one processor family. A high-level statement such as a WHILE loop or an IF ... THEN ... ELSE is not an instruction of the processor: a compiler translates it into several machine instructions.\n\n### Fetch, decode, execute\nThe address in the PC is copied to the memory address register (MAR), the instruction is read into the memory data register (MDR) and placed in the current instruction register (CIR), the PC is increased, the control unit decodes the op-code and the instruction is executed. A branch instruction works by replacing the contents of the PC.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Addressing modes",
+          "quand_utiliser": "Use when an instruction names an operand and you must say what is actually used.",
+          "contenu_markdown": "The addressing mode tells how to interpret the operand field.\n\n| Mode | Meaning | Example (operand 30) |\n|---|---|---|\n| Immediate | the operand is the data itself | `LDA #30` loads the number 30 |\n| Direct | the operand is the address of the data | `LDA 30` loads the contents of location 30 |\n| Indirect | the operand is the address of a location that holds the address of the data | `LDA (30)` loads the contents of the location whose address is stored in location 30 |\n| Indexed | address = operand + contents of the index register | `LDA 30,X` with X = 2 uses location 32 |\n| Relative | address = PC + offset (used for branches) | jump forward by the offset |\n\nImmediate mode needs no extra memory access; indirect mode needs one more access than direct mode."
+        },
+        {
+          "nom": "RISC and CISC",
+          "quand_utiliser": "Use when the two processor families are compared.",
+          "contenu_markdown": "| Feature | RISC (reduced instruction set computer) | CISC (complex instruction set computer) |\n|---|---|---|\n| Number of instructions | few, simple | many, some complex |\n| Instruction length | usually fixed | often variable |\n| Registers | many | fewer |\n| Memory access | usually only by load and store instructions | many instructions can address memory |\n| Execution | aims at about one instruction per clock cycle, suits pipelining | one instruction may take several cycles |\n| Burden | more work for the compiler | more work for the hardware that decodes |\n\nThese are tendencies, not strict rules."
+        },
+        {
+          "nom": "Bit-counting questions",
+          "quand_utiliser": "Use when the sizes of the fields of one instruction are asked.",
+          "contenu_markdown": "Work in this order: (1) op-code bits from the number of operations, rounded up; (2) bits for each register operand from the number of registers, $\\lceil \\log_2 \\text{registers}\\rceil$; (3) what remains of the instruction length is the immediate or address field; (4) locations reached $=2^{m}$, highest address $2^{m}-1$. Check that the fields add up to the instruction length."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A processor uses fixed 24-bit instructions. Each instruction has an op-code, one register operand and one memory address. The processor supports 100 operations and has 16 general-purpose registers. (a) How many bits does each field need? (b) How many memory locations can an instruction address, and what is the highest address in decimal and in hexadecimal? (c) How many op-code patterns are still unused?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the size of the op-code field.",
+          "justification": "2^6 = 64 is less than 100 and 2^7 = 128 is at least 100, so 6 bits are too few.",
+          "resultat_markdown": "Op-code: **7 bits**."
+        },
+        {
+          "numero": 2,
+          "action": "Find the size of the register field.",
+          "justification": "16 = 2^4, so 4 bits name one of the 16 registers.",
+          "resultat_markdown": "Register field: **4 bits**."
+        },
+        {
+          "numero": 3,
+          "action": "Find the address field.",
+          "justification": "The remaining bits belong to the address: 24 - 7 - 4.",
+          "resultat_markdown": "Address field: 24 - 7 - 4 = **13 bits**."
+        },
+        {
+          "numero": 4,
+          "action": "Count the addressable locations and the highest address.",
+          "justification": "13 bits give 2^13 patterns, numbered from 0, so the highest address is one less.",
+          "resultat_markdown": "$2^{13}=8192$ locations; highest address $8191$ = `1FFF` in hexadecimal."
+        },
+        {
+          "numero": 5,
+          "action": "Count the unused op-codes and check the total.",
+          "justification": "7 bits give 128 patterns and 100 are used; the fields must add up to 24.",
+          "resultat_markdown": "128 - 100 = **28** unused; 7 + 4 + 13 = 24, which is correct."
+        }
+      ],
+      "conclusion_markdown": "The format is 7 + 4 + 13 bits. An instruction can reach 8192 locations (addresses 0 to 8191, or 0000 to 1FFF in hexadecimal), and 28 op-code patterns are free for future operations."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A processor with 20 operations needs 4 op-code bits because $\\log_2 20\\approx 4.3$.",
+          "pourquoi_faux": "4 bits give only 16 patterns, fewer than 20. The result of the logarithm must be rounded up, not to the nearest integer.",
+          "correction_markdown": "5 bits are needed ($2^{5}=32\\ge 20$)."
+        },
+        {
+          "erreur_markdown": "With 10 operand bits the highest address is 1024.",
+          "pourquoi_faux": "Addresses start at 0, so 1024 locations are numbered 0 to 1023.",
+          "correction_markdown": "The highest address is $2^{10}-1=1023$."
+        },
+        {
+          "erreur_markdown": "`LDA #30` loads the contents of memory location 30.",
+          "pourquoi_faux": "The symbol # marks immediate addressing: the operand is the data itself, not an address.",
+          "correction_markdown": "`LDA #30` loads the number 30; `LDA 30` (direct) loads the contents of location 30."
+        },
+        {
+          "erreur_markdown": "Assembly language is a high-level language that runs unchanged on any computer.",
+          "pourquoi_faux": "Assembly language is low level: its instructions correspond to the instructions of one processor family, and an assembler translates it.",
+          "correction_markdown": "Say that assembly language is low level and processor specific; a high-level language is translated by a compiler or an interpreter."
+        },
+        {
+          "erreur_markdown": "A CISC processor has a smaller instruction set than a RISC processor.",
+          "pourquoi_faux": "It is the other way round: RISC means a reduced set of simple instructions and CISC a larger set of complex ones.",
+          "correction_markdown": "RISC: few, simple, usually fixed length; CISC: many, some complex, often variable length."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "An instruction is 12 bits long. The first 4 bits are the op-code and the rest is one memory address. (a) How many different operations can be coded? (b) How many bits does the address field have? (c) How many locations can it address and what is the highest address in decimal and in binary?",
+          "solution_markdown": "(a) $2^{4}=16$ operations.\n\n(b) 12 - 4 = 8 bits.\n\n(c) $2^{8}=256$ locations, numbered 0 to 255. The highest address is 255, which is `11111111` in binary.\n\n**Result: 16 operations, 8 address bits, 256 locations, highest address 255 = 11111111.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "In a simple assembly language `#` marks an immediate operand, a plain number is a direct address, a number in brackets is an indirect address and `,X` adds the index register X to the address. Memory location 30 holds 40, location 32 holds 9 and location 40 holds 55. X holds 2. What does the accumulator contain after each of these instructions? (a) `LDA #30` (b) `LDA 30` (c) `LDA (30)` (d) `LDA 30,X`",
+          "solution_markdown": "(a) Immediate: the number itself, **30**.\n\n(b) Direct: the contents of location 30, **40**.\n\n(c) Indirect: location 30 holds 40, so the data is in location 40, which holds **55**.\n\n(d) Indexed: the address is 30 + 2 = 32, which holds **9**.\n\n**Result: 30, 40, 55 and 9.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The following program uses the simple instructions LDA, STA, ADD, SUB, BNZ (branch to the label if the accumulator is not zero) and HLT. `STA` does not change the accumulator; `#` marks a number.\n\n```\n      LDA #0\n      STA SUM\n      LDA #4\n      STA COUNT\nLOOP: LDA SUM\n      ADD COUNT\n      STA SUM\n      LDA COUNT\n      SUB #1\n      STA COUNT\n      BNZ LOOP\n      HLT\n```\n(a) What do SUM and COUNT hold when the program stops? (b) How many instructions are executed in all? (c) What happens to the program counter when BNZ branches?",
+          "solution_markdown": "(a) The loop adds COUNT to SUM and then lowers COUNT by 1:\n\n| pass | SUM | COUNT after |\n|---|---|---|\n| 1 | 4 | 3 |\n| 2 | 7 | 2 |\n| 3 | 9 | 1 |\n| 4 | 10 | 0 |\n\nAfter the fourth pass the accumulator holds 0, so BNZ does not branch. SUM = 4 + 3 + 2 + 1 = 10 and COUNT = 0.\n\n(b) The four setup instructions run once (4), the seven instructions from LOOP to BNZ run on each of the 4 passes (28), and HLT runs once: 4 + 28 + 1 = 33.\n\n(c) The PC is loaded with the address of the instruction labelled LOOP, instead of the address of the next instruction in sequence.\n\n**Result: SUM = 10, COUNT = 0, 33 instructions executed.** The code is an example of the logic; it was checked by an equivalent program, since no compiler for this language was available."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "An instruction has an op-code and operands; n operations need ceil(log2 n) op-code bits, rounded up.",
+        "An address field of m bits reaches 2^m locations, with the highest address 2^m - 1.",
+        "An instruction set groups data transfer, arithmetic, logic, branch, input and output, and control instructions.",
+        "Assembly language is a low-level, processor specific language translated by an assembler; high-level statements are not single processor instructions.",
+        "Addressing modes (immediate, direct, indirect, indexed, relative) decide whether the operand is data or an address.",
+        "RISC uses few simple instructions, mostly fixed length, with many registers; CISC has many instructions, some complex."
+      ]
+    }
+  ]
+}

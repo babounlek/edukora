@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-geography-topographic-map-skills",
+  "meta": {
+    "titre": "Topographic Map Skills: scale, gradient, bearing, area and Strahler stream ordering",
+    "matiere": "Geography",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Measurements and drainage analysis on topographic maps",
+    "duree_estimee_min": 40,
+    "tags": [
+      "topographic map skills"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-geography-2026-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Geography past paper (Cameroon)",
+    "epreuve_source": "gce-al-geography-2026-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-geography-topographic-map-skills-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In the Paper 3 booklet, the map questions that carry the surest marks are the calculations: a distance, a gradient, a stream order, a bifurcation ratio. A candidate who sketches the River Mezam network, ranks its streams and calculates a ratio earns marks that need no opinion, only method and care. The same few skills recur in the Paper 3 map questions. This course gives you each method with its formula and units, a full worked example on stream ordering, and the way to state the significance of a result, which is where many candidates lose the last marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A representative fraction such as 1:50,000 means that 1 cm on the map is 50,000 cm on the ground.",
+        "Converting units: 100 cm make 1 m and 1,000 m make 1 km.",
+        "A tributary is a stream that flows into a larger stream, and a confluence is the point where two streams join."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Measuring on topographic maps and ranking streams by Strahler's method",
+      "contenu_markdown": "### Scale and distance\nAt 1:50,000, 1 cm on the map is 50,000 cm on the ground, which is 0.5 km. Multiply the map distance by the scale denominator, then convert: $\\text{ground distance (km)}=\\dfrac{\\text{map distance (cm)}\\times 50\\,000}{100\\,000}$. For a winding road or river, lay the edge of a strip of paper along it, mark each bend, then measure the total length.\n\n### Gradient\n$$\\text{gradient}=\\frac{\\text{vertical interval}}{\\text{horizontal distance}}$$\nBoth lengths must be in the same unit. A gradient is often written as 1 in $n$, where $n=\\dfrac{\\text{horizontal distance}}{\\text{vertical interval}}$. A smaller $n$ means a steeper slope.\n\n### Area and bearing\nOn a sheet with a 1 km grid, each full grid square is 1 km². Count whole squares and count part squares as one if more than half full, ignoring the others. A bearing is the angle measured clockwise from grid north, written with three figures (for example 065°). The back bearing is the forward bearing plus or minus 180°.\n\n### Strahler's stream ordering\n1. A stream with no tributary is of order 1.\n2. When two streams of the same order $u$ join, the stream below the junction has order $u+1$.\n3. When two streams of different orders join, the stream keeps the higher order.\n\nCount the streams $N_u$ of each order $u$. The **bifurcation ratio** between two successive orders is $R_b=\\dfrac{N_u}{N_{u+1}}$, and the **mean bifurcation ratio** is the average of the ratios found. Its theoretical minimum is 2; natural networks on uniform rocks commonly give values of about 3 to 5. A value close to 2 tends to go with a rounded basin where floods peak sharply, while a high value points to an elongated basin or strong geological control over the channels.\n\n### Drainage density\n$$D_d=\\frac{\\text{total length of streams (km)}}{\\text{basin area (km}^2)}$$\nA high density suggests impermeable rock, steep slopes or heavy rainfall; a low density suggests permeable rock.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Sketching and ranking a drainage network",
+          "quand_utiliser": "When the question says draw a diagram of a river and its tributaries and rank the streams.",
+          "contenu_markdown": "Trace only the streams inside the given limits (the easting and northing lines named). Start at the tips, number every source stream 1, then move downstream applying the junction rules. Write the order on each segment and add a small key. Draw each stream with a line thickness that grows with its order if you can, and keep the junction angles realistic."
+        },
+        {
+          "nom": "Calculate and state the significance",
+          "quand_utiliser": "When the question asks you to calculate a ratio or density and comment on it.",
+          "contenu_markdown": "Write the formula, substitute the counted values, give the result with units and sensible rounding, then add one sentence of meaning. The sentence must relate the number to the basin: a mean ratio near 2 or below 3 suggests a rounded basin and quick, sharp floods; a mean ratio above 5 suggests structural control or an elongated basin."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "A student ranks a fictitious river network by Strahler's method. The counts of streams by order are shown in this table.\n\n| Order | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|\n| Number of streams | 18 | 5 | 2 | 1 |\n\nThe basin has an area of 36 km² and the total length of all its streams is 54 km. (a) Calculate the bifurcation ratio between each pair of successive orders. (b) Calculate the mean bifurcation ratio and state its significance. (c) Calculate the drainage density.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the definition and the formula.",
+          "justification": "The ratio compares the number of streams of one order with the number of the next higher order.",
+          "resultat_markdown": "$R_b=\\dfrac{N_u}{N_{u+1}}$, with $N_1=18$, $N_2=5$, $N_3=2$, $N_4=1$."
+        },
+        {
+          "numero": 2,
+          "action": "Calculate the three ratios.",
+          "justification": "There are four orders, so there are three successive pairs: 1 to 2, 2 to 3 and 3 to 4.",
+          "resultat_markdown": "$R_{b1}=\\dfrac{18}{5}=3.6$, $R_{b2}=\\dfrac{5}{2}=2.5$, $R_{b3}=\\dfrac{2}{1}=2.0$."
+        },
+        {
+          "numero": 3,
+          "action": "Calculate the mean bifurcation ratio.",
+          "justification": "The mean is the sum of the ratios divided by their number, which is 3.",
+          "resultat_markdown": "$\\dfrac{3.6+2.5+2.0}{3}=\\dfrac{8.1}{3}=2.7$."
+        },
+        {
+          "numero": 4,
+          "action": "State the significance.",
+          "justification": "The mean value must be related to the shape of the basin and the control over the drainage.",
+          "resultat_markdown": "A mean of 2.7 is low, close to the theoretical minimum of 2. It suggests a fairly rounded basin where tributaries join the main river in a similar way, with little structural control, so floods tend to build up quickly."
+        },
+        {
+          "numero": 5,
+          "action": "Calculate the drainage density.",
+          "justification": "Density is the total channel length divided by the area, with units of km per km².",
+          "resultat_markdown": "$D_d=\\dfrac{54}{36}=1.5\\ \\mathrm{km\\,km^{-2}}$."
+        }
+      ],
+      "conclusion_markdown": "The bifurcation ratios are 3.6, 2.5 and 2.0, so the mean bifurcation ratio is **2.7**. This low value suggests a rounded basin without strong structural control, so floods tend to peak quickly. The drainage density is **1.5 km per km²**, meaning that every square kilometre of the basin holds on average 1.5 km of stream channel."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Calculating the bifurcation ratio as $N_{u+1}\\div N_u$, for example $5\\div18$.",
+          "pourquoi_faux": "The ratio is defined as the number of streams of a lower order divided by the number of the next higher order. Inverting it gives a value below 1, which no natural network can show.",
+          "correction_markdown": "Always divide the larger count (lower order) by the smaller one: $R_b=\\dfrac{N_u}{N_{u+1}}$."
+        },
+        {
+          "erreur_markdown": "Raising a stream from order 2 to order 3 where an order 1 stream simply joins an order 2 stream.",
+          "pourquoi_faux": "The order rises only when two streams of the same order meet. A stream of lower order joining a higher one does not change the higher order.",
+          "correction_markdown": "Order 1 joining order 2 gives order 2 below the junction. Two order 2 streams meeting give order 3."
+        },
+        {
+          "erreur_markdown": "Computing 4 cm at 1:50,000 as 4 × 50,000 = 200,000 km.",
+          "pourquoi_faux": "The product is in centimetres, not kilometres. The unit conversion was skipped.",
+          "correction_markdown": "$200\\,000$ cm $=2\\,000$ m $=2$ km, so 4 cm represents **2 km**."
+        },
+        {
+          "erreur_markdown": "Giving a gradient of 400 ÷ 2 = 1 in 200 for a rise of 400 m over 2 km.",
+          "pourquoi_faux": "The vertical interval is in metres and the horizontal distance in kilometres. The units must be the same before dividing.",
+          "correction_markdown": "Convert 2 km to 2,000 m, then $\\dfrac{2\\,000}{400}=5$, so the gradient is 1 in 5."
+        },
+        {
+          "erreur_markdown": "Measuring a bearing anticlockwise from north, or giving the bearing from B to A when the question asks from A to B.",
+          "pourquoi_faux": "A bearing is clockwise from grid north and is read from the first named point to the second. The reverse direction is different by 180°.",
+          "correction_markdown": "Place the protractor at the first named point, read clockwise from grid north, and give three figures. The back bearing is the forward bearing plus or minus 180°."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A topographic map is drawn at 1:50,000. (a) A footpath measures 7.6 cm on the map. What is its length on the ground, in kilometres? (b) A feeder road is 9 km long on the ground. What length represents it on the map? (c) The summit of a hill is 1,640 m high and the foot is 1,240 m, the horizontal distance between them being 3.2 km. Calculate the average gradient.",
+          "solution_markdown": "(a) $7.6\\times 0.5=3.8$ km. The path is **3.8 km** long. (b) $9\\div 0.5=18$, so **18 cm** on the map. (c) Vertical interval $=1\\,640-1\\,240=400$ m; horizontal distance $=3.2$ km $=3\\,200$ m. Gradient $=\\dfrac{400}{3\\,200}=\\dfrac{1}{8}$, written **1 in 8**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A fictitious drainage basin has these stream counts by Strahler order: 21 streams of order 1, 6 of order 2, 2 of order 3 and 1 of order 4. (a) Calculate each bifurcation ratio and the mean bifurcation ratio, correct to one decimal place. (b) State what the result suggests about the basin.",
+          "solution_markdown": "(a) $R_{b1}=\\dfrac{21}{6}=3.5$, $R_{b2}=\\dfrac{6}{2}=3.0$, $R_{b3}=\\dfrac{2}{1}=2.0$. Mean $=\\dfrac{3.5+3.0+2.0}{3}=\\dfrac{8.5}{3}\\approx$ **2.8**. (b) The mean is low, close to the theoretical minimum of 2, so the basin is probably fairly rounded with little geological control over the channels, and floods tend to arrive quickly and sharply."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Two fictitious drainage basins are compared. Basin A has an area of 40 km² and a total stream length of 72 km. Basin B has an area of 25 km² and a total stream length of 70 km. (a) Calculate the drainage density of each. (b) Suggest two reasons for the difference in density. (c) A road runs from a market in Basin A to a village in Basin B on a bearing of 065°. State the bearing of the market from the village. (d) The road climbs from 1,300 m to 1,500 m over a ground distance of 4 km. Calculate its average gradient.",
+          "solution_markdown": "(a) Basin A: $\\dfrac{72}{40}=1.8\\ \\mathrm{km\\,km^{-2}}$. Basin B: $\\dfrac{70}{25}=2.8\\ \\mathrm{km\\,km^{-2}}$. **Basin B is the more densely drained.** (b) Basin B may lie on less permeable rock, so more rain runs off in channels; it may have steeper slopes or receive heavier rainfall; basin A may have permeable rock, so more water infiltrates. Any two reasons carry the marks. (c) The back bearing is $65^{\\circ}+180^{\\circ}=$ **245°**. (d) Vertical interval $=200$ m, horizontal distance $=4\\,000$ m. Gradient $=\\dfrac{200}{4\\,000}=\\dfrac{1}{20}$, written **1 in 20**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "At 1:50,000, 1 cm on the map is 0.5 km on the ground; always convert to the same unit before dividing for gradient.",
+        "Gradient is vertical interval divided by horizontal distance and is often written 1 in n; a smaller n is a steeper slope.",
+        "Strahler's rule: order rises only when two streams of the same order join; Rb is the lower-order count divided by the next order count.",
+        "The mean bifurcation ratio is the average of the successive ratios; state what it suggests about basin shape and structural control.",
+        "Drainage density is total stream length divided by basin area; a bearing is clockwise from grid north with three figures."
+      ]
+    }
+  ]
+}

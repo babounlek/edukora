@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-computer-science-software-design",
+  "meta": {
+    "titre": "Software Design: top-down, bottom-up, modular and object-oriented approaches",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Design strategies and design tools",
+    "duree_estimee_min": 35,
+    "tags": [
+      "software design"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-software-design-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A team is asked to build a program that handles enrolment, fees and results for a college. Nobody can write such a program in one go: it must first be designed, that is, broken into parts that can be understood, built and tested one by one. At A Level you are asked to name the design strategy from a short description and to choose the tool that suits a stage of the design. This course gives you the cues that identify each strategy and the use of each tool."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Software development passes through stages: analysis of the problem, design, coding, testing and maintenance.",
+        "An algorithm is a finite sequence of unambiguous steps that solves a problem.",
+        "A procedure or function is a named block of code that can be called from other places and can receive parameters."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Design strategies and the tools used to describe a design",
+      "contenu_markdown": "### Design strategies\n| Strategy | Idea | Cue in a question |\n|---|---|---|\n| Top-down (stepwise refinement) | Start from the whole problem, split it into sub-problems, and refine each until every piece is simple enough to code. | \"divide and conquer\", \"break the task into smaller tasks\", \"start with the main task\" |\n| Bottom-up | Start by building and testing the basic low-level components, then combine them into larger ones until the whole system exists. | \"start from existing routines\", \"reuse tested components\", \"assemble\" |\n| Modular | The system is split into modules; each is self-contained, does one well-defined job, and is used only through an explicit interface (its parameters and results). | \"self-contained subtasks\", \"explicit interfaces\" |\n| Object-oriented | The system is modelled as classes and objects that hold data and the operations on it; the design identifies classes, attributes, methods and relationships such as inheritance. | \"classes\", \"objects\", \"inheritance\" |\n\nA good module has **high cohesion** (it does one job) and **low coupling** (it depends little on the inside of other modules). Such modules can be written by different people, tested separately and replaced without changing the rest.\n\n### Design tools\n| Tool | What it describes |\n|---|---|\n| Flowchart | The steps of an algorithm and the flow of control (decisions and loops) with standard symbols. |\n| Pseudocode (structured English) | An algorithm in language-independent, near-program form (sequence, selection, iteration); it shows how data will be processed inside a program unit before coding. |\n| Structure chart | The hierarchy of modules, which module calls which, and the data passed between them. |\n| Data flow diagram (DFD) | How data moves between external entities, processes and data stores. It shows data, not the order of instructions. |\n| Data dictionary | The definition of each data item: name, type, size and meaning. |\n| Class diagram | The classes of an object-oriented design with their attributes, methods and relationships. |\n\nChoose the tool by the question: the flow of data through a system is a DFD; the structure of the modules is a structure chart; the detailed processing of data in one unit is pseudocode or a flowchart.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Carrying out a top-down refinement",
+          "quand_utiliser": "Use when asked to decompose a task or to show the design of a program.",
+          "contenu_markdown": "1. State the whole task in one sentence (level 0).\n2. Split it into three to six main sub-tasks (level 1), each doing one job.\n3. Define what each sub-task receives and returns (its interface).\n4. Refine every sub-task that is still too large, level by level, until each piece can be written in a few lines.\n5. Write the lowest level in pseudocode, then code and test each module separately."
+        },
+        {
+          "nom": "Comparing the strategies",
+          "quand_utiliser": "Use when a question asks for advantages and disadvantages.",
+          "contenu_markdown": "Top-down gives a clear overview and keeps attention on the requirements, but low-level difficulties are discovered late. Bottom-up allows tested components to be reused and tested early, but the pieces may not fit together into the required whole. Modular design lets teams work in parallel and makes testing and maintenance easier, but the interfaces must be defined carefully. In practice designers mix the strategies."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A college in Bamenda keeps, for each student, the fee due (75 000 FCFA, the same for everybody) and the amount paid so far. The bursar wants a program that prints how many students still owe money and the total owed.\n\n(a) Name the strategy that starts from the whole task and give the first two levels of the design. (b) Refine the module that computes the figures into pseudocode. (c) Trace it for three students who have paid 75 000, 40 000 and 0 FCFA.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "State the whole task and name the strategy.",
+          "justification": "Starting from the complete task and splitting it is top-down design (stepwise refinement).",
+          "resultat_markdown": "Level 0: **Report the outstanding fees**."
+        },
+        {
+          "numero": 2,
+          "action": "Split the task into level-1 modules.",
+          "justification": "Each module should do one job (high cohesion).",
+          "resultat_markdown": "1. `ReadPayments`   2. `ComputeTotals`   3. `PrintReport`"
+        },
+        {
+          "numero": 3,
+          "action": "Define the interface of the module to refine.",
+          "justification": "Modules communicate only through parameters, which keeps coupling low.",
+          "resultat_markdown": "`ComputeTotals` receives the fee and the list of amounts paid, and returns the number of students who owe and the total owed."
+        },
+        {
+          "numero": 4,
+          "action": "Refine `ComputeTotals` into pseudocode.",
+          "justification": "Pseudocode shows sequence, selection and iteration without the syntax of a language.",
+          "resultat_markdown": "```\nPROCEDURE ComputeTotals(fee, paid[1..n])\n  count <- 0\n  total <- 0\n  FOR i <- 1 TO n\n    owed <- fee - paid[i]\n    IF owed > 0 THEN\n      count <- count + 1\n      total <- total + owed\n    ENDIF\n  NEXT i\n  RETURN count, total\nENDPROCEDURE\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Trace the pseudocode for the three students.",
+          "justification": "A trace table checks the logic before any coding.",
+          "resultat_markdown": "| paid | owed | owed > 0 ? | count | total |\n|---|---|---|---|---|\n| 75000 | 0 | no | 0 | 0 |\n| 40000 | 35000 | yes | 1 | 35000 |\n| 0 | 75000 | yes | 2 | 110000 |"
+        }
+      ],
+      "conclusion_markdown": "Top-down refinement gives three modules, and the refined module returns count = 2 and total = 110 000 FCFA for the three students. The pseudocode is an example of the logic, and its translation was run to check the trace.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"Top-down design means writing the smallest functions first and joining them together.\"",
+          "pourquoi_faux": "That describes bottom-up design. Top-down starts from the whole task and divides it.",
+          "correction_markdown": "Top-down: whole task, then sub-tasks, then refinement. Bottom-up: basic components first, then combination."
+        },
+        {
+          "erreur_markdown": "\"A flowchart and a data flow diagram show the same thing.\"",
+          "pourquoi_faux": "A flowchart shows the order of steps, with decisions and loops, inside an algorithm. A data flow diagram shows how data moves between processes, data stores and external entities, without decisions or loops.",
+          "correction_markdown": "Use a flowchart for the logic of one algorithm and a data flow diagram for the movement of data through a system."
+        },
+        {
+          "erreur_markdown": "\"A good module does many different jobs so that fewer modules are needed.\"",
+          "pourquoi_faux": "A module with many jobs has low cohesion; it is hard to understand, test and reuse, and a change in one job may break another.",
+          "correction_markdown": "A good module has high cohesion: one well-defined job, reached through a clear interface."
+        },
+        {
+          "erreur_markdown": "\"Pseudocode must follow the exact syntax of a language such as Pascal.\"",
+          "pourquoi_faux": "Pseudocode is language-independent. Its purpose is to state the logic clearly before coding.",
+          "correction_markdown": "Use clear structure (sequence, IF, loops) and meaningful names; the syntax of the programming language comes later."
+        },
+        {
+          "erreur_markdown": "\"Modules should share global variables freely because it is convenient.\"",
+          "pourquoi_faux": "Shared global data raises coupling: a change in one module can silently affect the others.",
+          "correction_markdown": "Pass data through parameters and return values so that each module depends only on its interface."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the design strategy in each case.\n\n(i) A developer first writes and tests routines for reading files, checking dates and printing, and later combines them into a payroll program.\n\n(ii) A manager splits an online ticket booking system into searching, booking and paying, and then splits paying into smaller tasks.\n\n(iii) A system is described by classes `Customer`, `Order` and `Product`, with the relationships between them.\n\n(iv) Which tool records the name, type and size of every field of a record?",
+          "solution_markdown": "(i) **Bottom-up design**: low-level routines are built first and combined.\n\n(ii) **Top-down design** (stepwise refinement): the whole task is divided and each part is divided again.\n\n(iii) **Object-oriented design**: the system is modelled by classes and objects.\n\n(iv) The **data dictionary**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Report cards must be produced for a class. (a) Give three level-1 modules for the task `Produce the report cards`. (b) Write pseudocode for a module `ComputeAverage` that receives four marks and returns their average, and give the result for the marks 12, 15, 9 and 14. (c) Choose the best tool for each purpose: (i) showing which module calls which; (ii) showing how marks travel from the teachers to the printed card; (iii) showing the decision steps for checking that a mark lies between 0 and 20.",
+          "solution_markdown": "(a) For example `ReadMarks`, `ComputeAverages`, `PrintCards` (any three modules with one job each).\n\n(b)\n\n```\nPROCEDURE ComputeAverage(m1, m2, m3, m4)\n  sum <- m1 + m2 + m3 + m4\n  average <- sum / 4\n  RETURN average\nENDPROCEDURE\n```\n\nFor 12, 15, 9, 14: sum = 50 and average = 50 / 4 = **12.5**.\n\n(c) (i) a **structure chart**; (ii) a **data flow diagram**; (iii) a **flowchart** (or pseudocode)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A shop program has a single module `Payment` that adds up the bill, applies a 10 % discount when the bill is more than 50 000 FCFA, updates the stock file and prints the receipt.\n\n(a) Explain what is wrong with this design in terms of cohesion. (b) Propose a modular design with three or four modules and their interfaces. (c) Show the module `CalculateDiscount(total)` for bills of 80 000 and 40 000 FCFA. (d) Explain why this design helps a team of three programmers.",
+          "solution_markdown": "(a) `Payment` does four unrelated jobs, so it has **low cohesion**: it is hard to test, and a change to the receipt may break the discount.\n\n(b) For example `CalculateDiscount(total)` returns the amount to pay; `UpdateStock(items)` updates the stock file; `PrintReceipt(items, amount)` prints; `Payment` only calls the others in order. Each module is reached only through its parameters (low coupling).\n\n(c) For 80 000: the bill is more than 50 000, the discount is 10 % of 80 000 = 8 000, so the amount to pay is **72 000 FCFA**. For 40 000: no discount, so **40 000 FCFA**.\n\n(d) Each programmer can write and test one module separately against its interface, a module can be replaced or corrected without changing the others, and the same `CalculateDiscount` can be reused elsewhere. The values were checked by running the logic."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Top-down design (stepwise refinement, divide and conquer) starts from the whole task and splits it; bottom-up design builds basic components first and combines them.",
+        "Modular design splits a system into self-contained modules with explicit interfaces; aim for high cohesion and low coupling.",
+        "Object-oriented design models the system as classes and objects with attributes, methods and relationships.",
+        "Pseudocode and flowcharts describe the processing inside a program unit; a structure chart shows the module hierarchy; a data flow diagram shows the movement of data; a data dictionary defines data items.",
+        "To identify a strategy, read the cue in the question (whole task first, existing components first, self-contained modules, classes) and say why."
+      ]
+    }
+  ]
+}

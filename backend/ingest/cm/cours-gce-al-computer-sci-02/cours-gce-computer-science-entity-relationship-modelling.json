@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-entity-relationship-modelling",
+  "meta": {
+    "titre": "Entity Relationship Modelling: from a description to entities, keys and tables",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Database design: entities, attributes and relationships",
+    "duree_estimee_min": 35,
+    "tags": [
+      "entity relationship modelling"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-entity-relationship-modelling-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A travel agency in Bamenda wants to sell its bus tickets by computer. The manager speaks about passengers, journeys and seats; the programmer speaks about tables and keys. Before any table is created, both need a picture that each of them can read and check. That picture is the entity relationship model. The examiners ask you to define its terms, to read a short description and pick out entities, attributes and relationships, and to turn the model into tables."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A database is an organised collection of related data stored so that many users and programs can share it.",
+        "In a relational database data is stored in tables: each row is a record (tuple) and each column is an attribute (field).",
+        "A primary key identifies each row of a table uniquely; a foreign key holds the primary key value of a row in another table."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Entities, attributes, relationships and their conversion to tables",
+      "contenu_markdown": "### Entities, attributes and relationships\nAn **entity** is a thing of interest about which the organisation keeps data: a person, place, object, event or concept, for example a passenger or a journey. In a model each rectangle stands for an entity type (all passengers); one particular passenger is an occurrence of it. An **attribute** is a property that describes an entity, such as a name or a telephone number; the attribute values of one occurrence become one row. A **relationship** is an association between entities, usually named by a verb (a passenger books a journey).\n\n### Kinds of attribute\n| Kind | Meaning | Example |\n|---|---|---|\n| Simple (atomic) | cannot usefully be split | seat number |\n| Composite | made of smaller parts | name = first name, middle initial, last name |\n| Multivalued | one occurrence holds several values | several phone numbers |\n| Derived | calculated from another attribute | age from date of birth |\n| Key | identifies each occurrence uniquely | passenger_id |\n\n### Cardinality of a relationship\n- **One-to-one (1:1)**: an occurrence on one side is linked to at most one on the other.\n- **One-to-many (1:N)**: one driver drives many journeys, but each journey has one driver.\n- **Many-to-many (M:N)**: a passenger books many journeys and a journey carries many passengers.\nParticipation says whether a link is compulsory (every journey must have a driver) or optional.\n\n### The diagram\nIn the common (Chen) notation a rectangle is an entity, an ellipse an attribute (the key is underlined), a diamond a relationship, and the lines carry the cardinality (1, N, M). Because it shows the data requirements in pictures, with no technical detail about storage, the diagram can be read by managers and by programmers alike.\n\n### From the model to tables\n1. Each entity becomes a table; its key attribute becomes the primary key.\n2. In a 1:N relationship the primary key of the \"one\" side is added to the table of the \"many\" side as a foreign key.\n3. An M:N relationship becomes a new junction table whose primary key combines the two foreign keys; attributes of the relationship (such as a seat number) are stored there.\n4. A composite attribute becomes several columns; a multivalued attribute goes into a table of its own.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Reading a description",
+          "quand_utiliser": "Use when a scenario is given and you must find the model in it.",
+          "contenu_markdown": "Read the text three times.\n- A noun with several attributes and many occurrences is an **entity** (snack-bar, member, route).\n- A noun that only describes another one is an **attribute** (address, fee, colour).\n- A verb joining two entities is a **relationship**.\n- Phrases give the cardinality: \"may manage several\" means many; \"never more than one\" or \"exactly one\" means one.\nThen write each relationship in both directions, for example \"a driver drives many journeys; a journey has exactly one driver\". Both sentences together fix the cardinality."
+        },
+        {
+          "nom": "Explaining terms for two marks",
+          "quand_utiliser": "Use for a short question that begins with explain or define.",
+          "contenu_markdown": "Give a definition and an example for each term; that is one mark for the idea and one for a correct illustration. Do not draw a diagram unless it is asked for. For example, for an entity type write what it is (a class of things about which data is kept) and give an example from a familiar organisation such as a school (Student)."
+        },
+        {
+          "nom": "Resolving a many-to-many relationship",
+          "quand_utiliser": "Use when two entities are linked M:N.",
+          "contenu_markdown": "A relational table cannot hold a list in one cell, so an M:N relationship is replaced by a third entity (the junction or associative entity) linked 1:N to each of the two. In the booking example, Passenger 1:N Booking and Journey 1:N Booking. The key of the junction table is the pair of foreign keys, unless the situation allows the same pair to occur more than once. If it does, add a separate identifier or one more attribute such as a date to the key."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A bus agency keeps the following information. Passengers have a passenger number, a first name, a last name and a telephone number. Journeys have a journey number, an origin, a destination, a departure date and a fare in FCFA. Each journey is driven by exactly one driver (driver number, name) and a driver drives many journeys. A passenger may book many journeys and a journey carries many passengers. For each booking the seat number is recorded, and on one journey a seat is given to only one passenger. A passenger books a given journey at most once.\n\n(a) Name the entities and give the attributes and the key of each. (b) State the cardinality of each relationship. (c) Show how the model becomes tables, and write the statements that create them.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the entities.",
+          "justification": "A noun that has several attributes of its own and many occurrences is an entity.",
+          "resultat_markdown": "Entities: Passenger, Journey and Driver."
+        },
+        {
+          "numero": 2,
+          "action": "List the attributes and choose a key for each entity.",
+          "justification": "Each key must identify an occurrence uniquely; the composite name is stored as two simple columns.",
+          "resultat_markdown": "Passenger(**passenger_id**, first_name, last_name, phone); Journey(**journey_no**, origin, destination, departure_date, fare); Driver(**driver_id**, name)."
+        },
+        {
+          "numero": 3,
+          "action": "Fix the cardinality of each relationship.",
+          "justification": "Read each link in both directions: one driver drives many journeys but a journey has exactly one driver; a passenger books many journeys and a journey carries many passengers.",
+          "resultat_markdown": "Driver drives Journey is 1:N. Passenger books Journey is M:N."
+        },
+        {
+          "numero": 4,
+          "action": "Resolve the M:N relationship.",
+          "justification": "A table cannot store a list of journeys in one passenger row, so a junction entity Booking is added; the seat number belongs to the booking itself, not to the passenger or to the journey.",
+          "resultat_markdown": "Booking(**passenger_id**, **journey_no**, seat_no) with both foreign keys, and the pair (journey_no, seat_no) must be unique."
+        },
+        {
+          "numero": 5,
+          "action": "Place the foreign key of the 1:N relationship and write the tables.",
+          "justification": "The foreign key goes on the many side: Journey receives driver_id.",
+          "resultat_markdown": "```sql\nCREATE TABLE Driver (\n  driver_id INTEGER PRIMARY KEY,\n  name TEXT NOT NULL\n);\nCREATE TABLE Journey (\n  journey_no INTEGER PRIMARY KEY,\n  origin TEXT NOT NULL,\n  destination TEXT NOT NULL,\n  departure_date TEXT NOT NULL,\n  fare INTEGER NOT NULL,\n  driver_id INTEGER NOT NULL,\n  FOREIGN KEY (driver_id) REFERENCES Driver(driver_id)\n);\nCREATE TABLE Passenger (\n  passenger_id INTEGER PRIMARY KEY,\n  first_name TEXT NOT NULL,\n  last_name TEXT NOT NULL,\n  phone TEXT\n);\nCREATE TABLE Booking (\n  passenger_id INTEGER,\n  journey_no INTEGER,\n  seat_no INTEGER NOT NULL,\n  PRIMARY KEY (passenger_id, journey_no),\n  FOREIGN KEY (passenger_id) REFERENCES Passenger(passenger_id),\n  FOREIGN KEY (journey_no) REFERENCES Journey(journey_no),\n  UNIQUE (journey_no, seat_no)\n);\n```"
+        }
+      ],
+      "conclusion_markdown": "The model has three entities and one junction entity, Booking. Driver is linked 1:N to Journey through the foreign key driver_id; Passenger and Journey are linked M:N and are joined through Booking. The statements are an example of the logic and were run on a test database, where the key and unique rules rejected a second booking of the same seat, a second booking of the same journey by one passenger, an unknown journey and an unknown driver."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The entity **Phone** is drawn in a rectangle and linked to Passenger by a relationship.",
+          "pourquoi_faux": "A telephone number has no attributes of interest of its own here; it only describes a passenger, so it is an attribute.",
+          "correction_markdown": "Make phone an attribute of Passenger. If several numbers must be kept it is a multivalued attribute; it becomes a separate table only because of the conversion rule, not because it is an entity."
+        },
+        {
+          "erreur_markdown": "To show that a passenger books many journeys, the Passenger table has one column holding a list such as `10, 12, 15`.",
+          "pourquoi_faux": "A relational field must hold one value (atomic). A list cannot be searched, constrained or joined properly.",
+          "correction_markdown": "Create a junction table Booking(passenger_id, journey_no, seat_no) with one row per booking."
+        },
+        {
+          "erreur_markdown": "In the 1:N link Driver to Journey, the column `journey_no` is added to the Driver table.",
+          "pourquoi_faux": "A driver has many journeys, so one driver row would need many values. The foreign key goes on the many side.",
+          "correction_markdown": "Add `driver_id` to the Journey table as a foreign key."
+        },
+        {
+          "erreur_markdown": "The attribute `phone numbers` (a student may give several) is described as a composite attribute.",
+          "pourquoi_faux": "A composite attribute is divided into different parts (first name, last name). Several values of the same kind make a multivalued attribute.",
+          "correction_markdown": "Phone numbers are multivalued; the name is composite."
+        },
+        {
+          "erreur_markdown": "A rectangle is drawn for one particular person, labelled `Mbah`.",
+          "pourquoi_faux": "A rectangle stands for an entity type, the whole class of similar things, not for one occurrence.",
+          "correction_markdown": "Draw the rectangle `Passenger` and let Mbah be one row of it."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A school database keeps an entity Student with these attributes: `student_id`, the name stored as first name and last name, `date_of_birth`, `age` (worked out from the date of birth) and the telephone numbers of the student (up to three). Classify each attribute as simple, composite, multivalued, derived or key. Which attribute is the key?",
+          "solution_markdown": "- `student_id`: **key** attribute (it identifies a student uniquely, and it is simple).\n- name: **composite** (first name and last name).\n- `date_of_birth`: **simple**.\n- `age`: **derived**, because it can be calculated from the date of birth, so it need not be stored.\n- telephone numbers: **multivalued**, because one student can have up to three values.\n\n**The key attribute is `student_id`.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A hospital has wards and nurses. Each ward has a ward number and a name. Each nurse has a nurse number and a name and is assigned to exactly one ward; a ward has several nurses. (a) State the cardinality of the relationship. (b) Say which table receives a foreign key and which one. (c) Write the statements that create the two tables.",
+          "solution_markdown": "(a) One ward has many nurses and each nurse belongs to one ward: the relationship is **one-to-many (1:N)** from Ward to Nurse.\n\n(b) The foreign key goes on the many side, so **Nurse receives `ward_no`**, which refers to the primary key of Ward.\n\n(c)\n```sql\nCREATE TABLE Ward (\n  ward_no INTEGER PRIMARY KEY,\n  ward_name TEXT NOT NULL\n);\nCREATE TABLE Nurse (\n  nurse_id INTEGER PRIMARY KEY,\n  nurse_name TEXT NOT NULL,\n  ward_no INTEGER NOT NULL,\n  FOREIGN KEY (ward_no) REFERENCES Ward(ward_no)\n);\n```\nThe statement `NOT NULL` on `ward_no` expresses that a nurse is assigned to exactly one ward, and a nurse whose ward does not exist is rejected.\n\n**Result: 1:N, foreign key `ward_no` in Nurse.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A farmers' cooperative records which crop each farmer grows and on how many hectares. A farmer grows several crops and a crop is grown by several farmers. The table below shows the data.\n\n| farmer_id | crop | hectares |\n|---|---|---|\n| 1 | cocoa | 2 |\n| 1 | maize | 1 |\n| 2 | maize | 3 |\n| 2 | cassava | 2 |\n| 3 | cocoa | 4 |\n| 3 | cassava | 1 |\n\n(a) State the cardinality between Farmer and Crop and explain why the hectares cannot be stored in the Farmer table or in the Crop table. (b) Write the statement that creates the junction table, with its primary key, and explain the choice of key. (c) Write a query that gives the total hectares of each crop, largest first, and give its result.",
+          "solution_markdown": "(a) The relationship is **many-to-many**. The area belongs to a farmer and a crop together (farmer 1 has 2 hectares of cocoa but 1 of maize), so it cannot be a single value in Farmer, which has several crops, or in Crop, which has several farmers.\n\n(b)\n```sql\nCREATE TABLE Grows (\n  farmer_id INTEGER,\n  crop TEXT,\n  hectares INTEGER NOT NULL,\n  PRIMARY KEY (farmer_id, crop)\n);\n```\n`farmer_id` alone repeats (farmer 1 has two rows) and `crop` alone repeats (cocoa has two rows), so the pair is the key: each farmer-crop pair occurs once. In a full design both columns would also be foreign keys to a Farmer table and a Crop table.\n\n(c) `SELECT crop, SUM(hectares) AS total FROM Grows GROUP BY crop ORDER BY total DESC;`\n\n| crop | total |\n|---|---|\n| cocoa | 6 |\n| maize | 4 |\n| cassava | 3 |\n\n**Result: cocoa 6, maize 4, cassava 3 hectares.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "An entity is a type of thing about which data is kept; an attribute describes it; a relationship associates entities.",
+        "Attributes can be simple, composite, multivalued, derived or key; the key identifies each occurrence uniquely.",
+        "Cardinality is 1:1, 1:N or M:N; write the link in both directions before deciding.",
+        "An ER diagram states the data requirements in pictures, so technical and non-technical people can check them together.",
+        "Conversion: entity to table; 1:N puts the foreign key on the many side; M:N needs a junction table with a composite key.",
+        "Never store a list in one cell; a multivalued attribute or an M:N link needs its own table."
+      ]
+    }
+  ]
+}

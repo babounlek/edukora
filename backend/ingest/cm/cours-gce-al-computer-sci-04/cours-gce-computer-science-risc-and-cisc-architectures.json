@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-gce-computer-science-risc-and-cisc-architectures",
+  "meta": {
+    "titre": "RISC and CISC Architectures: design trade-offs and instruction formats",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Processor instruction set design",
+    "duree_estimee_min": 35,
+    "tags": [
+      "risc and cisc architectures"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-risc-and-cisc-architectures-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A smartphone and an office computer in Yaounde can run similar programs, yet their processors follow different design philosophies. One approach gives the processor a small number of simple instructions that each finish quickly. The other gives it many powerful instructions that each do more work. These two approaches are called RISC and CISC. Examiners ask you to state the differences between them, to explain their trade-offs and, often, to work out how many bits the fields of an instruction need. This course covers all of these."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "An instruction is made of an opcode, which says what to do, and operands, which say what to do it on; the CPU fetches, decodes and executes it.",
+        "Registers are small, very fast storage locations inside the CPU, while main memory is slower to access.",
+        "n bits can represent 2^n different values, so a field that must distinguish k values needs the smallest n with 2^n at least k.",
+        "The clock rate in hertz is the number of clock cycles per second."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "RISC and CISC: design features, trade-offs and instruction formats",
+      "contenu_markdown": "### Two design philosophies\n- **CISC** (Complex Instruction Set Computer) offers a large set of powerful instructions, some of which do several steps at once, for example reading two memory locations, adding them and storing the result. Instructions have **variable length**, there are **many addressing modes**, the instructions take **different numbers of clock cycles**, operations can work directly on memory, and the control unit is often **microprogrammed**. The x86 family used in many desktop computers is of this type.\n- **RISC** (Reduced Instruction Set Computer) offers a small set of simple instructions, ideally one clock cycle each, of **fixed length** and with **few addressing modes**. It uses a **load/store architecture**: only LOAD and STORE access memory and all arithmetic is done between **registers**, of which there are **many**. The control unit is usually **hardwired**. ARM processors, widely used in mobile devices, follow this approach.\n\n| Feature | CISC | RISC |\n|---|---|---|\n| Number of instructions | large | small |\n| Instruction length | variable | fixed |\n| Cycles per instruction | several, varying | about one |\n| Memory access | many instructions | only LOAD and STORE |\n| Registers | fewer | many |\n| Control unit | often microprogrammed | usually hardwired |\n| Program size | fewer instructions, shorter programs | more instructions, longer programs |\n| Pipelining | harder | easier, because instructions are simple and regular |\n\n### Performance\nCPU time = number of instructions x CPI x clock period, where CPI is the average number of clock cycles per instruction. RISC uses more instructions with a low CPI, CISC fewer instructions with a higher CPI. Neither is always faster: the result depends on the program and the machine.\n\n### Sizing an instruction\nWith k different values a field needs the smallest whole number of bits n such that $2^{n} \\ge k$, that is $n = \\lceil \\log_2 k \\rceil$. The immediate field gets the bits that are left: instruction length minus opcode and register fields.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Sizing the fields of an instruction",
+          "quand_utiliser": "Use when the instruction length, the number of operations and the number of registers are given.",
+          "contenu_markdown": "1. Opcode bits = smallest n with $2^{n}$ at least the number of operations.\n2. Register field bits = smallest n with $2^{n}$ at least the number of registers; multiply by the number of register operands.\n3. Immediate bits = instruction length - opcode bits - register bits.\n4. An immediate of k bits holds 0 to $2^{k}-1$ if unsigned, or $-2^{k-1}$ to $2^{k-1}-1$ in two's complement.\n5. A field of n bits can address $2^{n}$ items, so the unused codes show how many operations or registers could still be added."
+        },
+        {
+          "nom": "The same task in each style",
+          "quand_utiliser": "Use when asked how a load/store machine does what a CISC machine does in one instruction.",
+          "contenu_markdown": "To add two numbers in memory and store the result in memory, a CISC machine may have one instruction:\n\n```\nADD  C, A, B        ; memory to memory (illustrative, not a real instruction set)\n```\n\nA RISC machine needs four simple instructions, because only LOAD and STORE touch memory:\n\n```\nLOAD   R1, A\nLOAD   R2, B\nADD    R3, R1, R2\nSTORE  R3, C\n```\n\nThe RISC program is longer but every instruction is simple, has the same length and takes about one cycle. These lines are an example of logic, not code for a particular processor."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A RISC processor has 32-bit instructions, 48 registers and 75 operations. Every instruction contains an opcode, one destination register, one source register and an immediate constant that fills the remaining bits.\n\n(a) Find the minimum number of bits for the opcode and for each register field.\n(b) Find the size of the immediate field and the range of values it can hold if it is a signed (two's complement) number.\n(c) How many further operations could be added without making the opcode field longer?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Size the opcode.",
+          "justification": "The opcode must distinguish 75 operations, so find the smallest n with 2^n at least 75.",
+          "resultat_markdown": "2^6 = 64 is too small; 2^7 = 128 is enough. Opcode: **7 bits**."
+        },
+        {
+          "numero": 2,
+          "action": "Size one register field.",
+          "justification": "48 registers need 48 different codes: 2^5 = 32 is too small and 2^6 = 64 is enough.",
+          "resultat_markdown": "Each register field: **6 bits**; two register fields use 12 bits."
+        },
+        {
+          "numero": 3,
+          "action": "Find the immediate field.",
+          "justification": "The immediate takes all the bits not used by the other fields.",
+          "resultat_markdown": "32 - 7 - 6 - 6 = **13 bits**."
+        },
+        {
+          "numero": 4,
+          "action": "Find the range of a signed 13-bit immediate.",
+          "justification": "Two's complement with k bits holds -2^(k-1) to 2^(k-1) - 1.",
+          "resultat_markdown": "-2^12 to 2^12 - 1, that is **-4096 to 4095** (an unsigned field would hold 0 to 8191)."
+        },
+        {
+          "numero": 5,
+          "action": "Count the unused opcodes.",
+          "justification": "A 7-bit opcode has 128 codes and 75 are used.",
+          "resultat_markdown": "128 - 75 = **53 more operations** can be added."
+        }
+      ],
+      "conclusion_markdown": "**Opcode 7 bits, registers 6 bits each, immediate 13 bits (signed range -4096 to 4095), and 53 spare opcodes.** The register field also has 64 - 48 = 16 unused codes. All values were recomputed by a program."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "RISC programs are shorter than CISC programs because the instruction set is reduced.",
+          "pourquoi_faux": "A simple instruction does little work, so a RISC program normally needs more instructions to do the same task. CISC instructions do more each, so CISC programs have fewer instructions.",
+          "correction_markdown": "Say that RISC gives longer programs of simple instructions and CISC shorter programs of complex instructions."
+        },
+        {
+          "erreur_markdown": "A RISC processor is slower because it has fewer instructions.",
+          "pourquoi_faux": "\"Reduced\" describes the complexity of the instruction set, not the speed. CPU time depends on the instruction count, the cycles per instruction and the clock period together.",
+          "correction_markdown": "Use CPU time = instructions x CPI x clock period to compare two machines."
+        },
+        {
+          "erreur_markdown": "In a RISC processor an ADD instruction can take one of its operands directly from memory.",
+          "pourquoi_faux": "RISC uses a load/store architecture: only LOAD and STORE access memory and arithmetic works on registers.",
+          "correction_markdown": "Load the operand into a register first, then add."
+        },
+        {
+          "erreur_markdown": "CISC instructions are all of the same length.",
+          "pourquoi_faux": "Fixed-length instructions are a RISC feature; CISC instructions have variable length because of their many formats and addressing modes.",
+          "correction_markdown": "Write: CISC variable length; RISC fixed length."
+        },
+        {
+          "erreur_markdown": "An instruction set of 60 operations needs a 60-bit opcode.",
+          "pourquoi_faux": "The opcode field holds a binary code, and n bits give 2^n different codes. 5 bits give only 32 codes, but 6 bits give 64 codes, which is enough for 60.",
+          "correction_markdown": "Opcode bits = smallest n with 2^n at least the number of operations, here 6 bits."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "State whether each feature is typical of RISC or of CISC.\n\n(a) Instructions have different lengths.\n(b) Only LOAD and STORE instructions access memory.\n(c) The control unit is often microprogrammed.\n(d) There is a large number of registers.\n(e) A single instruction may do a memory-to-memory addition.\n(f) Pipelining is easy because instructions are simple and regular.",
+          "solution_markdown": "(a) **CISC**. (b) **RISC**. (c) **CISC**. (d) **RISC**. (e) **CISC**. (f) **RISC**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A processor has 24-bit instructions, 90 operations and 16 registers. Each instruction contains an opcode, three register operands and an immediate field that uses all the remaining bits.\n\n(a) Find the number of bits of the opcode and of each register field.\n(b) How many bits does the immediate field have, and what is its range as a signed two's complement number?\n(c) What is the largest number of operations that the same opcode field could support?",
+          "solution_markdown": "(a) 2^6 = 64 < 90 <= 128 = 2^7, so the opcode needs **7 bits**. 16 registers need 4 bits each (2^4 = 16), so three register fields use 12 bits.\n\n(b) Immediate = 24 - 7 - 12 = **5 bits**. A signed 5-bit value ranges from -2^4 to 2^4 - 1, that is **-16 to 15**.\n\n(c) A 7-bit opcode has 2^7 = **128 codes**, so up to 128 operations."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A program is compiled for a CISC machine and for a RISC machine. The CISC version has 1,200,000 instructions with an average CPI of 4.5. The RISC version has 2,000,000 instructions with an average CPI of 1.5. Both machines run at 2.0 GHz.\n\n(a) Find the CPU time of each version.\n(b) How many times faster is the RISC version?\n(c) The RISC machine is replaced by one with a 1.2 GHz clock. Which version is now faster, and by what factor (two decimal places)?\n(d) Name the feature of RISC that explains the lower CPI.",
+          "solution_markdown": "(a) CISC: 1,200,000 x 4.5 = 5,400,000 cycles; at 2.0 x 10^9 cycles per second the time is 2.7 x 10^-3 s = **2.7 ms**. RISC: 2,000,000 x 1.5 = 3,000,000 cycles, so the time is **1.5 ms**.\n\n(b) 2.7 / 1.5 = **1.8 times faster**.\n\n(c) The RISC time becomes 3,000,000 / (1.2 x 10^9) = 2.5 ms, still less than 2.7 ms. **The RISC version is still faster, by a factor of 2.7 / 2.5 = 1.08.**\n\n(d) Simple, fixed-length instructions that are mostly one cycle each, made possible by the load/store design and hardwired control, give a CPI close to 1."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "CISC has a large set of complex instructions of variable length, many addressing modes, several cycles per instruction and often a microprogrammed control unit.",
+        "RISC has a small set of simple fixed-length instructions, a load/store design, many registers, about one cycle per instruction and usually a hardwired control unit.",
+        "A RISC program has more instructions than a CISC program for the same task, but each instruction is simpler and quicker, and pipelining is easier.",
+        "CPU time = instruction count x CPI x clock period, so neither design is always faster.",
+        "Opcode bits = smallest n with 2^n at least the number of operations; the immediate field is what is left after the opcode and register fields.",
+        "In a two-difference question give two clear contrasts, such as instruction length and memory access, with RISC and CISC side by side."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-gce-computer-science-process-scheduling",
+  "meta": {
+    "titre": "Process Scheduling: FCFS, SJF, priority and round robin on a CPU",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "CPU scheduling algorithms",
+    "duree_estimee_min": 35,
+    "tags": [
+      "process scheduling"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-process-scheduling-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In a busy photocopy shop in Bamenda there is one machine and several customers with jobs of very different sizes. The owner may serve them in order of arrival, start with the shortest job, or give each customer a few minutes in turn. A computer faces exactly this choice with its processor, because many processes want the CPU at the same time. Examiners ask you to define the vocabulary, to explain what a context switch is for, to compare the algorithms and to compute waiting times; this course trains all four."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A process is a program in execution; a single CPU core runs only one process at a time.",
+        "The processes that are ready to run but are waiting for the CPU are kept in the ready queue.",
+        "A CPU burst is the amount of CPU time a process needs before it finishes or has to wait for input or output."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "CPU scheduling: criteria, algorithms and context switching",
+      "contenu_markdown": "### Vocabulary and formulae\n- **Multitasking**: the operating system keeps several processes in progress by switching the CPU between them so quickly that they seem to run together.\n- **Context switch**: the CPU stops one process, saves its state (program counter and registers) in its process control block (PCB), then loads the saved state of the next process. It is pure overhead, because no user work is done meanwhile.\n- **Preemptive** scheduling lets the operating system take the CPU from a running process; in **non-preemptive** scheduling a process keeps the CPU until it finishes or waits.\n- Turnaround time = completion time - arrival time. Waiting time = turnaround time - burst time (time spent in the ready queue).\n\n### The main algorithms\n| Algorithm | Next process chosen | Type | Weak point |\n|---|---|---|---|\n| FCFS (first come, first served) | the one that arrived first | non-preemptive | a long job delays all the short ones behind it (convoy effect) |\n| SJF (shortest job first) | the smallest CPU burst among the processes that have arrived | non-preemptive | long jobs may wait a long time; burst times must be known or estimated |\n| SRTF (shortest remaining time first) | the smallest remaining burst, checked at every arrival | preemptive SJF | frequent switches; same risk for long jobs |\n| Priority | the highest priority among the ready processes | either | starvation of low-priority processes |\n| Round robin | each process in turn for at most one time quantum | preemptive | a very small quantum wastes time in switches; a very large one behaves like FCFS |\n\n### Priority scheduling in detail\nEach process has a priority number. In this course a smaller number means a higher priority; always read the convention given in the question. In the **preemptive** version, when a process arrives in the ready queue its priority is compared with the priority of the process now running; if it is higher, the running process goes back to the ready queue and the newcomer takes the CPU. In the non-preemptive version the newcomer simply waits for the running process to end. **Ageing**, which slowly raises the priority of a process that has waited long, prevents starvation.\n\nWhen all processes are available at the same moment, SJF gives the smallest average waiting time of all non-preemptive orderings.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Method for a scheduling calculation",
+          "quand_utiliser": "Use for every question that asks for a chart or an average time.",
+          "contenu_markdown": "For any computation question draw a Gantt chart before using the formulae.\n1. List every process with its arrival time and burst time.\n2. Move a clock forward. At each decision point (the end of a process, the end of a quantum, or an arrival in a preemptive algorithm) apply the rule of the algorithm to the processes that have already arrived.\n3. Write the chart as time intervals, for example 0-6 P1, 6-9 P3.\n4. Read the completion time of each process, then compute turnaround time and waiting time, and the averages.\nCheck: the total of the intervals must equal the total of the bursts when the CPU never idles."
+        },
+        {
+          "nom": "Explaining multitasking and context switching",
+          "quand_utiliser": "Use for a definition or explanation question on these terms.",
+          "contenu_markdown": "A model answer on multitasking and context switching has three linked points: the CPU is shared in short slices; a switch is needed because the state of the process that stops must be saved so that it can later continue exactly where it stopped; the next process's saved state is loaded. Add the cost: the switch takes time during which no program does useful work, which is why the quantum of round robin should not be too small."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Four print jobs arrive at a school server. Arrival time and CPU burst are in milliseconds.\n\n| Process | Arrival | Burst |\n|---|---|---|\n| P1 | 0 | 6 |\n| P2 | 1 | 8 |\n| P3 | 2 | 3 |\n| P4 | 3 | 5 |\n\nCompare FCFS with non-preemptive SJF: draw the Gantt chart of each, find every waiting time and the average waiting time, and say which algorithm is better here.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Apply FCFS: run the processes in order of arrival.",
+          "justification": "FCFS ignores the burst size and follows arrival order P1, P2, P3, P4; the CPU is never idle because each process has already arrived when the previous one ends.",
+          "resultat_markdown": "| Interval | Process |\n|---|---|\n| 0 - 6 | P1 |\n| 6 - 14 | P2 |\n| 14 - 17 | P3 |\n| 17 - 22 | P4 |"
+        },
+        {
+          "numero": 2,
+          "action": "Find the FCFS waiting times.",
+          "justification": "Waiting time = start time - arrival time here, since each process runs without interruption (equivalently completion - arrival - burst).",
+          "resultat_markdown": "P1: 0 - 0 = 0. P2: 6 - 1 = 5. P3: 14 - 2 = 12. P4: 17 - 3 = 14. Average = (0 + 5 + 12 + 14) / 4 = 31 / 4 = 7.75 ms."
+        },
+        {
+          "numero": 3,
+          "action": "Apply non-preemptive SJF: at time 0 only P1 has arrived.",
+          "justification": "P1 must start, and it cannot be taken off the CPU. It ends at time 6.",
+          "resultat_markdown": "P1 runs 0 - 6."
+        },
+        {
+          "numero": 4,
+          "action": "At time 6 choose the shortest burst among the arrived processes.",
+          "justification": "P2 (8), P3 (3) and P4 (5) are waiting; P3 is the smallest, then at time 9 P4 (5) is smaller than P2 (8).",
+          "resultat_markdown": "| Interval | Process |\n|---|---|\n| 0 - 6 | P1 |\n| 6 - 9 | P3 |\n| 9 - 14 | P4 |\n| 14 - 22 | P2 |"
+        },
+        {
+          "numero": 5,
+          "action": "Find the SJF waiting times.",
+          "justification": "Same formula as before: start time - arrival time.",
+          "resultat_markdown": "P1: 0. P3: 6 - 2 = 4. P4: 9 - 3 = 6. P2: 14 - 1 = 13. Average = (0 + 4 + 6 + 13) / 4 = 23 / 4 = 5.75 ms."
+        },
+        {
+          "numero": 6,
+          "action": "Compare the two averages.",
+          "justification": "The algorithm with the smaller average waiting time serves the jobs better on that criterion.",
+          "resultat_markdown": "5.75 ms is smaller than 7.75 ms."
+        }
+      ],
+      "conclusion_markdown": "**SJF is better here: average waiting time 5.75 ms against 7.75 ms for FCFS.** The long job P2 no longer blocks the short jobs P3 and P4. The price is that P2 itself waits 13 ms instead of 5 ms, which shows the risk of delay for long jobs. The values were recomputed with a small simulation program."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Waiting time of a process is its completion time.",
+          "pourquoi_faux": "Completion time includes the burst time and the time before arrival; waiting time is only the time spent in the ready queue.",
+          "correction_markdown": "Waiting time = completion time - arrival time - burst time."
+        },
+        {
+          "erreur_markdown": "In SJF, the algorithm picks the shortest burst of all the processes in the table, including those that have not arrived yet.",
+          "pourquoi_faux": "A process that has not arrived is not in the ready queue and cannot be chosen.",
+          "correction_markdown": "Choose only among the processes whose arrival time is less than or equal to the current time."
+        },
+        {
+          "erreur_markdown": "Preemptive means that a process gives up the CPU when it decides to.",
+          "pourquoi_faux": "In preemptive scheduling it is the operating system that removes the CPU from a running process (new arrival with higher priority, quantum finished).",
+          "correction_markdown": "State that the operating system takes the CPU away, and that the process is placed back in the ready queue."
+        },
+        {
+          "erreur_markdown": "Priority scheduling is fair because every process eventually runs.",
+          "pourquoi_faux": "If high-priority processes keep arriving, a low-priority process may wait indefinitely (starvation).",
+          "correction_markdown": "Mention starvation and the cure called ageing, which raises the priority of a waiting process over time."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Three jobs A, B and C reach the CPU together at time 0, in this order, with bursts of 10, 2 and 3 ms. Using FCFS, find the waiting time of each job and the average. Then give the average if the jobs were run in the order B, C, A, and name the effect you observe.",
+          "solution_markdown": "Order A, B, C: A starts at 0, B at 10, C at 12, so the waiting times are 0, 10 and 12. Average = (0 + 10 + 12) / 3 = 22 / 3, about 7.33 ms.\n\nOrder B, C, A: B starts at 0, C at 2, A at 5, so the waiting times are 0, 2 and 5. Average = 7 / 3, about 2.33 ms.\n\nThe long job at the head of the queue makes all the short jobs wait: this is the convoy effect.\n\n**Averages: 7.33 ms for A, B, C and 2.33 ms for B, C, A.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Three processes P1, P2 and P3 arrive together at time 0 in this order with bursts 7, 4 and 2 ms. Use round robin with a time quantum of 3 ms. Draw the Gantt chart, find the completion time and the waiting time of each process and the average waiting time, and count the context switches between consecutive time slices.",
+          "solution_markdown": "Gantt chart: 0-3 P1 (4 left), 3-6 P2 (1 left), 6-8 P3 (finished at 8), 8-11 P1 (1 left), 11-12 P2 (finished at 12), 12-13 P1 (finished at 13).\n\nCompletion times: P1 13, P2 12, P3 8. All arrive at 0, so turnaround time equals completion time and waiting time = completion - burst: P1 13 - 7 = 6, P2 12 - 4 = 8, P3 8 - 2 = 6.\n\nAverage = (6 + 8 + 6) / 3 = 20 / 3, about 6.67 ms. There are 6 slices, so 5 switches between consecutive slices.\n\n**Average waiting time = 6.67 ms; 5 context switches.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Preemptive priority scheduling is used (smaller number = higher priority). P1 arrives at 0 with burst 5 and priority 3; P2 at 1, burst 3, priority 1; P3 at 2, burst 4, priority 4; P4 at 3, burst 2, priority 2. Draw the Gantt chart, find the turnaround and waiting times and their averages, and say which process would starve if new processes of priority 1 kept arriving.",
+          "solution_markdown": "At 0 only P1 can run. At 1, P2 (priority 1) is higher than P1 (3), so P2 preempts and runs 1-4. P3 (priority 4) arrives at 2 and P4 (priority 2) at 3; P4 is lower than the running P2, so there is no preemption. At 4 the best ready process is P4 (2): it runs 4-6. Then P1 (3) resumes with 4 ms left and runs 6-10, and P3 runs 10-14.\n\nGantt chart: 0-1 P1, 1-4 P2, 4-6 P4, 6-10 P1, 10-14 P3.\n\nCompletion: P1 10, P2 4, P3 14, P4 6. Turnaround = completion - arrival: 10, 3, 12, 3; average 28 / 4 = 7. Waiting = turnaround - burst: 5, 0, 8, 1; average 14 / 4 = 3.5.\n\nP3 has the lowest priority and would starve first.\n\n**Average turnaround 7 ms, average waiting time 3.5 ms; P3 starves.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Multitasking shares the CPU between processes in short slices; a context switch saves the state of the stopped process in its PCB and loads the state of the next one, and costs time without doing user work.",
+        "Turnaround time = completion - arrival; waiting time = turnaround - burst.",
+        "FCFS is simple but suffers from the convoy effect; SJF minimises the average waiting time when all processes are available together but may delay long jobs; SRTF is its preemptive form.",
+        "In preemptive priority scheduling a newly arrived process is compared with the running one and takes the CPU if its priority is higher; low-priority processes may starve, which ageing prevents.",
+        "Round robin gives each process at most one quantum in turn: too small a quantum wastes time in switches, too large behaves like FCFS.",
+        "In every calculation draw the Gantt chart first, and only choose among processes that have already arrived."
+      ]
+    }
+  ]
+}

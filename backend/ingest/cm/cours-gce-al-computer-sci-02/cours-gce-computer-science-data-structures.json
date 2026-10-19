@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-computer-science-data-structures",
+  "meta": {
+    "titre": "Data Structures: stacks, queues, linked lists and trees in practice",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Programming: abstract data types and their implementation",
+    "duree_estimee_min": 40,
+    "tags": [
+      "data structures"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-data-structures-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In a Douala motor park the first passenger to arrive is the first to board the bus: that is a queue. A pile of plates in a canteen works the opposite way, because the last plate put on the pile is the first one taken. A program that sorts jobs, undoes a typing mistake or searches a list of names needs the same kind of orderly organisation of data. Examiners ask you to define the common structures, to show how items are stored in them and to follow their operations."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A variable stores one value of a given data type, and an array stores several values of the same type under one name.",
+        "Memory locations have addresses, and a pointer is a variable that holds the address of another item.",
+        "A loop repeats a group of instructions, and a procedure is a named block of code that can be called."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Abstract data types and the main data structures",
+      "contenu_markdown": "### Terms\nA **data structure** is an organised way of storing a collection of data items so that it can be processed. An **abstract data type (ADT)** describes the values and the operations allowed on them without saying how they are stored; the structure that stores them is an implementation. A **static** structure has a size fixed when the program is written (an array); a **dynamic** structure grows and shrinks while the program runs (a linked list).\n\n### Array and record\nAn array holds a fixed number of elements of the same type, each reached by its index; a loop over the index is the natural way to process every element in the same way. A record groups fields of different types about one thing, such as a student.\n\n### Stack\nA stack is **last in, first out (LIFO)**. Items are added and removed at one end only, the top. Operations: `push` (add on top), `pop` (remove and return the top), `peek` (read the top without removing it), `isEmpty`, `isFull`. A **stack pointer** records the position of the top item. Pushing on a full stack is an **overflow**; popping an empty stack is an **underflow**. Uses: return addresses of procedure calls, the undo command, reversing a word.\n\n### Queue\nA queue is **first in, first out (FIFO)**. Items join at the rear (`enqueue`) and leave from the front (`dequeue`). In a **circular queue** stored in an array the rear and front indices wrap round to the start with a MOD operation, so that freed cells are reused. Uses: a print queue, a keyboard buffer, scheduling of jobs.\n\n### Linked list\nA linked list is made of nodes; each node holds a data item and a pointer to the next node. A head pointer gives the first node and the last pointer is `nil`. Insertion and deletion change pointers and move no data, but reaching the n-th item means following n pointers from the head.\n\n### Binary tree\nEach node has at most two children (left and right). The top node is the root and a node with no child is a leaf. In a **binary search tree** every value in the left subtree is smaller than the node and every value in the right subtree is larger. Traversals: pre-order (node, left, right), in-order (left, node, right), post-order (left, right, node). The in-order traversal of a binary search tree gives the values in ascending order.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Array implementation of a stack and a queue",
+          "quand_utiliser": "Use when you must write or trace the operations on an array.",
+          "contenu_markdown": "The stack below uses `top = 0` for an empty stack; other books use another starting value, so state your convention.\n\n```pascal\nconst MaxSize = 4;\nvar items: array[1..MaxSize] of integer;\n    top: integer;            { 0 means that the stack is empty }\n\nprocedure Push(x: integer);\nbegin\n  if top = MaxSize then writeln('Overflow')\n  else begin top := top + 1; items[top] := x end\nend;\n\nprocedure Pop(var x: integer);\nbegin\n  if top = 0 then writeln('Underflow')\n  else begin x := items[top]; top := top - 1 end\nend;\n```\nFor a circular queue of size `N` with items counted in `count`, enqueue does `rear := rear mod N + 1` before storing, and dequeue does `front := front mod N + 1` after reading. The queue is full when `count = N` and empty when `count = 0`; the count is what tells a full queue from an empty one when front and rear are close. The code is an example of the logic; it was checked by an equivalent program, since no compiler for this language was available."
+        },
+        {
+          "nom": "Linked lists and trees",
+          "quand_utiliser": "Use for pointer manipulation or tree traversal.",
+          "contenu_markdown": "To insert a new node after the node `p`, first copy the pointer of `p` into the new node, then make `p` point to the new node: `new.next := p.next; p.next := new`. In the other order the rest of the list is lost. To delete the node after `p`, set `p.next := p.next.next`.\nTo search a binary search tree, compare the value with the root; go left if it is smaller and right if it is larger; stop when the value is found or an empty subtree is reached. The number of comparisons is at most the height of the tree."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A stack can hold 4 items. It starts empty and these operations are performed in order: push 15, push 8, push 23, pop, push 4, push 9, push 6. Show the contents of the stack and the position of the stack pointer after each stage, and say what happens at the last operation.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Describe the empty stack.",
+          "justification": "The pointer must be defined before any push; here it is 0 when no item is stored.",
+          "resultat_markdown": "Stack empty, `top = 0`."
+        },
+        {
+          "numero": 2,
+          "action": "Perform the first three pushes.",
+          "justification": "A push increases the pointer and stores the item in the cell it points to.",
+          "resultat_markdown": "| cell | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|\n| item | 15 | 8 | 23 | |\n\n`top = 3`"
+        },
+        {
+          "numero": 3,
+          "action": "Perform the pop.",
+          "justification": "A pop returns the item at the top, which is 23, and lowers the pointer. The value stays in the cell but is no longer part of the stack.",
+          "resultat_markdown": "Returned 23; items 15, 8 remain; `top = 2`."
+        },
+        {
+          "numero": 4,
+          "action": "Push 4 and push 9.",
+          "justification": "Each push goes on top of the existing items; the cell that held 23 is overwritten by 4.",
+          "resultat_markdown": "| cell | 1 | 2 | 3 | 4 |\n|---|---|---|---|---|\n| item | 15 | 8 | 4 | 9 |\n\n`top = 4`, the stack is full."
+        },
+        {
+          "numero": 5,
+          "action": "Try push 6.",
+          "justification": "The pointer equals the capacity, so there is no free cell.",
+          "resultat_markdown": "**Overflow**: the push is refused and the stack is unchanged (`top = 4`)."
+        }
+      ],
+      "conclusion_markdown": "The final contents from bottom to top are 15, 8, 4, 9, with the stack pointer at 4. Popping all items would return 9, 4, 8, 15 in that order, because the structure is last in, first out. The last operation causes a stack overflow. The code is an example of the logic; it was checked by an equivalent program, since no compiler for this language was available."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "After pushing A, B and C, `pop` returns A because it was the first item added.",
+          "pourquoi_faux": "That describes a queue. A stack is last in, first out, so pop removes the most recent item.",
+          "correction_markdown": "`pop` returns C, then B, then A."
+        },
+        {
+          "erreur_markdown": "The program calls `pop` on a stack that has just been created, without testing anything.",
+          "pourquoi_faux": "There is no item to remove, which is an underflow. Without a test the pointer would become invalid.",
+          "correction_markdown": "Test `isEmpty` (top = 0) first, and report underflow instead of popping."
+        },
+        {
+          "erreur_markdown": "To insert node `new` after `p` in a linked list: `p.next := new; new.next := p.next`.",
+          "pourquoi_faux": "The first assignment overwrites the link to the rest of the list, so the second one makes `new` point to itself and the old successors are lost.",
+          "correction_markdown": "Write `new.next := p.next` first, then `p.next := new`."
+        },
+        {
+          "erreur_markdown": "A linked list is better than an array when the 500th item must be read quickly.",
+          "pourquoi_faux": "An array reaches any element directly by its index; a linked list must follow the pointers one by one from the head.",
+          "correction_markdown": "Use an array for fast access by position; use a linked list for frequent insertion and deletion."
+        },
+        {
+          "erreur_markdown": "The in-order traversal of a binary tree visits the root first, then the left and right subtrees.",
+          "pourquoi_faux": "That is the pre-order traversal. In-order visits the left subtree, then the node, then the right subtree.",
+          "correction_markdown": "In-order is left, node, right; on a binary search tree it gives ascending order."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "For each situation choose a stack or a queue and give the reason: (a) print jobs sent to a shared printer in a computer room; (b) the undo command of a text editor; (c) reversing the letters of a word; (d) customers waiting at a ticket counter. Also, the items `x`, `y`, `z` are pushed in this order on an empty stack and then all popped: in what order do they leave?",
+          "solution_markdown": "(a) **Queue**: jobs are served in the order of arrival (FIFO).\n\n(b) **Stack**: the most recent action is the first to be undone (LIFO).\n\n(c) **Stack**: pushing the letters and popping them returns them in reverse order.\n\n(d) **Queue**: the customer who came first is served first.\n\nThe items leave in the order **z, y, x**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A circular queue is stored in an array of 5 cells numbered 1 to 5. At the start `front = 1`, `rear = 0` and the queue is empty. Enqueue is done with `rear := rear mod 5 + 1` before the item is stored; dequeue returns the item at `front` and then does `front := front mod 5 + 1`. The operations are: enqueue 11, 12, 13, 14; dequeue twice; enqueue 15, 16, 17, 18. Give the contents of the array, the values of front, rear and the number of items at the end, and say which operation fails.",
+          "solution_markdown": "After the four first enqueues cells 1 to 4 hold 11, 12, 13, 14 and `rear = 4`. Two dequeues return 11 and 12 and `front = 3`; 2 items remain.\n\nEnqueue 15 goes in cell 5 (`rear = 5`); enqueue 16 wraps round: `rear = 5 mod 5 + 1 = 1`, so 16 replaces 11; enqueue 17 goes in cell 2 (`rear = 2`) and replaces 12. The queue now holds 5 items and is full, so enqueue 18 fails.\n\n| cell | 1 | 2 | 3 | 4 | 5 |\n|---|---|---|---|---|---|\n| item | 16 | 17 | 13 | 14 | 15 |\n\n**Result: front = 3, rear = 2, 5 items; enqueue 18 fails because the queue is full.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The values 38, 22, 55, 14, 30, 47, 61 and 26 are inserted in this order into an empty binary search tree (a value smaller than a node goes to its left, a larger one to its right). (a) Give the pre-order, in-order and post-order traversals. (b) What is the height of the tree, counting the nodes on the longest path from the root? (c) List the values compared when 26 is searched.",
+          "solution_markdown": "Building the tree: 38 is the root; 22 and 55 are its left and right children; 14 and 30 are the children of 22; 47 and 61 are the children of 55; 26 goes left of 30.\n\n(a) Pre-order: 38, 22, 14, 30, 26, 55, 47, 61.\nIn-order: 14, 22, 26, 30, 38, 47, 55, 61 (ascending, as expected).\nPost-order: 14, 26, 30, 22, 47, 61, 55, 38.\n\n(b) The longest path is 38, 22, 30, 26: **height 4**.\n\n(c) 26 is compared with 38 (go left), 22 (go right), 30 (go left) and 26 (found): **38, 22, 30, 26**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "An abstract data type is defined by its values and operations; the data structure that stores them is its implementation.",
+        "A stack is LIFO (push, pop, peek, stack pointer, overflow, underflow); a queue is FIFO (enqueue at the rear, dequeue from the front).",
+        "A circular queue reuses cells with MOD; the count of items distinguishes full from empty.",
+        "A linked list stores data and a pointer in each node: easy insertion and deletion, but slow access by position.",
+        "A binary search tree puts smaller values on the left and larger ones on the right; in-order traversal gives ascending order.",
+        "Arrays are static and suit repeated processing by index; linked lists, stacks and queues can be dynamic."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-computer-science-binary-adders",
+  "meta": {
+    "titre": "Binary Adders: half adders, full adders and the ripple-carry adder",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Half adder, full adder and multi-bit addition",
+    "duree_estimee_min": 35,
+    "tags": [
+      "binary adders"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-binary-adders-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "On paper, adding 1 and 1 in binary gives 0 and a carry of 1, exactly as 9 + 1 gives 0 and a carry in a decimal column. The arithmetic logic unit (ALU) of a processor does this with logic gates. Examiners ask how many inputs and outputs each adder has, how a full adder differs from a half adder, how the expressions for sum and carry are obtained from a truth table, and how several adders are chained to add numbers of 4 or 8 bits."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "AND gives 1 only when both inputs are 1; OR gives 1 when at least one input is 1; XOR gives 1 when the two inputs are different.",
+        "Binary addition of two bits: 0 + 0 = 0, 0 + 1 = 1, 1 + 0 = 1, and 1 + 1 = 10 (sum 0, carry 1).",
+        "A truth table lists every combination of inputs and the output for each."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Half adders, full adders and the ripple-carry adder",
+      "contenu_markdown": "### Half adder\nA half adder adds **two bits**, A and B. It has **2 inputs** and **2 outputs**: the Sum (S) and the Carry (C). Some papers call the carry the remainder.\n\n| A | B | S | C |\n|---|---|---|---|\n| 0 | 0 | 0 | 0 |\n| 0 | 1 | 1 | 0 |\n| 1 | 0 | 1 | 0 |\n| 1 | 1 | 0 | 1 |\n\n$S = A \\oplus B$ (XOR) and $C = A \\cdot B$ (AND), so one XOR gate and one AND gate build it.\n\n### Full adder\nA full adder adds **three bits**: A, B and the carry-in $C_{in}$ that comes from the column on the right. It has **3 inputs** and **2 outputs**: the Sum and the carry-out $C_{out}$.\n\n$S = A \\oplus B \\oplus C_{in}$ and $C_{out} = A \\cdot B + C_{in} \\cdot (A \\oplus B)$.\n\nIt is built from **two half adders and one OR gate**: the first half adder adds A and B, the second adds the sum of the first to $C_{in}$, and the OR gate combines the two carries.\n\n**Difference**: a half adder has no carry-in, so it can only be used for the least significant column; a full adder accepts a carry-in, so it can be used for every other column.\n\n### Adding numbers of n bits\nA **ripple-carry adder** connects n full adders. The carry-out of each stage is the carry-in of the next stage, and the first stage receives a carry-in of 0 (or is a half adder). The n sum outputs form the result and the last carry-out signals a result too big for n bits (overflow for unsigned numbers). A stage has to wait for the carry of the previous one, so the delay grows with n; a carry look-ahead adder works out the carries in advance to be faster.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Deducing Boolean expressions from a truth table",
+          "quand_utiliser": "Use when a question gives a truth table and asks for the expression of an output.",
+          "contenu_markdown": "Take each row where the output is 1, write an AND term (use the variable for 1 and its complement for 0), and join the terms with OR. For the Sum of a half adder the rows 01 and 10 give $S = \\overline{A}\\,B + A\\,\\overline{B}$, which is $A \\oplus B$. For the carry only the row 11 has output 1, so $C = A\\,B$. For $C_{out}$ of a full adder the rows 011, 101, 110 and 111 give $\\overline{A}B C_{in} + A\\overline{B}C_{in} + AB\\overline{C_{in}} + ABC_{in}$, which simplifies to $AB + C_{in}(A \\oplus B)$."
+        },
+        {
+          "nom": "Subtraction with the same adder",
+          "quand_utiliser": "Use when a question asks how an adder can subtract.",
+          "contenu_markdown": "In two's complement, $A - B = A + \\overline{B} + 1$, where $\\overline{B}$ is B with every bit inverted. Feed the inverted bits of B to the adder and set the carry-in of the first stage to 1. A carry out of the last stage is ignored."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A 4-bit ripple-carry adder is built from four full adders. The first stage handles the right-hand (least significant) bits and has a carry-in of 0. (a) Add `0110` and `0111`, giving for each stage the inputs and the outputs. (b) Give the 4-bit answer and check it in denary. (c) Add `1011` and `0110` and explain the final carry-out.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Align the bits and set the first carry-in to 0.",
+          "justification": "Each stage adds the bits of one column and the carry from the stage on its right.",
+          "resultat_markdown": "A = 0110, B = 0111; stage 0 uses the right-hand bits, with $C_{in} = 0$."
+        },
+        {
+          "numero": 2,
+          "action": "Stage 0: bits 0 and 1, carry-in 0.",
+          "justification": "Full adder: 0 + 1 + 0 = 1, so sum 1 and carry 0.",
+          "resultat_markdown": "$S_0 = 1$, $C_{out} = 0$"
+        },
+        {
+          "numero": 3,
+          "action": "Stage 1: bits 1 and 1, carry-in 0.",
+          "justification": "1 + 1 + 0 = 10 in binary: sum 0 and carry 1.",
+          "resultat_markdown": "$S_1 = 0$, $C_{out} = 1$"
+        },
+        {
+          "numero": 4,
+          "action": "Stages 2 and 3.",
+          "justification": "Stage 2: 1 + 1 + 1 = 11 in binary, sum 1 and carry 1. Stage 3: 0 + 0 + 1 = 1, sum 1 and carry 0.",
+          "resultat_markdown": "| Stage | A | B | $C_{in}$ | Sum | $C_{out}$ |\n|---|---|---|---|---|---|\n| 0 | 0 | 1 | 0 | 1 | 0 |\n| 1 | 1 | 1 | 0 | 0 | 1 |\n| 2 | 1 | 1 | 1 | 1 | 1 |\n| 3 | 0 | 0 | 1 | 1 | 0 |"
+        },
+        {
+          "numero": 5,
+          "action": "Read the answer and check it.",
+          "justification": "The sum bits, read from stage 3 to stage 0, give the result.",
+          "resultat_markdown": "Sum = **1101**; check: 6 + 7 = 13 = 8 + 4 + 1. The final carry-out is 0, so the answer fits in 4 bits."
+        },
+        {
+          "numero": 6,
+          "action": "Repeat for 1011 + 0110 (11 + 6).",
+          "justification": "The same stages are used; the carries are 0, 1, 1, 1 from stage 0 to stage 3.",
+          "resultat_markdown": "Sum bits **0001** and a final carry-out of **1**: the true result 17 is 10001, which needs 5 bits, so the carry-out signals overflow for 4-bit unsigned numbers."
+        }
+      ],
+      "conclusion_markdown": "0110 + 0111 = 1101 with no carry-out (13). 1011 + 0110 gives 0001 and a carry-out of 1, which is the fifth bit of 10001 (17). The stage values were produced by a gate-level simulation in a script.",
+      "epreuve_source": false
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"A half adder has three inputs and a full adder has two inputs.\"",
+          "pourquoi_faux": "The numbers are reversed. The full adder is the one that has the extra carry-in.",
+          "correction_markdown": "Half adder: 2 inputs, 2 outputs. Full adder: 3 inputs (A, B, carry-in), 2 outputs (sum, carry-out)."
+        },
+        {
+          "erreur_markdown": "\"The sum output of a half adder is A AND B.\"",
+          "pourquoi_faux": "A AND B is the carry. The sum is 1 when exactly one input is 1, which is the XOR function.",
+          "correction_markdown": "$S = A \\oplus B$ and $C = A \\cdot B$."
+        },
+        {
+          "erreur_markdown": "\"1 + 1 = 2, so the sum output of a half adder is 2 when both inputs are 1.\"",
+          "pourquoi_faux": "An output carries one bit, either 0 or 1. The value 2 is written 10 in binary: sum 0 and carry 1.",
+          "correction_markdown": "For A = 1 and B = 1, S = 0 and C = 1."
+        },
+        {
+          "erreur_markdown": "\"A full adder is made from two half adders and one AND gate.\"",
+          "pourquoi_faux": "The two carries of the half adders cannot both be 1 together, and the output carry is 1 if either is, which is an OR function.",
+          "correction_markdown": "A full adder is two half adders and one OR gate."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) State the number of inputs and of outputs of a half adder and of a full adder. (b) Give the sum and the carry output of a half adder when A = 1 and B = 1. (c) Give the sum and the carry-out of a full adder when A = 1, B = 1 and the carry-in is 1.",
+          "solution_markdown": "(a) Half adder: **2 inputs and 2 outputs**. Full adder: **3 inputs and 2 outputs**.\n\n(b) S = 1 XOR 1 = **0** and C = 1 AND 1 = **1**.\n\n(c) 1 + 1 + 1 = 11 in binary, so the sum is **1** and the carry-out is **1**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Complete the truth table of a full adder for all eight combinations of A, B and $C_{in}$. (b) In how many rows is $C_{out}$ equal to 1? (c) Write $C_{out}$ in the form $AB + C_{in}(A \\oplus B)$ and check it for A = 0, B = 1, $C_{in}$ = 1.",
+          "solution_markdown": "(a)\n\n| A | B | Cin | Sum | Cout |\n|---|---|---|---|---|\n| 0 | 0 | 0 | 0 | 0 |\n| 0 | 0 | 1 | 1 | 0 |\n| 0 | 1 | 0 | 1 | 0 |\n| 0 | 1 | 1 | 0 | 1 |\n| 1 | 0 | 0 | 1 | 0 |\n| 1 | 0 | 1 | 0 | 1 |\n| 1 | 1 | 0 | 0 | 1 |\n| 1 | 1 | 1 | 1 | 1 |\n\n(b) **4 rows** (those with at least two inputs equal to 1).\n\n(c) For A = 0, B = 1, $C_{in}$ = 1: $AB = 0$, $A \\oplus B = 1$, so $C_{out} = 0 + 1 \\cdot 1 = $ **1**, which matches the row 0 1 1 of the table."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A 4-bit ripple-carry adder uses four full adders, and each full adder is made of two XOR gates, two AND gates and one OR gate.\n\n(a) Count the gates of each type in the whole adder. (b) Add `1001` and `0111`, giving the carry-out of each stage, and comment on the result. (c) Explain how the adder can compute 9 - 5 using 4-bit two's complement, and give the result. (d) Explain why the adder becomes slower as the number of bits grows.",
+          "solution_markdown": "(a) **8 XOR gates, 8 AND gates and 4 OR gates**, 20 gates in all (4 x 5).\n\n(b) Stage 0: 1 + 1 + 0 gives sum 0, carry 1. Stage 1: 0 + 1 + 1 gives sum 0, carry 1. Stage 2: 0 + 1 + 1 gives sum 0, carry 1. Stage 3: 1 + 0 + 1 gives sum 0, carry 1. The result is **0000** with a final carry-out of **1**: the true answer 16 = 10000 needs 5 bits, so it overflows 4 bits.\n\n(c) Invert 0101 to get 1010 and set the first carry-in to 1: 1001 + 1010 + 1 = 1 0100. Ignore the carry-out: the result is **0100 = 4**.\n\n(d) Each stage must wait for the carry from the previous stage, so the carry ripples through every stage and the delay grows with the number of bits. All results were checked by a gate-level simulation."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A half adder has 2 inputs and 2 outputs: S = A XOR B and C = A AND B; it has no carry-in.",
+        "A full adder has 3 inputs (A, B, carry-in) and 2 outputs (sum, carry-out): $S = A \\oplus B \\oplus C_{in}$ and $C_{out} = AB + C_{in}(A \\oplus B)$.",
+        "A full adder is built from two half adders and one OR gate.",
+        "A ripple-carry adder chains full adders, the carry-out of each stage feeding the carry-in of the next; a final carry-out of 1 shows overflow for unsigned numbers.",
+        "Expressions are deduced from the rows with output 1 of the truth table; subtraction is done by adding the inverted number with a carry-in of 1."
+      ]
+    }
+  ]
+}

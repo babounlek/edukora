@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-memory-organisation",
+  "meta": {
+    "titre": "Memory Organisation: address lines, memory chips and the memory hierarchy",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Computer architecture: main memory",
+    "duree_estimee_min": 35,
+    "tags": [
+      "memory organisation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-memory-organisation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A buyer in Douala compares two laptops: one has 4 GB of RAM and the other 8 GB, and the seller adds that the cheaper one has a faster hard disk. To understand what these figures mean you need to know how memory is organised: how many locations an address can name, how chips are combined to build a memory, and why computers use several kinds of memory at once. These ideas give examiners many short calculations."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A bit is a binary digit, and a byte is a group of 8 bits.",
+        "Powers of two: 2^10 = 1024, 2^20 = 1 048 576 and so on; n binary digits can form 2^n different patterns.",
+        "The processor reads and writes main memory through three sets of wires called buses: address, data and control."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Addressing, capacity, memory types and the memory hierarchy",
+      "contenu_markdown": "### Locations, addresses and buses\nMain memory is a set of numbered storage locations. Each location holds one word of a fixed number of bits (often 8) and has a unique address. The **address bus** carries the address from the processor; the **data bus** carries the contents of the location in either direction; the **control bus** carries signals such as read and write.\n- With $n$ address lines there are $2^{n}$ locations, with addresses $0$ to $2^{n}-1$.\n- The width of the data bus is the number of bits transferred at once, and it is the size of one location.\n- Capacity (in bits) = number of locations x bits per location.\n- A memory described as \"4K by 16\" has $4\\times1024$ locations of 16 bits each, so 12 address lines and 16 data lines.\n\n### Units\nIn calculations of this kind the usual convention is $1\\ \\text{KB}=1024$ bytes, $1\\ \\text{MB}=1024$ KB and $1\\ \\text{GB}=1024$ MB, and K, M, G stand for $2^{10}$, $2^{20}$, $2^{30}$ locations. Follow the statement of the question if it gives another one.\n\n| Address lines | Locations |\n|---|---|\n| 10 | 1K = 1024 |\n| 16 | 64K = 65 536 |\n| 20 | 1M |\n| 24 | 16M |\n| 32 | 4G |\n\n### Types of memory\n- **RAM** can be read and written and loses its contents when the power is off (volatile). **SRAM** is faster, dearer and needs no refreshing; it is used for cache. **DRAM** is cheaper and denser but its contents must be refreshed continually; it is used for main memory.\n- **ROM** keeps its contents without power (non-volatile) and holds fixed programs such as the start-up program.\n- Registers are small storage cells inside the processor and are the fastest memory.\n\n### The memory hierarchy\nComputers combine several kinds of storage because speed, size and cost cannot all be had together.\n\n| Level | Speed | Size | Cost per bit |\n|---|---|---|---|\n| Registers | fastest | smallest | highest |\n| Cache (SRAM) | very fast | small | high |\n| Main memory (DRAM) | fast | medium | medium |\n| Secondary storage (disk) | slowest | largest | lowest |\n\nThe cache works because programs tend to reuse the same data and neighbouring addresses soon after (locality of reference).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Building a memory from chips",
+          "quand_utiliser": "Use when a large memory is made from smaller chips.",
+          "contenu_markdown": "Let the memory needed be $W$ words of $B$ bits, built from chips of $w$ words of $b$ bits.\n- Chips in one row for the width: $B/b$. Rows for the depth: $W/w$. Number of chips $=(B/b)\\times(W/w)$.\n- Address lines common to every chip: $\\log_2 w$.\n- The remaining address lines ($\\log_2 W-\\log_2 w$) go to a decoder that enables one row of chips.\n- Check: total bits of the chips equals $W\\times B$."
+        },
+        {
+          "nom": "Cache access time",
+          "quand_utiliser": "Use when a hit ratio and two access times are given.",
+          "contenu_markdown": "If the question states that a miss is served directly by main memory, the average access time is $h\\,t_c+(1-h)\\,t_m$, where $h$ is the hit ratio, $t_c$ the cache access time and $t_m$ the main memory access time. Some books add the cache time to the miss time; use the model that the question gives."
+        },
+        {
+          "nom": "Reading capacities in bytes",
+          "quand_utiliser": "Use when a bus width is given for a byte-addressable memory.",
+          "contenu_markdown": "A byte-addressable memory has one byte per location, so the capacity in bytes equals the number of locations. With 24 address lines there are $2^{24}=16\\,777\\,216$ locations, that is 16 MB, and the addresses run from `000000` to `FFFFFF` in hexadecimal. In the other direction, a memory of $2^{k}$ locations needs $k$ address lines."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A memory of 4K by 16 bits must be built from chips of 1K by 8 bits. (a) How many address lines does the memory need? (b) How many chips are needed, and how are they arranged? (c) How many address lines are common to every chip and how many go to the decoder? (d) What is the total capacity in bytes?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the address lines of the whole memory.",
+          "justification": "4K = 4 x 1024 = 4096 = 2^12 locations, so the number of lines is the exponent.",
+          "resultat_markdown": "**12 address lines**."
+        },
+        {
+          "numero": 2,
+          "action": "Find the number of chips.",
+          "justification": "The width is 16 bits and a chip gives 8, so 2 chips are placed side by side. The depth is 4096 words and a chip has 1024, so 4 rows are needed.",
+          "resultat_markdown": "2 x 4 = **8 chips**, in 4 rows of 2."
+        },
+        {
+          "numero": 3,
+          "action": "Find the address lines common to every chip.",
+          "justification": "Each chip has 1K = 1024 = 2^10 locations, so its own address input needs 10 lines, shared by all chips.",
+          "resultat_markdown": "**10 lines** (the low-order ones)."
+        },
+        {
+          "numero": 4,
+          "action": "Find the lines for the decoder.",
+          "justification": "The other lines select the row that is active: 12 - 10 = 2, which a 2-to-4 decoder turns into one of 4 row-select signals.",
+          "resultat_markdown": "**2 lines** to a 2-to-4 decoder."
+        },
+        {
+          "numero": 5,
+          "action": "Find the capacity and check it.",
+          "justification": "4096 words of 16 bits = 65 536 bits; divided by 8 this gives bytes. Each chip holds 1024 x 8 = 8192 bits.",
+          "resultat_markdown": "65 536 / 8 = **8192 bytes (8 KB)**; 8 chips x 8192 bits = 65 536 bits, which agrees."
+        }
+      ],
+      "conclusion_markdown": "The memory needs 12 address lines and 8 chips arranged as 4 rows of 2: 10 address lines are common to all chips, 2 go to a decoder that selects the row, and the capacity is 8 KB."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A memory with 20 address lines has 20 locations.",
+          "pourquoi_faux": "Each line carries one bit of the address, so n lines give $2^{n}$ different addresses.",
+          "correction_markdown": "20 lines give $2^{20}=1\\,048\\,576$ locations (1M)."
+        },
+        {
+          "erreur_markdown": "A 2K by 16 memory has a capacity of 2K bytes.",
+          "pourquoi_faux": "The notation gives 2K locations of 16 bits; a byte is 8 bits, so each location holds 2 bytes.",
+          "correction_markdown": "$2048\\times16$ bits = 4096 bytes = 4 KB."
+        },
+        {
+          "erreur_markdown": "A computer with a 32-bit data bus can address $2^{32}$ locations.",
+          "pourquoi_faux": "The data bus width gives the bits moved at once. The number of locations depends on the width of the address bus.",
+          "correction_markdown": "Count the address lines for the number of locations; count the data lines for the word size."
+        },
+        {
+          "erreur_markdown": "A question says 1 MB = 1024 KB, but 1 MB is taken as 1000 KB in the calculation.",
+          "pourquoi_faux": "Memory sizes follow powers of two, and the statement of the question fixes the convention; using a different one gives a wrong answer.",
+          "correction_markdown": "Use 1 KB = 1024 bytes, 1 MB = 1024 KB, 1 GB = 1024 MB when the question says so."
+        },
+        {
+          "erreur_markdown": "ROM loses its contents when the power is off and RAM keeps them.",
+          "pourquoi_faux": "It is the other way round: RAM is volatile; ROM is non-volatile.",
+          "correction_markdown": "RAM: read and write, volatile. ROM: contents kept without power."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A memory has 16 address lines and each location holds 8 bits. (a) How many locations does it have? (b) What is its capacity in KB? (c) What are the lowest and highest addresses in hexadecimal?",
+          "solution_markdown": "(a) $2^{16}=65\\,536$ locations.\n\n(b) One byte per location gives 65 536 bytes, and 65 536 / 1024 = 64 KB.\n\n(c) The addresses run from 0 to 65 535, which is `0000` to `FFFF` in hexadecimal.\n\n**Result: 65 536 locations, 64 KB, addresses 0000 to FFFF.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A 16K by 8 memory is built from 2K by 8 chips. (a) How many chips are needed? (b) How many address lines does the memory have, and how many are common to each chip? (c) How many lines feed the decoder and what size of decoder is needed?",
+          "solution_markdown": "(a) The width is already 8 bits, so one chip wide; the depth is 16K / 2K = 8 rows. **8 chips** are needed.\n\n(b) 16K = 16 x 1024 = $2^{14}$, so the memory has **14 address lines**; 2K = $2^{11}$, so **11 lines** are common to each chip.\n\n(c) 14 - 11 = **3 lines** feed the decoder, which must be a 3-to-8 decoder (3 inputs, 8 outputs, one per chip).\n\n**Result: 8 chips, 14 address lines, 11 common, a 3-to-8 decoder.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) List registers, cache, hard disk and main memory from the fastest to the slowest. (b) A system has a cache access time of 5 ns, a main memory access time of 80 ns and a hit ratio of 0.95. Assuming that a miss is served directly from main memory, find the average access time. (c) How many address lines does a byte-addressable memory of 2 GB need?",
+          "solution_markdown": "(a) Registers, cache, main memory, hard disk.\n\n(b) Average time = $0.95\\times5+0.05\\times80=4.75+4.00=8.75$ ns.\n\n(c) 2 GB = $2\\times1024^{3}=2^{31}$ bytes, one byte per location, so **31 address lines** are needed.\n\n**Result: order registers, cache, main memory, disk; 8.75 ns; 31 address lines.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "n address lines give 2^n locations (addresses 0 to 2^n - 1); the data bus width is the bits per location.",
+        "Capacity = number of locations x bits per location; with a byte-addressable memory, locations equal bytes.",
+        "Use 1 KB = 1024 bytes, 1 MB = 1024 KB, 1 GB = 1024 MB unless the question states another convention.",
+        "To build a memory from chips: number of chips = (width ratio) x (depth ratio); common lines = log2 of chip locations; the rest go to a decoder.",
+        "RAM is volatile (SRAM faster, used for cache; DRAM cheaper, used for main memory); ROM is non-volatile.",
+        "The hierarchy trades speed against size and cost; the cache works thanks to locality of reference."
+      ]
+    }
+  ]
+}

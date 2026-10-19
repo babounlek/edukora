@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-computer-science-abstract-data-types",
+  "meta": {
+    "titre": "Abstract Data Types: stacks, queues and the hidden implementation",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "ADT specification, stack and queue",
+    "duree_estimee_min": 35,
+    "tags": [
+      "abstract data types"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-abstract-data-types-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In a queue at a bank in Douala the customer who arrived first is served first. In a canteen the plate put on the pile last is the first one taken. These two behaviours can be described completely without saying whether the customers stand on a pavement or the plates lie in a cupboard. Computer scientists do the same with data: they describe what a collection can hold and which operations it offers, and they leave the storage for later. Examiners ask you to define the idea, to name the operations of a stack and of a queue, and to trace them."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A data type is a set of values together with the operations allowed on them; integer is an example.",
+        "An array is a fixed-size collection of elements of the same type, reached by an index.",
+        "A procedure or function is a named block of code that is executed when it is called."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Abstract data types: specification, stack and queue",
+      "contenu_markdown": "### Definition\nAn **abstract data type (ADT)** is a mathematical model of a collection of data, defined by the values the collection may hold and by the operations that act on them, together with the rules that those operations obey. It says **what** the operations do and not **how** they are coded. The user of the ADT sees only its **interface** (operation names, parameters, effect); the **implementation** (for example an array or a linked list) stays hidden. This is **information hiding**, also called encapsulation. A **data structure** is a concrete implementation of an ADT.\n\nThe benefits are that the implementation can be changed without changing the programs that use it, that the same ADT can be reused, that teams can work separately and that each operation can be tested alone.\n\n### Stack\nA **stack** follows the rule **LIFO** (last in, first out). Operations: `push(x)` adds x on top; `pop` removes and returns the top element; `peek` (or `top`) reads the top element without removing it; `isEmpty`; `isFull` for a bounded stack. Using `pop` on an empty stack is **underflow**; using `push` on a full stack is **overflow**. With an array `a` and an index `top`, push increases `top` by 1 and stores x in `a[top]`; pop reads `a[top]` and decreases `top` by 1.\n\n### Queue\nA **queue** follows the rule **FIFO** (first in, first out). Operations: `enqueue(x)` adds x at the rear; `dequeue` removes and returns the element at the front; `front` reads it; `isEmpty`; `isFull`. Dequeue on an empty queue is underflow and enqueue on a full bounded queue is overflow.\n\n### Other ADTs\n| ADT | Idea |\n|---|---|\n| List | ordered collection; insert, delete and read at a position |\n| Set | collection without repeated elements; add, remove, test membership |\n| Dictionary (map) | pairs of key and value; look up a value from its key |\n| Priority queue | the element with the highest priority leaves first |\n| Tree, graph | elements linked by parent-child or general relations |",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Using a stack: postfix evaluation",
+          "quand_utiliser": "Use when a question gives an expression in postfix form or asks for a trace of stack operations.",
+          "contenu_markdown": "Read the tokens from left to right. A number is pushed. An operator pops the top element **b** first, then the next element **a**, computes **a operator b**, and pushes the result. The order matters for subtraction and division: the element popped first is the right operand. A valid expression ends with one value on the stack."
+        },
+        {
+          "nom": "Circular queue in an array",
+          "quand_utiliser": "Use when a bounded queue is stored in an array of N cells and a trace of front and rear is asked.",
+          "contenu_markdown": "Keep `front` (index of the first element), `rear` (index of the last element) and `count`. To enqueue: if count = N report overflow; otherwise `rear := (rear + 1) mod N`, store x in `a[rear]`, add 1 to count. To dequeue: if count = 0 report underflow; otherwise read `a[front]`, `front := (front + 1) mod N`, subtract 1 from count. The modulo makes an index that passes the last cell return to cell 0, so freed cells are reused."
+        },
+        {
+          "nom": "A stack coded in ISO Pascal",
+          "quand_utiliser": "Use to see how the interface is separated from the storage.",
+          "contenu_markdown": "```\nconst max = 5;\ntype stack = record\n        items : array[1..max] of integer;\n        top   : integer;          { 0 means empty }\n     end;\n\nprocedure push(var s : stack; x : integer);\nbegin\n  if s.top = max then writeln('overflow')\n  else begin\n    s.top := s.top + 1;\n    s.items[s.top] := x\n  end\nend;\n\nfunction pop(var s : stack) : integer;\nbegin\n  if s.top = 0 then begin writeln('underflow'); pop := 0 end\n  else begin\n    pop := s.items[s.top];\n    s.top := s.top - 1\n  end\nend;\n```\n\nThis code is an example of logic: no Pascal compiler was used, and its logic was checked by an executed Python translation (after push 4, push 7, push 9, two pops give 9 then 7 and leave 4). The var parameter s is passed by reference, so that the stack changes in the caller."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "An expression in postfix form is `8 2 3 * + 4 -`.\n\n(a) Name the ADT that is best suited to evaluate it and justify your choice.\n(b) Evaluate the expression, showing the contents of the stack after each token.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the access rule needed.",
+          "justification": "The operands needed by an operator are the ones read most recently, so the last element stored must be the first one used.",
+          "resultat_markdown": "Last in, first out: the ADT is a **stack**."
+        },
+        {
+          "numero": 2,
+          "action": "Process the numbers 8, 2 and 3.",
+          "justification": "Each number is pushed, the top being on the right.",
+          "resultat_markdown": "After 8: [8]. After 2: [8, 2]. After 3: [8, 2, 3]."
+        },
+        {
+          "numero": 3,
+          "action": "Process the operator `*`.",
+          "justification": "Pop b = 3 first, then a = 2; compute 2 * 3 = 6 and push it.",
+          "resultat_markdown": "Stack: [8, 6]."
+        },
+        {
+          "numero": 4,
+          "action": "Process the operator `+`.",
+          "justification": "Pop b = 6, then a = 8; compute 8 + 6 = 14 and push it.",
+          "resultat_markdown": "Stack: [14]."
+        },
+        {
+          "numero": 5,
+          "action": "Process 4 and then the operator `-`.",
+          "justification": "Push 4. Then pop b = 4 first and a = 14 second; the result is a - b, not b - a.",
+          "resultat_markdown": "Stack after 4: [14, 4]. After `-`: 14 - 4 = 10, stack [10]."
+        },
+        {
+          "numero": 6,
+          "action": "Read the result.",
+          "justification": "A valid expression leaves exactly one value on the stack.",
+          "resultat_markdown": "The value of the expression is **10**."
+        }
+      ],
+      "conclusion_markdown": "(a) A stack, because the operands needed by each operator are the most recently stored ones (LIFO).\n\n(b) The stack contents are [8], [8, 2], [8, 2, 3], [8, 6], [14], [14, 4], [10]. The value of the expression is **10**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"An ADT is the array or the linked list used to store the data.\"",
+          "pourquoi_faux": "The array and the linked list are implementations. An ADT is the model: values, operations and rules, independent of the storage.",
+          "correction_markdown": "The same stack ADT can be implemented with an array or with a linked list without changing the programs that use it."
+        },
+        {
+          "erreur_markdown": "\"The operation pop removes the element that has been in the stack longest.\"",
+          "pourquoi_faux": "That describes a queue. A stack removes the most recent element.",
+          "correction_markdown": "Stack: LIFO, pop removes the top. Queue: FIFO, dequeue removes the front."
+        },
+        {
+          "erreur_markdown": "Evaluating `14 4 -` as 4 - 14 because 4 was popped first.",
+          "pourquoi_faux": "The element popped first is the right operand. Reversing the operands changes the result of subtraction and division.",
+          "correction_markdown": "Pop b first, then a, and compute a - b = 14 - 4 = 10."
+        },
+        {
+          "erreur_markdown": "\"Overflow happens when we pop an empty stack.\"",
+          "pourquoi_faux": "Overflow is a push on a full structure. Removing from an empty structure is underflow.",
+          "correction_markdown": "Push on full: overflow. Pop or dequeue on empty: underflow."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A queue of customers is empty. The operations enqueue(Ngu), enqueue(Tabi), dequeue, enqueue(Chi), dequeue are carried out in this order.\n\n(a) What does each dequeue return?\n(b) Which customer is left in the queue?",
+          "solution_markdown": "A queue is FIFO.\n\n(a) The first dequeue returns **Ngu**, the second returns **Tabi**.\n\n(b) Only **Chi** is left."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A bounded stack of capacity 4 is empty. The operations push(5), push(8), pop, push(2), push(6), push(1), push(9), pop are carried out in this order.\n\n(a) Which operation causes an error, and what kind of error is it?\n(b) What does each pop return, and what does the stack contain at the end (bottom first)?",
+          "solution_markdown": "Contents after each operation: [5]; [5, 8]; pop gives 8, [5]; [5, 2]; [5, 2, 6]; [5, 2, 6, 1] (full).\n\n(a) push(9) is attempted on a full stack: **overflow**, and 9 is not stored.\n\n(b) The first pop returns **8**, the second returns **1**. The final contents are **[5, 2, 6]**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A circular queue is stored in an array of N = 4 cells numbered 0 to 3, empty at the start (front = 0, rear = -1, count = 0). The operations are enqueue(A), enqueue(B), enqueue(C), dequeue, dequeue, enqueue(D), enqueue(E), enqueue(F), enqueue(G).\n\n(a) Give the contents of the four cells, front, rear and count after enqueue(F).\n(b) What happens at enqueue(G)?\n(c) Explain why the index calculation uses mod N.",
+          "solution_markdown": "Trace: A, B, C go into cells 0, 1, 2. The two dequeues return A then B, so front = 2 and count = 1 (only C). D goes into cell 3. E goes into cell (3 + 1) mod 4 = 0. F goes into cell 1.\n\n(a) Cells 0 to 3 hold **E, F, C, D**; **front = 2, rear = 1, count = 4**.\n\n(b) count = 4 = N, so the queue is full: **overflow**, and G is not stored.\n\n(c) Without the modulo, rear would pass the last cell and the free cells 0 and 1 (emptied by the dequeues) could not be reused. mod N makes the index return to 0 after N - 1."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "An ADT is a model: the values, the operations and their rules; it states what is done and hides how, so the implementation can change without changing the users.",
+        "A data structure (array, linked list) is an implementation of an ADT.",
+        "Stack: LIFO with push, pop, peek, isEmpty, isFull. Queue: FIFO with enqueue, dequeue, front, isEmpty, isFull.",
+        "Pop or dequeue on an empty structure is underflow; push or enqueue on a full one is overflow.",
+        "In postfix evaluation the first element popped is the right operand.",
+        "A circular queue uses mod N so that freed cells are reused."
+      ]
+    }
+  ]
+}

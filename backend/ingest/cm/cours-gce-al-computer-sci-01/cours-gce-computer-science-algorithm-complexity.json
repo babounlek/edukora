@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-algorithm-complexity",
+  "meta": {
+    "titre": "Algorithm Complexity: counting operations and comparing growth rates",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Time complexity and Big-O",
+    "duree_estimee_min": 35,
+    "tags": [
+      "algorithm complexity"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-algorithm-complexity-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Finding one name in a list of twenty pupils is easy by eye. Finding one number in a list of one million phone subscribers is another matter: the method you choose decides whether the answer comes in a blink or after a very long wait. Computer scientists compare methods by counting how the work grows when the amount of data grows, not by timing them on one machine. Complexity questions at the GCE ask you to count executions of a statement, to name a growth rate and to compare algorithms; this course gives you a routine for each."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "An algorithm is a finite sequence of unambiguous steps; a loop repeats statements and a loop inside a loop multiplies the repetitions.",
+        "The letter n stands for the size of the input, for example the number of items in a list.",
+        "The base-2 logarithm log2 n is the power to which 2 is raised to obtain n; log2 8 = 3 and log2 1024 = 10."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Time complexity, Big-O notation and common growth rates",
+      "contenu_markdown": "### What is measured\nThe **time complexity** of an algorithm describes how the number of executions of its most costly (dominant) instruction grows with the input size n. Counting executions instead of seconds makes the result independent of the machine. The **space complexity** describes in the same way the extra memory needed. Because the work can depend on the data, state the case: **best case**, **worst case** or **average case**.\n\n### Big-O notation\n$f(n) = O(g(n))$ means that there are constants $c > 0$ and $n_0$ such that $f(n) \\le c\\,g(n)$ for every $n \\ge n_0$. In practice:\n1. drop constant factors;\n2. keep only the fastest-growing term;\n3. statements one after the other **add** (the larger term wins); a statement inside a loop **multiplies** by the number of repetitions.\n\nSo $3n^2 + 5n + 2$ is $O(n^2)$.\n\n### Common growth rates\n| Class | Name | Typical example | Operations for n = 1024 |\n|---|---|---|---|\n| $O(1)$ | constant | reading an array cell by its index | 1 |\n| $O(\\log n)$ | logarithmic | binary search in a sorted array | 10 |\n| $O(n)$ | linear | one pass through a list; linear search | 1024 |\n| $O(n \\log n)$ | linearithmic | merge sort | 10240 |\n| $O(n^2)$ | quadratic | two nested loops over the data; simple sorts in the worst case | 1048576 |\n| $O(2^n)$ | exponential | trying every subset of n items | doubles with each extra item |\n\nA traversal of a binary tree (preorder, inorder or postorder) visits each of the n nodes once, so it is $O(n)$ whether it is recursive or iterative with a stack.\n\n### Reading a question\n\"Count the number of times\" asks for an exact formula; \"state the complexity\" asks for the Big-O class, usually of the worst case unless another case is named.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Counting the executions of loops",
+          "quand_utiliser": "Use when a question gives code and asks how many times a statement runs.",
+          "contenu_markdown": "Counting loops:\n- one loop from 1 to n: n executions of its body;\n- a loop inside a loop, both to n: $n \\times n = n^2$;\n- an inner loop that runs from 1 to the outer variable i: $1 + 2 + \\dots + n = \\dfrac{n(n+1)}{2}$, which is still $O(n^2)$;\n- a loop whose variable doubles (`i := 1; while i < n do i := i * 2`): about $\\log_2 n$ executions, exactly $\\lceil \\log_2 n \\rceil$ here."
+        },
+        {
+          "nom": "Searching and sorting cases",
+          "quand_utiliser": "Use when comparing search and sort algorithms in their best and worst cases.",
+          "contenu_markdown": "Searching and sorting cases:\n- linear search: best 1 comparison, worst n;\n- binary search on a sorted array: at most $\\lfloor \\log_2 n \\rfloor + 1$ comparisons, since each comparison halves the remaining range;\n- insertion sort: already sorted data needs $n - 1$ comparisons (best, $O(n)$) and reversed data needs $\\dfrac{n(n-1)}{2}$ (worst, $O(n^2)$).\n\nBinary search in C, an example of the logic (the array must be sorted):\n\n```c\nint binary_search(int a[], int n, int target)\n{\n    int low = 0, high = n - 1;\n    while (low <= high) {\n        int mid = (low + high) / 2;\n        if (a[mid] == target) return mid;\n        else if (a[mid] < target) low = mid + 1;\n        else high = mid - 1;\n    }\n    return -1;\n}\n```"
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Study this fragment (pseudocode) where A is an array of n numbers.\n\n```text\ntotal := 0\nfor i := 1 to n do\n    total := total + A[i]              { statement S1 }\nfor i := 1 to n do\n    for j := 1 to i do\n        pairs := pairs + 1             { statement S2 }\n```\n\n(a) How many times is each statement executed when n = 10, and for a general n? (b) Give the time complexity in Big-O notation. (c) By about what factor does the work grow if n is doubled from 1000 to 2000?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Locate the loops and decide which statements are counted.",
+          "justification": "S1 is inside one loop; S2 is inside two nested loops. The work is the number of executions of S1 and S2.",
+          "resultat_markdown": "S1: one loop. S2: nested loops with a triangular inner range."
+        },
+        {
+          "numero": 2,
+          "action": "Count S1.",
+          "justification": "The loop on i runs n times and S1 runs once per turn.",
+          "resultat_markdown": "S1 runs $n$ times; for n = 10 that is 10."
+        },
+        {
+          "numero": 3,
+          "action": "Count S2.",
+          "justification": "For each i the inner loop runs i times, so the total is the sum $1 + 2 + \\dots + n$.",
+          "resultat_markdown": "S2 runs $\\dfrac{n(n+1)}{2}$ times; for n = 10 that is $\\dfrac{10 \\times 11}{2} = 55$."
+        },
+        {
+          "numero": 4,
+          "action": "Add the two parts.",
+          "justification": "The loops are one after the other, so the counts are added.",
+          "resultat_markdown": "Total $= n + \\dfrac{n(n+1)}{2} = \\dfrac{n^2 + 3n}{2}$; for n = 10 that is 65."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the Big-O rules.",
+          "justification": "Drop the factor one half and the lower term 3n, and keep the fastest-growing term.",
+          "resultat_markdown": "The complexity is $O(n^2)$."
+        },
+        {
+          "numero": 6,
+          "action": "Compare n = 1000 and n = 2000.",
+          "justification": "Compute the exact totals and divide.",
+          "resultat_markdown": "For n = 1000 the total is 501500 and for n = 2000 it is 2003000; the ratio is $2003000 / 501500 \\approx 3.99$, close to 4."
+        }
+      ],
+      "conclusion_markdown": "**S1 runs n times and S2 runs n(n+1)/2 times (10 and 55 when n = 10); the complexity is O(n^2); doubling n multiplies the work by about 4.** All counts were verified by running the loops."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The program takes 3 seconds, so its complexity is $O(3)$.",
+          "pourquoi_faux": "Complexity does not measure seconds, which depend on the computer; it describes how the number of operations grows with n.",
+          "correction_markdown": "Count executions of the dominant operation as a function of n, then give the Big-O class."
+        },
+        {
+          "erreur_markdown": "The cost $5n^2 + n$ is written $O(5n^2 + n)$.",
+          "pourquoi_faux": "Big-O keeps only the fastest-growing term and drops constant factors, because both are irrelevant for large n.",
+          "correction_markdown": "$5n^2 + n$ is $O(n^2)$."
+        },
+        {
+          "erreur_markdown": "Two loops one after the other, each doing n steps, give $O(n^2)$.",
+          "pourquoi_faux": "Loops placed one after the other add: $n + n = 2n$, which is $O(n)$. Only nesting multiplies.",
+          "correction_markdown": "Add the costs of consecutive statements and multiply for nested ones."
+        },
+        {
+          "erreur_markdown": "Linear search is $O(1)$ because the item was found at the first cell.",
+          "pourquoi_faux": "That is the best case. The complexity usually quoted is the worst case, when the item is last or absent.",
+          "correction_markdown": "Say best case 1 comparison, worst case n comparisons, so $O(n)$ in the worst case."
+        },
+        {
+          "erreur_markdown": "Binary search is $O(\\log n)$ on any list.",
+          "pourquoi_faux": "The halving argument works only if the data is sorted and cells can be reached directly by index.",
+          "correction_markdown": "State the condition: a sorted array; for unsorted data the sort has to be paid for first."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Give the Big-O class of each cost: (a) $5n + 20$; (b) $4n^2 + n\\log_2 n + 7$; (c) 100 operations whatever n is; (d) $2^n + n^3$.",
+          "solution_markdown": "Drop constants and keep the fastest-growing term.\n\n(a) $5n$ is the dominant term, so $O(n)$. (b) $n^2$ grows faster than $n \\log_2 n$, so $O(n^2)$. (c) A constant number of operations is $O(1)$. (d) An exponential beats any power of n for large n, so $O(2^n)$.\n\n**Answers: O(n), O(n^2), O(1), O(2^n).**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A sorted list holds 500 names. (a) How many times is the loop body executed at most by `i := 1; while i < 500 do i := i * 2`? (b) What is the largest number of comparisons that binary search needs on this list? (c) How many comparisons can linear search need at most?",
+          "solution_markdown": "(a) The values taken by i that satisfy i < 500 are 1, 2, 4, 8, 16, 32, 64, 128 and 256, which is 9 values; at 512 the loop stops. So the body runs 9 times, which is $\\lceil \\log_2 500 \\rceil$.\n\n(b) At most $\\lfloor \\log_2 500 \\rfloor + 1 = 8 + 1 = 9$ comparisons, because $2^8 = 256 \\le 500 < 512 = 2^9$.\n\n(c) Linear search needs 500 comparisons in the worst case.\n\n**Answers: 9, 9 and 500.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Algorithm A needs $2n^2$ basic operations and algorithm B needs $50n$ on an input of size n. (a) For which sizes is B the faster? (b) For n = 1000, compare the number of operations and the times if one operation takes one microsecond. (c) What happens to the work of each algorithm when n is multiplied by 10?",
+          "solution_markdown": "(a) $2n^2 = 50n$ gives $n = 25$, and both need 1250 operations there. For $n > 25$, A needs more operations, so B is faster; for $n < 25$ A is faster.\n\n(b) A: $2 \\times 1000^2 = 2\\,000\\,000$ operations, which is 2 s. B: $50 \\times 1000 = 50\\,000$ operations, which is 0.05 s. B is 40 times faster.\n\n(c) A grows with $n^2$, so its work is multiplied by $10^2 = 100$; B grows with n, so its work is multiplied by 10.\n\n**Answers: B is faster for n above 25; at n = 1000, 2 s against 0.05 s; factors 100 and 10.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Time complexity is the growth of the number of executions of the dominant operation with the input size n; always say whether you mean best, worst or average case.",
+        "Big-O keeps the fastest-growing term and drops constants: $3n^2 + 5n + 2$ is $O(n^2)$.",
+        "Consecutive statements add; nested loops multiply; a doubling loop gives about $\\log_2 n$ repetitions.",
+        "Order of growth: $O(1)$, $O(\\log n)$, $O(n)$, $O(n \\log n)$, $O(n^2)$, $O(2^n)$.",
+        "Linear search is $O(n)$ in the worst case; binary search is $O(\\log n)$ but needs sorted data; a binary tree traversal visits each node once, $O(n)$."
+      ]
+    }
+  ]
+}

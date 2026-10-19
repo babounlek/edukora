@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-computer-science-sql-queries",
+  "meta": {
+    "titre": "SQL Queries: from creating tables to joining and grouping data",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Relational databases and SQL",
+    "duree_estimee_min": 35,
+    "tags": [
+      "sql queries"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-sql-queries-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A shopkeeper in Douala who keeps customers and sales in exercise books must turn pages for a long time to learn which customers bought more than 50 000 FCFA this month. In a relational database the same answer comes from one short request written in SQL. Examiners test SQL in two ways: written questions on the families of statements and on what a given query returns, and practical work where you must write the statements that build and query a small database. This course shows how to do both without hesitation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A relational database stores data in tables; each row is a tuple (record) and each column is an attribute (field).",
+        "A primary key is a column, or a set of columns, whose value identifies each row uniquely; a foreign key is a column that holds the primary key of a row in another table.",
+        "A DBMS (database management system) is the software that creates the database, stores the data and answers requests; MySQL and PostgreSQL are examples."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "SQL statements: building, changing and querying a relational database",
+      "contenu_markdown": "### The families of SQL statements\n| Family | Purpose | Main statements |\n|---|---|---|\n| DDL (Data Definition Language) | create or change the structure | `CREATE DATABASE`, `CREATE TABLE`, `ALTER TABLE`, `DROP TABLE` |\n| DML (Data Manipulation Language) | query and change the tuples | `SELECT`, `INSERT`, `UPDATE`, `DELETE` |\n| DCL (Data Control Language) | give or remove access rights | `GRANT`, `REVOKE` |\n\nSome books place `SELECT` in a separate family called DQL (query language); the idea is the same. The family that lets a user query data and also insert, delete and change tuples is DML.\n\n### Building the structure (DDL)\n`CREATE DATABASE ShopDB;` creates the database. `CREATE TABLE` names every column, gives its data type and states its constraints: `PRIMARY KEY`, `NOT NULL`, `UNIQUE`, `DEFAULT` and `FOREIGN KEY ... REFERENCES ...`. A foreign key refuses a value that does not exist in the parent table.\n\n### Changing data (DML)\n- `INSERT INTO table (c1, c2) VALUES (v1, v2);` adds one tuple. Text and dates go in single quotes.\n- `UPDATE table SET c1 = v1 WHERE condition;` changes the matching rows.\n- `DELETE FROM table WHERE condition;` removes the matching rows. Without `WHERE`, every row is changed or removed.\n\n### Reading data: the clauses in their fixed order\n`SELECT` columns, `FROM` tables, `WHERE` row condition, `GROUP BY` columns, `HAVING` group condition, `ORDER BY` columns (`ASC` by default, `DESC` for the reverse).\n- `*` means every column. `DISTINCT` removes duplicate rows; the default `ALL` keeps them and is itself followed by `*` or a column list.\n- Aggregate functions `COUNT`, `SUM`, `AVG`, `MIN`, `MAX` return one value for a set of rows.\n- `WHERE` filters rows before grouping, so it cannot contain an aggregate function; `HAVING` filters groups after grouping.\n- A missing value is `NULL`; test it with `IS NULL`, never with `= NULL`.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Joining tables",
+          "quand_utiliser": "Use when the answer needs columns from two or more tables.",
+          "contenu_markdown": "A query that needs columns from two tables joins them on the key.\n- `INNER JOIN ... ON a.k = b.k` (or just `JOIN`) keeps only the pairs of rows that match.\n- `JOIN ... USING (k)` is a short form when both tables have a column named `k`; that column then appears once in the result.\n- `LEFT JOIN` keeps every row of the left table; where no row matches, the columns of the right table are `NULL`.\n- Two tables listed with no join condition give a Cartesian product: every row of one with every row of the other, so m rows and n rows give m x n rows.\n\n```sql\nSELECT name, amount\nFROM Customer\nJOIN Orders USING (cust_id);\n```\nThe statements in this course are examples of the logic; the exact spelling of some commands (for example how a database is created or how a join is abbreviated) differs a little between systems, so check the one you use."
+        },
+        {
+          "nom": "Grouping and totals",
+          "quand_utiliser": "Use when the question says for each, per, total or number of.",
+          "contenu_markdown": "Use `GROUP BY` when the question says \"for each\", \"per\" or \"by\". Every column in the `SELECT` list that is not inside an aggregate function must also appear in `GROUP BY`.\n- Count the rows of each group: `COUNT(*)`. Count only the non-`NULL` values of one column: `COUNT(column)`.\n- Keep only some groups with `HAVING`, for example `HAVING COUNT(*) > 2`.\n- Write a condition on single rows with `WHERE` and a condition on a total or count with `HAVING`; both can appear in the same query, `WHERE` first."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A small shop keeps two tables. `Customer(cust_id, name, town)` has the primary key `cust_id`. `Orders(order_id, cust_id, amount)` has the primary key `order_id`; `amount` is in FCFA and `cust_id` must exist in `Customer`.\n\n| cust_id | name | town |\n|---|---|---|\n| 1 | Achu | Douala |\n| 2 | Beri | Bamenda |\n| 3 | Chi | Douala |\n| 4 | Dang | Yaounde |\n\n| order_id | cust_id | amount |\n|---|---|---|\n| 101 | 1 | 15000 |\n| 102 | 1 | 22000 |\n| 103 | 2 | 8000 |\n| 104 | 3 | 30000 |\n| 105 | 3 | 12000 |\n| 106 | 3 | 5000 |\n\n(a) Write the statement that creates `Orders`, with its keys. (b) Write a query that lists the name and the total spent of every customer whose total is above 20 000 FCFA, the highest total first. (c) Give the result of the query.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the structure of Orders column by column.",
+          "justification": "Each column needs a data type; the two key rules (primary and foreign) are constraints of the table.",
+          "resultat_markdown": "```sql\nCREATE TABLE Orders (\n  order_id INTEGER PRIMARY KEY,\n  cust_id INTEGER NOT NULL,\n  amount INTEGER NOT NULL,\n  FOREIGN KEY (cust_id) REFERENCES Customer(cust_id)\n);\n```"
+        },
+        {
+          "numero": 2,
+          "action": "Decide which tables and columns the query needs.",
+          "justification": "The name is in Customer and the amounts are in Orders, so the two tables must be joined on the shared key cust_id.",
+          "resultat_markdown": "`FROM Customer JOIN Orders ON Customer.cust_id = Orders.cust_id`"
+        },
+        {
+          "numero": 3,
+          "action": "Group the joined rows by customer and add up the amounts.",
+          "justification": "The question asks for a total for each customer, so SUM is applied to a group and GROUP BY names the customer.",
+          "resultat_markdown": "`SELECT Customer.name, SUM(Orders.amount) AS total ... GROUP BY Customer.cust_id, Customer.name`"
+        },
+        {
+          "numero": 4,
+          "action": "Keep only the customers whose total is above 20 000.",
+          "justification": "The condition is on a total, which exists only after grouping, so it belongs to HAVING and not to WHERE.",
+          "resultat_markdown": "`HAVING SUM(Orders.amount) > 20000`"
+        },
+        {
+          "numero": 5,
+          "action": "Sort the groups.",
+          "justification": "ORDER BY is the last clause; DESC puts the largest total first.",
+          "resultat_markdown": "`ORDER BY total DESC;`"
+        },
+        {
+          "numero": 6,
+          "action": "Evaluate the query on the data.",
+          "justification": "Achu has 15000 + 22000 = 37000, Beri has 8000, Chi has 30000 + 12000 + 5000 = 47000, Dang has no order and is lost by an inner join. Only 37000 and 47000 exceed 20000.",
+          "resultat_markdown": "| name | total |\n|---|---|\n| Chi | 47000 |\n| Achu | 37000 |"
+        }
+      ],
+      "conclusion_markdown": "The complete query is `SELECT Customer.name, SUM(Orders.amount) AS total FROM Customer JOIN Orders ON Customer.cust_id = Orders.cust_id GROUP BY Customer.cust_id, Customer.name HAVING SUM(Orders.amount) > 20000 ORDER BY total DESC;` and it returns Chi (47000) then Achu (37000). The code is an example of the logic and was checked on a small test database."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "`SELECT cust_id FROM Orders WHERE SUM(amount) > 20000 GROUP BY cust_id;`",
+          "pourquoi_faux": "WHERE is applied to each row before any group exists, so an aggregate function such as SUM is not allowed there; a system refuses the statement.",
+          "correction_markdown": "Put the condition on the total in `HAVING SUM(amount) > 20000` after `GROUP BY cust_id`."
+        },
+        {
+          "erreur_markdown": "`DELETE FROM Customer;` written to remove the customer called Dang.",
+          "pourquoi_faux": "Without a WHERE clause the statement removes every row of the table.",
+          "correction_markdown": "`DELETE FROM Customer WHERE name = 'Dang';` (check the condition with a `SELECT` first)."
+        },
+        {
+          "erreur_markdown": "`SELECT name, amount FROM Customer, Orders;` to show each customer with his own orders.",
+          "pourquoi_faux": "With no join condition the result is a Cartesian product: here 4 x 6 = 24 rows, most of them pairing a customer with orders that are not his.",
+          "correction_markdown": "Add the join condition: `... FROM Customer JOIN Orders ON Customer.cust_id = Orders.cust_id;` which returns 6 rows."
+        },
+        {
+          "erreur_markdown": "`SELECT * FROM Customer WHERE town = NULL;`",
+          "pourquoi_faux": "NULL means unknown, and a comparison with NULL is never true, so no row is returned even when some towns are missing.",
+          "correction_markdown": "`SELECT * FROM Customer WHERE town IS NULL;`"
+        },
+        {
+          "erreur_markdown": "`SELECT ALL FROM Customer;` written to display all the columns.",
+          "pourquoi_faux": "ALL is the opposite of DISTINCT (keep duplicates) and still needs something to select after it, such as * or a column list; it does not mean every column.",
+          "correction_markdown": "`SELECT * FROM Customer;` or `SELECT cust_id, name, town FROM Customer;`"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A bookshop stores `Book(book_id, title, price, copies)`, where `price` is in FCFA:\n\n| book_id | title | price | copies |\n|---|---|---|---|\n| 1 | Algebra Notes | 2500 | 10 |\n| 2 | Pascal Basics | 3500 | 0 |\n| 3 | Network Guide | 1800 | 4 |\n| 4 | Database Primer | 2900 | 0 |\n| 5 | Logic Workbook | 4200 | 7 |\n\nWrite a query that displays the title and price of the books that cost less than 3000 FCFA, cheapest first, and give its result.",
+          "solution_markdown": "`SELECT title, price FROM Book WHERE price < 3000 ORDER BY price ASC;`\n\nThe rows with a price below 3000 are books 1, 3 and 4. Sorted by price they give:\n\n| title | price |\n|---|---|\n| Network Guide | 1800 |\n| Algebra Notes | 2500 |\n| Database Primer | 2900 |\n\n**Result: three rows, Network Guide, Algebra Notes, Database Primer.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A bookshop stores `Book(book_id, title, price, copies)`, where `price` is in FCFA:\n\n| book_id | title | price | copies |\n|---|---|---|---|\n| 1 | Algebra Notes | 2500 | 10 |\n| 2 | Pascal Basics | 3500 | 0 |\n| 3 | Network Guide | 1800 | 4 |\n| 4 | Database Primer | 2900 | 0 |\n| 5 | Logic Workbook | 4200 | 7 |\n\nWrite (a) one statement that adds 500 FCFA to the price of every book costing less than 3000 FCFA, then (b) one statement that deletes the books of which no copy is left. After both statements, how many rows remain and what is the sum of the remaining prices?",
+          "solution_markdown": "(a) `UPDATE Book SET price = price + 500 WHERE price < 3000;` The prices become 3000, 3500, 2300, 3400 and 4200 for books 1 to 5.\n\n(b) `DELETE FROM Book WHERE copies = 0;` Books 2 and 4 have 0 copies and are removed. The remaining books are 1 (3000), 3 (2300) and 5 (4200).\n\nThe sum is 3000 + 2300 + 4200 = 9500, which `SELECT COUNT(*), SUM(price) FROM Book;` returns together with the count.\n\n**3 rows remain and the sum of their prices is 9500 FCFA.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A school keeps `Classroom(class_id, label)` and `Student(stud_id, name, class_id)`.\n\n| class_id | label |\n|---|---|\n| 1 | Lower Sixth Science |\n| 2 | Lower Sixth Arts |\n| 3 | Upper Sixth Science |\n\n| stud_id | name | class_id |\n|---|---|---|\n| 1 | Mbah | 1 |\n| 2 | Njoh | 1 |\n| 3 | Eko | 3 |\n| 4 | Fon | 1 |\n| 5 | Tabi | 3 |\n\n(a) Write a query that gives each class label with its number of students, including a class with no student, the largest class first. (b) Give the result. (c) Explain why `COUNT(*)` would give a wrong value for the empty class.",
+          "solution_markdown": "(a) A plain join would lose the empty class, so a `LEFT JOIN` starts from `Classroom`:\n\n```sql\nSELECT Classroom.label, COUNT(Student.stud_id) AS nb\nFROM Classroom\nLEFT JOIN Student ON Classroom.class_id = Student.class_id\nGROUP BY Classroom.class_id, Classroom.label\nORDER BY nb DESC;\n```\n\n(b) Class 1 has Mbah, Njoh and Fon (3), class 3 has Eko and Tabi (2) and class 2 has none:\n\n| label | nb |\n|---|---|\n| Lower Sixth Science | 3 |\n| Upper Sixth Science | 2 |\n| Lower Sixth Arts | 0 |\n\n(c) For the empty class the left join produces one row in which the student columns are NULL. `COUNT(*)` counts that row and returns 1; `COUNT(Student.stud_id)` ignores NULL and returns 0.\n\n**Result: 3, 2 and 0; COUNT(*) would wrongly give 1 for Lower Sixth Arts.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "DDL defines structure (`CREATE`, `ALTER`, `DROP`), DML queries and changes tuples (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) and DCL controls rights (`GRANT`, `REVOKE`).",
+        "Clause order in a query: `SELECT`, `FROM`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`. `WHERE` filters rows, `HAVING` filters groups.",
+        "A join needs a condition (`ON` or `USING`); without one the result is a Cartesian product of m x n rows. `LEFT JOIN` keeps the unmatched rows of the left table.",
+        "`UPDATE` and `DELETE` without `WHERE` act on every row; test the condition with a `SELECT` first.",
+        "Test for missing values with `IS NULL`; `COUNT(column)` ignores NULL while `COUNT(*)` counts rows.",
+        "Primary and foreign keys protect integrity: a foreign key value must exist in the parent table."
+      ]
+    }
+  ]
+}

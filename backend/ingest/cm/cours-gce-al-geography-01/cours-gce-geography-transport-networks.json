@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-geography-transport-networks",
+  "meta": {
+    "titre": "Transport Networks: connectivity indices, route efficiency and the factors behind patterns",
+    "matiere": "Geography",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Network indices, accessibility and transport questions",
+    "duree_estimee_min": 40,
+    "tags": [
+      "transport networks"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-geography-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Geography past paper (Cameroon)",
+    "epreuve_source": "gce-al-geography-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-geography-transport-networks-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A truck leaving the port of Douala with goods for the north will follow the road or the railway towards Yaounde and Ngaoundere, and every extra bend, bridge or break of gauge adds to the cost of the goods in the market. Geographers study such routes as networks of points and lines, and they measure how well connected a network is with simple indices. The questions are predictable: calculate an index from a described network, state what the number means, and explain why the pattern developed as it did. This course gives you the definitions, the formulas and the reasoning for each."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A graph is made of points joined by lines, and a closed loop of lines is a circuit.",
+        "Fractions can be written as decimals and as percentages.",
+        "Road, rail, water, air and pipeline are the main modes of transport, each with different costs and speeds."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Transport networks and how to measure them",
+      "contenu_markdown": "### Key terms\n- **Node (vertex)**: a point where routes meet or end, such as a town, port, junction or airport.\n- **Link (edge)**: a route joining two nodes, such as a road, railway or shipping lane.\n- **Network**: the pattern of nodes and links. A **circuit** is a closed loop of links.\n- **Connectivity**: how well the nodes are joined to each other.\n- **Planar network**: links cross only at nodes, with no flyovers or tunnels.\n\n### Measuring connectivity\nLet $e$ be the number of links and $v$ the number of nodes, counting the end points too.\n\n| Index | Formula | Meaning |\n|---|---|---|\n| Beta ($\\beta$) | $\\frac{e}{v}$ | links per node; below 1 for a connected network with no circuit (a tree), 1 for one circuit, above 1 for several circuits |\n| Gamma ($\\gamma$) | $\\frac{e}{3(v-2)}$ | actual links as a fraction of the maximum possible in a planar network; from 0 to 1 |\n| Alpha ($\\alpha$) | $\\frac{e-v+1}{2v-5}$ | actual circuits as a fraction of the maximum possible; from 0 to 1 |\n| Cyclomatic number ($\\mu$) | $e-v+1$ | number of independent circuits |\n\nHigher values mean a better connected network, with more alternative routes. Low values are typical of sparsely developed regions.\n\n### Factors affecting the pattern\n- **Physical**: mountains and escarpments raise costs and force winding routes; rivers and swamps need bridges; dense forest and heavy rain make roads costly to build and maintain.\n- **Economic**: traffic volume and the value of goods; ports, mines, plantations and large towns attract investment, while poor areas often have few paved links.\n- **Political and historical**: government policy, national boundaries and routes built to carry exports from the interior to the coast.\n- **Technological**: bridges, tunnels and container ports make routes possible that were once too costly.\n\nIn many African countries this has produced routes that run from the interior to the coastal ports, with fewer links between interior regions. In Cameroon the seaport of Douala and the railway from Douala through Yaounde to Ngaoundere form a main axis.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Detour index and improving a route",
+          "quand_utiliser": "When the question asks you to calculate the index for a road section, say what it shows and suggest improvements.",
+          "contenu_markdown": "$$\n\\text{Detour index} = \\frac{\\text{actual route distance}}{\\text{straight-line distance}} \\times 100\n$$\n\nFor a road of 21 km joining two towns 15 km apart in a straight line, the index is $\\frac{21}{15} \\times 100 = 140\\%$. **Significance**: the nearer the value is to 100%, the more direct the route; 140% means the road is 40% longer than the direct line, so journeys are longer and more costly. **Actions to reduce deviations**: straighten bends and build bypasses, bridge rivers instead of going round them, cut through or tunnel under hills, and build direct new links between the towns."
+        },
+        {
+          "nom": "Accessibility matrix and Shimbel index",
+          "quand_utiliser": "When asked which node is the most accessible or best placed for a depot, market or hospital.",
+          "contenu_markdown": "Build a table of the **topological distance** between every pair of nodes, that is the smallest number of links on a route between them. The row total for a node is its **Shimbel index**. The node with the lowest total is the most accessible and the highest total is the least accessible. The measure counts links, not kilometres, so mention that real distances, road quality and traffic also matter."
+        },
+        {
+          "nom": "Short essays: transport costs, footloose industry and shipping lanes",
+          "quand_utiliser": "When the question asks for reasons or an explanation with no calculation.",
+          "contenu_markdown": "**Footloose industries** are not tied to a raw material or a market. Reasons: their products are light and of high value, so transport costs are a small part of total cost; electricity and good roads are available over wide areas; communication technology lets firms manage distant sites; and skilled labour, government incentives and living conditions now matter more than raw materials.\n\n**Shipping lanes**: ships follow set routes because the shortest path between two ports on a globe is a great-circle route, canals and straits (such as Suez or Panama) are narrow passages that all traffic must use, ports with deep water and equipment are limited in number, and winds, currents, storms and ice make some waters costly or unsafe. Traffic is also concentrated on lanes joining the main producing and consuming regions, and traffic-separation schemes make busy lanes safer."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A region has six towns, A to F, joined by eight roads: AB, BC, CD, DA, AC, CE, EF and FD. No two roads cross except at a town.\n\n(a) Calculate the beta index, the gamma index, the alpha index and the cyclomatic number.\n(b) Interpret the results and suggest what would raise connectivity.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the nodes and the links.",
+          "justification": "Every town is a node, including those at the ends of roads, and every road is a link.",
+          "resultat_markdown": "$v = 6$ (A, B, C, D, E, F); $e = 8$. The network is connected and planar."
+        },
+        {
+          "numero": 2,
+          "action": "Calculate beta.",
+          "justification": "Beta is the number of links per node.",
+          "resultat_markdown": "$\\beta = \\frac{e}{v} = \\frac{8}{6} = 1.33$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculate gamma.",
+          "justification": "The maximum number of links in a planar network is $3(v-2)$, which compares the actual links with the greatest number possible.",
+          "resultat_markdown": "$3(6-2) = 12$, so $\\gamma = \\frac{8}{12} = 0.67$ (67%)"
+        },
+        {
+          "numero": 4,
+          "action": "Calculate alpha and the cyclomatic number.",
+          "justification": "Alpha compares the actual number of circuits with the maximum number $2v-5$.",
+          "resultat_markdown": "$\\mu = 8 - 6 + 1 = 3$ and $2v - 5 = 7$, so $\\alpha = \\frac{3}{7} = 0.43$"
+        },
+        {
+          "numero": 5,
+          "action": "Interpret the results.",
+          "justification": "A number without a meaning gains few marks.",
+          "resultat_markdown": "Beta above 1 and three circuits show that there are alternative routes between most towns. Gamma of 67% means that two thirds of the possible links exist, so the network is fairly well connected. Alpha of 0.43 means that fewer than half of the possible circuits exist."
+        }
+      ],
+      "conclusion_markdown": "The network has beta 1.33, gamma 0.67, alpha 0.43 and three independent circuits. It is moderately well connected: travellers between most towns can choose between routes, but the network is far from complete. Connectivity would rise by adding links, for example between B and E or between A and F, or by upgrading existing roads so that more traffic uses them."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Beta $= \\frac{v}{e}$, giving $\\frac{6}{8} = 0.75$ for the network in the example.",
+          "pourquoi_faux": "The formula is inverted. Beta measures links per node, so the number of links must be on top.",
+          "correction_markdown": "$\\beta = \\frac{e}{v} = \\frac{8}{6} = 1.33$."
+        },
+        {
+          "erreur_markdown": "Counting only the junctions as nodes and forgetting the towns at the ends of single roads.",
+          "pourquoi_faux": "Every town, port or terminal point is a node, so $v$ is too small and all the indices are wrong.",
+          "correction_markdown": "List all the places at the ends of each link before counting; check that $v$ equals the number of different letters or names used."
+        },
+        {
+          "erreur_markdown": "Stating only \"the detour index is 140\" and leaving the significance blank.",
+          "pourquoi_faux": "The question asks for the meaning: a bare number cannot be marked as significance.",
+          "correction_markdown": "Add that the road is 40% longer than a straight line, so it is winding and costly, and say what could be done."
+        },
+        {
+          "erreur_markdown": "Saying that a high detour index means an efficient road.",
+          "pourquoi_faux": "The reverse is true: 100% is the most direct route, and higher values mean longer, more winding routes.",
+          "correction_markdown": "Explain that the closer to 100%, the more efficient and direct the route."
+        },
+        {
+          "erreur_markdown": "Explaining the pattern of a network by relief alone.",
+          "pourquoi_faux": "Relief matters, but networks also reflect economic, political and historical factors. An answer with a single factor is incomplete.",
+          "correction_markdown": "Give at least a physical, an economic and a political or historical factor, each linked to the pattern (for example colonial routes to the coast)."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A district has seven villages joined by six roads: AB, BC, CD, DE, BF and FG. All villages can be reached from one another.\n\n(a) Calculate the beta index.\n(b) What does the result show?\n(c) One new road is built between E and G. Calculate the new beta index and the cyclomatic number.",
+          "solution_markdown": "(a) $v = 7$ and $e = 6$, so $\\beta = \\frac{6}{7} = $ **0.86**.\n\n(b) Beta is below 1, so the network has no circuit: it is a tree, each village can be reached by only one route and a broken road would cut off part of the network.\n\n(c) Now $e = 7$, so $\\beta = \\frac{7}{7} = $ **1.0** and $\\mu = 7 - 7 + 1 = $ **1**. There is now one circuit and an alternative route exists."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A planar road network has 5 towns and 7 roads.\n\n(a) Calculate the maximum number of roads that a planar network of 5 towns can have.\n(b) Calculate the gamma index and the alpha index.\n(c) State how many additional roads could be built before the network is complete.",
+          "solution_markdown": "(a) Maximum $= 3(v - 2) = 3 \\times 3 = $ **9**.\n\n(b) $\\gamma = \\frac{7}{9} = $ **0.78** (78%). $\\mu = 7 - 5 + 1 = 3$ and $2v - 5 = 5$, so $\\alpha = \\frac{3}{5} = $ **0.6**.\n\n(c) $9 - 7 = $ **2** additional roads."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Five towns P, Q, R, S and T are joined by five roads: PQ, QR, RS, QT and TS.\n\n(a) Construct the matrix of topological distances (the smallest number of links between each pair of towns) and find the total for each town.\n(b) Identify the most and the least accessible town.\n(c) Suggest why the most accessible town is a good site for a distribution depot, and name one limitation of this method.",
+          "solution_markdown": "(a)\n\n| | P | Q | R | S | T | Total |\n|---|---|---|---|---|---|---|\n| P | 0 | 1 | 2 | 3 | 2 | 8 |\n| Q | 1 | 0 | 1 | 2 | 1 | 5 |\n| R | 2 | 1 | 0 | 1 | 2 | 6 |\n| S | 3 | 2 | 1 | 0 | 1 | 7 |\n| T | 2 | 1 | 2 | 1 | 0 | 6 |\n\n(b) The most accessible town is **Q** (total 5) and the least accessible is **P** (total 8).\n\n(c) From Q no town is more than two links away, so deliveries need fewer links and are quicker and cheaper on average. Limitation: the method counts links, not distances or road quality, and it ignores the size of the towns and the traffic they generate."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A network is made of nodes and links; connectivity measures how well nodes are joined, and circuits give alternative routes.",
+        "Beta $= \\frac{e}{v}$, gamma $= \\frac{e}{3(v-2)}$, alpha $= \\frac{e-v+1}{2v-5}$, cyclomatic number $= e-v+1$. Count all nodes, including end points.",
+        "Higher indices mean better connected networks; a tree has beta below 1 and no circuit.",
+        "Detour index is actual distance over straight-line distance times 100: near 100% is direct, higher is winding. Reduce it by bypasses, bridges, cuttings and direct links.",
+        "The Shimbel index (row total of the distance matrix) is lowest for the most accessible node.",
+        "Network patterns result from physical, economic, political-historical and technological factors; always link each factor to the pattern you describe."
+      ]
+    }
+  ]
+}

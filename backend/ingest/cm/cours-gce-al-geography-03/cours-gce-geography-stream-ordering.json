@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-geography-stream-ordering",
+  "meta": {
+    "titre": "Stream Ordering: ranking streams and using the bifurcation ratio",
+    "matiere": "Geography",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Drainage basin morphometry",
+    "duree_estimee_min": 35,
+    "tags": [
+      "stream ordering"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-geography-2024-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Geography past paper (Cameroon)",
+    "epreuve_source": "gce-al-geography-2024-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-geography-stream-ordering-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Study a topographic map of a river basin in the Western Highlands of Cameroon and you see dozens of tiny blue lines that join to form a few larger streams and finally one main river. To compare basins fairly, and to predict how fast a river will respond to heavy rain, geographers rank these streams by order. The ranking leads to counts of streams, to the bifurcation ratio and to a statement about flood risk. At the GCE Advanced Level you must rank streams by Strahler's method, count them by order, calculate a mean bifurcation ratio and say what the result means."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A tributary is a smaller stream that flows into a larger stream, and the point where they meet is a confluence.",
+        "A drainage basin is the area drained by a river and its tributaries, and a watershed marks its edge.",
+        "A source is where a stream begins and the mouth is where it ends.",
+        "A ratio compares two numbers by division, for example 12 divided by 3 gives a ratio of 4."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Strahler stream ordering and the bifurcation ratio",
+      "contenu_markdown": "### Strahler's method\nStrahler's method ranks every stream segment in a network by working downstream from the sources.\n1. A stream with no tributaries, starting at a source, is **first order**.\n2. Where two streams of the **same order** join, the stream below the confluence is **one order higher**.\n3. Where two streams of **different order** join, the stream below keeps the **higher order**.\n4. The order of the basin is the highest order, that of the main stream at the mouth.\n\n| Streams joining | Stream below the confluence |\n|---|---|\n| 1st + 1st | 2nd |\n| 2nd + 2nd | 3rd |\n| 1st + 2nd | 2nd |\n| 2nd + 3rd | 3rd |\n\nAlways start at the sources, never at the mouth. Write the number of every segment on the sketch, then count the segments of each order (N for that order).\n\n### Bifurcation ratio\nThe **bifurcation ratio** compares the number of streams of one order with the number of the next higher order.\n\n$$R_b = \\frac{N_u}{N_{u+1}}$$\n\nThe **mean bifurcation ratio** is the average of the ratios for successive pairs of orders. In natural basins with uniform rock it commonly falls between about 3 and 5, because the number of streams falls roughly in a geometric series as order rises (Horton's law of stream numbers).\n\n### Meaning of the result\n- **Low ratio** (towards 2): the basin tends to be rounded, and tributaries join the main stream over a short length, so flood water arrives together and gives a high, sharp flood peak.\n- **High ratio** (above about 5): the basin tends to be long and narrow or controlled by rock structure, and tributary water reaches the main river at different times, giving a lower and flatter flood peak.\nRainfall, slope, rock type and land use also affect flooding, so a ratio is only a guide.\n\n### Drainage density\n**Drainage density** is the total length of streams divided by the basin area, in km per km². High values suggest impermeable rock, heavy rainfall and quick runoff.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Ranking a network from a map or description",
+          "quand_utiliser": "When you must draw or label a stream network or count streams of a given order.",
+          "contenu_markdown": "Start at each source and label it 1. Move downstream and apply the junction rule at every confluence. A lower-order stream that joins a higher-order one does not change the order. Keep a tally for each order. Check the result: the main stream at the mouth must have the highest order, and the numbers of streams should fall as the order rises."
+        },
+        {
+          "nom": "Calculating the mean bifurcation ratio",
+          "quand_utiliser": "When you are given the number of streams of each order.",
+          "contenu_markdown": "Divide each order by the next higher order (first by second, second by third and so on), then add the ratios and divide by how many ratios there are. Write the ratios before the mean and give the answer to one or two decimal places. Never divide the higher number by the lower number."
+        },
+        {
+          "nom": "Stating the significance",
+          "quand_utiliser": "When the question asks what your result shows.",
+          "contenu_markdown": "Compare the value with the usual range of about 3 to 5. Say what shape or structure it suggests and link it to the flood hydrograph: a low value suggests a high, quick peak and a high value a lower, delayed peak. Add that other factors also matter and, if the network is small, that the sample is limited."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A small drainage basin has six sources, labelled a to f. Streams a and b join to form stream g, and streams c and d join to form stream h. Streams g and h join to form stream i. Stream e then joins stream i, and further downstream stream f also joins it.\n\n(a) Rank all the streams by Strahler's method and state the order of the basin.\n\n(b) Count the streams of each order and calculate the mean bifurcation ratio.\n\n(c) State the significance of your answer.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Label the sources.",
+          "justification": "Streams with no tributaries are first order, and all ranking starts there.",
+          "resultat_markdown": "a, b, c, d, e and f are all first order."
+        },
+        {
+          "numero": 2,
+          "action": "Apply the junction rule to g and h.",
+          "justification": "Two streams of the same order give a stream one order higher.",
+          "resultat_markdown": "a (1) + b (1) gives g of order 2. c (1) + d (1) gives h of order 2."
+        },
+        {
+          "numero": 3,
+          "action": "Rank stream i and the joins of e and f.",
+          "justification": "g and h are both second order, so i is third order. A first-order stream joining a third-order stream does not change its order.",
+          "resultat_markdown": "g (2) + h (2) gives i of order 3. After e (1) joins, the stream is still order 3, and after f (1) joins it is still order 3, so the basin is of **third order**."
+        },
+        {
+          "numero": 4,
+          "action": "Count the streams in each order.",
+          "justification": "Each segment of a given order is counted once.",
+          "resultat_markdown": "First order: 6 (a, b, c, d, e, f). Second order: 2 (g, h). Third order: 1 (i)."
+        },
+        {
+          "numero": 5,
+          "action": "Calculate the ratios and the mean.",
+          "justification": "Divide each order by the next higher order, then average the ratios.",
+          "resultat_markdown": "$R_b$ (1st to 2nd) $= \\frac{6}{2} = 3$. $R_b$ (2nd to 3rd) $= \\frac{2}{1} = 2$. Mean $= \\frac{3 + 2}{2} = 2.5$."
+        },
+        {
+          "numero": 6,
+          "action": "State the significance.",
+          "justification": "The value must be compared with the usual range and linked to flood behaviour.",
+          "resultat_markdown": "2.5 is below the usual range of 3 to 5. It suggests a compact basin whose tributaries join close together, so flood water would arrive together and give a quick, high peak. The network is small, so the result is only a rough guide."
+        }
+      ],
+      "conclusion_markdown": "(a) The first-order streams are a, b, c, d, e and f; g and h are second order; i is third order, so the basin is **third order**. (b) There are 6, 2 and 1 streams of orders 1, 2 and 3, giving ratios of 3 and 2 and a **mean bifurcation ratio of 2.5**. (c) A low value suggests a compact basin that responds quickly to rainfall with a sharp flood peak, although the small sample limits the conclusion."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A first-order stream joins a second-order stream, so the stream below is third order.",
+          "pourquoi_faux": "The order rises only when streams of the same order meet. A lower-order stream joining a higher-order one leaves the order unchanged.",
+          "correction_markdown": "1st + 2nd gives 2nd. Only 2nd + 2nd gives 3rd."
+        },
+        {
+          "erreur_markdown": "Bifurcation ratio = number of streams of the higher order divided by the number of the lower order.",
+          "pourquoi_faux": "This inverts the ratio and gives a value below 1. There are always fewer streams of higher order.",
+          "correction_markdown": "$R_b = N_u \\div N_{u+1}$: the number of streams of a given order divided by the number of the next higher order."
+        },
+        {
+          "erreur_markdown": "Ranking starts at the mouth, where the main river is first order.",
+          "pourquoi_faux": "Strahler's method starts at the sources, with the unbranched streams as first order. The main river at the mouth has the highest order.",
+          "correction_markdown": "Label the sources 1, work downstream and apply the junction rule at each confluence."
+        },
+        {
+          "erreur_markdown": "The mean bifurcation ratio is the total number of streams divided by the number of orders.",
+          "pourquoi_faux": "The mean is the average of the ratios between successive orders, not a division of the total count.",
+          "correction_markdown": "Calculate each ratio first, then add them and divide by the number of ratios."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Give the order of the stream below each of the following confluences: (a) two first-order streams; (b) a second-order and a first-order stream; (c) two second-order streams; (d) two third-order streams; (e) two second-order streams meet, and then a first-order stream joins the stream formed below that confluence.",
+          "solution_markdown": "(a) **2nd order.** (b) **2nd order**, because the orders differ and the higher one is kept. (c) **3rd order.** (d) **4th order.** (e) The two second-order streams give a third-order stream; the first-order stream then joins it without changing the order, so **3rd order**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A basin has 48 streams of order 1, 12 of order 2, 3 of order 3 and 1 of order 4. The total length of streams is 90 km and the basin area is 45 km². (a) Calculate the bifurcation ratios and their mean, to two decimal places. (b) Calculate the drainage density. (c) State what the mean ratio suggests.",
+          "solution_markdown": "(a) $\\frac{48}{12} = 4$; $\\frac{12}{3} = 4$; $\\frac{3}{1} = 3$. Mean $= \\frac{4 + 4 + 3}{3} = \\frac{11}{3} =$ **3.67**. (b) Drainage density $= \\frac{90}{45} =$ **2 km per km²**. (c) 3.67 lies in the usual range of about 3 to 5, so the basin is not strongly controlled by rock structure and its flood response should be moderate."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Basin P has a mean bifurcation ratio of 2.1 and Basin Q a mean bifurcation ratio of 5.4. Discuss what these values suggest about the shape of each basin and about the flood hydrograph of each river, and why a ratio alone is not enough to predict floods.",
+          "solution_markdown": "Award marks for these points. Basin P, with a low ratio, is likely to be rounded or compact, so tributaries of similar length join the main river close together. Rainwater from the whole basin reaches the main channel at about the same time, giving a short lag time, a steep rising limb and a high flood peak. Basin Q, with a high ratio, is likely to be elongated or strongly controlled by geological structure, so the tributaries enter the main river at different points along its length. Water from the upper part arrives later than water from the lower part, giving a longer lag time and a lower, flatter peak. Evaluation: flood behaviour also depends on rainfall intensity, slope, rock permeability, vegetation, soil moisture and urban or farming land use, and the ratio comes from a sample of streams that may be small. **Conclusion: the ratio gives a useful indication of flood response but must be combined with the other characteristics of the basin.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Strahler's method starts from the sources (first order); two streams of equal order give one order higher; a lower-order stream joining a higher-order one changes nothing.",
+        "The order of the basin is the order of the main stream at the mouth.",
+        "Bifurcation ratio = number of streams of one order divided by the number of the next higher order; the mean is the average of these ratios.",
+        "Natural basins commonly have mean ratios of about 3 to 5; a low value suggests a compact basin with a sharp flood peak and a high value a flatter peak.",
+        "Drainage density = total stream length divided by basin area (km per km²) and also helps to predict runoff."
+      ]
+    }
+  ]
+}

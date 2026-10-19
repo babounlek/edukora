@@ -1,0 +1,154 @@
+{
+  "cours_id": "cours-gce-computer-science-software-documentation",
+  "meta": {
+    "titre": "Software Documentation: who reads which document and when",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "user, technical and internal documentation",
+    "duree_estimee_min": 30,
+    "tags": [
+      "software documentation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-software-documentation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school in Bafoussam installs a new timetable program. The head teacher opens a printed guide to learn how to print a class list, the technician who loads the program on twenty computers needs a different document, and a programmer who joins the project later reads the explanations written inside the source code. One program, three readers, three kinds of documentation. Examiners ask you to name the right document for a given person and situation, to say what comments are for, and to explain why documentation matters, so this course trains those three skills."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A program is a set of instructions written in a programming language.",
+        "Software is developed in stages such as analysis, design, coding, testing, installation and maintenance.",
+        "An end user uses a program to do a task and does not need to know how the program is built."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Software documentation: user, technical and internal",
+      "contenu_markdown": "### What documentation is\nSoftware documentation is all the written or on-screen material that explains what a software product does, how it is built, how to install it and how to use it. It is produced during the whole development cycle and is used during operation and maintenance.\n\n### Two audiences, two families\n| Family | Reader | Typical content | Typical documents |\n|---|---|---|---|\n| User documentation | End users | how to start the program, how to carry out each task, what an error message means and what to do about it | user manual (user guide), tutorial, quick-start card, FAQ, on-line help, troubleshooting section |\n| Technical documentation | Programmers, maintainers, installers and administrators | how the system is designed and built, how to install and configure it, how it was tested | requirements specification, design documents (flowcharts, data flow diagrams, entity-relationship diagrams, data dictionary), source code listing, test plan and test results, installation guide, maintenance guide |\n\nA user who meets an error, or who does not know how to use a feature, consults the **user manual**, and in particular its troubleshooting part or its list of error messages. A person who sets up the software, checks the hardware it needs and configures it follows the **installation guide**, which belongs to the technical documentation.\n\n### Internal documentation: comments\nComments are text written inside the source code for human readers; the compiler or interpreter ignores them completely. They state the purpose of a routine, the meaning of a variable, the reason for a choice or an assumption. In ISO Pascal a comment is placed between { and } (or between (* and *)); in ANSI C it is placed between /* and */. Good comments explain why the code is written in a certain way, not only what each line does, and they are updated when the code changes.\n\n### Why documentation matters\n- Users learn the product and solve their own problems without calling the developer.\n- Maintainers can correct errors and add features without having to guess how the program works.\n- Testers can check the program against the requirements.\n- The knowledge stays in the organisation when the original programmers leave.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Choosing the right document",
+          "quand_utiliser": "Use when a question describes a person and a need and asks which document that person should consult.",
+          "contenu_markdown": "Ask two questions: who is the reader, and what does that reader want to do?\n\n| Situation | Best document |\n|---|---|\n| learn to use the program and its menus | tutorial or user manual |\n| understand an error message or recover from a fault | user manual, troubleshooting section |\n| quick answers to the most common problems | FAQ |\n| install the program, check the system requirements, configure it | installation guide (technical documentation) |\n| understand why a part of the code works as it does | comments and design documents |\n| check that the program does what the client asked | requirements specification, test plan and test results |"
+        },
+        {
+          "nom": "Writing useful comments",
+          "quand_utiliser": "Use when you must comment a piece of code or say what makes a comment good.",
+          "contenu_markdown": "A weak comment repeats the code: `{ add 1 to passes }`. A useful comment gives the purpose or the reason.\n\n```\n{ Count the pupils whose mark reaches the threshold (10 or more). }\npasses := 0;\nfor i := 1 to n do\n    if marks[i] >= 10 then passes := passes + 1;\n```\n\nThis code is an example of logic. Its logic was checked by an executed Python translation: with the marks 12, 8, 15, 10, 9 the count is 3. In ANSI C the same comment would be written between /* and */."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A software company delivers a payroll program to a bakery in Douala.\n\n(a) Name three documents that the company should supply and state who will use each one.\n\n(b) Explain why the programmer should also write comments in the source code. [6 marks]",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Read the command words.",
+          "justification": "\"Name ... and state who\" asks for short items, each with its reader; \"Explain why\" asks for a reason and a consequence, not a list.",
+          "resultat_markdown": "Part (a): three documents, each linked to a reader. Part (b): one developed paragraph."
+        },
+        {
+          "numero": 2,
+          "action": "Sort the possible documents into the two families.",
+          "justification": "The reader decides the family: end users need user documentation, installers and programmers need technical documentation.",
+          "resultat_markdown": "User family: user manual, tutorial, FAQ. Technical family: installation guide, design documents, test results."
+        },
+        {
+          "numero": 3,
+          "action": "Choose three documents and attach a reader to each.",
+          "justification": "A good answer covers more than one family and gives a purpose for each document.",
+          "resultat_markdown": "| Document | Reader | Purpose |\n|---|---|---|\n| user manual | the payroll clerk | how to enter hours and print payslips, what an error message means |\n| installation guide | the technician | system requirements and set-up steps on the bakery computer |\n| design documents (data dictionary, flowcharts) | programmers who maintain the program | how the program is organised |"
+        },
+        {
+          "numero": 4,
+          "action": "Build the argument for comments.",
+          "justification": "An explanation needs a cause and a consequence: what is missing without comments, and what goes wrong.",
+          "resultat_markdown": "Later the tax rate changes and another programmer must modify the program. Without comments that person must read every line to guess what it does, which is slow and may lead to a new error."
+        },
+        {
+          "numero": 5,
+          "action": "Add the benefit and close the answer.",
+          "justification": "The last sentence ties the reasoning back to the question.",
+          "resultat_markdown": "With comments the programmer finds the right routine quickly, changes it safely and the program stays correct."
+        }
+      ],
+      "conclusion_markdown": "(a) The company should supply a **user manual** for the payroll clerk, an **installation guide** for the technician who sets up the program, and **design documents** (such as a data dictionary and flowcharts) for the programmers who will maintain it.\n\n(b) Comments are ignored by the computer but are read by people. They record the purpose of each routine and the reasons for choices. When the tax rate or a rule changes, another programmer can find and change the right routine quickly instead of reading every line, so the risk of a new error is smaller and maintenance is cheaper."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"Comments are instructions that tell the computer what to do, so they must be correct for the program to run.\"",
+          "pourquoi_faux": "The compiler or interpreter ignores comments completely; they are written for human readers.",
+          "correction_markdown": "A comment has no effect on the execution. It documents the code for the people who read it, so it must be accurate but is never executed."
+        },
+        {
+          "erreur_markdown": "\"The technician who must install and configure the program on a server reads the quick-start card meant for end users.\"",
+          "pourquoi_faux": "A quick-start card for end users shows how to perform tasks; it does not give the system requirements and the configuration steps.",
+          "correction_markdown": "The installer follows the installation guide, which is part of the technical documentation."
+        },
+        {
+          "erreur_markdown": "A comment written as `{ add 1 to c }` next to the statement `c := c + 1`.",
+          "pourquoi_faux": "It only repeats what the statement already says and tells the reader nothing about the purpose.",
+          "correction_markdown": "A useful comment states the purpose, for example `{ c counts the readings above the limit chosen by the clinic }`."
+        },
+        {
+          "erreur_markdown": "\"Documentation is written once, after the program is finished.\"",
+          "pourquoi_faux": "Requirements, design, test plans and test results are written at their own stage of the development cycle; waiting until the end loses details and leaves the team without guidance.",
+          "correction_markdown": "Documentation is produced throughout development and updated during maintenance."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classify each item as user documentation or technical documentation.\n\n(a) A FAQ page on the website of a mobile-money application.\n(b) An entity-relationship diagram of the database of a school management program.\n(c) The list of test cases with their results.\n(d) A tutorial that teaches a new shop assistant to issue a receipt.",
+          "solution_markdown": "Award a mark for each correct classification.\n\n(a) **User documentation**: it answers the questions of ordinary users.\n(b) **Technical documentation**: it describes how the system is designed.\n(c) **Technical documentation**: it records how the program was tested.\n(d) **User documentation**: it teaches an end user to perform a task."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A pharmacy in Limbe buys a stock-control program. When the assistant opens the monthly report, the screen shows \"Error 52: file not found\".\n\n(a) Which document should she consult first? Justify your answer.\n(b) The supplier's engineer comes to put the program on a new computer. Which document should he follow?\n(c) State two things that this second document contains.",
+          "solution_markdown": "(a) The **user manual**, in its troubleshooting part or list of error messages. She is an end user and needs to know what the message means and what to do, not how the program is built.\n\n(b) The **installation guide**, which belongs to the technical documentation, because he must set up and configure the program.\n\n(c) Any two of: the system requirements (hardware and operating system needed), the installation steps, the configuration settings, how to check that the installation works."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A clinic's program contains this code, written with no explanation.\n\n```\nc := 0;\nfor i := 1 to n do\n    if t[i] > 37 then c := c + 1;\n```\n\n(a) The array t holds body temperatures in degrees Celsius. Write one comment that states the purpose of the code.\n(b) State the value of c for n = 4 and the readings 36, 38, 37, 39.\n(c) The programmer who wrote the program leaves the clinic and no document describes the program. Explain two difficulties that the new programmer will meet.",
+          "solution_markdown": "(a) For example: `{ Count the readings above 37 degrees Celsius, the limit chosen by the clinic }`. Award a mark for stating the purpose and not just repeating the statements.\n\n(b) Only 38 and 39 are greater than 37 (37 is not greater than 37), so **c = 2**.\n\n(c) Any two of: the new programmer must read every line to guess the purpose of each routine, which is slow; the reasons for choices (such as the limit 37) are unknown, so a change may introduce errors; there is no test plan to check that a change keeps the program correct; the user has no manual to learn the program, so the same questions come back to the programmer."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Software documentation explains what the product does, how it is built, how to install it and how to use it; it is produced at every stage of development.",
+        "User documentation (user manual, tutorial, FAQ, on-line help, troubleshooting) is for end users; technical documentation (specification, design documents, test results, installation guide) is for programmers, maintainers and installers.",
+        "To learn the program or handle an error, consult the user manual; to install and configure, follow the installation guide.",
+        "Comments are internal documentation for human readers; the compiler ignores them. In ISO Pascal they go between { } or (* *), in ANSI C between /* and */.",
+        "A good comment gives the purpose or the reason, not a copy of the statement.",
+        "Documentation keeps the program usable and maintainable when the original developers are no longer there."
+      ]
+    }
+  ]
+}

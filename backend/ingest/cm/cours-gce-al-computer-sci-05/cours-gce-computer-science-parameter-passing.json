@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-computer-science-parameter-passing",
+  "meta": {
+    "titre": "Parameter Passing: by value, by reference and what the caller sees",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "value and reference parameters, function results",
+    "duree_estimee_min": 35,
+    "tags": [
+      "parameter passing"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-parameter-passing-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "At a photocopy shop in Bamenda a customer can hand over a photocopy of her notes or her original notebook. If the clerk writes corrections on the photocopy, the notebook stays as it was; if he writes in the notebook itself, the customer finds the corrections at home. Subprograms treat their parameters in the same two ways, and the examiner's question is always the same: after the call, what values do the caller's variables hold? This course gives you a method that never fails."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A subprogram (procedure or function) is a named block of code that is executed when it is called.",
+        "A variable is a named memory location that holds a value and has an address.",
+        "A local variable exists only while its subprogram is running."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parameter passing: value, reference and returned values",
+      "contenu_markdown": "### Vocabulary\nThe names in the heading of a subprogram are its **formal parameters**. The values or variables written in the call are the **actual parameters** (arguments). The mode of passing decides how a formal parameter is linked to its actual parameter.\n\n### Passing by value\nThe value of the actual parameter is **copied** into the formal parameter, which behaves like a local variable. Any change made to the formal parameter is lost when the subprogram ends; the caller's variable is not changed. The actual parameter may be a constant, a variable or an expression such as `a + 2`. This mode is safe but copies data, which is costly for a large array.\n\n### Passing by reference\nThe **address** of the actual parameter is passed, so the formal parameter is another name (an alias) for the caller's variable. Every assignment to the formal parameter changes the caller's variable at once. The actual parameter must be a variable, not a constant or an expression. This mode is efficient for large data and is the way a subprogram sends several results back, but it can cause unwanted changes (side effects).\n\n### In ISO Pascal and ANSI C\n- ISO Pascal passes by value by default; the word `var` before a formal parameter makes it a reference parameter.\n- ANSI C passes every argument by value. A reference effect is obtained by passing a pointer: the call uses `&a`, the subprogram uses `*p`. The pointer itself is copied, but the variable it points to is shared.\n\n### Values returned by a function\nA **function** returns one value to the point of the call; in ISO Pascal this value is assigned to the function's name, in ANSI C it is given by `return`. The returned value is handed back as a value (a copy), so the call can be used inside an expression. A **procedure** returns no value, but it can pass results back through reference parameters.\n\n| Feature | By value | By reference |\n|---|---|---|\n| What is passed | a copy of the value | the address of the variable |\n| Caller's variable after the call | unchanged | changed if the subprogram assigns to it |\n| Allowed actual parameter | constant, variable, expression | variable only |",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Tracing method with memory boxes",
+          "quand_utiliser": "Use for any question that asks for the values of the variables after a call.",
+          "contenu_markdown": "1. Draw one box for each variable of the caller with its starting value.\n2. For each by-value formal parameter draw a **new** box holding a copy; for each by-reference formal parameter draw **no** box, only a second name on the caller's box.\n3. Execute the body statement by statement, always updating the right box.\n4. When the subprogram ends, throw the copies away and read the caller's boxes."
+        },
+        {
+          "nom": "Aliasing: the same variable passed twice",
+          "quand_utiliser": "Use when two reference parameters receive the same actual variable.",
+          "contenu_markdown": "If the call passes the same variable `a` for two reference parameters, `x` and `y` are two names for one box. A change made through `x` is seen at once through `y`. If one of them is by value, its copy is taken at the moment of the call, before the body changes anything."
+        },
+        {
+          "nom": "The same logic in ISO Pascal and ANSI C",
+          "quand_utiliser": "Use to see how each language writes a reference parameter.",
+          "contenu_markdown": "```\nprocedure swap(var p, q : integer);\nvar tmp : integer;\nbegin\n  tmp := p; p := q; q := tmp\nend;                          { call: swap(m, n) }\n```\n\n```\nvoid swap(int *p, int *q)\n{\n    int tmp = *p;\n    *p = *q;\n    *q = tmp;\n}\n/* call: swap(&m, &n); */\n```\n\nThese are examples of logic: no Pascal or C compiler was used. Their logic was checked by an executed Python translation: with m = 7 and n = 2, the reference version gives m = 2 and n = 7, while a by-value version leaves m = 7 and n = 2."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The procedure below has three parameters. The parameters x and z are passed by reference and y is passed by value.\n\n```\nproc t(x, y, z) =\n    x <- x + y;\n    y <- y * 2;\n    z <- x - z;\nend\na <- 4;  b <- 3;  c <- 10;\nt(a, b, c);\n```\n\n(a) Give the values of a, b and c after the call. (b) Give the values again if y were also passed by reference.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write down the modes and draw the boxes.",
+          "justification": "The mode decides which formal parameters are aliases and which are copies.",
+          "resultat_markdown": "x is another name for a, z is another name for c, and y is a new box holding a copy of b. Boxes: a = 4, b = 3, c = 10, y = 3."
+        },
+        {
+          "numero": 2,
+          "action": "Execute `x <- x + y`.",
+          "justification": "x is the box a, so a changes.",
+          "resultat_markdown": "a = 4 + 3 = 7."
+        },
+        {
+          "numero": 3,
+          "action": "Execute `y <- y * 2`.",
+          "justification": "y is a copy, so only the copy changes; b is untouched.",
+          "resultat_markdown": "y = 6 and b stays 3."
+        },
+        {
+          "numero": 4,
+          "action": "Execute `z <- x - z`.",
+          "justification": "x is a, which is now 7; z is the box c.",
+          "resultat_markdown": "c = 7 - 10 = -3."
+        },
+        {
+          "numero": 5,
+          "action": "Throw the copy away and read the caller's variables.",
+          "justification": "The by-value copy disappears at the end of the call.",
+          "resultat_markdown": "a = 7, b = 3, c = -3."
+        },
+        {
+          "numero": 6,
+          "action": "Repeat for part (b).",
+          "justification": "If y is an alias of b, the second statement doubles b itself.",
+          "resultat_markdown": "a = 7, b = 6, c = -3."
+        }
+      ],
+      "conclusion_markdown": "(a) **a = 7, b = 3, c = -3**. b is unchanged because y is a copy.\n\n(b) **a = 7, b = 6, c = -3**. Only b differs: it is now doubled, because y is another name for b."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"After the call the variable b is 6, because the procedure doubles y.\" (y passed by value, called with b)",
+          "pourquoi_faux": "A by-value parameter is a copy. Doubling the copy does not change the caller's variable.",
+          "correction_markdown": "b keeps its old value. Only reference parameters carry changes back."
+        },
+        {
+          "erreur_markdown": "\"In ANSI C a parameter is passed by reference when the call uses &.\"",
+          "pourquoi_faux": "ANSI C passes every argument by value. The call `f(&a)` copies the address of a. Because the function uses that address, it can change a, which gives the effect of a reference, but the pointer itself is still a copy.",
+          "correction_markdown": "Say that C simulates reference passing with pointers; ISO Pascal has true reference parameters with `var`."
+        },
+        {
+          "erreur_markdown": "Calling a procedure whose first parameter is by reference with a constant, as in `swap(5, n)`.",
+          "pourquoi_faux": "A reference parameter must be tied to a variable that has an address. A constant or an expression has no variable to change.",
+          "correction_markdown": "Use a variable for every reference parameter; constants and expressions are allowed only for by-value parameters."
+        },
+        {
+          "erreur_markdown": "\"The actual parameters are the names written in the heading of the procedure.\"",
+          "pourquoi_faux": "The names in the heading are the formal parameters. The actual parameters are the values or variables written in the call.",
+          "correction_markdown": "Formal: in the heading. Actual: in the call."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A procedure has the heading `procedure area(l, w : integer; var res : integer);` in ISO Pascal and is called by `area(5, side, total)` where `side` and `total` are variables.\n\n(a) Name the formal parameters and the actual parameters.\n(b) State the passing mode of each formal parameter.\n(c) Which actual parameter must be a variable, and why?",
+          "solution_markdown": "(a) Formal parameters: **l, w, res**. Actual parameters: **5, side, total**.\n\n(b) l and w are passed **by value**; res is passed **by reference** because of the word `var`.\n\n(c) **total** must be a variable, because the procedure stores its result in res, which is an alias of total. The actual parameters 5 and side are only copied, so a constant is allowed for l."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "```\nproc k(x, y) =\n    y <- y + x;\n    x <- 0;\nend\nm <- 8;  n <- 5;\nk(m, n);\n```\n\n(a) x is passed by value and y by reference. Give m and n after the call.\n(b) Give m and n if both are passed by reference.",
+          "solution_markdown": "(a) y is the box n, so n = 5 + 8 = 13. Then x, a copy, is set to 0 and m is untouched. Final values: **m = 8, n = 13**.\n\n(b) y is n and x is m. n = 5 + 8 = 13, then m = 0. Final values: **m = 0, n = 13**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "```\nproc w(x, y) =\n    x <- x + 1;\n    y <- y * 3;\n    x <- x + y;\nend\na <- 2;\nw(a, a);\n```\n\nGive the value of a after the call in each case: (a) both parameters by reference; (b) x by reference and y by value; (c) both by value. Explain the difference between (a) and (b).",
+          "solution_markdown": "(a) Both names x and y are the box a. x <- x + 1 gives a = 3. y <- y * 3 gives a = 9. x <- x + y gives a = 9 + 9 = **18**.\n\n(b) y is a copy of a taken at the call, so y = 2. x <- x + 1 gives a = 3. y <- y * 3 gives y = 6 (a stays 3). x <- x + y gives a = 3 + 6 = **9**.\n\n(c) Both are copies, so nothing reaches the caller: a stays **2**.\n\nThe difference between (a) and (b) comes from aliasing. In (a) the change made through x is seen through y, so y multiplies the new value 3. In (b) y holds the old value 2, which it received at the call."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Formal parameters are in the heading of the subprogram; actual parameters are in the call.",
+        "By value: a copy is passed, so the caller's variable is unchanged; by reference: the variable itself (an alias) is passed, so assignments change the caller's variable.",
+        "A reference parameter needs a variable as actual parameter; a value parameter may receive a constant or an expression.",
+        "ISO Pascal uses var for reference parameters; ANSI C passes everything by value and simulates reference passing with pointers (& and *).",
+        "A function returns its result as a value (a copy); a procedure sends results back through reference parameters.",
+        "To trace a call, draw boxes: a new box for each by-value parameter, an alias for each by-reference parameter."
+      ]
+    }
+  ]
+}

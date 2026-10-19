@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-infix-prefix-and-postfix-notation",
+  "meta": {
+    "titre": "Infix, Prefix and Postfix Notation: conversion and stack evaluation",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Expression notations and stack evaluation",
+    "duree_estimee_min": 35,
+    "tags": [
+      "infix prefix and postfix notation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-infix-prefix-and-postfix-notation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in a market in Douala keys 1500 + 3 x 250 into a phone and expects 2250 FCFA, because the multiplication is done before the addition even though no bracket was typed. A compiler has to take the same decision for every formula in a program or a spreadsheet. Many of them first convert the expression into a form that needs no brackets and no precedence rules, and then evaluate it with a stack. Examiners ask you to define the three notations, to convert between them, to evaluate postfix expressions and to name the data structure that makes this easy."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Operators have precedence: multiplication and division come before addition and subtraction, and operators of equal precedence are taken from left to right; brackets override precedence.",
+        "A stack is a last in, first out structure: push adds a value on top and pop removes the top value.",
+        "A binary operator has two operands, and for subtraction and division the order of the operands changes the result."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Infix, prefix and postfix: definitions, conversion and evaluation",
+      "contenu_markdown": "### Three ways to write the same calculation\n- **Infix**: the operator stands between its two operands, as in `A + B`. Brackets and precedence rules are needed to show the order of evaluation.\n- **Prefix** (Polish notation): the operator stands before its operands, as in `+ A B`.\n- **Postfix** (reverse Polish notation, RPN): the operator stands after its operands, as in `A B +`.\n\nPrefix and postfix need no brackets and no precedence rules, because the position of each symbol alone fixes the order of evaluation.\n\n| Infix | Prefix | Postfix |\n|---|---|---|\n| `A + B` | `+ A B` | `A B +` |\n| `(A + B) * C` | `* + A B C` | `A B + C *` |\n| `A + B * C` | `+ A * B C` | `A B C * +` |\n| `A - B - C` | `- - A B C` | `A B - C -` |\n| `A * (B + C) - D` | `- * A + B C D` | `A B C + * D -` |\n\n### Converting infix to postfix with a stack\nScan the infix expression from left to right.\n1. An operand goes straight to the output.\n2. A left bracket is pushed on the stack.\n3. An operator: while the operator on top of the stack has higher precedence, or equal precedence (left-to-right operators), pop it to the output; then push the new operator.\n4. A right bracket: pop operators to the output until the left bracket, which is discarded.\n5. At the end pop everything left on the stack to the output.\n\n### Evaluating postfix with a stack\nScan left to right. An operand is **pushed**. An operator **pops two values**, applies the operation and pushes the result. The first value popped is the **right** operand and the second is the **left** operand, which matters for `-` and `/`. At the end exactly one value remains: the answer. A **stack** (last in, first out) is the data structure required, since the most recent operands are the first ones needed.\n\nThe advantage of RPN for a computer is that it needs no brackets and no precedence rules, and the expression is evaluated in one left-to-right pass.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Using an expression tree",
+          "quand_utiliser": "Use to find the prefix form, or to check any conversion.",
+          "contenu_markdown": "Build a tree in which the operator evaluated **last** is the root and the two parts it combines are its sub-trees. Then read the tree in three ways: root first, then left, then right (pre-order) gives **prefix**; left, then right, then root (post-order) gives **postfix**; left, root, right (in-order, with brackets restored) gives **infix**. For `(P - Q) * R + S / T` the root is `+`, its left sub-tree is `(P - Q) * R` and its right sub-tree is `S / T`."
+        },
+        {
+          "nom": "Postfix evaluation as an algorithm",
+          "quand_utiliser": "Use when asked to write or trace the algorithm, or to name the data structure.",
+          "contenu_markdown": "```c\n/* Example of logic: evaluate a postfix expression of single-digit operands\n   separated by spaces. It was checked by a Python translation, not compiled. */\nint evaluate(char expr[])\n{\n    int stack[20];\n    int top = -1;\n    int i, a, b;\n    for (i = 0; expr[i] != '\\0'; i++) {\n        char c = expr[i];\n        if (c >= '0' && c <= '9') {\n            top++;\n            stack[top] = c - '0';           /* push the operand */\n        } else if (c != ' ') {\n            b = stack[top--];               /* right operand comes off first */\n            a = stack[top--];\n            top++;\n            if (c == '+')      stack[top] = a + b;\n            else if (c == '-') stack[top] = a - b;\n            else if (c == '*') stack[top] = a * b;\n            else               stack[top] = a / b;\n        }\n    }\n    return stack[top];                      /* the single value left */\n}\n```\nFor `\"7 2 3 * - 4 +\"` the function returns 5, the value of 7 - 2 x 3 + 4."
+        },
+        {
+          "nom": "Prefix evaluation",
+          "quand_utiliser": "Use when the expression is given in prefix form.",
+          "contenu_markdown": "Scan from **right to left**. Push each operand; when an operator is met, pop two values, the first popped being the **left** operand and the second the **right** operand, apply the operator and push the result. This is the mirror image of the postfix method, which is why the order of the popped values changes."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The expression `X = (P - Q) * R + S / T` is given in infix form.\n\n(a) Write X in postfix and in prefix form.\n(b) Evaluate the postfix form with P = 14, Q = 6, R = 3, S = 20 and T = 4, showing the stack, and check the answer on the infix form.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Apply the precedence rules to the infix form.",
+          "justification": "Brackets first: `P - Q`; then `*` and `/` before `+`. So the expression is (P - Q) times R, plus (S divided by T).",
+          "resultat_markdown": "Last operation: `+`. Sub-expressions: `(P - Q) * R` and `S / T`."
+        },
+        {
+          "numero": 2,
+          "action": "Convert to postfix with an operator stack.",
+          "justification": "Operands go to the output; an operator is pushed after popping every operator of higher or equal precedence; a right bracket pops back to the left bracket.",
+          "resultat_markdown": "| Token read | Operator stack | Output so far |\n|---|---|---|\n| `(` | `(` | (empty) |\n| `P` | `(` | `P` |\n| `-` | `( -` | `P` |\n| `Q` | `( -` | `P Q` |\n| `)` | (empty) | `P Q -` |\n| `*` | `*` | `P Q -` |\n| `R` | `*` | `P Q - R` |\n| `+` | `+` | `P Q - R *` |\n| `S` | `+` | `P Q - R * S` |\n| `/` | `+ /` | `P Q - R * S` |\n| `T` | `+ /` | `P Q - R * S T` |\n| `end` | `+` | `P Q - R * S T /` |\n| `end` | (empty) | `P Q - R * S T / +` |\n\nPostfix: `P Q - R * S T / +`."
+        },
+        {
+          "numero": 3,
+          "action": "Read the tree in pre-order to obtain the prefix form.",
+          "justification": "The root `+` comes first, then the left sub-tree `* - P Q R`, then the right sub-tree `/ S T`.",
+          "resultat_markdown": "Prefix: `+ * - P Q R / S T`."
+        },
+        {
+          "numero": 4,
+          "action": "Evaluate the postfix form for P = 14, Q = 6, R = 3, S = 20, T = 4.",
+          "justification": "Replace each letter by its value, then push operands and let each operator pop two values (right operand first).",
+          "resultat_markdown": "| Token read | Stack after (top on the right) |\n|---|---|\n| `14` | 14 |\n| `6` | 14 6 |\n| `-` | 8 |\n| `3` | 8 3 |\n| `*` | 24 |\n| `20` | 24 20 |\n| `4` | 24 20 4 |\n| `/` | 24 5 |\n| `+` | 29 |"
+        },
+        {
+          "numero": 5,
+          "action": "Check with the infix form.",
+          "justification": "A correct conversion must give the same value as the original expression.",
+          "resultat_markdown": "(14 - 6) x 3 + 20 / 4 = 8 x 3 + 5 = 24 + 5 = 29. The two values agree."
+        }
+      ],
+      "conclusion_markdown": "**Postfix: `P Q - R * S T / +`; prefix: `+ * - P Q R / S T`; value 29, with a stack that never holds more than 3 items.** The algorithm in the method section is an example of logic; all the conversions and values were recomputed by a program."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "To evaluate `9 3 -` the answer is 3 - 9 = -6.",
+          "pourquoi_faux": "The first value popped is the right operand. Taking it as the left operand reverses subtraction and division.",
+          "correction_markdown": "Pop the right operand first, then the left: 9 - 3 = 6."
+        },
+        {
+          "erreur_markdown": "The postfix form of `A - B` is found by reversing the prefix form, so `- A B` becomes `B A -`.",
+          "pourquoi_faux": "Reversing the prefix form gives `B A -`, which means B - A, not A - B. Reversal swaps the operands, which changes the value for - and /.",
+          "correction_markdown": "Convert from the infix form or from a tree: the postfix form of `A - B` is `A B -`."
+        },
+        {
+          "erreur_markdown": "The postfix form of `A + B * C` is `A B + C *`.",
+          "pourquoi_faux": "This puts the operators in the order in which they are written. Multiplication has higher precedence and must be applied first.",
+          "correction_markdown": "Apply precedence: B * C first, so `A B C * +`."
+        },
+        {
+          "erreur_markdown": "Writing brackets in a postfix expression to be safe, as in `(A B +) C *`.",
+          "pourquoi_faux": "Brackets are never needed in postfix or prefix; the order of the symbols already fixes the order of evaluation.",
+          "correction_markdown": "Remove the brackets: `A B + C *`."
+        },
+        {
+          "erreur_markdown": "The data structure used to evaluate a postfix expression is a queue.",
+          "pourquoi_faux": "The most recently pushed operands are the first ones needed by the next operator, which is last in, first out behaviour; a queue is first in, first out.",
+          "correction_markdown": "Answer: a stack."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Write the expression `(M - N) / (P + Q)` in postfix form and in prefix form.",
+          "solution_markdown": "Postfix: `M N - P Q + /`. Prefix: `/ - M N + P Q`.\n\nMethod: the root of the tree is the division, which is last to be done. Its left sub-tree is `M - N` and its right sub-tree is `P + Q`. Post-order gives `M N -`, then `P Q +`, then `/`. Pre-order gives `/`, then `- M N`, then `+ P Q`.\n\n**Postfix `M N - P Q + /`; prefix `/ - M N + P Q`.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A postfix expression, with the tokens separated by spaces, is `12 4 / 3 + 2 5 * -`.\n\n(a) Evaluate it, writing the contents of the stack after each token.\n(b) What is the largest number of values on the stack at any moment?\n(c) Write the equivalent infix expression with brackets.",
+          "solution_markdown": "(a) Stack after each token (top on the right): 12: [12]; 4: [12, 4]; /: [3]; 3: [3, 3]; +: [6]; 2: [6, 2]; 5: [6, 2, 5]; *: [6, 10]; -: [-4].\nThe division 12 / 4 gives 3, then 3 + 3 = 6, then 2 x 5 = 10, and finally 6 - 10 = -4 (second popped minus first popped).\n\n(b) The stack holds at most 3 values, and this happens only once, after the token `5` has been read (the stack is then 6, 2, 5).\n\n(c) `((12 / 4) + 3) - (2 * 5)`.\n\n**Value: -4; maximum stack size: 3.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A prefix expression is `- * 6 + 2 3 / 8 4`.\n\n(a) Evaluate it by scanning from right to left, showing the stack.\n(b) Write the equivalent infix expression with brackets.\n(c) Write it in postfix form and evaluate that form to check your answer.",
+          "solution_markdown": "(a) Scan from the right. Push 4, push 8; `/` pops 8 (left) then 4 (right): 8 / 4 = 2, push 2. Push 3, push 2; `+` pops 2 then 3: 5, push 5. Push 6; `*` pops 6 then 5: 30, push 30. The stack holds 2 and 30 (30 on top); `-` pops 30 (left) first, then 2 (right): 30 - 2 = 28.\n\n(b) `((6 * (2 + 3)) - (8 / 4))`.\n\n(c) Postfix: `6 2 3 + * 8 4 / -`. Evaluation: push 6, 2, 3; `+` gives 5, stack 6 5; `*` gives 30; push 8, 4; `/` gives 2, stack 30 2; `-` gives 28.\n\n**Value: 28 in both forms.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Infix puts the operator between the operands, prefix before them and postfix (reverse Polish notation) after them.",
+        "Prefix and postfix need no brackets and no precedence rules; the order of the symbols fixes the order of evaluation.",
+        "To convert infix to postfix use an operator stack (higher or equal precedence operators are popped first) or an expression tree (post-order for postfix, pre-order for prefix).",
+        "To evaluate postfix, scan left to right, push operands, and let each operator pop two values: the first popped is the right operand.",
+        "The data structure required to evaluate a postfix expression is a stack; its great advantage is a single left-to-right pass without brackets.",
+        "Always check a conversion by evaluating both forms with the same values."
+      ]
+    }
+  ]
+}

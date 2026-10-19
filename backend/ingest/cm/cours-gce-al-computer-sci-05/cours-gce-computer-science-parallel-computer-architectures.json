@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-parallel-computer-architectures",
+  "meta": {
+    "titre": "Parallel Computer Architectures: Flynn's classes and speed-up",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Flynn's taxonomy, memory organisation and speed-up",
+    "duree_estimee_min": 35,
+    "tags": [
+      "parallel computer architectures"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-computer-science-2023-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-al-computer-science-2023-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-parallel-computer-architectures-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A printing shop in Douala must produce thousands of identical leaflets. One machine is slow, so the owner installs several machines that work at the same time. The job is finished sooner, but a step that only one worker can do, such as cutting the whole stack, does not become faster. Computers meet the same limit. Examiners ask you to expand the abbreviations SISD, SIMD, MISD and MIMD, to match a description to a class, to compare shared and distributed memory, and to calculate a speed-up."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The CPU repeatedly fetches, decodes and executes instructions.",
+        "An instruction works on data held in registers or in memory.",
+        "A multi-core processor contains more than one processing core on a single chip."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Flynn's classification of computer architectures",
+      "contenu_markdown": "### Why use parallel hardware\nA conventional computer executes one instruction after another. When a problem is large, the answer arrives sooner if several processing units work at the same time. Parallel architectures are classified by **Flynn's taxonomy**, which counts the **instruction streams** (sequences of instructions being executed) and the **data streams** (sequences of data being processed).\n\n| Class | Stands for | Instruction streams | Data streams | Typical example |\n|---|---|---|---|---|\n| SISD | Single Instruction, Single Data | 1 | 1 | conventional single-core computer |\n| SIMD | Single Instruction, Multiple Data | 1 | many | vector and array processors, graphics processors (largely), multimedia instructions |\n| MISD | Multiple Instruction, Single Data | many | 1 | rare; for example some fault-tolerant designs in which several units work on the same data |\n| MIMD | Multiple Instruction, Multiple Data | many | many | multi-core processors, multiprocessor servers, clusters |\n\n### Reading the classes\n- **SISD**: one processing unit, one instruction at a time, one data item at a time. A single processor that shares its time between several programs is still SISD.\n- **SIMD**: a control unit broadcasts one instruction and many processing elements carry it out together, each on its own data item. Adding two lists of numbers element by element is the standard example.\n- **MISD**: several units apply different instructions to the same data. It is rare in practice.\n- **MIMD**: each processor fetches its own instructions and works on its own data, independently of the others. It is the most flexible class and the one used by multi-core PCs and clusters.\n\n### Measuring the gain\nIf $T_1$ is the run time on one processor and $T_n$ the run time on $n$ processors, the **speed-up** is $S = T_1 / T_n$ and the **efficiency** is $E = S / n$. The gain is limited because a part of every program is serial and because processors lose time communicating.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Shared memory versus distributed memory",
+          "quand_utiliser": "Use when a question asks how the processors of a MIMD machine are connected to memory.",
+          "contenu_markdown": "| Feature | Shared memory (tightly coupled) | Distributed memory (loosely coupled) |\n|---|---|---|\n| Memory | one common address space seen by all processors | each processor has its own private memory |\n| Communication | by reading and writing shared variables | by sending messages over a network |\n| Care needed | mutual exclusion to avoid race conditions | design of the messages and the data distribution |\n| Typical example | multi-core PC | cluster of separate computers |"
+        },
+        {
+          "nom": "Matching a description to a class",
+          "quand_utiliser": "Use for a one-line description of how instructions and data are used.",
+          "contenu_markdown": "Count the instruction streams first, then the data streams.\n- One instruction at a time on one item: SISD.\n- One instruction applied to many items together: SIMD.\n- Different instructions on the same item: MISD.\n- Each unit has its own instructions and its own data: MIMD.\n\nKey words: \"lockstep\" or \"same operation on every element\" point to SIMD; \"independent\" or \"each processor runs its own program\" points to MIMD."
+        },
+        {
+          "nom": "Amdahl's law",
+          "quand_utiliser": "Use when a fraction of the program can be shared among n processors and the rest must run serially.",
+          "contenu_markdown": "If a fraction $p$ of the run time can be parallelised perfectly and the rest $1-p$ is serial, the speed-up on $n$ processors is:\n\n$$\nS(n) = \\frac{1}{(1-p) + \\frac{p}{n}}\n$$\n\nWhen $n$ becomes very large the speed-up tends to $\\frac{1}{1-p}$. The serial part therefore sets an upper limit, whatever the number of processors."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "(a) One instruction adds the same brightness value to 1 000 pixels of an image at once, each pixel being a separate data item. Name the Flynn class and justify it.\n\n(b) A program takes 120 s on one processor. 80 % of the run time can be shared perfectly among processors and 20 % must run serially. Find the run time on 4 processors, the speed-up, the efficiency and the maximum possible speed-up.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the streams in (a).",
+          "justification": "Flynn's classes depend only on the number of instruction streams and data streams.",
+          "resultat_markdown": "One instruction stream, many data streams (the pixels)."
+        },
+        {
+          "numero": 2,
+          "action": "Name and justify the class.",
+          "justification": "One instruction applied to many data items together is the definition of SIMD.",
+          "resultat_markdown": "The class is **SIMD**."
+        },
+        {
+          "numero": 3,
+          "action": "Split the 120 s in (b) into serial and parallel parts.",
+          "justification": "Only the parallel part is divided by the number of processors.",
+          "resultat_markdown": "Serial: 0.20 x 120 = 24 s. Parallel: 0.80 x 120 = 96 s."
+        },
+        {
+          "numero": 4,
+          "action": "Find the time on 4 processors.",
+          "justification": "Time = serial part + parallel part divided by n.",
+          "resultat_markdown": "$T_4 = 24 + \\frac{96}{4} = 24 + 24 = 48$ s."
+        },
+        {
+          "numero": 5,
+          "action": "Find the speed-up and the efficiency.",
+          "justification": "Speed-up compares the two run times; efficiency divides the speed-up by the number of processors.",
+          "resultat_markdown": "$S = \\frac{120}{48} = 2.5$ and $E = \\frac{2.5}{4} = 0.625$, that is 62.5 %."
+        },
+        {
+          "numero": 6,
+          "action": "Find the maximum speed-up.",
+          "justification": "With unlimited processors the parallel part tends to zero time and only the serial 24 s remains.",
+          "resultat_markdown": "$S_{max} = \\frac{120}{24} = 5$, equal to $\\frac{1}{1-0.8}$."
+        }
+      ],
+      "conclusion_markdown": "(a) **SIMD**: a single instruction stream drives many processing elements, each working on its own pixel.\n\n(b) T on 4 processors = **48 s**; speed-up = **2.5**; efficiency = **62.5 %**; the speed-up can never exceed **5**, because the serial 20 % of the work always remains."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"SIMD means that several processors each execute their own program on their own data.\"",
+          "pourquoi_faux": "That describes MIMD. In SIMD there is a single instruction stream, shared by all the processing elements.",
+          "correction_markdown": "SIMD: one instruction, many data items. MIMD: many instructions, many data items."
+        },
+        {
+          "erreur_markdown": "\"MIMD means that all the processors execute the same instruction at the same time.\"",
+          "pourquoi_faux": "Executing the same instruction in lockstep is SIMD. The processors of a MIMD machine are independent and each has its own instructions.",
+          "correction_markdown": "In MIMD every processor fetches and executes its own instructions on its own data."
+        },
+        {
+          "erreur_markdown": "\"A computer that runs several programs in turn on one core is MIMD, because it runs many programs.\"",
+          "pourquoi_faux": "The classes count the streams that are executed at the same instant. One core executes one instruction at a time, even if the operating system switches between programs.",
+          "correction_markdown": "A single core that shares its time is still SISD."
+        },
+        {
+          "erreur_markdown": "\"With 4 processors a program always runs 4 times faster.\"",
+          "pourquoi_faux": "The serial part of the program cannot be shared, and processors lose time communicating, so the speed-up is smaller than 4 unless the whole program is perfectly parallel and costs nothing to organise.",
+          "correction_markdown": "Use Amdahl's law: with 80 % parallel work the speed-up on 4 processors is 2.5, not 4."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Write out in full each of the abbreviations SISD, SIMD, MISD and MIMD and give, for each one, the number of instruction streams and of data streams.",
+          "solution_markdown": "| Abbreviation | In full | Instruction streams | Data streams |\n|---|---|---|---|\n| SISD | Single Instruction, Single Data | **1** | **1** |\n| SIMD | Single Instruction, Multiple Data | **1** | **many** |\n| MISD | Multiple Instruction, Single Data | **many** | **1** |\n| MIMD | Multiple Instruction, Multiple Data | **many** | **many** |"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Name the Flynn class of each machine.\n\n(a) A phone that runs one program step by step on a single core.\n(b) A processor whose single instruction adds 16 pairs of numbers at the same moment.\n(c) A cluster of eight computers, each answering a different customer's request with its own program.\n(d) Three units that process the same sensor reading with three different methods and compare the results.",
+          "solution_markdown": "(a) **SISD**: one instruction stream and one data stream.\n(b) **SIMD**: one instruction acts on many data items together.\n(c) **MIMD**: each computer has its own instructions and its own data.\n(d) **MISD**: several instruction streams work on the same data stream."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "90 % of the run time of a program can be shared perfectly among processors; the other 10 % is serial.\n\n(a) Calculate the speed-up on 10 processors and on 100 processors, to two decimal places.\n(b) State the largest speed-up that any number of processors could give.\n(c) A manager says that 100 processors will make the program 100 times faster. Evaluate this claim.",
+          "solution_markdown": "Use $S(n) = \\frac{1}{(1-p) + \\frac{p}{n}}$ with $p = 0.9$.\n\n(a) For $n = 10$: $S = \\frac{1}{0.1 + 0.09} = \\frac{1}{0.19} \\approx$ **5.26**. For $n = 100$: $S = \\frac{1}{0.1 + 0.009} = \\frac{1}{0.109} \\approx$ **9.17**.\n\n(b) The limit is $\\frac{1}{1-0.9} =$ **10**.\n\n(c) The claim is false. The speed-up on 100 processors is about 9.17, so the efficiency is only about 9.2 %. The serial 10 % of the program limits the gain to 10 whatever the number of processors."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Flynn's taxonomy counts instruction streams and data streams: SISD (1,1), SIMD (1, many), MISD (many, 1), MIMD (many, many).",
+        "SIMD applies one instruction to many data items together; MIMD processors are independent, each with its own instructions and data.",
+        "A single core that shares its time between programs is still SISD.",
+        "Shared-memory MIMD machines are tightly coupled and need mutual exclusion; distributed-memory machines are loosely coupled and communicate by messages.",
+        "Speed-up S = T1 / Tn and efficiency E = S / n; by Amdahl's law the serial fraction limits the speed-up to 1/(1-p)."
+      ]
+    }
+  ]
+}
