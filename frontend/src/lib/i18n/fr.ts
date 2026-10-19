@@ -531,7 +531,6 @@ export const fr = {
   "vue.matieres_one": "ta matière",
   "vue.matieres_other": "tes {n} matières",
   "vue.matieres_toutes": "toutes les matières",
-  "vue.autre_examen": "Voir un autre examen",
   "vue.tous_examens": "Tu vois tous les examens.",
   "vue.revenir": "Revenir à mon examen",
   "inedite.reprendre": "Reprendre l'épreuve",

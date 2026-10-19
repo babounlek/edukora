@@ -62,10 +62,11 @@ describe("BandeauVue", () => {
     expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/mes-acces")
   })
 
-  it("un abonné a une sortie d'examen discrète, un visiteur « tout le catalogue »", async () => {
+  it("un abonné n'a aucune sortie d'examen : son accès est celui de son examen", async () => {
     afficher("/epreuves?cursus=7")
-    expect(await screen.findByRole("button", { name: "Voir un autre examen" })).toBeInTheDocument()
+    expect(await screen.findByText("GCE O Level")).toBeInTheDocument()
     expect(screen.queryByRole("button", { name: "Voir tout le catalogue" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: /autre examen/ })).not.toBeInTheDocument()
   })
 
   it("sans abonnement, la sortie reste « Voir tout le catalogue »", async () => {
@@ -74,14 +75,15 @@ describe("BandeauVue", () => {
     expect(await screen.findByRole("button", { name: "Voir tout le catalogue" })).toBeInTheDocument()
   })
 
-  it("la sortie d'examen retire le cursus et mémorise le choix d'élargir", async () => {
+  it("pour un visiteur, la sortie d'examen retire le cursus et mémorise le choix d'élargir", async () => {
+    compte(false)
     afficher("/epreuves?cursus=7")
-    fireEvent.click(await screen.findByRole("button", { name: "Voir un autre examen" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Voir tout le catalogue" }))
     await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("tout=1"))
     expect(screen.getByTestId("lieu")).not.toHaveTextContent("cursus=")
   })
 
-  it("une fois élargi, le bandeau propose de revenir à son examen", async () => {
+  it("même un abonné, une fois la liste élargie (ancien lien), peut revenir à son examen", async () => {
     afficher("/epreuves?tout=1")
     expect(await screen.findByText("Tu vois tous les examens.")).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Revenir à mon examen" }))

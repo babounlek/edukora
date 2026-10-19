@@ -12,11 +12,12 @@ const LIEN = "underline underline-offset-4 transition-colors hover:text-primary"
  * dont l'examen est un paramètre d'URL (épreuves, cours). Remplace deux bandeaux voisins - le filtre par examen et
  * « voir seulement mes matières » - qui racontaient chacun la moitié de la même réduction.
  *
- * Deux réglages distincts, deux sorties : l'examen (un DÉFAUT, jamais une frontière - voir useFiltreCursusParDefaut ;
- * visiteurs, liens partagés et révisions d'un autre niveau gardent tout le catalogue) et les matières (préférence du
- * profil, voir quiz.matieres). Pour un abonné, la sortie d'examen se fait discrète (« Voir un autre examen ») : son
- * parcours est son examen. Un visiteur ou un compte sans abonnement garde « Voir tout le catalogue », qui sert à
- * choisir. Une fois élargi, le bandeau reste pour revenir à son examen.
+ * Deux réglages distincts : l'examen (un DÉFAUT, jamais une frontière côté serveur - visiteurs et liens partagés gardent
+ * tout le catalogue, voir useFiltreCursusParDefaut) et les matières (préférence du profil, voir quiz.matieres). Un abonné
+ * n'a pas de sortie d'examen : son accès est celui de son examen, un autre ne s'ouvrirait que sur un aperçu payant. Un
+ * visiteur ou un compte sans abonnement garde « Voir tout le catalogue », qui sert à choisir. Si la liste est pourtant
+ * élargie (lien ancien, dernière recherche restaurée), le bandeau reste pour revenir à son examen - sans cela l'abonné
+ * resterait coincé sur tout le catalogue.
  */
 export function BandeauVue() {
   const { t, tn } = useI18n()
@@ -70,13 +71,17 @@ export function BandeauVue() {
           {t("matieres.bandeau_modifier")}
         </Link>
       )}
-      <button
-        type="button"
-        onClick={() => setSearchParams(desactiverFiltreCursus(new URLSearchParams(searchParams)))}
-        className={abonne ? `${LIEN} text-xs opacity-80` : LIEN}
-      >
-        {abonne ? t("vue.autre_examen") : t("ep.voir_catalogue")}
-      </button>
+      {/* Pas de sortie d'examen pour un abonné : son accès est celui de son examen, un autre ne s'ouvrirait que sur un
+          aperçu. Il ajoute un examen par « Mes accès » ou « Tarifs ». */}
+      {!abonne && (
+        <button
+          type="button"
+          onClick={() => setSearchParams(desactiverFiltreCursus(new URLSearchParams(searchParams)))}
+          className={LIEN}
+        >
+          {t("ep.voir_catalogue")}
+        </button>
+      )}
     </p>
   )
 }

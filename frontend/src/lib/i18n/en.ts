@@ -525,7 +525,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "vue.matieres_one": "your subject",
   "vue.matieres_other": "your {n} subjects",
   "vue.matieres_toutes": "all subjects",
-  "vue.autre_examen": "See another exam",
   "vue.tous_examens": "You are viewing every exam.",
   "vue.revenir": "Back to my exam",
   "inedite.reprendre": "Resume the paper",
