@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-ict-ict-algorithms-and-flowcharts",
+  "meta": {
+    "titre": "Algorithms and Flowcharts: forms, symbols, control structures, tracing and bubble sort",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Algorithm forms, flowchart symbols and control structures",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict algorithms and flowcharts"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-algorithms-and-flowcharts-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A shopkeeper in Bamenda gives a reduction to every customer whose bill reaches a set amount, and every clerk must apply the rule in exactly the same way. Writing the rule as a list of exact steps is writing an algorithm; drawing it with standard boxes and arrows gives a flowchart. GCE questions give you an algorithm and ask in which form it is written, which control structure it uses, what it achieves, how to draw it, or how a sorting method works. The skill that settles most of them is executing the algorithm by hand on test data."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A variable is a named storage location whose value can change.",
+        "A computer carries out instructions one after another unless it is told to decide or to repeat.",
+        "Comparison operators such as =, <, >, <= and >= give a true or false result."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Algorithm forms, flowchart symbols, control structures and sorting",
+      "contenu_markdown": "### What an algorithm is\nAn **algorithm** is a finite, ordered list of unambiguous steps that turns input into output and solves a defined problem. It must stop after a finite number of steps, each step must have one clear meaning, and each step must be possible to carry out.\n\n### Forms of an algorithm\n| Form | How it looks |\n|---|---|\n| Natural language | numbered steps written as ordinary sentences |\n| Pseudocode | program-like English with keywords such as INPUT, IF, THEN, ELSE, WHILE, OUTPUT |\n| Flowchart | a diagram of standard symbols joined by arrows |\n\nWhen asked for the form, give the form and the feature that proves it (numbered everyday sentences, or keywords, or symbols).\n\n### Flowchart symbols\n| Symbol | Shape | Use |\n|---|---|---|\n| Terminator | oval | Start and Stop |\n| Input / output | parallelogram | read a value, display a result |\n| Process | rectangle | calculation or assignment |\n| Decision | diamond | a yes/no test with two labelled exits |\n| Flow line | arrow | direction of the flow |\n\nA flowchart has one Start, at least one Stop, and every decision has exactly two labelled exits.\n\n### Control structures\n- **Sequence**: steps carried out in the order written.\n- **Selection**: one path or another is chosen by a condition (IF ... THEN ... ELSE).\n- **Iteration**: steps repeat while or until a condition holds (WHILE, FOR, REPEAT ... UNTIL).\n\nAny algorithm containing a test with different actions for the two outcomes uses selection, even if it also contains a sequence.\n\n### Tracing an algorithm\nA **trace table** has one column per variable and one row for each change. Run the algorithm on test data, fill the table, and read the output. Then state the purpose in one sentence about the result (for example \"it finds the average\"), not by repeating the steps.\n\n### Bubble sort\nBubble sort compares two **adjacent** items and swaps them when they are in the wrong order. One pass moves along the whole list; when sorting upwards, the largest unsorted item ends up at the end of the list after each pass. Passes repeat until a complete pass makes no swap.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Drawing a flowchart from an algorithm",
+          "quand_utiliser": "The question asks you to convert steps into a diagram.",
+          "contenu_markdown": "Number the steps. Start with an oval marked Start. Draw a parallelogram for each input or output, a rectangle for each calculation, and a diamond for each IF or loop test with its Yes and No exits labelled. For a loop, draw the arrow from the end of the repeated steps back to the test. End every path in an oval marked Stop."
+        },
+        {
+          "nom": "One pass of bubble sort",
+          "quand_utiliser": "The question asks you to show the state of a list after a pass.",
+          "contenu_markdown": "Take the list 7, 3, 9, 2. Pass 1: compare 7 and 3, swap: 3, 7, 9, 2. Compare 7 and 9, no swap. Compare 9 and 2, swap: 3, 7, 2, 9. Pass 2 gives 3, 2, 7, 9. Pass 3 gives 2, 3, 7, 9. Pass 4 makes no swap, so the sort stops. Always show the list after each pass."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A teacher's algorithm is written in this pseudocode:\n\n```text\nINPUT n\ntotal <- 0\ncount <- 0\nWHILE count < n\n    INPUT mark\n    total <- total + mark\n    count <- count + 1\nENDWHILE\naverage <- total / n\nOUTPUT average\n```\n(a) State the form of the algorithm. (b) Complete a trace table for n = 3 and marks 14, 9, 16. (c) State the purpose of the algorithm. (d) Name the control structures used. (e) Describe the flowchart as a list of symbols.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the form.",
+          "justification": "Keywords such as INPUT, WHILE and OUTPUT and the indented layout are the marks of pseudocode.",
+          "resultat_markdown": "The algorithm is in **pseudocode**."
+        },
+        {
+          "numero": 2,
+          "action": "Fill the trace table, one row per change.",
+          "justification": "The loop runs while count is less than n, so it repeats three times for n = 3.",
+          "resultat_markdown": "| step | mark | total | count |\n|---|---|---|---|\n| start | | 0 | 0 |\n| 1st pass | 14 | 14 | 1 |\n| 2nd pass | 9 | 23 | 2 |\n| 3rd pass | 16 | 39 | 3 |\n\nThen count = 3 is not less than 3, so the loop ends."
+        },
+        {
+          "numero": 3,
+          "action": "Compute and read the output.",
+          "justification": "After the loop, average is total divided by n.",
+          "resultat_markdown": "$39 \\div 3 = 13$, so the algorithm outputs **13**."
+        },
+        {
+          "numero": 4,
+          "action": "State the purpose and the structures.",
+          "justification": "The purpose is the effect on the data; the structures come from the shape of the code.",
+          "resultat_markdown": "Purpose: it reads n marks and outputs their mean. Structures: **sequence** (initialisation and the final calculation) and **iteration** (the WHILE loop)."
+        },
+        {
+          "numero": 5,
+          "action": "Describe the flowchart.",
+          "justification": "Each statement becomes a symbol and the loop becomes an arrow back to the test.",
+          "resultat_markdown": "Oval Start; parallelogram INPUT n; rectangle total = 0; rectangle count = 0; diamond count < n? with Yes to parallelogram INPUT mark, rectangle total = total + mark, rectangle count = count + 1 and an arrow back to the diamond; No to rectangle average = total / n; parallelogram OUTPUT average; oval Stop."
+        }
+      ],
+      "conclusion_markdown": "The algorithm is written in pseudocode, uses sequence and iteration, and outputs the mean of the marks entered. For the marks 14, 9 and 16 the result is **13**. If n were 0 the final division would fail, so a careful algorithm tests n before dividing."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Using a rectangle for a test such as mark >= 50 and drawing a single exit.",
+          "pourquoi_faux": "A test has two outcomes, so it needs a diamond with two labelled exits; a rectangle shows a calculation.",
+          "correction_markdown": "Draw a diamond with exits labelled Yes and No (or True and False)."
+        },
+        {
+          "erreur_markdown": "Naming only sequence as the control structure of an algorithm that contains an IF test.",
+          "pourquoi_faux": "The IF ... ELSE chooses between paths, which is selection.",
+          "correction_markdown": "Name selection, and also sequence or iteration if the algorithm has those too."
+        },
+        {
+          "erreur_markdown": "Stating the purpose by repeating the steps: \"it inputs a number, adds, then prints\".",
+          "pourquoi_faux": "That describes how it works, not what it achieves.",
+          "correction_markdown": "Trace it with test data and state the result in one sentence, such as \"it outputs the mean of the marks\"."
+        },
+        {
+          "erreur_markdown": "Stopping bubble sort after one pass.",
+          "pourquoi_faux": "One pass puts only the largest item in place; the other items may still be out of order.",
+          "correction_markdown": "Repeat passes until a complete pass makes no swap."
+        },
+        {
+          "erreur_markdown": "Describing a numbered list of English sentences as a flowchart.",
+          "pourquoi_faux": "A flowchart is made of symbols and arrows; a numbered list of sentences is natural language.",
+          "correction_markdown": "Name the form from its features: sentences, keywords or symbols."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the flowchart symbol used for each action. (a) Read the price of an item from the keyboard. (b) Test whether the price is greater than 5000. (c) Calculate the price after a reduction. (d) Mark the start of the algorithm.",
+          "solution_markdown": "(a) **Parallelogram** (input). (b) **Diamond** (decision) with Yes and No exits. (c) **Rectangle** (process). (d) **Oval** (terminator)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A taxi company uses this algorithm.\n\n```text\nINPUT distance\nIF distance <= 10 THEN\n    fare <- 300\nELSE\n    fare <- 300 + (distance - 10) * 50\nENDIF\nOUTPUT fare\n```\n(a) Find the output for distance 8 and for distance 14. (b) State the purpose of the algorithm. (c) Name the control structures.",
+          "solution_markdown": "(a) For 8: the test is true, so fare = 300; output **300**. For 14: the test is false, so fare $= 300 + (14 - 10) \\times 50 = 500$; output **500**. (b) It outputs the fare: a fixed charge of 300 FCFA up to 10 km, then 50 FCFA for each extra kilometre. (c) **Sequence** and **selection**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Complete a trace table and give the output of:\n\n```text\ntotal <- 0\nFOR i <- 1 TO 6\n    IF i MOD 2 = 0 THEN\n        total <- total + i * i\n    ENDIF\nNEXT i\nOUTPUT total\n```\n(i MOD 2 is the remainder when i is divided by 2.) (b) State what the algorithm computes. (c) Sort 6, 2, 8, 4 into ascending order by bubble sort, showing the list after each pass and the total number of swaps.",
+          "solution_markdown": "(a) Only even values of i change total.\n\n| i | i MOD 2 | total |\n|---|---|---|\n| (start) | | 0 |\n| 1 | 1 | 0 |\n| 2 | 0 | 4 |\n| 3 | 1 | 4 |\n| 4 | 0 | 20 |\n| 5 | 1 | 20 |\n| 6 | 0 | 56 |\n\nOutput **56**. (b) The sum of the squares of the even numbers from 1 to 6, $4 + 16 + 36 = 56$. (c) Pass 1: 2, 6, 4, 8 (two swaps). Pass 2: 2, 4, 6, 8 (one swap). Pass 3: no swap, so the sort stops. Total swaps: **3**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "An algorithm is finite, unambiguous and ordered; it takes input and gives output.",
+        "The three forms are natural language, pseudocode and flowchart; name the form from its visible features.",
+        "Oval for Start and Stop, parallelogram for input and output, rectangle for a process, diamond for a decision with two labelled exits.",
+        "The control structures are sequence, selection (IF) and iteration (loops).",
+        "Trace with test data in a trace table, then state the purpose as a result, not as a list of steps.",
+        "Bubble sort compares adjacent items, swaps them if needed, and repeats passes until no swap occurs."
+      ]
+    }
+  ]
+}

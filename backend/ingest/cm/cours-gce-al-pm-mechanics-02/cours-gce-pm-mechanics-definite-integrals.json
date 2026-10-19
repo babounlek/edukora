@@ -1,0 +1,164 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-definite-integrals",
+ "meta": {
+  "titre": "Definite Integrals: areas between curves and volumes of revolution",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Areas, volumes and substitution",
+  "duree_estimee_min": 35,
+  "tags": [
+   "definite integrals"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-definite-integrals-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A builder in Douala wants the exact amount of concrete for a water tank whose wall follows a curved profile, so no simple formula for a box or a cylinder will do. A definite integral adds up very thin slices and gives the exact answer. The same idea gives the area of a curved plot of land or the volume of a bowl. At Advanced Level definite integrals appear in both papers, usually as an area or a volume of revolution, often with a substitution or a logarithm in the working."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Powers integrate as $\\int x^{n}\\,dx=\\dfrac{x^{n+1}}{n+1}+c$ for $n\\neq-1$, and $\\int\\dfrac{1}{ax+b}\\,dx=\\dfrac1a\\ln|ax+b|+c$.",
+    "A quadratic can be factorised, and its roots are the points where its curve meets the $x$-axis.",
+    "Two graphs meet where their equations are equal, so the intersection points come from solving $f(x)=g(x)$.",
+    "The chain rule: differentiating a function of a function multiplies by the derivative of the inner function."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Definite integrals as areas and volumes",
+   "contenu_markdown": "### The definition\n\nIf $F'(x)=f(x)$, the **definite integral** of $f$ from $a$ to $b$ is\n\n$$\n\\int_a^b f(x)\\,dx=\\big[F(x)\\big]_a^b=F(b)-F(a) \\tag{1}\n$$\n\nNo constant of integration is needed because it cancels. When $f(x)\\ge 0$ on $[a,b]$, the value is the area between the curve, the $x$-axis and the lines $x=a$ and $x=b$. Useful properties: reversing the limits changes the sign; the interval can be split, $\\int_a^b f\\,dx=\\int_a^c f\\,dx+\\int_c^b f\\,dx$; a constant factor comes out of the integral; for an odd function $\\int_{-a}^{a}f\\,dx=0$, and for an even function it equals $2\\int_0^a f\\,dx$.\n\n### An area is never negative\n\nAn integral is a **signed** quantity: it is negative where the curve lies below the $x$-axis. To find an area, locate the points where $f(x)=0$ inside the interval, split the integral there and add the **absolute values** of the pieces. For two curves with $g(x)\\le f(x)$ on $[a,b]$,\n\n$$\nA=\\int_a^b\\big(f(x)-g(x)\\big)\\,dx \\tag{2}\n$$\n\nwhere $a$ and $b$ come from solving $f(x)=g(x)$.\n\n### Volume of revolution about the $x$-axis\n\nRotating the region under $y=f(x)$, between $x=a$ and $x=b$, through a complete revolution about the $x$-axis gives a solid of volume\n\n$$\nV=\\pi\\int_a^b y^{2}\\,dx \\tag{3}\n$$\n\nEach thin slice is a disc of radius $y$ and thickness $dx$, so $y$ is squared **before** integrating, and the bracket is expanded first. If the region lies between a curve $y_1$ and a second curve or line $y_2$, with $y_1\\ge y_2\\ge 0$, the solid has a hole and $V=\\pi\\int_a^b\\big(y_1^{2}-y_2^{2}\\big)\\,dx$.\n",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Substitution with new limits",
+     "quand_utiliser": "When the integrand contains an inner expression together with (a multiple of) its derivative, for example a fraction whose numerator is related to the derivative of the denominator.",
+     "contenu_markdown": "Choose the inner expression as the new variable, replace $dx$ using the derivative, and **change the limits** at the same time, so that you never return to $x$. For $\\int_0^3\\dfrac{x}{x^{2}+1}\\,dx$ put $u=x^{2}+1$, so that $du=2x\\,dx$ and $x\\,dx=\\tfrac12\\,du$. When $x=0$, $u=1$; when $x=3$, $u=10$. Then\n\n$$\n\\int_0^3\\frac{x}{x^{2}+1}\\,dx=\\frac12\\int_1^{10}\\frac{1}{u}\\,du=\\frac12\\big[\\ln u\\big]_1^{10}=\\frac12\\ln 10\n$$\n\nIf you keep the original limits with the new variable, the answer is wrong."
+    },
+    {
+     "nom": "Integrals that give logarithms",
+     "quand_utiliser": "When the integrand is a constant over a linear expression, or a fraction that first splits into partial fractions.",
+     "contenu_markdown": "For a linear denominator, $\\int_a^b\\dfrac{k}{px+q}\\,dx=\\dfrac{k}{p}\\Big[\\ln|px+q|\\Big]_a^b=\\dfrac{k}{p}\\ln\\dfrac{pb+q}{pa+q}$, using $\\ln m-\\ln n=\\ln\\dfrac{m}{n}$. Do not forget the factor $\\dfrac1p$ from the chain rule. For example $\\int_0^2\\dfrac{6}{3x+1}\\,dx=2\\big(\\ln 7-\\ln 1\\big)=2\\ln 7$. A fraction with two linear factors in the denominator is first written in partial fractions, and each part gives a logarithm. A term such as $\\dfrac{1}{(x+k)^2}$ is **not** a logarithm: it integrates to $-\\dfrac{1}{x+k}$."
+    },
+    {
+     "nom": "Rotation about the y-axis",
+     "quand_utiliser": "When the region is rotated about the $y$-axis, or when the curve is given as $x$ in terms of $y$.",
+     "contenu_markdown": "Use $V=\\pi\\int_c^d x^{2}\\,dy$ with limits on $y$. Express $x^{2}$ in terms of $y$ first. For the curve $y=x^{2}$ between $y=0$ and $y=4$, $x^{2}=y$, so\n\n$$\nV=\\pi\\int_0^4 y\\,dy=\\pi\\Big[\\frac{y^{2}}{2}\\Big]_0^4=8\\pi\n$$\n\nAlways read from the question whether the limits are values of $x$ or of $y$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "The curve $C$ has equation $y=3x-x^{2}$ and the line $\\ell$ has equation $y=x$. The finite region $R$ lies between $C$ and $\\ell$.\n\n(a) Find the exact area of $R$.\n\n(b) Find the exact volume of the solid formed when $R$ is rotated through $360^\\circ$ about the $x$-axis.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Find where the curve and the line meet, and which is on top.",
+     "justification": "The limits of integration are the $x$-values at the intersections. Testing one point between them shows which graph is higher, so that the difference is positive.",
+     "resultat_markdown": "$3x-x^{2}=x\\Rightarrow x(2-x)=0$, so $x=0$ or $x=2$. At $x=1$ the curve gives $2$ and the line gives $1$, so $C$ is above $\\ell$ on $0<x<2$. Both graphs are above the $x$-axis there."
+    },
+    {
+     "numero": 2,
+     "action": "Integrate the difference of the two functions for the area.",
+     "justification": "Equation (2): area between curves is the integral of upper minus lower.",
+     "resultat_markdown": "$A=\\displaystyle\\int_0^2\\big(2x-x^{2}\\big)\\,dx=\\Big[x^{2}-\\frac{x^{3}}{3}\\Big]_0^2=4-\\frac83=\\frac43$"
+    },
+    {
+     "numero": 3,
+     "action": "Write the integrand of the volume as outer disc minus inner disc, and expand.",
+     "justification": "The solid is a disc of radius $y_1=3x-x^{2}$ with a hole of radius $y_2=x$, so the area of a slice is $\\pi(y_1^{2}-y_2^{2})$, not $\\pi(y_1-y_2)^{2}$.",
+     "resultat_markdown": "$y_1^{2}-y_2^{2}=(3x-x^{2})^{2}-x^{2}=9x^{2}-6x^{3}+x^{4}-x^{2}=8x^{2}-6x^{3}+x^{4}$"
+    },
+    {
+     "numero": 4,
+     "action": "Integrate term by term.",
+     "justification": "Raise each power by one and divide by the new power, then keep $\\pi$ outside.",
+     "resultat_markdown": "$$\nV=\\pi\\int_0^2\\big(8x^{2}-6x^{3}+x^{4}\\big)\\,dx=\\pi\\Big[\\frac{8x^{3}}{3}-\\frac{3x^{4}}{2}+\\frac{x^{5}}{5}\\Big]_0^2 \\tag{4}\n$$"
+    },
+    {
+     "numero": 5,
+     "action": "Substitute the limits and combine the fractions.",
+     "justification": "The lower limit gives $0$. For the upper limit use a common denominator of $15$.",
+     "resultat_markdown": "$\\dfrac{64}{3}-24+\\dfrac{32}{5}=\\dfrac{320-360+96}{15}=\\dfrac{56}{15}$, so $V=\\dfrac{56\\pi}{15}$."
+    }
+   ],
+   "conclusion_markdown": "The area of $R$ is $\\dfrac43$ square units and the volume is $\\dfrac{56\\pi}{15}\\approx 11.7$ cubic units."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "To find the volume, $V=\\pi\\left(\\displaystyle\\int_0^2 y\\,dx\\right)^{2}$.",
+     "pourquoi_faux": "The formula squares the radius of each disc, $y$, inside the integral. Squaring the whole integral squares the area under the curve, which has no meaning as a volume.",
+     "correction_markdown": "Expand $y^{2}$ as a function of $x$ and then integrate: $V=\\pi\\displaystyle\\int_0^2 y^{2}\\,dx$."
+    },
+    {
+     "erreur_markdown": "$\\displaystyle\\int_0^3(x^{2}-2x)\\,dx=0$, so the region between the curve and the $x$-axis has area $0$.",
+     "pourquoi_faux": "The curve is below the axis for $0<x<2$ and above it for $2<x<3$, so the two signed parts cancel. An area cannot be zero here.",
+     "correction_markdown": "Split at the root $x=2$: the pieces are $-\\dfrac43$ and $\\dfrac43$, so the area is $\\dfrac43+\\dfrac43=\\dfrac83$."
+    },
+    {
+     "erreur_markdown": "For $\\displaystyle\\int_0^1 2x(x^{2}+1)^{3}\\,dx$, put $u=x^{2}+1$ and write $\\displaystyle\\int_0^1 u^{3}\\,du=\\frac14$.",
+     "pourquoi_faux": "The limits $0$ and $1$ belong to $x$. After the substitution they must be replaced by the values of $u$.",
+     "correction_markdown": "When $x=0$, $u=1$; when $x=1$, $u=2$. So the integral is $\\displaystyle\\int_1^2 u^{3}\\,du=\\frac{16-1}{4}=\\frac{15}{4}$."
+    },
+    {
+     "erreur_markdown": "For a solid with a hole, $V=\\pi\\displaystyle\\int_a^b(y_1-y_2)^{2}\\,dx$.",
+     "pourquoi_faux": "The area of a ring-shaped slice is the area of the big disc minus the area of the hole, $\\pi y_1^{2}-\\pi y_2^{2}$. This is not $\\pi(y_1-y_2)^{2}$, because $(y_1-y_2)^{2}$ contains a cross term $-2y_1y_2$.",
+     "correction_markdown": "Use $V=\\pi\\displaystyle\\int_a^b\\big(y_1^{2}-y_2^{2}\\big)\\,dx$."
+    },
+    {
+     "erreur_markdown": "$\\displaystyle\\int_0^2\\frac{1}{2x+1}\\,dx=\\ln 5$.",
+     "pourquoi_faux": "Differentiating $\\ln(2x+1)$ gives $\\dfrac{2}{2x+1}$, so the factor $2$ from the inner function must be divided out.",
+     "correction_markdown": "$\\displaystyle\\int_0^2\\frac{1}{2x+1}\\,dx=\\frac12\\Big[\\ln(2x+1)\\Big]_0^2=\\frac12\\ln 5$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Evaluate $\\displaystyle\\int_1^4\\left(3\\sqrt{x}-\\frac{2}{x^{2}}\\right)dx$.",
+     "solution_markdown": "Write the integrand as $3x^{1/2}-2x^{-2}$. An antiderivative is $2x^{3/2}+2x^{-1}$, because the derivative of $2x^{3/2}$ is $3x^{1/2}$ and the derivative of $2x^{-1}$ is $-2x^{-2}$.\n\n$$\n\\int_1^4\\left(3x^{1/2}-2x^{-2}\\right)dx=\\Big[2x^{3/2}+2x^{-1}\\Big]_1^4\n$$\n\nAt $x=4$: $2(8)+\\dfrac{2}{4}=16.5$. At $x=1$: $2+2=4$. The difference is $16.5-4=$ **12.5**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Use the substitution $u=x+1$ to show that $\\displaystyle\\int_0^3\\frac{x}{\\sqrt{x+1}}\\,dx=\\frac83$.",
+     "solution_markdown": "With $u=x+1$: $du=dx$ and $x=u-1$. The limits change: $x=0$ gives $u=1$ and $x=3$ gives $u=4$.\n\n$$\n\\int_1^4\\frac{u-1}{\\sqrt{u}}\\,du=\\int_1^4\\left(u^{1/2}-u^{-1/2}\\right)du=\\Big[\\frac23u^{3/2}-2u^{1/2}\\Big]_1^4\n$$\n\nAt $u=4$: $\\dfrac{16}{3}-4=\\dfrac43$. At $u=1$: $\\dfrac23-2=-\\dfrac43$. The difference is $\\dfrac43-\\left(-\\dfrac43\\right)=$ **8/3**, as required."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "The region $S$ is bounded by the curve $y=\\dfrac{3}{\\sqrt{2x+1}}$, the $x$-axis and the lines $x=0$ and $x=4$.\n\n(a) Find the exact area of $S$.\n\n(b) The region $S$ is rotated through $360^\\circ$ about the $x$-axis. Show that the volume of the solid is $9\\pi\\ln 3$, and give its value to 2 decimal places.",
+     "solution_markdown": "(a) $\\dfrac{3}{\\sqrt{2x+1}}=3(2x+1)^{-1/2}$, and the derivative of $(2x+1)^{1/2}$ is $(2x+1)^{-1/2}$, so an antiderivative is $3(2x+1)^{1/2}$.\n\n$$\nA=\\Big[3(2x+1)^{1/2}\\Big]_0^4=3(3)-3(1)=6\n$$\n\nThe area is **6** square units.\n\n(b) $y^{2}=\\dfrac{9}{2x+1}$, so\n\n$$\nV=\\pi\\int_0^4\\frac{9}{2x+1}\\,dx=\\pi\\cdot\\frac92\\Big[\\ln(2x+1)\\Big]_0^4=\\frac{9\\pi}{2}\\ln 9\n$$\n\nSince $\\ln 9=2\\ln 3$, $V=$ **$9\\pi\\ln 3$** $\\approx$ **31.06** cubic units."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\displaystyle\\int_a^b f(x)\\,dx=F(b)-F(a)$: no constant, and the limits are applied to the antiderivative.",
+    "An integral is signed. For an area, split at every root inside the interval and add absolute values; between two curves integrate (upper $-$ lower).",
+    "Volume about the $x$-axis is $V=\\pi\\int y^{2}\\,dx$: square $y$ first. With a hole, use $y_1^{2}-y_2^{2}$, never $(y_1-y_2)^{2}$.",
+    "In a substitution, change the limits to values of the new variable and do not return to $x$.",
+    "$\\int\\dfrac{k}{px+q}\\,dx=\\dfrac{k}{p}\\ln|px+q|$, and a squared linear denominator integrates to $-\\dfrac{1}{x+k}$, not to a logarithm."
+   ]
+  }
+ ]
+}

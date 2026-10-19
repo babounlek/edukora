@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-statistics-probability-density-functions",
+  "meta": {
+    "titre": "Probability Density Functions: Constants, Areas, Median, Mode and Expectation",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Continuous random variables",
+    "duree_estimee_min": 40,
+    "tags": [
+      "probability density functions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-probability-density-functions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A customer arrives at a mobile money kiosk in Yaounde and the waiting time can be any value in an interval, such as $2.37$ minutes or $2.371$ minutes. A table of probabilities for single values is impossible, because every exact value has probability zero. Instead the pattern of waiting times is described by a curve, and a probability is the area under it between two times. This curve is the probability density function, and at the GCE you are expected to find its unknown constant, then a probability, the median, the mode and the mean."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The integral of a power is $\\int x^n\\,dx=\\dfrac{x^{n+1}}{n+1}+c$ for $n\\ne-1$, and a definite integral $\\int_a^b f(x)\\,dx$ is the area under the curve between $x=a$ and $x=b$.",
+        "For a discrete random variable the mean is $E(X)=\\sum xP(X=x)$ and the variance is $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$.",
+        "A turning point of a curve is found by solving $f'(x)=0$, and the sign of $f''(x)$ shows whether it is a maximum or a minimum.",
+        "A polynomial equation can be solved by factorising or, when it has no neat roots, numerically."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Probability density functions: area, cumulative distribution, median, mode and mean",
+      "contenu_markdown": "### What a probability density function is\n\nA function $f$ is a **probability density function** (p.d.f.) of a continuous random variable $X$ when\n\n$$\nf(x)\\ge 0\\ \\text{ for all } x,\\qquad \\int_{-\\infty}^{\\infty}f(x)\\,dx=1 \\tag{1}\n$$\n\nThe probability that $X$ lies in an interval is the area under the curve over that interval:\n\n$$\nP(a<X<b)=\\int_a^b f(x)\\,dx \\tag{2}\n$$\n\nNote that $f(x)$ is **not** a probability and may exceed $1$; only areas are probabilities. Since $P(X=a)=0$, the signs $<$ and $\\le$ give the same probability. When $f$ is defined in pieces, integrate only over the part of the range where $f$ is not zero.\n\n### Cumulative distribution function\n\n$$\nF(x)=P(X\\le x)=\\int_{-\\infty}^{x}f(t)\\,dt,\\qquad f(x)=F'(x) \\tag{3}\n$$\n\nOnce $F$ is known, $P(a<X<b)=F(b)-F(a)$ and $P(X>a)=1-F(a)$. If $f$ is non-zero only on $[a,b]$, then $F(x)=0$ for $x<a$, $F(x)=\\int_a^x f(t)\\,dt$ for $a\\le x\\le b$ and $F(x)=1$ for $x>b$.\n\n### Measures of location and spread\n\n- **Mean:** $E(X)=\\int x f(x)\\,dx$, and in general $E(g(X))=\\int g(x)f(x)\\,dx$, always over the range where $f$ is non-zero.\n- **Variance:** $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$, which is never negative.\n- **Median** $m$: the value with half of the area on each side, $F(m)=\\tfrac12$.\n- **Mode:** the value of $x$ at which $f(x)$ is greatest. Solve $f'(x)=0$, confirm a maximum, and compare with the values of $f$ at the ends of the range.\n- **Linear change:** $E(aX+b)=aE(X)+b$ and $\\operatorname{Var}(aX+b)=a^2\\operatorname{Var}(X)$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Finding an unknown constant, then a probability",
+          "quand_utiliser": "When the p.d.f. contains a constant such as $k$ and the question then asks for a probability or an expected value.",
+          "contenu_markdown": "Write $\\int f(x)\\,dx=1$ over the range where $f$ is not zero and solve for the constant. Check that the resulting $f$ is never negative. Only then integrate between the limits of the probability asked. For a tail such as $P(X>c)$ either integrate from $c$ to the upper end of the range, or use $1-F(c)$. An unknown constant can also be found from a given mean: use $E(X)=\\int xf(x)\\,dx$ as a second equation when $f$ has two unknown constants."
+        },
+        {
+          "nom": "Median and quartiles",
+          "quand_utiliser": "When the question asks for the median, a quartile or a value cutting off a stated proportion of the distribution.",
+          "contenu_markdown": "Find $F(x)$ first, then solve $F(q)=p$, with $p=\\tfrac12$ for the median, $\\tfrac14$ for the lower quartile and $\\tfrac34$ for the upper quartile. Reject any root that falls outside the range of $f$. For $f(x)=\\tfrac{x}{2}$ on $[0,2]$ we get $F(x)=\\tfrac{x^2}{4}$, so the median satisfies $\\tfrac{m^2}{4}=\\tfrac12$ and $m=\\sqrt2\\approx1.414$. Sometimes $F(m)=\\tfrac12$ is a cubic equation with no neat root: a question may then ask you to show that $m$ satisfies it, and the value is found numerically."
+        },
+        {
+          "nom": "A mode at the end of the range",
+          "quand_utiliser": "When $f$ is increasing or decreasing over its whole range, so that setting $f'(x)=0$ gives no maximum.",
+          "contenu_markdown": "The greatest value of $f$ then occurs at an end of the range. For $f(x)=\\tfrac{x}{2}$ on $[0,2]$ the function increases from $0$ to $1$ and the mode is $x=2$, even though $f'(x)=\\tfrac12$ is never zero. Always compare the turning point with the values at both ends before deciding."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "A continuous random variable $X$ has probability density function $f(x)=kx^2(3-x)$ for $0\\le x\\le3$, and $f(x)=0$ otherwise, where $k$ is a constant. (a) Show that $k=\\dfrac{4}{27}$. (b) Find $P(1<X<2)$. (c) Find the mode of $X$. (d) Find $E(X)$ and $\\operatorname{Var}(X)$.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Use the condition that the total area is 1 to find $k$.",
+          "justification": "Integrate only over $0\\le x\\le3$, where $f$ is not zero.",
+          "resultat_markdown": "$\\displaystyle\\int_0^3 k(3x^2-x^3)\\,dx=k\\left[x^3-\\frac{x^4}{4}\\right]_0^3=k\\left(27-\\frac{81}{4}\\right)=\\frac{27k}{4}=1$, so $k=\\dfrac{4}{27}$."
+        },
+        {
+          "numero": 2,
+          "action": "Integrate $f$ between the limits $1$ and $2$.",
+          "justification": "A probability is an area under the curve between the two values.",
+          "resultat_markdown": "$P(1<X<2)=\\dfrac{4}{27}\\left[x^3-\\dfrac{x^4}{4}\\right]_1^2=\\dfrac{4}{27}\\left[(8-4)-\\left(1-\\dfrac14\\right)\\right]=\\dfrac{4}{27}\\times\\dfrac{13}{4}=\\dfrac{13}{27}$."
+        },
+        {
+          "numero": 3,
+          "action": "Differentiate $f$ and solve $f'(x)=0$.",
+          "justification": "The mode is where $f$ is greatest; check a maximum and the end values.",
+          "resultat_markdown": "$f'(x)=\\dfrac{4}{27}(6x-3x^2)=0$ gives $x=0$ or $x=2$. For $x=2$, $f''(x)=\\dfrac{4}{27}(6-6x)<0$, a maximum, and $f(2)=\\dfrac{16}{27}$, while $f(0)=f(3)=0$. So the mode is $2$."
+        },
+        {
+          "numero": 4,
+          "action": "Find $E(X)$ by integrating $xf(x)$.",
+          "justification": "The mean is the integral of $x$ times the density.",
+          "resultat_markdown": "$E(X)=\\dfrac{4}{27}\\displaystyle\\int_0^3(3x^3-x^4)\\,dx=\\dfrac{4}{27}\\left[\\dfrac{3x^4}{4}-\\dfrac{x^5}{5}\\right]_0^3=\\dfrac{4}{27}\\left(\\dfrac{243}{4}-\\dfrac{243}{5}\\right)=\\dfrac{4}{27}\\times\\dfrac{243}{20}=\\dfrac95$."
+        },
+        {
+          "numero": 5,
+          "action": "Find $E(X^2)$, then the variance.",
+          "justification": "Use $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$, and integrate $x^2f(x)$ for $E(X^2)$.",
+          "resultat_markdown": "$E(X^2)=\\dfrac{4}{27}\\displaystyle\\int_0^3(3x^4-x^5)\\,dx=\\dfrac{4}{27}\\left[\\dfrac{3x^5}{5}-\\dfrac{x^6}{6}\\right]_0^3=\\dfrac{4}{27}\\times\\dfrac{243}{10}=\\dfrac{18}{5}$, so $\\operatorname{Var}(X)=\\dfrac{18}{5}-\\left(\\dfrac95\\right)^2=\\dfrac{90-81}{25}=\\dfrac{9}{25}$."
+        }
+      ],
+      "conclusion_markdown": "(a) $k=\\dfrac{4}{27}$; (b) $P(1<X<2)=\\dfrac{13}{27}\\approx0.481$; (c) the mode is $2$; (d) $E(X)=\\dfrac95=1.8$ and $\\operatorname{Var}(X)=\\dfrac{9}{25}=0.36$. The mean is below the mode because the curve has a longer tail on the left."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Finding $k$ by setting $f(3)=1$, or by setting $\\int_0^3 f(x)\\,dx=0$.",
+          "pourquoi_faux": "A p.d.f. is a height, not a probability; it is the total **area** that must equal $1$.",
+          "correction_markdown": "Solve $\\displaystyle\\int_0^3 f(x)\\,dx=1$ for $k$."
+        },
+        {
+          "erreur_markdown": "Finding the median by solving $\\displaystyle\\int_0^m f(x)\\,dx=1$.",
+          "pourquoi_faux": "The integral up to the median is the area to its left, which is one half, not the whole area.",
+          "correction_markdown": "Solve $\\displaystyle\\int_0^m f(x)\\,dx=\\tfrac12$, that is $F(m)=\\tfrac12$."
+        },
+        {
+          "erreur_markdown": "Giving the maximum value of $f$ as the mode, for example stating that the mode is $\\dfrac{16}{27}$.",
+          "pourquoi_faux": "The mode is the value of $x$ at which the density is greatest, not the greatest density itself.",
+          "correction_markdown": "Solve $f'(x)=0$ to get $x=2$; the number $\\dfrac{16}{27}$ is only $f(2)$."
+        },
+        {
+          "erreur_markdown": "Computing the variance as $E(X^2)-E(X)$, or as $\\int x^2f(x)\\,dx$ alone.",
+          "pourquoi_faux": "The mean must be squared in the formula; $\\int x^2f(x)\\,dx$ is $E(X^2)$, which is not the variance unless the mean is zero.",
+          "correction_markdown": "$\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$."
+        },
+        {
+          "erreur_markdown": "Integrating $f(x)=2x$ on $0\\le x\\le1$ from $0$ to $3$ to find $P(X<3)$.",
+          "pourquoi_faux": "Outside the range the density is zero, so the integral stops at the end of the range. Here $P(X<3)=1$, not an area of $9$.",
+          "correction_markdown": "$P(X<3)=\\displaystyle\\int_0^1 2x\\,dx=1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A continuous random variable $X$ has p.d.f. $f(x)=cx$ for $0\\le x\\le4$ and $f(x)=0$ otherwise. Find (a) the constant $c$, (b) $P(X>3)$, (c) $E(X)$.",
+          "solution_markdown": "(a) $\\displaystyle\\int_0^4 cx\\,dx=c\\left[\\frac{x^2}{2}\\right]_0^4=8c=1$, so $c=\\mathbf{\\tfrac18}$.\n\n(b) $P(X>3)=\\displaystyle\\int_3^4\\frac{x}{8}\\,dx=\\left[\\frac{x^2}{16}\\right]_3^4=1-\\frac{9}{16}=\\mathbf{\\tfrac{7}{16}}$.\n\n(c) $E(X)=\\displaystyle\\int_0^4 x\\cdot\\frac{x}{8}\\,dx=\\left[\\frac{x^3}{24}\\right]_0^4=\\frac{64}{24}=\\mathbf{\\tfrac83}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A continuous random variable $X$ has p.d.f. $f(x)=kx^2$ for $0\\le x\\le2$ and $0$ otherwise. (a) Find $k$. (b) Find the cumulative distribution function $F(x)$ for $0\\le x\\le2$. (c) Find the median and the lower quartile of $X$, to $3$ decimal places.",
+          "solution_markdown": "(a) $\\displaystyle\\int_0^2 kx^2\\,dx=\\frac{8k}{3}=1$, so $k=\\mathbf{\\tfrac38}$.\n\n(b) $F(x)=\\displaystyle\\int_0^x\\frac{3t^2}{8}\\,dt=\\mathbf{\\frac{x^3}{8}}$ for $0\\le x\\le2$.\n\n(c) Median: $\\dfrac{m^3}{8}=\\dfrac12$, so $m^3=4$ and $m=\\sqrt[3]{4}=\\mathbf{1.587}$. Lower quartile: $\\dfrac{q^3}{8}=\\dfrac14$, so $q^3=2$ and $q=\\sqrt[3]{2}=\\mathbf{1.260}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A continuous random variable $X$ has p.d.f. $f(x)=a+bx$ for $0\\le x\\le1$, and $f(x)=0$ otherwise, where $a$ and $b$ are constants. It is given that $E(X)=\\dfrac59$. (a) Find $a$ and $b$. (b) Find $\\operatorname{Var}(X)$. (c) Find $P\\left(X<\\dfrac59\\right)$. (d) State the mode of $X$.",
+          "solution_markdown": "(a) Total area: $\\displaystyle\\int_0^1(a+bx)\\,dx=a+\\frac b2=1$. Mean: $\\displaystyle\\int_0^1(ax+bx^2)\\,dx=\\frac a2+\\frac b3=\\frac59$. Multiply the second equation by $2$: $a+\\dfrac{2b}{3}=\\dfrac{10}{9}$. Subtracting the first equation: $\\dfrac{b}{6}=\\dfrac19$, so $b=\\mathbf{\\tfrac23}$ and then $a=1-\\dfrac13=\\mathbf{\\tfrac23}$.\n\n(b) $E(X^2)=\\displaystyle\\int_0^1\\left(\\tfrac23x^2+\\tfrac23x^3\\right)dx=\\frac29+\\frac16=\\frac{7}{18}$, so $\\operatorname{Var}(X)=\\dfrac{7}{18}-\\dfrac{25}{81}=\\dfrac{63-50}{162}=\\mathbf{\\tfrac{13}{162}}$.\n\n(c) $P\\left(X<\\tfrac59\\right)=\\displaystyle\\int_0^{5/9}\\tfrac23(1+x)\\,dx=\\tfrac23\\left(\\tfrac59+\\tfrac{25}{162}\\right)=\\tfrac23\\times\\tfrac{115}{162}=\\mathbf{\\tfrac{115}{243}}\\approx0.473$.\n\n(d) $f(x)=\\tfrac23(1+x)$ increases over the whole range, so the greatest value of $f$ occurs at the end: the mode is $x=\\mathbf{1}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A p.d.f. satisfies $f(x)\\ge0$ and has total area $1$; use $\\int f(x)\\,dx=1$ over the range where $f$ is not zero to find an unknown constant.",
+        "$P(a<X<b)=\\int_a^b f(x)\\,dx$, and for a continuous variable $P(X=a)=0$; $F(x)=\\int_{-\\infty}^x f(t)\\,dt$ and $f=F'$.",
+        "Median: $F(m)=\\tfrac12$. Quartiles: $F(q)=\\tfrac14$ and $\\tfrac34$.",
+        "Mode: the $x$-value where $f$ is greatest; solve $f'(x)=0$, check it is a maximum and compare with the ends of the range.",
+        "$E(X)=\\int xf(x)\\,dx$ and $\\operatorname{Var}(X)=E(X^2)-[E(X)]^2$, with $E(X^2)=\\int x^2f(x)\\,dx$."
+      ]
+    }
+  ]
+}

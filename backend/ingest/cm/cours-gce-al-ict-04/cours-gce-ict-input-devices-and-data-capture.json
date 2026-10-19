@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-ict-input-devices-and-data-capture",
+  "meta": {
+    "titre": "Input Devices and Data Capture: choosing the right device and checking what it reads",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Input devices, automatic data capture and check digits",
+    "duree_estimee_min": 30,
+    "tags": [
+      "input devices and data capture"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-input-devices-and-data-capture-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "At the till of a supermarket in Douala, the cashier passes each item over a window and the price appears at once. In a pharmacy, a stock clerk reads a box in a second instead of typing its name. In every case a device captures data, and the choice of device depends on what the data looks like. Examiners ask candidates to name the right device, to explain how it works and to say what it cannot do. These are short, precise answers that can be learned."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "An input device sends data to the computer; an output device presents results.",
+        "The computer stores data as binary digits, and a byte is eight bits.",
+        "Records such as products or members are held in a file or database, each with an identifying number."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Data capture: devices, how they work and their limits",
+      "contenu_markdown": "### Data capture\n**Data capture** means collecting data and converting it into a form that the computer can process. It is **manual** when a person types the data from a source document, and **automatic** (direct data entry) when a device reads it without typing. Automatic capture is faster, reduces transcription errors and saves labour, but the equipment costs money and a damaged code or a poor reading can still give wrong data.\n\n### Main devices\n| Device | What it captures | Typical use |\n|---|---|---|\n| Keyboard | Typed characters | Manual entry of text and figures |\n| Mouse, touchpad, touch screen | Position and selection | Pointing, choosing options |\n| Scanner | Image of a page or photograph | Digitising documents |\n| OCR (optical character recognition) | Printed characters, compared with stored shapes and turned into editable text | Converting printed pages to text |\n| OMR (optical mark recognition) | Pencil marks in fixed positions | Multiple-choice answer sheets, surveys |\n| MICR (magnetic ink character recognition) | Characters printed in magnetic ink | Bank cheques |\n| Barcode reader | Pattern of bars, read with reflected light | Shop tills, stock, library books, drug packs |\n| RFID reader | Data in a tag, read by radio without a direct line of sight | Tracking goods, access cards |\n| Card reader (magnetic stripe, chip) | Account data on a card | Cash machines, payments |\n| Microphone | Sound, converted into a digital signal | Recording, speech recognition |\n| Digital camera, webcam | Still and moving images | Photos, video calls |\n| Fingerprint reader | Biometric pattern | Identification and access control |\n| Sensor | A physical quantity (temperature, light, pressure) | Control and data logging |\n\n### How a barcode works\nThe bars encode a **product number**, not the price. The reader shines light on the code, the dark and light bars reflect differently, and the device converts this into a number. The computer then looks the number up in the product file, finds the description and the price, and updates the stock. Changing a price therefore means changing one record in the file, not reprinting labels.\n\n### Check digits\nThe last digit of a barcode is a **check digit** calculated from the others, so that a misread or mistyped number can be detected.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Automatic speech recognition (ASR)",
+          "quand_utiliser": "When the question asks what ASR is, a use, advantages or a limitation.",
+          "contenu_markdown": "**Definition**: ASR converts spoken words into text or commands. A microphone changes the sound into an electrical signal, which is digitised and compared by software with stored patterns of speech to find the most likely words. **Uses**: dictating a document, voice commands on a phone, hands-free control of equipment, telephone menus, aid for users who cannot type. **Advantages**: hands-free, can be faster than typing, helps users with disabilities and reduces typing strain. **Limitations**: errors with strong accents, background noise or words that sound alike; the system may need training to one voice; dictating aloud in a shared office disturbs others and exposes private content."
+        },
+        {
+          "nom": "Check digits (EAN-13 rule)",
+          "quand_utiliser": "When the question gives the digits of a barcode and asks for the check digit or whether the number is valid.",
+          "contenu_markdown": "Take the first 12 digits. Multiply the digits in odd positions (1st, 3rd, 5th, ...) by 1 and those in even positions (2nd, 4th, ...) by 3. Add all the results. The check digit is the number that brings this sum up to the next multiple of 10 (it is 0 when the sum is already a multiple of 10). Formula: check digit = (10 − (sum mod 10)) mod 10. A number is valid if the stored 13th digit equals the calculated check digit."
+        },
+        {
+          "nom": "Choosing a device for a task",
+          "quand_utiliser": "When a scenario describes the data and asks which device should capture it.",
+          "contenu_markdown": "Ask what the data looks like. Marks in boxes: OMR. Printed characters to edit: scanner with OCR. Cheque numbers: MICR. A short code on packaging: barcode reader. Items to count without unpacking them: RFID. A person's identity: fingerprint reader. Spoken words: microphone with ASR. A temperature: sensor. Always add why the device suits the data (speed, accuracy, fewer errors)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "A library in Bamenda wants to record the loan of books quickly. Each book carries a printed code, and each member has a card.\n\n(a) Name the device that reads the code, and describe how the details of the book appear on the screen after the code is read.\n\n(b) Give two advantages of this method over typing the details.\n\n(c) Give one limitation.\n\n(d) The first twelve digits of one code are 590123412345. Calculate its check digit using the EAN-13 rule.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the kind of data and choose the device.",
+          "justification": "A short fixed code printed on each item that must be read many times a day is exactly what a barcode reader captures.",
+          "resultat_markdown": "Device: a **barcode reader**."
+        },
+        {
+          "numero": 2,
+          "action": "Describe the operation in order.",
+          "justification": "A complete description follows the chain from light to record.",
+          "resultat_markdown": "The reader shines light on the bars; dark and light bars reflect differently; the reader turns this into a number; the program looks the number up in the book file; the title and the borrowing status are displayed and the loan is recorded."
+        },
+        {
+          "numero": 3,
+          "action": "Give advantages and a limitation, each with a reason.",
+          "justification": "A bare word earns no mark; each point needs its explanation.",
+          "resultat_markdown": "Advantages: **fast** (no typing of titles) and **accurate** (fewer keying errors). Limitation: a **damaged or dirty code** cannot be read and must be typed by hand."
+        },
+        {
+          "numero": 4,
+          "action": "Multiply each digit by its weight, 1 in odd positions and 3 in even positions.",
+          "justification": "The EAN-13 rule weights the digits alternately by 1 and 3.",
+          "resultat_markdown": "5×1, 9×3, 0×1, 1×3, 2×1, 3×3, 4×1, 1×3, 2×1, 3×3, 4×1, 5×3 give 5, 27, 0, 3, 2, 9, 4, 3, 2, 9, 4, 15."
+        },
+        {
+          "numero": 5,
+          "action": "Add and find the digit that completes the next multiple of 10.",
+          "justification": "The check digit makes the weighted total a multiple of 10.",
+          "resultat_markdown": "Sum = **83**; the next multiple of 10 is 90; 90 − 83 = **7**."
+        }
+      ],
+      "conclusion_markdown": "(a) A barcode reader; the number is looked up in the book file and the details are shown. (b) Speed and accuracy. (c) A damaged code cannot be read. (d) The check digit is **7**, so the full code is 5901234123457."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"The barcode contains the price of the product.\"",
+          "pourquoi_faux": "The bars encode only a product number. The price is stored in the computer file and found by looking the number up.",
+          "correction_markdown": "\"The barcode identifies the product; the computer finds its price in the product file.\""
+        },
+        {
+          "erreur_markdown": "\"OCR and OMR are the same: both read letters.\"",
+          "pourquoi_faux": "OCR recognises the shape of printed characters and gives text. OMR only detects whether a mark is present in a known position.",
+          "correction_markdown": "OCR for printed text, OMR for pencil marks on answer sheets and forms."
+        },
+        {
+          "erreur_markdown": "\"A scanner turns a printed page into a text file that can be edited.\"",
+          "pourquoi_faux": "A scanner produces an image of the page. Editable text needs OCR software to recognise the characters in that image.",
+          "correction_markdown": "\"A scanner captures an image; with OCR software the image can be converted to editable text.\""
+        },
+        {
+          "erreur_markdown": "\"Automatic speech recognition identifies who is speaking.\"",
+          "pourquoi_faux": "ASR converts the words spoken into text or commands. Identifying the speaker is a different task (voice or speaker recognition).",
+          "correction_markdown": "\"ASR converts speech to text or commands using a microphone and software.\""
+        },
+        {
+          "erreur_markdown": "\"Automatic data capture removes all errors.\"",
+          "pourquoi_faux": "It removes keying errors, but a damaged code, a wrong record in the file or a misreading can still produce bad data.",
+          "correction_markdown": "\"It greatly reduces errors; data must still be checked, for example with a check digit or validation.\""
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the most suitable input device for each task.\n\n(a) Marking the answer sheets of a multiple-choice test completed in pencil.\n\n(b) Processing the numbers printed along the bottom of bank cheques.\n\n(c) Converting a printed page into text that a word processor can edit.\n\n(d) Dictating a letter without touching the keyboard.\n\n(e) Counting boxes on pallets in a warehouse without opening them or lining up each one.",
+          "solution_markdown": "(a) **OMR reader** (optical mark recognition).\n\n(b) **MICR reader** (magnetic ink character recognition).\n\n(c) **Scanner with OCR software**.\n\n(d) **Microphone with automatic speech recognition**.\n\n(e) **RFID reader** (tags are read by radio without line of sight)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The first twelve digits of a barcode are 620145873026.\n\n(a) Calculate the weighted sum and the check digit.\n\n(b) The code is later typed as 6204158730264 (the fourth and fifth digits were interchanged). Calculate the check digit of the twelve digits typed and say whether the error is detected.\n\n(c) Why is it better to enter the code with a reader than to type it?",
+          "solution_markdown": "(a) Weighted digits: 6, 6, 0, 3, 4, 15, 8, 21, 3, 0, 2, 18. Sum = **86**. Next multiple of 10 = 90; check digit = **4**.\n\n(b) The twelve digits typed (620415873026) give a sum of 92, so the calculated check digit is **8**. It differs from the stored digit 4, so the error **is detected**.\n\n(c) A reader is faster and avoids keying errors such as transposed digits."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A school scans 250 certificates, each 6 inches by 8 inches, at 200 dots per inch (pixels per inch). In colour, each pixel uses 3 bytes. Take 1 MB = 1,000,000 bytes and 1 GB = 1,000 MB, and assume no compression.\n\n(a) How many pixels are in one scanned certificate?\n\n(b) What is the size of one colour scan in MB, and of all the scans in GB?\n\n(c) If the certificates are scanned in greyscale with 1 byte per pixel, what is the total size in MB?\n\n(d) The school wants to scan at 400 dots per inch in colour and has an 8 GB memory stick. Will all scans fit? Explain the effect of the resolution.",
+          "solution_markdown": "(a) Width = 6 × 200 = 1200 pixels; height = 8 × 200 = 1600 pixels. Pixels = 1200 × 1600 = **1,920,000**.\n\n(b) 1,920,000 × 3 = 5,760,000 bytes = **5.76 MB** per scan. For 250 scans: 250 × 5.76 = 1,440 MB = **1.44 GB**.\n\n(c) 1,920,000 bytes = 1.92 MB per scan; 250 × 1.92 = **480 MB**.\n\n(d) Doubling the resolution doubles both the width and the height in pixels, so the file is 4 times larger: 4 × 1.44 GB = **5.76 GB**, which is below 8 GB, so the scans **fit**. A higher resolution gives more detail but needs much more storage."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Data capture converts data into a form the computer can process: manual (keyboard) or automatic (readers and sensors).",
+        "Match the device to the data: OMR for marks, OCR for printed characters, MICR for cheques, barcode reader for product codes, RFID for tagged items, fingerprint reader for identity.",
+        "A barcode holds a product number; the computer finds the price in the file, so a price change is made in one place.",
+        "ASR converts speech to text or commands: hands-free and helpful to disabled users, but affected by accents, noise and similar-sounding words.",
+        "A check digit detects misreads: weights 1 and 3 alternately, add, and complete to the next multiple of 10.",
+        "A scanner gives an image; OCR is needed to obtain editable text; file size grows with resolution and colour depth."
+      ]
+    }
+  ]
+}

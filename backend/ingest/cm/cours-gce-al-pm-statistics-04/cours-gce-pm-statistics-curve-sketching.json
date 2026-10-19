@@ -1,0 +1,160 @@
+{
+  "cours_id": "cours-gce-pm-statistics-curve-sketching",
+  "meta": {
+    "titre": "Curve Sketching: Rational Curves from Intercepts, Asymptotes and Gradient",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Sketching rational curves",
+    "duree_estimee_min": 30,
+    "tags": [
+      "curve sketching"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-curve-sketching-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Suppose a taxi booking in Bamenda costs a fixed fee plus a rate per kilometre. The manager studies the cost per kilometre as the distance grows: it falls quickly for short trips, then levels off towards a limit that it never quite reaches, and it is meaningless for a trip of length zero. A graph tells this story at a glance through its limit line, its forbidden value and its starting point. At the GCE you are asked to sketch curves of this kind, marking where they meet the axes and how they behave near their asymptotes. A good sketch needs no long table of points, only a few exact features found by calculation."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A rational function is a quotient of two polynomials, and it is undefined where the denominator is zero.",
+        "The $y$-intercept of a curve is found by putting $x=0$, and the $x$-intercepts by putting $y=0$.",
+        "A fraction is zero only when its numerator is zero, and its sign depends on the signs of its numerator and denominator.",
+        "The gradient of a curve is $\\dfrac{dy}{dx}$; the curve rises where it is positive and falls where it is negative, and the quotient rule differentiates $\\dfrac{u}{v}$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sketching a rational curve from exact features",
+      "contenu_markdown": "### Features to find, in this order\n\nTake $y=\\dfrac{ax+b}{cx+d}$ with $c\\neq0$ and $ad-bc\\neq0$.\n\n**Vertical asymptote.** The curve is undefined where $cx+d=0$. The numerator is not zero there, so the line $x=-\\dfrac dc$ is a vertical asymptote.\n\n**Horizontal asymptote.** Divide the numerator by the denominator and write\n\n$$\ny=\\frac ac+\\frac{bc-ad}{c\\,(cx+d)} \\tag{1}\n$$\n\nAs $x\\to\\pm\\infty$ the fraction tends to $0$, so $y\\to\\dfrac ac$ and the line $y=\\dfrac ac$ is the horizontal asymptote. The fraction is never zero, so the curve **never meets** this line, and the sign of the fraction shows on which side of the line each branch lies.\n\n**Intercepts.** Put $x=0$ for the $y$-intercept $\\dfrac bd$ (if $d\\neq0$) and $y=0$ for the $x$-intercept $x=-\\dfrac ba$ (if $a\\neq0$).\n\n**Gradient.** The quotient rule gives\n\n$$\n\\frac{dy}{dx}=\\frac{ad-bc}{(cx+d)^2} \\tag{2}\n$$\n\nThis has the sign of $ad-bc$ at every point, so the curve has **no turning points**: both branches rise if $ad-bc>0$ and both fall if $ad-bc<0$.\n\n**Behaviour near the vertical asymptote.** Take a value of $x$ just above and just below $-\\dfrac dc$ and decide the sign of $y$. The curve goes to $+\\infty$ on one side and to $-\\infty$ on the other.\n\n### Drawing the sketch\n\nDraw the asymptotes as dashed lines and label their equations. Mark the intercepts with their coordinates. Draw each branch through its marked points, rising or falling as (2) requires, and approaching the asymptotes without ever crossing them. The curve has two separate branches: never join them across the vertical asymptote.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Oblique asymptote and turning points",
+          "quand_utiliser": "When the numerator has degree $2$ and the denominator degree $1$, as in $y=\\dfrac{x^2}{x-2}$.",
+          "contenu_markdown": "Divide to write $\\dfrac{x^2}{x-2}=x+2+\\dfrac{4}{x-2}$. The remainder term tends to $0$ as $x\\to\\pm\\infty$, so $y=x+2$ is an **oblique asymptote**, and $x=2$ is the vertical asymptote. Now there can be turning points: $\\dfrac{dy}{dx}=1-\\dfrac{4}{(x-2)^2}=0$ gives $(x-2)^2=4$, so $x=0$ or $x=4$, at the points $(0,0)$ and $(4,8)$. The second derivative $\\dfrac{8}{(x-2)^3}$ equals $-1$ at $x=0$ (a maximum) and $+1$ at $x=4$ (a minimum). The local maximum value $0$ is lower than the local minimum value $8$, so the curve has no points with $0<y<8$."
+        },
+        {
+          "nom": "Testing whether the curve meets a line, and the range",
+          "quand_utiliser": "When the question asks whether the curve crosses a horizontal line, or which values of $y$ the curve takes.",
+          "contenu_markdown": "Put $y=k$ and solve for $x$. For $y=\\dfrac{ax+b}{cx+d}$ there is exactly one solution for every $k$ except $k=\\dfrac ac$, where the equation reduces to a false statement such as $5=-2$: the line $y=\\dfrac ac$ is never met. For a quadratic over a linear expression, $y=k$ gives a quadratic equation in $x$; the curve meets the line only when its discriminant is at least $0$, and that inequality in $k$ is the range of $y$. Always check that a solution is not the excluded value of $x$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Sketch the curve $y=\\dfrac{3x-2}{x+1}$. Give the equations of its asymptotes, the coordinates of the points where it meets the axes, and the behaviour of $y$ as $x$ approaches the vertical asymptote from each side.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the vertical asymptote.",
+          "justification": "The curve is undefined where the denominator is zero, and the numerator is not zero there.",
+          "resultat_markdown": "$x+1=0$ gives $x=-1$. At $x=-1$ the numerator is $-5\\neq0$, so $x=-1$ is the vertical asymptote."
+        },
+        {
+          "numero": 2,
+          "action": "Write $y$ as a constant plus a fraction to find the horizontal asymptote.",
+          "justification": "Rewriting $3x-2$ as $3(x+1)-5$ separates the part that settles from the part that tends to zero.",
+          "resultat_markdown": "$y=\\dfrac{3(x+1)-5}{x+1}=3-\\dfrac{5}{x+1}$. As $x\\to\\pm\\infty$ the fraction tends to $0$, so $y\\to3$ and the horizontal asymptote is $y=3$. Since $\\dfrac5{x+1}$ is never $0$, the curve never meets this line."
+        },
+        {
+          "numero": 3,
+          "action": "Find the intercepts.",
+          "justification": "The $y$-intercept comes from $x=0$ and the $x$-intercept from $y=0$.",
+          "resultat_markdown": "At $x=0$, $y=-2$, giving $(0,-2)$. At $y=0$, $3x-2=0$ so $x=\\dfrac23$, giving $\\left(\\dfrac23,0\\right)$."
+        },
+        {
+          "numero": 4,
+          "action": "Test the sign of $y$ on each side of $x=-1$.",
+          "justification": "The sign of $3-\\dfrac{5}{x+1}$ near $x=-1$ is controlled by the sign of $x+1$.",
+          "resultat_markdown": "For $x$ just above $-1$, $x+1$ is a small positive number, so $\\dfrac5{x+1}$ is large and positive and $y\\to-\\infty$. For $x$ just below $-1$, $x+1$ is a small negative number, so $y\\to+\\infty$. Also $y<3$ when $x>-1$ and $y>3$ when $x<-1$."
+        },
+        {
+          "numero": 5,
+          "action": "Find the gradient.",
+          "justification": "The sign of the gradient shows whether each branch rises or falls and whether there are turning points.",
+          "resultat_markdown": "$\\dfrac{dy}{dx}=\\dfrac{5}{(x+1)^2}>0$ for every $x\\neq-1$. Both branches rise and there are no turning points."
+        },
+        {
+          "numero": 6,
+          "action": "Check two extra points and assemble the sketch.",
+          "justification": "Points far from the asymptote confirm the position of each branch.",
+          "resultat_markdown": "At $x=1$, $y=\\dfrac12$ (right branch, below $y=3$). At $x=-3$, $y=\\dfrac{11}{2}$ (left branch, above $y=3$). Draw $x=-1$ and $y=3$ dashed, then the two branches through these points."
+        }
+      ],
+      "conclusion_markdown": "The vertical asymptote is $x=-1$ and the horizontal asymptote is $y=3$. The curve meets the axes at $(0,-2)$ and $\\left(\\dfrac23,0\\right)$. The right-hand branch ($x>-1$) rises from $-\\infty$ beside $x=-1$, passes through both intercepts and approaches $y=3$ from below. The left-hand branch ($x<-1$) lies above $y=3$ and rises to $+\\infty$ as $x\\to-1$ from the left."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Giving the horizontal asymptote of $y=\\dfrac{3x-2}{x+1}$ as $y=-2$.",
+          "pourquoi_faux": "The number $-2$ is the $y$-intercept, the ratio $\\dfrac bd$. The horizontal asymptote is the limit of $y$ as $x\\to\\pm\\infty$, which is the ratio of the coefficients of $x$.",
+          "correction_markdown": "The asymptote is $y=\\dfrac ac=3$. Check by writing $y=3-\\dfrac5{x+1}$."
+        },
+        {
+          "erreur_markdown": "Stating that the vertical asymptote of $y=\\dfrac{3x-2}{x+1}$ is $x=1$.",
+          "pourquoi_faux": "A sign slip: the asymptote is where the denominator is zero, and $x+1=0$ gives $x=-1$, not $x=1$.",
+          "correction_markdown": "Solve $x+1=0$ explicitly: the vertical asymptote is $x=-1$."
+        },
+        {
+          "erreur_markdown": "Drawing the curve as one piece that goes through the vertical asymptote, or letting a branch cross $y=3$.",
+          "pourquoi_faux": "The function is not defined at $x=-1$, so the curve is in two separate parts. It never takes the value $3$, because $\\dfrac{5}{x+1}$ is never $0$.",
+          "correction_markdown": "Draw two branches, one on each side of $x=-1$, each approaching but never touching the dashed lines."
+        },
+        {
+          "erreur_markdown": "Writing that the curve has a turning point where it flattens out near $y=3$.",
+          "pourquoi_faux": "Levelling off in the limit is not a turning point. A turning point needs $\\dfrac{dy}{dx}=0$, but $\\dfrac{5}{(x+1)^2}$ is never zero.",
+          "correction_markdown": "The curve has no turning points; each branch is rising throughout, with gradient tending to $0$ far from the asymptote."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "For the curve $y=\\dfrac{x+3}{x-2}$, state the equations of the asymptotes and the coordinates of the points where it meets the axes. Say whether the branches rise or fall, and describe the behaviour of $y$ as $x\\to2$ from the right.",
+          "solution_markdown": "Vertical asymptote: $x-2=0$, so $\\mathbf{x=2}$. Writing $y=\\dfrac{(x-2)+5}{x-2}=1+\\dfrac5{x-2}$ shows that $y\\to1$ as $x\\to\\pm\\infty$, so the horizontal asymptote is $\\mathbf{y=1}$.\n\nIntercepts: at $x=0$, $y=-\\dfrac32$, so $\\left(0,-\\dfrac32\\right)$; at $y=0$, $x=-3$, so $(-3,0)$.\n\nGradient: $\\dfrac{dy}{dx}=-\\dfrac{5}{(x-2)^2}<0$, so **both branches fall**. As $x\\to2$ from the right, $x-2$ is a small positive number, so $\\dfrac5{x-2}$ is large and positive and $y\\to+\\infty$ (and $y\\to-\\infty$ from the left). The right-hand branch falls from $+\\infty$ towards $y=1$ from above; the left-hand branch lies below $y=1$ and falls through $(-3,0)$ and $\\left(0,-\\dfrac32\\right)$ to $-\\infty$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A curve has equation $y=\\dfrac{5-x}{x+2}$. (a) Find the equations of its asymptotes. (b) Find the coordinates of the points where it meets the axes. (c) Show that the curve does not meet the line $y=-1$. (d) Find the point where the curve meets the line $y=1$. (e) Describe the two branches.",
+          "solution_markdown": "(a) The denominator is zero at $x=-2$, so the vertical asymptote is $\\mathbf{x=-2}$. Since $\\dfrac{5-x}{x+2}=-1+\\dfrac{7}{x+2}$, the horizontal asymptote is $\\mathbf{y=-1}$.\n\n(b) At $x=0$, $y=\\dfrac52$, so $\\left(0,\\dfrac52\\right)$. At $y=0$, $x=5$, so $(5,0)$.\n\n(c) Putting $y=-1$ gives $5-x=-(x+2)$, that is $5=-2$, which is false for every $x$. Hence the curve **never meets** $y=-1$.\n\n(d) Putting $y=1$ gives $5-x=x+2$, so $x=\\dfrac32$. The point is $\\mathbf{\\left(\\tfrac32,1\\right)}$.\n\n(e) $\\dfrac{dy}{dx}=-\\dfrac{7}{(x+2)^2}<0$, so both branches fall. For $x>-2$, $y=-1+\\dfrac7{x+2}>-1$: the branch falls from $+\\infty$ beside $x=-2$ through $\\left(0,\\dfrac52\\right)$, $\\left(\\dfrac32,1\\right)$ and $(5,0)$, and approaches $y=-1$ from above. For $x<-2$ the branch lies below $y=-1$ and falls from $y=-1$ to $-\\infty$ as $x\\to-2$ from the left."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Consider the curve $y=\\dfrac{x^2-2x+5}{x-1}$. (a) Show that $y=x-1+\\dfrac{4}{x-1}$ and write down the equations of the asymptotes. (b) Find the coordinates of the stationary points and determine their nature. (c) Show that the curve has no $x$-intercept and find its $y$-intercept. (d) By putting $y=k$ and using a discriminant, show that no point of the curve has $-4<y<4$. (e) Describe the shape of the curve.",
+          "solution_markdown": "(a) $(x-1)^2+4=x^2-2x+5$, so $\\dfrac{x^2-2x+5}{x-1}=x-1+\\dfrac4{x-1}$. The vertical asymptote is $\\mathbf{x=1}$ and, since $\\dfrac4{x-1}\\to0$, the oblique asymptote is $\\mathbf{y=x-1}$.\n\n(b) $\\dfrac{dy}{dx}=1-\\dfrac{4}{(x-1)^2}=0$ gives $(x-1)^2=4$, so $x=3$ or $x=-1$. Then $y(3)=\\dfrac{9-6+5}{2}=4$ and $y(-1)=\\dfrac{1+2+5}{-2}=-4$. The second derivative is $\\dfrac{8}{(x-1)^3}$, equal to $+1$ at $x=3$ and $-1$ at $x=-1$. So $\\mathbf{(3,4)}$ is a minimum and $\\mathbf{(-1,-4)}$ is a maximum.\n\n(c) The numerator is $(x-1)^2+4>0$ for all $x$, so $y\\neq0$ and there is **no $x$-intercept**. At $x=0$, $y=\\dfrac{5}{-1}=\\mathbf{-5}$.\n\n(d) $y=k$ gives $x^2-2x+5=k(x-1)$, that is $x^2-(2+k)x+(5+k)=0$. Its discriminant is $(2+k)^2-4(5+k)=k^2-16$. A point exists only if $k^2-16\\ge0$, that is $k\\le-4$ or $k\\ge4$. (The value $x=1$ is never a root, since it gives $4\\neq0$.) Hence no point has $-4<y<4$.\n\n(e) The curve has two branches. The right branch ($x>1$) lies above $y=x-1$, has its minimum at $(3,4)$ and rises to $+\\infty$ both as $x\\to1^+$ and as $x\\to\\infty$. The left branch ($x<1$) lies below $y=x-1$, passes through $(0,-5)$, has its maximum at $(-1,-4)$ and falls to $-\\infty$ as $x\\to1^-$ and as $x\\to-\\infty$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Work in this order: domain and vertical asymptote, horizontal or oblique asymptote, intercepts, gradient and turning points, behaviour on each side of the vertical asymptote.",
+        "For $y=\\dfrac{ax+b}{cx+d}$: vertical asymptote $x=-\\dfrac dc$, horizontal asymptote $y=\\dfrac ac$, $y$-intercept $\\dfrac bd$, $x$-intercept $-\\dfrac ba$, and gradient $\\dfrac{ad-bc}{(cx+d)^2}$, which is never zero.",
+        "Writing $y$ as a constant plus a fraction shows the horizontal asymptote, the side of it on which each branch lies, and that this curve never meets it.",
+        "Quadratic over linear: divide to find the oblique asymptote, solve $\\dfrac{dy}{dx}=0$ for the turning points, test them with the second derivative, and use $y=k$ with a discriminant to find the range.",
+        "In the final sketch, label the equations of the asymptotes and the coordinates of the intercepts, and draw separate branches that never cross the vertical asymptote."
+      ]
+    }
+  ]
+}

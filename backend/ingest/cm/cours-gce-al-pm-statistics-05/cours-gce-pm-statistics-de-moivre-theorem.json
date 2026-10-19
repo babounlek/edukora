@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-pm-statistics-de-moivre-theorem",
+  "meta": {
+    "titre": "De Moivre's Theorem: Powers, Multiple Angles and Roots of Complex Numbers",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "De Moivre's theorem and its applications",
+    "duree_estimee_min": 35,
+    "tags": [
+      "de moivre theorem"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-de-moivre-theorem-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "An electrician in Douala describes a mains voltage as an arrow of fixed length turning steadily around a point, and adding two voltages means adding two turning arrows. Complex numbers in modulus-argument form describe exactly such arrows, and De Moivre's theorem says what happens when one of them is multiplied by itself many times: its length is raised to a power and its angle is multiplied. At A Level the theorem appears every year, for simplifying products and quotients, for finding powers and roots of a given number, and for proving identities about multiple angles. All of these use the same short method, which this lesson builds step by step."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A complex number $z = x + iy$ has modulus $r = |z| = \\sqrt{x^2 + y^2}$ and argument $\\theta$, the angle from the positive real axis, with $x = r\\cos\\theta$ and $y = r\\sin\\theta$.",
+        "The principal argument satisfies $-\\pi < \\theta \\le \\pi$, and the quadrant of $z$ must be checked before an inverse tangent is accepted.",
+        "The binomial expansion $(a+b)^4 = a^4 + 4a^3b + 6a^2b^2 + 4ab^3 + b^4$, and the powers $i^2 = -1$, $i^3 = -i$, $i^4 = 1$.",
+        "The identity $\\sin^2\\theta + \\cos^2\\theta = 1$ and the exact values of sine and cosine at multiples of $\\pi/6$ and $\\pi/4$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "De Moivre's theorem: powers, quotients and the key companion results",
+      "contenu_markdown": "### The theorem\nFor every real number $\\theta$ and every integer $n$,\n\n$$\n(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta \\tag{1}\n$$\n\nIt follows from the product rule for complex numbers: moduli multiply and arguments add. Applying that rule $n$ times to $\\cos\\theta + i\\sin\\theta$, whose modulus is $1$, adds $\\theta$ to itself $n$ times.\n\n### Powers of any complex number\nIf $z = r(\\cos\\theta + i\\sin\\theta)$, then\n\n$$\nz^n = r^n(\\cos n\\theta + i\\sin n\\theta) \\tag{2}\n$$\n\nThe **modulus is raised to the power** $n$ and the **argument is multiplied by** $n$. If the question wants the principal argument, add or subtract multiples of $2\\pi$ until $-\\pi < n\\theta \\le \\pi$. Because $\\cos(-\\theta) + i\\sin(-\\theta) = \\cos\\theta - i\\sin\\theta$, the theorem also holds for negative $n$, and a quotient becomes a subtraction of angles:\n\n$$\n\\frac{\\cos a + i\\sin a}{\\cos b + i\\sin b} = \\cos(a-b) + i\\sin(a-b) \\tag{3}\n$$\n\n### Method for a power\n1. Find $r$ and $\\theta$, checking the quadrant of $z$ on a sketch.\n2. Apply (2) and reduce the angle.\n3. Convert to $a + bi$ using exact values if asked.\n\n### Useful companion results\nPut $z = \\cos\\theta + i\\sin\\theta$, so that $1/z = \\cos\\theta - i\\sin\\theta$. Then\n\n$$\nz^n + \\frac{1}{z^n} = 2\\cos n\\theta, \\qquad z^n - \\frac{1}{z^n} = 2i\\sin n\\theta \\tag{4}\n$$\n\nThese two results are the key to writing powers of $\\cos\\theta$ and $\\sin\\theta$ in terms of multiple angles.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Multiple-angle identities by binomial expansion",
+          "quand_utiliser": "When asked to express $\\cos n\\theta$ or $\\sin n\\theta$ in terms of powers of $\\cos\\theta$ and $\\sin\\theta$.",
+          "contenu_markdown": "Write $c = \\cos\\theta$ and $s = \\sin\\theta$. By De Moivre's theorem $\\cos n\\theta + i\\sin n\\theta = (c + is)^n$. Expand the right-hand side with the binomial theorem, replace $i^2$ by $-1$, $i^3$ by $-i$ and so on, then **equate real parts** to get $\\cos n\\theta$ and **equate imaginary parts** to get $\\sin n\\theta$. For $n = 2$ this gives $\\cos 2\\theta = c^2 - s^2$ and $\\sin 2\\theta = 2sc$. To obtain an answer in $\\cos\\theta$ alone, replace $s^2$ by $1 - c^2$ (only possible when $s$ appears to an even power)."
+        },
+        {
+          "nom": "Powers of sine and cosine in terms of multiple angles",
+          "quand_utiliser": "When asked to write $\\cos^n\\theta$ or $\\sin^n\\theta$ as a sum of cosines or sines of multiples of $\\theta$, often before integrating.",
+          "contenu_markdown": "With $z = \\cos\\theta + i\\sin\\theta$, use $(2\\cos\\theta)^n = \\left(z + \\frac{1}{z}\\right)^n$ and expand. Pair the terms $z^k$ and $z^{-k}$ and replace each pair by $2\\cos k\\theta$ using (4). For $n = 3$:\n$$(2\\cos\\theta)^3 = z^3 + 3z + \\frac{3}{z} + \\frac{1}{z^3} = 2\\cos 3\\theta + 6\\cos\\theta,$$\nso $\\cos^3\\theta = \\tfrac14(\\cos 3\\theta + 3\\cos\\theta)$. For powers of sine use $(2i\\sin\\theta)^n = \\left(z - \\frac{1}{z}\\right)^n$ and note that $(2i)^n$ is real only for even $n$."
+        },
+        {
+          "nom": "Roots of a complex number",
+          "quand_utiliser": "When asked to solve $z^n = w$ or to find the $n$th roots of a complex number.",
+          "contenu_markdown": "Write $w = r(\\cos\\theta + i\\sin\\theta)$. The $n$ distinct $n$th roots are\n$$z_k = r^{1/n}\\left[\\cos\\frac{\\theta + 2\\pi k}{n} + i\\sin\\frac{\\theta + 2\\pi k}{n}\\right], \\qquad k = 0, 1, \\dots, n-1.$$\nThey lie on a circle of radius $r^{1/n}$ centred at the origin and are equally spaced, with consecutive roots separated by an angle $2\\pi/n$. For $n \\ge 2$ their sum is zero. The cube roots of $1$ are $1$ and $-\\tfrac12 \\pm \\tfrac{\\sqrt3}{2}i$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Use De Moivre's theorem to show that $\\cos 4\\theta \\equiv 8\\cos^4\\theta - 8\\cos^2\\theta + 1$. Hence find the exact value of $\\cos\\dfrac{\\pi}{8}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write $(\\cos\\theta + i\\sin\\theta)^4$ as $\\cos 4\\theta + i\\sin 4\\theta$.",
+          "justification": "De Moivre's theorem with $n = 4$ links the multiple angle to a fourth power.",
+          "resultat_markdown": "$\\cos4\\theta + i\\sin4\\theta = (c + is)^4$, where $c = \\cos\\theta$ and $s = \\sin\\theta$."
+        },
+        {
+          "numero": 2,
+          "action": "Expand $(c + is)^4$ with the binomial theorem.",
+          "justification": "The coefficients are $1, 4, 6, 4, 1$, and $(is)^2 = -s^2$, $(is)^3 = -is^3$, $(is)^4 = s^4$.",
+          "resultat_markdown": "$(c+is)^4 = c^4 + 4ic^3s - 6c^2s^2 - 4ics^3 + s^4$."
+        },
+        {
+          "numero": 3,
+          "action": "Equate real parts.",
+          "justification": "Two complex numbers are equal only if their real parts are equal and their imaginary parts are equal.",
+          "resultat_markdown": "$\\cos4\\theta = c^4 - 6c^2s^2 + s^4$ (and $\\sin4\\theta = 4c^3s - 4cs^3$)."
+        },
+        {
+          "numero": 4,
+          "action": "Replace $s^2$ by $1 - c^2$ to obtain an expression in $c$ only.",
+          "justification": "Only even powers of $s$ remain, so the identity $s^2 = 1 - c^2$ removes $s$ completely.",
+          "resultat_markdown": "$c^4 - 6c^2(1 - c^2) + (1 - c^2)^2 = c^4 - 6c^2 + 6c^4 + 1 - 2c^2 + c^4 = 8c^4 - 8c^2 + 1$."
+        },
+        {
+          "numero": 5,
+          "action": "Put $\\theta = \\dfrac{\\pi}{8}$ and use $\\cos\\dfrac{\\pi}{2} = 0$.",
+          "justification": "The identity holds for every $\\theta$, and $4\\theta = \\pi/2$ has a known cosine.",
+          "resultat_markdown": "With $u = \\cos^2\\dfrac{\\pi}{8}$: $8u^2 - 8u + 1 = 0$."
+        },
+        {
+          "numero": 6,
+          "action": "Solve the quadratic in $u$ and choose the correct root.",
+          "justification": "The roots are $u = \\dfrac{8 \\pm \\sqrt{32}}{16} = \\dfrac{2 \\pm \\sqrt2}{4}$. Since $\\pi/8 < \\pi/4$, $\\cos^2\\dfrac{\\pi}{8} > \\cos^2\\dfrac{\\pi}{4} = \\dfrac12$, and only the plus sign gives a value above $\\dfrac12$; also $\\cos\\dfrac{\\pi}{8} > 0$.",
+          "resultat_markdown": "$\\cos^2\\dfrac{\\pi}{8} = \\dfrac{2+\\sqrt2}{4}$, so $\\cos\\dfrac{\\pi}{8} = \\dfrac{\\sqrt{2+\\sqrt2}}{2}$."
+        }
+      ],
+      "conclusion_markdown": "$\\cos4\\theta \\equiv 8\\cos^4\\theta - 8\\cos^2\\theta + 1$ was obtained by equating real parts of $(\\cos\\theta + i\\sin\\theta)^4$, and substituting $\\theta = \\pi/8$ gives $\\cos\\dfrac{\\pi}{8} = \\dfrac{\\sqrt{2+\\sqrt2}}{2} \\approx 0.9239$. The rejected root, $\\dfrac{2-\\sqrt2}{4}$, is the value of $\\cos^2\\dfrac{3\\pi}{8}$, which also satisfies $\\cos\\dfrac{3\\pi}{2} = 0$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$\\left[2(\\cos\\theta + i\\sin\\theta)\\right]^5 = 2(\\cos5\\theta + i\\sin5\\theta)$",
+          "pourquoi_faux": "The theorem as stated in (1) applies to modulus 1. Here the modulus is 2, and it must be raised to the same power as the number.",
+          "correction_markdown": "$\\left[2(\\cos\\theta + i\\sin\\theta)\\right]^5 = 2^5(\\cos5\\theta + i\\sin5\\theta) = 32(\\cos5\\theta + i\\sin5\\theta)$."
+        },
+        {
+          "erreur_markdown": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos^n\\theta + i\\sin^n\\theta$",
+          "pourquoi_faux": "The exponent multiplies the angle; it does not become a power of the cosine and sine. With $\\theta = \\pi/2$ and $n = 2$ the left side is $i^2 = -1$ but the right side is $0 + i = i$.",
+          "correction_markdown": "$(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$, so for $\\theta = \\pi/2$, $n = 2$ the result is $\\cos\\pi + i\\sin\\pi = -1$."
+        },
+        {
+          "erreur_markdown": "To find $(-1 + i)^3$, take $\\arg(-1+i) = \\tan^{-1}(-1) = -\\dfrac{\\pi}{4}$, which gives $2\\sqrt2\\left(\\cos\\left(-\\dfrac{3\\pi}{4}\\right) + i\\sin\\left(-\\dfrac{3\\pi}{4}\\right)\\right) = -2 - 2i$.",
+          "pourquoi_faux": "The point $(-1, 1)$ is in the second quadrant, so the calculator value $-\\pi/4$ is the wrong argument: it belongs to $1 - i$.",
+          "correction_markdown": "$\\arg(-1+i) = \\dfrac{3\\pi}{4}$, so $(-1+i)^3 = (\\sqrt2)^3\\left(\\cos\\dfrac{9\\pi}{4} + i\\sin\\dfrac{9\\pi}{4}\\right) = 2\\sqrt2\\left(\\cos\\dfrac{\\pi}{4} + i\\sin\\dfrac{\\pi}{4}\\right) = 2 + 2i$."
+        },
+        {
+          "erreur_markdown": "Solving $z^3 = 8i$ and answering only $z = 2\\left(\\cos\\dfrac{\\pi}{6} + i\\sin\\dfrac{\\pi}{6}\\right)$.",
+          "pourquoi_faux": "A cubic equation has three roots. Dividing only the first argument by 3 loses the other two, because the argument of $8i$ is not unique: $\\frac{\\pi}{2}$, $\\frac{\\pi}{2} + 2\\pi$, $\\frac{\\pi}{2} + 4\\pi$ all describe it.",
+          "correction_markdown": "Use $\\dfrac{\\pi/2 + 2\\pi k}{3}$ for $k = 0, 1, 2$ to get the three roots, at angles $\\dfrac{\\pi}{6}$, $\\dfrac{5\\pi}{6}$ and $\\dfrac{3\\pi}{2}$."
+        },
+        {
+          "erreur_markdown": "In expanding $(\\cos\\theta + i\\sin\\theta)^3$, writing $(i\\sin\\theta)^3 = i\\sin^3\\theta$.",
+          "pourquoi_faux": "Since $i^3 = i^2 \\cdot i = -i$, the term is $-i\\sin^3\\theta$. A wrong sign here gives a wrong identity for $\\sin3\\theta$.",
+          "correction_markdown": "$(i\\sin\\theta)^3 = i^3\\sin^3\\theta = -i\\sin^3\\theta$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Express $(\\sqrt3 - i)^6$ in the form $a + bi$.",
+          "solution_markdown": "The point $(\\sqrt3, -1)$ is in the fourth quadrant. Modulus: $r = \\sqrt{3 + 1} = 2$. Argument: $\\theta = -\\dfrac{\\pi}{6}$.\n\nBy (2): $(\\sqrt3 - i)^6 = 2^6\\left[\\cos\\left(-\\dfrac{6\\pi}{6}\\right) + i\\sin\\left(-\\dfrac{6\\pi}{6}\\right)\\right] = 64(\\cos(-\\pi) + i\\sin(-\\pi)) = 64(-1 + 0i)$.\n\n**$(\\sqrt3 - i)^6 = -64$**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Solve $z^3 = 8i$, giving each root in the form $a + bi$ with exact values of $a$ and $b$.",
+          "solution_markdown": "Write $8i = 8\\left(\\cos\\dfrac{\\pi}{2} + i\\sin\\dfrac{\\pi}{2}\\right)$. The roots have modulus $8^{1/3} = 2$ and arguments $\\dfrac{\\pi/2 + 2\\pi k}{3}$, $k = 0, 1, 2$, that is $\\dfrac{\\pi}{6}$, $\\dfrac{5\\pi}{6}$, $\\dfrac{3\\pi}{2}$.\n\n- $k = 0$: $2\\left(\\dfrac{\\sqrt3}{2} + \\dfrac{i}{2}\\right) = \\sqrt3 + i$\n- $k = 1$: $2\\left(-\\dfrac{\\sqrt3}{2} + \\dfrac{i}{2}\\right) = -\\sqrt3 + i$\n- $k = 2$: $2(0 - i) = -2i$\n\nCheck: $(-2i)^3 = -8i^3 = 8i$. The three roots are equally spaced by $\\dfrac{2\\pi}{3}$ on the circle $|z| = 2$ and add up to $0$.\n\n**$z = \\sqrt3 + i,\\ -\\sqrt3 + i,\\ -2i$**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) By expanding $\\left(z + \\dfrac{1}{z}\\right)^4$ where $z = \\cos\\theta + i\\sin\\theta$, show that $\\cos^4\\theta \\equiv \\dfrac18(\\cos4\\theta + 4\\cos2\\theta + 3)$.\n\n(b) Hence evaluate $\\displaystyle\\int_0^{\\pi/2}\\cos^4\\theta\\,d\\theta$.",
+          "solution_markdown": "(a) $z + \\dfrac{1}{z} = 2\\cos\\theta$, so $(2\\cos\\theta)^4 = z^4 + 4z^2 + 6 + \\dfrac{4}{z^2} + \\dfrac{1}{z^4}$.\n\nGroup the terms: $\\left(z^4 + \\dfrac{1}{z^4}\\right) + 4\\left(z^2 + \\dfrac{1}{z^2}\\right) + 6 = 2\\cos4\\theta + 8\\cos2\\theta + 6$ by (4).\n\nHence $16\\cos^4\\theta = 2\\cos4\\theta + 8\\cos2\\theta + 6$, and dividing by 16: **$\\cos^4\\theta \\equiv \\dfrac18(\\cos4\\theta + 4\\cos2\\theta + 3)$**.\n\n(b) $\\displaystyle\\int_0^{\\pi/2}\\cos^4\\theta\\,d\\theta = \\dfrac18\\left[\\dfrac{\\sin4\\theta}{4} + 2\\sin2\\theta + 3\\theta\\right]_0^{\\pi/2}$.\n\nAt $\\theta = \\dfrac{\\pi}{2}$: $\\sin 2\\pi = 0$, $\\sin\\pi = 0$ and $3\\theta = \\dfrac{3\\pi}{2}$; at $\\theta = 0$ every term is $0$. So the integral is $\\dfrac18 \\cdot \\dfrac{3\\pi}{2}$.\n\n**$\\displaystyle\\int_0^{\\pi/2}\\cos^4\\theta\\,d\\theta = \\dfrac{3\\pi}{16}$**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "De Moivre: $(\\cos\\theta + i\\sin\\theta)^n = \\cos n\\theta + i\\sin n\\theta$; for $z = r(\\cos\\theta + i\\sin\\theta)$, $z^n = r^n(\\cos n\\theta + i\\sin n\\theta)$.",
+        "Always find the modulus and the argument first, checking the quadrant on a sketch, and reduce the final angle to the principal range when asked.",
+        "A quotient subtracts the angles, and $1/(\\cos\\theta + i\\sin\\theta) = \\cos\\theta - i\\sin\\theta$.",
+        "For $\\cos n\\theta$ and $\\sin n\\theta$, expand $(\\cos\\theta + i\\sin\\theta)^n$ and equate real and imaginary parts; for powers of $\\cos\\theta$ and $\\sin\\theta$, expand $(z \\pm 1/z)^n$ and use $z^k \\pm z^{-k}$.",
+        "The $n$th roots of $r(\\cos\\theta + i\\sin\\theta)$ have modulus $r^{1/n}$, arguments $(\\theta + 2\\pi k)/n$ for $k = 0, \\dots, n-1$, and are equally spaced round a circle."
+      ]
+    }
+  ]
+}

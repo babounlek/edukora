@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-complex-numbers",
+  "meta": {
+    "titre": "Complex Numbers: Cartesian, polar and exponential form",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Arithmetic, argument and roots of polynomials",
+    "duree_estimee_min": 40,
+    "tags": [
+      "complex numbers"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-complex-numbers-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Technicians who repair generators and inverters in Yaoundé or Douala work with alternating currents, whose voltages rise, fall and change direction many times a second. Engineers describe such quantities with complex numbers, because a rotation becomes a simple multiplication. At the GCE the same ideas appear as pure algebra: arithmetic in the form $a+bi$, converting to modulus and argument, raising a number to a power, and finding all the roots of a polynomial equation when one complex root is known. Each of these is a short, mechanical routine once the rules are clear."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "$i^2=-1$, and the usual rules of algebra (expanding brackets, collecting terms) still hold for $i$.",
+        "Exact values of sine and cosine at $\\dfrac{\\pi}{6}$, $\\dfrac{\\pi}{4}$ and $\\dfrac{\\pi}{3}$, and angles measured in radians.",
+        "If a polynomial $f(z)$ has $f(a)=0$, then $(z-a)$ is a factor; for $z^3+bz^2+cz+d=0$ the sum of the roots is $-b$ and the product is $-d$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Complex numbers in three forms, powers and conjugate roots",
+      "contenu_markdown": "### Cartesian form and division\n\nA complex number is $z=a+bi$ with $a=\\operatorname{Re}z$ and $b=\\operatorname{Im}z$ real. Its **conjugate** is $\\bar z=a-bi$, and $z\\bar z=a^2+b^2$ is real. To divide, multiply numerator and denominator by the conjugate of the denominator, which makes the denominator real:\n\n$$\n\\frac{p+qi}{r+si}=\\frac{(p+qi)(r-si)}{r^2+s^2} \\tag{1}\n$$\n\n### Modulus, argument, exponential form\n\nThe **modulus** is $|z|=\\sqrt{a^2+b^2}$. The **argument** $\\theta=\\arg z$ is the angle, measured anticlockwise from the positive real axis, of the line joining the origin to the point $(a,b)$ on the Argand diagram. Its **principal value** lies in $-\\pi<\\theta\\le\\pi$. With $r=|z|$ we have $a=r\\cos\\theta$ and $b=r\\sin\\theta$, so\n\n$$\nz=r(\\cos\\theta+i\\sin\\theta)=re^{i\\theta} \\tag{2}\n$$\n\nThe last form uses Euler's formula $e^{i\\theta}=\\cos\\theta+i\\sin\\theta$, with $\\theta$ in radians. The equation $\\tan\\theta=b/a$ has two solutions in a full turn, so always sketch the point and choose the quadrant from the signs of $a$ and $b$: a calculator gives only values between $-\\frac{\\pi}{2}$ and $\\frac{\\pi}{2}$.\n\n### Products, quotients and powers\n\nModuli multiply and arguments add in a product ($|z_1z_2|=|z_1||z_2|$, $\\arg z_1z_2=\\arg z_1+\\arg z_2$ up to a multiple of $2\\pi$); in a quotient moduli divide and arguments subtract. For an integer $n$,\n\n$$\n\\left(re^{i\\theta}\\right)^n=r^ne^{in\\theta} \\tag{3}\n$$\n\nand afterwards you add or subtract multiples of $2\\pi$ to return to the principal argument.\n\n### Polynomials with real coefficients\n\nIf every coefficient of a polynomial equation is real and $z_1$ is a non-real root, then $\\bar z_1$ is also a root. Roots $a\\pm bi$ come from the real quadratic factor $z^2-2az+(a^2+b^2)$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Powers and quotients in Cartesian form",
+          "quand_utiliser": "When the answer is wanted as $a+bi$ and no angle is involved.",
+          "contenu_markdown": "Expand with brackets and replace $i^2=-1$, $i^3=-i$, $i^4=1$. For example $(2+i)^2=4+4i+i^2=3+4i$, and then $(2+i)^3=(3+4i)(2+i)=6+3i+8i+4i^2=2+11i$. For a quotient use formula (1). Keep the real and imaginary parts separate in the final line: $a+bi$ with $a$ and $b$ real."
+        },
+        {
+          "nom": "Special angles and numbers on the axes",
+          "quand_utiliser": "When converting to exponential form and the number lies on an axis or has an exact angle.",
+          "contenu_markdown": "Numbers on the axes: $i=e^{i\\pi/2}$, $-1=e^{i\\pi}$ and $-2i=2e^{-i\\pi/2}$. Numbers with exact angles: $\\sqrt3+i=2e^{i\\pi/6}$, because $|{\\sqrt3+i}|=2$ and $\\tan\\theta=\\dfrac1{\\sqrt3}$ with the point in the first quadrant. For a negative real part add or subtract $\\pi$ from the arctan value: $-\\sqrt3+i$ has argument $\\pi-\\dfrac{\\pi}{6}=\\dfrac{5\\pi}{6}$."
+        },
+        {
+          "nom": "Finding the other roots of a polynomial",
+          "quand_utiliser": "When one complex root of a real polynomial is given and you must find the rest.",
+          "contenu_markdown": "Write the conjugate as a second root and form the real quadratic factor. For example, if $2+i$ is a root of a real cubic then so is $2-i$, and $(z-2-i)(z-2+i)=(z-2)^2+1=z^2-4z+5$ is a factor. Find the remaining root by dividing, or from the sum of the roots ($-b$ for a monic cubic) or from the product ($-d$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Express $\\left(1-\\sqrt3\\,i\\right)^5$ in the form $a+bi$, giving $a$ and $b$ in exact form.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the modulus of $1-\\sqrt3\\,i$.",
+          "justification": "The modulus is $\\sqrt{a^2+b^2}$ and is needed for the exponential form.",
+          "resultat_markdown": "$r=\\sqrt{1^2+(\\sqrt3)^2}=\\sqrt4=2$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the principal argument.",
+          "justification": "The point $(1,-\\sqrt3)$ is in the fourth quadrant, so $\\theta$ is negative. Here $\\tan\\theta=-\\sqrt3$.",
+          "resultat_markdown": "$\\theta=-\\dfrac{\\pi}{3}$."
+        },
+        {
+          "numero": 3,
+          "action": "Write the number in exponential form.",
+          "justification": "Equation (2) gives $z=re^{i\\theta}$.",
+          "resultat_markdown": "$1-\\sqrt3\\,i=2e^{-i\\pi/3}$."
+        },
+        {
+          "numero": 4,
+          "action": "Raise to the power 5.",
+          "justification": "Apply (3): the modulus is raised to the power and the argument is multiplied by $5$.",
+          "resultat_markdown": "$$\n\\left(2e^{-i\\pi/3}\\right)^5=2^5e^{-5\\pi i/3}=32e^{-5\\pi i/3} \\tag{4}\n$$"
+        },
+        {
+          "numero": 5,
+          "action": "Reduce the argument to the principal range.",
+          "justification": "$-\\dfrac{5\\pi}{3}$ is below $-\\pi$; adding $2\\pi$ does not change the point.",
+          "resultat_markdown": "$-\\dfrac{5\\pi}{3}+2\\pi=\\dfrac{\\pi}{3}$, so the number is $32e^{i\\pi/3}$."
+        },
+        {
+          "numero": 6,
+          "action": "Convert back to Cartesian form.",
+          "justification": "Use $a=r\\cos\\theta$ and $b=r\\sin\\theta$ with $\\cos\\dfrac{\\pi}{3}=\\dfrac12$ and $\\sin\\dfrac{\\pi}{3}=\\dfrac{\\sqrt3}{2}$.",
+          "resultat_markdown": "$32\\left(\\dfrac12+\\dfrac{\\sqrt3}{2}\\,i\\right)=16+16\\sqrt3\\,i$."
+        }
+      ],
+      "conclusion_markdown": "$\\left(1-\\sqrt3\\,i\\right)^5=16+16\\sqrt3\\,i$. Check on the modulus: $\\sqrt{16^2+(16\\sqrt3)^2}=\\sqrt{256+768}=\\sqrt{1024}=32=2^5$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The student finds $\\arg(-1+i)$ by writing $\\arctan\\dfrac{1}{-1}=-\\dfrac{\\pi}{4}$.",
+          "pourquoi_faux": "The calculator value of arctan lies between $-\\frac{\\pi}{2}$ and $\\frac{\\pi}{2}$, so it cannot distinguish the fourth quadrant from the second. The point $(-1,1)$ is in the second quadrant.",
+          "correction_markdown": "Sketch the point. It is in the second quadrant, so $\\arg(-1+i)=\\pi-\\dfrac{\\pi}{4}=\\dfrac{3\\pi}{4}$."
+        },
+        {
+          "erreur_markdown": "To simplify $\\dfrac{2+i}{1-3i}$ the student multiplies top and bottom by $1-3i$.",
+          "pourquoi_faux": "Multiplying by the denominator itself gives $(1-3i)^2=-8-6i$, which is still complex. The denominator becomes real only when it is multiplied by its **conjugate**.",
+          "correction_markdown": "Multiply by $1+3i$: $\\dfrac{(2+i)(1+3i)}{1^2+3^2}=\\dfrac{2+6i+i+3i^2}{10}=\\dfrac{-1+7i}{10}$."
+        },
+        {
+          "erreur_markdown": "The student expands $(2-i)^2$ as $4+i^2=3$.",
+          "pourquoi_faux": "The middle term $2\\times2\\times(-i)$ is forgotten. A square of a sum or difference always has three terms.",
+          "correction_markdown": "$(2-i)^2=4-4i+i^2=3-4i$."
+        },
+        {
+          "erreur_markdown": "The equation $z^2-2iz-1-2i=0$ has the root $1+2i$, so the student says that $1-2i$ is also a root.",
+          "pourquoi_faux": "The conjugate root theorem needs **real** coefficients, and here the coefficient of $z$ is $-2i$. In fact the sum of the roots is $2i$, so the other root is $-1$, not $1-2i$.",
+          "correction_markdown": "Use the conjugate root only for real coefficients. Here, sum of roots $=2i$ gives the second root $2i-(1+2i)=-1$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Express $\\dfrac{3+2i}{1-i}$ in the form $a+bi$, and find its modulus.",
+          "solution_markdown": "Multiply numerator and denominator by the conjugate $1+i$:\n\n$\\dfrac{(3+2i)(1+i)}{(1-i)(1+i)}=\\dfrac{3+3i+2i+2i^2}{1+1}=\\dfrac{1+5i}{2}$.\n\nSo the number is **$\\dfrac12+\\dfrac52\\,i$**.\n\nIts modulus is $\\sqrt{\\dfrac14+\\dfrac{25}{4}}=\\sqrt{\\dfrac{26}{4}}=$ **$\\dfrac{\\sqrt{26}}{2}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Show that $3+i$ is a root of the equation $z^3-4z^2-2z+20=0$, and find the other two roots.",
+          "solution_markdown": "$(3+i)^2=9+6i-1=8+6i$ and $(3+i)^3=(8+6i)(3+i)=24+8i+18i-6=18+26i$.\n\nThen $z^3-4z^2-2z+20=(18+26i)-4(8+6i)-2(3+i)+20$.\n\nReal parts: $18-32-6+20=0$. Imaginary parts: $26-24-2=0$. So $3+i$ is a root.\n\nThe coefficients are real, so **$3-i$ is also a root**. The sum of the three roots is $-(-4)=4$, so the third root is $4-(3+i)-(3-i)=$ **$-2$**.\n\nCheck with the product of the roots, which is $-20$: $(3+i)(3-i)(-2)=10\\times(-2)=-20$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The complex number $u$ is $-\\sqrt3+i$.\n\n(a) Express $u$ in the form $re^{i\\theta}$, with $\\theta$ the principal argument.\n\n(b) Find $u^6$.\n\n(c) Find the smallest positive integer $n$ for which $u^n$ is real and positive, and state its value.",
+          "solution_markdown": "(a) $r=\\sqrt{3+1}=2$. The point $(-\\sqrt3,1)$ is in the second quadrant and $\\tan^{-1}\\dfrac{1}{\\sqrt3}=\\dfrac{\\pi}{6}$, so $\\theta=\\pi-\\dfrac{\\pi}{6}$. Thus **$u=2e^{5\\pi i/6}$**.\n\n(b) $u^6=2^6e^{5\\pi i}=64e^{i\\pi}$ since $5\\pi-4\\pi=\\pi$, so **$u^6=-64$**.\n\n(c) $u^n=2^ne^{5n\\pi i/6}$ is real and positive when $\\dfrac{5n\\pi}{6}$ is a multiple of $2\\pi$, that is when $5n=12k$ for an integer $k$. Since $5$ and $12$ have no common factor, $n$ must be a multiple of $12$. The smallest value is **$n=12$**, and $u^{12}=2^{12}e^{10\\pi i}=$ **$4096$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Divide complex numbers by multiplying top and bottom by the conjugate of the denominator; always give $a+bi$ with $a$ and $b$ real.",
+        "Modulus $r=\\sqrt{a^2+b^2}$; the argument needs a sketch to choose the quadrant, never only $\\arctan\\dfrac ba$.",
+        "$z=re^{i\\theta}=r(\\cos\\theta+i\\sin\\theta)$, and powers follow $\\left(re^{i\\theta}\\right)^n=r^ne^{in\\theta}$; bring the argument back into $-\\pi<\\theta\\le\\pi$.",
+        "For a polynomial with real coefficients, non-real roots come in conjugate pairs $a\\pm bi$, with real quadratic factor $z^2-2az+(a^2+b^2)$.",
+        "After finding two roots, the third comes from the sum ($-b$) or the product ($-d$) of the roots of a monic cubic."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-matrix-algebra",
+  "meta": {
+    "titre": "Matrix Algebra: products, transposes, 3 by 3 inverses and linear systems",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Matrices and linear systems",
+    "duree_estimee_min": 35,
+    "tags": [
+      "matrix algebra"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-matrix-algebra-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Douala sells plantains, tomatoes and onions at three stalls, and her daily sales are written as a table of numbers. Written as a matrix, such a table can be multiplied by a column of prices in one operation, and unknown prices can be found by applying an inverse matrix. Engineers, banks and computer programs solve large sets of linear equations in exactly this way. At Advanced Level the GCE papers return again and again to the same chain of skills: a determinant, a product or a transpose, an inverse, and then three equations in three unknowns solved \"hence\". Every step has to be exact, because one wrong sign ruins the whole chain."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Matrices of the same order are added or subtracted entry by entry, and a matrix is multiplied by a number entry by entry.",
+        "A $2\\times2$ determinant is $\\begin{vmatrix}a&b\\\\c&d\\end{vmatrix}=ad-bc$.",
+        "The identity matrix $\\mathbf I$ has 1 on the leading diagonal and 0 elsewhere, and $\\mathbf{AI}=\\mathbf{IA}=\\mathbf A$.",
+        "A pair of linear equations in two unknowns can be solved by elimination or by substitution."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Products, transposes, determinants and inverses of 3 by 3 matrices",
+      "contenu_markdown": "### Products and transposes\nA matrix with $m$ rows and $n$ columns has order $m\\times n$. The product $\\mathbf{AB}$ exists only when the number of columns of $\\mathbf A$ equals the number of rows of $\\mathbf B$. Its entry in row $i$ and column $j$ is row $i$ of $\\mathbf A$ multiplied term by term with column $j$ of $\\mathbf B$ and added up:\n\n$$\n(\\mathbf{AB})_{ij}=\\sum_{k} a_{ik}\\,b_{kj} \\tag{1}\n$$\n\nMatrix multiplication is not commutative, so in general $\\mathbf{AB}\\neq\\mathbf{BA}$. The transpose $\\mathbf A^{\\mathrm T}$ is formed by writing the rows of $\\mathbf A$ as columns, and $(\\mathbf{AB})^{\\mathrm T}=\\mathbf B^{\\mathrm T}\\mathbf A^{\\mathrm T}$ (the order reverses).\n\n### Determinant of a $3\\times3$ matrix\nExpanding along the first row,\n\n$$\n|\\mathbf A|=a_{11}C_{11}+a_{12}C_{12}+a_{13}C_{13} \\tag{2}\n$$\n\nwhere the cofactor is $C_{ij}=(-1)^{i+j}M_{ij}$ and the minor $M_{ij}$ is the $2\\times2$ determinant left after deleting row $i$ and column $j$. The signs $(-1)^{i+j}$ follow a chessboard:\n\n| | col 1 | col 2 | col 3 |\n|---|---|---|---|\n| row 1 | $+$ | $-$ | $+$ |\n| row 2 | $-$ | $+$ | $-$ |\n| row 3 | $+$ | $-$ | $+$ |\n\nAny row or column can be used, so choose the one with the most zeros, and check by expanding along a second line. Also $|\\mathbf A^{\\mathrm T}|=|\\mathbf A|$ and $|\\mathbf{AB}|=|\\mathbf A|\\,|\\mathbf B|$.\n\n### Inverse and linear systems\nThe inverse $\\mathbf A^{-1}$ exists only when $|\\mathbf A|\\neq0$; such a matrix is called non-singular. If $\\mathbf C$ is the matrix of cofactors, then\n\n$$\n\\mathbf A^{-1}=\\frac{1}{|\\mathbf A|}\\,\\mathrm{adj}\\,\\mathbf A,\\qquad \\mathrm{adj}\\,\\mathbf A=\\mathbf C^{\\mathrm T} \\tag{3}\n$$\n\nand $\\mathbf{AA}^{-1}=\\mathbf A^{-1}\\mathbf A=\\mathbf I$. A system of three equations is written $\\mathbf{AX}=\\mathbf b$, where $\\mathbf X$ is the column of unknowns. When $|\\mathbf A|\\neq0$, multiplying both sides on the left by $\\mathbf A^{-1}$ gives\n\n$$\n\\mathbf X=\\mathbf A^{-1}\\mathbf b \\tag{4}\n$$\n\nThe inverse must be placed on the left, because matrix multiplication is not commutative.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Using a given product instead of computing an inverse",
+          "quand_utiliser": "When a question gives two matrices, asks for their product, and then says \"hence\" solve a system.",
+          "contenu_markdown": "If $\\mathbf{AB}=k\\mathbf I$ with $k\\neq0$, then $\\mathbf A\\left(\\tfrac1k\\mathbf B\\right)=\\mathbf I$, so $\\mathbf A^{-1}=\\tfrac1k\\mathbf B$ and also $\\mathbf B^{-1}=\\tfrac1k\\mathbf A$. No cofactors are needed. A system whose coefficient matrix is $\\mathbf B$ is solved by $\\mathbf X=\\tfrac1k\\mathbf A\\mathbf b$: read the coefficients of the equations carefully to see whether they are the rows of $\\mathbf A$ or of $\\mathbf B$, then use the other matrix."
+        },
+        {
+          "nom": "Singular matrices and an unknown parameter",
+          "quand_utiliser": "When an entry of the matrix is a letter and the question asks for which values the inverse does not exist.",
+          "contenu_markdown": "Expand $|\\mathbf A|$ as a polynomial in the parameter, put it equal to zero and solve. The matrix is singular for exactly those values. For a singular matrix the equations $\\mathbf{AX}=\\mathbf b$ have either no solution or infinitely many, never a single solution, so the method $\\mathbf X=\\mathbf A^{-1}\\mathbf b$ fails."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Let $\\mathbf N=\\begin{pmatrix}1 & 2 & 0 \\\\ 0 & 1 & 3 \\\\ 1 & 0 & 1\\end{pmatrix}$.\n\n(a) Find $|\\mathbf N|$. (b) Find $\\mathbf N^{-1}$. (c) Hence solve the equations $x+2y=5$, $y+3z=5$ and $x+z=2$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Expand the determinant along the first row.",
+          "justification": "The third entry of the first row is 0, so only two minors have to be calculated, with signs $+,-,+$.",
+          "resultat_markdown": "$|\\mathbf N|=1\\begin{vmatrix}1&3\\\\0&1\\end{vmatrix}-2\\begin{vmatrix}0&3\\\\1&1\\end{vmatrix}+0=1(1)-2(-3)=7$"
+        },
+        {
+          "numero": 2,
+          "action": "Find the nine cofactors.",
+          "justification": "Each cofactor is the signed $2\\times2$ minor. For example $C_{21}=-\\begin{vmatrix}2&0\\\\0&1\\end{vmatrix}=-2$ and $C_{32}=-\\begin{vmatrix}1&0\\\\0&3\\end{vmatrix}=-3$.",
+          "resultat_markdown": "$C_{11}=1,\\ C_{12}=3,\\ C_{13}=-1$; $C_{21}=-2,\\ C_{22}=1,\\ C_{23}=2$; $C_{31}=6,\\ C_{32}=-3,\\ C_{33}=1$.\n\n$$\n\\mathbf C=\\begin{pmatrix}1 & 3 & -1 \\\\ -2 & 1 & 2 \\\\ 6 & -3 & 1\\end{pmatrix} \\tag{1}\n$$"
+        },
+        {
+          "numero": 3,
+          "action": "Transpose the cofactor matrix to obtain the adjugate.",
+          "justification": "The adjugate is $\\mathbf C^{\\mathrm T}$, so rows and columns are swapped. Forgetting this step is the commonest error.",
+          "resultat_markdown": "$$\n\\mathrm{adj}\\,\\mathbf N=\\begin{pmatrix}1 & -2 & 6 \\\\ 3 & 1 & -3 \\\\ -1 & 2 & 1\\end{pmatrix} \\tag{2}\n$$"
+        },
+        {
+          "numero": 4,
+          "action": "Divide by the determinant and check one entry.",
+          "justification": "$\\mathbf N^{-1}=\\frac{1}{|\\mathbf N|}\\mathrm{adj}\\,\\mathbf N$. Row 1 of $\\mathbf N$ times column 1 of the adjugate must give $|\\mathbf N|$: $1(1)+2(3)+0(-1)=7$.",
+          "resultat_markdown": "$$\n\\mathbf N^{-1}=\\frac{1}{7}\\begin{pmatrix}1 & -2 & 6 \\\\ 3 & 1 & -3 \\\\ -1 & 2 & 1\\end{pmatrix} \\tag{3}\n$$"
+        },
+        {
+          "numero": 5,
+          "action": "Write the equations as $\\mathbf{NX}=\\mathbf b$ and multiply on the left by $\\mathbf N^{-1}$.",
+          "justification": "The coefficient matrix of the equations is exactly $\\mathbf N$, with $\\mathbf b=(5,\\,5,\\,2)^{\\mathrm T}$, so $\\mathbf X=\\mathbf N^{-1}\\mathbf b$.",
+          "resultat_markdown": "$$\n\\begin{pmatrix}x\\\\y\\\\z\\end{pmatrix}=\\frac17\\begin{pmatrix}1&-2&6\\\\3&1&-3\\\\-1&2&1\\end{pmatrix}\\begin{pmatrix}5\\\\5\\\\2\\end{pmatrix}=\\frac17\\begin{pmatrix}7\\\\14\\\\7\\end{pmatrix}=\\begin{pmatrix}1\\\\2\\\\1\\end{pmatrix} \\tag{4}\n$$"
+        },
+        {
+          "numero": 6,
+          "action": "Check in the original equations.",
+          "justification": "A solution of a system must satisfy every equation.",
+          "resultat_markdown": "$1+2(2)=5$, $2+3(1)=5$ and $1+1=2$, all true."
+        }
+      ],
+      "conclusion_markdown": "$|\\mathbf N|=7$, $\\mathbf N^{-1}=\\dfrac17\\begin{pmatrix}1 & -2 & 6 \\\\ 3 & 1 & -3 \\\\ -1 & 2 & 1\\end{pmatrix}$, and the solution is $x=1$, $y=2$, $z=1$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Computing $\\begin{pmatrix}1&2\\\\3&4\\end{pmatrix}\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$ as $\\begin{pmatrix}0&2\\\\3&0\\end{pmatrix}$, multiplying entries in the same position.",
+          "pourquoi_faux": "Matrix multiplication is not entry-by-entry. Each entry of a product is a row of the first matrix combined with a column of the second.",
+          "correction_markdown": "Row by column: $\\begin{pmatrix}1(0)+2(1)&1(1)+2(0)\\\\3(0)+4(1)&3(1)+4(0)\\end{pmatrix}=\\begin{pmatrix}2 & 1 \\\\ 4 & 3\\end{pmatrix}$."
+        },
+        {
+          "erreur_markdown": "Writing $(\\mathbf{AB})^{\\mathrm T}=\\mathbf A^{\\mathrm T}\\mathbf B^{\\mathrm T}$.",
+          "pourquoi_faux": "The order must reverse. If $\\mathbf A$ is $2\\times3$ and $\\mathbf B$ is $3\\times4$, then $\\mathbf A^{\\mathrm T}$ is $3\\times2$ and $\\mathbf B^{\\mathrm T}$ is $4\\times3$, so $\\mathbf A^{\\mathrm T}\\mathbf B^{\\mathrm T}$ does not even exist.",
+          "correction_markdown": "$(\\mathbf{AB})^{\\mathrm T}=\\mathbf B^{\\mathrm T}\\mathbf A^{\\mathrm T}$, which has order $4\\times2$ as it should."
+        },
+        {
+          "erreur_markdown": "Expanding $|\\mathbf N|$ with all signs positive: $1(1)+2(-3)+0=-5$.",
+          "pourquoi_faux": "The cofactor signs alternate $+,-,+$ along the first row. The term for $a_{12}$ carries a minus sign, so $-2\\times(-3)=+6$, not $-6$.",
+          "correction_markdown": "$|\\mathbf N|=1(1)-2(-3)+0=7$. Expanding along a second row or column is a quick check."
+        },
+        {
+          "erreur_markdown": "Using the matrix of cofactors directly as the adjugate: $\\mathbf N^{-1}=\\frac17\\mathbf C$.",
+          "pourquoi_faux": "The adjugate is the transpose of the cofactor matrix. With $\\mathbf C$ in place, the first row of $\\mathbf N$ times the first column of $\\mathbf C$ gives $1(1)+2(-2)+0(6)=-3$, not 7, so the product is not $7\\mathbf I$.",
+          "correction_markdown": "Transpose first: $\\mathrm{adj}\\,\\mathbf N=\\mathbf C^{\\mathrm T}$, then $\\mathbf N^{-1}=\\frac17\\mathrm{adj}\\,\\mathbf N$."
+        },
+        {
+          "erreur_markdown": "Solving $\\mathbf{AX}=\\mathbf b$ by writing $\\mathbf X=\\mathbf b\\mathbf A^{-1}$.",
+          "pourquoi_faux": "Multiplication is not commutative. Here $\\mathbf b$ is a $3\\times1$ column and $\\mathbf A^{-1}$ is $3\\times3$, so $\\mathbf b\\mathbf A^{-1}$ is not defined.",
+          "correction_markdown": "Multiply both sides on the left: $\\mathbf A^{-1}\\mathbf{AX}=\\mathbf A^{-1}\\mathbf b$, giving $\\mathbf X=\\mathbf A^{-1}\\mathbf b$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Given $\\mathbf A=\\begin{pmatrix}2 & 0 & 1 \\\\ 1 & 3 & 0 \\\\ 0 & 1 & 4\\end{pmatrix}$, find $|\\mathbf A|$, write down $\\mathbf A^{\\mathrm T}$, and verify that $|\\mathbf A^{\\mathrm T}|=|\\mathbf A|$.",
+          "solution_markdown": "Expanding along the first row: $|\\mathbf A|=2(3\\times4-0\\times1)-0+1(1\\times1-3\\times0)=24+1=$ **25**.\n\n$\\mathbf A^{\\mathrm T}=\\begin{pmatrix}2 & 1 & 0 \\\\ 0 & 3 & 1 \\\\ 1 & 0 & 4\\end{pmatrix}$.\n\nExpanding $|\\mathbf A^{\\mathrm T}|$ along its first row: $2(3\\times4-1\\times0)-1(0\\times4-1\\times1)+0=24+1=25$. So $|\\mathbf A^{\\mathrm T}|=|\\mathbf A|=$ **25**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The matrices $\\mathbf A$ and $\\mathbf B$ are given by $\\mathbf A=\\begin{pmatrix}1 & 1 & 0 \\\\ 0 & 2 & 1 \\\\ 1 & 0 & 1\\end{pmatrix}$ and $\\mathbf B=\\begin{pmatrix}2 & -1 & 1 \\\\ 1 & 1 & -1 \\\\ -2 & 1 & 2\\end{pmatrix}$.\n\n(a) Find $\\mathbf{AB}$. (b) Hence solve the equations $2x-y+z=-1$, $x+y-z=4$ and $-2x+y+2z=-2$.",
+          "solution_markdown": "(a) Row by column: $\\mathbf{AB}=\\begin{pmatrix}3 & 0 & 0 \\\\ 0 & 3 & 0 \\\\ 0 & 0 & 3\\end{pmatrix}=3\\mathbf I$. For example, the first row of $\\mathbf A$ with the first column of $\\mathbf B$ gives $1(2)+1(1)+0(-2)=3$.\n\n(b) The coefficient matrix of the equations is $\\mathbf B$. Since $\\mathbf{AB}=3\\mathbf I$, we have $\\mathbf B^{-1}=\\tfrac13\\mathbf A$. Then\n\n$$\n\\begin{pmatrix}x\\\\y\\\\z\\end{pmatrix}=\\frac13\\begin{pmatrix}1&1&0\\\\0&2&1\\\\1&0&1\\end{pmatrix}\\begin{pmatrix}-1\\\\4\\\\-2\\end{pmatrix}=\\frac13\\begin{pmatrix}3\\\\6\\\\-3\\end{pmatrix} \\tag{1}\n$$\n\nSo **$x=1$, $y=2$, $z=-1$**. Check in the second equation: $1+2-(-1)=4$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $\\mathbf M=\\begin{pmatrix}1&k&1\\\\2&1&0\\\\1&1&k\\end{pmatrix}$, where $k$ is a constant.\n\n(a) Show that $|\\mathbf M|=1+k-2k^2$ and find the values of $k$ for which $\\mathbf M$ has no inverse.\n\n(b) For $k=0$, find $\\mathbf M^{-1}$ and hence solve $x+z=4$, $2x+y=5$, $x+y=4$.",
+          "solution_markdown": "(a) Expanding along the first row: $|\\mathbf M|=1(k\\times1-0\\times1)-k(2k-0\\times1)+1(2\\times1-1\\times1)=k-2k^2+1$, so $|\\mathbf M|=1+k-2k^2$.\n\n$\\mathbf M$ has no inverse when $|\\mathbf M|=0$: $2k^2-k-1=0$, that is $(2k+1)(k-1)=0$. So **$k=1$ or $k=-\\tfrac12$**.\n\n(b) For $k=0$: $\\mathbf M=\\begin{pmatrix}1 & 0 & 1 \\\\ 2 & 1 & 0 \\\\ 1 & 1 & 0\\end{pmatrix}$ and $|\\mathbf M|=1$. The cofactors are $\\mathbf C=\\begin{pmatrix}0 & 0 & 1 \\\\ 1 & -1 & -1 \\\\ -1 & 2 & 1\\end{pmatrix}$, so\n\n$$\n\\mathbf M^{-1}=\\begin{pmatrix}0 & 1 & -1 \\\\ 0 & -1 & 2 \\\\ 1 & -1 & 1\\end{pmatrix} \\tag{1}\n$$\n\nThe equations are $\\mathbf{MX}=(4,\\,5,\\,4)^{\\mathrm T}$, so $\\mathbf X=\\mathbf M^{-1}\\mathbf b=(0+5-4,\\ 0-5+8,\\ 4-5+4)^{\\mathrm T}$. Hence **$x=1$, $y=3$, $z=3$**. Check: $x+z=4$, $2x+y=5$ and $x+y=4$ all hold."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A product $\\mathbf{AB}$ is row by column, needs columns of $\\mathbf A$ = rows of $\\mathbf B$, and is not commutative; $(\\mathbf{AB})^{\\mathrm T}=\\mathbf B^{\\mathrm T}\\mathbf A^{\\mathrm T}$.",
+        "Expand a $3\\times3$ determinant along the row or column with most zeros, using the chessboard signs $+,-,+$ / $-,+,-$ / $+,-,+$; $|\\mathbf A^{\\mathrm T}|=|\\mathbf A|$.",
+        "$\\mathbf A^{-1}=\\dfrac{1}{|\\mathbf A|}\\mathbf C^{\\mathrm T}$: cofactors, then transpose, then divide by the determinant. No inverse exists when $|\\mathbf A|=0$.",
+        "If $\\mathbf{AB}=k\\mathbf I$, then $\\mathbf A^{-1}=\\frac1k\\mathbf B$: use this for any hence-type question instead of recomputing.",
+        "Solve $\\mathbf{AX}=\\mathbf b$ with $\\mathbf X=\\mathbf A^{-1}\\mathbf b$ (inverse on the left), and check the answer in the original equations."
+      ]
+    }
+  ]
+}

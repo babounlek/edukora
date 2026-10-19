@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-pm-statistics-series-convergence",
+  "meta": {
+    "titre": "Series Convergence: Geometric Series, Sums to Infinity and Ranges of Validity",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Convergence of geometric and binomial series",
+    "duree_estimee_min": 35,
+    "tags": [
+      "series convergence"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2024-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2024-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-series-convergence-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Bafoussam who puts aside, each month, half as much as in the previous month is adding amounts that get smaller and smaller, and can ask whether the total will ever pass a fixed figure. Infinite series answer this: some, such as geometric series with a small ratio, add up to a finite sum, while others grow without bound. The GCE papers test this in a few standard forms: finding a sum to infinity, finding an unknown first term or ratio, finding the values of x for which a series converges, and stating where a binomial expansion is valid."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A geometric sequence has a constant ratio between consecutive terms, so its terms are $a, ar, ar^2, \\dots$ with $n$th term $ar^{n-1}$.",
+        "For $|r| < 1$, powers $r^n$ become as small as we please when $n$ is large; for $|r| > 1$ they grow without bound.",
+        "Sigma notation $\\sum_{k=1}^{n} u_k$ means the sum of $u_k$ from $k = 1$ to $k = n$.",
+        "The inequality $|r| < 1$ is the same as $-1 < r < 1$, and $|u| < c$ with $c > 0$ means $-c < u < c$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Geometric series, sum to infinity and the condition for convergence",
+      "contenu_markdown": "### Geometric series\nA geometric series has first term $a$ and common ratio $r$: $a + ar + ar^2 + \\cdots$. The sum of the first $n$ terms, for $r \\ne 1$, is\n\n$$\nS_n = \\frac{a(1 - r^n)}{1 - r} \\tag{1}\n$$\n\nThe series **converges** when $|r| < 1$, because then $r^n \\to 0$ and the partial sums settle to the **sum to infinity**:\n\n$$\nS_\\infty = \\frac{a}{1 - r}, \\qquad |r| < 1 \\tag{2}\n$$\n\nIf $|r| \\ge 1$ (and $a \\ne 0$) the series has no sum to infinity: the partial sums either grow without bound or keep jumping about. So $1 + 2 + 4 + \\cdots$ has no sum even though the formula would produce a number.\n\n### Reading sigma notation\nIn $\\sum_{k=1}^{\\infty} ar^{k-1}$ the first term is $a$. In $\\sum_{k=1}^{\\infty} 5\\left(\\tfrac13\\right)^k$ the first term is the value at $k = 1$, namely $\\tfrac53$, and the ratio is $\\tfrac13$. Always write out the first two or three terms before using (2).\n\n### Necessary, but not sufficient\nIf a series converges, its terms must tend to $0$. The converse is false: the harmonic series $1 + \\frac12 + \\frac13 + \\frac14 + \\cdots$ has terms tending to $0$ but its partial sums grow without bound, so it diverges. Terms tending to $0$ is a necessary condition, never a proof of convergence.\n\n### Series involving $x$\nIf the ratio contains $x$, convergence holds for the values of $x$ that satisfy $|r| < 1$. Solve this inequality and state the range.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Finding the first term and ratio from conditions",
+          "quand_utiliser": "When a question gives the sum to infinity together with another term or sum, and asks for a and r.",
+          "contenu_markdown": "Translate each condition into an equation in $a$ and $r$, use (2) to write $a = S_\\infty(1 - r)$, and substitute into the other equation. This usually gives a quadratic in $r$. **Reject** any root with $|r| \\ge 1$, because the sum to infinity would not exist, and keep both roots if both satisfy $|r| < 1$: a problem can have two valid series. Check the final answer in both original conditions."
+        },
+        {
+          "nom": "Range of values of x for convergence",
+          "quand_utiliser": "When the common ratio depends on x and the question asks where the series converges or what it sums to.",
+          "contenu_markdown": "For $1 + (2x - 1) + (2x - 1)^2 + \\cdots$ the ratio is $r = 2x - 1$. Convergence needs $|2x - 1| < 1$, that is $-1 < 2x - 1 < 1$, so $0 < x < 1$. The end points are excluded, because at $x = 0$ the ratio is $-1$ and at $x = 1$ the ratio is $1$. In that range the sum is $\\dfrac{1}{1 - (2x - 1)} = \\dfrac{1}{2 - 2x}$. For $x = \\tfrac14$, $r = -\\tfrac12$ and the sum is $\\dfrac{1}{1 + \\frac12} = \\dfrac23$."
+        },
+        {
+          "nom": "Validity of binomial expansions",
+          "quand_utiliser": "When asked for the values of x for which an expansion of (1 + ax)^n, with n not a positive integer, is valid.",
+          "contenu_markdown": "For $n$ that is negative or fractional, $(1 + u)^n = 1 + nu + \\dfrac{n(n-1)}{2!}u^2 + \\dfrac{n(n-1)(n-2)}{3!}u^3 + \\cdots$ is a genuine infinite series, valid only for $|u| < 1$. With $u = ax$ the condition is $|x| < \\dfrac{1}{|a|}$. For instance $(1 + 3x)^{-1} = 1 - 3x + 9x^2 - \\cdots$ is a geometric series with ratio $-3x$, so it is valid for $|x| < \\tfrac13$. Similarly $(1 + x)^{-2} = 1 - 2x + 3x^2 - 4x^3 + \\cdots$ is valid for $|x| < 1$. When $n$ is a positive integer, the expansion stops and is valid for all $x$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A geometric series has a positive common ratio. Its second term is $6$ and its sum to infinity is $25$. Find the two possible values of the first term $a$ and of the common ratio $r$, and write down the first three terms of each series.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the two conditions as equations.",
+          "justification": "The second term of a geometric series is $ar$, and the sum to infinity is given by formula (2).",
+          "resultat_markdown": "$ar = 6$ and $\\dfrac{a}{1 - r} = 25$."
+        },
+        {
+          "numero": 2,
+          "action": "Express $a$ from the second equation and substitute in the first.",
+          "justification": "$a = 25(1 - r)$ removes $a$ and leaves one equation in $r$.",
+          "resultat_markdown": "$25r(1 - r) = 6$, so $25r^2 - 25r + 6 = 0$."
+        },
+        {
+          "numero": 3,
+          "action": "Solve the quadratic.",
+          "justification": "The discriminant is $625 - 600 = 25$, so $r = \\dfrac{25 \\pm 5}{50}$.",
+          "resultat_markdown": "$r = \\dfrac35$ or $r = \\dfrac25$."
+        },
+        {
+          "numero": 4,
+          "action": "Check that each ratio allows a sum to infinity.",
+          "justification": "Convergence requires $|r| < 1$; both values satisfy it and both are positive.",
+          "resultat_markdown": "Both are valid."
+        },
+        {
+          "numero": 5,
+          "action": "Find the first term for each ratio.",
+          "justification": "Use $a = 25(1 - r)$.",
+          "resultat_markdown": "$r = \\dfrac35$: $a = 25 \\times \\dfrac25 = 10$. $r = \\dfrac25$: $a = 25 \\times \\dfrac35 = 15$."
+        },
+        {
+          "numero": 6,
+          "action": "Write the first three terms and verify.",
+          "justification": "Multiply by the ratio each time and check the second term and the sum.",
+          "resultat_markdown": "$10, 6, \\dfrac{18}{5}, \\dots$ with $\\dfrac{10}{1 - 3/5} = 25$. $15, 6, \\dfrac{12}{5}, \\dots$ with $\\dfrac{15}{1 - 2/5} = 25$."
+        }
+      ],
+      "conclusion_markdown": "The two series are $a = 10$, $r = \\dfrac35$ with terms $10, 6, 3.6, \\dots$ and $a = 15$, $r = \\dfrac25$ with terms $15, 6, 2.4, \\dots$. Both have second term $6$ and sum to infinity $25$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$1 + 2 + 4 + 8 + \\cdots = \\dfrac{1}{1 - 2} = -1$",
+          "pourquoi_faux": "The formula (2) is valid only when $|r| < 1$. Here $r = 2$ and the terms grow, so the partial sums $1, 3, 7, 15, \\dots$ grow without bound: a sum of positive numbers cannot equal $-1$.",
+          "correction_markdown": "State that $|r| = 2 \\ge 1$, so the series diverges and has no sum to infinity."
+        },
+        {
+          "erreur_markdown": "The series $1 - 3 + 9 - 27 + \\cdots$ converges because $r = -3$ is less than $1$.",
+          "pourquoi_faux": "The condition is $|r| < 1$, not $r < 1$. A large negative ratio gives terms that grow in size and alternate in sign.",
+          "correction_markdown": "Here $|r| = 3 > 1$, so the series diverges. It has no sum to infinity, although the formula would give $\\frac14$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\sum_{k=1}^{\\infty} 5\\left(\\dfrac13\\right)^k = \\dfrac{5}{1 - \\frac13} = \\dfrac{15}{2}$",
+          "pourquoi_faux": "With the lower limit $k = 1$, the first term is $5 \\times \\frac13 = \\frac53$, not $5$. The formula was applied with the wrong value of $a$.",
+          "correction_markdown": "$a = \\dfrac53$ and $r = \\dfrac13$, so the sum is $\\dfrac{5/3}{2/3} = \\dfrac52$."
+        },
+        {
+          "erreur_markdown": "The terms of $\\dfrac11 + \\dfrac12 + \\dfrac13 + \\dfrac14 + \\cdots$ tend to $0$, so the series converges.",
+          "pourquoi_faux": "Terms tending to $0$ is necessary for convergence but does not guarantee it. This harmonic series diverges: its partial sums grow without limit, although very slowly.",
+          "correction_markdown": "Use a test that proves convergence (for example a geometric series with $|r| < 1$); terms tending to zero never proves it."
+        },
+        {
+          "erreur_markdown": "The expansion of $(1 + 2x)^{-1}$ is valid for all $x$ because it is a binomial expansion, or for $|x| < 1$ by copying the condition for $(1 + x)^{-1}$.",
+          "pourquoi_faux": "The condition is on the whole quantity $2x$: $|2x| < 1$, so $|x| < \\frac12$. At $x = 0.8$ the series $1 - 1.6 + 2.56 - \\cdots$ has a ratio of size $1.6$ and does not converge.",
+          "correction_markdown": "$(1 + 2x)^{-1} = 1 - 2x + 4x^2 - \\cdots$ is valid for $|x| < \\dfrac12$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Write the recurring decimal $0.272727\\ldots$ as a geometric series and hence express it as a fraction in its lowest terms.",
+          "solution_markdown": "$0.272727\\ldots = 0.27 + 0.0027 + 0.000027 + \\cdots$ This is geometric with $a = 0.27$ and $r = 0.01$. Since $|r| < 1$,\n$$S_\\infty = \\frac{0.27}{1 - 0.01} = \\frac{0.27}{0.99} = \\frac{27}{99} = \\frac{3}{11}.$$\n\n**$0.272727\\ldots = \\dfrac{3}{11}$**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Find the set of values of $x$ for which $\\displaystyle\\sum_{k=1}^{\\infty}\\left(\\dfrac{3}{x+1}\\right)^k$ converges.\n\n(b) Find the sum to infinity in terms of $x$, and evaluate it for $x = 5$.",
+          "solution_markdown": "(a) The series is geometric with ratio $r = \\dfrac{3}{x+1}$ (and first term $r$). It converges when $\\left|\\dfrac{3}{x+1}\\right| < 1$, that is $|x + 1| > 3$. So $x + 1 > 3$ or $x + 1 < -3$.\n\n**The series converges for $x > 2$ or $x < -4$.**\n\n(b) $S_\\infty = \\dfrac{r}{1 - r} = \\dfrac{\\frac{3}{x+1}}{1 - \\frac{3}{x+1}} = \\dfrac{3}{x + 1 - 3} = \\dfrac{3}{x - 2}$. For $x = 5$: $r = \\dfrac12$, so $S_\\infty = \\dfrac{3}{3}$.\n\n**$S_\\infty = \\dfrac{3}{x - 2}$, and the value for $x = 5$ is $1$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) The series $40 + 20 + 10 + \\cdots$ is geometric. Find its sum to infinity and its sum to $n$ terms.\n\n(b) Find the smallest value of $n$ for which the sum to $n$ terms differs from the sum to infinity by less than $0.01$.\n\n(c) A student argues that $1 + \\frac12 + \\frac13 + \\frac14 + \\cdots$ converges because its terms tend to $0$. Explain the mistake.",
+          "solution_markdown": "(a) $a = 40$ and $r = \\dfrac12$, so $S_\\infty = \\dfrac{40}{1 - \\frac12} = 80$, and $S_n = \\dfrac{40\\left(1 - \\left(\\frac12\\right)^n\\right)}{\\frac12} = 80\\left(1 - 2^{-n}\\right)$.\n\n(b) $S_\\infty - S_n = 80 \\times 2^{-n}$. We need $80 \\times 2^{-n} < 0.01$, that is $2^n > 8000$. Now $2^{12} = 4096$ is too small and $2^{13} = 8192 > 8000$. Check: $\\dfrac{80}{8192} = 0.00977 < 0.01$ while $\\dfrac{80}{4096} = 0.0195 > 0.01$.\n\n**The smallest value is $n = 13$.**\n\n(c) Terms tending to $0$ is necessary for convergence but not sufficient. The harmonic series diverges: its partial sums grow without bound, though slowly. **The argument confuses a necessary condition with a proof.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Geometric series: $S_n = \\dfrac{a(1-r^n)}{1-r}$; it converges exactly when $|r| < 1$, and then $S_\\infty = \\dfrac{a}{1-r}$.",
+        "Write out the first terms from sigma notation before applying a formula, so that the correct first term $a$ is used.",
+        "If the ratio contains $x$, solve $|r| < 1$ for the range of convergence, and write the sum as a function of $x$ in that range.",
+        "Terms tending to zero is necessary for convergence but never sufficient; the harmonic series diverges.",
+        "The expansion of $(1 + ax)^n$ for negative or fractional $n$ is valid only when $|ax| < 1$, that is $|x| < 1/|a|$."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-ict-spreadsheet-charts",
+  "meta": {
+    "titre": "Spreadsheet Charts: choosing the chart type, selecting the right data and completing every chart element",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Chart types, data selection and chart elements",
+    "duree_estimee_min": 35,
+    "tags": [
+      "spreadsheet charts"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2025-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2025-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-spreadsheet-charts-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A teacher in Kumba keeps the daily sales of the school canteen in a worksheet and wants the Parents' Association to see at a glance which day sells most. A table of figures answers slowly; a column chart answers at once, provided the right cells are selected, the right chart type is chosen and the chart carries a title, labelled axes and a legend where one is needed. Practical papers in ICT award marks for the chart type and for the organisation of the chart elements, so a missing element can cost a mark that a careful candidate keeps."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A range such as B1:E6 is a block of cells identified by its first and last cell.",
+        "A formula starts with = and can use cell references and functions such as SUM and AVERAGE.",
+        "The first row of a table holds the headings, and each column holds one kind of data."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Choosing the chart, selecting the data and adding the chart elements",
+      "contenu_markdown": "### Choosing the chart type\n| Purpose | Chart type |\n|---|---|\n| Compare values of separate categories | column chart (vertical bars) or bar chart (horizontal bars) |\n| Show a change over time | line chart |\n| Show each part as a share of one whole | pie chart |\n| Show the relationship between two numeric variables | scatter (XY) chart |\n| Show how a total is built from parts | stacked column or area chart |\n\nA pie chart needs a single series of positive values that add up to a meaningful whole, with only a few slices.\n\n### Selecting the data\nThe chart reads a range that includes the headings. One column holds the **categories** (the labels on the horizontal axis of a column chart) and each column of numbers is a **series** whose heading becomes its name. For two columns that are not next to each other, select the first, hold Ctrl and select the second. Do not select columns that were not asked for, and do not include a TOTAL row: it would be drawn as one more category. If the categories are numeric codes, the software may treat them as a series; then set them as category labels in the data selection dialog.\n\n### Chart elements\n| Element | What it does |\n|---|---|\n| Chart title | says what the chart shows |\n| Axis titles | name the category axis and the value axis, with the unit |\n| Axis labels | the category names and the numeric scale |\n| Legend | tells which colour is which series; needed with several series, and normally shown for a pie chart unless the slices are labelled directly |\n| Data labels | print the exact value or percentage on each mark |\n| Gridlines | help the eye read values |\n\nA default title such as \"Chart 1\" earns nothing: give a title that names the subject.\n\n### Placing and checking\nInsert the chart on the sheet or on a new sheet as instructed, and enlarge it so that every label can be read. Before saving, check it against the instruction: type, data, title, axis titles, legend and labels. Menu names differ between spreadsheet programs, but the elements and the reasoning are the same.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Pie chart with percentage labels",
+          "quand_utiliser": "The question asks for the share of each category in a total.",
+          "contenu_markdown": "Compute each share as the value divided by the total. A formula such as `=B2/$B$7` copied down column C keeps the total fixed, because `$B$7` is an absolute reference. Select the category names and the values only, insert a pie chart, and show percentage data labels. Never include the total row in the selection."
+        },
+        {
+          "nom": "Several series",
+          "quand_utiliser": "The data have more than one column of numbers to compare.",
+          "contenu_markdown": "A **clustered** column chart puts one column per series side by side in each category and compares them; a **stacked** column chart piles the series on top of each other and shows the total. A legend is needed. If the software puts the series on the wrong axis, use the switch row/column command, which exchanges the roles of rows and columns without changing the data."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A shop's worksheet holds this table in A1:E6, where column E must first be calculated.\n\n| Item Code | Item | Quantity | Unit Price (FCFA) | Total Price (FCFA) |\n|---|---|---|---|---|\n| A01 | Exercise book | 120 | 250 | |\n| A02 | Ballpoint pen | 200 | 100 | |\n| A03 | Geometry set | 35 | 1200 | |\n| A04 | Pencil | 150 | 75 | |\n| A05 | Ruler | 80 | 150 | |\n\nDraw a column chart that compares the total price of the items by name. It must have a suitable title, titles on both axes and data labels.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculate the totals in column E.",
+          "justification": "The chart needs the Total Price values, so they must be computed first by a formula that copies down.",
+          "resultat_markdown": "In E2 enter `=C2*D2` and copy it to E6. The values are 30000, 20000, 42000, 11250 and 12000."
+        },
+        {
+          "numero": 2,
+          "action": "Select the data.",
+          "justification": "The categories are the item names (column B) and the values are column E, which are not adjacent, and Quantity and Unit Price are not wanted.",
+          "resultat_markdown": "Select B1:B6, hold Ctrl, select E1:E6. The headings are included so that the series gets the name Total Price (FCFA)."
+        },
+        {
+          "numero": 3,
+          "action": "Choose the chart type.",
+          "justification": "Separate items are compared, so the best choice is a column chart.",
+          "resultat_markdown": "Insert a clustered column chart."
+        },
+        {
+          "numero": 4,
+          "action": "Add the chart elements.",
+          "justification": "Each element is a requirement of the instruction.",
+          "resultat_markdown": "Title: Total price of each item. Category axis title: Item. Value axis title: Total price (FCFA). Data labels switched on."
+        },
+        {
+          "numero": 5,
+          "action": "Decide on the legend and check.",
+          "justification": "With one series, the legend repeats the axis title and adds nothing; the tallest column must belong to the largest total.",
+          "resultat_markdown": "The legend may be removed. The tallest column is the geometry set at 42000, and the shortest is the pencil at 11250."
+        }
+      ],
+      "conclusion_markdown": "The chart is a clustered column chart with five columns (Exercise book 30000, Ballpoint pen 20000, Geometry set 42000, Pencil 11250, Ruler 12000), a title, two axis titles and data labels. The sum of the five totals, 115,250 FCFA, is not an item and is not plotted."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Selecting A1:E6 for a chart of Item against Total Price.",
+          "pourquoi_faux": "Quantity and Unit Price become extra series and spoil the chart.",
+          "correction_markdown": "Select only the item column and the Total Price column, using Ctrl for the second block."
+        },
+        {
+          "erreur_markdown": "Including the TOTAL row of the table in the selection.",
+          "pourquoi_faux": "The total is drawn as one more category, and its column dwarfs the others (in a pie chart it takes half of the circle).",
+          "correction_markdown": "Select only the heading and the item rows, and leave the total out."
+        },
+        {
+          "erreur_markdown": "Using a line chart to compare separate categories such as items or classes.",
+          "pourquoi_faux": "A line joins points in order and suggests a trend that does not exist between unrelated categories.",
+          "correction_markdown": "Use a column or bar chart for categories, and a line chart for change over time."
+        },
+        {
+          "erreur_markdown": "Leaving the default title and no axis titles.",
+          "pourquoi_faux": "The reader cannot tell what the chart shows or which unit is used.",
+          "correction_markdown": "Give a meaningful title and name both axes, with the unit in the value axis title."
+        },
+        {
+          "erreur_markdown": "Writing `=B2/B7` and copying it down to get shares of a total.",
+          "pourquoi_faux": "The reference to the total moves down with the formula, so the later cells divide by empty cells.",
+          "correction_markdown": "Write `=B2/$B$7` so that the total cell stays fixed when the formula is copied."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Choose the most suitable chart type for each task. (a) The average temperature of each month of one year. (b) The share of each of five expense types in a budget. (c) The marks of six students in one test. (d) The relationship between hours of study and marks for twenty students.",
+          "solution_markdown": "(a) **Line chart**: values change over time. (b) **Pie chart**: parts of one whole. (c) **Column chart**: separate categories compared. (d) **Scatter chart**: two numeric variables, looking for a relationship."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A weather club records the rainfall (in mm) in A1:B7: months January to June in A2:A7 and the values 24, 48, 96, 132, 168 and 192 in B2:B7. (a) Give the chart type and the ranges you select to show the evolution. (b) List the elements to add. (c) Write a formula for the mean monthly rainfall and give its value. (d) Which month has the highest rainfall?",
+          "solution_markdown": "(a) A **line chart**, selecting A1:B7 (months as categories, rainfall as the series). (b) A title such as Monthly rainfall, a category axis title (Month), a value axis title (Rainfall (mm)); the legend is optional with one series. (c) `=AVERAGE(B2:B7)` gives $660 \\div 6 = $ **110 mm**. (d) **June**, with 192 mm."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A school trip budget is stored in A1:B6 (headings in row 1): Transport 360000, Meals 240000, Tickets 120000, Insurance 60000, Souvenirs 20000 (FCFA). The total is in B7. (a) Write the formulas for B7 and for the share in C2 (to be copied to C6). (b) Give the five shares. (c) Describe the chart to draw and what to select. (d) A candidate includes row 7 in the selection. Explain what the pie chart shows.",
+          "solution_markdown": "(a) B7: `=SUM(B2:B6)` gives 800000. C2: `=B2/$B$7`, copied down. (b) 45%, 30%, 15%, 7.5% and 2.5%. (c) A **pie chart**: select A1:B6 (names and amounts, not row 7), add a title, a legend and percentage data labels. (d) The total (800000) is drawn as a sixth slice equal to the sum of the others, so it takes **50%** of the circle and every real share is halved; the chart is wrong."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Choose the chart type from the purpose: column or bar for categories, line for time, pie for shares of a whole, scatter for two numeric variables.",
+        "Select exactly the categories and series asked for, using Ctrl for blocks that are not adjacent, and never the TOTAL row.",
+        "A complete chart has a meaningful title, titles on both axes with units, a legend when there are several series or a pie, and data labels when exact values are wanted.",
+        "Use an absolute reference such as `$B$7` when every share is divided by the same total.",
+        "Check the finished chart against each requirement of the instruction before saving."
+      ]
+    }
+  ]
+}

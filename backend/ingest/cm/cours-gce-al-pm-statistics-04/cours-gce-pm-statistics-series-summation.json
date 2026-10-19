@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-pm-statistics-series-summation",
+  "meta": {
+    "titre": "Series Summation: Standard Sums, Changing Limits and Proof by Induction",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Sums of series and induction proofs",
+    "duree_estimee_min": 35,
+    "tags": [
+      "series summation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-series-summation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A savings group in Bafoussam asks each member to put aside 1000 FCFA in the first week, 1500 FCFA in the second, 2000 FCFA in the third, and so on. After 40 weeks, how much has a member saved? Adding forty terms one at a time is slow and easy to get wrong, whereas a summation formula settles it in one line. The GCE goes further: it asks you to evaluate sums with the standard results, and to prove a stated formula for every positive integer $n$ by mathematical induction, where the structure of the proof matters as much as the algebra."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The symbol $\\displaystyle\\sum_{r=1}^{n}u_r$ means $u_1+u_2+\\dots+u_n$.",
+        "In an arithmetic sequence the terms change by a constant common difference $d$, and the $r$th term is $a+(r-1)d$.",
+        "Algebraic expressions can be factorised, for example $k^2+3k+2=(k+1)(k+2)$.",
+        "A statement about every positive integer cannot be proved by testing particular values."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Standard sums, sums between limits and proof by induction",
+      "contenu_markdown": "### Standard results\n\n$$\n\\sum_{r=1}^{n}1=n,\\qquad \\sum_{r=1}^{n}r=\\frac{n(n+1)}{2},\\qquad \\sum_{r=1}^{n}r^2=\\frac{n(n+1)(2n+1)}{6},\\qquad \\sum_{r=1}^{n}r^3=\\frac{n^2(n+1)^2}{4} \\tag{1}\n$$\n\nA sum can be split term by term and constants taken out: $\\sum(pu_r+qv_r)=p\\sum u_r+q\\sum v_r$. The sum of a constant $c$ over $n$ terms is $nc$, not $c$. For limits that do not begin at $1$, write the sum as a difference: $\\displaystyle\\sum_{r=m}^{n}u_r=S(n)-S(m-1)$, where $S(n)$ is the sum from $r=1$ to $n$. A sum that starts at $r=0$ has $n+1$ terms and contains the extra term for $r=0$.\n\nFor an arithmetic series with first term $a$ and common difference $d$,\n\n$$\nS_n=\\frac n2\\left[2a+(n-1)d\\right] \\tag{2}\n$$\n\n### Proof by induction\n\nTo prove a statement $P(n)$ for every positive integer $n$, write four parts.\n\n1. **Basis.** Show that $P(1)$ is true by evaluating both sides.\n2. **Assumption.** Assume that $P(k)$ is true for some positive integer $k$.\n3. **Inductive step.** Using the assumption, show that $P(k+1)$ is true. For a sum, write $\\displaystyle\\sum_{r=1}^{k+1}u_r=\\sum_{r=1}^{k}u_r+u_{k+1}$, replace the first part by the assumed formula, take out the common factor and simplify until you reach the formula with $n$ replaced by $k+1$.\n4. **Conclusion.** State that $P(1)$ is true and that $P(k)$ implies $P(k+1)$, so $P(n)$ is true for all positive integers $n$ by mathematical induction.\n\nWrite down the target formula with $k+1$ in place of $n$ before you simplify, so that you know what the factorised result must look like. Leave none of the four parts out.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Method of differences",
+          "quand_utiliser": "When each term can be written as a difference such as $f(r)-f(r+1)$, often after splitting into partial fractions or recognising a factorial pattern.",
+          "contenu_markdown": "If $u_r=f(r)-f(r+1)$, then $\\displaystyle\\sum_{r=1}^{n}u_r=f(1)-f(n+1)$, because every middle term cancels. For example, $\\dfrac{1}{r(r+1)}=\\dfrac1r-\\dfrac1{r+1}$, so $\\displaystyle\\sum_{r=1}^{n}\\dfrac{1}{r(r+1)}=1-\\dfrac1{n+1}=\\dfrac{n}{n+1}$. Write out the first two and the last two terms to show the cancellation."
+        },
+        {
+          "nom": "Induction for divisibility",
+          "quand_utiliser": "When the statement is that an expression such as $7^n-1$ is divisible by a given number rather than a formula for a sum.",
+          "contenu_markdown": "Prove that $7^n-1$ is divisible by $6$. Basis: $7^1-1=6$. Assume $7^k-1=6m$ for an integer $m$, so $7^k=6m+1$. Then $7^{k+1}-1=7(6m+1)-1=42m+6=6(7m+1)$, which is divisible by $6$. Conclude as before. The key move is to express the $(k+1)$ case through the assumed multiple."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Prove by induction that for every positive integer $n$, $\\displaystyle\\sum_{r=1}^{n}r(r+2)=\\frac{n(n+1)(2n+7)}{6}$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Check the basis case $n=1$.",
+          "justification": "The statement must be true for the first value before anything can be built on it.",
+          "resultat_markdown": "Left side: $1\\times3=3$. Right side: $\\dfrac{1\\times2\\times9}{6}=3$. The two sides agree, so $P(1)$ is true."
+        },
+        {
+          "numero": 2,
+          "action": "State the assumption.",
+          "justification": "The inductive step needs a formula that is assumed true for one value $k$.",
+          "resultat_markdown": "Assume that for some positive integer $k$, $\\displaystyle\\sum_{r=1}^{k}r(r+2)=\\dfrac{k(k+1)(2k+7)}{6}$."
+        },
+        {
+          "numero": 3,
+          "action": "Write the target and add the next term.",
+          "justification": "The sum to $k+1$ is the sum to $k$ plus the $(k+1)$th term, which is $(k+1)(k+3)$. The target replaces $n$ by $k+1$, and $2(k+1)+7=2k+9$.",
+          "resultat_markdown": "Target: $\\dfrac{(k+1)(k+2)(2k+9)}{6}$. Sum to $k+1$ $=\\dfrac{k(k+1)(2k+7)}{6}+(k+1)(k+3)$."
+        },
+        {
+          "numero": 4,
+          "action": "Take out the common factor and simplify.",
+          "justification": "Factorising early keeps the algebra short and shows the target form.",
+          "resultat_markdown": "$=\\dfrac{(k+1)\\left[k(2k+7)+6(k+3)\\right]}{6}=\\dfrac{(k+1)\\left(2k^2+13k+18\\right)}{6}=\\dfrac{(k+1)(k+2)(2k+9)}{6}$, because $(k+2)(2k+9)=2k^2+13k+18$."
+        },
+        {
+          "numero": 5,
+          "action": "Write the conclusion.",
+          "justification": "The proof is complete only when the logic is stated.",
+          "resultat_markdown": "$P(1)$ is true, and if $P(k)$ is true then $P(k+1)$ is true. By mathematical induction $P(n)$ is true for all positive integers $n$."
+        }
+      ],
+      "conclusion_markdown": "For every positive integer $n$, $\\displaystyle\\sum_{r=1}^{n}r(r+2)=\\dfrac{n(n+1)(2n+7)}{6}$: the basis holds, the step from $k$ to $k+1$ gives exactly the formula with $n=k+1$, and the conclusion follows by induction."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Using $\\displaystyle\\sum_{r=1}^{n}r^2=\\left(\\frac{n(n+1)}{2}\\right)^2$.",
+          "pourquoi_faux": "That is the formula for the sum of cubes. Test $n=2$: the sum of squares is $1+4=5$, but $\\left(\\dfrac{2\\times3}{2}\\right)^2=9$.",
+          "correction_markdown": "$\\displaystyle\\sum_{r=1}^{n}r^2=\\dfrac{n(n+1)(2n+1)}{6}$, which gives $\\dfrac{2\\times3\\times5}{6}=5$ for $n=2$."
+        },
+        {
+          "erreur_markdown": "Writing $\\displaystyle\\sum_{r=1}^{n}5=5$.",
+          "pourquoi_faux": "The constant $5$ is added once for each value of $r$, and there are $n$ values.",
+          "correction_markdown": "$\\displaystyle\\sum_{r=1}^{n}5=5n$."
+        },
+        {
+          "erreur_markdown": "Treating $\\displaystyle\\sum_{r=0}^{10}(2r+3)$ as having $10$ terms.",
+          "pourquoi_faux": "The values $r=0,1,\\dots,10$ are eleven values. The term for $r=0$ is included and is $3$.",
+          "correction_markdown": "There are $11$ terms: the sum is $2\\times55+3\\times11=143$."
+        },
+        {
+          "erreur_markdown": "In the inductive step, assuming that $P(k+1)$ is true, or checking $P(k+1)$ only for $k=1,2,3$.",
+          "pourquoi_faux": "Assuming what has to be proved is circular, and testing values proves nothing for general $k$. The step must derive $P(k+1)$ algebraically from $P(k)$.",
+          "correction_markdown": "Assume $P(k)$ only, add the $(k+1)$th term, and simplify to the formula with $n=k+1$."
+        },
+        {
+          "erreur_markdown": "Omitting the basis case because the inductive step works. For example, take $\\displaystyle\\sum_{r=1}^{n}2r=n^2+n+1$.",
+          "pourquoi_faux": "If this is assumed for $k$, adding $2(k+1)$ gives $(k+1)^2+(k+1)+1$, so the step works, yet the statement is false: for $n=1$ the left side is $2$ and the right side is $3$. Only the basis case exposes it.",
+          "correction_markdown": "Always verify $P(1)$ explicitly; the step alone does not prove the statement."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Evaluate $\\displaystyle\\sum_{r=1}^{25}(4r-3)$. (b) A trader saves 500 FCFA in the first week and 250 FCFA more each week than in the week before. Find her total savings after 20 weeks. (c) Evaluate $\\displaystyle\\sum_{r=1}^{12}r^2$.",
+          "solution_markdown": "(a) $\\displaystyle\\sum_{r=1}^{25}(4r-3)=4\\times\\dfrac{25\\times26}{2}-3\\times25=4\\times325-75=1300-75=\\mathbf{1225}$.\n\n(b) The weekly savings form an arithmetic series with $a=500$, $d=250$ and $n=20$. $S_{20}=\\dfrac{20}{2}\\left[2(500)+19(250)\\right]=10\\left[1000+4750\\right]=\\mathbf{57\\,500}$ FCFA.\n\n(c) $\\displaystyle\\sum_{r=1}^{12}r^2=\\dfrac{12\\times13\\times25}{6}=\\mathbf{650}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Use the standard results to show that $\\displaystyle\\sum_{r=1}^{n}r(r+3)=\\dfrac{n(n+1)(n+5)}{3}$. (b) Hence evaluate $\\displaystyle\\sum_{r=11}^{30}r(r+3)$.",
+          "solution_markdown": "(a) $\\displaystyle\\sum_{r=1}^{n}r(r+3)=\\sum r^2+3\\sum r=\\dfrac{n(n+1)(2n+1)}{6}+\\dfrac{3n(n+1)}{2}=\\dfrac{n(n+1)\\left[(2n+1)+9\\right]}{6}=\\dfrac{n(n+1)(2n+10)}{6}=\\mathbf{\\dfrac{n(n+1)(n+5)}{3}}$.\n\n(b) Write $S(n)=\\dfrac{n(n+1)(n+5)}{3}$. The required sum runs from $r=11$ to $r=30$, so it equals $S(30)-S(10)$. Now $S(30)=\\dfrac{30\\times31\\times35}{3}=10\\,850$ and $S(10)=\\dfrac{10\\times11\\times15}{3}=550$. The sum is $10\\,850-550=\\mathbf{10\\,300}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Show that $r\\times r!=(r+1)!-r!$ for every positive integer $r$. (b) Use the method of differences to show that $\\displaystyle\\sum_{r=1}^{n}r\\times r!=(n+1)!-1$, and evaluate the sum for $n=6$. (c) Prove the result of (b) by mathematical induction.",
+          "solution_markdown": "(a) $(r+1)!-r!=(r+1)\\,r!-r!=r!\\,\\left[(r+1)-1\\right]=\\mathbf{r\\times r!}$.\n\n(b) By (a), $\\displaystyle\\sum_{r=1}^{n}r\\times r!=\\sum_{r=1}^{n}\\left[(r+1)!-r!\\right]=(2!-1!)+(3!-2!)+\\dots+((n+1)!-n!)$. Every term cancels except the first and the last, leaving $(n+1)!-1!=\\mathbf{(n+1)!-1}$. For $n=6$: $7!-1=5040-1=\\mathbf{5039}$. As a check, $1+4+18+96+600+4320=5039$.\n\n(c) Basis: for $n=1$ the left side is $1\\times1!=1$ and the right side is $2!-1=1$. Assume $\\displaystyle\\sum_{r=1}^{k}r\\times r!=(k+1)!-1$. Then $\\displaystyle\\sum_{r=1}^{k+1}r\\times r!=(k+1)!-1+(k+1)\\times(k+1)!=(k+1)!\\,\\left[1+(k+1)\\right]-1=(k+2)(k+1)!-1=(k+2)!-1$, which is the formula with $n=k+1$. So $P(1)$ is true and $P(k)$ implies $P(k+1)$; by induction the result holds for all positive integers $n$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Standard sums: $\\sum1=n$, $\\sum r=\\dfrac{n(n+1)}2$, $\\sum r^2=\\dfrac{n(n+1)(2n+1)}6$, $\\sum r^3=\\dfrac{n^2(n+1)^2}4$; a constant $c$ summed over $n$ terms gives $nc$.",
+        "For limits from $m$ to $n$ use $S(n)-S(m-1)$; a sum starting at $r=0$ has $n+1$ terms. An arithmetic series has $S_n=\\dfrac n2\\left[2a+(n-1)d\\right]$.",
+        "Method of differences: if $u_r=f(r)-f(r+1)$ the sum is $f(1)-f(n+1)$; write out a few terms to show the cancellation.",
+        "Induction needs four parts: the basis $P(1)$, the assumption $P(k)$, the step to $P(k+1)$ using the assumption, and the stated conclusion.",
+        "In the step, add the $(k+1)$th term to the assumed formula, take out the common factor, and aim for the target written with $k+1$ in place of $n$. A divisibility proof writes the $(k+1)$ case in terms of the assumed multiple."
+      ]
+    }
+  ]
+}

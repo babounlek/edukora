@@ -1,0 +1,166 @@
+{
+  "cours_id": "cours-gce-pm-statistics-matrix-algebra",
+  "meta": {
+    "titre": "Matrix Algebra: Determinants, Cofactors and Solving Systems with an Inverse",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Determinants, inverses and linear systems",
+    "duree_estimee_min": 35,
+    "tags": [
+      "matrix algebra"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-matrix-algebra-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A market trader in Douala sells three items and, over three days, notes how many of each she sold and the day's takings in FCFA. To find the price of each item she must solve three equations in three unknowns. Matrices package such a system into a single equation $\\mathbf{A}\\mathbf{x}=\\mathbf{b}$, and the inverse matrix solves it in one move. At the GCE you are expected to multiply matrices and find determinants by hand, to calculate an inverse accurately, and, when the paper gives a product such as $\\mathbf{AB}$, to use it to solve a system without repeating the work."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Two matrices can be multiplied when the first has as many columns as the second has rows; the entry in row $i$ and column $j$ of the product is row $i$ of the first matrix multiplied term by term with column $j$ of the second, then added.",
+        "The identity matrix $\\mathbf{I}$ has $1$ on the leading diagonal and $0$ elsewhere, and $\\mathbf{AI}=\\mathbf{IA}=\\mathbf{A}$.",
+        "The determinant of $\\begin{pmatrix}p&q\\\\r&s\\end{pmatrix}$ is $ps-qr$.",
+        "A system of linear equations can be solved by elimination or by substitution."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Determinants, inverses and linear systems for 3 by 3 matrices",
+      "contenu_markdown": "### Determinant, minors and cofactors\n\nThe **minor** of an entry is the determinant of the $2\\times2$ matrix left when its row and column are deleted. The **cofactor** is the minor with the sign $(-1)^{i+j}$, that is, the signs alternate by position:\n\nrow 1: $+\\ -\\ +$, row 2: $-\\ +\\ -$, row 3: $+\\ -\\ +$.\n\nExpanding along the first row,\n\n$$\n\\det\\mathbf{A}=a_{11}C_{11}+a_{12}C_{12}+a_{13}C_{13} \\tag{1}\n$$\n\nand any row or column gives the same value, so choose the one with most zeros.\n\n### Inverse\n\nA matrix with $\\det\\mathbf{A}=0$ is **singular** and has no inverse. Otherwise\n\n$$\n\\mathbf{A}^{-1}=\\frac{1}{\\det\\mathbf{A}}\\operatorname{adj}\\mathbf{A} \\tag{2}\n$$\n\nwhere $\\operatorname{adj}\\mathbf{A}$, the **adjugate**, is the *transpose* of the matrix of cofactors. Check the result by confirming that $\\mathbf{AA}^{-1}=\\mathbf{I}$.\n\n### Rules\n\n- $\\mathbf{AB}\\neq\\mathbf{BA}$ in general.\n- $(\\mathbf{AB})^{\\mathrm T}=\\mathbf{B}^{\\mathrm T}\\mathbf{A}^{\\mathrm T}$ and $(\\mathbf{AB})^{-1}=\\mathbf{B}^{-1}\\mathbf{A}^{-1}$: the order reverses.\n- $\\det(\\mathbf{AB})=\\det\\mathbf{A}\\,\\det\\mathbf{B}$, $\\det\\mathbf{A}^{-1}=\\dfrac1{\\det\\mathbf{A}}$, and for a $3\\times3$ matrix $\\det(k\\mathbf{A})=k^3\\det\\mathbf{A}$.\n\n### Solving a system\n\nWrite the system as $\\mathbf{A}\\mathbf{x}=\\mathbf{b}$. If $\\det\\mathbf{A}\\neq0$, multiply on the left by $\\mathbf{A}^{-1}$:\n\n$$\n\\mathbf{x}=\\mathbf{A}^{-1}\\mathbf{b} \\tag{3}\n$$\n\nThe order matters: $\\mathbf{b}\\mathbf{A}^{-1}$ is not defined for a column $\\mathbf{b}$. If $\\det\\mathbf{A}=0$, the system has either no solution or infinitely many, and elimination decides which.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Using a given product to avoid inverting",
+          "quand_utiliser": "When the question gives two matrices, asks for $\\mathbf{AB}$, and then says 'hence solve' a system.",
+          "contenu_markdown": "If the product comes out as $\\mathbf{AB}=k\\mathbf{I}$ with $k\\neq0$, then $\\mathbf{A}^{-1}=\\dfrac1k\\mathbf{B}$ and $\\mathbf{B}^{-1}=\\dfrac1k\\mathbf{A}$. First decide which of the two matrices is the coefficient matrix of the system. If it is $\\mathbf{A}$, then $\\mathbf{x}=\\dfrac1k\\mathbf{B}\\mathbf{b}$; if it is $\\mathbf{B}$, then $\\mathbf{x}=\\dfrac1k\\mathbf{A}\\mathbf{b}$. No new determinant or cofactor is needed."
+        },
+        {
+          "nom": "A determinant containing an unknown",
+          "quand_utiliser": "When the matrix has an unknown entry and the question gives the value of the determinant, or says the matrix is singular.",
+          "contenu_markdown": "Expand the determinant along the row or column with most zeros. The result is a linear or quadratic expression in the unknown. Put it equal to the given value, or to $0$ for a singular matrix, and solve. If the equation is quadratic, the question usually says how many values to find; check each by substituting into the determinant."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The matrix $\\mathbf{M}=\\begin{pmatrix} 0 & 1 & 1 \\\\ 1 & 1 & 1 \\\\ 2 & 2 & 1 \\end{pmatrix}$. (a) Find $\\det\\mathbf{M}$ and the inverse $\\mathbf{M}^{-1}$. (b) Hence solve $y+z=4$, $x+y+z=6$, $2x+2y+z=9$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the determinant by expanding along the first row.",
+          "justification": "The first entry is $0$, so only two cofactors are needed for the determinant.",
+          "resultat_markdown": "$\\det\\mathbf{M}=0\\cdot C_{11}+1\\cdot C_{12}+1\\cdot C_{13}$ with $C_{12}=-(1\\cdot1-1\\cdot2)=1$ and $C_{13}=+(1\\cdot2-1\\cdot2)=0$. So $\\det\\mathbf{M}=1\\neq0$ and the inverse exists."
+        },
+        {
+          "numero": 2,
+          "action": "Find all nine cofactors.",
+          "justification": "Delete the row and column of each entry, take the $2\\times2$ determinant and apply the sign pattern $+\\,-\\,+$, $-\\,+\\,-$, $+\\,-\\,+$.",
+          "resultat_markdown": "$C_{11}=-1$, $C_{12}=1$, $C_{13}=0$; $C_{21}=1$, $C_{22}=-2$, $C_{23}=2$; $C_{31}=0$, $C_{32}=1$, $C_{33}=-1$. The cofactor matrix is $\\begin{pmatrix} -1 & 1 & 0 \\\\ 1 & -2 & 2 \\\\ 0 & 1 & -1 \\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "action": "Transpose the cofactor matrix and divide by the determinant.",
+          "justification": "The adjugate is the transpose of the cofactor matrix, and the determinant is $1$.",
+          "resultat_markdown": "$\\mathbf{M}^{-1}=\\dfrac{1}{1}\\begin{pmatrix} -1 & 1 & 0 \\\\ 1 & -2 & 1 \\\\ 0 & 2 & -1 \\end{pmatrix}=\\begin{pmatrix} -1 & 1 & 0 \\\\ 1 & -2 & 1 \\\\ 0 & 2 & -1 \\end{pmatrix}$."
+        },
+        {
+          "numero": 4,
+          "action": "Check the inverse.",
+          "justification": "A wrong cofactor shows up at once in the product.",
+          "resultat_markdown": "Row 1 of $\\mathbf{M}$ times the columns of $\\mathbf{M}^{-1}$: $(0)(-1)+(1)(1)+(1)(0)=1$, $(0)(1)+(1)(-2)+(1)(2)=0$, $(0)(0)+(1)(1)+(1)(-1)=0$. This is the first row of $\\mathbf{I}$; the other rows are checked in the same way."
+        },
+        {
+          "numero": 5,
+          "action": "Write the system as $\\mathbf{M}\\mathbf{x}=\\mathbf{b}$ and multiply by the inverse.",
+          "justification": "The coefficient matrix of the system is $\\mathbf{M}$, and $\\mathbf{x}=\\mathbf{M}^{-1}\\mathbf{b}$ with the inverse on the left.",
+          "resultat_markdown": "$\\begin{pmatrix}x\\\\y\\\\z\\end{pmatrix}=\\begin{pmatrix} -1 & 1 & 0 \\\\ 1 & -2 & 1 \\\\ 0 & 2 & -1 \\end{pmatrix}\\begin{pmatrix} 4 \\\\ 6 \\\\ 9 \\end{pmatrix}=\\begin{pmatrix} 2 \\\\ 1 \\\\ 3 \\end{pmatrix}$."
+        },
+        {
+          "numero": 6,
+          "action": "Check the solution in the three original equations.",
+          "justification": "The solution must satisfy every equation.",
+          "resultat_markdown": "$2x+2y+z=4+2+3=9$, and $y+z=1+3=4$, $x+y+z=2+1+3=6$."
+        }
+      ],
+      "conclusion_markdown": "$\\det\\mathbf{M}=1$ and $\\mathbf{M}^{-1}=\\begin{pmatrix} -1 & 1 & 0 \\\\ 1 & -2 & 1 \\\\ 0 & 2 & -1 \\end{pmatrix}$. The solution of the system is $x=2$, $y=1$, $z=3$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Expanding a $3\\times3$ determinant along a row with every term added, for example $a_{11}M_{11}+a_{12}M_{12}+a_{13}M_{13}$ using minors without signs.",
+          "pourquoi_faux": "The cofactor signs alternate. Using the minors without the sign $(-1)^{i+j}$ gives the wrong value whenever the middle term is not zero.",
+          "correction_markdown": "Use cofactors: $a_{11}M_{11}-a_{12}M_{12}+a_{13}M_{13}$ along the first row."
+        },
+        {
+          "erreur_markdown": "Writing the inverse as the matrix of cofactors divided by the determinant, without transposing.",
+          "pourquoi_faux": "The adjugate is the transpose of the cofactor matrix. The mistake can go unnoticed when the cofactor matrix happens to be symmetrical, but it gives a wrong inverse in general, as the check $\\mathbf{AA}^{-1}$ shows.",
+          "correction_markdown": "Transpose the cofactor matrix first, then divide by the determinant, then check $\\mathbf{AA}^{-1}=\\mathbf{I}$."
+        },
+        {
+          "erreur_markdown": "Writing $(\\mathbf{AB})^{-1}=\\mathbf{A}^{-1}\\mathbf{B}^{-1}$.",
+          "pourquoi_faux": "Matrix multiplication is not commutative. $\\mathbf{A}^{-1}\\mathbf{B}^{-1}\\mathbf{AB}$ does not simplify to $\\mathbf{I}$.",
+          "correction_markdown": "$(\\mathbf{AB})^{-1}=\\mathbf{B}^{-1}\\mathbf{A}^{-1}$: the second matrix is undone first."
+        },
+        {
+          "erreur_markdown": "Solving $\\mathbf{A}\\mathbf{x}=\\mathbf{b}$ by writing $\\mathbf{x}=\\mathbf{b}\\mathbf{A}^{-1}$.",
+          "pourquoi_faux": "The inverse must multiply on the same side on which $\\mathbf{A}$ appears, which is the left. The product of a $3\\times1$ column with a $3\\times3$ matrix is not even defined.",
+          "correction_markdown": "Multiply both sides on the left: $\\mathbf{x}=\\mathbf{A}^{-1}\\mathbf{b}$."
+        },
+        {
+          "erreur_markdown": "Saying that $\\det(2\\mathbf{A})=2\\det\\mathbf{A}$ for a $3\\times3$ matrix.",
+          "pourquoi_faux": "Multiplying a matrix by $2$ multiplies every one of its three rows by $2$, and each row contributes a factor $2$ to the determinant.",
+          "correction_markdown": "$\\det(2\\mathbf{A})=2^3\\det\\mathbf{A}=8\\det\\mathbf{A}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The matrix $\\mathbf{N}=\\begin{pmatrix}k&2&1\\\\0&3&1\\\\1&0&2\\end{pmatrix}$ contains a constant $k$. (a) Show that $\\det\\mathbf{N}=6k-1$. (b) Find the value of $k$ for which $\\det\\mathbf{N}=11$. (c) Find the value of $k$ for which $\\mathbf{N}$ is singular.",
+          "solution_markdown": "(a) Expand along the first row: $\\det\\mathbf{N}=k(3\\cdot2-1\\cdot0)-2(0\\cdot2-1\\cdot1)+1(0\\cdot0-3\\cdot1)=6k+2-3=\\mathbf{6k-1}$.\n\n(b) $6k-1=11$ gives $6k=12$, so $\\mathbf{k=2}$.\n\n(c) $\\mathbf{N}$ is singular when $\\det\\mathbf{N}=0$: $6k-1=0$, so $\\mathbf{k=\\dfrac16}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Two matrices are $\\mathbf{A}=\\begin{pmatrix} 1 & 1 & 0 \\\\ 0 & 1 & 1 \\\\ 1 & 0 & 1 \\end{pmatrix}$ and $\\mathbf{B}=\\begin{pmatrix} 1 & -1 & 1 \\\\ 1 & 1 & -1 \\\\ -1 & 1 & 1 \\end{pmatrix}$. (a) Find $\\mathbf{AB}$. (b) Hence write down $\\mathbf{A}^{-1}$. (c) Hence solve $x+y=4$, $y+z=7$, $x+z=5$.",
+          "solution_markdown": "(a) Multiplying row by column gives $\\mathbf{AB}=\\begin{pmatrix} 2 & 0 & 0 \\\\ 0 & 2 & 0 \\\\ 0 & 0 & 2 \\end{pmatrix}=\\mathbf{2I}$. For example, the entry in row 1 and column 2 is $(1)(-1)+(1)(1)+(0)(1)=0$, and in row 1 and column 1 it is $(1)(1)+(1)(1)+(0)(-1)=2$.\n\n(b) Since $\\mathbf{AB}=2\\mathbf{I}$, $\\mathbf{A}^{-1}=\\dfrac12\\mathbf{B}=\\dfrac12\\begin{pmatrix} 1 & -1 & 1 \\\\ 1 & 1 & -1 \\\\ -1 & 1 & 1 \\end{pmatrix}$.\n\n(c) The coefficient matrix of the system is $\\mathbf{A}$, so $\\mathbf{x}=\\mathbf{A}^{-1}\\mathbf{b}=\\dfrac12\\begin{pmatrix} 1 & -1 & 1 \\\\ 1 & 1 & -1 \\\\ -1 & 1 & 1 \\end{pmatrix}\\begin{pmatrix} 4 \\\\ 7 \\\\ 5 \\end{pmatrix}=\\dfrac12\\begin{pmatrix} 2 \\\\ 6 \\\\ 8 \\end{pmatrix}=\\begin{pmatrix} 1 \\\\ 3 \\\\ 4 \\end{pmatrix}$. So $\\mathbf{x=1,\\ y=3,\\ z=4}$. Check: $1+3=4$, $3+4=7$, $1+4=5$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "For a constant $a$, let $\\mathbf{M}_a=\\begin{pmatrix}1&a&0\\\\3&1&1\\\\0&1&2\\end{pmatrix}$. (a) Show that $\\det\\mathbf{M}_a=1-6a$ and find the value of $a$ for which $\\mathbf{M}_a$ is singular. (b) Take $a=1$ and write $\\mathbf{M}=\\mathbf{M}_1$. Find $\\mathbf{M}^{-1}$. (c) Hence solve $x+y=3$, $3x+y+z=6$, $y+2z=4$. (d) Write down $\\det\\left(\\mathbf{M}^{-1}\\right)$ and $\\det(2\\mathbf{M})$.",
+          "solution_markdown": "(a) Expanding along the first row, $\\det\\mathbf{M}_a=1(1\\cdot2-1\\cdot1)-a(3\\cdot2-1\\cdot0)+0=1-6a$. It is singular when $1-6a=0$, that is $\\mathbf{a=\\dfrac16}$.\n\n(b) For $a=1$, $\\det\\mathbf{M}=-5$. The cofactor matrix is $\\begin{pmatrix} 1 & -6 & 3 \\\\ -2 & 2 & -1 \\\\ 1 & -1 & -2 \\end{pmatrix}$ and its transpose is the adjugate $\\begin{pmatrix} 1 & -2 & 1 \\\\ -6 & 2 & -1 \\\\ 3 & -1 & -2 \\end{pmatrix}$. Therefore $\\mathbf{M}^{-1}=-\\dfrac15\\begin{pmatrix} 1 & -2 & 1 \\\\ -6 & 2 & -1 \\\\ 3 & -1 & -2 \\end{pmatrix}$. Check: row 1 of $\\mathbf{M}$ times column 1 of the adjugate is $(1)(1)+(1)(-6)+(0)(3)=-5$, which divided by $-5$ gives $1$.\n\n(c) The coefficient matrix is $\\mathbf{M}$, with $\\mathbf{b}=\\begin{pmatrix} 3 \\\\ 6 \\\\ 4 \\end{pmatrix}$. Then $\\mathbf{x}=-\\dfrac15\\begin{pmatrix} 1 & -2 & 1 \\\\ -6 & 2 & -1 \\\\ 3 & -1 & -2 \\end{pmatrix}\\begin{pmatrix} 3 \\\\ 6 \\\\ 4 \\end{pmatrix}=-\\dfrac15\\begin{pmatrix} -5 \\\\ -10 \\\\ -5 \\end{pmatrix}=\\begin{pmatrix} 1 \\\\ 2 \\\\ 1 \\end{pmatrix}$, so $\\mathbf{x=1,\\ y=2,\\ z=1}$. Check in the second equation: $3+2+1=6$.\n\n(d) $\\det\\left(\\mathbf{M}^{-1}\\right)=\\dfrac1{-5}=\\mathbf{-\\dfrac15}$ and $\\det(2\\mathbf{M})=2^3(-5)=\\mathbf{-40}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Expand a $3\\times3$ determinant along a row or column using cofactors with alternating signs $+\\,-\\,+$, $-\\,+\\,-$, $+\\,-\\,+$; choose the line with most zeros.",
+        "$\\mathbf{A}^{-1}=\\dfrac1{\\det\\mathbf{A}}\\operatorname{adj}\\mathbf{A}$, where the adjugate is the transpose of the cofactor matrix; a matrix with determinant $0$ is singular. Check with $\\mathbf{AA}^{-1}=\\mathbf{I}$.",
+        "$(\\mathbf{AB})^{-1}=\\mathbf{B}^{-1}\\mathbf{A}^{-1}$, $(\\mathbf{AB})^{\\mathrm T}=\\mathbf{B}^{\\mathrm T}\\mathbf{A}^{\\mathrm T}$, $\\det(\\mathbf{AB})=\\det\\mathbf{A}\\det\\mathbf{B}$ and $\\det(k\\mathbf{A})=k^3\\det\\mathbf{A}$ for a $3\\times3$ matrix.",
+        "To solve $\\mathbf{A}\\mathbf{x}=\\mathbf{b}$ use $\\mathbf{x}=\\mathbf{A}^{-1}\\mathbf{b}$, with the inverse on the left.",
+        "When $\\mathbf{AB}=k\\mathbf{I}$, the inverse of $\\mathbf{A}$ is $\\dfrac1k\\mathbf{B}$, and the inverse of $\\mathbf{B}$ is $\\dfrac1k\\mathbf{A}$; decide which matrix is the coefficient matrix before using it.",
+        "If a determinant contains an unknown, expand it, equate it to the given value (or $0$ for a singular matrix) and solve."
+      ]
+    }
+  ]
+}

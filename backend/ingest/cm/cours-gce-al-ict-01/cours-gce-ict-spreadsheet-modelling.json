@@ -1,0 +1,169 @@
+{
+  "cours_id": "cours-gce-ict-spreadsheet-modelling",
+  "meta": {
+    "titre": "Spreadsheet Modelling: writing formulas that stay correct when copied",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Formulas, cell references and functions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "spreadsheet modelling"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-spreadsheet-modelling-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Bafoussam records every sale in a worksheet. When the price of cooking oil changes, she does not want to retype fifty totals: she wants the sheet to recalculate by itself. That is the idea of a spreadsheet model. The values live in labelled input cells, and the results are formulas that point to them. The ICT practical paper tests this directly: you must write a formula for one cell, copy it through a column, and give the formula as it appears in the last row. A formula that is right in the first row but breaks when copied loses most of the marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A cell is named by its column letter followed by its row number, and a range such as B2:D5 is a block of cells.",
+        "A formula begins with the equals sign and is recalculated whenever a cell it depends on changes.",
+        "Brackets are evaluated first, then powers, then multiplication and division, then addition and subtraction."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Building formulas that copy correctly",
+      "contenu_markdown": "### Cell references\nA model refers to cells instead of typing their values, so a change in the data flows through to every result. When a formula is copied, each reference behaves according to its type:\n\n| Type | Example | Copied one row down and one column right |\n|---|---|---|\n| Relative | `B2` | becomes `C3` |\n| Absolute | `$B$2` | stays `$B$2` |\n| Mixed, column locked | `$B2` | becomes `$B3` |\n| Mixed, row locked | `B$2` | becomes `C$2` |\n\nThe dollar sign locks the part that follows it. Use an absolute reference for a single input cell shared by every row (a rate, a bonus, a lookup table) and relative references for the values that belong to one row. Never type such a constant inside the formula: a labelled input cell lets you test other values without editing any formula.\n\n### Common functions\n- `SUM`, `AVERAGE`, `MAX`, `MIN` and `COUNT` (which counts only numbers) work on a range such as `B2:D2`.\n- `IF(test, value_if_true, value_if_false)` chooses between two results. Text must be in double quotes. The comparison operators are `=`, `<>`, `>`, `<`, `>=` and `<=`; combine tests with `AND` and `OR`.\n- `COUNTIF(range, criterion)` counts the cells that satisfy a criterion; `SUMIF(range, criterion, sum_range)` adds the matching cells of a second range.\n- `VLOOKUP(value, table, column_number, FALSE)` searches the first column of the table for the value and returns the entry in the stated column. `FALSE` demands an exact match.\n- `ROUND(number, digits)` changes the stored value; a number format only changes the display.\n\n### Method for a \"write the formula\" question\n1. Say the rule in words and note which cell holds each input.\n2. For every reference decide whether it moves with the row (relative) or must stay fixed (absolute).\n3. Write the formula, starting with `=`, using functions and brackets.\n4. Imagine the copy: re-write the formula for the last row and check that each reference still points to the right cell.\n5. When the question names the cell of the last row, give the formula as it appears there.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Conditional results with IF, AND and nested IF",
+          "quand_utiliser": "When the result depends on a status or on a threshold (pass or fail, bonus or no bonus).",
+          "contenu_markdown": "The test is evaluated first; only one of the two results is returned. For more than two outcomes, nest the functions: `=IF(B2>=70,\"A\",IF(B2>=50,\"B\",\"C\"))`. Tests are checked in order and the first true one wins, so start with the strictest threshold. To demand two conditions together use `AND`: `=IF(AND(B2>=50,C2>=50),\"Pass\",\"Fail\")`."
+        },
+        {
+          "nom": "Lookup and conditional totals",
+          "quand_utiliser": "When a value must be fetched from a price list or when only some rows must be counted or added.",
+          "contenu_markdown": "Lock the lookup table so that it does not slide when copied: `=VLOOKUP(A2,$H$2:$I$4,2,FALSE)`. The code in column A must appear exactly in the first column of the table, otherwise the function returns `#N/A`. `COUNTIF` and `SUMIF` answer questions such as \"how many sales were made by one seller\" or \"what is the total of one product\" without filtering the data."
+        },
+        {
+          "nom": "What-if models",
+          "quand_utiliser": "When the question asks what happens to the results if an assumption changes.",
+          "contenu_markdown": "Put each assumption (rate, target, price) in its own labelled cell and make every formula point to it with an absolute reference. Changing that one cell recalculates the whole sheet. To answer a what-if question by hand, change the input and recompute only the cells that depend on it."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A market stall keeps its sales in a worksheet. Row 1 holds the headings and cell H1 holds the discount rate, 10%.\n\n| | A | B | C | D | E |\n|---|---|---|---|---|---|\n| 1 | Item | Price (FCFA) | Quantity | Discount? | Net amount (FCFA) |\n| 2 | Rice | 800 | 30 | Yes | |\n| 3 | Oil | 1500 | 12 | No | |\n| 4 | Salt | 250 | 40 | Yes | |\n| 5 | Soap | 400 | 25 | No | |\n\n(a) Write a formula for E2 that gives price multiplied by quantity, reduced by the rate in H1 only when column D shows Yes. The formula must stay correct when copied to E5; state the formula in E5.\n\n(b) Give the formulas that calculate the total of column E in E6 and the number of discounted items in D6, with their results.\n\n(c) The rate in H1 becomes 20%. State what must be edited and give the new total.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Put the rule in words.",
+          "justification": "A formula is easy to write once the rule is clear, and each input must be matched to a cell.",
+          "resultat_markdown": "Gross amount = price × quantity (B and C). If D is \"Yes\", the net amount is the gross amount × (1 − rate), with the rate in H1. Otherwise the net amount equals the gross amount."
+        },
+        {
+          "numero": 2,
+          "action": "Choose the function and write the formula for the first row.",
+          "justification": "Two different results depending on a text value means an IF with a text test, and the text is written in double quotes.",
+          "resultat_markdown": "E2: `=IF(D2=\"Yes\",B2*C2*(1-$H$1),B2*C2)`"
+        },
+        {
+          "numero": 3,
+          "action": "Decide which references move when the formula is copied down.",
+          "justification": "B, C and D belong to the row, so they are relative. There is only one rate, so H1 must be locked with dollar signs, otherwise it would slide to H2, H3 and so on and point at empty cells.",
+          "resultat_markdown": "From E2 copied three rows down, E5 contains: `=IF(D5=\"Yes\",B5*C5*(1-$H$1),B5*C5)`"
+        },
+        {
+          "numero": 4,
+          "action": "Recalculate the column.",
+          "justification": "Checking the results confirms that the IF test and the locked rate work.",
+          "resultat_markdown": "| Item | Gross | Discount? | Net amount (FCFA) |\n|---|---|---|---|\n| Rice | 24000 | Yes | **21600** |\n| Oil | 18000 | No | **18000** |\n| Salt | 10000 | Yes | **9000** |\n| Soap | 10000 | No | **10000** |"
+        },
+        {
+          "numero": 5,
+          "action": "Write the summary formulas.",
+          "justification": "The total adds the whole range, and COUNTIF counts the text criterion Yes in column D.",
+          "resultat_markdown": "E6: `=SUM(E2:E5)` gives **58600**. D6: `=COUNTIF(D2:D5,\"Yes\")` gives **2**."
+        },
+        {
+          "numero": 6,
+          "action": "Answer the what-if question.",
+          "justification": "The rate is in one input cell, so no formula needs to be edited.",
+          "resultat_markdown": "Edit only H1 (20%). Rice becomes 19200 and Salt 8000; Oil and Soap are unchanged. New total in E6: **55200**."
+        }
+      ],
+      "conclusion_markdown": "The model works because the rule is written once, every row-dependent reference is relative, and the single shared input (the rate) is locked with an absolute reference. A copied formula that keeps pointing at the same input cell is the pattern examiners look for."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Typing the numbers into the formula, such as `=800*30`.",
+          "pourquoi_faux": "The formula no longer follows the data: if the price or quantity changes, the result stays the same, and the formula cannot be copied to the other rows.",
+          "correction_markdown": "Refer to the cells: `=B2*C2`."
+        },
+        {
+          "erreur_markdown": "Writing the discount rate as `H1` (no dollar signs) in a formula that is copied down.",
+          "pourquoi_faux": "The relative reference slides down one row for every row copied, so row 5 reads H4, an empty cell, and the discount silently becomes zero.",
+          "correction_markdown": "Lock the shared input: `$H$1`."
+        },
+        {
+          "erreur_markdown": "Writing a text test without quotes: `=IF(D2=Yes,...)`.",
+          "pourquoi_faux": "Without quotes the spreadsheet reads Yes as a name, not as text, and the formula fails with a name error.",
+          "correction_markdown": "Put text in double quotes: `=IF(D2=\"Yes\",...)`."
+        },
+        {
+          "erreur_markdown": "Entering a 10% rate as `10` and using `1-H1`.",
+          "pourquoi_faux": "The factor becomes 1 − 10 = −9, which gives negative amounts. A percentage is stored as a fraction (10% is 0.1).",
+          "correction_markdown": "Type `10%` (or 0.1) in the input cell and keep the formula `1-$H$1`."
+        },
+        {
+          "erreur_markdown": "Writing `=SUM(E2:E4)` for a table that ends in row 5, or giving the first-row formula when the question asks for the last row.",
+          "pourquoi_faux": "The range stops one row early so one item is left out, and the formula of another row does not show whether the copy was understood.",
+          "correction_markdown": "Select the whole range `E2:E5` and, when asked for the formula in the last row, rewrite it for that row."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cell C2 contains `=A2*$F$1+B1`. The cell is copied to D4.\n\n(a) Write the formula that D4 contains.\n\n(b) Another worksheet has `=A2*F1+B1` in C2, copied to C5. Which cell does the rate reference point to in C5, and why is this a problem?",
+          "solution_markdown": "(a) D4 is two rows down and one column right of C2. Relative references shift by that amount, absolute parts stay: A2 becomes B4, `$F$1` stays, B1 becomes C3. D4 contains **`=B4*$F$1+C3`**.\n\n(b) C5 is three rows down. The unlocked reference F1 becomes F4, and the formula in C5 is `=A5*F4+B4`. The rate is now read from F4, an unrelated cell, so the results are **wrong from the second row onwards**. The reference should be `$F$1`."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A teacher records three test marks per student.\n\n| | A | B | C | D | E | F |\n|---|---|---|---|---|---|---|\n| 1 | Student | Test 1 | Test 2 | Test 3 | Average | Grade |\n| 2 | Aba | 72 | 65 | 80 | | |\n| 3 | Bih | 45 | 52 | 38 | | |\n| 4 | Che | 58 | 49 | 63 | | |\n| 5 | Dim | 90 | 85 | 94 | | |\n\n(a) Write the formula for E2 that gives the average of the three tests rounded to one decimal place.\n\n(b) Write the formula for F2 that gives \"Distinction\" for an average of 70 or more, \"Pass\" for 50 or more and \"Fail\" otherwise. Give the formula in F5 and the four grades.\n\n(c) Write a formula to count the students who failed, and one to find the highest average.",
+          "solution_markdown": "(a) E2: **`=ROUND(AVERAGE(B2:D2),1)`**. Rounding changes the stored value, which is what the grade test then reads.\n\n(b) F2: **`=IF(E2>=70,\"Distinction\",IF(E2>=50,\"Pass\",\"Fail\"))`**. The test for 70 comes first; a mark of 72.3 would otherwise be caught by the lower threshold and graded Pass. Copied to F5: `=IF(E5>=70,\"Distinction\",IF(E5>=50,\"Pass\",\"Fail\"))`.\n\nAverages: Aba 72.3, Bih 45.0, Che 56.7, Dim 89.7. Grades: **Distinction, Fail, Pass, Distinction**.\n\n(c) Number of fails: `=COUNTIF(F2:F5,\"Fail\")` gives **1**. Highest average: `=MAX(E2:E5)` gives **89.7**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A supplier uses a price list in H1:I4 and an order list in A1:C5 (column C is empty at first).\n\n| | A | B | C | H | I |\n|---|---|---|---|---|---|\n| 1 | Code | Quantity | Line cost | Code | Price (FCFA) |\n| 2 | P1 | 3 | | P1 | 1200 |\n| 3 | P2 | 2 | | P2 | 750 |\n| 4 | P1 | 5 | | P3 | 300 |\n| 5 | P3 | 4 | | | |\n\n(a) Write the formula for C2, using the price list, that can be copied to C5 without editing. Give it as it appears in C5.\n\n(b) Write the formula and the result for the total of column C in C6.\n\n(c) Write a formula that gives the total cost of code P1 only, and its result.\n\n(d) The price of P2 rises to 800 FCFA. What must be edited, and what is the new total?\n\n(e) Why is FALSE used as the last argument of the lookup?",
+          "solution_markdown": "(a) C2: `=VLOOKUP(A2,$H$2:$I$4,2,FALSE)*B2`. The order values A2 and B2 are relative; the table `$H$2:$I$4` is locked so that it does not slide. In C5: **`=VLOOKUP(A5,$H$2:$I$4,2,FALSE)*B5`**.\n\nLine costs: 3 × 1200 = 3600, 2 × 750 = 1500, 5 × 1200 = 6000, 4 × 300 = 1200.\n\n(b) C6: `=SUM(C2:C5)` gives 3600 + 1500 + 6000 + 1200 = **12300** FCFA.\n\n(c) `=SUMIF(A2:A5,\"P1\",C2:C5)` adds the cost of the rows whose code is P1: 3600 + 6000 = **9600** FCFA.\n\n(d) Edit only I3 (750 becomes 800). The cost of P2 becomes 2 × 800 = 1600 and the total becomes 12300 + 100 = **12400** FCFA.\n\n(e) FALSE asks for an exact match: the code must be found exactly in the first column, otherwise the function reports `#N/A` instead of returning the price of a near code."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A model stores inputs in labelled cells and calculates results with formulas that point at those cells; never type a changing value inside a formula.",
+        "Relative references move when a formula is copied; the dollar sign locks the column, the row, or both. Lock every single shared input, rate or lookup table.",
+        "For a \"write the formula\" question, say the rule in words, choose the function, decide which references are locked, then rewrite the formula for the last row to check the copy.",
+        "`IF` needs quoted text and ordered tests; `COUNTIF` and `SUMIF` count or add only the matching rows; `VLOOKUP` with FALSE gives an exact match from a locked table.",
+        "To answer a what-if question, change the single input and recompute only the cells that depend on it."
+      ]
+    }
+  ]
+}

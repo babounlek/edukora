@@ -1,0 +1,170 @@
+{
+ "cours_id": "cours-gce-pm-statistics-first-order-differential-equations",
+ "meta": {
+  "titre": "First Order Equations in One Pass: separating, integrating and fixing the constant",
+  "matiere": "Pure Mathematics with Statistics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Separable equations with a given condition",
+  "duree_estimee_min": 35,
+  "tags": [
+   "first order differential equations"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-statistics-first-order-differential-equations-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A baker in Bamenda takes a tray of rolls from the oven and leaves it in a shop that is much cooler than the oven. The hotter the rolls are compared with the shop, the faster they lose heat, and that sentence is already a differential equation: the rate of change of one quantity is tied to the quantity itself. In the GCE you are seldom asked to build such a model from nothing. You are given the equation and one piece of information, such as a value of the unknown at a chosen moment, and you must produce the function that satisfies both. The route is always the same: separate, integrate, use the information. Marks are lost mostly on the constant of integration and on logarithm slips."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Integration reverses differentiation, and every indefinite integral carries an arbitrary constant $+C$.",
+    "$\\int\\dfrac{1}{ax+b}\\,dx=\\dfrac1a\\ln|ax+b|+C$ for $a\\neq0$.",
+    "Laws of logarithms: $\\ln a+\\ln b=\\ln(ab)$, $k\\ln a=\\ln a^k$, and $\\ln A=B$ means $A=e^{B}$.",
+    "A rational expression can be split into partial fractions before it is integrated."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Separating the variables, integrating, and using the condition",
+   "contenu_markdown": "### What the question asks\nA first order differential equation links $x$, $y$ and only the first derivative $\\dfrac{dy}{dx}$. To solve it is to find a function $y=f(x)$ that satisfies it. The **general solution** contains one arbitrary constant. A **particular solution** is the member of that family through a given point, for example \"$y=1$ when $x=0$\".\n\n### Separable equations\nIf the equation can be written $\\dfrac{dy}{dx}=f(x)\\,g(y)$, the variables separate and\n\n$$\n\\int\\frac{1}{g(y)}\\,dy=\\int f(x)\\,dx \\tag{1}\n$$\n\n1. Collect every $y$ term with $dy$ on one side and every $x$ term with $dx$ on the other.\n2. Integrate both sides and write **one** constant $C$, on one side only.\n3. Substitute the condition into the integrated relation to find $C$.\n4. If the question says \"in the form $y=f(x)$\", rearrange. Use the laws of logarithms **before** removing the logarithm.\n\nDividing by $g(y)$ drops any constant solution $y=a$ with $g(a)=0$; the given condition normally excludes it, so this is rarely an issue in examination questions.\n\n### Logarithms and the constant\nRemember $\\int\\dfrac{dy}{y-a}=\\ln|y-a|$ but $\\int\\dfrac{dy}{a-y}=-\\ln|a-y|$. Writing the constant as $\\ln A$ lets logarithms merge: $\\ln|y|=2\\ln|x|+\\ln A$ gives $y=\\pm Ax^2$, and the condition fixes $A$ with its sign, which also removes the modulus signs. Never write $e^{x+C}$ as $x+e^{C}$.\n\n### Two standard results\n\n| Equation | Solution |\n|---|---|\n| $\\dfrac{dy}{dx}=ky$ | $y=Ae^{kx}$ |\n| $\\dfrac{dy}{dx}=-k(y-a)$ | $y=a+Be^{-kx}$ |\n\nIn both cases $A$ or $B$ is found from the condition.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Rates proportional to a difference (cooling and similar models)",
+     "quand_utiliser": "When the wording says the rate of change of $T$ is proportional to the gap between $T$ and a fixed value.",
+     "contenu_markdown": "For $\\dfrac{dT}{dt}=-k(T-a)$ with $T=T_0$ at $t=0$, separation gives $\\ln|T-a|=-kt+C$, so $T-a=(T_0-a)e^{-kt}$. The excess over $a$ shrinks by the same factor in equal times. A second reading, such as $T=T_1$ at $t=t_1$, gives $k$ from $e^{-kt_1}=\\dfrac{T_1-a}{T_0-a}$."
+    },
+    {
+     "nom": "Right-hand side needing partial fractions",
+     "quand_utiliser": "When the $x$ side of the separated equation is a rational function with two linear factors in the denominator.",
+     "contenu_markdown": "For $(x-1)(x+2)\\dfrac{dy}{dx}=cy$ the separated form is $\\int\\dfrac{dy}{y}=c\\int\\dfrac{dx}{(x-1)(x+2)}$. Since $\\dfrac{1}{(x-1)(x+2)}=\\dfrac13\\left(\\dfrac1{x-1}-\\dfrac1{x+2}\\right)$, the right-hand side integrates to $\\dfrac c3\\ln\\left|\\dfrac{x-1}{x+2}\\right|$. Keep $\\ln$ of a quotient and combine the constant as $\\ln A$."
+    },
+    {
+     "nom": "Checking a solution",
+     "quand_utiliser": "At the end of any question, in the last minute, to catch sign and constant errors.",
+     "contenu_markdown": "Differentiate your $y=f(x)$, substitute $y$ and $\\dfrac{dy}{dx}$ into the original equation, and confirm both sides agree. Then substitute the condition into $f$. Two quick checks catch almost every slip."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Solve $(x+1)\\dfrac{dy}{dx}=2(3-y)$, given that $y=1$ when $x=0$, expressing $y$ in terms of $x$.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Separate the variables.",
+     "justification": "All $y$ terms go with $dy$ and all $x$ terms with $dx$. This is allowed for $x\\neq-1$ and $y\\neq3$, and the condition has $x=0$, $y=1$.",
+     "resultat_markdown": "$\\dfrac{1}{3-y}\\,dy=\\dfrac{2}{x+1}\\,dx$"
+    },
+    {
+     "numero": 2,
+     "action": "Integrate both sides with a single constant.",
+     "justification": "$\\int\\dfrac{dy}{3-y}=-\\ln|3-y|$ because the derivative of $3-y$ is $-1$; the right side is $2\\ln|x+1|$.",
+     "resultat_markdown": "$-\\ln|3-y|=2\\ln|x+1|+C$"
+    },
+    {
+     "numero": 3,
+     "action": "Use the condition to find $C$.",
+     "justification": "At $x=0$, $y=1$: the left side is $-\\ln2$ and the right side is $2\\ln1+C=C$.",
+     "resultat_markdown": "$C=-\\ln2$"
+    },
+    {
+     "numero": 4,
+     "action": "Combine the logarithms and remove them.",
+     "justification": "Multiply by $-1$ and use $k\\ln a=\\ln a^k$ and $\\ln a-\\ln b=\\ln\\dfrac ab$.",
+     "resultat_markdown": "$$\n\\ln|3-y|=\\ln\\frac{2}{(x+1)^2} \\tag{1}\n$$"
+    },
+    {
+     "numero": 5,
+     "action": "Decide the sign.",
+     "justification": "From (1), $|3-y|=\\dfrac{2}{(x+1)^2}$, which is never zero. So $3-y$ never changes sign, and at $x=0$ it equals $3-1=2>0$.",
+     "resultat_markdown": "$3-y=\\dfrac{2}{(x+1)^2}$"
+    },
+    {
+     "numero": 6,
+     "action": "Check the answer in the original equation.",
+     "justification": "With $y=3-\\dfrac{2}{(x+1)^2}$: $\\dfrac{dy}{dx}=\\dfrac{4}{(x+1)^3}$, so $(x+1)\\dfrac{dy}{dx}=\\dfrac{4}{(x+1)^2}=2(3-y)$, and $y(0)=3-2=1$.",
+     "resultat_markdown": "Both sides equal $\\dfrac{4}{(x+1)^2}$; $y(0)=1$."
+    }
+   ],
+   "conclusion_markdown": "$$y=3-\\frac{2}{(x+1)^2}$$"
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Solving $\\dfrac{dy}{dx}=2xy$ by integrating only the right-hand side: $y=x^2y+C$.",
+     "pourquoi_faux": "$y$ depends on $x$, so it cannot be pulled out of the integral as if it were constant. The variables must be separated first.",
+     "correction_markdown": "$\\int\\dfrac{dy}{y}=\\int2x\\,dx$ gives $\\ln|y|=x^2+C$, so $y=Ae^{x^2}$."
+    },
+    {
+     "erreur_markdown": "Writing $\\int\\dfrac{dy}{3-y}=\\ln|3-y|+C$.",
+     "pourquoi_faux": "The inner function is $3-y$, whose derivative is $-1$, so a minus sign is required. Differentiating $\\ln|3-y|$ gives $\\dfrac{-1}{3-y}$, not $\\dfrac{1}{3-y}$.",
+     "correction_markdown": "$\\int\\dfrac{dy}{3-y}=-\\ln|3-y|+C$."
+    },
+    {
+     "erreur_markdown": "From $\\ln y=2\\ln x+C$ concluding $y=x^2+e^{C}$.",
+     "pourquoi_faux": "Exponentiating a sum gives a product: $e^{2\\ln x+C}=e^{2\\ln x}\\times e^{C}$, so the constant multiplies, it does not add.",
+     "correction_markdown": "$y=e^{C}x^2=Ax^2$, with $A=e^{C}$ found from the condition."
+    },
+    {
+     "erreur_markdown": "For $\\dfrac{dy}{dx}=\\dfrac{2x}{y}$ with $y=3$ when $x=1$, substituting $x=1,\\,y=3$ at the start to get $\\dfrac{dy}{dx}=\\dfrac23$ and integrating that.",
+     "pourquoi_faux": "The condition belongs to the solution curve at one point only. In the differential equation $x$ and $y$ are variables, so they cannot be replaced by numbers before integrating.",
+     "correction_markdown": "Separate and integrate first: $\\dfrac{y^2}{2}=x^2+C$, then use $y=3$ at $x=1$ to get $C=\\dfrac72$."
+    },
+    {
+     "erreur_markdown": "Leaving $y=\\pm\\sqrt{2x^2+7}$ as the final answer when the condition is $y=3$ at $x=1$.",
+     "pourquoi_faux": "The condition selects one branch. Here $y>0$ at the given point, and $y$ cannot change sign because $2x^2+7>0$.",
+     "correction_markdown": "$y=\\sqrt{2x^2+7}$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Solve $\\dfrac{dy}{dx}=\\dfrac{2x}{y}$, given that $y=3$ when $x=1$. Give $y$ in terms of $x$.",
+     "solution_markdown": "Separate: $y\\,dy=2x\\,dx$. Integrate: $\\dfrac{y^2}{2}=x^2+C$. At $x=1$, $y=3$: $\\dfrac92=1+C$, so $C=\\dfrac72$. Hence $y^2=2x^2+7$. Since $y=3>0$ at the given point and $2x^2+7>0$ always, $y$ stays positive.\n\n**$y=\\sqrt{2x^2+7}$**"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "A cup of tea at $80^\\circ\\mathrm C$ is placed in a room at $20^\\circ\\mathrm C$. Its temperature $T^\\circ\\mathrm C$ after $t$ minutes satisfies $\\dfrac{dT}{dt}=-k(T-20)$ with $k>0$. The temperature is $50^\\circ\\mathrm C$ when $t=10$. (a) Find $T$ in terms of $t$. (b) Find $T$ when $t=30$. (c) Find the time at which $T=26$, to 3 significant figures.",
+     "solution_markdown": "(a) $\\int\\dfrac{dT}{T-20}=-\\int k\\,dt$ gives $\\ln|T-20|=-kt+C$. At $t=0$, $T-20=60$, so $C=\\ln60$ and $T-20=60e^{-kt}$. At $t=10$: $30=60e^{-10k}$, so $e^{-10k}=\\dfrac12$ and $k=\\dfrac{\\ln2}{10}\\approx0.0693$. Then $e^{-kt}=2^{-t/10}$.\n\n**$T=20+60\\times2^{-t/10}$**\n\n(b) $T=20+60\\times2^{-3}=20+7.5=$ **$27.5^\\circ\\mathrm C$**.\n\n(c) $6=60\\times2^{-t/10}$, so $2^{t/10}=10$ and $t=\\dfrac{10\\ln10}{\\ln2}=$ **33.2 minutes**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "For $x>1$ and $y>0$, $(x-1)(x+2)\\dfrac{dy}{dx}=y$, and $y=2$ when $x=2$. (a) Express $y$ in terms of $x$. (b) State the value, to 3 significant figures, that $y$ approaches as $x\\to\\infty$.",
+     "solution_markdown": "(a) Separate: $\\dfrac{dy}{y}=\\dfrac{dx}{(x-1)(x+2)}=\\dfrac13\\left(\\dfrac1{x-1}-\\dfrac1{x+2}\\right)dx$. Integrate (all quantities positive): $\\ln y=\\dfrac13\\ln\\dfrac{x-1}{x+2}+C$. At $x=2$, $y=2$: $\\ln2=\\dfrac13\\ln\\dfrac14+C=-\\dfrac23\\ln2+C$, so $C=\\dfrac53\\ln2$. Therefore $\\ln y=\\ln\\left[2^{5/3}\\left(\\dfrac{x-1}{x+2}\\right)^{1/3}\\right]$.\n\n**$y=2^{5/3}\\left(\\dfrac{x-1}{x+2}\\right)^{1/3}$**\n\n(b) As $x\\to\\infty$, $\\dfrac{x-1}{x+2}\\to1$, so $y\\to2^{5/3}=$ **3.17**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "A first order equation is solved by separating the variables when it can be written $\\dfrac{dy}{dx}=f(x)g(y)$; then integrate $\\int\\dfrac{dy}{g(y)}=\\int f(x)\\,dx$.",
+    "Write one constant of integration; find it by substituting the given pair of values into the integrated relation, never into the differential equation.",
+    "$\\int\\dfrac{dy}{a-y}=-\\ln|a-y|$ but $\\int\\dfrac{dy}{y-a}=\\ln|y-a|$; watch the sign of the inner derivative.",
+    "Combine logarithms before exponentiating, and write the constant as $\\ln A$ so that it multiplies.",
+    "When asked for $y=f(x)$, rearrange fully, use the condition to settle any $\\pm$ sign, and check by differentiating."
+   ]
+  }
+ ]
+}

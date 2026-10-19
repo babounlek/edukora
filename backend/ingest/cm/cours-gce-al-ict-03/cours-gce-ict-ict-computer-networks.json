@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-ict-ict-computer-networks",
+  "meta": {
+    "titre": "ICT Computer Networks: topologies, devices, media and what limits network speed",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "types of network, devices, topologies, performance and wireless LANs",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict computer networks"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-computer-networks-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school in Bafoussam has a computer room of ten machines. The head teacher wants every student to use one shared printer and one Internet connection. The teacher in charge must decide how to link the machines: to a central device, along one long cable, or through wireless access. Each choice affects the cost, the speed and what happens when something breaks. Questions on networks ask you to describe topologies, to compare them for a given situation, and to explain what makes a network fast, reliable or secure."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A network is a group of computers linked so that they can share data and resources.",
+        "Data travels in a network as bits, and speed is measured in bits per second.",
+        "A computer needs a network interface card (NIC) to be connected to a network."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Network types, devices, topologies and performance",
+      "contenu_markdown": "### Types of network, devices and media\nA **LAN** covers a small area such as a room or a school and belongs to one organisation. A **WAN** covers a large area such as a country and uses public or leased links; the Internet is the largest. In a **client-server** network a central server supplies files, printing and security to client computers; in a **peer-to-peer** network each computer shares its own resources.\n\n| Device | Role |\n|---|---|\n| Network interface card (NIC) | connects a computer to the network |\n| Hub | repeats the data it receives to every port |\n| Switch | sends the data only to the port of the destination device |\n| Router | joins different networks, for example a LAN to the Internet, and chooses the path of the data |\n| Wireless access point | lets wireless devices join the wired network |\n\n**Twisted pair** cable is cheap and easy to install but is affected by interference (shielded cable resists better). **Fibre optic** cable carries light, is very fast and is not affected by electrical interference, but costs more. Wireless links use radio waves.\n\n### Topologies\n| Topology | Layout | Strength | Weakness |\n|---|---|---|---|\n| Star | every device is cabled to a central switch or hub | a broken cable affects one device; easy to add devices | if the centre fails, the whole network stops |\n| Bus | all devices attach to one backbone cable with a terminator at each end | little cable, cheap | a break in the backbone stops the network; collisions slow it as devices increase |\n| Ring | each device is linked to two neighbours and data travels round the ring | orderly passing of data | one break or faulty device can stop the ring |\n| Mesh | devices have several links to others | other paths if a link fails | many cables, costly |\n\nA full mesh of $n$ devices needs $\\frac{n(n-1)}{2}$ links.\n\n### Speed and interference\nSpeed rises with shorter cable runs (signals weaken with distance), better media such as fibre, a switch in place of a hub, and fewer devices competing for the same link. Interference from power cables, motors and other signals is reduced by shielded or fibre cable, by the twisting of the wire pairs in twisted-pair cable (it limits crosstalk between pairs), and by laying data cables away from power cables and electrical machines.\n\nTransfer time is the amount of data in bits divided by the speed in bits per second. A speed in Mbit/s is divided by 8 to give MB/s.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Questions that say “describe the topology”",
+          "quand_utiliser": "When a topology must be described, with or without a labelled diagram.",
+          "contenu_markdown": "Draw boxes for the computers, lines for the cables and label the central switch or the backbone cable. Then add one sentence on how data travels and one on what happens when a cable or device fails. Star: all cables go to the centre; data goes through the switch; failure of the centre stops everything. Bus: one backbone; data is placed on it and all devices see it; a backbone break stops the network."
+        },
+        {
+          "nom": "Questions on choosing a topology",
+          "quand_utiliser": "When aspects to consider must be named and explained.",
+          "contenu_markdown": "Name each aspect, then explain it with a consequence. Cost: a bus needs little cable, a mesh needs many links. Reliability: in a star one broken cable affects one device. Size and growth: a star lets a device be added with one cable. Speed: a switch gives each device a better share than a shared backbone. Ease of finding faults: in a star the faulty cable is easy to find."
+        },
+        {
+          "nom": "Wireless LAN compared with cable LAN",
+          "quand_utiliser": "When the advantages or disadvantages of wireless links are asked.",
+          "contenu_markdown": "Advantages of wireless: users can move while connected, there are no cables to buy and lay, and a new device joins easily. Disadvantages: signals can be blocked, can suffer interference, usually give lower and less steady speed than cable, and are easier to intercept, so encryption and a password are needed. Explain each advantage with its consequence for the user."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A training centre in Garoua plans a room of 8 computers. (a) Recommend a topology and justify the choice. (b) State how many cables a star network needs and how many links a full mesh of the same computers would need. (c) A 45 MB file is sent over a 100 Mbit/s link. Calculate the time needed, taking 1 MB = 8 Mbit and ignoring all overheads.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Choose the topology from the situation.",
+          "justification": "Eight computers in one room can all be cabled to one central point, and a fault in one cable should not stop the others.",
+          "resultat_markdown": "A star network with a switch."
+        },
+        {
+          "numero": 2,
+          "action": "Justify the choice with a consequence.",
+          "justification": "A justification links a property of the topology to the needs of the centre.",
+          "resultat_markdown": "If one cable breaks, only one computer is cut off, and a new computer needs only one new cable."
+        },
+        {
+          "numero": 3,
+          "action": "Count the cables of the star.",
+          "justification": "Each computer has its own cable to the switch.",
+          "resultat_markdown": "8 cables."
+        },
+        {
+          "numero": 4,
+          "action": "Count the links of the full mesh.",
+          "justification": "Every pair of devices has a link, so use $\\frac{n(n-1)}{2}$ with $n = 8$.",
+          "resultat_markdown": "$\\frac{8 \\times 7}{2} = 28$ links."
+        },
+        {
+          "numero": 5,
+          "action": "Convert the file size to megabits.",
+          "justification": "The speed is in Mbit/s, so the size must be in Mbit.",
+          "resultat_markdown": "$45 \\times 8 = 360$ Mbit."
+        },
+        {
+          "numero": 6,
+          "action": "Divide by the speed.",
+          "justification": "Time = amount of data divided by speed.",
+          "resultat_markdown": "$\\frac{360\\ \\text{Mbit}}{100\\ \\text{Mbit/s}} = 3.6$ s."
+        }
+      ],
+      "conclusion_markdown": "**Model answer**: A star network with a switch is suitable because a single broken cable affects only one computer and a new computer needs only one more cable. The star needs 8 cables, while a full mesh would need 28 links. The file takes **3.6 s** to be sent."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "“In a star network, if the central switch fails, only one computer loses its connection.”",
+          "pourquoi_faux": "All data passes through the centre. When the switch fails every computer is cut off. Only a failure of a single cable affects a single computer.",
+          "correction_markdown": "Centre fails: the whole network stops. One cable fails: one computer is cut off."
+        },
+        {
+          "erreur_markdown": "“A hub and a switch work in the same way.”",
+          "pourquoi_faux": "A hub repeats the data to every port, so all devices receive everything. A switch sends the data only to the port of the destination, which reduces traffic.",
+          "correction_markdown": "Hub: repeats to all ports. Switch: forwards to the destination port only."
+        },
+        {
+          "erreur_markdown": "“A 100 Mbit/s connection moves 100 MB each second.”",
+          "pourquoi_faux": "Mbit means megabits and MB means megabytes. A byte has 8 bits, so 100 Mbit/s is 12.5 MB/s.",
+          "correction_markdown": "Divide the speed in Mbit/s by 8 to get MB/s: $100 \\div 8 = 12.5$ MB/s."
+        },
+        {
+          "erreur_markdown": "“Wireless networks are always faster and more secure than cable networks.”",
+          "pourquoi_faux": "Wireless links are convenient, but they usually give a lower and less steady speed, and their signals can be intercepted unless they are encrypted.",
+          "correction_markdown": "Wireless: mobility and easy installation. Cable: usually faster, steadier and harder to intercept."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "State the function of each of the following: a NIC, a switch, a router.",
+          "solution_markdown": "A **NIC** connects a computer to the network. A **switch** receives data and sends it only to the port of the destination device. A **router** joins different networks, such as a LAN and the Internet, and chooses the path the data follows. One mark for each."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "In a cyber cafe in Yaounde, a 250 MB video is copied from the server to a computer over a 50 Mbit/s link. (a) Calculate the time taken. (b) Calculate the time if the link is upgraded to 200 Mbit/s. Take 1 MB = 8 Mbit and ignore overheads.",
+          "solution_markdown": "(a) $250 \\times 8 = 2000$ Mbit; time $= \\frac{2000}{50} = $ **40 s**. (b) time $= \\frac{2000}{200} = $ **10 s**. The speed is four times greater, so the time is four times shorter."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A hospital needs to connect 6 departments in one building. (a) State how many cables a star network needs and how many links a full mesh needs. (b) Compare a star and a bus network for this hospital on reliability and on adding a department. (c) Recommend a topology and justify the choice.",
+          "solution_markdown": "(a) Star: **6 cables** (one from each department to the switch). Full mesh: $\\frac{6 \\times 5}{2} = $ **15 links**. (b) Reliability: in a star a broken cable cuts off only one department, whereas a break in the backbone of a bus can stop the whole network. Adding a department: in a star one new cable to the switch; in a bus the backbone must be extended or tapped, which may interrupt the network. (c) A star network, because a cable fault affects one department only and growth is easy; its weakness, the central switch, can be reduced by choosing a reliable switch and keeping a spare."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A LAN covers a small area under one organisation; a WAN covers a large area; the Internet is the largest WAN.",
+        "A hub repeats to all ports, a switch forwards to the destination port, a router joins networks.",
+        "Star: central device, one cable fault affects one device. Bus: one backbone, a break stops all. Ring: neighbours linked in a loop. Mesh: many links, reliable but costly.",
+        "Choose a topology by cost, reliability, size and growth, speed and fault finding, and explain each aspect with a consequence.",
+        "Network speed rises with shorter cables, better media, a switch instead of a hub and fewer competing devices; interference is cut by shielded or fibre cable kept away from power cables.",
+        "Transfer time = bits divided by bits per second; divide Mbit/s by 8 to get MB/s."
+      ]
+    }
+  ]
+}

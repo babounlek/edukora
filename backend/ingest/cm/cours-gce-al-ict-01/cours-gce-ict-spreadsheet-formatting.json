@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-ict-spreadsheet-formatting",
+  "meta": {
+    "titre": "Spreadsheet Formatting: meeting every presentation instruction on the right cells",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Cell, row and column formatting",
+    "duree_estimee_min": 30,
+    "tags": [
+      "spreadsheet formatting"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-spreadsheet-formatting-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The treasurer of a women's cooperative in Ngaoundere prints the contributions sheet before every meeting. A title that sits in one corner, numbers with different decimal places and totals that do not stand out make the page hard to read, even when every figure is right. In the ICT practical paper each formatting instruction is marked separately, and the examiner checks the saved worksheet cell by cell. Reading the instruction list carefully and applying each command to exactly the cells named is therefore worth as many marks as the formulas."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A worksheet is a grid of cells, and a range such as A1:J1 is a block of cells that can be selected together.",
+        "A cell contains text, a number, a date or a formula, and the formula result is what the cell displays.",
+        "Formatting is applied to the cells that are selected at that moment."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Applying the formatting commands exactly",
+      "contenu_markdown": "### Principle: select, then format\nFormatting changes how a cell **looks**, not what it **contains**. Select the exact range named in the instruction, then apply the command, then check the result on screen. A number shown as `34.6%` may be stored as `0.3456`: the stored value, which later formulas use, is unchanged. Only the `ROUND` function changes the stored value.\n\n### Commands by task (Excel-type layout; other programs offer the same commands under their Format menus)\n| Instruction | Command |\n|---|---|\n| Centre a title across A1:J1 | select A1:J1, then Merge and Center (Home tab). Only the content of the upper-left cell is kept |\n| Font, size, bold, italic, colour | Font group of the Home tab |\n| Fill colour | Fill Color button |\n| Row height, column width | Format menu or right-click on the row or column header; type the value asked, or use AutoFit |\n| Border (for example thick outside border) | Borders button, or Format Cells and the Border tab |\n| Currency, percentage, decimal places, date | Format Cells and the Number tab |\n| Alignment, wrap text, orientation | Alignment group of the Home tab |\n| Colour that appears when a rule is met | Conditional Formatting |\n\n### Points that cost marks\n- **Merge and centre** is not the same as centring: merging joins the cells into one, so the title is centred over the whole range.\n- **Percent**: applying the percent format to a cell that already contains `25` shows `2500%`, because the format multiplies by 100. Enter the fraction (`0.25`) or type `25%`.\n- **Totals** must be formulas (`SUM`), not numbers typed after a calculation, so that they update. A total row is made bold after it is calculated.\n- **Conditional formatting** applies a format automatically when a rule is true (for example a value below 10000) and removes it when the value changes. It is not the same as colouring a cell by hand.\n- Save the file under the name and in the folder the paper specifies.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Number formats",
+          "quand_utiliser": "When the question asks for money, percentages, dates or a fixed number of decimal places.",
+          "contenu_markdown": "Choose Number, Currency, Percentage or Date in the Number tab and set the number of decimal places. The format only affects the display; a cell that shows 48.7 may store 48.6666... and a formula that uses it reads the stored value. Displayed values can therefore look as if they do not add up exactly."
+        },
+        {
+          "nom": "Conditional formatting",
+          "quand_utiliser": "When some cells must stand out only if they meet a condition (a low mark, a stock shortage).",
+          "contenu_markdown": "Select the range, choose a rule type such as \"cell value less than\", enter the threshold, and choose the format. A strict \"less than 10\" does not include 10; use \"less than or equal to\" when the limit itself must be flagged."
+        },
+        {
+          "nom": "Layout for reading and printing",
+          "quand_utiliser": "When a worksheet must be easy to read or must fit a page.",
+          "contenu_markdown": "Widen columns until no value shows as hash signs, wrap long text, align numbers to the right and headings centrally, and freeze the heading row for long lists. For printing, choose the orientation and scale the sheet to fit the page width."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A cooperative records the monthly contributions of four members. Row 1 is for the title, row 2 holds the headings (Member, Jan, Feb, Mar, Total, Share) and rows 3 to 6 hold the data.\n\n| Member | Jan | Feb | Mar |\n|---|---|---|---|\n| Ndi | 15000 | 20000 | 10000 |\n| Fon | 12000 | 12000 | 12000 |\n| Beri | 5000 | 8000 | 9500 |\n| Lum | 20000 | 15000 | 18000 |\n\n(a) Put the title Cooperative Contributions in A1, merge and centre it across A1:F1, and give it font size 14, bold, a grey fill, row height 30 and a thick outside border.\n\n(b) Calculate each member's total in E3:E6 and the totals of columns B to E in row 7, then make row 7 bold.\n\n(c) In F3:F6 calculate each member's share of the grand total in E7 and display it as a percentage with one decimal place.\n\n(d) Display B3:E7 with a thousands separator and no decimals, and show in red every contribution in B3:D6 below 10000.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the list of instructions with the exact range of each.",
+          "justification": "Each instruction earns its own marks, so none must be forgotten or applied to the wrong cells.",
+          "resultat_markdown": "Title A1:F1 (merge, size, bold, fill, height, border); totals E3:E6 and B7:E7 (SUM, bold row 7); shares F3:F6 (formula, percent); format B3:E7; conditional rule B3:D6."
+        },
+        {
+          "numero": 2,
+          "action": "Format the title.",
+          "justification": "Select A1:F1 before merging so that the title is centred over the whole table, then apply the other commands to the same selection.",
+          "resultat_markdown": "Merge and Center on A1:F1; font size 14; Bold; Fill Color grey; row height 30; thick outside border around A1:F1."
+        },
+        {
+          "numero": 3,
+          "action": "Enter the total formulas, then bold row 7.",
+          "justification": "Totals must be formulas to stay correct if a contribution changes. The bold is applied after the values exist.",
+          "resultat_markdown": "E3: `=SUM(B3:D3)` copied to E6 gives 45000, 36000, 22500 and 53000. B7: `=SUM(B3:B6)` copied to E7 gives 52000, 55000, 49500 and **156500**."
+        },
+        {
+          "numero": 4,
+          "action": "Write the share formula with an absolute reference, then set the percent format.",
+          "justification": "The grand total is a single cell used by every row, so it is locked with dollar signs. The format is applied to the result cells.",
+          "resultat_markdown": "F3: `=E3/$E$7`, copied down so that F6 holds `=E6/$E$7`. Format F3:F6 as Percentage with 1 decimal place: **28.8%, 23.0%, 14.4%, 33.9%**."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the number format and the conditional rule.",
+          "justification": "A strict \"less than 10000\" rule flags only values under the limit, so 10000 itself stays unformatted.",
+          "resultat_markdown": "B3:E7 as Number, 0 decimals, with thousands separator. Rule on B3:D6: cell value less than 10000, red text. The flagged cells are the three contributions of Beri (5000, 8000, 9500)."
+        },
+        {
+          "numero": 6,
+          "action": "Check each instruction against the list and save.",
+          "justification": "A final comparison catches a forgotten border or a range that is one cell too short.",
+          "resultat_markdown": "All five groups of instructions are applied to the right ranges. Save the file under the name requested."
+        }
+      ],
+      "conclusion_markdown": "The worksheet now meets every instruction. Note that the four displayed shares add up to 100.1% but the stored shares add up to exactly 100%: the format changed the display, not the values."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Selecting only A1 and pressing Bold, Fill and Border when the instruction is about A1:J1.",
+          "pourquoi_faux": "The format is applied only to the selected cells, so the rest of the range stays unformatted and the marks for that part are lost.",
+          "correction_markdown": "Select the full range named in the instruction before applying each command."
+        },
+        {
+          "erreur_markdown": "Centring the title with the alignment button instead of merging the cells.",
+          "pourquoi_faux": "The title is centred inside its own cell only, so it does not sit in the middle of the table, and the cells are not merged.",
+          "correction_markdown": "Select the whole range and use Merge and Center."
+        },
+        {
+          "erreur_markdown": "Typing the totals after calculating them on a calculator, then making the row bold.",
+          "pourquoi_faux": "Typed numbers do not update when the data change, and the examiner looks for a formula in the cell.",
+          "correction_markdown": "Use `=SUM(...)` for the totals, then format the row."
+        },
+        {
+          "erreur_markdown": "Applying the percent format to a column that already contains whole numbers such as 25.",
+          "pourquoi_faux": "The percent format multiplies the stored value by 100 for display, so 25 appears as 2500%.",
+          "correction_markdown": "Calculate the value as a fraction (for example `=B3/B7`) and then apply the percent format."
+        },
+        {
+          "erreur_markdown": "Believing that the decimal-places button rounds the number.",
+          "pourquoi_faux": "It changes the display only: the full value is still stored and used by every formula that refers to the cell.",
+          "correction_markdown": "Use `ROUND(number, digits)` when the stored value itself must change."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cells D2, D3 and D4 contain the fractions 0.075, 0.5 and 0.125. They are formatted as percentages with one decimal place.\n\n(a) What does each cell display?\n\n(b) A cell contains the number 25 and the percent format is applied to it. What does it display, and why?",
+          "solution_markdown": "(a) The format multiplies by 100 for the display: **7.5%, 50.0% and 12.5%**. The stored values remain 0.075, 0.5 and 0.125.\n\n(b) It displays **2500%**, because the percent format shows the stored value multiplied by 100 (25 × 100 = 2500)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The range C2:C6 contains the stock levels of five items: 25, 8, 10, 3 and 14. A conditional format must highlight in red the items that need to be reordered.\n\n(a) Which cells are highlighted by the rule \"cell value less than 10\"?\n\n(b) The manager decides that an item with exactly 10 in stock must also be reordered. Change the rule and say which cells are now highlighted.\n\n(c) The stock in C3 is updated to 12. What happens to the highlighting, and why?",
+          "solution_markdown": "(a) 8 and 3 are below 10: the cells **C3 and C5** are highlighted. The value 10 in C4 is not less than 10.\n\n(b) Use \"less than or equal to 10\". The highlighted cells are **C3, C4 and C5**.\n\n(c) The format is attached to a **rule**, not to the cell. When C3 becomes 12 the rule is no longer true for it, so the red highlighting disappears automatically."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A teacher keeps these marks, with headings in row 1 (Student, Maths, English, ICT, Total, Average).\n\n| Student | Maths | English | ICT |\n|---|---|---|---|\n| Awa | 64 | 71 | 58 |\n| Bella | 45 | 52 | 49 |\n| Chia | 80 | 77 | 91 |\n\n(a) Write the formulas for the total in E2 and the average in F2, and say how they are copied to row 4.\n\n(b) In row 5 the class average of each subject is calculated. Write the formula for the Maths column and give the three results to one decimal place.\n\n(c) State the formatting needed to show the averages with one decimal place, make the heading row bold with a fill colour, and show in red any student average below 50. Which student is flagged?\n\n(d) Cell G2 contains `=F2*3`. What does it contain, and what does this show about number formats?",
+          "solution_markdown": "(a) E2: `=SUM(B2:D2)`; F2: `=AVERAGE(B2:D2)`. Select E2:F2 and copy down to row 4 (relative references move down one row at a time). Totals: **193, 146 and 248**.\n\n(b) B5: `=AVERAGE(B2:B4)`, copied to the right. Results: Maths **63.0**, English **66.7**, ICT **66.0**.\n\n(c) Select F2:F5 and apply the Number format with 1 decimal place (averages 64.3, 48.7 and 82.7). Select A1:F1 and apply Bold and a Fill Color. Select F2:F4 and add the conditional rule \"cell value less than 50\" with red text. The only student flagged is **Bella** (48.7).\n\n(d) G2 contains **193**. F2 is displayed as 64.3 but stores 64.3333..., and a formula uses the stored value, so 3 × 64.3333... = 193 (not 3 × 64.3 = 192.9). The number format changes only the display."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Select the exact range of each instruction, apply the command, and check the result against your list of instructions.",
+        "Merge and Center joins the cells and keeps only the upper-left content; centring alone does not merge.",
+        "A number format changes the display, never the stored value; only ROUND changes the value. Percent format multiplies the stored value by 100 for display.",
+        "Totals must be SUM formulas; the shared grand total in a share formula is locked with an absolute reference.",
+        "Conditional formatting follows a rule and updates by itself; a strict \"less than\" does not flag the limit value.",
+        "Save the workbook under the name and in the place requested."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-linear-transformations",
+ "meta": {
+  "titre": "Linear Transformations: matrices acting on points and lines",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Matrices as transformations",
+  "duree_estimee_min": 35,
+  "tags": [
+   "linear transformations"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-linear-transformations-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Every time a photograph on a phone screen is rotated, mirrored or stretched, the same rule is applied to the coordinates of every point of the picture. A designer in Douala who resizes a logo for a signboard relies on exactly that. In mathematics such rules are written as matrices, and a single matrix acting on the coordinates tells you where every point, line and shape goes. At A Level the questions ask for the image of a point, of a line, or of a shape under a given matrix, for the matrix of a combination of two transformations, and for the way the area changes."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Two matrices are multiplied by taking each row of the left matrix with each column of the right matrix, and the product of a matrix and a column vector gives a column vector.",
+    "The determinant of $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ is $ad-bc$, and when it is not zero the inverse is $\\dfrac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$.",
+    "A straight line has an equation $y=mx+c$ and the gradient through two points $(x_1,y_1)$ and $(x_2,y_2)$ is $\\dfrac{y_2-y_1}{x_2-x_1}$.",
+    "A point $(x,y)$ is written as the column vector $\\begin{pmatrix}x\\\\y\\end{pmatrix}$, and a point $(x,y,z)$ in three dimensions as a column of three entries."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Matrices acting on points, lines and shapes",
+   "contenu_markdown": "### The image of a point\n\nA **linear transformation** $T$ obeys $T(\\mathbf p+\\mathbf q)=T(\\mathbf p)+T(\\mathbf q)$ and $T(k\\mathbf p)=kT(\\mathbf p)$, and it is represented by a matrix $\\mathbf M$: the image of the point with column vector $\\mathbf p$ is $\\mathbf M\\mathbf p$. In two dimensions,\n\n$$\n\\begin{pmatrix}X\\\\Y\\end{pmatrix}=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}ax+by\\\\cx+dy\\end{pmatrix}\n\\tag{1}\n$$\n\nThe **columns** of $\\mathbf M$ are the images of $(1,0)$ and $(0,1)$. The origin always maps to itself. In three dimensions a $3\\times3$ matrix acts on a column of three entries in the same way.\n\nStandard $2\\times2$ matrices:\n\n| Transformation | Matrix |\n|---|---|\n| Rotation about $O$ through $\\theta$ anticlockwise | $\\begin{pmatrix}\\cos\\theta&-\\sin\\theta\\\\\\sin\\theta&\\cos\\theta\\end{pmatrix}$ |\n| Reflection in the $x$-axis | $\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$ |\n| Reflection in the line $y=x$ | $\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$ |\n| Enlargement, scale factor $k$, centre $O$ | $\\begin{pmatrix}k&0\\\\0&k\\end{pmatrix}$ |\n\n### Combining transformations\n\nIf $\\mathbf A$ is applied first and $\\mathbf B$ second, the single matrix is\n\n$$\n\\mathbf M=\\mathbf B\\mathbf A\n\\tag{2}\n$$\n\nThe matrix applied first stands **on the right**, next to the column vector. In general $\\mathbf B\\mathbf A\\ne\\mathbf A\\mathbf B$.\n\n### Determinant, area and inverse\n\n$$\n\\det\\mathbf M=ad-bc\n\\tag{3}\n$$\n\nThe area of the image of any shape is $|\\det\\mathbf M|$ times the area of the shape. A negative determinant means that the orientation is reversed (as in a reflection). If $\\det\\mathbf M=0$ the plane collapses onto a line or a point and $\\mathbf M$ has no inverse.\n\n### The image of a line\n\nIf $(X,Y)$ is the image of $(x,y)$ then $\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\mathbf M^{-1}\\begin{pmatrix}X\\\\Y\\end{pmatrix}$. Substitute these expressions for $x$ and $y$ into the equation of the line: the result is an equation in $X$ and $Y$, which is the image line. Do **not** just replace $x,y$ by $X,Y$.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Image of a line using two points",
+     "quand_utiliser": "When the matrix is easy to apply to points and you want to avoid finding an inverse.",
+     "contenu_markdown": "Since a non-singular matrix sends a line to a line, take two points on the original line, find their images, and write the equation of the line through the images. For $y=2x+1$ under $\\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}$: $(0,1)\\mapsto(1,1)$ and $(1,3)\\mapsto(6,5)$. The gradient is $\\dfrac{5-1}{6-1}=\\dfrac45$, so the image line is $Y-1=\\tfrac45(X-1)$, that is $5Y=4X+1$, the same as obtained with the inverse. For a line **through the origin** $y=mx$, the single point $(1,m)$ is enough: if its image is $(X_0,Y_0)$, the image line is the line through the origin and $(X_0,Y_0)$."
+    },
+    {
+     "nom": "Three-dimensional matrices",
+     "quand_utiliser": "When the point and the matrix have three coordinates.",
+     "contenu_markdown": "Multiply the matrix by the column of coordinates, taking each row against the column. For $\\mathbf M=\\begin{pmatrix}1&0&2\\\\0&2&1\\\\1&1&0\\end{pmatrix}$ and the point $(2,-1,3)$:\n\n$$\n\\begin{pmatrix}1&0&2\\\\0&2&1\\\\1&1&0\\end{pmatrix}\\begin{pmatrix}2\\\\-1\\\\3\\end{pmatrix}=\\begin{pmatrix}2+0+6\\\\0-2+3\\\\2-1+0\\end{pmatrix}=\\begin{pmatrix}8\\\\1\\\\1\\end{pmatrix}\n\\tag{4}\n$$\n\nso the image is $(8,1,1)$. The first column of $\\mathbf M$ is the image of $(1,0,0)$, the second of $(0,1,0)$ and the third of $(0,0,1)$. Combined transformations are again multiplied with the first one on the right."
+    },
+    {
+     "nom": "Composition and the determinant of a product",
+     "quand_utiliser": "When a question applies two transformations one after the other, or asks what single transformation is equivalent.",
+     "contenu_markdown": "Let $\\mathbf A=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ (rotation through $90^{\\circ}$ anticlockwise about $O$) and $\\mathbf B=\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$ (reflection in the $x$-axis). Rotation first and then reflection is $\\mathbf B\\mathbf A=\\begin{pmatrix}0&-1\\\\-1&0\\end{pmatrix}$, which sends $(1,0)$ to $(0,-1)$: it is a reflection in the line $y=-x$. Reflection first and then rotation is $\\mathbf A\\mathbf B=\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$, a reflection in $y=x$. The two orders give different transformations. Determinants multiply: $\\det(\\mathbf B\\mathbf A)=\\det\\mathbf B\\cdot\\det\\mathbf A=(-1)(1)=-1$, so area is preserved and orientation is reversed."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "epreuve_source": false,
+   "enonce_markdown": "The matrix $\\mathbf M=\\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}$ represents a linear transformation of the plane. Find the equation of the image of the line $y=2x+1$.",
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Write the image of a general point.",
+     "justification": "Equation (1) gives the coordinates $(X,Y)$ of the image of $(x,y)$.",
+     "resultat_markdown": "$X=3x+y$ and $Y=2x+y$."
+    },
+    {
+     "numero": 2,
+     "action": "Find the inverse of $\\mathbf M$.",
+     "justification": "The line must be rewritten in terms of $X$ and $Y$, which needs $\\mathbf M^{-1}$. First compute the determinant.",
+     "resultat_markdown": "$\\det\\mathbf M=3\\cdot1-1\\cdot2=1$, so $\\mathbf M^{-1}=\\begin{pmatrix}1&-1\\\\-2&3\\end{pmatrix}$. (Check: $\\mathbf M\\mathbf M^{-1}=\\begin{pmatrix}3-2&-3+3\\\\2-2&-2+3\\end{pmatrix}=\\mathbf I$.)"
+    },
+    {
+     "numero": 3,
+     "action": "Express $x$ and $y$ in terms of $X$ and $Y$.",
+     "justification": "Apply $\\mathbf M^{-1}$ to the column $(X,Y)$.",
+     "resultat_markdown": "$x=X-Y$ and $y=-2X+3Y$."
+    },
+    {
+     "numero": 4,
+     "action": "Substitute into the equation of the line.",
+     "justification": "Every point of the image line comes from a point $(x,y)$ satisfying $y=2x+1$.",
+     "resultat_markdown": "$-2X+3Y=2(X-Y)+1$, so $5Y=4X+1$."
+    },
+    {
+     "numero": 5,
+     "action": "Check with two points and state the result.",
+     "justification": "The points $(0,1)$ and $(1,3)$ lie on the original line, so their images must satisfy the new equation.",
+     "resultat_markdown": "$(0,1)\\mapsto(1,1)$: $5\\cdot1=4\\cdot1+1$. $(1,3)\\mapsto(6,5)$: $5\\cdot5=25=4\\cdot6+1$. Both satisfy $5Y=4X+1$."
+    }
+   ],
+   "conclusion_markdown": "The image of the line $y=2x+1$ is the line $5Y=4X+1$, that is $Y=\\dfrac{4X+1}{5}$, with gradient $\\dfrac45$ and $Y$-intercept $\\dfrac15$. It does not pass through the origin, because the original line does not."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Reading the image of $(1,0)$ under $\\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}$ as $(3,1)$, the first row.",
+     "pourquoi_faux": "The image of $(1,0)$ is the first **column** of the matrix, because only the first entry of the vector is non-zero.",
+     "correction_markdown": "$\\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}\\begin{pmatrix}1\\\\0\\end{pmatrix}=\\begin{pmatrix}3\\\\2\\end{pmatrix}$, so the image is $(3,2)$."
+    },
+    {
+     "erreur_markdown": "Finding the matrix for 'rotation $\\mathbf A$, then reflection $\\mathbf B$' as $\\mathbf A\\mathbf B$.",
+     "pourquoi_faux": "The matrix applied first is nearest to the column vector, so it must be on the right of the product.",
+     "correction_markdown": "The combined matrix is $\\mathbf B\\mathbf A$. With $\\mathbf A=\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ and $\\mathbf B=\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$ the product $\\mathbf B\\mathbf A$ is a reflection in $y=-x$, but $\\mathbf A\\mathbf B$ is a reflection in $y=x$."
+    },
+    {
+     "erreur_markdown": "Stating that the image of $y=2x+1$ is $Y=2X+1$ (replacing $x,y$ by $X,Y$).",
+     "pourquoi_faux": "The transformation moves points, so $(X,Y)$ is not the same as $(x,y)$, and the equation of the line changes.",
+     "correction_markdown": "Use $x=X-Y$, $y=-2X+3Y$ from the inverse, giving $5Y=4X+1$, or take two points on the line and map them."
+    },
+    {
+     "erreur_markdown": "Saying that a matrix with $\\det\\mathbf M=-1$ changes areas by a factor of $-1$.",
+     "pourquoi_faux": "An area cannot be negative; the sign of the determinant records orientation, not size.",
+     "correction_markdown": "The area scale factor is $|\\det\\mathbf M|=1$, and the negative sign shows that the orientation is reversed, as in a reflection."
+    },
+    {
+     "erreur_markdown": "Claiming that every line is mapped onto a line through the origin because the origin is an invariant point.",
+     "pourquoi_faux": "The origin is invariant, but an invertible matrix sends only the origin to the origin, so a line that misses the origin has an image that also misses it.",
+     "correction_markdown": "For an invertible matrix, a line through the origin maps to a line through the origin, and a line not through the origin maps to a line not through the origin, as with $5Y=4X+1$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "(a) Find the image of the point $(1,-2,3)$ under the transformation with matrix $\\begin{pmatrix}2&-1&0\\\\1&3&2\\\\0&1&4\\end{pmatrix}$. (b) Find the image of $(4,2)$ under $\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ and describe the transformation.",
+     "solution_markdown": "(a) Row by column: $2\\cdot1+(-1)(-2)+0\\cdot3=4$; $1\\cdot1+3(-2)+2\\cdot3=1$; $0\\cdot1+1\\cdot(-2)+4\\cdot3=10$. The image is **$(4,1,10)$**.\n\n(b) $\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\begin{pmatrix}4\\\\2\\end{pmatrix}=\\begin{pmatrix}0-2\\\\4+0\\end{pmatrix}$, so the image is **$(-2,4)$**. The matrix is the rotation matrix with $\\theta=90^{\\circ}$ (cosine $0$, sine $1$): an anticlockwise rotation through $90^{\\circ}$ about $O$."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "A transformation has matrix $\\mathbf N=\\begin{pmatrix}1&2\\\\3&5\\end{pmatrix}$. (a) Find the equation of the image of the line $y=x-2$. (b) Find $\\det\\mathbf N$ and state what it tells you about areas and orientation.",
+     "solution_markdown": "(a) $\\det\\mathbf N=1\\cdot5-2\\cdot3=-1$, so $\\mathbf N^{-1}=\\dfrac{1}{-1}\\begin{pmatrix}5&-2\\\\-3&1\\end{pmatrix}=\\begin{pmatrix}-5&2\\\\3&-1\\end{pmatrix}$. Hence $x=-5X+2Y$ and $y=3X-Y$.\n\nSubstituting into $y=x-2$: $3X-Y=-5X+2Y-2$, so $8X+2=3Y$. The image line is **$3Y=8X+2$**. (Check: $(0,-2)\\mapsto(-4,-10)$ and $3(-10)=-30=8(-4)+2$.)\n\n(b) $\\det\\mathbf N=$ **$-1$**. Areas are unchanged because $|\\det\\mathbf N|=1$, and the orientation is reversed because the determinant is negative."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A linear transformation $T$ maps the point $(1,1)$ to $(5,3)$ and the point $(1,-1)$ to $(1,-1)$. (a) Find the matrix $\\mathbf T$ of the transformation. (b) Show that each of the lines $y=-x$ and $y=\\tfrac12x$ is mapped onto itself. (c) Find the area of the image of the triangle with vertices $(0,0)$, $(2,0)$ and $(0,3)$.",
+     "solution_markdown": "(a) Let $\\mathbf T=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$. Then $a+b=5$, $a-b=1$, $c+d=3$, $c-d=-1$. Adding and subtracting: $a=3$, $b=2$, $c=1$, $d=2$. So **$\\mathbf T=\\begin{pmatrix}3&2\\\\1&2\\end{pmatrix}$**.\n\n(b) A point on $y=-x$ is $(t,-t)$ and $\\mathbf T\\begin{pmatrix}t\\\\-t\\end{pmatrix}=\\begin{pmatrix}3t-2t\\\\t-2t\\end{pmatrix}=\\begin{pmatrix}t\\\\-t\\end{pmatrix}$, which is on $y=-x$. A point on $y=\\tfrac12x$ is $(2t,t)$ and $\\mathbf T\\begin{pmatrix}2t\\\\t\\end{pmatrix}=\\begin{pmatrix}6t+2t\\\\2t+2t\\end{pmatrix}=\\begin{pmatrix}8t\\\\4t\\end{pmatrix}$, which satisfies $Y=\\tfrac12X$. So **both lines are mapped onto themselves**.\n\n(c) $\\det\\mathbf T=3\\cdot2-2\\cdot1=4$. The triangle has area $\\tfrac12\\cdot2\\cdot3=3$, so the image has area $4\\times3=$ **$12$**. (Check: the image vertices are $(0,0)$, $(6,2)$ and $(6,6)$, with area $\\tfrac12|6\\cdot6-2\\cdot6|=12$.)"
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "The image of a point is $\\mathbf M\\mathbf p$; the columns of $\\mathbf M$ are the images of $(1,0)$ and $(0,1)$ (or of the three unit vectors in three dimensions), and the origin never moves.",
+    "To find the image of a line, either express $x,y$ in terms of $X,Y$ with the inverse and substitute, or map two points of the line and write the line through the images.",
+    "When $\\mathbf A$ is applied first and $\\mathbf B$ second, the single matrix is $\\mathbf B\\mathbf A$; the order matters.",
+    "$\\det\\mathbf M=ad-bc$: the area scale factor is $|\\det\\mathbf M|$, a negative sign shows reversed orientation, and a zero determinant means no inverse.",
+    "Determinants multiply for a combined transformation, and an invertible matrix sends lines to lines and lines through the origin to lines through the origin."
+   ]
+  }
+ ]
+}

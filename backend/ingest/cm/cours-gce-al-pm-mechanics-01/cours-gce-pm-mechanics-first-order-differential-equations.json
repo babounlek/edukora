@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-first-order-differential-equations",
+  "meta": {
+    "titre": "First Order Differential Equations: separating variables and using conditions",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Separable equations and exponential change",
+    "duree_estimee_min": 35,
+    "tags": [
+      "first order differential equations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-first-order-differential-equations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A cup of tea left on a table in a room cools quickly at first and then more and more slowly towards the temperature of the room. The rate of cooling depends on how much hotter the tea is than the room, and that sentence is already a differential equation. Populations, loans with interest and radioactive substances behave in the same way: the rate of change depends on the present value. At the GCE you are asked to solve such equations by separating the variables, to use a given pair of values to find the constant, and to give the answer in the form requested."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "$\\dfrac{dy}{dx}$ is the rate of change of $y$ with respect to $x$, and integration reverses differentiation, with a constant of integration.",
+        "Standard integrals: $\\int x^n\\,dx=\\dfrac{x^{n+1}}{n+1}$ for $n\\neq-1$, $\\int\\dfrac{dx}{x}=\\ln|x|$, and $\\int e^{kx}\\,dx=\\dfrac1ke^{kx}$.",
+        "Laws of logarithms: $\\ln a+\\ln b=\\ln ab$, $n\\ln a=\\ln a^n$, and $e^{\\ln a}=a$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solving separable equations, with conditions",
+      "contenu_markdown": "### Separable equations\n\nA first order equation involves $\\dfrac{dy}{dx}$ and no higher derivative. If it can be written as $g(y)\\dfrac{dy}{dx}=f(x)$, the variables can be **separated** and each side integrated with respect to its own variable:\n\n$$\n\\int g(y)\\,dy=\\int f(x)\\,dx \\tag{1}\n$$\n\nAdd **one** constant of integration, on one side only. The result is the **general solution**, a family of curves. A given pair of values, such as $y=2$ when $x=0$, fixes the constant and gives the **particular solution**.\n\n### Method\n\n1. Separate: all the $y$ terms with $dy$ on one side, all the $x$ terms with $dx$ on the other.\n2. Integrate both sides and add $+c$ once.\n3. Substitute the given values to find $c$.\n4. Rearrange into the form requested, for instance $y=f(x)$ or $y^2=\\dots$.\n\nUseful integrals: $\\int y\\,dy=\\tfrac12y^2$, $\\int\\dfrac{dy}{y}=\\ln|y|$, $\\int\\dfrac{dx}{x-a}=\\ln|x-a|$ and $\\int\\dfrac{dy}{1-y}=-\\ln|1-y|$. When logarithms appear it is neat to write the constant as $\\ln A$, or to use $A=e^{c}$: for example $\\ln y=\\ln x+c$ gives $y=Ax$. Never exponentiate term by term.\n\n### Exponential change\n\nThe equation $\\dfrac{dy}{dx}=ky$ has the solution\n\n$$\ny=Ae^{kx} \\tag{2}\n$$\n\nwhere $A$ is the value of $y$ at $x=0$. The change is growth for $k>0$ and decay for $k<0$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Logarithmic integrals",
+          "quand_utiliser": "When one side integrates to a logarithm and the answer must be $y=f(x)$.",
+          "contenu_markdown": "Take $\\dfrac{dy}{dx}=\\dfrac{2y}{x+1}$. Separate: $\\dfrac{dy}{y}=\\dfrac{2\\,dx}{x+1}$. Integrate: $\\ln|y|=2\\ln|x+1|+c=\\ln(x+1)^2+c$. Then $|y|=e^{c}(x+1)^2$, so $y=A(x+1)^2$ with $A$ a constant. Check by differentiating: $\\dfrac{dy}{dx}=2A(x+1)=\\dfrac{2y}{x+1}$."
+        },
+        {
+          "nom": "Linear equations and the integrating factor",
+          "quand_utiliser": "When the equation has the form $\\dfrac{dy}{dx}+P(x)\\,y=Q(x)$ and cannot be separated.",
+          "contenu_markdown": "Multiply by the **integrating factor** $I=e^{\\int P\\,dx}$. The left side then becomes $\\dfrac{d}{dx}(Iy)$, so $Iy=\\int IQ\\,dx$. Example: $\\dfrac{dy}{dx}+2y=e^{-x}$. Here $I=e^{2x}$ and $\\dfrac{d}{dx}\\left(ye^{2x}\\right)=e^{x}$. Hence $ye^{2x}=e^{x}+c$ and $y=e^{-x}+ce^{-2x}$. Check: the derivative is $-e^{-x}-2ce^{-2x}$, and adding $2y$ leaves $e^{-x}$."
+        },
+        {
+          "nom": "Rates of change in context",
+          "quand_utiliser": "When a word problem says that a rate is proportional to a quantity or to a difference.",
+          "contenu_markdown": "Translate the sentence into an equation with a constant $k$. For a body cooling in surroundings at temperature $\\theta_s$, $\\dfrac{d\\theta}{dt}=-k(\\theta-\\theta_s)$, with $k>0$. Separating and integrating gives $\\theta=\\theta_s+(\\theta_0-\\theta_s)e^{-kt}$, where $\\theta_0$ is the temperature at $t=0$. Use the two readings given to find $e^{-kt}$ at a convenient time; often $k$ itself need not be evaluated."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve the differential equation $(1+x^2)\\dfrac{dy}{dx}=xy$, given that $y=3$ when $x=0$. Express $y$ in terms of $x$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Separate the variables.",
+          "justification": "Divide by $y$ (which is not zero, since $y=3$ at the start) and by $(1+x^2)$, so that $y$ and $dy$ are on the left and $x$ and $dx$ on the right.",
+          "resultat_markdown": "$$\n\\int\\frac{1}{y}\\,dy=\\int\\frac{x}{1+x^2}\\,dx \\tag{3}\n$$"
+        },
+        {
+          "numero": 2,
+          "action": "Integrate both sides.",
+          "justification": "The right integrand has the form $\\dfrac{f'(x)}{f(x)}$ up to a factor, since $\\dfrac{d}{dx}(1+x^2)=2x$. Add one constant.",
+          "resultat_markdown": "$\\ln|y|=\\dfrac12\\ln(1+x^2)+c$."
+        },
+        {
+          "numero": 3,
+          "action": "Remove the logarithms.",
+          "justification": "Exponentiate the whole equation, not each term, and write $e^{c}$ as a new constant $A$.",
+          "resultat_markdown": "$y=A\\sqrt{1+x^2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Use the condition $y=3$ when $x=0$.",
+          "justification": "This fixes the constant of the particular solution.",
+          "resultat_markdown": "$3=A\\sqrt{1+0}$, so $A=3$."
+        },
+        {
+          "numero": 5,
+          "action": "Check the result in the original equation.",
+          "justification": "Differentiating the answer and substituting guards against slips.",
+          "resultat_markdown": "$\\dfrac{dy}{dx}=\\dfrac{3x}{\\sqrt{1+x^2}}$, so $(1+x^2)\\dfrac{dy}{dx}=3x\\sqrt{1+x^2}=xy$. This agrees with the equation."
+        }
+      ],
+      "conclusion_markdown": "The solution is $y=3\\sqrt{1+x^2}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $y\\dfrac{dy}{dx}=2x$ the student writes $y\\times y=x^2+c$, so $y^2=x^2+c$.",
+          "pourquoi_faux": "The left side is $\\int y\\,dy=\\dfrac{y^2}{2}$, not $y^2$. Treating $y$ as if it were constant on the left loses the factor $\\frac12$, and the coefficient of $x^2$ comes out wrong.",
+          "correction_markdown": "$\\dfrac{y^2}{2}=x^2+c$, so $y^2=2x^2+c'$ with $c'=2c$."
+        },
+        {
+          "erreur_markdown": "After integrating $y\\,dy=5x\\,dx$ the student writes $\\dfrac{y^2}{2}=\\dfrac{5x^2}{2}$ and then uses the condition $y=2$ when $x=0$.",
+          "pourquoi_faux": "Without $+c$ the equation cannot be made to fit the condition: $2=0$ is false. The constant must be added at the moment of integration.",
+          "correction_markdown": "$\\dfrac{y^2}{2}=\\dfrac{5x^2}{2}+c$. With $y=2$ and $x=0$: $2=c$, so $y^2=5x^2+4$."
+        },
+        {
+          "erreur_markdown": "The student integrates $\\dfrac{dy}{1-y}$ and obtains $\\ln|1-y|$.",
+          "pourquoi_faux": "By the chain rule $\\dfrac{d}{dy}\\ln|1-y|=\\dfrac{-1}{1-y}$. The factor $-1$ from the inner function is missing, which changes the sign of the whole answer.",
+          "correction_markdown": "$\\int\\dfrac{dy}{1-y}=-\\ln|1-y|$."
+        },
+        {
+          "erreur_markdown": "From $\\ln y=\\ln x+c$ the student writes $y=x+c$.",
+          "pourquoi_faux": "Exponentiating must be done to the whole equation: $y=e^{\\ln x+c}=e^{c}\\,x$. Exponentiating term by term would turn a sum of logarithms into a sum of numbers, which is not valid.",
+          "correction_markdown": "$y=Ax$ with $A=e^{c}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Solve $\\dfrac{dy}{dx}=3x^2y$, given that $y=2$ when $x=0$.",
+          "solution_markdown": "Separate: $\\dfrac{dy}{y}=3x^2\\,dx$. Integrate: $\\ln|y|=x^3+c$.\n\nSo $y=Ae^{x^3}$ where $A=e^c$. When $x=0$, $y=2$ gives $2=Ae^0=A$.\n\nThe solution is **$y=2e^{x^3}$**. Check: $\\dfrac{dy}{dx}=2\\cdot3x^2e^{x^3}=3x^2y$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Solve $2y\\dfrac{dy}{dx}=\\cos x$, given that $y=2$ when $x=\\dfrac{\\pi}{2}$. Give $y$ in terms of $x$.",
+          "solution_markdown": "Separate: $2y\\,dy=\\cos x\\,dx$. Integrate: $y^2=\\sin x+c$.\n\nWhen $x=\\dfrac{\\pi}{2}$, $y=2$: $4=1+c$, so $c=3$ and $y^2=3+\\sin x$.\n\nSince $y=2$ is positive at the given point, we take the positive root: **$y=\\sqrt{3+\\sin x}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A cup of tea at $90^\\circ\\mathrm{C}$ is placed in a room at a constant $20^\\circ\\mathrm{C}$. The temperature $\\theta^\\circ\\mathrm{C}$ after $t$ minutes satisfies $\\dfrac{d\\theta}{dt}=-k(\\theta-20)$, where $k$ is a positive constant. After $5$ minutes the temperature is $60^\\circ\\mathrm{C}$.\n\n(a) Solve the equation for $\\theta$ in terms of $t$ and $k$.\n\n(b) Find the temperature after $10$ minutes, correct to $0.1^\\circ\\mathrm{C}$.\n\n(c) State the temperature that $\\theta$ approaches as $t$ becomes large.",
+          "solution_markdown": "(a) Separate: $\\dfrac{d\\theta}{\\theta-20}=-k\\,dt$. Integrate: $\\ln(\\theta-20)=-kt+c$ (the tea is hotter than the room), so $\\theta-20=Ae^{-kt}$.\n\nAt $t=0$, $\\theta=90$: $70=A$. Hence **$\\theta=20+70e^{-kt}$**.\n\n(b) At $t=5$: $40=70e^{-5k}$, so $e^{-5k}=\\dfrac47$. At $t=10$: $e^{-10k}=\\left(e^{-5k}\\right)^2=\\dfrac{16}{49}$.\n\n$\\theta=20+70\\times\\dfrac{16}{49}=20+\\dfrac{160}{7}=\\dfrac{300}{7}$, so **$\\theta=42.9^\\circ\\mathrm{C}$** to $0.1^\\circ\\mathrm{C}$.\n\n(c) As $t\\to\\infty$, $e^{-kt}\\to0$, so $\\theta\\to$ **$20^\\circ\\mathrm{C}$**, the temperature of the room."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A separable equation $g(y)\\dfrac{dy}{dx}=f(x)$ is solved by $\\int g(y)\\,dy=\\int f(x)\\,dx$, adding one constant $c$.",
+        "The general solution has an arbitrary constant; a given pair of values gives the particular solution.",
+        "Remember the integrals $\\int\\dfrac{dy}{y}=\\ln|y|$ and $\\int\\dfrac{dy}{1-y}=-\\ln|1-y|$; exponentiate the whole equation, with $A=e^{c}$.",
+        "$\\dfrac{dy}{dx}=ky$ gives $y=Ae^{kx}$, and a rate proportional to a difference gives $\\theta=\\theta_s+(\\theta_0-\\theta_s)e^{-kt}$.",
+        "Finish by writing the answer in the form requested, and check it by differentiating and substituting in the equation."
+      ]
+    }
+  ]
+}

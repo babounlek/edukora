@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-pm-statistics-partial-fractions",
+  "meta": {
+    "titre": "Partial Fractions: splitting a rational function into simple pieces",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Decomposition of rational functions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "partial fractions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-partial-fractions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Mokolo who shares a bulk delivery of rice between two shops is doing in daily life what partial fractions do in algebra: one awkward quantity is broken into simpler parts that can be handled separately. A rational function whose denominator is a product of brackets is hard to integrate or to expand in a series, but each of its pieces is easy. That is why partial fractions appear regularly in the GCE, either as a short 'find the constants' question in Paper 1 or as the first step of a longer integration or series question in Paper 2."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A rational function is a polynomial divided by a polynomial, and a polynomial has a degree equal to its highest power of $x$.",
+        "$\\int\\dfrac{1}{x-a}\\,dx=\\ln|x-a|+c$ and $\\int (x-a)^{-2}\\,dx=-\\dfrac{1}{x-a}+c$.",
+        "An identity ($\\equiv$) is true for every value of $x$, so any convenient value of $x$ may be substituted into it.",
+        "Polynomial division: dividend $=$ divisor $\\times$ quotient $+$ remainder."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Writing a proper rational function as a sum of simpler fractions",
+      "contenu_markdown": "**Idea.** A rational function $\\dfrac{P(x)}{Q(x)}$ is *proper* when the degree of $P$ is less than the degree of $Q$. A proper fraction whose denominator factorises can be written as a sum of simpler fractions, one family of terms for each factor of $Q$. The statement is an **identity**: it holds for every $x$ except where a denominator is zero, so any value of $x$ may be substituted.\n\n### Forms of the partial fractions\n\n| Factor in the denominator | Terms it produces |\n|---|---|\n| $(x-a)$ | $\\dfrac{A}{x-a}$ |\n| $(x-a)^{2}$ | $\\dfrac{A}{x-a}+\\dfrac{B}{(x-a)^{2}}$ |\n\nA squared factor needs a term for **each** power up to the square, otherwise there are too few constants to match the numerator.\n\n### Method for two distinct linear factors\n\n$$\n\\frac{P(x)}{(x-a)(x-b)}\\equiv\\frac{A}{x-a}+\\frac{B}{x-b} \\tag{1}\n$$\n\nMultiply both sides by $(x-a)(x-b)$ to obtain $P(x)\\equiv A(x-b)+B(x-a)$. Then either\n\n1. **substitute the roots**: putting $x=a$ gives $A=\\dfrac{P(a)}{a-b}$ and putting $x=b$ gives $B=\\dfrac{P(b)}{b-a}$ (the 'cover-up' rule: cover the bracket that vanishes and evaluate what is left at that root), or\n2. **equate coefficients** of $x^{0}$, $x^{1}$, $x^{2}$, ... on both sides and solve the simultaneous equations.\n\nSubstitution is faster for distinct linear factors; equating coefficients is needed for the remaining constants when a factor is repeated. Always check with a third value of $x$ such as $x=0$.\n\n### Why the pieces are useful\nEach piece has a standard integral, for example $\\int\\dfrac{A}{x-a}\\,dx=A\\ln|x-a|+c$, and each piece of the form $\\dfrac{1}{1+kx}$ can be expanded as a series. The decomposition turns one difficult task into several routine ones.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Improper fractions",
+          "quand_utiliser": "When the degree of the numerator is equal to or greater than the degree of the denominator.",
+          "contenu_markdown": "Divide first, or include a constant in the form from the start. For $\\dfrac{x^{2}+1}{x(x+1)}$ the degrees are equal and $x^{2}+1=1\\cdot(x^{2}+x)+(1-x)$, so the fraction is $1+\\dfrac{1-x}{x(x+1)}$. The remaining proper fraction splits as $\\dfrac{1}{x}-\\dfrac{2}{x+1}$, so the whole is $1+\\dfrac{1}{x}-\\dfrac{2}{x+1}$. A form with only $\\dfrac{A}{x}+\\dfrac{B}{x+1}$ can never match, because it tends to $0$ for large $x$ while the fraction tends to $1$. Equivalent starting form: $C+\\dfrac{A}{x}+\\dfrac{B}{x+1}$."
+        },
+        {
+          "nom": "Repeated linear factor",
+          "quand_utiliser": "When the denominator contains a squared bracket such as $(x-1)^{2}$.",
+          "contenu_markdown": "A squared factor needs two terms: $\\dfrac{3x-1}{(x-1)^{2}}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{(x-1)^{2}}$. Multiplying by $(x-1)^{2}$ gives $3x-1\\equiv A(x-1)+B$. Putting $x=1$ gives $B=2$, and equating the coefficients of $x$ gives $A=3$. So the result is $\\dfrac{3}{x-1}+\\dfrac{2}{(x-1)^{2}}$. For integration, $\\int\\dfrac{B}{(x-1)^{2}}\\,dx=-\\dfrac{B}{x-1}+c$: the squared term gives no logarithm."
+        },
+        {
+          "nom": "Using the result in a series",
+          "quand_utiliser": "When the question says 'hence expand in ascending powers of $x$' or asks for the range of validity.",
+          "contenu_markdown": "Write each piece as $(1+kx)^{-1}$ and use $(1+u)^{-1}=1-u+u^{2}-u^{3}+\\dots$, valid for $|u|<1$. Each piece has its own condition: $\\dfrac{1}{1-x}$ needs $|x|<1$ and $\\dfrac{1}{1+2x}$ needs $|x|<\\dfrac12$. The expansion of the sum is valid only where all conditions hold, so the stricter one, $|x|<\\dfrac12$, applies."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The function $f$ is defined for $x\\ge0$ by $f(x)=\\dfrac{2x^{2}+9x+1}{(x+1)(x+2)}$.\n\n(a) Express $f(x)$ in the form $A+\\dfrac{B}{x+1}+\\dfrac{C}{x+2}$.\n\n(b) Hence evaluate $\\displaystyle\\int_0^2 f(x)\\,dx$, giving the answer in the form $p+q\\ln2+r\\ln3$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compare the degrees of the numerator and the denominator.",
+          "justification": "The denominator expands to $x^{2}+3x+2$, which has the same degree as the numerator, so the fraction is not proper and a constant must appear.",
+          "resultat_markdown": "$2x^{2}+9x+1=2(x^{2}+3x+2)+(3x-3)$, so $f(x)=2+\\dfrac{3x-3}{(x+1)(x+2)}$."
+        },
+        {
+          "numero": 2,
+          "action": "Write the proper fraction in partial fractions.",
+          "justification": "Two distinct linear factors give one term for each factor.",
+          "resultat_markdown": "$\\dfrac{3x-3}{(x+1)(x+2)}\\equiv\\dfrac{B}{x+1}+\\dfrac{C}{x+2}$, so $3x-3\\equiv B(x+2)+C(x+1)$."
+        },
+        {
+          "numero": 3,
+          "action": "Find $B$ and $C$ by substitution.",
+          "justification": "Putting $x=-1$ removes the term in $C$, and putting $x=-2$ removes the term in $B$.",
+          "resultat_markdown": "$x=-1$: $-6=B(1)$, so $B=-6$. $x=-2$: $-9=C(-1)$, so $C=9$."
+        },
+        {
+          "numero": 4,
+          "action": "Check with a third value of $x$.",
+          "justification": "An identity must hold for every $x$; $x=0$ is easy to evaluate on both sides.",
+          "resultat_markdown": "$f(0)=\\dfrac12$ and $2-\\dfrac{6}{1}+\\dfrac{9}{2}=\\dfrac12$, so $f(x)=2-\\dfrac{6}{x+1}+\\dfrac{9}{x+2}$."
+        },
+        {
+          "numero": 5,
+          "action": "Integrate term by term between $0$ and $2$.",
+          "justification": "Each term has a standard integral; for $x\\ge0$ both brackets are positive, so the modulus signs can be dropped.",
+          "resultat_markdown": "$\\displaystyle\\int_0^2 f\\,dx=\\Big[\\,2x-6\\ln(x+1)+9\\ln(x+2)\\,\\Big]_0^2=\\big(4-6\\ln3+9\\ln4\\big)-\\big(9\\ln2\\big)$."
+        },
+        {
+          "numero": 6,
+          "action": "Simplify the logarithms.",
+          "justification": "Write $\\ln4=2\\ln2$ so that only $\\ln2$ and $\\ln3$ remain.",
+          "resultat_markdown": "$4-6\\ln3+18\\ln2-9\\ln2=4+9\\ln2-6\\ln3$."
+        }
+      ],
+      "conclusion_markdown": "$f(x)=2-\\dfrac{6}{x+1}+\\dfrac{9}{x+2}$ and $\\displaystyle\\int_0^2 f(x)\\,dx=4+9\\ln2-6\\ln3\\approx3.65$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$\\dfrac{x^{2}+1}{(x-1)(x+2)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+2}$, with no division first.",
+          "pourquoi_faux": "The numerator and denominator have the same degree, so the fraction is not proper. The right-hand side tends to $0$ for large $x$ but the left-hand side tends to $1$, so no constants $A$ and $B$ can work.",
+          "correction_markdown": "Include a constant: $\\dfrac{x^{2}+1}{(x-1)(x+2)}=1+\\dfrac{2}{3(x-1)}-\\dfrac{5}{3(x+2)}$."
+        },
+        {
+          "erreur_markdown": "$\\dfrac{3x-1}{(x-1)^{2}}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x-1}$.",
+          "pourquoi_faux": "The two terms combine into the single term $\\dfrac{A+B}{x-1}$, so there is really only one constant and the numerator $3x-1$ cannot be matched.",
+          "correction_markdown": "Use $\\dfrac{A}{x-1}+\\dfrac{B}{(x-1)^{2}}$, which gives $A=3$ and $B=2$."
+        },
+        {
+          "erreur_markdown": "To find the constant of $\\dfrac{1}{x+3}$ in $\\dfrac{5}{(x-2)(x+3)}$, put $x=3$.",
+          "pourquoi_faux": "The bracket $(x+3)$ vanishes at $x=-3$, not at $x=3$. Substituting the wrong value does not remove the other term, so the constant found is wrong.",
+          "correction_markdown": "Put $x=-3$ to get $\\dfrac{5}{-3-2}=-1$, and put $x=2$ to get $\\dfrac{5}{2+3}=1$. So $\\dfrac{5}{(x-2)(x+3)}=\\dfrac{1}{x-2}-\\dfrac{1}{x+3}$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\int\\dfrac{2}{(x+2)^{2}}\\,dx=2\\ln|x+2|+c$.",
+          "pourquoi_faux": "A logarithm comes only from a power $-1$. Here the power is $-2$, so the rule for powers applies.",
+          "correction_markdown": "$\\displaystyle\\int 2(x+2)^{-2}\\,dx=-\\dfrac{2}{x+2}+c$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\int\\dfrac{4}{2x+1}\\,dx=4\\ln|2x+1|+c$.",
+          "pourquoi_faux": "The bracket is $2x+1$, not $x$; integrating a linear bracket divides by its coefficient of $x$. Differentiating the answer gives $\\dfrac{8}{2x+1}$, not the integrand.",
+          "correction_markdown": "$\\displaystyle\\int\\dfrac{4}{2x+1}\\,dx=2\\ln|2x+1|+c$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Express $\\dfrac{x+7}{(x-1)(x+3)}$ in partial fractions, and hence evaluate $\\displaystyle\\int_2^5\\dfrac{x+7}{(x-1)(x+3)}\\,dx$, giving the answer as a single logarithm.",
+          "solution_markdown": "Let $\\dfrac{x+7}{(x-1)(x+3)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+3}$, so $x+7\\equiv A(x+3)+B(x-1)$.\n\nPut $x=1$: $8=4A$, so $A=2$. Put $x=-3$: $4=-4B$, so $B=-1$. Therefore $\\dfrac{x+7}{(x-1)(x+3)}=\\dfrac{2}{x-1}-\\dfrac{1}{x+3}$.\n\nIntegral: $\\displaystyle\\Big[\\,2\\ln(x-1)-\\ln(x+3)\\,\\Big]_2^5=(2\\ln4-\\ln8)-(2\\ln1-\\ln5)=4\\ln2-3\\ln2+\\ln5=\\ln2+\\ln5=$ **$\\ln10$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Find the constants $A$, $B$ and $C$ such that $\\dfrac{4x^{2}+5x}{(x-1)(x+2)^{2}}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+2}+\\dfrac{C}{(x+2)^{2}}$. Hence show that $\\displaystyle\\int_2^3\\dfrac{4x^{2}+5x}{(x-1)(x+2)^{2}}\\,dx=3\\ln5-5\\ln2-\\dfrac{1}{10}$.",
+          "solution_markdown": "Multiply by $(x-1)(x+2)^{2}$: $4x^{2}+5x\\equiv A(x+2)^{2}+B(x-1)(x+2)+C(x-1)$.\n\nPut $x=1$: $9=9A$, so $A=1$. Put $x=-2$: $4(4)-10=6=-3C$, so $C=-2$. Equate the coefficients of $x^{2}$: $4=A+B$, so $B=3$.\n\nSo the fraction is **$\\dfrac{1}{x-1}+\\dfrac{3}{x+2}-\\dfrac{2}{(x+2)^{2}}$** (check at $x=0$: left side $0$; right side $-1+\\frac32-\\frac12=0$).\n\nIntegral: $\\displaystyle\\Big[\\,\\ln(x-1)+3\\ln(x+2)+\\dfrac{2}{x+2}\\,\\Big]_2^3=\\Big(\\ln2+3\\ln5+\\dfrac25\\Big)-\\Big(0+3\\ln4+\\dfrac12\\Big)$. Since $3\\ln4=6\\ln2$, this is $\\ln2-6\\ln2+3\\ln5+\\dfrac25-\\dfrac12=$ **$3\\ln5-5\\ln2-\\dfrac1{10}$**, about $1.263$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $g(x)=\\dfrac{3+3x}{(1-x)(1+2x)}$.\n\n(a) Find constants $A$ and $B$ such that $g(x)\\equiv\\dfrac{A}{1-x}+\\dfrac{B}{1+2x}$.\n\n(b) Hence expand $g(x)$ in ascending powers of $x$ up to and including the term in $x^{3}$.\n\n(c) State the range of values of $x$ for which the expansion is valid.\n\n(d) Use your expansion with $x=0.1$ to estimate $g(0.1)$ and compare with the exact value.",
+          "solution_markdown": "(a) $3+3x\\equiv A(1+2x)+B(1-x)$. Put $x=1$: $6=3A$, so $A=2$. Put $x=-\\frac12$: $\\frac32=\\frac32B$, so $B=1$. Thus $g(x)=\\dfrac{2}{1-x}+\\dfrac{1}{1+2x}$.\n\n(b) $\\dfrac{2}{1-x}=2(1+x+x^{2}+x^{3}+\\dots)$ and $\\dfrac{1}{1+2x}=1-2x+4x^{2}-8x^{3}+\\dots$. Adding term by term: $(2+1)+(2-2)x+(2+4)x^{2}+(2-8)x^{3}$, so **$g(x)\\approx3+6x^{2}-6x^{3}$** (the term in $x$ is zero).\n\n(c) The first series needs $|x|<1$ and the second needs $|2x|<1$. Both hold only for **$|x|<\\dfrac12$**.\n\n(d) $3+6(0.01)-6(0.001)=$ **$3.054$**. Exact: $g(0.1)=\\dfrac{3.3}{0.9\\times1.2}=3.0556$ (to 4 d.p.). The difference, about $0.0016$, is the size of the omitted terms starting with $18x^{4}=0.0018$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A proper fraction has numerator degree below denominator degree; an improper one must be divided first (or given a constant term).",
+        "Distinct linear factors give $\\dfrac{A}{x-a}+\\dfrac{B}{x-b}$; a squared factor $(x-a)^{2}$ needs both $\\dfrac{A}{x-a}$ and $\\dfrac{B}{(x-a)^{2}}$.",
+        "Find constants by substituting the roots of the denominator (cover-up) and by equating coefficients for what remains; check with a third value of $x$.",
+        "Integrals: $\\int\\dfrac{A}{x-a}\\,dx=A\\ln|x-a|+c$, $\\int\\dfrac{B}{(x-a)^{2}}\\,dx=-\\dfrac{B}{x-a}+c$, and a linear bracket $(px+q)$ divides the result by $p$.",
+        "For series, expand each piece with its own condition and keep the stricter range, for example $|x|<\\frac12$ when $\\frac{1}{1+2x}$ is involved."
+      ]
+    }
+  ]
+}

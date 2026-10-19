@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-ict-ict-data-transmission",
+  "meta": {
+    "titre": "Data Transmission: communication components, transmission modes, framing overhead and transfer-time calculations",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Transmission modes, methods and data rate",
+    "duree_estimee_min": 35,
+    "tags": [
+      "ict data transmission"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-data-transmission-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Bafoussam sends a scanned invoice to a supplier in Douala over a mobile phone connection, then phones the supplier to check that it arrived. The invoice travelled in one direction only, while the phone call carried voices in both directions at once, and both used a medium of limited capacity. GCE questions on data transmission ask you to name the parts of a communication system, to distinguish the modes and methods of sending bits, to define terms such as multiplexing and bandwidth, and sometimes to compute a transfer time. All of them rest on a short vocabulary that must be used precisely."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Data are stored and sent as bits (0 and 1), and a byte is 8 bits.",
+        "A network connects devices so that they can exchange data.",
+        "A speed is a quantity divided by a time, so a time is a quantity divided by a speed."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Components, modes, methods and speed of data transmission",
+      "contenu_markdown": "### Components of a communication system\n| Component | Role |\n|---|---|\n| Sender (source) | creates the message and puts it on the medium |\n| Receiver (destination) | accepts the message and uses it |\n| Transmission medium | the path that carries the signal: twisted pair, coaxial cable, optical fibre or a wireless link (radio, microwave, satellite) |\n| Message | the data to be sent: text, numbers, images, sound or video |\n| Protocol | the agreed rules on format, order, speed and error handling, without which the two devices cannot understand each other |\n\nWhen a question asks for a stated number of components, name exactly that number and give the use of each.\n\n### Direction of flow\n- **Simplex**: one direction only, as in a television broadcast.\n- **Half-duplex**: both directions, but one at a time, as with a push-to-talk radio.\n- **Full-duplex**: both directions at the same time, as in a telephone call.\n\n### Serial and parallel\nIn **parallel** transmission several bits travel at once, each on its own line, which suits short distances such as inside a computer. In **serial** transmission the bits follow one another on a single line, which needs fewer wires and works over long distances.\n\n### Asynchronous and synchronous\n| | Asynchronous | Synchronous |\n|---|---|---|\n| What is sent | one character at a time | a continuous block (frame) of many characters |\n| Timing | no shared clock; each character has a start bit and a stop bit | sender and receiver kept in step by a clock; no start or stop bit per character |\n| Gaps | irregular gaps between characters are allowed | steady stream of data |\n| Efficiency | lower, because of the framing bits | higher for large volumes, because only a header and trailer per block are added |\n\n### Multiplexing\nMultiplexing lets several signals share one medium at the same time. A **multiplexer** combines them at the sending end and a **demultiplexer** separates them at the receiving end, so one cable does the work of several.\n\n### Speed\n**Bandwidth** is the maximum amount of data a channel can carry per unit time, in bits per second (bit/s). **Throughput** is the amount really delivered per second, which is lower because of overhead, errors and congestion.\n\nFor a transfer, the time is $t = \\dfrac{\\text{number of bits sent}}{\\text{rate in bit/s}}$. Convert bytes to bits first (multiply by 8) and include every extra framing bit. The **efficiency** is the useful bits divided by the bits actually sent, as a percentage.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Parity check",
+          "quand_utiliser": "The question asks how transmission errors are detected.",
+          "contenu_markdown": "A **parity bit** is added to each character so that the total number of 1s is even (even parity) or odd (odd parity). The receiver counts the 1s again: a wrong count shows that an error occurred. A parity check detects an odd number of changed bits only. It cannot say which bit is wrong and cannot correct it, and two changed bits cancel out."
+        },
+        {
+          "nom": "Framing overhead and efficiency",
+          "quand_utiliser": "The question gives start, stop or header bits and asks for a time or an efficiency.",
+          "contenu_markdown": "List what is added to each unit sent: 1 start bit and 1 stop bit per character in asynchronous mode (and a parity bit if one is used), or a header and trailer per frame in synchronous mode. Total bits sent = useful bits + added bits. Divide by the rate for the time, and divide the useful bits by the total for the efficiency."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A rural school sends the 3,000 characters of its register file to the regional office at 6,000 bit/s. Each character has 8 data bits. (a) With asynchronous transmission, each character also has 1 start bit, 1 parity bit and 1 stop bit: find the time taken and the efficiency. (b) With synchronous transmission, the characters are sent in frames of 500 characters, each frame carrying 40 extra bits: find the time taken and the efficiency. (c) State which method is better here and why.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the bits sent for each character in asynchronous mode.",
+          "justification": "Every added bit travels on the line and takes time.",
+          "resultat_markdown": "1 start + 8 data + 1 parity + 1 stop = 11 bits per character. Total: $3000 \\times 11 = 33\\,000$ bits."
+        },
+        {
+          "numero": 2,
+          "action": "Compute time and efficiency for the asynchronous method.",
+          "justification": "Time is bits divided by rate; efficiency compares useful bits (3000 x 8 = 24 000) with all bits.",
+          "resultat_markdown": "$t = 33\\,000 \\div 6000 = 5.5$ s. Efficiency $= 24\\,000 \\div 33\\,000 \\times 100 \\approx 72.7\\%$."
+        },
+        {
+          "numero": 3,
+          "action": "Find the number of frames and the bits sent in synchronous mode.",
+          "justification": "3000 characters in frames of 500 give 6 frames, each with 40 extra bits.",
+          "resultat_markdown": "Frames: $3000 \\div 500 = 6$. Extra bits: $6 \\times 40 = 240$. Total: $24\\,000 + 240 = 24\\,240$ bits."
+        },
+        {
+          "numero": 4,
+          "action": "Compute time and efficiency for the synchronous method.",
+          "justification": "Same formulas, with the new total.",
+          "resultat_markdown": "$t = 24\\,240 \\div 6000 = 4.04$ s. Efficiency $= 24\\,000 \\div 24\\,240 \\times 100 \\approx 99.0\\%$."
+        },
+        {
+          "numero": 5,
+          "action": "Compare and conclude.",
+          "justification": "The better method sends the same useful data in less time with fewer wasted bits.",
+          "resultat_markdown": "The synchronous method saves $5.5 - 4.04 = 1.46$ s and wastes far fewer bits."
+        }
+      ],
+      "conclusion_markdown": "(a) Asynchronous: 33,000 bits sent, **5.5 s**, efficiency about **72.7%**. (b) Synchronous: 24,240 bits sent, **4.04 s**, efficiency about **99.0%**. (c) Synchronous transmission is better for a large block of data, because it adds only one header per frame instead of three framing bits per character; asynchronous transmission is simpler and suits irregular, low-volume data."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Dividing a size in bytes by a rate in bits per second without converting.",
+          "pourquoi_faux": "A byte holds 8 bits, so the number of bits is eight times the number of bytes; dividing bytes by bit/s gives a time that is 8 times too small.",
+          "correction_markdown": "Convert first: bits = bytes x 8, then divide by the rate in bit/s."
+        },
+        {
+          "erreur_markdown": "Counting only the 8 data bits per character when timing an asynchronous transfer.",
+          "pourquoi_faux": "The start, stop and parity bits are sent on the line too and use time.",
+          "correction_markdown": "Add every framing bit to the bits per character before multiplying by the number of characters."
+        },
+        {
+          "erreur_markdown": "Writing that half-duplex means data travel in one direction only.",
+          "pourquoi_faux": "That is simplex. Half-duplex allows both directions, but not at the same moment.",
+          "correction_markdown": "Simplex: one way. Half-duplex: both ways, in turns. Full-duplex: both ways at once."
+        },
+        {
+          "erreur_markdown": "Defining multiplexing as sending the same message to many receivers.",
+          "pourquoi_faux": "That describes broadcasting. Multiplexing combines different signals so that they share one medium.",
+          "correction_markdown": "Multiplexing: several signals combined on one medium by a multiplexer and separated by a demultiplexer."
+        },
+        {
+          "erreur_markdown": "Claiming that a parity bit lets the receiver correct a wrong bit.",
+          "pourquoi_faux": "Parity shows only that the count of 1s is wrong; it does not locate the bad bit, and an even number of errors goes unseen.",
+          "correction_markdown": "Parity detects an odd number of bit errors; correction needs another method, usually a request to send again."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "State the transmission mode (simplex, half-duplex or full-duplex) in each case. (a) A radio station sends its programme to listeners' radios. (b) Two teachers hold a video call. (c) Two security officers use push-to-talk handsets.",
+          "solution_markdown": "(a) **Simplex**: the station transmits and the radios only receive. (b) **Full-duplex**: both teachers send and receive sound and picture at the same time. (c) **Half-duplex**: either officer can speak, but only one at a time."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A file of 4,500,000 bytes is downloaded over a link rated at 12,000,000 bit/s. Ignore overhead. (a) Find the download time. (b) In practice the link delivers only 9,000,000 bit/s. Find the real time. (c) Name the two quantities, 12,000,000 bit/s and 9,000,000 bit/s.",
+          "solution_markdown": "(a) Bits: $4\\,500\\,000 \\times 8 = 36\\,000\\,000$. Time: $36\\,000\\,000 \\div 12\\,000\\,000 = $ **3 s**. (b) $36\\,000\\,000 \\div 9\\,000\\,000 = $ **4 s**. (c) 12,000,000 bit/s is the **bandwidth** (maximum capacity) and 9,000,000 bit/s is the **throughput** (rate actually achieved)."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A message of 2,000 characters is sent at 8,000 bit/s. Link X is asynchronous with 1 start bit, 8 data bits and 1 stop bit per character. Link Y is synchronous: two frames of 1,000 characters, each frame having 64 extra bits. (a) Find the time and the efficiency on each link. (b) A 7-bit code is 1011001. Find the even parity bit and write the 8-bit byte with the parity bit on the left. (c) The byte 10110110 is received under even parity. Does it pass the check? Explain.",
+          "solution_markdown": "(a) Link X: $2000 \\times 10 = 20\\,000$ bits, $t = 20\\,000 \\div 8000 = $ **2.5 s**, efficiency $16\\,000 \\div 20\\,000 = $ **80%**. Link Y: $2 \\times (8000 + 64) = 16\\,128$ bits, $t = 16\\,128 \\div 8000 = $ **2.016 s**, efficiency $16\\,000 \\div 16\\,128 \\approx$ **99.2%**. (b) 1011001 contains four 1s, which is already even, so the parity bit is **0** and the byte is **01011001**. (c) 10110110 contains five 1s, an odd number, so it **fails** the even parity check: at least one bit was altered in transit."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A communication system needs a sender, a receiver, a medium, a message and a protocol; use the number the question asks for and say what each does.",
+        "Simplex is one way, half-duplex is both ways in turns, full-duplex is both ways at once.",
+        "Asynchronous sends one framed character at a time with start and stop bits; synchronous sends clocked blocks and wastes fewer bits on large volumes.",
+        "Multiplexing shares one medium among several signals; bandwidth is capacity, throughput is what is actually delivered.",
+        "Transfer time = bits sent / rate: convert bytes to bits and add all framing bits.",
+        "A parity bit detects an odd number of bit errors but cannot correct them."
+      ]
+    }
+  ]
+}

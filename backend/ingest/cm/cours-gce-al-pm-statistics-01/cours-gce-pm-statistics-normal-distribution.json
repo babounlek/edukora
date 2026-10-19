@@ -1,0 +1,171 @@
+{
+  "cours_id": "cours-gce-pm-statistics-normal-distribution",
+  "meta": {
+    "titre": "Normal Distribution: Standardising, Tables and Unknown Parameters",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Normal probabilities and inverse problems",
+    "duree_estimee_min": 35,
+    "tags": [
+      "normal distribution"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-normal-distribution-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A baker in Douala bakes hundreds of loaves a day that are meant to weigh the same, yet no two are exactly equal. Most loaves lie close to the average, a few are noticeably light or heavy, and the pattern is symmetrical. The same bell shape appears in the heights of cassava plants, in marks on a large examination and in the errors of a measuring instrument. That is why the normal distribution is the most important continuous distribution on the paper: each year the questions ask you to standardise, to use the tables, and to work backwards from a probability to an unknown value."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A continuous random variable takes any value in an interval, and a probability is the area under its probability density function.",
+        "The total area under a probability density function is 1, so $P(X>a)=1-P(X\\le a)$.",
+        "The mean measures the centre of a distribution, the standard deviation measures its spread, and the variance is the square of the standard deviation.",
+        "For a binomial variable $X\\sim B(n,p)$ the mean is $np$ and the variance is $npq$ with $q=1-p$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "The normal distribution: properties, standardising and the tables",
+      "contenu_markdown": "### Definition and properties\n\nA continuous random variable $X$ is **normally distributed** with mean $\\mu$ and variance $\\sigma^2$, written $X\\sim N(\\mu,\\sigma^2)$, when its probability density function is\n\n$$\nf(x)=\\frac{1}{\\sigma\\sqrt{2\\pi}}\\,\\exp\\!\\left(-\\frac{(x-\\mu)^2}{2\\sigma^2}\\right),\\qquad -\\infty<x<\\infty \\tag{1}\n$$\n\nProperties of this curve:\n\n- It is bell-shaped and symmetrical about the vertical line $x=\\mu$, so the mean, the median and the mode are all equal to $\\mu$.\n- The total area under it is 1, and it approaches the $x$-axis on both sides without ever touching it.\n- It has points of inflection at $x=\\mu-\\sigma$ and $x=\\mu+\\sigma$.\n- The second parameter in $N(\\mu,\\sigma^2)$ is the **variance**. If a question gives the standard deviation, square it before writing $N(\\mu,\\sigma^2)$.\n\n### Standardising and using the tables\n\nEvery normal variable is converted to the standard normal variable $Z\\sim N(0,1)$ by\n\n$$\nZ=\\frac{X-\\mu}{\\sigma} \\tag{2}\n$$\n\nThe tables give $\\Phi(z)=P(Z\\le z)$ for $z\\ge 0$. For a negative value use the symmetry of the curve:\n\n$$\n\\Phi(-z)=1-\\Phi(z) \\tag{3}\n$$\n\n| Required probability | In terms of $\\Phi$ |\n|---|---|\n| $P(X<b)$ | $\\Phi\\!\\left(\\dfrac{b-\\mu}{\\sigma}\\right)$ |\n| $P(X>a)$ | $1-\\Phi\\!\\left(\\dfrac{a-\\mu}{\\sigma}\\right)$ |\n| $P(a<X<b)$ | $\\Phi\\!\\left(\\dfrac{b-\\mu}{\\sigma}\\right)-\\Phi\\!\\left(\\dfrac{a-\\mu}{\\sigma}\\right)$ |\n\nBecause $X$ is continuous, $P(X=a)=0$, so $<$ and $\\le$ give the same probability. Always sketch the curve and shade the required area first: it shows at once whether the answer should be above or below $0.5$.\n\nAbout $68\\%$, $95\\%$ and $99.7\\%$ of the distribution lie within one, two and three standard deviations of the mean (more exactly $0.6827$, $0.9545$ and $0.9973$).",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Working backwards: finding x, the mean or the standard deviation",
+          "quand_utiliser": "When a probability is given and you must find a boundary value, or an unknown $\\mu$ or $\\sigma$.",
+          "contenu_markdown": "Find $z$ from the table so that $\\Phi(z)$ equals the given probability, then solve $z=\\dfrac{x-\\mu}{\\sigma}$ for the unknown. If the probability is below $0.5$ the value of $z$ is negative: look up $1-p$ and change the sign. Useful values: $\\Phi(z)=0.90$ gives $z=1.282$, $0.95$ gives $1.645$, $0.975$ gives $1.960$ and $0.99$ gives $2.326$. If both $\\mu$ and $\\sigma$ are unknown, two given probabilities produce two linear equations $x_1=\\mu+z_1\\sigma$ and $x_2=\\mu+z_2\\sigma$, which are solved simultaneously."
+        },
+        {
+          "nom": "Sums and differences of independent normal variables",
+          "quand_utiliser": "When the quantity asked about is a total, a difference or a multiple of several independent normal variables.",
+          "contenu_markdown": "If $X\\sim N(\\mu_1,\\sigma_1^2)$ and $Y\\sim N(\\mu_2,\\sigma_2^2)$ are independent, then any linear combination is normal, with\n\n$$\naX+bY\\sim N\\!\\left(a\\mu_1+b\\mu_2,\\ a^2\\sigma_1^2+b^2\\sigma_2^2\\right) \\tag{4}\n$$\n\nThe means combine with the signs given, but the variances **always add**, even for $X-Y$. Distinguish $2X$ from $X_1+X_2$, two independent copies of $X$: with $X\\sim N(20,9)$ we get $2X\\sim N(40,36)$ but $X_1+X_2\\sim N(40,18)$."
+        },
+        {
+          "nom": "Normal approximation to the binomial distribution",
+          "quand_utiliser": "When $X\\sim B(n,p)$ with $n$ large and $p$ not close to $0$ or $1$ (commonly $np>5$ and $nq>5$), so that binomial probabilities are too long to add.",
+          "contenu_markdown": "Use $X\\approx Y$ with $Y\\sim N(np,\\,npq)$ and apply a **continuity correction**, because a discrete variable is replaced by a continuous one: $P(X\\le k)\\approx P(Y<k+0.5)$, $P(X\\ge k)\\approx P(Y>k-0.5)$ and $P(X=k)\\approx P(k-0.5<Y<k+0.5)$. For $X\\sim B(100,0.4)$ we take $Y\\sim N(40,24)$, and $P(X\\le 45)\\approx P(Y<45.5)=\\Phi(1.12)=0.869$ (the exact binomial sum is also $0.869$ to three decimal places)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "The mass of a loaf from a bakery is normally distributed with mean $400\\ \\mathrm{g}$ and standard deviation $10\\ \\mathrm{g}$. (a) Find the probability that a loaf has mass greater than $420\\ \\mathrm{g}$. (b) Find the probability that a loaf has mass between $385\\ \\mathrm{g}$ and $410\\ \\mathrm{g}$. (c) The lightest $5\\%$ of loaves are sold in a cheaper pack. Find the greatest mass of a loaf in the cheaper pack.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Name the variable and write its distribution in terms of the variance.",
+          "justification": "The standard deviation is $10$, so the variance is $10^2=100$; standardising later uses $\\sigma=10$.",
+          "resultat_markdown": "$X\\sim N(400,\\ 100)$, where $X$ is the mass of a loaf in grams, and $Z=\\dfrac{X-400}{10}$."
+        },
+        {
+          "numero": 2,
+          "action": "Standardise the boundary in part (a) and use the upper-tail rule.",
+          "justification": "The area to the right of a boundary is $1-\\Phi(z)$.",
+          "resultat_markdown": "$z=\\dfrac{420-400}{10}=2$, so $P(X>420)=1-\\Phi(2)=1-0.9772=0.0228$."
+        },
+        {
+          "numero": 3,
+          "action": "Standardise both boundaries in part (b).",
+          "justification": "A probability between two values is the difference of two $\\Phi$ values.",
+          "resultat_markdown": "$z_1=\\dfrac{385-400}{10}=-1.5$ and $z_2=\\dfrac{410-400}{10}=1$."
+        },
+        {
+          "numero": 4,
+          "action": "Remove the negative value with $\\Phi(-z)=1-\\Phi(z)$ and subtract.",
+          "justification": "The table lists only $z\\ge0$.",
+          "resultat_markdown": "$\\Phi(-1.5)=1-0.9332=0.0668$ and $\\Phi(1)=0.8413$, so $P(385<X<410)=0.8413-0.0668=0.7745$."
+        },
+        {
+          "numero": 5,
+          "action": "For part (c), find the $z$-value that has $5\\%$ of the area below it.",
+          "justification": "The lightest loaves lie in the lower tail, so $z$ is negative. From the table, $\\Phi(z)=0.95$ gives $z=1.645$, hence the required value is $-1.645$.",
+          "resultat_markdown": "$P(X<m)=0.05$ means $\\dfrac{m-400}{10}=-1.645$."
+        },
+        {
+          "numero": 6,
+          "action": "Solve for $m$.",
+          "justification": "Multiply by $\\sigma$ and add $\\mu$; the answer must be below the mean, which is a useful check.",
+          "resultat_markdown": "$m=400-1.645\\times10=383.55$."
+        }
+      ],
+      "conclusion_markdown": "(a) $0.0228$; (b) $0.7745$; (c) a loaf is in the cheaper pack if its mass is below about $383.6\\ \\mathrm{g}$ (that is, $383.55\\ \\mathrm{g}$)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$X\\sim N(50,4)$, so $z=\\dfrac{X-50}{4}$.",
+          "pourquoi_faux": "In $N(\\mu,\\sigma^2)$ the second number is the variance, so here $\\sigma^2=4$ and the standard deviation is $2$.",
+          "correction_markdown": "$z=\\dfrac{X-50}{2}$. Always take the square root of the variance before standardising."
+        },
+        {
+          "erreur_markdown": "To find $P(X>a)$ with $z=1.2$, write $P(X>a)=\\Phi(1.2)=0.8849$.",
+          "pourquoi_faux": "The table gives the area to the **left** of $z$, which is $P(X<a)$.",
+          "correction_markdown": "$P(X>a)=1-\\Phi(1.2)=1-0.8849=0.1151$."
+        },
+        {
+          "erreur_markdown": "Reading a negative value directly: $\\Phi(-1.2)=0.8849$.",
+          "pourquoi_faux": "The tables stop at $z\\ge0$, and the area below a negative $z$ is small, less than $0.5$.",
+          "correction_markdown": "$\\Phi(-1.2)=1-\\Phi(1.2)=1-0.8849=0.1151$."
+        },
+        {
+          "erreur_markdown": "For the lowest $5\\%$ of a distribution with mean $\\mu$ and standard deviation $\\sigma$, take $x=\\mu+1.645\\sigma$.",
+          "pourquoi_faux": "A boundary in the lower tail lies below the mean, so its $z$-value is negative; the answer given is the upper $5\\%$ boundary.",
+          "correction_markdown": "$x=\\mu-1.645\\sigma$."
+        },
+        {
+          "erreur_markdown": "For $X\\sim N(30,16)$, write $X_1+X_2\\sim N(60,\\,4\\times16)$.",
+          "pourquoi_faux": "Multiplying the variance by $4$ describes $2X$, a single reading doubled. For two independent readings $X_1+X_2$ the variances add.",
+          "correction_markdown": "$X_1+X_2\\sim N(60,\\,16+16)=N(60,32)$, whereas $2X\\sim N(60,64)$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The time $T$ minutes a clerk takes to process a form is normally distributed with mean $12$ and standard deviation $2$. Find (a) $P(T<15)$ and (b) $P(T>10)$.",
+          "solution_markdown": "Here $T\\sim N(12,\\,2^2)$.\n\n(a) $z=\\dfrac{15-12}{2}=1.5$, so $P(T<15)=\\Phi(1.5)=\\mathbf{0.9332}$.\n\n(b) $z=\\dfrac{10-12}{2}=-1$, so $P(T>10)=1-\\Phi(-1)=1-(1-0.8413)=\\Phi(1)=\\mathbf{0.8413}$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A random variable $X\\sim N(200,\\sigma^2)$ satisfies $P(X>215)=0.10$. (a) Find $\\sigma$, to $3$ significant figures. (b) Using this value of $\\sigma$, find the value $m$ such that $P(X<m)=0.025$.",
+          "solution_markdown": "(a) $P(X<215)=0.90$, so $\\dfrac{215-200}{\\sigma}=1.282$. Hence $\\sigma=\\dfrac{15}{1.282}=\\mathbf{11.7}$.\n\n(b) $P(X<m)=0.025$ lies in the lower tail, and $\\Phi(1.96)=0.975$, so $\\dfrac{m-200}{11.7}=-1.96$. Hence $m=200-1.96\\times11.7=177.068$, that is $m=\\mathbf{177}$ to $3$ significant figures."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The mass of a bag of sugar is $S\\sim N(50,\\,0.8^2)$ kilograms and the mass of an empty crate is $C\\sim N(8,\\,1.2^2)$ kilograms, all independent. A crate is filled with $4$ bags. (a) State the distribution of the total mass $T$ and find $P(T>212)$. (b) State the distribution of $4S$, the mass of one bag multiplied by $4$, and explain why it differs from the mass of $4$ separate bags.",
+          "solution_markdown": "(a) $T=C+S_1+S_2+S_3+S_4$. Mean: $8+4\\times50=208$. Variance: $1.2^2+4\\times0.8^2=1.44+2.56=4$. So $T\\sim N(208,\\,4)$ and the standard deviation is $2$.\n\n$z=\\dfrac{212-208}{2}=2$, so $P(T>212)=1-\\Phi(2)=1-0.9772=\\mathbf{0.0228}$.\n\n(b) $4S\\sim N(200,\\,4^2\\times0.8^2)=N(200,\\,10.24)$, with standard deviation $3.2$. For four separate bags the variances add: $4\\times0.64=2.56$, with standard deviation $1.6$. Four independent bags partly cancel each other's variation, whereas $4S$ assumes that all four bags are as heavy, or as light, as the one weighed; so $4S$ is more spread out."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$X\\sim N(\\mu,\\sigma^2)$: the curve is bell-shaped, symmetrical about $\\mu$, with total area $1$ and points of inflection at $\\mu\\pm\\sigma$.",
+        "Standardise with $Z=\\dfrac{X-\\mu}{\\sigma}$, using the standard deviation, and sketch the area before reading the table.",
+        "The table gives $\\Phi(z)=P(Z\\le z)$: use $1-\\Phi(z)$ for an upper tail and $\\Phi(-z)=1-\\Phi(z)$ for a negative $z$.",
+        "For inverse problems find $z$ from the probability first; a lower-tail boundary has a negative $z$.",
+        "Independent normal variables: means combine with the signs given, variances always add; $2X$ and $X_1+X_2$ are different.",
+        "The binomial $B(n,p)$ is approximated by $N(np,npq)$ with a continuity correction of $\\pm0.5$."
+      ]
+    }
+  ]
+}

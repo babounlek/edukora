@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-ict-ict-database-queries",
+  "meta": {
+    "titre": "Practical Queries: sorting, filtering, selecting and summarising records",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Select queries, criteria and summaries",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict database queries"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p3-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-database-queries-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In the practical paper the instructions are precise: sort a table, filter it, build a query with certain fields and conditions, save it under a given name and print only the objects named. A learner who understands what a query is can follow any such instruction in whatever database package is used, while a learner who only memorises clicks loses marks as soon as the menu looks different. This lesson explains the ideas, the exact rules for criteria and summaries, and the usual ways in which marks are lost."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A table is made of records (rows) and fields (columns), and each field has a data type such as text, number, date or currency.",
+        "A primary key identifies each record of a table, and a foreign key in another table refers to it, which links the two tables.",
+        "A relational database package such as Microsoft Access lets you work in datasheet view (to see the records) and in design view (to build a query)."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Sorting, filtering and select queries",
+      "contenu_markdown": "### Sorting and filtering in datasheet view\n**Sorting** changes only the order in which records are shown: ascending means A to Z, smallest to largest or oldest to newest, and descending is the reverse. **Filtering** shows only the records that match a condition and hides the rest; the hidden records are not deleted. A filter works on one table and is easy to remove. A **query** is a saved object that can use several tables, so use a query when the question says \"create a query\" or \"save\".\n\n### Building a select query (design view)\nA **select query** retrieves the data that you ask for and never changes the stored data. Add the tables, double-click the fields to show, and set the grid rows: **Sort**, **Show** (untick for a field used only for a condition) and **Criteria**. Conditions on the **same row** are joined by AND; conditions on **different rows** are joined by OR. With two sort fields the left-hand one is sorted first. Run the query, compare the result with the data, save it under the exact name given, and print only the objects the question lists.\n\n| Wanted | Criteria written in the grid | SQL form |\n|---|---|---|\n| exactly equal to text | \"Buea\" | = 'Buea' |\n| text beginning with N | Like \"N*\" | LIKE 'N%' |\n| at least 5000 | >=5000 | >= 5000 |\n| between two values (inclusive) | Between 3000 And 8000 | BETWEEN 3000 AND 8000 |\n| not equal to | <>\"Buea\" | <> 'Buea' |\n| no value entered | Is Null | IS NULL |\n\nIn Access, dates in criteria are enclosed in # signs.\n\nA **calculated field** is typed in the Field row, for example `Total: [Qty]*[UnitPrice]`; it is not stored in the table.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Query using two tables",
+          "quand_utiliser": "When the fields needed come from more than one table.",
+          "contenu_markdown": "Add both tables and make sure a join line links the primary key to the matching foreign key. Without the join, every record of one table is combined with every record of the other: 6 patients and 8 visits would give 6 x 8 = 48 rows instead of 8. Fields used as criteria may come from either table."
+        },
+        {
+          "nom": "Summary (totals) query",
+          "quand_utiliser": "When the question asks for totals, counts or averages for groups.",
+          "contenu_markdown": "Click the Totals button to show the Total row. Put **Group By** under the field that defines the groups and **Sum**, **Count**, **Avg**, **Min** or **Max** under the field being summarised. A criterion on a field that is not summarised is applied before the grouping if its Total row says **Where**. A **crosstab query** is a summary with two groupings: one field becomes the **Row Heading**, another the **Column Heading**, and a third the **Value** with its function (such as Sum)."
+        },
+        {
+          "nom": "Parameter query",
+          "quand_utiliser": "When the user must type the value to search for each time the query runs.",
+          "contenu_markdown": "Type a prompt in square brackets in the Criteria row, for example `[Enter the doctor's name]`. When the query runs, the package asks for a value and uses it as the criterion. The prompt must not be the name of a field."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A clinic keeps two tables.\n\n**Patients**\n\n| PatientID | Surname | Town |\n|---|---|---|\n| 1 | Nkeng | Buea |\n| 2 | Mbarga | Yaounde |\n| 3 | Tchoua | Bafoussam |\n| 4 | Fonyuy | Bamenda |\n| 5 | Etoa | Yaounde |\n| 6 | Ngu | Buea |\n\n**Visits**\n\n| VisitID | PatientID | VisitDate | Doctor | Fee |\n|---|---|---|---|---|\n| 101 | 1 | 2026-03-02 | Dr Abena | 5000 |\n| 102 | 2 | 2026-03-05 | Dr Kamga | 3000 |\n| 103 | 3 | 2026-03-09 | Dr Abena | 8000 |\n| 104 | 1 | 2026-03-17 | Dr Kamga | 6500 |\n| 105 | 4 | 2026-02-26 | Dr Abena | 7000 |\n| 106 | 5 | 2026-03-21 | Dr Abena | 4500 |\n| 107 | 6 | 2026-03-28 | Dr Kamga | 5000 |\n| 108 | 2 | 2026-04-02 | Dr Abena | 9000 |\n\n(a) Create a query that shows the surname, visit date, doctor and fee of every visit made in March 2026 with a fee of 5 000 FCFA or more. Sort the result by surname in ascending order and then by date. Save the query as **MarchLarge**. [6 marks]\n\n(b) Create a second query that shows, for the visits made in March 2026, the number of visits and the total fees of each doctor. Save it as **DoctorMarch**. [4 marks]\n\n(c) State which objects you would print if asked to print the query MarchLarge only.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the tables and fields.",
+          "justification": "The surname is in Patients, while the date, doctor and fee are in Visits, so two tables are needed.",
+          "resultat_markdown": "Patients: Surname. Visits: VisitDate, Doctor, Fee."
+        },
+        {
+          "numero": 2,
+          "action": "Add both tables and check the join.",
+          "justification": "Records are matched on PatientID. A missing join would pair every patient with every visit.",
+          "resultat_markdown": "A join line from Patients.PatientID to Visits.PatientID."
+        },
+        {
+          "numero": 3,
+          "action": "Set the criteria on one row.",
+          "justification": "The date range and the fee condition must both be true, so they go on the same Criteria row.",
+          "resultat_markdown": "VisitDate: Between #01/03/2026# And #31/03/2026# (dates written as the package requires). Fee: >=5000."
+        },
+        {
+          "numero": 4,
+          "action": "Set the sort.",
+          "justification": "Surname is the first sort key, so its column is to the left of VisitDate.",
+          "resultat_markdown": "Surname: Ascending. VisitDate: Ascending."
+        },
+        {
+          "numero": 5,
+          "action": "Run and check.",
+          "justification": "Test the result against the stored data: visits 101, 103, 104 and 107 meet both conditions; 105 is in February and 108 in April.",
+          "resultat_markdown": "Four records, as shown in the conclusion."
+        },
+        {
+          "numero": 6,
+          "action": "Build the summary query and save.",
+          "justification": "A summary needs Group By on Doctor, Count on VisitID and Sum on Fee, with the date condition applied as Where.",
+          "resultat_markdown": "Saved as DoctorMarch."
+        }
+      ],
+      "conclusion_markdown": "**MarchLarge** (equivalent SQL, with dates written in ISO form):\n\n```sql\nSELECT Patients.Surname, Visits.VisitDate, Visits.Doctor, Visits.Fee\nFROM Patients INNER JOIN Visits ON Patients.PatientID = Visits.PatientID\nWHERE Visits.VisitDate BETWEEN '2026-03-01' AND '2026-03-31' AND Visits.Fee >= 5000\nORDER BY Patients.Surname, Visits.VisitDate;\n```\n\nResult:\n\n| Surname | VisitDate | Doctor | Fee |\n|---|---|---|---|\n| Ngu | 2026-03-28 | Dr Kamga | 5 000 |\n| Nkeng | 2026-03-02 | Dr Abena | 5 000 |\n| Nkeng | 2026-03-17 | Dr Kamga | 6 500 |\n| Tchoua | 2026-03-09 | Dr Abena | 8 000 |\n\n**DoctorMarch**:\n\n```sql\nSELECT Visits.Doctor, COUNT(Visits.VisitID) AS NumberOfVisits, SUM(Visits.Fee) AS TotalFees\nFROM Visits\nWHERE Visits.VisitDate BETWEEN '2026-03-01' AND '2026-03-31'\nGROUP BY Visits.Doctor;\n```\n\nResult:\n\n| Doctor | NumberOfVisits | TotalFees |\n|---|---|---|\n| Dr Abena | 3 | 17 500 |\n| Dr Kamga | 3 | 14 500 |\n\n**(c)** Print the query **MarchLarge** only, not the tables."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Writing Fee >= 5000 on one row and the date range on the next row of the Criteria grid.",
+          "pourquoi_faux": "Conditions on different rows are joined by OR, so the query returns every visit with a large fee in any month and every visit in March whatever its fee.",
+          "correction_markdown": "Put both conditions on the same Criteria row so that they are joined by AND."
+        },
+        {
+          "erreur_markdown": "Applying a filter to the table when the question asks to create and save a query.",
+          "pourquoi_faux": "A filter is not a saved, named query object, so there is nothing to print or mark under the required name.",
+          "correction_markdown": "Build the query in design view, run it, and save it with the exact name given."
+        },
+        {
+          "erreur_markdown": "Adding two tables to the query without a join line.",
+          "pourquoi_faux": "Each record of one table is paired with every record of the other, so there are far too many rows (6 x 8 = 48 here).",
+          "correction_markdown": "Join the primary key to the matching foreign key before running the query."
+        },
+        {
+          "erreur_markdown": "Leaving the condition-only field ticked in Show, or printing all the tables when only the query is named.",
+          "pourquoi_faux": "The result then shows fields that were not requested, and printing extra objects can lose marks.",
+          "correction_markdown": "Untick Show for a field used only for a condition, and print only the objects named in the question."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A shop keeps the table **Products**.\n\n| ProductID | Name | Category | Price | Stock |\n|---|---|---|---|---|\n| 1 | Rice 5 kg | Food | 4500 | 25 |\n| 2 | Cooking oil 1 l | Food | 1200 | 8 |\n| 3 | Orange juice | Drinks | 600 | 40 |\n| 4 | Water 1.5 l | Drinks | 500 | 15 |\n| 5 | Soap | Hygiene | 350 | 60 |\n| 6 | Toothpaste | Hygiene | 800 | 12 |\n\n(a) The table is sorted on Price in descending order. List the product names in the order they appear. (b) A query must show Name and Stock for products in the category Food or Drinks that have fewer than 20 items in stock. State the result. (c) Explain where the condition Stock < 20 must be placed in the Criteria grid.",
+          "solution_markdown": "(a) Highest price first: **Rice 5 kg, Cooking oil 1 l, Toothpaste, Orange juice, Water 1.5 l, Soap**.\n\n(b) The products that are Food or Drinks with stock below 20 are **Cooking oil 1 l (8)** and **Water 1.5 l (15)**. Rice (25) and orange juice (40) have enough stock, and Soap and Toothpaste are not Food or Drinks.\n\n(c) Put the categories on separate rows of the Criteria grid and repeat the stock condition on each row: row 1 has Category \"Food\" and Stock <20, row 2 has Category \"Drinks\" and Stock <20. (Alternatively, write \"Food\" Or \"Drinks\" in one Category cell and put <20 on that same row.) If <20 appears on one row only, the other category is not limited by stock: with the condition on the Drinks row only, Rice 5 kg would also appear."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A trader keeps two tables.\n\n**Customers**\n\n| CustID | Name | Town |\n|---|---|---|\n| 1 | Ayuk | Buea |\n| 2 | Bella | Douala |\n| 3 | Chi | Bamenda |\n\n**Orders**\n\n| OrderID | CustID | Item | Qty | UnitPrice |\n|---|---|---|---|---|\n| 1 | 1 | Bag | 3 | 4000 |\n| 2 | 2 | Shirt | 5 | 2500 |\n| 3 | 3 | Cap | 4 | 1500 |\n| 4 | 2 | Bag | 2 | 4000 |\n| 5 | 1 | Shoes | 3 | 6000 |\n| 6 | 3 | Shirt | 6 | 2500 |\n\n(a) Create a query that shows the customer name, the item and a calculated field named Total (quantity multiplied by unit price) for orders whose Total is more than 10 000 FCFA, with the largest Total first. Write the field expression for Total and state the result. (b) Describe the change needed so that the query asks for a customer name when it runs, and give the result when the name is Bella.",
+          "solution_markdown": "(a) In the Field row of an empty column type `Total: [Qty]*[UnitPrice]`, set Criteria `>10000` and Sort Descending. Both tables are used and joined on CustID. Result:\n\n| Name | Item | Total |\n|---|---|---|\n| Ayuk | Shoes | 18 000 |\n| Chi | Shirt | 15 000 |\n| Bella | Shirt | 12 500 |\n| Ayuk | Bag | 12 000 |\n\n(b) Remove the fixed name in the Criteria row of the Name field and type `[Enter the customer name]`. The package then asks for the name when the query runs. For Bella the result is **Shirt 12 500 FCFA** and **Bag 8 000 FCFA** (2 x 4 000), and the other customers' orders do not appear."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A phone shop records its sales in the table **Sales**.\n\n| SaleID | Seller | Day | Amount |\n|---|---|---|---|\n| 1 | Ako | Mon | 15000 |\n| 2 | Bih | Mon | 22000 |\n| 3 | Ako | Tue | 9000 |\n| 4 | Ako | Mon | 12000 |\n| 5 | Bih | Tue | 18000 |\n| 6 | Bih | Tue | 6000 |\n| 7 | Ako | Tue | 21000 |\n\n(a) Describe a summary query that shows, for each seller, the number of sales and the total amount, and give the result. (b) Describe a crosstab query with Seller as the row heading and Day as the column heading that shows the total amount. Give the result. (c) Give ONE advantage of the crosstab over the summary query in (a).",
+          "solution_markdown": "(a) Click Totals. Seller: **Group By**. SaleID: **Count**. Amount: **Sum**. Result:\n\n| Seller | CountOfSaleID | SumOfAmount |\n|---|---|---|\n| Ako | 4 | 57 000 |\n| Bih | 3 | 46 000 |\n\n(b) Row Heading: Seller. Column Heading: Day. Value: Amount, with the function Sum. Result:\n\n| Seller | Mon | Tue |\n|---|---|---|\n| Ako | 27 000 | 30 000 |\n| Bih | 22 000 | 24 000 |\n\nCheck: Ako $15\\,000 + 12\\,000 = 27\\,000$ on Monday and $9\\,000 + 21\\,000 = 30\\,000$ on Tuesday; Bih $22\\,000$ on Monday and $18\\,000 + 6\\,000 = 24\\,000$ on Tuesday. The totals 27 000 + 30 000 = 57 000 and 22 000 + 24 000 = 46 000 agree with (a).\n\n(c) The crosstab shows both groupings in one compact table, so the amounts for different days can be compared side by side, whereas the summary query in (a) gives only one total for each seller."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Sorting only changes the order of the display; a filter hides records for a moment; a query is a saved object that can use several tables.",
+        "In the Criteria grid, conditions on the same row are joined by AND and conditions on different rows by OR.",
+        "A calculated field is typed in the Field row, as in Total: [Qty]*[UnitPrice], and is not stored in the table.",
+        "A query across tables needs the join between the primary key and the foreign key, or every record is paired with every other.",
+        "A summary query uses Group By with Sum, Count, Avg, Min or Max, and a crosstab adds a Row Heading, a Column Heading and a Value.",
+        "Save the query under the exact name given, untick Show for condition-only fields, and print only the objects named."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-pm-statistics-definite-integrals",
+  "meta": {
+    "titre": "Definite Integrals: area, signed area and volumes of revolution",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Integration between limits",
+    "duree_estimee_min": 40,
+    "tags": [
+      "definite integrals"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-definite-integrals-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A potter in Foumban shaping a vase on a wheel produces a solid whose width changes smoothly from base to neck, and a builder in Douala estimating the concrete for a curved wall also meets a quantity made of thin slices of changing size. A definite integral is the exact tool for adding such slices between two limits. At A Level, definite integrals appear regularly, both as short evaluations and volume-of-revolution questions in Paper 1 and as longer 'show that' questions in Paper 2."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "If $F'(x)=f(x)$ then $F$ is an antiderivative of $f$; standard results include $\\int x^{n}\\,dx=\\dfrac{x^{n+1}}{n+1}+c$ for $n\\ne-1$, $\\int\\dfrac1x\\,dx=\\ln|x|+c$ and $\\int e^{kx}\\,dx=\\dfrac{e^{kx}}{k}+c$.",
+        "The chain rule and the product rule of differentiation, which are reversed in substitution and in integration by parts.",
+        "A curve $y=f(x)$ meets the $x$-axis where $f(x)=0$, which is found by factorising."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Evaluating definite integrals, areas and volumes of revolution",
+      "contenu_markdown": "**Definition.** If $F$ is an antiderivative of $f$, the definite integral of $f$ from $a$ to $b$ is $F(b)-F(a)$, written $\\Big[F(x)\\Big]_a^b$. No constant $c$ is needed because it cancels. Useful properties: $\\int_a^b f\\,dx=-\\int_b^a f\\,dx$; $\\int_a^c f\\,dx=\\int_a^b f\\,dx+\\int_b^c f\\,dx$; $\\int_a^b kf\\,dx=k\\int_a^b f\\,dx$.\n\n### Area\nWhen $f(x)\\ge0$ on $[a,b]$, the area enclosed by the curve, the $x$-axis and the lines $x=a$ and $x=b$ is $\\int_a^b f(x)\\,dx$. Where the curve is **below** the axis the integral is negative, but an area is positive, so use the modulus of that part. If the curve crosses the axis between $a$ and $b$, find the crossing points, integrate each piece separately and add the positive areas. When $y_1\\ge y_2$ on $[a,b]$, the area between two curves is $\\int_a^b (y_1-y_2)\\,dx$.\n\n### Volume of revolution\nWhen the region between $y=f(x)$, the $x$-axis and the lines $x=a$, $x=b$ is rotated completely about the $x$-axis, each thin slice becomes a disc of radius $y$ and thickness $dx$, so\n\n$$\nV=\\pi\\int_a^b y^{2}\\,dx \\tag{1}\n$$\n\nThe integrand is the square of the **whole** function, and $\\pi$ multiplies the integral. This is not $\\pi\\left(\\int y\\,dx\\right)^{2}$. Expand any bracket such as $(4x-x^{2})^{2}$ before integrating.\n\n### Techniques met in definite integrals\nFor a linear bracket, $\\int (px+q)^{n}\\,dx=\\dfrac{(px+q)^{n+1}}{p(n+1)}$ when $n\\ne-1$. For a product, integration by parts gives\n\n$$\\int_a^b u\\,\\frac{dv}{dx}\\,dx=\\Big[uv\\Big]_a^b-\\int_a^b v\\,\\frac{du}{dx}\\,dx.$$\n\nIn every method, keep the limits attached to the variable they belong to.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Substitution with new limits",
+          "quand_utiliser": "When the integrand contains a function together with a multiple of its derivative.",
+          "contenu_markdown": "Choose $u$, write $du=u'(x)\\,dx$ and **change the limits** into values of $u$, so that no return to $x$ is needed. Example: $\\displaystyle\\int_0^{\\pi/2}\\sin x\\cos^{2}x\\,dx$ with $u=\\cos x$ and $du=-\\sin x\\,dx$. When $x=0$, $u=1$; when $x=\\frac{\\pi}{2}$, $u=0$. The integral becomes $\\displaystyle\\int_1^0(-u^{2})\\,du=\\int_0^1u^{2}\\,du=\\dfrac13$."
+        },
+        {
+          "nom": "Area between a curve and a line",
+          "quand_utiliser": "When a region is bounded by two graphs rather than by an axis.",
+          "contenu_markdown": "Equate the two equations to find the intersections, decide which graph is higher between them (test one point), and integrate top minus bottom. Example: $y=x^{2}$ and $y=2x$ meet where $x^{2}=2x$, that is $x=0$ and $x=2$. At $x=1$ the line gives $2$ and the curve gives $1$, so the line is higher. Area $=\\displaystyle\\int_0^2(2x-x^{2})\\,dx=\\Big[x^{2}-\\dfrac{x^{3}}{3}\\Big]_0^2=4-\\dfrac83=\\dfrac43$."
+        },
+        {
+          "nom": "Integration by parts with limits",
+          "quand_utiliser": "When the integrand is a product such as a polynomial times $e^{x}$, $\\sin x$ or $\\cos x$.",
+          "contenu_markdown": "Take $u$ to be the factor that becomes simpler when differentiated. Example: $\\displaystyle\\int_0^1xe^{x}\\,dx$ with $u=x$ and $\\dfrac{dv}{dx}=e^{x}$ gives $\\Big[xe^{x}\\Big]_0^1-\\int_0^1e^{x}\\,dx=e-(e-1)=1$. Evaluate the bracket $[uv]$ at both limits before subtracting."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The curve $C$ has equation $y=4x-x^{2}$. The finite region $R$ is enclosed by $C$ and the $x$-axis. Find (a) the area of $R$, and (b) the exact volume of the solid formed when $R$ is rotated completely about the $x$-axis.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find where $C$ meets the $x$-axis.",
+          "justification": "These values are the limits of integration, and the sign of $y$ between them shows on which side of the axis $R$ lies.",
+          "resultat_markdown": "$4x-x^{2}=x(4-x)=0$ gives $x=0$ and $x=4$. At $x=2$, $y=4>0$, so $R$ lies above the axis."
+        },
+        {
+          "numero": 2,
+          "action": "Set up and evaluate the area.",
+          "justification": "Above the axis, the area is the integral of $y$ between the limits.",
+          "resultat_markdown": "$\\displaystyle\\int_0^4(4x-x^{2})\\,dx=\\Big[2x^{2}-\\dfrac{x^{3}}{3}\\Big]_0^4=32-\\dfrac{64}{3}=\\dfrac{32}{3}$."
+        },
+        {
+          "numero": 3,
+          "action": "Write the volume integral.",
+          "justification": "Use formula (1): square the whole function and multiply by $\\pi$.",
+          "resultat_markdown": "$V=\\pi\\displaystyle\\int_0^4(4x-x^{2})^{2}\\,dx$."
+        },
+        {
+          "numero": 4,
+          "action": "Expand the integrand.",
+          "justification": "A squared bracket cannot be integrated directly, so expand it into powers of $x$.",
+          "resultat_markdown": "$(4x-x^{2})^{2}=16x^{2}-8x^{3}+x^{4}$."
+        },
+        {
+          "numero": 5,
+          "action": "Integrate and substitute the limits.",
+          "justification": "Integrate each power, then subtract the value at $0$ (which is $0$) from the value at $4$.",
+          "resultat_markdown": "$V=\\pi\\Big[\\dfrac{16x^{3}}{3}-2x^{4}+\\dfrac{x^{5}}{5}\\Big]_0^4=\\pi\\Big(\\dfrac{1024}{3}-512+\\dfrac{1024}{5}\\Big)=\\dfrac{512\\pi}{15}$."
+        }
+      ],
+      "conclusion_markdown": "The area of $R$ is $\\dfrac{32}{3}$ square units and the volume of the solid is $\\dfrac{512\\pi}{15}\\approx107.2$ cubic units."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$V=\\pi\\displaystyle\\int_0^4(4x-x^{2})\\,dx$ for the volume of revolution.",
+          "pourquoi_faux": "The slice is a disc of area $\\pi y^{2}$, not $\\pi y$. The formula needs the square of the function.",
+          "correction_markdown": "$V=\\pi\\displaystyle\\int_0^4(4x-x^{2})^{2}\\,dx$, with the bracket expanded before integrating."
+        },
+        {
+          "erreur_markdown": "$V=\\pi\\left(\\displaystyle\\int_0^4(4x-x^{2})\\,dx\\right)^{2}$.",
+          "pourquoi_faux": "The square belongs inside the integral, on $y$. Squaring the value of the integral of $y$ is a different number and has no geometric meaning here.",
+          "correction_markdown": "Square the function, then integrate: $V=\\pi\\displaystyle\\int_0^4 y^{2}\\,dx=\\dfrac{512\\pi}{15}$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\int_0^1 2x(x^{2}+1)^{3}\\,dx$: with $u=x^{2}+1$ this becomes $\\displaystyle\\int_0^1u^{3}\\,du=\\dfrac14$.",
+          "pourquoi_faux": "After a substitution the limits must be values of $u$, not $x$. The old limits $0$ and $1$ were left in place.",
+          "correction_markdown": "When $x=0$, $u=1$; when $x=1$, $u=2$. So $\\displaystyle\\int_1^2u^{3}\\,du=\\dfrac{16-1}{4}=\\dfrac{15}{4}$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\int_0^{2\\pi}\\sin x\\,dx=0$, so the area between the curve and the $x$-axis from $0$ to $2\\pi$ is zero.",
+          "pourquoi_faux": "The integral gives a signed total in which the positive half cancels the negative half. An area is never zero here.",
+          "correction_markdown": "Split at $x=\\pi$: area $=\\displaystyle\\int_0^{\\pi}\\sin x\\,dx+\\left|\\int_{\\pi}^{2\\pi}\\sin x\\,dx\\right|=2+2=4$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\int_1^3\\dfrac{1}{x^{2}}\\,dx=F(1)-F(3)=-1+\\dfrac13=-\\dfrac23$.",
+          "pourquoi_faux": "The subtraction is in the wrong order: it must be $F(\\text{upper})-F(\\text{lower})$. A positive integrand over $1\\le x\\le3$ cannot give a negative integral.",
+          "correction_markdown": "$\\displaystyle\\Big[-\\dfrac1x\\Big]_1^3=-\\dfrac13-(-1)=\\dfrac23$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Evaluate (a) $\\displaystyle\\int_1^3\\left(2x+\\dfrac{1}{x^{2}}\\right)dx$ and (b) $\\displaystyle\\int_0^2e^{3x}\\,dx$, leaving the answer to (b) in terms of $e$.",
+          "solution_markdown": "(a) $\\displaystyle\\int_1^3\\left(2x+x^{-2}\\right)dx=\\Big[x^{2}-\\dfrac1x\\Big]_1^3=\\Big(9-\\dfrac13\\Big)-(1-1)=$ **$\\dfrac{26}{3}$**.\n\n(b) $\\displaystyle\\Big[\\dfrac{e^{3x}}{3}\\Big]_0^2=\\dfrac{e^{6}}{3}-\\dfrac13=$ **$\\dfrac{e^{6}-1}{3}$**, about $134.1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Use the substitution $u=x^{2}+16$ to evaluate $\\displaystyle\\int_0^3\\dfrac{x}{\\sqrt{x^{2}+16}}\\,dx$.\n\n(b) Use integration by parts to show that $\\displaystyle\\int_0^{\\pi}x\\sin x\\,dx=\\pi$.",
+          "solution_markdown": "(a) $du=2x\\,dx$, so $x\\,dx=\\frac12du$. When $x=0$, $u=16$; when $x=3$, $u=25$. The integral is $\\dfrac12\\displaystyle\\int_{16}^{25}u^{-1/2}\\,du=\\dfrac12\\Big[2\\sqrt u\\Big]_{16}^{25}=\\sqrt{25}-\\sqrt{16}=5-4=$ **$1$**.\n\n(b) Take $u=x$ and $\\dfrac{dv}{dx}=\\sin x$, so $\\dfrac{du}{dx}=1$ and $v=-\\cos x$. Then $\\displaystyle\\int_0^{\\pi}x\\sin x\\,dx=\\Big[-x\\cos x\\Big]_0^{\\pi}+\\int_0^{\\pi}\\cos x\\,dx=\\big(\\pi-0\\big)+\\Big[\\sin x\\Big]_0^{\\pi}=\\pi+0=$ **$\\pi$**, because $-\\pi\\cos\\pi=\\pi$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The curve $y=x^{2}-6x$ meets the $x$-axis at the origin $O$ and at the point $P$.\n\n(a) Find the coordinates of $P$ and show that $\\displaystyle\\int_0^{6}(x^{2}-6x)\\,dx=-36$. State the area of the finite region $R$ enclosed by the curve and the $x$-axis.\n\n(b) Find the exact volume of the solid formed when $R$ is rotated completely about the $x$-axis.\n\n(c) Find the value of $k$, with $k>0$, for which $\\displaystyle\\int_0^{k}(x^{2}-6x)\\,dx=0$, and explain the result geometrically.",
+          "solution_markdown": "(a) $x^{2}-6x=x(x-6)=0$ gives **$P=(6,0)$**. Then $\\Big[\\dfrac{x^{3}}{3}-3x^{2}\\Big]_0^6=72-108=-36$. The curve lies below the axis between $O$ and $P$, so the area is the modulus: **$36$ square units**.\n\n(b) $V=\\pi\\displaystyle\\int_0^6(x^{2}-6x)^{2}\\,dx=\\pi\\int_0^6(x^{4}-12x^{3}+36x^{2})\\,dx=\\pi\\Big[\\dfrac{x^{5}}{5}-3x^{4}+12x^{3}\\Big]_0^6=\\pi\\Big(\\dfrac{7776}{5}-3888+2592\\Big)=$ **$\\dfrac{1296\\pi}{5}$**, about $814.3$.\n\n(c) $\\dfrac{k^{3}}{3}-3k^{2}=k^{2}\\Big(\\dfrac k3-3\\Big)=0$, and $k>0$ gives **$k=9$**. Geometrically, the area below the axis from $x=0$ to $x=6$ (signed value $-36$) is cancelled by an equal area above the axis from $x=6$ to $x=9$, since $\\displaystyle\\int_6^9(x^{2}-6x)\\,dx=\\big(243-243\\big)-(-36)=36$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\displaystyle\\int_a^b f\\,dx=F(b)-F(a)$: upper limit first, no constant $c$; reversing the limits changes the sign.",
+        "Area under a curve is the integral only where the curve is above the axis; split at axis crossings and add the positive areas. Between two curves, integrate top minus bottom.",
+        "Volume about the $x$-axis: $V=\\pi\\displaystyle\\int_a^b y^{2}\\,dx$. Square the whole function, expand, integrate, then multiply by $\\pi$.",
+        "In a substitution change the limits into values of the new variable; in integration by parts evaluate $[uv]$ at both limits.",
+        "Keep exact forms such as $\\dfrac{512\\pi}{15}$ or $3\\ln5-5\\ln2$ until the last line, and only then give a decimal if asked."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-pm-statistics-properties-of-functions",
+  "meta": {
+    "titre": "Properties of Functions: Proving Injective, Surjective and Bijective",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Injective, surjective and bijective functions",
+    "duree_estimee_min": 30,
+    "tags": [
+      "properties of functions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2023-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2023-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-properties-of-functions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school in Douala gives every pupil a matricule number. If the rule never gives the same number to two different pupils, it is injective. If every number on the printed list is given to some pupil, it is surjective onto that list. When both hold, each number identifies exactly one pupil and the rule can be reversed. Mathematicians use these precise words for functions, and the GCE paper asks you to prove or disprove them for a given formula, usually a quotient of two linear expressions, and to decide when an inverse function exists."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A function $f:A\\to B$ gives each element of the domain $A$ exactly one element of the codomain $B$.",
+        "The range of $f$ is the set of values $f(x)$ that are actually taken, and it is a subset of the codomain.",
+        "A linear equation $px=q$ with $p\\neq0$ has the single solution $x=\\dfrac qp$.",
+        "A fractional equation is cleared by cross-multiplying, provided the denominators are not zero."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Injective, surjective and bijective functions: definitions and proofs",
+      "contenu_markdown": "### Definitions\n\nLet $f:A\\to B$ be a function.\n\n| Property | Meaning | How to prove it |\n|---|---|---|\n| Injective (one-to-one) | $f(x_1)=f(x_2)$ implies $x_1=x_2$ | Assume $f(x_1)=f(x_2)$ and deduce $x_1=x_2$ |\n| Surjective (onto) | every $y\\in B$ equals $f(x)$ for some $x\\in A$ | Take any $y\\in B$, solve $y=f(x)$ for $x$ and check $x\\in A$ |\n| Bijective | injective and surjective | Prove both |\n\nTo **disprove** injectivity, give two different inputs with the same output. To disprove surjectivity, give one value of $y$ in the codomain for which $y=f(x)$ has no solution in $A$. Checking a few numbers never proves a property; one counterexample does disprove it. Surjectivity depends on the codomain stated, so always read it in the question.\n\n### Linear fractional functions\n\nLet $f(x)=\\dfrac{ax+b}{cx+d}$ with $c\\neq0$ and $ad\\neq bc$, defined for $x\\neq-\\dfrac dc$. If $f(x_1)=f(x_2)$, cross-multiplying and cancelling gives\n\n$$\n(ad-bc)(x_1-x_2)=0 \\tag{1}\n$$\n\nso $x_1=x_2$ and $f$ is **injective**. To test surjectivity, solve $y=f(x)$ for $x$:\n\n$$\nx=\\frac{dy-b}{a-cy} \\tag{2}\n$$\n\nThis exists for every $y$ except $y=\\dfrac ac$, and it is never the excluded value $-\\dfrac dc$ (that would force $ad=bc$). Hence $f$ is a bijection from $\\mathbb{R}\\setminus\\left\\{-\\dfrac dc\\right\\}$ onto $\\mathbb{R}\\setminus\\left\\{\\dfrac ac\\right\\}$. With codomain $\\mathbb{R}$ it is **not surjective**, because $\\dfrac ac$ is never attained. If $ad=bc$ the function is constant.\n\n### Inverse function\n\nA function has an inverse exactly when it is bijective. Solve $y=f(x)$ for $x$, then write the result as a function of the input variable. The domain of $f^{-1}$ is the codomain of $f$, and $f^{-1}(f(x))=x$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Disproving injectivity (many-to-one functions)",
+          "quand_utiliser": "When the formula contains a square, a modulus or another expression that treats $x$ and a mirror value alike.",
+          "contenu_markdown": "Find two inputs with equal outputs. For $f(x)=x^2$ on $\\mathbb{R}$, $f(2)=f(-2)=4$ although $2\\neq-2$, so $f$ is not injective. A quadratic $(x-h)^2+k$ is symmetrical about $x=h$, since $f(h+t)=f(h-t)$, so it is never injective on the whole of $\\mathbb{R}$. Giving one pair of inputs is a complete disproof."
+        },
+        {
+          "nom": "Restricting the domain or the codomain",
+          "quand_utiliser": "When the question asks you to make a function bijective, or to define an inverse of a function that is not.",
+          "contenu_markdown": "Restrict the **domain** to one side of the axis of symmetry to make the function injective, and restrict the **codomain** to the range to make it surjective. For $f(x)=(x-1)^2+3$ take the domain $x\\ge1$ and the codomain $y\\ge3$. Then $y=(x-1)^2+3$ with $x\\ge1$ gives $x=1+\\sqrt{y-3}$, so $f^{-1}(y)=1+\\sqrt{y-3}$ for $y\\ge3$. The positive root is chosen because the restricted domain has $x-1\\ge0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A function $g:\\mathbb{R}\\setminus\\{-3\\}\\to\\mathbb{R}\\setminus\\{2\\}$ is given by $g(x)=\\dfrac{2x-5}{x+3}$. Show that $g$ is injective and surjective, and find the inverse function $g^{-1}$ together with its domain.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "State what has to be shown.",
+          "justification": "A bijection needs both properties, and each has its own method.",
+          "resultat_markdown": "Injective: $g(a)=g(b)\\Rightarrow a=b$. Surjective: every $y\\neq2$ equals $g(x)$ for some $x\\neq-3$."
+        },
+        {
+          "numero": 2,
+          "action": "Prove injectivity.",
+          "justification": "Assume equal outputs for two inputs $a,b$ in the domain and cross-multiply, which is allowed because $a+3$ and $b+3$ are not zero.",
+          "resultat_markdown": "$(2a-5)(b+3)=(2b-5)(a+3)$ gives $2ab+6a-5b-15=2ab+6b-5a-15$, so $11a=11b$ and $a=b$."
+        },
+        {
+          "numero": 3,
+          "action": "Solve $y=g(x)$ for $x$.",
+          "justification": "Surjectivity needs a preimage for every $y$ in the codomain.",
+          "resultat_markdown": "$y(x+3)=2x-5$ gives $xy+3y=2x-5$, so $x(y-2)=-5-3y$ and $x=\\dfrac{3y+5}{2-y}$ for $y\\neq2$."
+        },
+        {
+          "numero": 4,
+          "action": "Check that this $x$ lies in the domain.",
+          "justification": "The preimage must not be the excluded value $-3$.",
+          "resultat_markdown": "If $x=-3$ then $3y+5=-3(2-y)=-6+3y$, giving $5=-6$, which is impossible. So $x\\neq-3$ for every $y\\neq2$: every element of the codomain is reached, and $g$ is surjective."
+        },
+        {
+          "numero": 5,
+          "action": "Write the inverse.",
+          "justification": "The formula from step 3 reverses $g$, and its domain is the codomain of $g$.",
+          "resultat_markdown": "$g^{-1}(x)=\\dfrac{3x+5}{2-x}$ for $x\\in\\mathbb{R}\\setminus\\{2\\}$."
+        },
+        {
+          "numero": 6,
+          "action": "Verify with two values.",
+          "justification": "A numerical check catches algebra slips.",
+          "resultat_markdown": "$g^{-1}(0)=\\dfrac52$ and $g\\left(\\dfrac52\\right)=\\dfrac{0}{11/2}=0$. Also $g^{-1}(1)=8$ and $g(8)=\\dfrac{11}{11}=1$."
+        }
+      ],
+      "conclusion_markdown": "$g$ is injective (equal outputs force equal inputs) and surjective (every $y\\neq2$ is attained, and $2$ is not in the codomain), so $g$ is bijective, and $g^{-1}(x)=\\dfrac{3x+5}{2-x}$ with domain $\\mathbb{R}\\setminus\\{2\\}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Showing that $f$ is injective because $f(1)$, $f(2)$ and $f(3)$ are all different.",
+          "pourquoi_faux": "A finite list of values proves nothing: the property concerns every pair of inputs, and two inputs outside the list might still share an output.",
+          "correction_markdown": "Assume $f(x_1)=f(x_2)$ for arbitrary $x_1,x_2$ in the domain and prove $x_1=x_2$ by algebra."
+        },
+        {
+          "erreur_markdown": "Starting from $x_1=x_2$ and deducing $f(x_1)=f(x_2)$.",
+          "pourquoi_faux": "This is the wrong direction. It only says that $f$ gives one output for one input, which is true of every function.",
+          "correction_markdown": "Start from $f(x_1)=f(x_2)$ and conclude $x_1=x_2$."
+        },
+        {
+          "erreur_markdown": "Solving $y=\\dfrac{2x-5}{x+3}$ to get $x=\\dfrac{3y+5}{2-y}$ and concluding at once that the function is surjective onto $\\mathbb{R}$.",
+          "pourquoi_faux": "The formula fails at $y=2$, where it divides by zero, so $2$ is not attained. The solution must also be checked against the excluded input.",
+          "correction_markdown": "State that every $y\\neq2$ has a preimage in the domain, and that $2$ is not attained. The function is onto $\\mathbb{R}\\setminus\\{2\\}$ only."
+        },
+        {
+          "erreur_markdown": "Saying that the range of $f(x)=x^2$ on $\\mathbb{R}$ is $\\mathbb{R}$ because the codomain is $\\mathbb{R}$.",
+          "pourquoi_faux": "The range is the set of values actually taken, here $y\\ge0$. The codomain is part of the definition and may be larger; the function is surjective only when the two are equal.",
+          "correction_markdown": "Range $=[0,\\infty)\\neq\\mathbb{R}$, so $f$ is not surjective onto $\\mathbb{R}$. For example $-4$ is never attained."
+        },
+        {
+          "erreur_markdown": "Writing the inverse of $f$ as $\\dfrac{1}{f(x)}$.",
+          "pourquoi_faux": "The reciprocal $\\dfrac1{f(x)}$ is a different function. The inverse undoes $f$: it takes an output of $f$ back to its input.",
+          "correction_markdown": "Solve $y=f(x)$ for $x$ and then rename the variable. Check that $f^{-1}(f(x))=x$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Let $q:\\mathbb{R}\\to\\mathbb{R}$ be given by $q(x)=x^2-6x+5$. (a) Show that $q$ is not injective. (b) Find the range of $q$ and explain why $q$ is not surjective. (c) The domain is restricted to $x\\ge3$ and the codomain to $y\\ge-4$. Show that the restricted function has an inverse and find it.",
+          "solution_markdown": "(a) $q(1)=1-6+5=0$ and $q(5)=25-30+5=0$. Two different inputs give the same output, so $q$ is **not injective**.\n\n(b) Completing the square, $q(x)=(x-3)^2-4\\ge-4$, with equality at $x=3$, and every value $y\\ge-4$ is reached. The range is $[-4,\\infty)$. The value $-5$ is in the codomain $\\mathbb{R}$ but $(x-3)^2=-1$ has no real solution, so **$q$ is not surjective**.\n\n(c) On $x\\ge3$ the function $(x-3)^2-4$ is increasing, so it is injective, and onto $[-4,\\infty)$. From $y=(x-3)^2-4$ with $x-3\\ge0$: $x=3+\\sqrt{y+4}$. So $\\mathbf{q^{-1}(y)=3+\\sqrt{y+4}}$ for $y\\ge-4$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A function is defined by $m(x)=\\dfrac{4x+1}{2x-3}$ for $x\\in\\mathbb{R}$, $x\\neq\\dfrac32$. (a) Show that $m$ is injective. (b) Show that there is exactly one real number that is not a value of $m$, and find it. (c) With the codomain $\\mathbb{R}\\setminus\\{2\\}$, find $m^{-1}$ and state its domain.",
+          "solution_markdown": "(a) If $m(a)=m(b)$ then $(4a+1)(2b-3)=(4b+1)(2a-3)$. Expanding, $8ab-12a+2b-3=8ab-12b+2a-3$, so $14b=14a$ and $a=b$. Hence **$m$ is injective**.\n\n(b) From $y=\\dfrac{4x+1}{2x-3}$: $y(2x-3)=4x+1$, so $x(2y-4)=3y+1$. For $y=2$ this reads $0=7$, which is impossible, so **$2$ is not attained**. For $y\\neq2$, $x=\\dfrac{3y+1}{2y-4}$ exists, and it is not $\\dfrac32$ because $3y+1=\\dfrac32(2y-4)=3y-6$ would give $1=-6$. So $2$ is the only real number that is not a value.\n\n(c) $m^{-1}(x)=\\mathbf{\\dfrac{3x+1}{2x-4}}$, with domain $\\mathbf{\\mathbb{R}\\setminus\\{2\\}}$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "For a real constant $k$, let $f_k(x)=\\dfrac{kx+3}{x+2}$ for $x\\neq-2$. (a) Show that if $f_k(a)=f_k(b)$ then $(2k-3)(a-b)=0$. (b) State the values of $k$ for which $f_k$ is injective, and describe $f_k$ when $k$ takes the other value. (c) For $k=5$, find the real number that is not a value of $f_5$, and find the inverse of $f_5$ with its domain and the set it maps onto.",
+          "solution_markdown": "(a) $f_k(a)=f_k(b)$ gives $(ka+3)(b+2)=(kb+3)(a+2)$, so $kab+2ka+3b+6=kab+2kb+3a+6$. Hence $2k(a-b)=3(a-b)$, that is $\\mathbf{(2k-3)(a-b)=0}$.\n\n(b) If $k\\neq\\dfrac32$ the factor $2k-3$ is not zero, so $a=b$ and $f_k$ is **injective**. If $k=\\dfrac32$ then $f_k(x)=\\dfrac{\\frac32(x+2)}{x+2}=\\dfrac32$ for every $x\\neq-2$: the function is constant, so $f_k(1)=f_k(2)$ and it is not injective.\n\n(c) With $k=5$: $y(x+2)=5x+3$ gives $x(y-5)=3-2y$. For $y=5$ this reads $0=-7$, so **$5$ is not a value** of $f_5$ (indeed $f_5(x)=5-\\dfrac{7}{x+2}$). For $y\\neq5$, $x=\\dfrac{3-2y}{y-5}=\\dfrac{2y-3}{5-y}$, and $x\\neq-2$ because $2y-3=-2(5-y)$ would give $-3=-10$. So $\\mathbf{f_5^{-1}(x)=\\dfrac{2x-3}{5-x}}$, with domain $\\mathbb{R}\\setminus\\{5\\}$, mapping onto $\\mathbb{R}\\setminus\\{-2\\}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Injective: $f(x_1)=f(x_2)\\Rightarrow x_1=x_2$. Prove it by assuming equal outputs and deducing equal inputs; disprove it with two different inputs that have the same output.",
+        "Surjective: every $y$ in the codomain is attained. Solve $y=f(x)$ for $x$, check that $x$ is in the domain, and note any $y$ for which there is no solution.",
+        "For $f(x)=\\dfrac{ax+b}{cx+d}$ with $ad\\neq bc$: always injective, never takes the value $\\dfrac ac$, and is a bijection from $\\mathbb{R}\\setminus\\left\\{-\\dfrac dc\\right\\}$ onto $\\mathbb{R}\\setminus\\left\\{\\dfrac ac\\right\\}$. If $ad=bc$ it is constant.",
+        "An inverse exists exactly when the function is bijective. Find it by solving $y=f(x)$ for $x$; its domain is the codomain of $f$.",
+        "Restricting the domain makes a function injective and restricting the codomain to the range makes it surjective; for a quadratic, choose the side of the axis of symmetry."
+      ]
+    }
+  ]
+}

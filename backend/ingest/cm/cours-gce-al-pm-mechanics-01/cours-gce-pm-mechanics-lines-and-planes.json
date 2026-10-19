@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-lines-and-planes",
+  "meta": {
+    "titre": "Lines and Planes in Three Dimensions: direction, normal and intersection",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Vector geometry in three dimensions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "lines and planes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-lines-and-planes-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A surveyor in Douala who plans a straight pipe through a sloping site must answer two questions: in which direction does the pipe run, and where does it pierce the sloping ground? Vectors answer both at once. A line is fixed by one point and one direction, and a plane is fixed by one point and one direction at right angles to it. In the GCE paper the questions are almost always the same few moves: read a direction or a normal from an equation, test whether a line is parallel to a plane, and find where two lines meet or show that they never do."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The scalar product is $\\mathbf a\\cdot\\mathbf b=a_1b_1+a_2b_2+a_3b_3=|\\mathbf a||\\mathbf b|\\cos\\theta$, and it is zero exactly when two non-zero vectors are perpendicular.",
+        "The magnitude of $\\mathbf a=a_1\\mathbf i+a_2\\mathbf j+a_3\\mathbf k$ is $|\\mathbf a|=\\sqrt{a_1^2+a_2^2+a_3^2}$.",
+        "Two linear equations in two unknowns can be solved by elimination or by substitution."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vector equations of lines and planes, parallelism and intersection",
+      "contenu_markdown": "### Lines\n\nA line through the point with position vector $\\mathbf a$ and parallel to the **direction vector** $\\mathbf d$ has vector equation\n\n$$\n\\mathbf r=\\mathbf a+s\\mathbf d \\tag{1}\n$$\n\nwhere the parameter $s$ takes every real value. Any non-zero multiple of $\\mathbf d$ gives the same line. Each value of $s$ gives one point of the line, and reading the $\\mathbf i$, $\\mathbf j$, $\\mathbf k$ components of (1) gives $x$, $y$ and $z$ as linear functions of $s$.\n\n### Planes\n\nA plane is fixed by one point (position vector $\\mathbf a$) and a **normal vector** $\\mathbf n$, a vector perpendicular to every direction lying in the plane. A point $\\mathbf r$ is in the plane when $\\mathbf r-\\mathbf a$ is perpendicular to $\\mathbf n$:\n\n$$\n\\mathbf r\\cdot\\mathbf n=\\mathbf a\\cdot\\mathbf n \\tag{2}\n$$\n\nIn Cartesian form the plane is $\\alpha x+\\beta y+\\gamma z=h$, and its normal is read directly as $\\alpha\\mathbf i+\\beta\\mathbf j+\\gamma\\mathbf k$. The constant $h$ is not part of the normal, so $\\alpha x+\\beta y+\\gamma z-h=0$ has the same normal.\n\n### A line and a plane\n\nLet the line have direction $\\mathbf d$ and the plane have normal $\\mathbf n$.\n\n| Situation | Test |\n|---|---|\n| Line parallel to the plane, or lying in it | $\\mathbf d\\cdot\\mathbf n=0$ |\n| Line perpendicular to the plane | $\\mathbf d$ is a multiple of $\\mathbf n$ |\n| Line meets the plane in exactly one point | $\\mathbf d\\cdot\\mathbf n\\neq0$ |\n\nIf $\\mathbf d\\cdot\\mathbf n=0$, test one point of the line in the plane equation: if it satisfies the equation, the whole line lies in the plane; otherwise the line never meets the plane. If $\\mathbf d\\cdot\\mathbf n\\neq0$, write $x$, $y$, $z$ in terms of $s$, substitute into the plane equation and solve for $s$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Do two lines meet?",
+          "quand_utiliser": "When you are asked whether two lines intersect, and where.",
+          "contenu_markdown": "Give the two lines **different** parameters, $\\lambda$ for $L_1$ and $\\mu$ for $L_2$, and equate the position vectors. Equating the $\\mathbf i$, $\\mathbf j$ and $\\mathbf k$ components gives three equations in two unknowns. Solve two of them, then test the answer in the third.\n\n- Third equation satisfied: the lines meet at one point. Substitute the parameter into either line to get the position vector.\n- Third equation not satisfied and the directions are not multiples of each other: the lines are **skew**. They do not meet and they are not parallel. This can happen only in three dimensions.\n- Directions are multiples of each other: the lines are parallel, or identical if they share a point."
+        },
+        {
+          "nom": "Angles between lines and between a line and a plane",
+          "quand_utiliser": "When an acute angle is asked for.",
+          "contenu_markdown": "For lines with directions $\\mathbf d_1$ and $\\mathbf d_2$ the acute angle $\\theta$ satisfies\n\n$$\n\\cos\\theta=\\frac{|\\mathbf d_1\\cdot\\mathbf d_2|}{|\\mathbf d_1||\\mathbf d_2|} \\tag{3}\n$$\n\nFor a line with direction $\\mathbf d$ and a plane with normal $\\mathbf n$, the angle $\\varphi$ between the line and the plane satisfies\n\n$$\n\\sin\\varphi=\\frac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|} \\tag{4}\n$$\n\nbecause the angle between $\\mathbf d$ and $\\mathbf n$ is $90^\\circ-\\varphi$. Use **sine** for a line and a plane, and cosine for two lines."
+        },
+        {
+          "nom": "Finding an unknown constant",
+          "quand_utiliser": "When a letter in the plane or the line must make them parallel or perpendicular.",
+          "contenu_markdown": "Write the condition: $\\mathbf d\\cdot\\mathbf n=0$ for parallel, or $\\mathbf d=c\\,\\mathbf n$ for perpendicular. Expand the scalar product, which gives a linear equation in the unknown, and solve it. If the line is given as $\\dfrac{x-x_0}{p}=\\dfrac{y-y_0}{q}=\\dfrac{z-z_0}{w}$, its direction is $p\\mathbf i+q\\mathbf j+w\\mathbf k$. Afterwards check one point of the line in the plane to decide between \"lies in the plane\" and \"never meets the plane\"."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "The lines $L_1$ and $L_2$ have equations\n$$\nL_1:\\ \\mathbf r=2\\mathbf i+\\mathbf j+\\mathbf k+\\lambda(\\mathbf i-\\mathbf j+2\\mathbf k),\\qquad L_2:\\ \\mathbf r=5\\mathbf i+\\mathbf j+2\\mathbf k+\\mu(2\\mathbf i+\\mathbf j-\\mathbf k)\n$$\n(a) Show that $L_1$ and $L_2$ intersect and find the position vector of the point of intersection.\n\n(b) Find the acute angle between the lines, correct to $0.1^\\circ$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Give the lines different parameters and equate the components.",
+          "justification": "A common point has one position vector whichever line it is found from, but the two parameters need not be equal.",
+          "resultat_markdown": "$$\n2+\\lambda=5+2\\mu,\\qquad 1-\\lambda=1+\\mu,\\qquad 1+2\\lambda=2-\\mu \\tag{5}\n$$"
+        },
+        {
+          "numero": 2,
+          "action": "Solve the first two equations.",
+          "justification": "The second equation is the simplest: it gives $\\lambda=-\\mu$. Substituting in the first leaves one equation in one unknown.",
+          "resultat_markdown": "$2-\\mu=5+2\\mu$, so $\\mu=-1$ and $\\lambda=1$."
+        },
+        {
+          "numero": 3,
+          "action": "Test the values in the third equation.",
+          "justification": "Two unknowns were found from two equations; the third equation decides whether the lines really meet.",
+          "resultat_markdown": "Left side: $1+2(1)=3$. Right side: $2-(-1)=3$. They are equal, so the lines **intersect**."
+        },
+        {
+          "numero": 4,
+          "action": "Find the position vector of the point.",
+          "justification": "Substitute the parameter into one line, and use the other line as a check.",
+          "resultat_markdown": "With $\\lambda=1$ in $L_1$: $\\mathbf r=(2+1)\\mathbf i+(1-1)\\mathbf j+(1+2)\\mathbf k=3\\mathbf i+3\\mathbf k$. With $\\mu=-1$ in $L_2$: $(5-2)\\mathbf i+(1-1)\\mathbf j+(2+1)\\mathbf k$, the same vector."
+        },
+        {
+          "numero": 5,
+          "action": "Compute the scalar product of the direction vectors and their magnitudes.",
+          "justification": "The angle between the lines is found from the directions $\\mathbf d_1=\\mathbf i-\\mathbf j+2\\mathbf k$ and $\\mathbf d_2=2\\mathbf i+\\mathbf j-\\mathbf k$ only.",
+          "resultat_markdown": "$\\mathbf d_1\\cdot\\mathbf d_2=(1)(2)+(-1)(1)+(2)(-1)=-1$, and $|\\mathbf d_1|=|\\mathbf d_2|=\\sqrt6$."
+        },
+        {
+          "numero": 6,
+          "action": "Apply formula (3).",
+          "justification": "The modulus in the numerator makes the angle acute.",
+          "resultat_markdown": "$\\cos\\theta=\\dfrac{|-1|}{\\sqrt6\\times\\sqrt6}=\\dfrac16$, so $\\theta=80.4^\\circ$ to $0.1^\\circ$."
+        }
+      ],
+      "conclusion_markdown": "(a) The lines intersect at the point with position vector $\\mathbf r=3\\mathbf i+3\\mathbf k$, found with $\\lambda=1$ and $\\mu=-1$. (b) The acute angle between them is $80.4^\\circ$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For the line with direction $\\mathbf d$ and the plane with normal $\\mathbf n$, the student states: \"the line is parallel to the plane because $\\mathbf d=2\\mathbf n$\".",
+          "pourquoi_faux": "If $\\mathbf d$ is a multiple of $\\mathbf n$, the line runs along the normal, so it is **perpendicular** to the plane. Parallelism needs the direction to be perpendicular to the normal.",
+          "correction_markdown": "Parallel means $\\mathbf d\\cdot\\mathbf n=0$. A multiple, $\\mathbf d=c\\,\\mathbf n$, means perpendicular."
+        },
+        {
+          "erreur_markdown": "To find where two lines meet, the student writes both lines with the same parameter $s$ and equates them.",
+          "pourquoi_faux": "Using one letter forces the two lines to be at the same parameter value. The meeting point usually corresponds to different parameter values on the two lines, so correct intersections are missed.",
+          "correction_markdown": "Use $\\lambda$ on one line and $\\mu$ on the other, equate the components and solve for both."
+        },
+        {
+          "erreur_markdown": "The student finds $\\lambda$ and $\\mu$ from two component equations and writes \"the lines intersect\" without further work.",
+          "pourquoi_faux": "Two equations always give values for two unknowns. Only the third equation tells whether the lines really meet. If it fails, the lines are skew.",
+          "correction_markdown": "Substitute $\\lambda$ and $\\mu$ into the third component equation. Conclude \"intersect\" only if both sides agree; otherwise say that the lines are skew (when their directions are not parallel)."
+        },
+        {
+          "erreur_markdown": "To find the angle between a line with direction $\\mathbf d$ and a plane with normal $\\mathbf n$, the student calculates $\\cos\\varphi=\\dfrac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|}$.",
+          "pourquoi_faux": "That formula gives the angle between the line and the **normal**. The angle between the line and the plane is its complement.",
+          "correction_markdown": "Use $\\sin\\varphi=\\dfrac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|}$ for the angle between a line and a plane."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A plane passes through the point $A(1,2,3)$ and has normal vector $2\\mathbf i-\\mathbf j+4\\mathbf k$. Find its Cartesian equation, and decide whether the point $B(3,0,2)$ lies in the plane.",
+          "solution_markdown": "The equation is $\\mathbf r\\cdot(2\\mathbf i-\\mathbf j+4\\mathbf k)=\\mathbf a\\cdot(2\\mathbf i-\\mathbf j+4\\mathbf k)$ with $\\mathbf a=\\mathbf i+2\\mathbf j+3\\mathbf k$.\n\nRight side: $2(1)-1(2)+4(3)=2-2+12=12$.\n\nSo the plane is **$2x-y+4z=12$**.\n\nFor $B$: $2(3)-0+4(2)=6+8=14$, which is not $12$. So **$B$ does not lie in the plane**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The line $\\mathbf r=\\mathbf i+2\\mathbf j-\\mathbf k+t(2\\mathbf i+\\mathbf j+3\\mathbf k)$ is parallel to the plane $3x+ky-z=5$. Find the value of the constant $k$. Hence decide whether the line lies in the plane.",
+          "solution_markdown": "The direction of the line is $2\\mathbf i+\\mathbf j+3\\mathbf k$ and the normal of the plane is $3\\mathbf i+k\\mathbf j-\\mathbf k$.\n\nParallel means the scalar product is zero: $2(3)+1(k)+3(-1)=0$, so $6+k-3=0$ and **$k=-3$**.\n\nThe plane is now $3x-3y-z=5$. The point $(1,2,-1)$ of the line gives $3(1)-3(2)-(-1)=3-6+1=-2$, which is not $5$.\n\nSo the point is not in the plane: the line is parallel to the plane but **does not lie in it**, and never meets it."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The line $l$ has equation $\\mathbf r=\\mathbf i+2\\mathbf k+t(\\mathbf i+2\\mathbf j-\\mathbf k)$ and the plane $\\Pi$ has equation $2x-y+2z=8$.\n\n(a) Find the position vector of the point where $l$ meets $\\Pi$.\n\n(b) Find the acute angle between $l$ and $\\Pi$, correct to $0.1^\\circ$.",
+          "solution_markdown": "(a) On the line, $x=1+t$, $y=2t$, $z=2-t$. Substituting in the plane equation:\n\n$2(1+t)-2t+2(2-t)=8$, that is $6-2t=8$, so $t=-1$.\n\nThe point is $x=0$, $y=-2$, $z=3$: **$\\mathbf r=-2\\mathbf j+3\\mathbf k$**. Check: $0-(-2)+6=8$.\n\n(b) $\\mathbf d=\\mathbf i+2\\mathbf j-\\mathbf k$ and $\\mathbf n=2\\mathbf i-\\mathbf j+2\\mathbf k$. Then $\\mathbf d\\cdot\\mathbf n=2-2-2=-2$, $|\\mathbf d|=\\sqrt6$ and $|\\mathbf n|=3$.\n\n$\\sin\\varphi=\\dfrac{2}{3\\sqrt6}\\approx0.2722$, so **$\\varphi=15.8^\\circ$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A line is $\\mathbf r=\\mathbf a+s\\mathbf d$: one point and one direction. A plane is $\\mathbf r\\cdot\\mathbf n=\\mathbf a\\cdot\\mathbf n$, or $\\alpha x+\\beta y+\\gamma z=h$ with normal $\\alpha\\mathbf i+\\beta\\mathbf j+\\gamma\\mathbf k$.",
+        "Parallel to a plane means $\\mathbf d\\cdot\\mathbf n=0$; perpendicular to a plane means $\\mathbf d$ is a multiple of $\\mathbf n$.",
+        "To intersect two lines, use two different parameters, solve two component equations, and always test the third.",
+        "Where a line meets a plane: substitute $x$, $y$, $z$ in terms of the parameter into the plane equation and solve for it.",
+        "Angle between two lines uses cosine of the directions; angle between a line and a plane uses sine with the normal. Both use a modulus for the acute angle."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-series-summation",
+  "meta": {
+    "titre": "Series Summation: Standard Sums, Induction and Geometric Series",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Sigma notation, induction and sums to infinity",
+    "duree_estimee_min": 35,
+    "tags": [
+      "series summation"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2025-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2025-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-series-summation-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Bafoussam decides to put a little more money aside each day than the day before. To know the total after a month she could add thirty numbers one by one, but a formula does the job in seconds. Sigma notation and the standard sums are the tools that turn long additions into one line of algebra. At Advanced Level this topic returns almost every year: you are asked to sum a series with the standard results, to prove a given formula by mathematical induction, or to find the sum of a geometric series, sometimes to infinity."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Sigma notation $\\sum_{r=1}^{n}u_r$ means $u_1+u_2+\\dots+u_n$.",
+        "Expanding brackets and factorising quadratic and cubic expressions is routine algebra.",
+        "The $n$th term of a geometric sequence with first term $a$ and common ratio $q$ is $aq^{n-1}$.",
+        "A rule that works for $n=1$ and keeps working from each integer to the next works for all integers from 1 onwards."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Standard sums, mathematical induction and geometric series",
+      "contenu_markdown": "**Sigma notation.** $\\sum_{r=1}^{n} u_r$ means $u_1+u_2+\\dots+u_n$. Sums are linear, $\\sum (a u_r + b v_r) = a\\sum u_r + b\\sum v_r$, and a constant added $n$ times gives $\\sum_{r=1}^{n} c = cn$.\n\n**Standard results** for a positive integer $n$:\n\n$$\n\\sum_{r=1}^{n} r = \\frac{n(n+1)}{2} \\tag{1}\n$$\n\n\n\n$$\n\\sum_{r=1}^{n} r^{2} = \\frac{n(n+1)(2n+1)}{6} \\tag{2}\n$$\n\n\n\n$$\n\\sum_{r=1}^{n} r^{3} = \\frac{n^{2}(n+1)^{2}}{4} \\tag{3}\n$$\n\nTo sum from $r=m$ to $r=n$, subtract: if $S(n)=\\sum_{r=1}^{n}u_r$, then $\\sum_{r=m}^{n}u_r = S(n)-S(m-1)$. The routine is to expand $u_r$ in powers of $r$, split the sum, substitute the standard results and factorise the answer.\n\n**Geometric series** with first term $a$ and common ratio $q$:\n\n$$\nS_n = \\frac{a\\left(1-q^{n}\\right)}{1-q}\\quad (q\\neq 1) \\tag{4}\n$$\n\n\n\n$$\nS_\\infty = \\frac{a}{1-q}\\quad (|q|<1) \\tag{5}\n$$\n\nThe sum to infinity exists only when $|q|<1$. In $\\sum_{r=1}^{\\infty} k\\,q^{r}$ the first term is $kq$, not $k$, so the sum is $\\dfrac{kq}{1-q}$.\n\n**Mathematical induction** proves a statement $P(n)$ for every positive integer $n$ in four moves: (1) show $P(1)$ is true; (2) assume $P(k)$ is true for some integer $k\\ge 1$; (3) show that $P(k+1)$ then follows; (4) conclude that $P(n)$ is true for all positive integers $n$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Proof by induction of a summation formula",
+          "quand_utiliser": "When the question says prove by induction, or show for all positive integers, that a sum equals a given expression in n.",
+          "contenu_markdown": "Let $P(n)$ be the statement $\\sum_{r=1}^{n}u_r = f(n)$.\n\n1. **Basis.** Work out the left side for $n=1$ (it is $u_1$) and the right side $f(1)$, and show they are equal.\n2. **Assumption.** Write down: suppose $\\sum_{r=1}^{k}u_r = f(k)$ for some integer $k\\ge 1$.\n3. **Step.** Since $\\sum_{r=1}^{k+1}u_r = \\sum_{r=1}^{k}u_r + u_{k+1}$, the assumption gives $f(k)+u_{k+1}$. Factorise and show it equals $f(k+1)$, a target you write down first. For example, with $f(n)=\\frac{n(n+1)(n+2)}{3}$ and $u_r = r(r+1)$: $f(k)+u_{k+1} = (k+1)(k+2)\\left(\\frac{k}{3}+1\\right) = \\frac{(k+1)(k+2)(k+3)}{3} = f(k+1)$.\n4. **Conclusion.** $P(1)$ is true, and if $P(k)$ is true then $P(k+1)$ is true, so by mathematical induction $P(n)$ is true for all positive integers $n$."
+        },
+        {
+          "nom": "Infinite geometric series and recurring decimals",
+          "quand_utiliser": "When the question asks for a sum to infinity, or asks you to write a recurring decimal as a fraction.",
+          "contenu_markdown": "First check $|q|<1$: the series with $q=\\frac{1}{3}$ converges, but $\\sum 2^{r}$ does not. Then identify the first term $a$ (the term at the lower limit) and use $S_\\infty = \\frac{a}{1-q}$.\n\nA recurring decimal is a geometric series: $0.363636\\ldots = 0.36 + 0.0036 + \\dots$ has $a=0.36$ and $q=0.01$, so its value is $\\frac{0.36}{0.99}=\\frac{36}{99}=\\frac{4}{11}$."
+        },
+        {
+          "nom": "Method of differences",
+          "quand_utiliser": "When the general term can be split into partial fractions or written as f(r) minus f(r+1), so that most terms cancel.",
+          "contenu_markdown": "If $u_r = f(r)-f(r+1)$, then $\\sum_{r=1}^{n}u_r = f(1)-f(n+1)$, because every middle term cancels. For example $\\frac{1}{r(r+1)} = \\frac{1}{r}-\\frac{1}{r+1}$, so $\\sum_{r=1}^{n}\\frac{1}{r(r+1)} = 1-\\frac{1}{n+1} = \\frac{n}{n+1}$, and the sum to infinity is $1$ because $\\frac{1}{n+1}\\to 0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Find an expression for $\\sum_{r=1}^{n}(r+1)(2r-3)$ in the form $\\dfrac{n\\left(an^{2}+bn+c\\right)}{6}$, and hence evaluate $\\sum_{r=10}^{20}(r+1)(2r-3)$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Expand the general term.",
+          "justification": "Sums are easiest to handle as powers of $r$.",
+          "resultat_markdown": "$(r+1)(2r-3) = 2r^{2}-r-3$."
+        },
+        {
+          "numero": 2,
+          "action": "Split the sum using linearity.",
+          "justification": "Each piece is a standard sum, and the constant term is summed $n$ times.",
+          "resultat_markdown": "$\\sum_{r=1}^{n}(2r^{2}-r-3) = 2\\sum r^{2}-\\sum r-3\\sum 1$."
+        },
+        {
+          "numero": 3,
+          "action": "Substitute the standard results.",
+          "justification": "Use $\\sum r^2=\\frac{n(n+1)(2n+1)}{6}$, $\\sum r=\\frac{n(n+1)}{2}$ and $\\sum 1=n$, and put everything over 6.",
+          "resultat_markdown": "$\\dfrac{n(n+1)(2n+1)}{3}-\\dfrac{n(n+1)}{2}-3n = \\dfrac{n\\left[2(n+1)(2n+1)-3(n+1)-18\\right]}{6}$."
+        },
+        {
+          "numero": 4,
+          "action": "Simplify the bracket.",
+          "justification": "Expand $2(n+1)(2n+1)=4n^{2}+6n+2$ and collect terms; check with $n=1$, where the sum is just the first term $(2)(-1)=-2$.",
+          "resultat_markdown": "Bracket $=4n^{2}+3n-19$, so $S(n)=\\dfrac{n\\left(4n^{2}+3n-19\\right)}{6}$. For $n=1$: $\\dfrac{1\\times(-12)}{6}=-2$, which agrees."
+        },
+        {
+          "numero": 5,
+          "action": "Evaluate from $r=10$ to $r=20$.",
+          "justification": "Subtract the sum of the first 9 terms from the sum of the first 20: $S(20)-S(9)$, not $S(20)-S(10)$.",
+          "resultat_markdown": "$S(20)=\\dfrac{20\\times1641}{6}=5470$ and $S(9)=\\dfrac{9\\times332}{6}=498$, so the sum is $5470-498=4972$."
+        }
+      ],
+      "conclusion_markdown": "$\\sum_{r=1}^{n}(r+1)(2r-3) = \\dfrac{n\\left(4n^{2}+3n-19\\right)}{6}$, so $a=4$, $b=3$, $c=-19$, and $\\sum_{r=10}^{20}(r+1)(2r-3) = 4972$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$\\sum_{r=1}^{n} r^{2} = \\left(\\dfrac{n(n+1)}{2}\\right)^{2}$.",
+          "pourquoi_faux": "The square of a sum is not the sum of the squares. For $n=2$ the sum of squares is $1+4=5$, but the proposed formula gives $3^{2}=9$. The expression given is actually $\\sum r^{3}$.",
+          "correction_markdown": "$\\sum_{r=1}^{n} r^{2} = \\dfrac{n(n+1)(2n+1)}{6}$, which gives $\\dfrac{2\\times3\\times5}{6}=5$ for $n=2$."
+        },
+        {
+          "erreur_markdown": "$\\sum_{r=1}^{5} 4 = 4$.",
+          "pourquoi_faux": "A constant summed from $r=1$ to $r=n$ is added $n$ times, once for each value of $r$. Writing $4$ ignores the five terms.",
+          "correction_markdown": "$\\sum_{r=1}^{5} 4 = 4\\times 5 = 20$, and in general $\\sum_{r=1}^{n} c = cn$."
+        },
+        {
+          "erreur_markdown": "$\\sum_{r=5}^{8} r = S(8)-S(5)$, where $S(n)=\\sum_{r=1}^{n}r$.",
+          "pourquoi_faux": "Subtracting $S(5)$ removes the term $r=5$ as well. The sum from 5 to 8 has the four terms $5+6+7+8=26$, but $S(8)-S(5)=36-15=21$.",
+          "correction_markdown": "Subtract the sum up to the term before the lower limit: $S(8)-S(4)=36-10=26$."
+        },
+        {
+          "erreur_markdown": "$\\sum_{r=1}^{\\infty} 2\\left(\\dfrac{1}{3}\\right)^{r} = \\dfrac{2}{1-\\frac{1}{3}} = 3$.",
+          "pourquoi_faux": "The formula $\\frac{a}{1-q}$ needs the first term. When $r=1$ the term is $\\frac{2}{3}$, not $2$; the value $2$ would be the term at $r=0$.",
+          "correction_markdown": "With $a=\\frac{2}{3}$ and $q=\\frac{1}{3}$: $S_\\infty=\\dfrac{2/3}{2/3}=1$."
+        },
+        {
+          "erreur_markdown": "\"The formula is true for $n=1$, $n=2$ and $n=3$, so it is true for all $n$.\"",
+          "pourquoi_faux": "Checking a few cases is not a proof. The expression $n^{2}+n+41$ is prime for many early values of $n$, yet for $n=40$ it equals $41^{2}$. An induction proof needs the step showing $P(k)\\Rightarrow P(k+1)$.",
+          "correction_markdown": "Prove the basis case, assume $P(k)$, deduce $P(k+1)$, and write the conclusion."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Evaluate $\\sum_{r=1}^{20}(3r-2)$. (b) Find the sum to infinity of $\\sum_{r=1}^{\\infty}5\\left(\\dfrac{2}{3}\\right)^{r}$, and the sum of its first four terms.",
+          "solution_markdown": "(a) $\\sum(3r-2)=3\\sum r-2\\sum 1 = 3\\times\\dfrac{20\\times21}{2}-2\\times20=630-40=$ **590**.\n\n(b) The first term is $a=5\\times\\frac{2}{3}=\\frac{10}{3}$ and $q=\\frac{2}{3}$, with $|q|<1$. So $S_\\infty=\\dfrac{10/3}{1/3}=$ **10**. \nThe first four terms sum to $\\dfrac{10}{3}\\cdot\\dfrac{1-(2/3)^{4}}{1/3}=10\\left(1-\\dfrac{16}{81}\\right)=\\dfrac{650}{81}=$ **$\\dfrac{650}{81}\\approx 8.02$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Show that $\\sum_{r=1}^{n}(2r-1)^{2}=\\dfrac{n(2n-1)(2n+1)}{3}$. (b) Hence find $\\sum_{r=6}^{10}(2r-1)^{2}$.",
+          "solution_markdown": "(a) $(2r-1)^{2}=4r^{2}-4r+1$, so the sum is $4\\cdot\\dfrac{n(n+1)(2n+1)}{6}-4\\cdot\\dfrac{n(n+1)}{2}+n = \\dfrac{n\\left[2(n+1)(2n+1)-6(n+1)+3\\right]}{3}$. The bracket is $4n^{2}+6n+2-6n-6+3=4n^{2}-1=(2n-1)(2n+1)$, so the sum is **$\\dfrac{n(2n-1)(2n+1)}{3}$**.\n\n(b) Use $S(10)-S(5)$: $S(10)=\\dfrac{10\\times19\\times21}{3}=1330$ and $S(5)=\\dfrac{5\\times9\\times11}{3}=165$. The required sum is $1330-165=$ **1165**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Prove by induction that, for all positive integers $n$, $\\sum_{r=1}^{n}r(r+1)(r+2)=\\dfrac{n(n+1)(n+2)(n+3)}{4}$. (b) Hence evaluate $\\sum_{r=10}^{20}r(r+1)(r+2)$.",
+          "solution_markdown": "(a) Let $P(n)$ be the given statement.\n**Basis.** For $n=1$ the left side is $1\\times2\\times3=6$ and the right side is $\\dfrac{1\\times2\\times3\\times4}{4}=6$, so $P(1)$ is true.\n**Assumption.** Suppose $P(k)$ is true for some integer $k\\ge1$: $\\sum_{r=1}^{k}r(r+1)(r+2)=\\dfrac{k(k+1)(k+2)(k+3)}{4}$.\n**Step.** Add the next term: $\\sum_{r=1}^{k+1}r(r+1)(r+2)=\\dfrac{k(k+1)(k+2)(k+3)}{4}+(k+1)(k+2)(k+3) = (k+1)(k+2)(k+3)\\left(\\dfrac{k}{4}+1\\right)=\\dfrac{(k+1)(k+2)(k+3)(k+4)}{4}$, which is the formula with $n=k+1$, so $P(k+1)$ is true.\n**Conclusion.** $P(1)$ is true and $P(k)\\Rightarrow P(k+1)$, so $P(n)$ is true for all positive integers $n$.\n\n(b) Let $S(n)=\\dfrac{n(n+1)(n+2)(n+3)}{4}$. Then $S(20)=\\dfrac{20\\times21\\times22\\times23}{4}=53130$ and $S(9)=\\dfrac{9\\times10\\times11\\times12}{4}=2970$, so the sum is $53130-2970=$ **50160**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Use $\\sum r=\\frac{n(n+1)}{2}$, $\\sum r^{2}=\\frac{n(n+1)(2n+1)}{6}$, $\\sum r^{3}=\\frac{n^{2}(n+1)^{2}}{4}$ and $\\sum_{r=1}^{n}c=cn$; expand the general term first and factorise the answer.",
+        "A sum from $r=m$ to $n$ equals $S(n)-S(m-1)$, so the subtracted sum stops one term before the lower limit.",
+        "Induction has four parts: basis $P(1)$, assumption $P(k)$, step $P(k)\\Rightarrow P(k+1)$ (add the term $u_{k+1}$), and a written conclusion.",
+        "Geometric series: $S_n=\\frac{a(1-q^{n})}{1-q}$, and $S_\\infty=\\frac{a}{1-q}$ only when $|q|<1$, with $a$ the first term of the series as written.",
+        "For a sum of fractions try partial fractions: the method of differences makes most terms cancel."
+      ]
+    }
+  ]
+}

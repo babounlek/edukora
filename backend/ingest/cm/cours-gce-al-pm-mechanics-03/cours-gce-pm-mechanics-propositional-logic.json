@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-propositional-logic",
+  "meta": {
+    "titre": "Propositional Logic: implication, contrapositive and truth tables",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Logic and truth tables",
+    "duree_estimee_min": 30,
+    "tags": [
+      "propositional logic"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-propositional-logic-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A teacher in Bamenda tells her class: \"If you finish the past papers, you will pass.\" A student who did not finish the papers and still passed has not made the teacher a liar, yet many candidates think the promise was broken. Everyday speech hides the exact meaning of words such as \"if\", \"or\" and \"not\", and a mistake here costs marks. Propositional logic gives each of these words one precise meaning that can be tested in a truth table. At Advanced Level the paper asks you to build truth tables, to write the contrapositive of an implication, and to translate symbols into ordinary English."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A statement is a sentence that is definitely true or definitely false, but not both.",
+        "The words \"and\", \"or\" and \"not\" are used to join or change statements.",
+        "A table with 2 columns of letters can list every combination of two choices, such as heads or tails for two coins."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Connectives, implication, contrapositive and truth tables",
+      "contenu_markdown": "### Statements and connectives\nA statement is a sentence that is either true (T) or false (F). If $p$ and $q$ are statements, the connectives are: negation $\\sim p$ (\"not $p$\"), conjunction $p\\wedge q$ (\"$p$ and $q$\"), disjunction $p\\vee q$ (\"$p$ or $q$\", where \"or\" is inclusive: at least one is true), implication $p\\Rightarrow q$ (\"if $p$ then $q$\") and the biconditional $p\\Leftrightarrow q$ (\"$p$ if and only if $q$\"), which is true when $p$ and $q$ have the same truth value.\n\n| $p$ | $q$ | $\\sim p$ | $p\\wedge q$ | $p\\vee q$ | $p\\Rightarrow q$ | $p\\Leftrightarrow q$ |\n|---|---|---|---|---|---|---|\n| T | T | F | T | T | T | T |\n| T | F | F | F | T | F | F |\n| F | T | T | F | T | T | F |\n| F | F | T | F | F | T | T |\n\nThe implication is false in only one case: $p$ true and $q$ false. When $p$ is false the implication is true whatever $q$ is. In $p\\Rightarrow q$, $p$ is the hypothesis and $q$ the conclusion.\n\n### Converse, inverse and contrapositive\nFrom $p\\Rightarrow q$ we form three related statements:\n\n| $p$ | $q$ | $p\\Rightarrow q$ | $q\\Rightarrow p$ | $\\sim p\\Rightarrow\\sim q$ | $\\sim q\\Rightarrow\\sim p$ |\n|---|---|---|---|---|---|\n| T | T | T | T | T | T |\n| T | F | F | T | T | F |\n| F | T | T | F | F | T |\n| F | F | T | T | T | T |\n\nColumns 3 and 6 are identical, so the contrapositive $\\sim q\\Rightarrow\\sim p$ is equivalent to the original implication. The converse and the inverse are not equivalent to it (they are equivalent to each other). An implication can also be rewritten as $\\sim p\\vee q$.\n\n### Negations (De Morgan's laws)\n$$\n\\sim(p\\wedge q)\\equiv(\\sim p)\\vee(\\sim q),\\qquad \\sim(p\\vee q)\\equiv(\\sim p)\\wedge(\\sim q) \\tag{1}\n$$\n\n$$\n\\sim(p\\Rightarrow q)\\equiv p\\wedge(\\sim q) \\tag{2}\n$$\n\n### Truth tables\nWith $n$ statements the table has $2^n$ rows, listed systematically (for two statements: TT, TF, FT, FF). Add one column for every sub-expression, working from the innermost brackets outwards, and put the required compound statement in the last column. A compound statement that is true in every row is a tautology, one that is false in every row is a contradiction, and two statements are equivalent when their final columns are identical.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Translating between symbols and English",
+          "quand_utiliser": "When a question defines statements $p$ and $q$ in words and asks for a compound statement in ordinary English, or the reverse.",
+          "contenu_markdown": "Let $p$: \"The market is open\" and $q$: \"Mary buys rice\". Then $p\\Rightarrow q$ reads \"If the market is open, then Mary buys rice\"; $p\\wedge q$ reads \"The market is open and Mary buys rice\"; $\\sim p\\vee q$ reads \"The market is not open or Mary buys rice\". To write $\\sim q$, negate the verb: \"Mary does not buy rice\". Always keep the order of the symbols and write complete sentences in the same tense as the given statements."
+        },
+        {
+          "nom": "Showing equivalence or a tautology",
+          "quand_utiliser": "When asked to prove that two statements mean the same, or that a statement is always true.",
+          "contenu_markdown": "Build one table containing both compound statements and compare the two final columns row by row. Identical columns prove equivalence; a final column of T only proves a tautology. State your conclusion in a sentence, for example \"The final columns are identical, so the two statements are equivalent.\""
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Two statements are defined as $p$: \"Mary studies hard\" and $q$: \"Mary passes the examination\".\n\n(a) Write, in words, the statement $p\\Rightarrow q$ and its contrapositive.\n\n(b) Construct a truth table for $r=(p\\Rightarrow q)\\wedge(\\sim q)$ and state a simpler statement that is equivalent to $r$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Translate and form the contrapositive (part (a)).",
+          "justification": "The contrapositive of $p\\Rightarrow q$ is $\\sim q\\Rightarrow\\sim p$: negate both statements and reverse them.",
+          "resultat_markdown": "$p\\Rightarrow q$: \"If Mary studies hard, then she passes the examination.\"\n\n$\\sim q\\Rightarrow\\sim p$: \"If Mary does not pass the examination, then she did not study hard.\""
+        },
+        {
+          "numero": 2,
+          "action": "List every combination of truth values.",
+          "justification": "There are two statements, so the table needs $2^2=4$ rows, written TT, TF, FT, FF.",
+          "resultat_markdown": "The rows are TT, TF, FT, FF, as in the first two columns of the table in the next step."
+        },
+        {
+          "numero": 3,
+          "action": "Evaluate the two sub-expressions.",
+          "justification": "$p\\Rightarrow q$ is false only in the row where $p$ is T and $q$ is F, and $\\sim q$ swaps T and F in the $q$ column.",
+          "resultat_markdown": "| $p$ | $q$ | $p\\Rightarrow q$ | $\\sim q$ | $r=(p\\Rightarrow q)\\wedge(\\sim q)$ |\n|---|---|---|---|---|\n| T | T | T | F | F |\n| T | F | F | T | F |\n| F | T | T | F | F |\n| F | F | T | T | T |"
+        },
+        {
+          "numero": 4,
+          "action": "Combine with $\\wedge$.",
+          "justification": "A conjunction is true only when both parts are true. Both are true only in the last row ($p$ false, $q$ false), where $p\\Rightarrow q$ is T and $\\sim q$ is T.",
+          "resultat_markdown": "The last column of the table gives F, F, F, T."
+        },
+        {
+          "numero": 5,
+          "action": "Find an equivalent simpler statement.",
+          "justification": "A statement that is true only when $p$ is false and $q$ is false is $\\sim p\\wedge\\sim q$. Compare its column with that of $r$.",
+          "resultat_markdown": "| $p$ | $q$ | $r$ | $\\sim p\\wedge\\sim q$ |\n|---|---|---|---|\n| T | T | F | F |\n| T | F | F | F |\n| F | T | F | F |\n| F | F | T | T |"
+        }
+      ],
+      "conclusion_markdown": "The final columns of $r$ and $\\sim p\\wedge\\sim q$ are identical, so $(p\\Rightarrow q)\\wedge(\\sim q)\\equiv\\sim p\\wedge\\sim q$. In words: $r$ is true exactly when Mary did not study hard and did not pass."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"$p\\Rightarrow q$ is false when $p$ is false, because the condition did not happen.\"",
+          "pourquoi_faux": "The implication is false only when $p$ is true and $q$ is false. When $p$ is false, nothing has been broken, so $p\\Rightarrow q$ is true whatever $q$ is.",
+          "correction_markdown": "In the table, rows 3 and 4 (where $p$ is F) give T for $p\\Rightarrow q$."
+        },
+        {
+          "erreur_markdown": "Giving $q\\Rightarrow p$ as the contrapositive of $p\\Rightarrow q$.",
+          "pourquoi_faux": "$q\\Rightarrow p$ is the converse, which is not equivalent to the original (it differs in the row where $p$ is F and $q$ is T). The contrapositive negates both statements and reverses them.",
+          "correction_markdown": "The contrapositive is $\\sim q\\Rightarrow\\sim p$."
+        },
+        {
+          "erreur_markdown": "Writing $\\sim(p\\wedge q)$ as $\\sim p\\wedge\\sim q$.",
+          "pourquoi_faux": "This is not De Morgan's law: for $p$ true and $q$ false, $\\sim(p\\wedge q)$ is T but $\\sim p\\wedge\\sim q$ is F. The connective must change when the negation passes through the brackets.",
+          "correction_markdown": "$\\sim(p\\wedge q)\\equiv\\sim p\\vee\\sim q$ and $\\sim(p\\vee q)\\equiv\\sim p\\wedge\\sim q$."
+        },
+        {
+          "erreur_markdown": "Treating $p\\vee q$ as \"either $p$ or $q$ but not both\", so entering F in the TT row.",
+          "pourquoi_faux": "In logic, $\\vee$ is inclusive: $p\\vee q$ is true when at least one of $p$, $q$ is true, including when both are.",
+          "correction_markdown": "Enter T in the TT row for $p\\vee q$; it is false only in the FF row."
+        },
+        {
+          "erreur_markdown": "Drawing a table for two statements with only three rows (TT, TF, FF).",
+          "pourquoi_faux": "Two statements have $2^2=4$ combinations, and the missing row (FT) may be exactly the one that decides whether two statements are equivalent.",
+          "correction_markdown": "List all four rows: TT, TF, FT, FF; for three statements use $2^3=8$ rows."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Let $p$: \"A shape is a square\" and $q$: \"The shape has four sides\". Write in words the converse, the inverse and the contrapositive of $p\\Rightarrow q$, and say which of them are equivalent to $p\\Rightarrow q$.",
+          "solution_markdown": "$p\\Rightarrow q$: \"If a shape is a square, then it has four sides.\"\n\nConverse $q\\Rightarrow p$: \"If a shape has four sides, then it is a square.\"\n\nInverse $\\sim p\\Rightarrow\\sim q$: \"If a shape is not a square, then it does not have four sides.\"\n\nContrapositive $\\sim q\\Rightarrow\\sim p$: \"If a shape does not have four sides, then it is not a square.\"\n\nOnly the **contrapositive** is equivalent to $p\\Rightarrow q$. The converse and the inverse are both false for this pair of statements: a rectangle that is not a square has four sides."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Construct a truth table for $(p\\vee q)\\wedge\\sim(p\\wedge q)$ and describe in words when this statement is true.",
+          "solution_markdown": "| $p$ | $q$ | $p\\vee q$ | $p\\wedge q$ | $\\sim(p\\wedge q)$ | $(p\\vee q)\\wedge\\sim(p\\wedge q)$ |\n|---|---|---|---|---|---|\n| T | T | T | T | F | F |\n| T | F | T | F | T | T |\n| F | T | T | F | T | T |\n| F | F | F | F | T | F |\n\nThe final column is F, T, T, F. So the statement is true when **exactly one of $p$ and $q$ is true** (this is the exclusive \"or\"), and false when both are true or both are false."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Use a truth table to show that $\\sim(p\\Rightarrow q)$ is equivalent to $p\\wedge\\sim q$.\n\n(b) Hence write the negation of \"If a student attends every lesson, then the student passes\" in ordinary English.\n\n(c) Determine whether $(p\\Rightarrow q)\\vee(q\\Rightarrow p)$ is a tautology.",
+          "solution_markdown": "(a)\n\n| $p$ | $q$ | $p\\Rightarrow q$ | $\\sim(p\\Rightarrow q)$ | $\\sim q$ | $p\\wedge\\sim q$ |\n|---|---|---|---|---|---|\n| T | T | T | F | F | F |\n| T | F | F | T | T | T |\n| F | T | T | F | F | F |\n| F | F | T | F | T | F |\n\nThe columns for $\\sim(p\\Rightarrow q)$ and $p\\wedge\\sim q$ are identical (F, T, F, F), so they are equivalent.\n\n(b) With $p$: \"A student attends every lesson\" and $q$: \"The student passes\", the negation is $p\\wedge\\sim q$: **\"A student attends every lesson and does not pass.\"**\n\n(c)\n\n| $p$ | $q$ | $p\\Rightarrow q$ | $q\\Rightarrow p$ | $(p\\Rightarrow q)\\vee(q\\Rightarrow p)$ |\n|---|---|---|---|---|\n| T | T | T | T | T |\n| T | F | F | T | T |\n| F | T | T | F | T |\n| F | F | T | T | T |\n\nThe final column is T, T, T, T, so the statement **is a tautology**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$p\\Rightarrow q$ is false only when $p$ is true and $q$ is false; $p\\vee q$ is inclusive and is false only when both are false.",
+        "The contrapositive $\\sim q\\Rightarrow\\sim p$ is equivalent to $p\\Rightarrow q$; the converse $q\\Rightarrow p$ and the inverse $\\sim p\\Rightarrow\\sim q$ are not (but are equivalent to each other).",
+        "De Morgan: $\\sim(p\\wedge q)\\equiv\\sim p\\vee\\sim q$, $\\sim(p\\vee q)\\equiv\\sim p\\wedge\\sim q$, and $\\sim(p\\Rightarrow q)\\equiv p\\wedge\\sim q$.",
+        "A truth table has $2^n$ rows; work from the inner brackets outwards, one column per sub-expression, final statement last.",
+        "Equivalent statements have identical final columns; a tautology has only T in its final column."
+      ]
+    }
+  ]
+}

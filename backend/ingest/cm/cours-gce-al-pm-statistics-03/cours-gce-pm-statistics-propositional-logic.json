@@ -1,0 +1,163 @@
+{
+ "cours_id": "cours-gce-pm-statistics-propositional-logic",
+ "meta": {
+  "titre": "Logic of Statements: connectives, truth tables and the contrapositive",
+  "matiere": "Pure Mathematics with Statistics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Connectives, implication and truth tables",
+  "duree_estimee_min": 30,
+  "tags": [
+   "propositional logic"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-statistics-propositional-logic-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A phone shop in Buea puts up a notice saying that anyone who buys a phone today receives a free case. One customer buys a phone and is handed no case. Another customer buys nothing and is given a case anyway. The shop broke its promise to the first customer only: the second customer did not meet the condition, so nothing was promised to him. Logic turns this everyday judgement into rules that always give the same answer. At Advanced Level you must apply those rules to build truth tables, to write the contrapositive of a statement, and to translate between symbols and ordinary English."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A statement is a sentence that is true or false but not both, for example \"12 is divisible by 3\". A question or an instruction is not a statement.",
+    "Two statements give four combinations of truth values and three statements give eight.",
+    "In mathematics \"or\" is inclusive: $p$ or $q$ is true when at least one of them is true."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Connectives, implication, contrapositive and truth tables",
+   "contenu_markdown": "### The connectives\n\n| Symbol | Name | Read as | True when |\n|---|---|---|---|\n| $\\sim p$ | negation | not $p$ | $p$ is false |\n| $p\\wedge q$ | conjunction | $p$ and $q$ | both are true |\n| $p\\vee q$ | disjunction | $p$ or $q$ (or both) | at least one is true |\n| $p\\Rightarrow q$ | implication | if $p$ then $q$ | not ($p$ true and $q$ false) |\n| $p\\Leftrightarrow q$ | equivalence | $p$ if and only if $q$ | $p$ and $q$ have the same truth value |\n\nThe implication is the one students get wrong. It is false in exactly one row, where $p$ is true and $q$ is false, just as the shop's promise is broken only when the phone is bought and the case is not given.\n\n| $p$ | $q$ | $p\\Rightarrow q$ |\n|---|---|---|\n| T | T | T |\n| T | F | F |\n| F | T | T |\n| F | F | T |\n\n### Converse, inverse and contrapositive\nFor $p\\Rightarrow q$: the **converse** is $q\\Rightarrow p$, the **inverse** is $\\sim p\\Rightarrow\\sim q$, and the **contrapositive** is $\\sim q\\Rightarrow\\sim p$. The contrapositive always has the same truth value as the original statement. The converse and the inverse have the same truth value as each other, but not necessarily the same as the original.\n\n### Equivalences to know\n$$\np\\Rightarrow q\\ \\equiv\\ \\sim p\\vee q\\ \\equiv\\ \\sim q\\Rightarrow\\sim p \\tag{1}\n$$\n\nDe Morgan's laws: $\\sim(p\\wedge q)\\equiv\\sim p\\vee\\sim q$ and $\\sim(p\\vee q)\\equiv\\sim p\\wedge\\sim q$. Also $\\sim(p\\Rightarrow q)\\equiv p\\wedge\\sim q$. A **tautology** is true in every row; a **contradiction** is false in every row. Two statements are **equivalent** when their final columns are identical.\n\n### Building a truth table\nWith $n$ simple statements use $2^n$ rows, listed in the order TT, TF, FT, FF for two. Give one column to each part of the compound statement, working from the inside: brackets first, then negations, then the main connective last. Check every row; one copying slip gives a wrong conclusion.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Translating between symbols and English",
+     "quand_utiliser": "When a question gives $p$ and $q$ as sentences and asks for a compound statement in words, or the reverse.",
+     "contenu_markdown": "Write $p\\Rightarrow q$ as \"If $p$, then $q$\", $p\\wedge q$ as \"$p$ and $q$\" and $\\sim p\\vee\\sim q$ as \"either not $p$ or not $q$ (or both)\". Keep the tense and the subject of the original sentences, and make each \"not\" attach to the right verb. A negation is never produced by simply inserting \"not\" without checking the meaning."
+    },
+    {
+     "nom": "Tautologies and equivalences with three statements",
+     "quand_utiliser": "When a statement involves $p$, $q$ and $r$.",
+     "contenu_markdown": "Use eight rows. Build a column for each sub-statement, then the full statement. If the last column is T in all eight rows the statement is a tautology. To test equivalence of two statements, build both final columns and compare them row by row."
+    },
+    {
+     "nom": "Writing the negation of a statement",
+     "quand_utiliser": "When asked to \"write the negation\" or \"the opposite\" in words.",
+     "contenu_markdown": "Use De Morgan's laws for \"and\" and \"or\". The negation of \"if $p$ then $q$\" is \"$p$ and not $q$\", never another implication. For \"all\" and \"some\" statements, the negation of \"all $A$ are $B$\" is \"some $A$ is not $B$\"."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Construct the truth table for $m=(\\sim p\\vee q)\\wedge(p\\vee q)$ and state a simpler statement that is equivalent to $m$.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Decide the number of rows and list them.",
+     "justification": "There are two simple statements, so $2^2=4$ rows are needed. Listing them in a fixed order avoids missing or repeating a row.",
+     "resultat_markdown": "$(p,q)$: TT, TF, FT, FF"
+    },
+    {
+     "numero": 2,
+     "action": "Evaluate $\\sim p$ and then the bracket $\\sim p\\vee q$.",
+     "justification": "Negations are done first. A disjunction is false only when both parts are false.",
+     "resultat_markdown": "$\\sim p$: F, F, T, T and $\\sim p\\vee q$: T, F, T, T"
+    },
+    {
+     "numero": 3,
+     "action": "Evaluate the second bracket $p\\vee q$.",
+     "justification": "It is false only when $p$ and $q$ are both false.",
+     "resultat_markdown": "$p\\vee q$: T, T, T, F"
+    },
+    {
+     "numero": 4,
+     "action": "Combine the two brackets with $\\wedge$.",
+     "justification": "A conjunction is true only when both brackets are true in the same row. Writing all the columns together gives the full table.",
+     "resultat_markdown": "| $p$ | $q$ | $\\sim p$ | $\\sim p\\vee q$ | $p\\vee q$ | $m$ |\n|---|---|---|---|---|---|\n| T | T | F | T | T | T |\n| T | F | F | F | T | F |\n| F | T | T | T | T | T |\n| F | F | T | T | F | F |"
+    },
+    {
+     "numero": 5,
+     "action": "Compare the final column with the columns of $p$ and $q$.",
+     "justification": "Equivalent statements have identical columns. The column of $m$ reads T, F, T, F, which is the column of $q$.",
+     "resultat_markdown": "$m\\equiv q$"
+    }
+   ],
+   "conclusion_markdown": "The final column of $m$ is T, F, T, F, the same as the column of $q$. Hence $m$ is equivalent to **$q$**: whatever the truth value of $p$, the statement $m$ is true exactly when $q$ is true."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Saying that $p\\Rightarrow q$ is false when $p$ is false.",
+     "pourquoi_faux": "An implication is only broken when the condition holds and the conclusion fails. If $p$ is false, nothing has been promised.",
+     "correction_markdown": "When $p$ is false, $p\\Rightarrow q$ is true whatever the value of $q$."
+    },
+    {
+     "erreur_markdown": "Giving \"If a number is not even, then it is not divisible by 4\" as the **converse** of \"If a number is divisible by 4, then it is even\".",
+     "pourquoi_faux": "The converse swaps the two parts without negating them. Swapping and negating both parts gives the contrapositive.",
+     "correction_markdown": "Converse: \"If a number is even, then it is divisible by 4\". The statement in the error is the contrapositive."
+    },
+    {
+     "erreur_markdown": "Writing the negation of $p\\Rightarrow q$ as $p\\Rightarrow\\sim q$.",
+     "pourquoi_faux": "When $p$ is false, both $p\\Rightarrow q$ and $p\\Rightarrow\\sim q$ are true, so they cannot be negations of each other.",
+     "correction_markdown": "$\\sim(p\\Rightarrow q)\\equiv p\\wedge\\sim q$."
+    },
+    {
+     "erreur_markdown": "Writing $\\sim(p\\wedge q)$ as $\\sim p\\wedge\\sim q$.",
+     "pourquoi_faux": "With $p$ true and $q$ false, $p\\wedge q$ is false so its negation is true, but $\\sim p\\wedge\\sim q$ is false.",
+     "correction_markdown": "De Morgan: $\\sim(p\\wedge q)\\equiv\\sim p\\vee\\sim q$."
+    },
+    {
+     "erreur_markdown": "Using only four rows for a truth table that involves three statements $p,q,r$.",
+     "pourquoi_faux": "Three statements give $2^3=8$ combinations. With four rows some combinations are never tested and a false statement can look like a tautology.",
+     "correction_markdown": "List all eight rows: TTT, TTF, TFT, TFF, FTT, FTF, FFT, FFF."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Let $p$ be \"The market is open\" and $q$ be \"Mary buys tomatoes\". Write each of the following in ordinary English: (a) $p\\Rightarrow q$ (b) $\\sim p\\wedge q$ (c) $\\sim(p\\vee q)$.",
+     "solution_markdown": "(a) If the market is open, then Mary buys tomatoes.\n\n(b) The market is not open and Mary buys tomatoes.\n\n(c) It is not the case that the market is open or Mary buys tomatoes; equivalently, the market is not open and Mary does not buy tomatoes (De Morgan).\n\nAward a mark for each correct sentence; the second form in (c) is also acceptable."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Consider the statement S: \"If a whole number is divisible by 4, then it is even\". (a) Write the converse, the inverse and the contrapositive of S. (b) State whether S and each of these three statements is true or false, giving a counterexample where one is false.",
+     "solution_markdown": "(a) Converse: If a whole number is even, then it is divisible by 4.\nInverse: If a whole number is not divisible by 4, then it is not even.\nContrapositive: If a whole number is not even, then it is not divisible by 4.\n\n(b) S is **true**, since every multiple of 4 is a multiple of 2. The contrapositive is **true**, because it is equivalent to S. The converse is **false**: 6 is even but not divisible by 4. The inverse is **false** for the same number: 6 is not divisible by 4, yet it is even."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "(a) Let $A$ denote $(p\\Rightarrow q)\\wedge(q\\Rightarrow r)$. Construct a truth table to show that $A\\Rightarrow(p\\Rightarrow r)$ is a tautology. (b) Write down, in words, the negation of: \"If Amina revises, then she passes\".",
+     "solution_markdown": "(a) Eight rows are needed:\n\n| $p$ | $q$ | $r$ | $p\\Rightarrow q$ | $q\\Rightarrow r$ | $A$ | $p\\Rightarrow r$ | $A\\Rightarrow(p\\Rightarrow r)$ |\n|---|---|---|---|---|---|---|---|\n| T | T | T | T | T | T | T | T |\n| T | T | F | T | F | F | F | T |\n| T | F | T | F | T | F | T | T |\n| T | F | F | F | T | F | F | T |\n| F | T | T | T | T | T | T | T |\n| F | T | F | T | F | F | T | T |\n| F | F | T | T | T | T | T | T |\n| F | F | F | T | T | T | T | T |\n\nThe final column is T in all eight rows, so the statement is a **tautology**.\n\n(b) The negation of $p\\Rightarrow q$ is $p\\wedge\\sim q$: **Amina revises and she does not pass.**"
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "The implication $p\\Rightarrow q$ is false in exactly one row: $p$ true and $q$ false. It is true whenever $p$ is false.",
+    "The contrapositive $\\sim q\\Rightarrow\\sim p$ is equivalent to $p\\Rightarrow q$; the converse $q\\Rightarrow p$ and the inverse $\\sim p\\Rightarrow\\sim q$ are not.",
+    "De Morgan: $\\sim(p\\wedge q)\\equiv\\sim p\\vee\\sim q$, $\\sim(p\\vee q)\\equiv\\sim p\\wedge\\sim q$, and $\\sim(p\\Rightarrow q)\\equiv p\\wedge\\sim q$.",
+    "A truth table needs $2^n$ rows and one column per sub-statement, built from the inside out; a tautology gives T in every row.",
+    "When translating, keep the original sentences and place each \"not\" with care; \"if $p$ then $q$\" is the standard reading of $p\\Rightarrow q$."
+   ]
+  }
+ ]
+}

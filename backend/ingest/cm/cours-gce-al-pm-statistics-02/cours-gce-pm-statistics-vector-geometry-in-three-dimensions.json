@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-statistics-vector-geometry-in-three-dimensions",
+  "meta": {
+    "titre": "Vector Geometry in Three Dimensions: lines, intersections and planes",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Lines, intersections and angles in space",
+    "duree_estimee_min": 40,
+    "tags": [
+      "vector geometry in three dimensions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-vector-geometry-in-three-dimensions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A drone flying in a straight line is fully described by where it starts and which way it is heading. Two such paths may cross, run side by side, or simply pass one above the other without ever meeting, which is only possible in three dimensions. A surveyor setting out two straight pipes in Buea would ask exactly this question before digging. Vector equations answer it exactly, and at A Level it returns regularly, usually as 'find the values of the two parameters for which the lines intersect' in Paper 2."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The vector from $A$ to $B$ is $\\mathbf{b}-\\mathbf{a}$, and the point with position vector $x\\mathbf{i}+y\\mathbf{j}+z\\mathbf{k}$ has coordinates $(x,y,z)$.",
+        "Two vectors are parallel when one is a scalar multiple of the other.",
+        "Three linear equations in two unknowns are solved by using two of them and testing the third.",
+        "The scalar product $\\mathbf{a}\\cdot\\mathbf{b}=|\\mathbf{a}||\\mathbf{b}|\\cos\\theta$ and the vector product $\\mathbf{a}\\times\\mathbf{b}$, which is perpendicular to both $\\mathbf{a}$ and $\\mathbf{b}$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Vector equations of lines, intersections and planes",
+      "contenu_markdown": "### The line\nA line through the point with position vector $\\mathbf{a}$ and with direction $\\mathbf{d}$ has the vector equation\n\n$$\n\\mathbf{r}=\\mathbf{a}+\\lambda\\mathbf{d} \\tag{1}\n$$\n\nwhere the parameter $\\lambda$ takes every real value and each value gives one point. The line through two points $A$ and $B$ has direction $\\mathbf{d}=\\mathbf{b}-\\mathbf{a}$ (not $\\mathbf{a}+\\mathbf{b}$), so $\\mathbf{r}=\\mathbf{a}+\\lambda(\\mathbf{b}-\\mathbf{a})$. Eliminating $\\lambda$ gives the Cartesian form $\\dfrac{x-a_1}{d_1}=\\dfrac{y-a_2}{d_2}=\\dfrac{z-a_3}{d_3}$. One line has many equations: any point of the line may be used, and $\\mathbf{d}$ may be replaced by any non-zero multiple.\n\n### Relationship between two lines\nTake $L_1:\\ \\mathbf{r}=\\mathbf{a}_1+\\lambda\\mathbf{d}_1$ and $L_2:\\ \\mathbf{r}=\\mathbf{a}_2+\\mu\\mathbf{d}_2$, with **different letters** for the two parameters.\n\n1. If $\\mathbf{d}_1$ is a multiple of $\\mathbf{d}_2$, the lines are **parallel**. They are the same line if one point of $L_1$ lies on $L_2$, and distinct otherwise.\n2. If not, equate the $\\mathbf{i}$, $\\mathbf{j}$ and $\\mathbf{k}$ components. This gives three equations in $\\lambda$ and $\\mu$. Solve two of them, then **test the third**. If it is satisfied, the lines **intersect**, and substituting $\\lambda$ into $L_1$ gives the position vector of the point. If it fails, the lines are **skew**: not parallel and never meeting.\n\n### Angle between two lines\nThe angle between two lines is the angle between their direction vectors; position vectors play no part. For the acute angle,\n\n$$\\cos\\theta=\\frac{|\\mathbf{d}_1\\cdot\\mathbf{d}_2|}{|\\mathbf{d}_1||\\mathbf{d}_2|}.$$\n\nLines with $\\mathbf{d}_1\\cdot\\mathbf{d}_2=0$ are perpendicular, whether or not they meet.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Is a given point on the line?",
+          "quand_utiliser": "To test membership of a line, or to find a missing coordinate.",
+          "contenu_markdown": "Position vectors are written here as ordered triples, so $(1,0,4)$ means $\\mathbf{i}+4\\mathbf{k}$. Take the line $\\mathbf{r}=(1,0,4)+\\lambda(2,1,-1)$. For the point $(5,2,2)$ the first coordinate gives $1+2\\lambda=5$, so $\\lambda=2$. Then the second coordinate is $0+2=2$ and the third is $4-2=2$, both correct, so the point is on the line. For $(5,2,3)$ the same $\\lambda=2$ gives third coordinate $2\\ne3$, so the point is not on the line. One parameter value must fit all three coordinates."
+        },
+        {
+          "nom": "Line and plane",
+          "quand_utiliser": "When a plane is given as $ax+by+cz=d$ or $\\mathbf{r}\\cdot\\mathbf{n}=p$.",
+          "contenu_markdown": "A plane with normal $\\mathbf{n}=(a,b,c)$ through the point with position vector $\\mathbf{a}_0$ has equation $\\mathbf{r}\\cdot\\mathbf{n}=\\mathbf{a}_0\\cdot\\mathbf{n}$, that is $ax+by+cz=d$ with $d=\\mathbf{a}_0\\cdot\\mathbf{n}$. For example, the plane through $(1,0,0)$ with normal $(2,1,-1)$ is $2x+y-z=2$. If two vectors lie in the plane, their cross product is a normal. To find where a line meets the plane, put the line's coordinates, written with the parameter, into the Cartesian equation, solve for the parameter and substitute back. If $\\mathbf{d}\\cdot\\mathbf{n}=0$ the line is parallel to the plane. The angle $\\varphi$ between the line and the plane satisfies $\\sin\\varphi=\\dfrac{|\\mathbf{d}\\cdot\\mathbf{n}|}{|\\mathbf{d}||\\mathbf{n}|}$, because the direction makes an angle of $90^\\circ-\\varphi$ with the normal."
+        },
+        {
+          "nom": "Perpendicular directions",
+          "quand_utiliser": "When asked whether lines are perpendicular, or for a direction perpendicular to two lines.",
+          "contenu_markdown": "Lines are perpendicular when $\\mathbf{d}_1\\cdot\\mathbf{d}_2=0$. Example: $\\mathbf{d}_1=(2,1,-1)$ and $\\mathbf{d}_2=(1,-1,1)$ give $2-1-1=0$, so the lines are perpendicular. A direction perpendicular to both is $\\mathbf{d}_1\\times\\mathbf{d}_2=(0,-3,-3)$, or equally $(0,1,1)$: check $(0,1,1)\\cdot\\mathbf{d}_1=0+1-1=0$ and $(0,1,1)\\cdot\\mathbf{d}_2=0-1+1=0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Two lines have vector equations\n$$L_1:\\ \\mathbf{r}=\\mathbf{i}+2\\mathbf{k}+\\lambda(\\mathbf{i}+\\mathbf{j}-\\mathbf{k}),\\qquad L_2:\\ \\mathbf{r}=2\\mathbf{i}+3\\mathbf{j}-2\\mathbf{k}+\\mu(\\mathbf{i}-\\mathbf{j}+2\\mathbf{k}).$$\n(a) Show that the lines intersect and find the position vector of the point of intersection.\n\n(b) Find the acute angle between the lines, to one decimal place.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write each line in components, with its own parameter.",
+          "justification": "The parameters $\\lambda$ and $\\mu$ are independent, so they need different letters.",
+          "resultat_markdown": "$L_1$: $(1+\\lambda,\\ \\lambda,\\ 2-\\lambda)$. $L_2$: $(2+\\mu,\\ 3-\\mu,\\ -2+2\\mu)$."
+        },
+        {
+          "numero": 2,
+          "action": "Equate the three components.",
+          "justification": "At a common point the $\\mathbf{i}$, $\\mathbf{j}$ and $\\mathbf{k}$ coordinates must be equal.",
+          "resultat_markdown": "$\\mathbf{i}$: $1+\\lambda=2+\\mu$ (1). $\\mathbf{j}$: $\\lambda=3-\\mu$ (2). $\\mathbf{k}$: $2-\\lambda=-2+2\\mu$ (3)."
+        },
+        {
+          "numero": 3,
+          "action": "Solve two equations, then test the third.",
+          "justification": "Two equations fix $\\lambda$ and $\\mu$; the third decides between intersecting and skew.",
+          "resultat_markdown": "From (1), $\\lambda=1+\\mu$. In (2): $1+\\mu=3-\\mu$, so $\\mu=1$ and $\\lambda=2$. In (3): left side $2-2=0$ and right side $-2+2=0$. They agree, so the lines intersect."
+        },
+        {
+          "numero": 4,
+          "action": "Find the position vector of the point.",
+          "justification": "Substitute $\\lambda=2$ into $L_1$, and check with $\\mu=1$ in $L_2$.",
+          "resultat_markdown": "$L_1$ gives $(3,2,0)$ and $L_2$ gives $(2+1,\\ 3-1,\\ -2+2)=(3,2,0)$. The point is $3\\mathbf{i}+2\\mathbf{j}$."
+        },
+        {
+          "numero": 5,
+          "action": "Find the angle between the direction vectors.",
+          "justification": "Use $\\cos\\theta=\\dfrac{|\\mathbf{d}_1\\cdot\\mathbf{d}_2|}{|\\mathbf{d}_1||\\mathbf{d}_2|}$ with $\\mathbf{d}_1=(1,1,-1)$ and $\\mathbf{d}_2=(1,-1,2)$.",
+          "resultat_markdown": "$\\mathbf{d}_1\\cdot\\mathbf{d}_2=1-1-2=-2$, $|\\mathbf{d}_1|=\\sqrt3$, $|\\mathbf{d}_2|=\\sqrt6$. So $\\cos\\theta=\\dfrac{2}{\\sqrt{18}}=\\dfrac{\\sqrt2}{3}=0.4714$ and $\\theta=61.9^\\circ$."
+        }
+      ],
+      "conclusion_markdown": "The lines meet at the point with position vector $3\\mathbf{i}+2\\mathbf{j}$ (for $\\lambda=2$, $\\mu=1$), and the acute angle between them is $61.9^\\circ$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Writing $L_1:\\ \\mathbf{r}=\\mathbf{a}_1+\\lambda\\mathbf{d}_1$ and $L_2:\\ \\mathbf{r}=\\mathbf{a}_2+\\lambda\\mathbf{d}_2$ with the same letter, then equating.",
+          "pourquoi_faux": "Using one letter forces both lines to be at the same parameter value, which is a much stronger condition than meeting. Genuine intersections are missed.",
+          "correction_markdown": "Use two independent parameters, $\\lambda$ and $\\mu$, and solve for both."
+        },
+        {
+          "erreur_markdown": "Solving the $\\mathbf{i}$ and $\\mathbf{j}$ equations to get $\\lambda$ and $\\mu$, and stating that the lines intersect.",
+          "pourquoi_faux": "Three equations must hold at once. Two lines in space can satisfy two of them and fail the third; they are then skew and do not meet.",
+          "correction_markdown": "Substitute the values into the $\\mathbf{k}$ equation. If the two sides differ, write 'the lines do not intersect (skew)'."
+        },
+        {
+          "erreur_markdown": "The line through $A(1,2,3)$ and $B(4,6,8)$ has direction $\\mathbf{a}+\\mathbf{b}=(5,8,11)$.",
+          "pourquoi_faux": "The direction is the vector from $A$ to $B$, which is a difference. The sum of the position vectors is a different vector, in general not even parallel to the line.",
+          "correction_markdown": "$\\mathbf{d}=\\mathbf{b}-\\mathbf{a}=(3,4,5)$, so $\\mathbf{r}=(1,2,3)+\\lambda(3,4,5)$."
+        },
+        {
+          "erreur_markdown": "The lines do not meet, so they are parallel.",
+          "pourquoi_faux": "Parallel lines have proportional direction vectors. In three dimensions, lines can fail to meet and still not be parallel: they are skew.",
+          "correction_markdown": "First compare the direction vectors; only if they are proportional are the lines parallel."
+        },
+        {
+          "erreur_markdown": "The angle between two lines is found from the position vectors $\\mathbf{a}_1$ and $\\mathbf{a}_2$.",
+          "pourquoi_faux": "A position vector only locates a point; the orientation of a line is given by its direction vector.",
+          "correction_markdown": "Use $\\cos\\theta=\\dfrac{|\\mathbf{d}_1\\cdot\\mathbf{d}_2|}{|\\mathbf{d}_1||\\mathbf{d}_2|}$ for the acute angle."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(Vectors are given as ordered triples $(x,y,z)$.) The points $A$ and $B$ have position vectors $(2,-1,3)$ and $(5,1,1)$.\n\n(a) Find a vector equation of the line $AB$.\n\n(b) Determine whether $D(8,3,-1)$ and $E(8,3,1)$ lie on the line.\n\n(c) Write the equation of the line in Cartesian form.",
+          "solution_markdown": "(a) $\\mathbf{d}=\\mathbf{b}-\\mathbf{a}=(3,2,-2)$, so **$\\mathbf{r}=(2,-1,3)+\\lambda(3,2,-2)$**.\n\n(b) For $D$: $2+3\\lambda=8$ gives $\\lambda=2$; then $y=-1+4=3$ and $z=3-4=-1$, both correct, so **$D$ lies on the line**. For $E$: the same $\\lambda=2$ gives $z=-1\\ne1$, so **$E$ does not lie on the line**.\n\n(c) Eliminating $\\lambda$: **$\\dfrac{x-2}{3}=\\dfrac{y+1}{2}=\\dfrac{z-3}{-2}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(Vectors are given as ordered triples.) Three lines are given by\n$L_1:\\ \\mathbf{r}=(1,2,0)+\\lambda(2,1,-1)$, $L_2:\\ \\mathbf{r}=(0,1,3)+\\mu(-4,-2,2)$ and $L_3:\\ \\mathbf{r}=(3,-1,2)+\\nu(1,2,-1)$.\n\n(a) Show that $L_1$ and $L_2$ are parallel but not the same line.\n\n(b) Show that $L_1$ and $L_3$ are skew.",
+          "solution_markdown": "(a) $(-4,-2,2)=-2(2,1,-1)$, so the directions are parallel and $L_1\\parallel L_2$. Is $(0,1,3)$ on $L_1$? The first coordinate $1+2\\lambda=0$ gives $\\lambda=-\\frac12$, so the second coordinate would be $2-\\frac12=\\frac32\\ne1$. The point is not on $L_1$, so **the lines are parallel and distinct**.\n\n(b) The directions $(2,1,-1)$ and $(1,2,-1)$ are not proportional, so the lines are not parallel. Equating components: $1+2\\lambda=3+\\nu$ (1), $2+\\lambda=-1+2\\nu$ (2), $-\\lambda=2-\\nu$ (3). From (1), $\\nu=2\\lambda-2$. In (2): $2+\\lambda=-1+4\\lambda-4$, so $3\\lambda=7$ and $\\lambda=\\frac73$, $\\nu=\\frac83$. In (3): left side $-\\frac73$, right side $2-\\frac83=-\\frac23$. These differ, so **the lines do not intersect: they are skew**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(Vectors are given as ordered triples.) The line $L$ has equation $\\mathbf{r}=(1,2,-1)+t(2,1,2)$ and the plane $\\Pi$ has equation $x+2y-z=9$.\n\n(a) Show that $L$ meets $\\Pi$ at exactly one point and find the position vector of that point.\n\n(b) Find the acute angle between $L$ and $\\Pi$, to one decimal place.",
+          "solution_markdown": "(a) A general point of $L$ is $(1+2t,\\ 2+t,\\ -1+2t)$. Substituting into the plane: $(1+2t)+2(2+t)-(-1+2t)=1+2t+4+2t+1-2t=6+2t$. Setting $6+2t=9$ gives $t=\\frac32$, a single value, so there is exactly one point: **$(4,\\ \\frac72,\\ 2)$**. Check: $4+7-2=9$.\n\n(b) The normal to $\\Pi$ is $\\mathbf{n}=(1,2,-1)$ and the direction of $L$ is $\\mathbf{d}=(2,1,2)$. Then $\\mathbf{d}\\cdot\\mathbf{n}=2+2-2=2$, $|\\mathbf{d}|=3$ and $|\\mathbf{n}|=\\sqrt6$. So $\\sin\\varphi=\\dfrac{2}{3\\sqrt6}=0.2722$ and **$\\varphi=15.8^\\circ$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A line is $\\mathbf{r}=\\mathbf{a}+\\lambda\\mathbf{d}$; through two points the direction is $\\mathbf{b}-\\mathbf{a}$, never $\\mathbf{a}+\\mathbf{b}$.",
+        "Two lines: proportional directions mean parallel (same line only if a point is shared); otherwise equate components with two different parameters, solve two equations and test the third.",
+        "If the third equation fails the lines are skew; lines that do not meet are not necessarily parallel.",
+        "The angle between lines uses the direction vectors: $\\cos\\theta=\\dfrac{|\\mathbf{d}_1\\cdot\\mathbf{d}_2|}{|\\mathbf{d}_1||\\mathbf{d}_2|}$; perpendicular lines have $\\mathbf{d}_1\\cdot\\mathbf{d}_2=0$.",
+        "A plane with normal $(a,b,c)$ is $ax+by+cz=d$; a line meets it by substituting the parametric coordinates, and the line-plane angle satisfies $\\sin\\varphi=\\dfrac{|\\mathbf{d}\\cdot\\mathbf{n}|}{|\\mathbf{d}||\\mathbf{n}|}$."
+      ]
+    }
+  ]
+}

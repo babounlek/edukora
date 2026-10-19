@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-ict-ict-database-design",
+  "meta": {
+    "titre": "Database Design: from a flat file to keyed tables in third normal form",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Database models, keys and normalisation",
+    "duree_estimee_min": 35,
+    "tags": [
+      "ict database design"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-database-design-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school library in Bertoua records every loan in one long sheet: the student's name, class and address, the book's title and author, and the return date. A student who borrows ten books has her name and address typed ten times, and when she moves, some rows are corrected and others are forgotten. Database design exists to remove this kind of repetition by storing each fact once and linking the tables with keys. The Paper 2 questions on this theme ask you to compare database models, to name the keys of a set of tables, and to say what a designer does."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A database is an organised collection of related data stored so that it can be searched, updated and reported on.",
+        "A table is made of records (rows) and fields (columns), and each field has a data type such as text, number, date or yes/no.",
+        "Data redundancy means the same fact is stored in more than one place."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Database models, keys and normalisation",
+      "contenu_markdown": "### Database models\nA **flat file** keeps everything in a single table. It is simple, but facts are repeated, and this causes inconsistency (two spellings of one name) and anomalies: an update must be made in many rows, a new customer cannot be recorded until he buys something, and deleting the last order of a customer erases the customer as well.\nIn a **hierarchical** model records form a tree: each child has exactly one parent. In a **network** model records are connected by pointers and a record may have several parents. Both depend on stored links, so changing the structure is difficult and queries must follow the links.\nIn the **relational** model data are held in several tables, and tables are related through key values rather than pointers. Its advantages: each fact is stored once, so there is less redundancy and better consistency; the structure can be changed without rewriting the links; the model is easy to understand as tables; and it can be queried with a standard language (SQL).\n\n### Keys\n- **Primary key**: a field (or set of fields) whose value identifies each record uniquely and is never empty.\n- **Composite key**: a primary key made of two or more fields taken together. A table has one primary key, which may be composite.\n- **Foreign key**: a field in one table that holds the primary key value of a record in another table. It creates the link and its values may repeat. **Referential integrity** means each foreign key value must match an existing primary key value.\n\n### Normalisation\nNormalisation splits tables to remove redundancy.\n- **1NF**: every field holds a single value (no repeating groups such as Phone1, Phone2) and each record is identified by a key.\n- **2NF**: in 1NF, and every non-key field depends on the whole key. This matters only for composite keys: a field that depends on part of the key goes to another table.\n- **3NF**: in 2NF, and no non-key field depends on another non-key field (no transitive dependency).\n\n### Relationships\nIn a one-to-many relationship the foreign key is placed in the table on the many side. A many-to-many relationship is split with a link table whose composite key is made of the two foreign keys.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Normalisation question: find the tables and their keys",
+          "quand_utiliser": "When a flat table is given and you must produce tables in 3NF and name the primary, foreign and composite keys.",
+          "contenu_markdown": "1. Find the key of the flat table (often composite). 2. For each field ask: does it depend on the whole key, on part of it, or on another non-key field? 3. Create one table for each group of fields that depend on the same determinant, with that determinant as primary key. 4. Keep the determinant in the original table as a foreign key. 5. List the keys table by table."
+        },
+        {
+          "nom": "Comparison question: model against model",
+          "quand_utiliser": "When asked to differentiate or compare relational database, flat file, network or hierarchical models.",
+          "contenu_markdown": "Answer with a pair of statements on the same criterion, for example number of tables (one against several), how facts are repeated, how records are linked (by key values or by pointers), and how easy it is to change the structure. Two separate descriptions without a comparison do not earn the \"differentiate\" mark."
+        },
+        {
+          "nom": "Role of the database designer",
+          "quand_utiliser": "When asked for the functions of a designer (as opposed to a user or an administrator).",
+          "contenu_markdown": "The designer analyses the user requirements, identifies the entities and their attributes, chooses the primary keys, defines the relationships, normalises the tables, specifies data types and validation rules, and documents the design (a data dictionary). The database administrator, by contrast, manages access rights, backups and day-to-day performance."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A stationery supplier keeps its sales in one table. Each order has a date and one customer, and may contain several items. A record is identified by the pair (OrderID, ItemCode).\n\n| OrderID | OrderDate | CustomerID | CustomerName | Town | ItemCode | ItemName | UnitPrice | Quantity |\n|---|---|---|---|---|---|---|---|---|\n| 101 | 2026-03-02 | C1 | Mbah Ltd | Bamenda | P1 | Exercise book | 300 | 20 |\n| 101 | 2026-03-02 | C1 | Mbah Ltd | Bamenda | P2 | Ball pen | 100 | 50 |\n| 102 | 2026-03-04 | C2 | Tabi Stores | Buea | P1 | Exercise book | 300 | 10 |\n| 103 | 2026-03-05 | C1 | Mbah Ltd | Bamenda | P2 | Ball pen | 100 | 30 |\n\nNormalise the table to third normal form. State the primary keys, the foreign keys, the composite key and the table that contains it.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Identify the key of the flat table and check 1NF.",
+          "justification": "All fields hold one value and the pair (OrderID, ItemCode) identifies every record, so the table is in 1NF with a composite key.",
+          "resultat_markdown": "Key of the flat table: (OrderID, ItemCode)."
+        },
+        {
+          "numero": 2,
+          "action": "Look for partial dependencies (2NF).",
+          "justification": "A field that depends on only one part of the composite key must leave the table.",
+          "resultat_markdown": "OrderDate and CustomerID depend on OrderID alone. ItemName and UnitPrice depend on ItemCode alone. Only Quantity needs both OrderID and ItemCode."
+        },
+        {
+          "numero": 3,
+          "action": "Look for transitive dependencies (3NF).",
+          "justification": "A non-key field determined by another non-key field must also move out.",
+          "resultat_markdown": "CustomerName and Town depend on CustomerID, which is not a key of the order. They move to a Customer table."
+        },
+        {
+          "numero": 4,
+          "action": "Write the resulting tables.",
+          "justification": "Each table has one subject; the determinants become primary keys and stay behind as foreign keys where they link tables.",
+          "resultat_markdown": "- Customer(CustomerID [PK], CustomerName, Town)\n- Item(ItemCode [PK], ItemName, UnitPrice)\n- SalesOrder(OrderID [PK], OrderDate, CustomerID [FK])\n- OrderLine(OrderID [PK, FK], ItemCode [PK, FK], Quantity)\n\nPK = part of the primary key, FK = foreign key."
+        },
+        {
+          "numero": 5,
+          "action": "Check that nothing was lost and list the keys.",
+          "justification": "Joining the four tables on their keys must give back the original four records; the sample now has 2 customers, 2 items, 3 orders and 4 order lines.",
+          "resultat_markdown": "Primary keys: CustomerID, ItemCode, OrderID, and (OrderID, ItemCode). Foreign keys: CustomerID in SalesOrder, OrderID and ItemCode in OrderLine. Composite key: (OrderID, ItemCode), in the table **OrderLine**."
+        }
+      ],
+      "conclusion_markdown": "In 3NF each fact is stored once: the name of customer C1 appears in one record of Customer instead of three records of the flat file, so renaming her needs a single edit. The composite key lives in OrderLine, whose two key fields are also foreign keys."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"The primary key of the Customer table is CustomerName.\"",
+          "pourquoi_faux": "Two customers can share a name, so the field does not identify a record uniquely. A key must be unique and never empty.",
+          "correction_markdown": "Use a code created for the purpose, such as CustomerID."
+        },
+        {
+          "erreur_markdown": "Placing the foreign key in the table on the \"one\" side, for example a list of order numbers in the Customer table.",
+          "pourquoi_faux": "One field would have to hold many values, which breaks 1NF.",
+          "correction_markdown": "Put CustomerID in the SalesOrder table (the many side), so that each order points to its single customer."
+        },
+        {
+          "erreur_markdown": "\"A composite key is a table with two primary keys.\"",
+          "pourquoi_faux": "A table has exactly one primary key. A composite key is one key made of two or more fields that are unique only together.",
+          "correction_markdown": "Write: the primary key (OrderID, ItemCode) is a composite key. Each of its fields can also be a foreign key."
+        },
+        {
+          "erreur_markdown": "\"A relational database differs from a flat file because it holds more records.\"",
+          "pourquoi_faux": "Both can hold any number of records. The difference is the structure: several linked tables against one table.",
+          "correction_markdown": "Write: a relational database splits the data into related tables linked by keys, so each fact is stored once, while a flat file repeats facts in a single table."
+        },
+        {
+          "erreur_markdown": "Defining 1NF as \"no duplicate records\" only.",
+          "pourquoi_faux": "1NF also requires atomic fields and no repeating groups.",
+          "correction_markdown": "State both: every field holds a single value, there are no repeating groups, and each record is identified by a key."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A school uses two tables: Class(ClassCode, ClassName, FormTeacher) and Student(StudentID, StudentName, DateOfBirth, ClassCode). Each student belongs to one class and a class has many students.\n\n(a) Name the primary key of each table.\n\n(b) Name the foreign key and the table that contains it.\n\n(c) What happens, if referential integrity is enforced, when a clerk enters a student whose ClassCode does not exist in Class?",
+          "solution_markdown": "(a) Class: **ClassCode**. Student: **StudentID**.\n\n(b) **ClassCode in Student** is the foreign key; it holds a primary key value of Class. It sits on the many side of the one-to-many relationship.\n\n(c) The record is **rejected**: a foreign key value must match an existing primary key value."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A table Enrolment(StudentID, CourseCode, StudentName, CourseTitle, Grade) records the grade of each student in each course. The primary key is (StudentID, CourseCode).\n\n(a) Explain why the table is not in 2NF.\n\n(b) Rewrite it in 3NF and give the keys of every table.",
+          "solution_markdown": "(a) StudentName depends on StudentID alone and CourseTitle depends on CourseCode alone: both depend on **part** of the composite key (a partial dependency), so 2NF is broken. Only Grade depends on the whole key.\n\n(b) **Student**(StudentID, StudentName): primary key StudentID. **Course**(CourseCode, CourseTitle): primary key CourseCode. **Enrolment**(StudentID, CourseCode, Grade): composite primary key (StudentID, CourseCode), with StudentID and CourseCode both foreign keys. No non-key field depends on another non-key field, so the tables are also in 3NF."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A company stores staff data as Staff(StaffID, StaffName, DeptCode, DeptName, Phone1, Phone2), with StaffID as the primary key. A department has several staff.\n\n(a) State which normal forms are broken and why.\n\n(b) Rewrite the design in 3NF, with the keys.\n\n(c) Describe one anomaly that the original table allows and the new design prevents.",
+          "solution_markdown": "(a) **1NF** is broken by the repeating group Phone1, Phone2 (a third number would need a new column). **3NF** is broken because DeptName depends on DeptCode, which is not the key (a transitive dependency). 2NF holds, because the key is a single field.\n\n(b) **Department**(DeptCode, DeptName): primary key DeptCode. **Staff**(StaffID, StaffName, DeptCode): primary key StaffID, foreign key DeptCode. **StaffPhone**(StaffID, PhoneNumber): composite primary key (StaffID, PhoneNumber), where StaffID is a foreign key.\n\n(c) Update anomaly: if the department is renamed, every staff row carrying the old name must be edited, and a missed row leaves two names for one department. In the new design the name is stored in one record of Department, so **one edit** is enough. (Another valid anomaly: a department with no staff cannot be recorded in the original table.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A flat file stores everything in one table and repeats facts; the relational model stores each fact once in separate tables linked by key values.",
+        "Primary key: unique and never empty. Composite key: one primary key made of several fields. Foreign key: holds a primary key value from another table, and sits on the many side of a one-to-many link.",
+        "1NF: single values, no repeating groups. 2NF: no field depends on only part of a composite key. 3NF: no field depends on another non-key field.",
+        "Many-to-many relationships are split with a link table whose composite key is made of the two foreign keys.",
+        "The designer analyses requirements, defines tables, keys, relationships and validation rules; the administrator looks after access, backup and performance."
+      ]
+    }
+  ]
+}

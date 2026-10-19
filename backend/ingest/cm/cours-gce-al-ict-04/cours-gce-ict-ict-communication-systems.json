@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-ict-ict-communication-systems",
+  "meta": {
+    "titre": "ICT Communication Systems: components, bandwidth and video conferencing for organisations",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Data communication, bandwidth and conferencing",
+    "duree_estimee_min": 30,
+    "tags": [
+      "ict communication systems"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-communication-systems-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "The managers of a company with offices in Douala and Garoua cannot travel every time a decision is needed, so they meet through a screen. Whether the meeting runs smoothly depends on the parts of the communication system and on the capacity of the link between the two towns. ICT examiners ask candidates to name these parts, to explain how data is transmitted and to describe systems such as video conferencing. Precise definitions and one or two simple calculations are enough for good marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A network joins computers so that they can exchange data.",
+        "Data is sent as signals; a bit is the smallest unit of data and a byte is eight bits.",
+        "A signal needs a path between the sending device and the receiving device."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Data communication: components, media, modes of transmission and bandwidth",
+      "contenu_markdown": "### Components of a data communication system\nA system works only if its parts do their jobs. The three major components are:\n\n| Component | Use |\n|---|---|\n| **Sender** (source) | The device that creates the message and sends it (a computer, a phone, a camera) |\n| **Transmission medium** | The path that carries the signal between sender and receiver |\n| **Receiver** | The device that receives the message and presents it to the user |\n\nFuller descriptions add the **message** itself (text, sound, image or video) and a **protocol**, the set of agreed rules that lets the two devices understand each other. Devices such as a network card or a modem convert data into signals suitable for the medium.\n\n### Transmission media\n**Wired**: twisted-pair cable (copper pairs twisted to reduce interference), coaxial cable, and fibre-optic cable, which carries data as pulses of light, has a very large capacity and is not affected by electrical interference. **Wireless**: radio waves, microwaves, satellite links and infrared.\n\n### Direction of transmission\n| Mode | Meaning | Example |\n|---|---|---|\n| Simplex | One direction only | Radio broadcast; keyboard to computer |\n| Half-duplex | Both directions, one at a time | Walkie-talkie |\n| Full-duplex | Both directions at the same time | Telephone call |\n\n### Bandwidth\n**Bandwidth** is the capacity of a channel: the amount of data it can carry each second, measured in bits per second (bit/s, kbit/s, Mbit/s). It is not the speed at which a signal travels. The time to send a file is\n\n$$t = \\frac{\\text{size in bits}}{\\text{bandwidth in bits per second}}$$\n\nRemember that 1 byte = 8 bits, so a file given in megabytes must be multiplied by 8 to give megabits.\n\n### Systems used in organisations\nOrganisations use e-mail, instant messaging, telephone and audio conferencing, and video conferencing to let members at different sites discuss and decide without travelling.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Synchronous and asynchronous transmission, and multiplexing",
+          "quand_utiliser": "When the question asks for a difference between the two methods or what multiplexing is.",
+          "contenu_markdown": "**Asynchronous**: data is sent one character at a time, each framed by a start bit and a stop bit, at irregular intervals, with no shared clock. It is simple and cheap but wastes bits on the framing. **Synchronous**: data is sent as continuous blocks (frames), and sender and receiver are kept in step by a clock signal; it is faster and more efficient for large amounts of data. **Multiplexing** combines several signals so that they share one channel (by dividing the time or the frequency), which saves the cost of separate lines."
+        },
+        {
+          "nom": "Video conferencing",
+          "quand_utiliser": "When the question asks what video conferencing is, its advantages, equipment or the effect of bandwidth.",
+          "contenu_markdown": "**Definition**: a real-time, two-way exchange of sound and pictures between people at different places over a network. **Hardware**: camera, microphone, screen, loudspeakers and a network connection. **Software**: conferencing software with a codec that compresses and decompresses sound and video. **Advantages**: saves travel time and cost; allows quick meetings and decisions; documents can be shared on screen. **Effect of bandwidth**: if the bandwidth is too low, sound and picture are delayed, jerky or of poor quality, and the call may freeze; more participants and better picture quality need more bandwidth."
+        },
+        {
+          "nom": "Bandwidth sharing and time calculations",
+          "quand_utiliser": "When a question gives file sizes and link speeds, or several users on one link.",
+          "contenu_markdown": "Convert first: megabytes × 8 = megabits. Divide by the bandwidth in Mbit/s to obtain seconds. If a link is shared equally by n users, each gets bandwidth ÷ n, so the transfer takes n times longer. Several streams on one link must add up to no more than its capacity."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "epreuve_source": false,
+      "enonce_markdown": "A company with offices in Douala and Garoua holds meetings by video conference. In each direction the link provides 2 Mbit/s, and one video and audio stream needs 1.6 Mbit/s. Take 1 MB = 1,000,000 bytes and 1 Mbit/s = 1,000,000 bit/s.\n\n(a) Is the link sufficient for one stream, and how much capacity is left?\n\n(b) A shared document is then displayed as a second stream of 0.6 Mbit/s. Is the link still sufficient? Describe what the participants notice.\n\n(c) After the meeting, a 45 MB recording is sent over the free link. Calculate the time taken.\n\n(d) State two advantages to the company of video conferencing.",
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Compare the demand with the capacity.",
+          "justification": "A link works smoothly only if the total bit rate of the streams does not exceed its bandwidth.",
+          "resultat_markdown": "Demand 1.6 Mbit/s is below capacity 2.0 Mbit/s: the link is **sufficient**, with 0.4 Mbit/s left."
+        },
+        {
+          "numero": 2,
+          "action": "Add the second stream and compare again.",
+          "justification": "Streams sharing one link add together.",
+          "resultat_markdown": "1.6 + 0.6 = **2.2 Mbit/s**, which exceeds 2.0 Mbit/s by **0.2 Mbit/s**. The link is not sufficient."
+        },
+        {
+          "numero": 3,
+          "action": "Describe the effect on the users.",
+          "justification": "Data that cannot be carried in time arrives late or is lost.",
+          "resultat_markdown": "Sound and picture become delayed and jerky, quality drops and the call may freeze. Remedies: lower the video quality, send the document only when needed, or increase the bandwidth."
+        },
+        {
+          "numero": 4,
+          "action": "Convert the file size to bits.",
+          "justification": "The bandwidth is in bits per second while the file is in bytes, so multiply by 8.",
+          "resultat_markdown": "45 MB × 8 = **360 Mbit**."
+        },
+        {
+          "numero": 5,
+          "action": "Divide by the bandwidth.",
+          "justification": "Time = size in bits ÷ bandwidth.",
+          "resultat_markdown": "360 ÷ 2 = **180 s = 3 minutes**."
+        }
+      ],
+      "conclusion_markdown": "(a) Yes; 0.4 Mbit/s is spare. (b) No: 2.2 Mbit/s is needed against 2.0; the conference becomes jerky or freezes. (c) 3 minutes. (d) Saves travel time and cost; decisions can be taken quickly with people in both towns, and documents can be shown on screen."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"Bandwidth is how fast a signal travels along the cable.\"",
+          "pourquoi_faux": "Bandwidth is the capacity of the channel, the amount of data carried per second. It is not the travel speed of the signal.",
+          "correction_markdown": "\"Bandwidth is the maximum amount of data a channel can carry per second, in bits per second.\""
+        },
+        {
+          "erreur_markdown": "Dividing a file of 12 MB by a link of 8 Mbit/s and answering 1.5 seconds.",
+          "pourquoi_faux": "Megabytes and megabits were mixed. One byte is 8 bits, so 12 MB is 96 Mbit.",
+          "correction_markdown": "12 × 8 = 96 Mbit; 96 ÷ 8 = 12 seconds."
+        },
+        {
+          "erreur_markdown": "\"Video conferencing is a telephone call.\"",
+          "pourquoi_faux": "A telephone call carries sound only. Video conferencing carries live sound and pictures in both directions between sites.",
+          "correction_markdown": "\"Video conferencing is a real-time exchange of sound and pictures between people at different places.\""
+        },
+        {
+          "erreur_markdown": "\"Synchronous transmission means that data goes in both directions at the same time.\"",
+          "pourquoi_faux": "Synchronous and asynchronous describe the timing of the data using a clock. The direction of transmission is described as simplex, half-duplex or full-duplex.",
+          "correction_markdown": "\"In synchronous transmission, data is sent in blocks and sender and receiver are kept in step by a clock.\""
+        },
+        {
+          "erreur_markdown": "\"Multiplexing means sending the same message to many receivers.\"",
+          "pourquoi_faux": "Sending one message to many receivers is broadcasting. Multiplexing combines several different signals onto one channel.",
+          "correction_markdown": "\"Multiplexing lets several signals share one channel, for example by dividing the time or the frequency.\""
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the mode of transmission (simplex, half-duplex or full-duplex) in each case.\n\n(a) A radio station broadcasting to listeners.\n\n(b) Two police officers using walkie-talkies, where only one can speak at a time.\n\n(c) Two people talking on mobile phones.\n\n(d) A keyboard sending characters to a computer.\n\n(e) Name the three major components of a data communication system.",
+          "solution_markdown": "(a) **Simplex**.\n\n(b) **Half-duplex**.\n\n(c) **Full-duplex**.\n\n(d) **Simplex**.\n\n(e) The **sender**, the **transmission medium** and the **receiver** (a fuller list adds the message and the protocol)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A file of 12 MB is sent over a link of 2 Mbit/s. Take 1 MB = 1,000,000 bytes.\n\n(a) Calculate the transfer time.\n\n(b) Calculate the time if the link is replaced by one of 8 Mbit/s, and how many times faster this is.\n\n(c) The 8 Mbit/s link is shared equally by four users who all send a file of the same size at the same moment. How long does each transfer take?",
+          "solution_markdown": "(a) 12 MB × 8 = 96 Mbit; 96 ÷ 2 = **48 s**.\n\n(b) 96 ÷ 8 = **12 s**, which is **4 times** faster.\n\n(c) Each user gets 8 ÷ 4 = 2 Mbit/s, so the time is 96 ÷ 2 = **48 s**, the same as on the 2 Mbit/s link."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A text of 4,000 characters is sent over a line running at 9,600 bit/s. In asynchronous mode each character is sent as 1 start bit, 8 data bits and 1 stop bit. In synchronous mode the text is sent in frames, each with 1,000 characters (8 bits each) and 80 bits of control information.\n\n(a) Calculate the time in asynchronous mode (two decimal places) and the percentage of the bits that are data.\n\n(b) Calculate the time in synchronous mode (two decimal places) and the percentage of the bits that are data (one decimal place).\n\n(c) Four terminals each need a rate of 2,400 bit/s. Show that one 9,600 bit/s line can carry them all, and name the technique used.",
+          "solution_markdown": "(a) Bits = 4,000 × 10 = 40,000; time = 40,000 ÷ 9,600 = **4.17 s**. Data bits are 8 out of 10, that is **80%**.\n\n(b) Frames = 4,000 ÷ 1,000 = 4; bits per frame = 8,000 + 80 = 8,080; total = 4 × 8,080 = 32,320 bits; time = 32,320 ÷ 9,600 = **3.37 s**. Data share = 8,000 ÷ 8,080 = **99.0%**.\n\n(c) 4 × 2,400 = 9,600 bit/s, exactly the capacity of the line, so it can carry all four. The technique is **multiplexing**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The three major components are the sender, the transmission medium and the receiver; the message and the protocol complete the full description.",
+        "Simplex is one direction only, half-duplex is both directions in turn, full-duplex is both directions at once.",
+        "Bandwidth is capacity in bits per second, not signal speed; time = size in bits ÷ bandwidth, and 1 byte = 8 bits.",
+        "Asynchronous transmission frames each character with start and stop bits; synchronous transmission sends blocks kept in step by a clock and is more efficient.",
+        "Multiplexing makes several signals share one channel.",
+        "Video conferencing is a real-time two-way exchange of sound and pictures; it saves travel but needs enough bandwidth, or the call becomes delayed and jerky."
+      ]
+    }
+  ]
+}

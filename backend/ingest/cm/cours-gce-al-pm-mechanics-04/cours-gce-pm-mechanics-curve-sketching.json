@@ -1,0 +1,159 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-curve-sketching",
+ "meta": {
+  "titre": "Curve Sketching: building a sketch from intercepts, asymptotes and turning points",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Rational and periodic curves",
+  "duree_estimee_min": 35,
+  "tags": [
+   "curve sketching"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p2-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-curve-sketching-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A baker in Bafoussam works out the production cost of each loaf. A fixed daily cost is shared among more and more loaves, so the cost per loaf keeps falling, but it can never fall below the price of the flour and fuel needed for one loaf. That levelling off is a horizontal asymptote, and the impossibility of sharing the cost among zero loaves is a vertical one. Sketching such curves quickly, from a few exact facts instead of a long table of values, is a skill that the A Level papers reward every year: the marks go to the intercepts, the asymptotes and the correct behaviour of the curve near them."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A rational function is a quotient of two polynomials and it is undefined wherever its denominator is zero.",
+    "The derivative $\\dfrac{dy}{dx}$ is the gradient of the curve, and a stationary point is where $\\dfrac{dy}{dx}=0$.",
+    "A product or quotient of linear factors changes sign each time one factor passes through zero (when that factor appears to an odd power).",
+    "Polynomial long division writes an improper fraction as a polynomial plus a proper fraction."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Sketching a rational or piecewise curve from exact features",
+   "contenu_markdown": "### The checklist\n\nA sketch is not a plot of many points. It is a picture built from exact facts, each marked on the axes before the curve is drawn. Work in this order.\n\n1. **Domain and intercepts.** Exclude every $x$ that makes the denominator zero. Put $y=0$ to get the $x$-intercepts (numerator zero) and $x=0$ to get the $y$-intercept.\n2. **Vertical asymptotes.** If the denominator is zero at $x=p$ but the numerator is not, the line $x=p$ is a vertical asymptote. Test the sign of $y$ just to the left and just to the right of $p$ to decide whether the curve goes to $+\\infty$ or $-\\infty$ on each side.\n3. **Horizontal or oblique asymptote.** Compare the degrees. Top degree smaller than bottom degree: $y=0$. Equal degrees: $y$ equals the ratio of the leading coefficients. Top degree one more than bottom: divide, and the quotient $y=mx+k$ is an oblique asymptote. The sign of the leftover fraction tells you on which side of the asymptote the curve lies for large positive and for large negative $x$.\n4. **Stationary points.** Solve $\\dfrac{dy}{dx}=0$, find the $y$-values, and decide the nature from the sign of $\\dfrac{dy}{dx}$ on either side or from $\\dfrac{d^2y}{dx^2}$.\n5. **Symmetry.** If $f(-x)=f(x)$ the curve is symmetric about the $y$-axis; if $f(-x)=-f(x)$ it maps onto itself under a half-turn about the origin.\n6. **Draw.** Asymptotes are dashed lines, never part of the curve. Label every intercept, asymptote and stationary point.\n\n### A form that does most of the work for a linear-over-linear curve\n\nDividing out the fraction gives\n\n$$\ny=\\frac{ax+b}{cx+d}=\\frac{a}{c}+\\frac{bc-ad}{c\\,(cx+d)}\n\\tag{1}\n$$\n\nso the horizontal asymptote is $y=\\dfrac{a}{c}$, the vertical asymptote is $x=-\\dfrac{d}{c}$, and the sign of $bc-ad$ fixes which side of the horizontal asymptote each branch lies on. Differentiating,\n\n$$\n\\frac{dy}{dx}=\\frac{ad-bc}{(cx+d)^{2}}\n\\tag{2}\n$$\n\nhas the same sign everywhere, so such a curve has **no stationary points** and is increasing on both branches (if $ad-bc>0$) or decreasing on both (if $ad-bc<0$). The two branches are separated by the vertical asymptote and are never joined.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Oblique asymptote and turning points",
+     "quand_utiliser": "When the numerator has degree one more than the denominator, for example a quadratic over a linear expression.",
+     "contenu_markdown": "Divide first. For $y=\\dfrac{x^{2}+1}{x-1}$,\n\n$$\ny=x+1+\\frac{2}{x-1}\n\\tag{3}\n$$\n\nso $y=x+1$ is the oblique asymptote and $x=1$ the vertical one. The leftover term $\\dfrac{2}{x-1}$ is positive for $x>1$ (curve above the line) and negative for $x<1$ (curve below it). Then $\\dfrac{dy}{dx}=1-\\dfrac{2}{(x-1)^{2}}=0$ gives $(x-1)^{2}=2$, so $x=1\\pm\\sqrt2$, with $y=2\\pm2\\sqrt2$. Since $\\dfrac{d^{2}y}{dx^{2}}=\\dfrac{4}{(x-1)^{3}}$, the point $(1+\\sqrt2,\\,2+2\\sqrt2)$ is a local minimum and $(1-\\sqrt2,\\,2-2\\sqrt2)$ is a local maximum. The local maximum ($y\\approx-0.83$) is **lower** than the local minimum ($y\\approx4.83$): this is normal when a vertical asymptote separates the branches, and no point of the curve has $y$ between these two values. The curve meets the $y$-axis at $(0,-1)$ and never meets the $x$-axis because $x^{2}+1>0$."
+    },
+    {
+     "nom": "Periodic and piecewise functions",
+     "quand_utiliser": "When $f$ is defined by different formulae on different intervals and a period is given.",
+     "contenu_markdown": "Sketch one period from the formulae, then copy it. For the period $3$ function with $f(x)=x+1$ for $0\\le x<2$, $f(x)=7-2x$ for $2\\le x<3$ and $f(x+3)=f(x)$, evaluate the end of each piece: $f(0)=1$, $f(2)=3$ from both formulae (so the pieces join), $f(3)=1$. Each piece is a straight segment, so the vertices are enough. Translate by $\\pm3$ to fill the required interval:\n\n| $x$ | $-3$ | $-1$ | $0$ | $2$ | $3$ | $5$ | $6$ |\n|---|---|---|---|---|---|---|---|\n| $f(x)$ | $1$ | $3$ | $1$ | $3$ | $1$ | $3$ | $1$ |\n\nJoin consecutive vertices by straight lines. Where two pieces do not meet, draw a filled dot at the value that is attained and an open dot at the value that is not. Always state which end of the interval is included, and check that the shape repeats exactly after one period in both directions."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "epreuve_source": false,
+   "enonce_markdown": "Sketch the curve $y=\\dfrac{x+3}{2x-1}$, showing its intercepts, its asymptotes and how each branch approaches them.",
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Find the domain and the intercepts.",
+     "justification": "The denominator is zero when $2x-1=0$, and the intercepts come from $y=0$ and $x=0$.",
+     "resultat_markdown": "$x\\ne\\tfrac12$. With $y=0$: $x=-3$, so the point is $(-3,0)$. With $x=0$: $y=-3$, so the point is $(0,-3)$."
+    },
+    {
+     "numero": 2,
+     "action": "Find the vertical asymptote and the direction of each side.",
+     "justification": "At $x=\\tfrac12$ the denominator vanishes while the numerator is $3.5\\ne0$; the sign of the small denominator decides the direction.",
+     "resultat_markdown": "Vertical asymptote $x=\\tfrac12$. Just right of $\\tfrac12$ the denominator is small and positive, so $y\\to+\\infty$. Just left of $\\tfrac12$ it is small and negative, so $y\\to-\\infty$."
+    },
+    {
+     "numero": 3,
+     "action": "Find the horizontal asymptote and the side of it that each branch lies on.",
+     "justification": "Use equation (1) with $a=1,\\ b=3,\\ c=2,\\ d=-1$, so $bc-ad=7$.",
+     "resultat_markdown": "$y=\\dfrac12+\\dfrac{7}{2(2x-1)}$. Horizontal asymptote $y=\\tfrac12$. For $x>\\tfrac12$ the fraction is positive, so that branch is above $y=\\tfrac12$; for $x<\\tfrac12$ it is negative, so that branch is below."
+    },
+    {
+     "numero": 4,
+     "action": "Find the gradient to decide whether there are turning points.",
+     "justification": "Use equation (2): the numerator $ad-bc$ is a constant.",
+     "resultat_markdown": "$\\dfrac{dy}{dx}=\\dfrac{-7}{(2x-1)^{2}}<0$ for all $x\\ne\\tfrac12$. No stationary points, and both branches are decreasing."
+    },
+    {
+     "numero": 5,
+     "action": "Assemble the sketch.",
+     "justification": "Each branch is a decreasing curve squeezed between the two asymptotes and passing through the plotted points.",
+     "resultat_markdown": "Right branch: comes down from $+\\infty$ beside $x=\\tfrac12$ and flattens towards $y=\\tfrac12$ from above as $x\\to\\infty$. Left branch: starts just below $y=\\tfrac12$ for large negative $x$, passes through $(-3,0)$ and $(0,-3)$, and plunges to $-\\infty$ as $x\\to\\tfrac12$ from the left."
+    }
+   ],
+   "conclusion_markdown": "The curve has intercepts $(-3,0)$ and $(0,-3)$, asymptotes $x=\\tfrac12$ and $y=\\tfrac12$, no stationary points, and two decreasing branches that lie in the top-right and bottom-left regions formed by the asymptotes."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Drawing a single smooth curve that passes through the vertical asymptote $x=\\tfrac12$ to join the two branches.",
+     "pourquoi_faux": "The function is not defined at the asymptote and the values go to $+\\infty$ on one side and $-\\infty$ on the other, so the graph has two separate pieces.",
+     "correction_markdown": "Draw the vertical asymptote as a dashed line and make each branch approach it without touching it, one going up and one going down."
+    },
+    {
+     "erreur_markdown": "For $y=\\dfrac{5x-2}{x+3}$, stating that the horizontal asymptote is $y=-\\tfrac23$ (the ratio of the constant terms).",
+     "pourquoi_faux": "Behaviour for large $|x|$ is controlled by the highest powers, not by the constant terms.",
+     "correction_markdown": "For large $|x|$, $y\\approx\\dfrac{5x}{x}=5$, so the horizontal asymptote is $y=5$."
+    },
+    {
+     "erreur_markdown": "Stating that a curve can never cross its horizontal asymptote.",
+     "pourquoi_faux": "An asymptote describes the limit as $x\\to\\pm\\infty$; at finite $x$ the curve may cross it.",
+     "correction_markdown": "The curve $y=\\dfrac{4x}{x^{2}+1}$ has horizontal asymptote $y=0$ and still crosses it at the origin. A vertical asymptote, in contrast, is never crossed because the function is undefined there."
+    },
+    {
+     "erreur_markdown": "For $y=\\dfrac{x^{2}+1}{x-1}$, calling the stationary point with the larger $y$-value the maximum.",
+     "pourquoi_faux": "Maximum and minimum here are local: they depend on the sign of the second derivative, not on which $y$-value is bigger.",
+     "correction_markdown": "The point at $x=1-\\sqrt2$ has $\\dfrac{d^{2}y}{dx^{2}}<0$, so it is a local maximum even though its $y$-value is smaller than that of the local minimum at $x=1+\\sqrt2$."
+    },
+    {
+     "erreur_markdown": "Extending a function of period $3$ to the left of the given interval by repeating the graph only to the right.",
+     "pourquoi_faux": "A periodic function repeats in both directions, so the shape on $[-3,0]$ must equal the shape on $[0,3]$.",
+     "correction_markdown": "Translate the one-period graph by $-3$ as well as by $+3$, and check a point such as $f(-1)=f(2)$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "For the curve $y=\\dfrac{x-2}{x+3}$, find the coordinates of the points where it meets the axes, the equations of its asymptotes, and state on which side of the horizontal asymptote the curve lies when $x\\to+\\infty$ and when $x\\to-\\infty$.",
+     "solution_markdown": "Put $y=0$: $x=2$. Put $x=0$: $y=-\\tfrac23$. The curve meets the axes at **$(2,0)$ and $\\left(0,-\\tfrac23\\right)$**.\n\nThe denominator is zero at $x=-3$, so the vertical asymptote is **$x=-3$**. The degrees are equal and the leading coefficients are both $1$, so the horizontal asymptote is **$y=1$**.\n\nDividing, $y=1-\\dfrac{5}{x+3}$. As $x\\to+\\infty$, $x+3>0$ so $-\\dfrac{5}{x+3}<0$: the curve is **below** $y=1$. As $x\\to-\\infty$, $x+3<0$ so $-\\dfrac{5}{x+3}>0$: the curve is **above** $y=1$. (Check with equation (2): $ad-bc=1\\cdot3-(-2)\\cdot1=5>0$, so both branches are increasing.)"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Consider $y=\\dfrac{4x}{x^{2}+1}$. (a) Show that the curve is symmetric under a half-turn about the origin. (b) Find the coordinates and nature of its stationary points. (c) Write down its asymptotes and show that $-2\\le y\\le2$ for all real $x$.",
+     "solution_markdown": "(a) Let $f(x)=\\dfrac{4x}{x^{2}+1}$. Then $f(-x)=\\dfrac{-4x}{x^{2}+1}=-f(x)$, so $f$ is odd and the graph maps onto itself under a half-turn about the origin.\n\n(b) $\\dfrac{dy}{dx}=\\dfrac{4(x^{2}+1)-4x\\cdot2x}{(x^{2}+1)^{2}}=\\dfrac{4(1-x^{2})}{(x^{2}+1)^{2}}$. This is zero when $x=\\pm1$. The gradient is positive for $|x|<1$ and negative for $|x|>1$, so $x=1$ is a maximum and $x=-1$ is a minimum: **maximum $(1,2)$ and minimum $(-1,-2)$**.\n\n(c) The denominator $x^{2}+1$ is never zero, so there is no vertical asymptote. The numerator has lower degree, so the horizontal asymptote is **$y=0$**. Finally $2-y=\\dfrac{2(x-1)^{2}}{x^{2}+1}\\ge0$ and $2+y=\\dfrac{2(x+1)^{2}}{x^{2}+1}\\ge0$, so **$-2\\le y\\le2$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A curve has equation $y=\\dfrac{x^{2}-x-2}{x-3}$. Find its intercepts with the axes and its asymptotes, find the coordinates and nature of its stationary points, and describe the shape of the two branches.",
+     "solution_markdown": "Factorising, $x^{2}-x-2=(x-2)(x+1)$, so the curve meets the $x$-axis at **$(2,0)$ and $(-1,0)$**, and at $x=0$, $y=\\dfrac{-2}{-3}$, so it meets the $y$-axis at **$\\left(0,\\tfrac23\\right)$**.\n\nDividing, $x^{2}-x-2=(x-3)(x+2)+4$, so $y=x+2+\\dfrac{4}{x-3}$. The asymptotes are **$x=3$** and **$y=x+2$**.\n\n$\\dfrac{dy}{dx}=1-\\dfrac{4}{(x-3)^{2}}=0$ gives $(x-3)^{2}=4$, so $x=5$ or $x=1$. Then $y(5)=9$ and $y(1)=1$. Since $\\dfrac{d^{2}y}{dx^{2}}=\\dfrac{8}{(x-3)^{3}}$ is positive at $x=5$ and negative at $x=1$: **local minimum $(5,9)$ and local maximum $(1,1)$**.\n\nRight branch ($x>3$): the leftover term $\\dfrac{4}{x-3}$ is positive, so the curve lies above the oblique asymptote; it falls from $+\\infty$ beside $x=3$ to the minimum $(5,9)$ and then rises, approaching $y=x+2$ from above. Left branch ($x<3$): the leftover term is negative, so the curve lies below the line; it rises from the lower left (close to $y=x+2$) through $(-1,0)$ and $\\left(0,\\tfrac23\\right)$ to the maximum $(1,1)$, then falls through $(2,0)$ to $-\\infty$ as $x\\to3$ from the left."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Build the sketch from exact features in a fixed order: domain, intercepts, vertical asymptotes, horizontal or oblique asymptote, stationary points, symmetry.",
+    "A vertical asymptote comes from a zero of the denominator that is not also a zero of the numerator; test the sign on both sides to see which way each side goes.",
+    "Compare degrees for the long-term behaviour, and divide when the top is one degree higher to find the oblique asymptote and the side the curve lies on.",
+    "A linear-over-linear curve has $\\dfrac{dy}{dx}=\\dfrac{ad-bc}{(cx+d)^{2}}$, so it has no stationary points; local maxima and minima are not the largest and smallest $y$-values when branches are separated.",
+    "For a periodic or piecewise function, evaluate each piece at its ends, mark open and closed dots, then translate one period to the left and to the right."
+   ]
+  }
+ ]
+}

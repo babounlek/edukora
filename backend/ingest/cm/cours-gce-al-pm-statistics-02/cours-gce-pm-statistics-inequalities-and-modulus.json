@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-statistics-inequalities-and-modulus",
+  "meta": {
+    "titre": "Solving Inequalities and Modulus Problems: sign tables, squaring and checking",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Modulus and rational inequalities",
+    "duree_estimee_min": 35,
+    "tags": [
+      "inequalities and modulus"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-inequalities-and-modulus-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine a mobile money agent in Bafoussam who wants the cash float to stay above a minimum so that withdrawals can be paid, and below a maximum for safety. Conditions like these are inequalities, and a statement such as 'the till error is at most 500 FCFA either way' is a modulus condition. The GCE tests both ideas: short Paper 1 questions on $|x-a|$ and longer Paper 2 questions on rational inequalities, where one careless multiplication loses part of the answer."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "$|x|$ is the distance of $x$ from $0$ on the number line: $|x|=x$ when $x\\ge0$ and $|x|=-x$ when $x<0$, so $|x|\\ge0$ always.",
+        "Multiplying or dividing both sides of an inequality by a negative number reverses the inequality sign.",
+        "A quadratic such as $(x+1)(x-3)$ is zero at its roots, positive outside them and negative between them when the coefficient of $x^{2}$ is positive.",
+        "$|a|^{2}=a^{2}$ for every real $a$, so squaring removes a modulus."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Solving modulus and rational inequalities without losing solutions",
+      "contenu_markdown": "**Distance meaning.** $|x-a|$ is the distance from $x$ to $a$. For $k>0$:\n\n$$\n|x-a|<k\\iff a-k<x<a+k \\tag{1}\n$$\n\nWith a non-strict sign the result is closed: $|x-a|\\le k\\iff a-k\\le x\\le a+k$. In contrast, $|x-a|>k$ means $x<a-k$ **or** $x>a+k$: two separate pieces, joined by 'or', never by 'and'. The statement $|x-a|\\ge k$ gives the same with $\\le$ and $\\ge$. If $k<0$, then $|x-a|<k$ has no solution and $|x-a|>k$ is true for every $x$.\n\n### Rules for rational inequalities\n1. **Never multiply or divide by an expression whose sign is unknown.** Move every term to one side, combine into a single fraction and compare with $0$.\n2. Find the **critical values**, where a numerator or a denominator is zero. They split the number line into intervals; in each interval every factor keeps one sign, so a sign table (or one test value) decides the interval.\n3. Zeros of a denominator are **always excluded**. Zeros of a numerator are included only when the inequality is not strict ($\\le$ or $\\ge$).\n4. Write the answer as intervals joined by 'or', then test one value inside and one outside.\n\n### Equations with a modulus\nFor $|f(x)|=g(x)$ we need $g(x)\\ge0$. Solve $f(x)=g(x)$ and $f(x)=-g(x)$, then **reject** any root that makes $g(x)<0$. When both sides are moduli, or when both sides are non-negative, squaring is safe:\n\n$$|f|<|g|\\iff f^{2}<g^{2}\\iff (f-g)(f+g)<0.$$\n\nA graph helps: the graph of $y=|f(x)|$ is the graph of $y=f(x)$ with the part below the $x$-axis reflected upwards.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Rational inequality by a sign table",
+          "quand_utiliser": "When the unknown appears in a denominator and the inequality is not simply linear.",
+          "contenu_markdown": "Example: $\\dfrac{x-1}{x+2}\\ge0$. The numerator is zero at $x=1$ and the denominator at $x=-2$.\n\n| Interval | $x-1$ | $x+2$ | Quotient |\n|---|---|---|---|\n| $x<-2$ | $-$ | $-$ | $+$ |\n| $-2<x<1$ | $-$ | $+$ | $-$ |\n| $x>1$ | $+$ | $+$ | $+$ |\n\nThe quotient is non-negative for $x<-2$ or $x\\ge1$. The value $x=-2$ is excluded (division by zero) and $x=1$ is included because the inequality is non-strict."
+        },
+        {
+          "nom": "Two moduli, by squaring",
+          "quand_utiliser": "When the inequality compares $|f(x)|$ with $|g(x)|$.",
+          "contenu_markdown": "Both sides are non-negative, so squaring keeps the direction. Example: $|x|<|x-4|$ gives $x^{2}<(x-4)^{2}$, that is $0<-8x+16$, so $x<2$. Check: $x=0$ gives $0<4$, true; $x=3$ gives $3<1$, false."
+        },
+        {
+          "nom": "Modulus equal to an expression",
+          "quand_utiliser": "When the right-hand side is not a constant, for example $|f(x)|=g(x)$.",
+          "contenu_markdown": "Example: $|x-1|=3-2x$. Case 1: $x-1=3-2x$ gives $x=\\frac43$, and $3-2x=\\frac13\\ge0$, so it is accepted. Case 2: $x-1=-(3-2x)$ gives $x=2$, but then $3-2x=-1<0$, which a modulus can never equal, so it is **rejected**. The only solution is $x=\\dfrac43$. Check: $\\left|\\frac43-1\\right|=\\frac13$ and $3-\\frac83=\\frac13$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve the inequality $\\dfrac{4}{x+1}>\\dfrac{3}{x-2}$, giving your answer as a union of intervals.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "State the values excluded from the start.",
+          "justification": "A denominator cannot be zero, so these values can never belong to the solution set.",
+          "resultat_markdown": "$x\\ne-1$ and $x\\ne2$."
+        },
+        {
+          "numero": 2,
+          "action": "Move everything to one side and combine into one fraction.",
+          "justification": "Cross-multiplying is not allowed, because the sign of $(x+1)(x-2)$ changes with $x$.",
+          "resultat_markdown": "$\\dfrac{4}{x+1}-\\dfrac{3}{x-2}=\\dfrac{4(x-2)-3(x+1)}{(x+1)(x-2)}=\\dfrac{x-11}{(x+1)(x-2)}>0$."
+        },
+        {
+          "numero": 3,
+          "action": "List the critical values.",
+          "justification": "These are the zeros of the numerator and of the denominator, where the sign of the quotient can change.",
+          "resultat_markdown": "$x=-1$, $x=2$ and $x=11$, which split the number line into four intervals."
+        },
+        {
+          "numero": 4,
+          "action": "Build the sign table.",
+          "justification": "In each interval, find the sign of every factor, then the sign of the quotient $\\dfrac{x-11}{(x+1)(x-2)}$.",
+          "resultat_markdown": "| Interval | $x-11$ | $x+1$ | $x-2$ | Quotient |\n|---|---|---|---|---|\n| $x<-1$ | $-$ | $-$ | $-$ | $-$ |\n| $-1<x<2$ | $-$ | $+$ | $-$ | $+$ |\n| $2<x<11$ | $-$ | $+$ | $+$ | $-$ |\n| $x>11$ | $+$ | $+$ | $+$ | $+$ |"
+        },
+        {
+          "numero": 5,
+          "action": "Select the intervals and test.",
+          "justification": "We need the quotient to be strictly positive, so no critical value is included.",
+          "resultat_markdown": "Positive for $-1<x<2$ and for $x>11$. Tests: $x=0$ gives $4>-1.5$, true; $x=5$ gives $0.67>1$, false; $x=12$ gives $0.31>0.3$, true."
+        }
+      ],
+      "conclusion_markdown": "The solution set is $-1<x<2$ or $x>11$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$\\dfrac{4}{x+1}>\\dfrac{3}{x-2}\\Rightarrow 4(x-2)>3(x+1)\\Rightarrow x>11$.",
+          "pourquoi_faux": "Both sides were multiplied by $(x+1)(x-2)$, which is negative for $-1<x<2$. In that interval the inequality should have been reversed, so the multiplication loses every solution there.",
+          "correction_markdown": "Combine into $\\dfrac{x-11}{(x+1)(x-2)}>0$ and use a sign table: $-1<x<2$ or $x>11$."
+        },
+        {
+          "erreur_markdown": "$|x-5|\\ge3$ gives $2\\le x\\le8$.",
+          "pourquoi_faux": "The interval $2\\le x\\le8$ is the solution of $|x-5|\\le3$. The value $x=5$ gives $|0|\\ge3$, which is false, yet $5$ lies inside the proposed interval.",
+          "correction_markdown": "$|x-5|\\ge3$ means $x-5\\ge3$ or $x-5\\le-3$, so $x\\le2$ or $x\\ge8$."
+        },
+        {
+          "erreur_markdown": "$(x+1)(x-3)\\ge0$ gives $x\\le-1$ and $x\\ge3$.",
+          "pourquoi_faux": "No number is both at most $-1$ and at least $3$, so 'and' describes an empty set. The two pieces are alternatives.",
+          "correction_markdown": "Write $x\\le-1$ **or** $x\\ge3$."
+        },
+        {
+          "erreur_markdown": "$|x+2|=2x+1$ gives $x+2=2x+1$ so $x=1$, and $x+2=-(2x+1)$ so $x=-1$; the solutions are $x=1$ and $x=-1$.",
+          "pourquoi_faux": "A modulus cannot equal a negative number. For $x=-1$ the right-hand side is $2(-1)+1=-1<0$, while $|-1+2|=1$, so $x=-1$ is not a solution.",
+          "correction_markdown": "Test every root in the original equation. Only $x=1$ works: $|1+2|=3=2(1)+1$."
+        },
+        {
+          "erreur_markdown": "$-2x>6$ gives $x>-3$.",
+          "pourquoi_faux": "Dividing by a negative number reverses the inequality sign.",
+          "correction_markdown": "$-2x>6\\Rightarrow x<-3$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Solve $|2x-3|\\le5$. (b) Solve $|x+1|>4$.",
+          "solution_markdown": "(a) $-5\\le2x-3\\le5$, so $-2\\le2x\\le8$, giving **$-1\\le x\\le4$**.\n\n(b) $x+1>4$ or $x+1<-4$, giving **$x>3$ or $x<-5$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Solve the equation $|x+3|=2x-1$. (b) Solve the inequality $|x+3|<2x-1$.",
+          "solution_markdown": "(a) We need $2x-1\\ge0$. Case 1: $x+3=2x-1$ gives $x=4$, and $2(4)-1=7\\ge0$, so it is accepted (check: $|7|=7$). Case 2: $x+3=-(2x-1)$ gives $3x=-2$, so $x=-\\frac23$, but then $2x-1=-\\frac73<0$, so it is rejected. The only solution is **$x=4$**.\n\n(b) $|x+3|<2x-1$ means $-(2x-1)<x+3<2x-1$. The right part gives $x+3<2x-1$, so $x>4$. The left part gives $1-2x<x+3$, so $x>-\\frac23$. Both hold for **$x>4$**, which also guarantees $2x-1>0$. Check: $x=5$ gives $8<9$, true; $x=0$ gives $3<-1$, false."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Solve $|x-2|<|2x+1|$.\n\n(b) Find the set of values of $x$ for which $\\dfrac{x}{x-3}\\le2$.\n\n(c) Hence find the values of $x$ that satisfy both the inequality in (a) and the inequality in (b).",
+          "solution_markdown": "(a) Square both sides: $(x-2)^{2}<(2x+1)^{2}$, so $(2x+1)^{2}-(x-2)^{2}>0$. Factorise the difference of squares: $(2x+1-x+2)(2x+1+x-2)=(x+3)(3x-1)>0$. This holds outside the roots: **$x<-3$ or $x>\\frac13$**.\n\n(b) $\\dfrac{x}{x-3}-2=\\dfrac{x-2(x-3)}{x-3}=\\dfrac{6-x}{x-3}\\le0$. Critical values $x=3$ (denominator, excluded) and $x=6$ (numerator, included). For $x<3$ the quotient is $\\dfrac{+}{-}$, negative: included. For $3<x<6$ it is $\\dfrac{+}{+}$, positive: excluded. For $x>6$ it is $\\dfrac{-}{+}$, negative: included. At $x=6$ it equals $0$: included. So **$x<3$ or $x\\ge6$**.\n\n(c) Intersect the two sets: $x<-3$ lies in both; for $\\frac13<x$ we need also $x<3$ or $x\\ge6$. The result is **$x<-3$, or $\\frac13<x<3$, or $x\\ge6$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$|x-a|<k$ means $a-k<x<a+k$ (a single interval); $|x-a|>k$ means $x<a-k$ or $x>a+k$ (two pieces joined by 'or').",
+        "For a rational inequality, move all terms to one side, combine into one fraction, find the critical values and use a sign table; never cross-multiply by an expression of unknown sign.",
+        "Exclude zeros of denominators always; include zeros of numerators only for $\\le$ and $\\ge$.",
+        "For $|f|=g$ solve $f=g$ and $f=-g$, then reject every root with $g<0$; for $|f|<|g|$ square both sides and factorise $(f-g)(f+g)$.",
+        "Reverse the inequality sign when multiplying or dividing by a negative number, and always test a value from each interval of your answer."
+      ]
+    }
+  ]
+}

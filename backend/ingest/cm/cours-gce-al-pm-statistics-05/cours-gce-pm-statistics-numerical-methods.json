@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-statistics-numerical-methods",
+  "meta": {
+    "titre": "Numerical Methods: Locating Roots, Newton-Raphson and Convergent Iterations",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Root location, Newton-Raphson and fixed-point iteration",
+    "duree_estimee_min": 35,
+    "tags": [
+      "numerical methods"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2024-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2024-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-numerical-methods-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A civil engineer in Douala cannot always solve an equation by factorising, for example when a design condition leads to a cubic equation. She does what calculators and computers do: start from a rough guess and improve it step by step until the digits stop changing. These numerical methods are examined at A Level in a standard way. You are asked to show that a root lies in a given interval, then to apply the Newton-Raphson formula once or twice, or to decide whether a given rearrangement of an equation will converge. Most marks are lost through arithmetic slips and the wrong calculator mode, so the method has to be exact."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The derivative of a polynomial, for example if $f(x) = x^3 + x - 3$ then $f'(x) = 3x^2 + 1$.",
+        "A continuous function that changes sign on an interval must pass through zero inside that interval.",
+        "In calculus, trigonometric functions take angles in radians, so a calculator must be in radian mode.",
+        "Rounding to a given number of decimal places is done only at the end of a calculation."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Root location, Newton-Raphson and fixed-point iteration",
+      "contenu_markdown": "### Locating a root\nA root of $f(x) = 0$ is a number $\\alpha$ with $f(\\alpha) = 0$. If $f$ is **continuous** on $[a, b]$ and $f(a)$, $f(b)$ have opposite signs, then there is at least one root between $a$ and $b$. Always state the continuity, then give both values. The converse is false: no sign change does not prove that there is no root, because an even number of roots can sit inside the interval.\n\n### The Newton-Raphson method\nDraw the tangent to $y = f(x)$ at $x = x_n$; it meets the $x$-axis at the next approximation:\n\n$$\nx_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)} \\tag{1}\n$$\n\nTo use it: write down $f$ and $f'$, substitute $x_n$ into both, and keep all the digits of the calculator until the final line. Stop when two successive values agree to the accuracy required. Near a simple root the number of correct digits roughly doubles at each step, so convergence is fast.\n\n### Fixed-point iteration\nRearrange $f(x) = 0$ into the form $x = g(x)$ and iterate\n\n$$\nx_{n+1} = g(x_n) \\tag{2}\n$$\n\nThe iteration converges to a root $\\alpha$, for a start close enough to $\\alpha$, when $|g'(\\alpha)| < 1$. If $0 < g'(\\alpha) < 1$ the values approach $\\alpha$ from one side in a staircase; if $-1 < g'(\\alpha) < 0$ they alternate on both sides in a cobweb. If $|g'(\\alpha)| > 1$ the values move away from $\\alpha$.\n\n### Giving a root to a stated accuracy\nTo prove that a root is $r$ correct to $d$ decimal places, show a sign change of $f$ between $r - \\tfrac12 \\times 10^{-d}$ and $r + \\tfrac12 \\times 10^{-d}$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "When Newton-Raphson fails",
+          "quand_utiliser": "When f'(x_n) is zero or very small, or when the first approximation is far from the root wanted.",
+          "contenu_markdown": "Formula (1) cannot be used where $f'(x_n) = 0$, because the tangent is parallel to the $x$-axis. For $f(x) = x^3 - 3x + 1$ we have $f'(1) = 0$, so $x_0 = 1$ is unusable (although $f(0) = 1$ and $f(1) = -1$ show a root in $(0, 1)$). Starting at $x_0 = 0.5$ gives $f(0.5) = -0.375$, $f'(0.5) = -2.25$ and $x_1 = 0.3333$. A tangent drawn near a turning point throws the next value far away, possibly towards a different root, so choose a start where $f'$ is not small."
+        },
+        {
+          "nom": "Choosing a convergent rearrangement",
+          "quand_utiliser": "When a question gives two or more rearrangements of the same equation and asks which one to use.",
+          "contenu_markdown": "The equation $x^3 - x - 1 = 0$ has a root $\\alpha \\approx 1.3247$. Rearrangement $x = \\sqrt[3]{x+1}$ has $g'(x) = \\dfrac{1}{3(x+1)^{2/3}}$, and $g'(\\alpha) \\approx 0.19$, so it converges. From $x_0 = 1.3$ the values are 1.3000, 1.3200, 1.3238, 1.3245, 1.3247. Rearrangement $x = x^3 - 1$ has $g'(x) = 3x^2$, and $g'(\\alpha) \\approx 5.26$, which is greater than $1$, so from the same start the values move away: 1.3000, 1.1970, 0.7151, -0.6344."
+        },
+        {
+          "nom": "Proving the accuracy of a root",
+          "quand_utiliser": "When a question asks you to show that a root is a stated number to some decimal places.",
+          "contenu_markdown": "Let $f(x) = x^3 + x - 3$. Iterating Newton-Raphson suggests $\\alpha \\approx 1.2134$, and to prove $\\alpha = 1.213$ to $3$ decimal places evaluate $f$ at the two ends of the rounding interval: $f(1.2125) = -0.0049$ (negative) and $f(1.2135) = 0.0005$ (positive). The change of sign, with $f$ continuous, shows $1.2125 < \\alpha < 1.2135$, which is exactly the statement that $\\alpha = 1.213$ to $3$ d.p."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "(a) Show that the equation $x^3 + x - 3 = 0$ has a root between $x = 1$ and $x = 2$.\n\n(b) Using $x_0 = 1.5$ as a first approximation, apply the Newton-Raphson method twice to find $x_1$ and $x_2$, giving each to $4$ decimal places.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Evaluate $f(x) = x^3 + x - 3$ at the ends of the interval.",
+          "justification": "$f$ is a polynomial, hence continuous, so a change of sign guarantees a root in between.",
+          "resultat_markdown": "$f(1) = 1 + 1 - 3 = -1 < 0$ and $f(2) = 8 + 2 - 3 = 7 > 0$, so there is a root between $1$ and $2$."
+        },
+        {
+          "numero": 2,
+          "action": "Differentiate and write the formula for this equation.",
+          "justification": "Formula (1) needs $f'(x)$.",
+          "resultat_markdown": "$f'(x) = 3x^2 + 1$, so $x_{n+1} = x_n - \\dfrac{x_n^3 + x_n - 3}{3x_n^2 + 1}$."
+        },
+        {
+          "numero": 3,
+          "action": "Find $x_1$ from $x_0 = 1.5$.",
+          "justification": "Substitute $x_0$ into $f$ and $f'$.",
+          "resultat_markdown": "$f(1.5) = 3.375 + 1.5 - 3 = 1.875$ and $f'(1.5) = 3(2.25) + 1 = 7.75$, so $x_1 = 1.5 - \\dfrac{1.875}{7.75} = 1.2581$ (4 d.p.)."
+        },
+        {
+          "numero": 4,
+          "action": "Find $x_2$ from the unrounded $x_1 = 1.258065\\ldots$",
+          "justification": "Keep the full calculator value of $x_1$ in the next substitution, to avoid accumulating rounding errors.",
+          "resultat_markdown": "$f(x_1) = 0.2492$ and $f'(x_1) = 5.7482$, so $x_2 = 1.258065 - \\dfrac{0.2492}{5.7482} = 1.2147$ (4 d.p.)."
+        },
+        {
+          "numero": 5,
+          "action": "Check that the process is converging.",
+          "justification": "A good iteration makes $|f(x_n)|$ shrink quickly.",
+          "resultat_markdown": "$|f(x_1)| = 0.2492$ and $|f(x_2)| = 0.0070$, so $x_2$ is much closer to the root than $x_1$."
+        }
+      ],
+      "conclusion_markdown": "$x_1 = 1.2581$ and $x_2 = 1.2147$ to 4 decimal places. One further step would give $x_3 = 1.2134$, so the root is close to $1.213$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Using a calculator in degree mode to apply Newton-Raphson to $f(x) = \\cos x - x$.",
+          "pourquoi_faux": "The derivative $-\\sin x - 1$ and the formula $x_{n+1} = x_n - f(x_n)/f'(x_n)$ assume that $x$ is in radians. In degree mode, $\\cos 0.7$ is read as the cosine of $0.7^\\circ$ and every value is wrong.",
+          "correction_markdown": "Set the calculator to radian mode before any numerical-methods question with trigonometric functions. For example $\\cos 0.7 = 0.7648$ (radians)."
+        },
+        {
+          "erreur_markdown": "Writing $x_{n+1} = x_n + \\dfrac{f(x_n)}{f'(x_n)}$, or $x_{n+1} = x_n - \\dfrac{f'(x_n)}{f(x_n)}$.",
+          "pourquoi_faux": "The tangent meets the axis at $x_n - f(x_n)/f'(x_n)$; the sign and the order of $f$ and $f'$ both matter. For $f(x) = x^3 + x - 3$ and $x_0 = 1.5$ the plus sign gives $1.7419$, which is farther from the root than $x_0$.",
+          "correction_markdown": "Use $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$. For the same start this gives $x_1 = 1.2581$, closer to the root."
+        },
+        {
+          "erreur_markdown": "For $f(x) = x^2 - 3x + 2$, $f(0) = 2$ and $f(3) = 2$ have the same sign, so there is no root between $0$ and $3$.",
+          "pourquoi_faux": "No change of sign does not prove the absence of a root. Two roots can lie in the interval, in which case the signs at the ends are equal.",
+          "correction_markdown": "$f(x) = (x-1)(x-2)$ has roots $1$ and $2$ inside $[0, 3]$. A sign change proves a root exists; its absence proves nothing."
+        },
+        {
+          "erreur_markdown": "Rounding $\\dfrac{f(x_0)}{f'(x_0)}$ to one decimal place, writing $x_1 = 1.5 - 0.2 = 1.3$.",
+          "pourquoi_faux": "Rounding in the middle of the calculation moves the answer: $1.3$ is a long way from the correct $1.2581$, and later iterations would drift further.",
+          "correction_markdown": "Keep all the digits from the calculator, $\\dfrac{1.875}{7.75} = 0.241935\\ldots$, and round only the final answer: $x_1 = 1.2581$."
+        },
+        {
+          "erreur_markdown": "Starting Newton-Raphson for $x^2 - 3x + 1 = 0$ at $x_0 = 1.5$ and carrying on.",
+          "pourquoi_faux": "At $x = 1.5$, $f'(x) = 2x - 3 = 0$, so the formula divides by zero. The method fails at a turning point.",
+          "correction_markdown": "Choose another starting value, such as $x_0 = 3$ or $x_0 = 0$, where $f'$ is not zero."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Show that $x^3 - 2x - 5 = 0$ has a root between $2$ and $3$. Taking $x_0 = 2$, use the Newton-Raphson method to find $x_1$ and $x_2$, giving $x_2$ to $4$ decimal places.",
+          "solution_markdown": "Let $f(x) = x^3 - 2x - 5$. $f(2) = 8 - 4 - 5 = -1 < 0$ and $f(3) = 27 - 6 - 5 = 16 > 0$. $f$ is continuous, so there is a root between $2$ and $3$.\n\n$f'(x) = 3x^2 - 2$, so $f'(2) = 10$. $x_1 = 2 - \\dfrac{-1}{10} = 2.1$.\n\n$f(2.1) = 9.261 - 4.2 - 5 = 0.061$ and $f'(2.1) = 3(4.41) - 2 = 11.23$. $x_2 = 2.1 - \\dfrac{0.061}{11.23} = 2.094568\\ldots$\n\n**$x_1 = 2.1$ and $x_2 = 2.0946$ (4 d.p.)**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Show that $\\cos x - x = 0$, with $x$ in radians, has a root between $0$ and $1$.\n\n(b) Taking $x_0 = 0.7$, use the Newton-Raphson method to find $x_1$ and $x_2$ to $4$ decimal places.",
+          "solution_markdown": "(a) Let $f(x) = \\cos x - x$, continuous for all $x$. $f(0) = 1 > 0$ and $f(1) = \\cos 1 - 1 = -0.4597 < 0$, so there is a root between $0$ and $1$.\n\n(b) $f'(x) = -\\sin x - 1$. At $x_0 = 0.7$: $f(0.7) = 0.7648 - 0.7 = 0.0648$ and $f'(0.7) = -1.6442$, so $x_1 = 0.7 - \\dfrac{0.0648}{-1.6442} = 0.7394$ (4 d.p.).\n\nAt the unrounded $x_1 = 0.739436$: $f(x_1) = -0.00059$ and $f'(x_1) = -1.6739$, so $x_2 = 0.739436 - \\dfrac{-0.00059}{-1.6739} = 0.7391$ (4 d.p.).\n\n**$x_1 = 0.7394$ and $x_2 = 0.7391$**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) Apply the Newton-Raphson method to $f(x) = x^2 - 6$ and show that it gives $x_{n+1} = \\dfrac12\\left(x_n + \\dfrac{6}{x_n}\\right)$.\n\n(b) Taking $x_0 = 2.5$, find $x_1$ exactly and $x_2$ to $4$ decimal places, and compare with $\\sqrt6$.\n\n(c) A student instead uses $x_{n+1} = \\dfrac{6}{x_n}$ with $x_0 = 2.5$. Find the first four values of the sequence and explain what happens.",
+          "solution_markdown": "(a) $f'(x) = 2x$, so $x_{n+1} = x_n - \\dfrac{x_n^2 - 6}{2x_n} = \\dfrac{2x_n^2 - x_n^2 + 6}{2x_n} = \\dfrac{x_n^2 + 6}{2x_n} = \\dfrac12\\left(x_n + \\dfrac{6}{x_n}\\right)$. **Shown.**\n\n(b) $x_1 = \\dfrac12\\left(2.5 + \\dfrac{6}{2.5}\\right) = \\dfrac12(2.5 + 2.4) = 2.45$. Then $x_2 = \\dfrac12\\left(2.45 + \\dfrac{6}{2.45}\\right) = \\dfrac12(2.45 + 2.44898\\ldots) = 2.4495$ (4 d.p.). Since $\\sqrt6 = 2.44949\\ldots$, **$x_1 = 2.45$ and $x_2 = 2.4495$; already $x_2$ agrees with $\\sqrt6$ to 4 decimal places.**\n\n(c) $x_1 = \\dfrac{6}{2.5} = 2.4$, $x_2 = \\dfrac{6}{2.4} = 2.5$, $x_3 = 2.4$, $x_4 = 2.5$. The values alternate forever between $2.5$ and $2.4$. Here $g(x) = \\dfrac6x$, $g'(x) = -\\dfrac{6}{x^2}$ and $g'(\\sqrt6) = -1$, so $|g'(\\alpha)| < 1$ fails. **The sequence oscillates and does not converge.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "To show a root lies in an interval: state that $f$ is continuous, evaluate $f$ at both ends and show opposite signs. A missing sign change proves nothing.",
+        "Newton-Raphson: $x_{n+1} = x_n - \\dfrac{f(x_n)}{f'(x_n)}$. Write $f$ and $f'$, keep full calculator values and round only the final answer.",
+        "Trigonometric functions in numerical methods need radians; the method fails where $f'(x_n) = 0$.",
+        "Fixed-point iteration $x_{n+1} = g(x_n)$ converges to a root $\\alpha$ when $|g'(\\alpha)| < 1$ and diverges when $|g'(\\alpha)| > 1$.",
+        "To prove a root to $d$ decimal places, show a change of sign of $f$ between the two numbers half a unit of the last place above and below the value."
+      ]
+    }
+  ]
+}

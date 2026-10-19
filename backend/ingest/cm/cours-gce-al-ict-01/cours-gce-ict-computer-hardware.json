@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-ict-computer-hardware",
+  "meta": {
+    "titre": "Computer Hardware: what the CPU, memory and storage do and how they limit speed",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "CPU, memory and storage devices",
+    "duree_estimee_min": 35,
+    "tags": [
+      "computer hardware"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-computer-hardware-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Two second-hand laptops are on sale in a shop in Douala for the same price. One has a faster processor, the other has twice the memory and a solid-state drive. Which one will feel quicker for a student who keeps a word processor, a browser and a spreadsheet open at once? Exam questions on hardware are of this kind: they name a symptom and ask which component to improve, or they ask what the parts of the processor do and how data is stored. A precise answer names the component, says what it does, and links it to the symptom."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Hardware is the physical equipment of a computer; software is the set of programs it runs.",
+        "A bit is a binary digit, and eight bits make one byte.",
+        "A computer system performs four basic functions: input, processing, output and storage."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "The CPU, memory, storage and performance",
+      "contenu_markdown": "### Inside the CPU\n- The **arithmetic and logic unit (ALU)** performs arithmetic (addition, subtraction and so on) and logical operations such as comparisons and AND, OR, NOT.\n- The **control unit (CU)** fetches each instruction from memory, decodes it, and sends control signals that coordinate the other parts and set the timing.\n- **Registers** are very small, very fast stores inside the processor. Examples: the program counter (address of the next instruction), the instruction register (the instruction being processed), the accumulator (results of the ALU) and the memory address and data registers.\n- The **internal bus** carries data and signals between the registers, the ALU and the control unit. The **system buses** link the CPU to main memory and to input and output devices: the **address bus** (one way, from the CPU, carries the address wanted), the **data bus** (two ways, carries data and instructions) and the **control bus** (carries signals such as read, write and timing).\n\n### The instruction cycle\n1. **Fetch**: the address in the program counter is sent to memory, the instruction is copied into the CPU, and the program counter moves on to the next address.\n2. **Decode**: the control unit works out what the instruction means and which data it needs.\n3. **Execute**: the instruction is carried out, for example by the ALU, and the result is stored in a register or in memory.\n\n### What decides performance\n| Factor | Effect | Typical symptom it cures |\n|---|---|---|\n| Clock speed (GHz) | more clock cycles each second, so more instructions each second | slow calculations |\n| Number of cores | several instructions processed at the same time | slow when many programs run |\n| Cache memory | small, fast memory near the CPU holding frequently used data | processor waiting for RAM |\n| RAM size | more programs and data held in main memory, less swapping to disk | slows down when many programs are open |\n| Storage type | a solid-state drive has no moving parts and loads files faster than a hard disk | slow start-up and slow loading |\n\n### Memory and storage\nRAM is read-write and **volatile**: it loses its contents when power is off, and it holds running programs and data. ROM is **non-volatile** and holds the start-up instructions. Backing storage keeps data permanently. With **serial (sequential) access**, as on magnetic tape, the device must pass through the earlier data to reach a record. With **direct (random) access**, as on a hard disk, CD-ROM or flash drive, it goes straight to the wanted location.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "\"Which component should be upgraded?\" questions",
+          "quand_utiliser": "When a symptom is described and a recommendation must be justified.",
+          "contenu_markdown": "Link the symptom to the cause before naming the part. Slow only when many programs are open: shortage of RAM. Slow in one long calculation: processor speed or number of cores. Slow to start and to open files: storage type. Always add why the other parts are not the main cause."
+        },
+        {
+          "nom": "\"State and explain\" questions on the instruction cycle",
+          "quand_utiliser": "When two or three stages must be named and described.",
+          "contenu_markdown": "Each stage earns a mark for its name and a mark for what happens in it. Write fetch, decode and execute in order, and give an action for each, such as the use of the program counter in the fetch stage."
+        },
+        {
+          "nom": "Capacity and transfer-time calculations",
+          "quand_utiliser": "When data sizes are compared with the capacity or the speed of a device.",
+          "contenu_markdown": "Use 1 KB = 1024 bytes, 1 MB = 1024 KB and 1 GB = 1024 MB unless the question gives other values. Number of media = size ÷ capacity, **rounded up**. Time = size ÷ speed, with the same unit in both."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "In a school office, a computer with a 2.4 GHz processor, 2 GB of RAM and a hard disk drive becomes very slow whenever the clerk opens a spreadsheet, a web browser and a word processor together, but works normally with one program open. Explain the cause and recommend one upgrade, with a justification.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Read the symptom carefully.",
+          "justification": "The condition (many programs together) and the control case (one program is fine) point to a limit of shared resources, not to a lack of raw processing speed.",
+          "resultat_markdown": "Slow only with several programs open."
+        },
+        {
+          "numero": 2,
+          "action": "Link the symptom to the memory.",
+          "justification": "Running programs and their data are held in RAM. When RAM is full, the operating system moves data to the hard disk and fetches it back when needed.",
+          "resultat_markdown": "Swapping between RAM and disk is far slower than working in RAM, so the whole machine slows down."
+        },
+        {
+          "numero": 3,
+          "action": "Eliminate the other candidates.",
+          "justification": "A justification needs a reason for rejecting the alternatives.",
+          "resultat_markdown": "A faster clock would speed up calculations, but the delay here comes from waiting for the disk. A faster drive would shorten loading, but not the swapping."
+        },
+        {
+          "numero": 4,
+          "action": "State the recommendation.",
+          "justification": "The upgrade must remove the cause named in step 2.",
+          "resultat_markdown": "Increase the RAM, for example by adding a second module."
+        },
+        {
+          "numero": 5,
+          "action": "State the expected effect.",
+          "justification": "Examiners expect the benefit linked back to the symptom.",
+          "resultat_markdown": "More programs and data fit in RAM at once, so swapping falls and the computer stays responsive with three programs open."
+        }
+      ],
+      "conclusion_markdown": "**Model answer**: The slowdown appears when several programs are open because their data no longer fit in the 2 GB of RAM, so the system keeps swapping data between RAM and the slower hard disk. Adding RAM is the best upgrade because it removes this swapping. A faster processor would not help, since the processor is waiting for the disk, not working at full load."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "\"The ALU controls the other parts of the computer.\"",
+          "pourquoi_faux": "Controlling and coordinating is the job of the control unit. The ALU only performs arithmetic and logic operations.",
+          "correction_markdown": "The ALU calculates and compares; the control unit fetches, decodes and sends control signals."
+        },
+        {
+          "erreur_markdown": "\"RAM keeps your files permanently.\"",
+          "pourquoi_faux": "RAM is volatile: its contents are lost when power is switched off.",
+          "correction_markdown": "Files are kept on backing storage (hard disk, flash drive, optical disc); RAM holds the programs and data in use."
+        },
+        {
+          "erreur_markdown": "\"A computer with a higher clock speed is always faster.\"",
+          "pourquoi_faux": "Speed also depends on the number of cores, the cache, the amount of RAM and the type of storage. A fast processor can still wait for a slow disk.",
+          "correction_markdown": "Say that a higher clock speed raises the number of instructions per second, but overall performance depends on several factors together."
+        },
+        {
+          "erreur_markdown": "\"A magnetic tape lets the computer go straight to any record.\"",
+          "pourquoi_faux": "A tape is a serial-access medium: to reach a record, the tape must be wound past the data stored before it.",
+          "correction_markdown": "Tape uses serial access; a disc (hard disk or CD-ROM) allows direct access."
+        },
+        {
+          "erreur_markdown": "\"The address bus carries the data from memory to the CPU.\"",
+          "pourquoi_faux": "Data and instructions travel on the data bus. The address bus only carries the location wanted, from the CPU outwards.",
+          "correction_markdown": "Address bus: one way, location. Data bus: two ways, content. Control bus: signals."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Name the part of the computer that performs each task.\n\n(a) Deciding which of two numbers is larger.\n\n(b) Holding the address of the instruction that will be fetched next.\n\n(c) Carrying the address of a memory location from the CPU to the memory.\n\n(d) Sending the signal that tells the memory to read.",
+          "solution_markdown": "(a) The **arithmetic and logic unit** (a comparison is a logical operation).\n\n(b) The **program counter**, a register.\n\n(c) The **address bus**.\n\n(d) The **control unit**, using the **control bus**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) State the three stages of the instruction cycle in order and describe what happens in the first.\n\n(b) A bank keeps its yearly records on magnetic tape. Give one reason why tape suits this use and one reason why it is unsuitable for finding a single customer's record quickly.",
+          "solution_markdown": "(a) **Fetch, decode, execute.** In the fetch stage the address in the program counter is sent to memory, the instruction is copied into the CPU, and the program counter is moved on to the next address.\n\n(b) Suitable: tape stores a large amount of data at a low cost per byte and tapes can be stored away safely, which suits records that are rarely read. Unsuitable: tape has **serial access**, so the drive must wind through all the earlier records before reaching the wanted one."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A school must back up 18 GB of data. Use 1 GB = 1024 MB.\n\n(a) How many recordable discs of 700 MB capacity are needed?\n\n(b) The data can instead be copied to an external drive over a link that transfers 40 MB each second. How long does the copy take? Give the answer in minutes and seconds.\n\n(c) A newer link transfers 120 MB each second. How many times faster is it and what is the new copying time?",
+          "solution_markdown": "(a) 18 GB = 18 × 1024 = 18432 MB. 18432 ÷ 700 = 26.3, and a disc cannot be used partly, so the result is rounded up: **27 discs**.\n\n(b) Time = 18432 MB ÷ 40 MB/s = 460.8 s = 7 minutes 40.8 seconds, so about **7 min 41 s**.\n\n(c) 120 ÷ 40 = **3 times faster**. Time = 18432 ÷ 120 = 153.6 s = **2 min 33.6 s** (about 2 min 34 s), which is one third of 460.8 s."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The ALU performs arithmetic and logic operations; the control unit fetches, decodes and coordinates with control signals; registers are tiny, very fast stores inside the CPU.",
+        "The instruction cycle is fetch, decode, execute, and the program counter holds the address of the next instruction.",
+        "Address bus: one way, carries the location. Data bus: two ways, carries data and instructions. Control bus: carries control and timing signals. The internal bus links the parts inside the processor.",
+        "Performance depends on clock speed, cores, cache, RAM size and storage type: match the symptom to the cause before naming the upgrade, and say why the other parts are not responsible.",
+        "RAM is volatile and holds running programs; ROM is non-volatile; magnetic tape is serial access, while a hard disk, CD-ROM and flash drive are direct access.",
+        "Capacity questions: size ÷ capacity rounded up; time = size ÷ speed in the same unit."
+      ]
+    }
+  ]
+}

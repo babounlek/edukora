@@ -1,0 +1,164 @@
+{
+ "cours_id": "cours-gce-pm-statistics-integration-of-rational-functions",
+ "meta": {
+  "titre": "Rational Integrands: partial fractions turned into logarithms",
+  "matiere": "Pure Mathematics with Statistics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Partial fractions and logarithmic integrals",
+  "duree_estimee_min": 40,
+  "tags": [
+   "integration of rational functions"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-statistics-2026-p2-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-statistics-2026-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-statistics-integration-of-rational-functions-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Suppose a model gives the rate of change of a quantity as a fraction whose denominator is a product of two linear factors. To find the total change over an interval, that fraction must be integrated, and the answer is almost always written with logarithms. Written as a single fraction, the quotient cannot be integrated with the standard rules; split into simpler fractions, each part can. The GCE asks for exactly this chain of steps, often with the instruction to show that the result equals a given logarithm, so every line of the working is marked."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "$\\int\\dfrac1x\\,dx=\\ln|x|+C$, and the integral of a sum is the sum of the integrals.",
+    "Laws of logarithms: $\\ln a-\\ln b=\\ln\\dfrac ab$, $k\\ln a=\\ln a^k$ and $\\ln1=0$.",
+    "A quadratic or cubic polynomial can be factorised into linear factors when it has real roots.",
+    "Polynomial division gives a quotient and a remainder of lower degree."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Partial fractions, the logarithm rules, and exact definite integrals",
+   "contenu_markdown": "### Standard integrals\n$$\n\\int\\frac{1}{ax+b}\\,dx=\\frac1a\\ln|ax+b|+C \\tag{1}\n$$\n\n$$\n\\int\\frac{f'(x)}{f(x)}\\,dx=\\ln|f(x)|+C \\tag{2}\n$$\n\nAlso $\\int\\dfrac{dx}{(ax+b)^2}=-\\dfrac{1}{a(ax+b)}+C$.\n\n### Partial fractions\nA fraction is **proper** when the degree of the numerator is less than the degree of the denominator. Factorise the denominator, then write:\n\n- distinct factors: $\\dfrac{N(x)}{(x-a)(x-b)}=\\dfrac{A}{x-a}+\\dfrac{B}{x-b}$\n- a repeated factor: $\\dfrac{N(x)}{(x-a)(x-b)^2}=\\dfrac{A}{x-a}+\\dfrac{B}{x-b}+\\dfrac{C}{(x-b)^2}$\n\nMultiply both sides by the denominator and find the constants. The **cover-up method** gives $A$ by substituting $x=a$ in the numerator and in the other factors; other constants are found by substituting convenient values or by comparing coefficients. If the fraction is **improper**, divide first so that a polynomial plus a proper fraction remains.\n\n### Integrating and finishing\nIntegrate term by term with (1). In a definite integral the interval must not contain a zero of the denominator, and the modulus signs can then be dropped when each factor keeps one sign on the interval. Combine the logarithms with $\\ln a-\\ln b=\\ln\\dfrac ab$ and $k\\ln a=\\ln a^k$. When the question says \"show that\", the final line must be exactly the stated value; give exact answers, not decimals, unless told otherwise.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Improper fractions: divide first",
+     "quand_utiliser": "When the numerator has degree equal to or greater than the denominator.",
+     "contenu_markdown": "For $g(x)=\\dfrac{x^2+x-3}{(x-1)(x+2)}$ the denominator expands to $x^2+x-2$, so $g(x)=1-\\dfrac{1}{(x-1)(x+2)}=1-\\dfrac13\\left(\\dfrac1{x-1}-\\dfrac1{x+2}\\right)$. Then $\\int_2^4g(x)\\,dx=2-\\dfrac13\\left[\\ln\\dfrac{x-1}{x+2}\\right]_2^4=2-\\dfrac13\\ln2$."
+    },
+    {
+     "nom": "A repeated linear factor",
+     "quand_utiliser": "When the denominator contains $(x-b)^2$.",
+     "contenu_markdown": "$\\dfrac{3x^2-3x+3}{(x-2)(x+1)^2}=\\dfrac1{x-2}+\\dfrac2{x+1}-\\dfrac3{(x+1)^2}$, with $A=1$ by cover-up at $x=2$. Integrating, $\\ln|x-2|+2\\ln|x+1|+\\dfrac3{x+1}+C$, because $\\int-\\dfrac{3}{(x+1)^2}dx=\\dfrac{3}{x+1}$."
+    },
+    {
+     "nom": "Numerator equal to the derivative of the denominator",
+     "quand_utiliser": "When no partial fractions are needed, for instance with an irreducible quadratic.",
+     "contenu_markdown": "$\\int\\dfrac{2x+3}{x^2+3x+5}\\,dx=\\ln(x^2+3x+5)+C$ by (2). The quadratic has discriminant $9-20<0$, so it is always positive and no modulus is needed."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Express $f(x)=\\dfrac{x+11}{(x-1)(x+3)}$ in partial fractions. Hence show that $\\displaystyle\\int_2^5 f(x)\\,dx=\\ln25$.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Write the form of the decomposition.",
+     "justification": "The fraction is proper and the denominator has two distinct linear factors.",
+     "resultat_markdown": "$\\dfrac{x+11}{(x-1)(x+3)}=\\dfrac{A}{x-1}+\\dfrac{B}{x+3}$"
+    },
+    {
+     "numero": 2,
+     "action": "Find $A$ and $B$ by the cover-up method.",
+     "justification": "Multiplying by the denominator gives $x+11=A(x+3)+B(x-1)$. Put $x=1$ to find $A$ and $x=-3$ to find $B$.",
+     "resultat_markdown": "$12=4A$, so $A=3$; $8=-4B$, so $B=-2$. Thus $f(x)=\\dfrac{3}{x-1}-\\dfrac{2}{x+3}$."
+    },
+    {
+     "numero": 3,
+     "action": "Integrate term by term.",
+     "justification": "Use (1) with $a=1$. On $[2,5]$ both $x-1$ and $x+3$ are positive, so the modulus signs can be dropped.",
+     "resultat_markdown": "$\\int f(x)\\,dx=3\\ln(x-1)-2\\ln(x+3)+C$"
+    },
+    {
+     "numero": 4,
+     "action": "Substitute the limits.",
+     "justification": "Evaluate at $x=5$ and subtract the value at $x=2$.",
+     "resultat_markdown": "$\\left[3\\ln4-2\\ln8\\right]-\\left[3\\ln1-2\\ln5\\right]=3\\ln4-2\\ln8+2\\ln5$"
+    },
+    {
+     "numero": 5,
+     "action": "Combine the logarithms.",
+     "justification": "Use $k\\ln a=\\ln a^k$: $3\\ln4=\\ln64$ and $2\\ln8=\\ln64$, so these cancel. Also $2\\ln5=\\ln25$.",
+     "resultat_markdown": "$$\n\\ln64-\\ln64+\\ln25=\\ln25 \\tag{1}\n$$"
+    }
+   ],
+   "conclusion_markdown": "$f(x)=\\dfrac{3}{x-1}-\\dfrac{2}{x+3}$, and $\\displaystyle\\int_2^5f(x)\\,dx=\\ln25$, as required."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Writing $\\int\\dfrac{dx}{(x-1)(x+3)}=\\ln|(x-1)(x+3)|+C$.",
+     "pourquoi_faux": "Rule (2) needs the numerator to be the derivative of the whole denominator. Here the numerator is $1$, and the derivative of $(x-1)(x+3)$ is $2x+2$.",
+     "correction_markdown": "Partial fractions first: $\\dfrac14\\left(\\dfrac1{x-1}-\\dfrac1{x+3}\\right)$, which integrates to $\\dfrac14\\ln\\left|\\dfrac{x-1}{x+3}\\right|+C$."
+    },
+    {
+     "erreur_markdown": "Writing $\\int\\dfrac{dx}{2x+1}=\\ln|2x+1|+C$.",
+     "pourquoi_faux": "The inner function $2x+1$ has derivative $2$, so differentiating $\\ln|2x+1|$ gives $\\dfrac{2}{2x+1}$, twice the integrand.",
+     "correction_markdown": "$\\int\\dfrac{dx}{2x+1}=\\dfrac12\\ln|2x+1|+C$."
+    },
+    {
+     "erreur_markdown": "Writing $\\dfrac{x^2+4}{x(x+2)}=\\dfrac Ax+\\dfrac B{x+2}$.",
+     "pourquoi_faux": "The fraction is improper (both degrees equal $2$). The decomposition is missing the constant term, so no values of $A$ and $B$ can work.",
+     "correction_markdown": "Divide first: $\\dfrac{x^2+4}{x(x+2)}=1+\\dfrac{4-2x}{x(x+2)}=1+\\dfrac2x-\\dfrac4{x+2}$."
+    },
+    {
+     "erreur_markdown": "For $\\dfrac{3x^2-3x+3}{(x-2)(x+1)^2}$, using only $\\dfrac{A}{x-2}+\\dfrac{B}{(x+1)^2}$.",
+     "pourquoi_faux": "A repeated factor needs one term for each power: $\\dfrac B{x+1}$ and $\\dfrac C{(x+1)^2}$. Omitting the first term loses a family of fractions.",
+     "correction_markdown": "$\\dfrac A{x-2}+\\dfrac B{x+1}+\\dfrac C{(x+1)^2}$."
+    },
+    {
+     "erreur_markdown": "Simplifying $2\\ln3-\\ln5$ as $\\ln\\dfrac65$.",
+     "pourquoi_faux": "The multiplier 2 belongs as a power: $2\\ln3=\\ln3^2=\\ln9$, not $\\ln6$.",
+     "correction_markdown": "$2\\ln3-\\ln5=\\ln9-\\ln5=\\ln\\dfrac95$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "For $x>2$, find $\\displaystyle\\int\\dfrac{6}{(x-2)(x+1)}\\,dx$.",
+     "solution_markdown": "Write $\\dfrac{6}{(x-2)(x+1)}=\\dfrac A{x-2}+\\dfrac B{x+1}$. Then $6=A(x+1)+B(x-2)$: $x=2$ gives $A=2$; $x=-1$ gives $B=-2$. Integrating,\n\n**$2\\ln(x-2)-2\\ln(x+1)+C=2\\ln\\dfrac{x-2}{x+1}+C$**"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Express $\\dfrac{2x+7}{(x+2)(x+3)}$ in partial fractions and show that $\\displaystyle\\int_0^1\\dfrac{2x+7}{(x+2)(x+3)}\\,dx=\\ln\\dfrac{81}{32}$.",
+     "solution_markdown": "$2x+7=A(x+3)+B(x+2)$: $x=-2$ gives $A=3$; $x=-3$ gives $B=-1$. So the fraction is $\\dfrac3{x+2}-\\dfrac1{x+3}$.\n\n$\\displaystyle\\int_0^1=\\left[3\\ln(x+2)-\\ln(x+3)\\right]_0^1=(3\\ln3-\\ln4)-(3\\ln2-\\ln3)=3\\ln3-\\ln4-3\\ln2+\\ln3$\n\n$=\\ln\\dfrac{27}{8}-\\ln\\dfrac43=$ **$\\ln\\dfrac{81}{32}$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Let $p(x)=\\dfrac{x^2+4}{x(x+2)}$. (a) Express $p(x)$ in the form $1+\\dfrac{A}{x}+\\dfrac{B}{x+2}$. (b) Hence show that $\\displaystyle\\int_1^3p(x)\\,dx=2+\\ln\\dfrac{729}{625}$.",
+     "solution_markdown": "(a) $x^2+4=x(x+2)+(4-2x)$, so $p(x)=1+\\dfrac{4-2x}{x(x+2)}$. Then $4-2x=A(x+2)+Bx$: $x=0$ gives $A=2$; $x=-2$ gives $8=-2B$, $B=-4$.\n\n**$p(x)=1+\\dfrac2x-\\dfrac4{x+2}$**\n\n(b) $\\displaystyle\\int_1^3p\\,dx=\\left[x+2\\ln x-4\\ln(x+2)\\right]_1^3=(3+2\\ln3-4\\ln5)-(1+0-4\\ln3)=2+6\\ln3-4\\ln5$\n\n$=2+\\ln729-\\ln625=$ **$2+\\ln\\dfrac{729}{625}$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Standard results: $\\int\\dfrac{dx}{ax+b}=\\dfrac1a\\ln|ax+b|+C$ and $\\int\\dfrac{f'}{f}\\,dx=\\ln|f|+C$.",
+    "Divide first if the fraction is improper; use one term per power for a repeated factor.",
+    "The cover-up method gives each constant for a distinct linear factor: substitute the root of that factor.",
+    "In a \"show that\" question, keep exact logarithms and combine them with $k\\ln a=\\ln a^k$ and $\\ln a-\\ln b=\\ln\\dfrac ab$.",
+    "Check the interval: it must not contain a zero of the denominator."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,163 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-vector-geometry-in-three-dimensions",
+ "meta": {
+  "titre": "Vector Geometry in Three Dimensions: intersecting lines, normals and angles with planes",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Lines, planes and angles in space",
+  "duree_estimee_min": 40,
+  "tags": [
+   "vector geometry in three dimensions"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p2-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-vector-geometry-in-three-dimensions-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "Two engineers in Douala plan cable routes through a building and need to know whether the two cables cross, and a roofer must describe a sloping roof by a single equation. Lines and planes in space are handled with the same few tools: direction vectors, a normal vector from a vector product, and the scalar product for angles. At Advanced Level a long Paper 2 question often asks whether two lines meet, for the equation of the plane that contains them, and for an angle."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "The position vector of a point is the vector from the origin to it, and $\\overrightarrow{AB}=\\mathbf b-\\mathbf a$.",
+    "The scalar product $\\mathbf a\\cdot\\mathbf b=|\\mathbf a||\\mathbf b|\\cos\\theta$ and the vector product $\\mathbf a\\times\\mathbf b$, which is perpendicular to both $\\mathbf a$ and $\\mathbf b$.",
+    "Two simultaneous linear equations in two unknowns can be solved by elimination or substitution."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Lines, planes, intersections and angles in three dimensions",
+   "contenu_markdown": "### Lines\n\nA line through the point with position vector $\\mathbf a$, parallel to the **direction vector** $\\mathbf d$, has the vector equation\n\n$$\n\\mathbf r=\\mathbf a+\\lambda\\mathbf d \\tag{1}\n$$\n\nwhere $\\lambda$ is a scalar parameter. For a line through two points $A$ and $B$ take $\\mathbf d=\\overrightarrow{AB}=\\mathbf b-\\mathbf a$. Eliminating $\\lambda$ gives the Cartesian form $\\dfrac{x-a_1}{d_1}=\\dfrac{y-a_2}{d_2}=\\dfrac{z-a_3}{d_3}$ (when no component of $\\mathbf d$ is zero). The angle between two lines is the angle between their direction vectors, taken acute: $\\cos\\theta=\\dfrac{|\\mathbf d_1\\cdot\\mathbf d_2|}{|\\mathbf d_1||\\mathbf d_2|}$.\n\n### Planes\n\nA plane is fixed by one point $\\mathbf a$ on it and a **normal vector** $\\mathbf n$, which is perpendicular to every line lying in the plane:\n\n$$\n\\mathbf r\\cdot\\mathbf n=\\mathbf a\\cdot\\mathbf n\\quad\\Longleftrightarrow\\quad n_1x+n_2y+n_3z=d,\\qquad d=\\mathbf a\\cdot\\mathbf n \\tag{2}\n$$\n\nIf two non-parallel directions $\\mathbf u$ and $\\mathbf v$ lie in the plane (two sides of a triangle, or the directions of two lines in it), then $\\mathbf n=\\mathbf u\\times\\mathbf v$.\n\n### Angle between a line and a plane\n\nIf the line has direction $\\mathbf d$ and the plane has normal $\\mathbf n$, the angle $\\theta$ between the line and the plane satisfies\n\n$$\n\\sin\\theta=\\frac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|} \\tag{3}\n$$\n\nThe scalar product measures the angle with the normal, which is $90^\\circ-\\theta$, so the formula uses the **sine**. The angle between two planes is the angle between their normals.\n\n### Where a line meets a plane\n\nWrite the general point of the line as $(a_1+\\lambda d_1,\\ a_2+\\lambda d_2,\\ a_3+\\lambda d_3)$, substitute it into the plane equation and solve for $\\lambda$. If $\\lambda$ disappears and the equation is false, the line is parallel to the plane and never meets it; if it is true, the line lies in the plane.\n",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Do two lines intersect?",
+     "quand_utiliser": "When two lines have equations with different parameters and you must decide whether they meet, are parallel or are skew.",
+     "contenu_markdown": "Use **different** parameters, say $\\lambda$ and $\\mu$, and equate the $\\mathbf i$, $\\mathbf j$ and $\\mathbf k$ components. Solve any two of the three equations, then **test the solution in the third**. If it holds, the lines meet, and the point of intersection is found by substituting one parameter back. If it fails, and the direction vectors are not parallel, the lines are **skew**: they do not meet and are not parallel. For $\\mathbf r=(\\mathbf i+2\\mathbf k)+\\lambda(\\mathbf i+\\mathbf j)$ and $\\mathbf r=(3\\mathbf j+\\mathbf k)+\\mu(\\mathbf i-\\mathbf j+\\mathbf k)$, the $\\mathbf i$ and $\\mathbf j$ equations give $\\lambda=1$ and $\\mu=2$. The $\\mathbf k$ components are then $2$ and $3$, which differ, so the lines are skew."
+    },
+    {
+     "nom": "Plane through three points",
+     "quand_utiliser": "When three points on a plane are given and a Cartesian equation is needed.",
+     "contenu_markdown": "Form two vectors in the plane from the points, take their vector product as the normal, and find $d$ with any one of the points. For $A(1,0,0)$, $B(0,2,0)$ and $C(0,0,3)$: $\\overrightarrow{AB}=(-1,2,0)$ and $\\overrightarrow{AC}=(-1,0,3)$, so $\\mathbf n=\\overrightarrow{AB}\\times\\overrightarrow{AC}=(6,3,2)$. Using $A$, $d=6\\times1=6$, and the plane is $6x+3y+2z=6$. Check with the other two points: $B$ gives $6$ and $C$ gives $6$. (correct)"
+    },
+    {
+     "nom": "Line meeting a plane, with the angle",
+     "quand_utiliser": "When a line crosses a plane and the intersection point or the angle between them is requested.",
+     "contenu_markdown": "For the line $\\mathbf r=(\\mathbf i+\\mathbf j+\\mathbf k)+t(\\mathbf i+2\\mathbf j+2\\mathbf k)$ and the plane $x+y+z=8$, the point $(1+t,\\,1+2t,\\,1+2t)$ lies in the plane when $3+5t=8$, so $t=1$ and the point is $(2,3,3)$. With $\\mathbf d=(1,2,2)$, $|\\mathbf d|=3$, and $\\mathbf n=(1,1,1)$, $|\\mathbf n|=\\sqrt3$, equation (3) gives $\\sin\\theta=\\dfrac{5}{3\\sqrt3}$, so $\\theta\\approx74.2^\\circ$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Two lines have equations $L_1:\\ \\mathbf r=(2\\mathbf i+\\mathbf j)+\\lambda(\\mathbf i+\\mathbf j+2\\mathbf k)$ and $L_2:\\ \\mathbf r=(\\mathbf i+5\\mathbf j-\\mathbf k)+\\mu(2\\mathbf i-3\\mathbf j+3\\mathbf k)$.\n\n(a) Show that $L_1$ and $L_2$ intersect, and find the position vector of the point of intersection.\n\n(b) Find a Cartesian equation of the plane that contains both lines.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Equate the $\\mathbf i$ and $\\mathbf j$ components of the two lines and solve.",
+     "justification": "A common point has the same position vector on both lines, with a different parameter for each line. Two equations in $\\lambda$ and $\\mu$ determine them.",
+     "resultat_markdown": "$2+\\lambda=1+2\\mu$ and $1+\\lambda=5-3\\mu$. Subtracting: $1=-4+5\\mu$, so $\\mu=1$, and then $\\lambda=1$."
+    },
+    {
+     "numero": 2,
+     "action": "Test these values in the $\\mathbf k$ components.",
+     "justification": "Two equations were used to find two unknowns, so the third equation is the real test of whether the lines meet.",
+     "resultat_markdown": "$L_1$: $2\\lambda=2$. $\\ L_2$: $-1+3\\mu=2$. The two agree, so the lines intersect."
+    },
+    {
+     "numero": 3,
+     "action": "Substitute the parameter into either line to get the point.",
+     "justification": "Using both lines gives the same point, which also checks the working.",
+     "resultat_markdown": "With $\\lambda=1$: $(2+1)\\mathbf i+(1+1)\\mathbf j+2\\mathbf k=3\\mathbf i+2\\mathbf j+2\\mathbf k$. With $\\mu=1$: $(1+2)\\mathbf i+(5-3)\\mathbf j+(-1+3)\\mathbf k$, the same."
+    },
+    {
+     "numero": 4,
+     "action": "Find a normal to the plane from the two direction vectors.",
+     "justification": "Both lines lie in the plane, so their directions lie in it; the vector product of two non-parallel directions is perpendicular to the plane.",
+     "resultat_markdown": "$$\n\\mathbf n=(\\mathbf i+\\mathbf j+2\\mathbf k)\\times(2\\mathbf i-3\\mathbf j+3\\mathbf k)=9\\mathbf i+\\mathbf j-5\\mathbf k \\tag{4}\n$$"
+    },
+    {
+     "numero": 5,
+     "action": "Use a point of the plane to find the constant, then check with another point.",
+     "justification": "By equation (2), $d=\\mathbf a\\cdot\\mathbf n$ for any point of the plane. The point of intersection is on the plane.",
+     "resultat_markdown": "$d=(3,2,2)\\cdot(9,1,-5)=27+2-10=19$. Plane: $9x+y-5z=19$. Check with $(2,1,0)$ on $L_1$: $18+1=19$ (correct), and with $(1,5,-1)$ on $L_2$: $9+5+5=19$ (correct)."
+    }
+   ],
+   "conclusion_markdown": "(a) The lines intersect at the point with position vector $3\\mathbf i+2\\mathbf j+2\\mathbf k$. (b) The plane has Cartesian equation $9x+y-5z=19$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Writing $L_1:\\ \\mathbf r=\\mathbf a_1+\\lambda\\mathbf d_1$ and $L_2:\\ \\mathbf r=\\mathbf a_2+\\lambda\\mathbf d_2$ and then equating them.",
+     "pourquoi_faux": "Using the same letter forces the common point to occur at the same parameter on both lines, which is rarely true. It can make intersecting lines appear not to meet.",
+     "correction_markdown": "Use two different parameters, $\\lambda$ and $\\mu$, as two unknowns."
+    },
+    {
+     "erreur_markdown": "Solving the $\\mathbf i$ and $\\mathbf j$ equations for $\\lambda$ and $\\mu$ and concluding that the lines meet.",
+     "pourquoi_faux": "Two lines in three dimensions have three component equations for two unknowns. Skew lines satisfy two of them and fail the third.",
+     "correction_markdown": "Substitute the values in the third equation. If it fails, the lines (not parallel) are skew."
+    },
+    {
+     "erreur_markdown": "The angle between a line with direction $\\mathbf d$ and a plane with normal $\\mathbf n$ satisfies $\\cos\\theta=\\dfrac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|}$.",
+     "pourquoi_faux": "That expression gives the angle between the line and the **normal**, which is $90^\\circ$ minus the angle with the plane. If the line is nearly perpendicular to the plane, the cosine is close to $1$ but the angle with the plane is close to $90^\\circ$.",
+     "correction_markdown": "Use $\\sin\\theta=\\dfrac{|\\mathbf d\\cdot\\mathbf n|}{|\\mathbf d||\\mathbf n|}$, or find the angle with the normal and subtract it from $90^\\circ$."
+    },
+    {
+     "erreur_markdown": "Taking the normal of the plane containing two lines as $\\mathbf d_1+\\mathbf d_2$.",
+     "pourquoi_faux": "A sum of two direction vectors lies in the plane, so it cannot be perpendicular to it. For $\\mathbf d_1=(1,1,2)$ and $\\mathbf d_2=(2,-3,3)$ the sum is $(3,-2,5)$, and its scalar product with $\\mathbf d_1$ is $11$, not $0$.",
+     "correction_markdown": "Use the vector product: $\\mathbf n=\\mathbf d_1\\times\\mathbf d_2$, and check that $\\mathbf n\\cdot\\mathbf d_1=0$ and $\\mathbf n\\cdot\\mathbf d_2=0$."
+    },
+    {
+     "erreur_markdown": "The plane through $(3,2,2)$ with normal $9\\mathbf i+\\mathbf j-5\\mathbf k$ is $9x+y-5z=0$.",
+     "pourquoi_faux": "The right-hand side is $\\mathbf a\\cdot\\mathbf n$, which is $0$ only for a plane through the origin. This plane does not contain the origin, since the point $(3,2,2)$ is on it and gives $19$.",
+     "correction_markdown": "Compute $d=\\mathbf a\\cdot\\mathbf n=27+2-10=19$, so the plane is $9x+y-5z=19$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "The points $A$ and $B$ have coordinates $(1,-2,3)$ and $(4,0,-1)$.\n\n(a) Write down a vector equation of the line $AB$.\n\n(b) Determine whether the point $(7,2,-5)$ lies on the line $AB$.",
+     "solution_markdown": "(a) $\\overrightarrow{AB}=(4-1,\\ 0+2,\\ -1-3)=(3,2,-4)$, so **$\\mathbf r=\\mathbf i-2\\mathbf j+3\\mathbf k+\\lambda(3\\mathbf i+2\\mathbf j-4\\mathbf k)$**.\n\n(b) Set $1+3\\lambda=7$, which gives $\\lambda=2$. Then $-2+2\\lambda=2$ and $3-4\\lambda=-5$, which both agree with the point $(7,2,-5)$. All three components are satisfied with the same $\\lambda=2$, so the point **lies on the line**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "The points $P$, $Q$ and $R$ have position vectors $\\mathbf i+2\\mathbf k$, $\\ 2\\mathbf i+\\mathbf j$ and $3\\mathbf j+\\mathbf k$.\n\n(a) Find a Cartesian equation of the plane $PQR$.\n\n(b) The line $\\mathbf r=s(\\mathbf i+\\mathbf j+\\mathbf k)$ meets this plane. Find the acute angle between the line and the plane, to 1 decimal place.",
+     "solution_markdown": "(a) $\\overrightarrow{PQ}=(1,1,-2)$ and $\\overrightarrow{PR}=(-1,3,-1)$.\n\n$$\n\\overrightarrow{PQ}\\times\\overrightarrow{PR}=(1\\cdot(-1)-(-2)\\cdot3,\\ -(1\\cdot(-1)-(-2)(-1)),\\ 1\\cdot3-1\\cdot(-1))=(5,3,4)\n$$\n\nUsing $P$, $d=5(1)+3(0)+4(2)=13$. The plane is **$5x+3y+4z=13$**. Check with $Q$: $10+3+0=13$; with $R$: $0+9+4=13$.\n\n(b) $\\mathbf d=(1,1,1)$ with $|\\mathbf d|=\\sqrt3$, and $\\mathbf n=(5,3,4)$ with $|\\mathbf n|=\\sqrt{50}$. Then $\\mathbf d\\cdot\\mathbf n=12$ and\n\n$$\n\\sin\\theta=\\frac{12}{\\sqrt3\\sqrt{50}}=\\frac{12}{\\sqrt{150}}\\approx0.9798\n$$\n\nso $\\theta\\approx$ **78.5°**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Two lines have equations $L_1:\\ \\mathbf r=(\\mathbf i+2\\mathbf j-\\mathbf k)+t(2\\mathbf i-\\mathbf j+\\mathbf k)$ and $L_2:\\ \\mathbf r=(\\mathbf j+3\\mathbf k)+s(\\mathbf i+\\mathbf j-2\\mathbf k)$.\n\n(a) Show that $L_1$ and $L_2$ do not intersect.\n\n(b) Find the acute angle between $L_1$ and $L_2$, to 1 decimal place.\n\n(c) The plane $\\Pi$ has equation $x+2y-z=9$. Find the position vector of the point where $L_1$ meets $\\Pi$, and the acute angle between $L_1$ and $\\Pi$.",
+     "solution_markdown": "(a) Equate components, using $t$ and $s$: $1+2t=s$, $\\ 2-t=1+s$ and $-1+t=3-2s$. Substituting $s=1+2t$ in the second gives $2-t=2+2t$, so $t=0$ and $s=1$. In the third equation the left side is $-1$ and the right side is $3-2=1$. They differ, and the directions $(2,-1,1)$ and $(1,1,-2)$ are not multiples of each other, so the lines are **skew**: they do not intersect.\n\n(b) $\\mathbf d_1\\cdot\\mathbf d_2=2-1-2=-1$, and $|\\mathbf d_1|=|\\mathbf d_2|=\\sqrt6$. Taking the acute angle, $\\cos\\theta=\\dfrac{|-1|}{6}=\\dfrac16$, so $\\theta\\approx$ **80.4°**.\n\n(c) The point $(1+2t,\\ 2-t,\\ -1+t)$ lies on $\\Pi$ when $(1+2t)+2(2-t)-(-1+t)=9$, that is $6-t=9$, so $t=-3$. The position vector is **$-5\\mathbf i+5\\mathbf j-4\\mathbf k$**. Check: $-5+10+4=9$.\n\nWith $\\mathbf n=(1,2,-1)$, $\\mathbf d_1\\cdot\\mathbf n=2-2-1=-1$ and $|\\mathbf n|=\\sqrt6$. So $\\sin\\theta=\\dfrac{1}{\\sqrt6\\sqrt6}=\\dfrac16$ and $\\theta\\approx$ **9.6°**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Line: $\\mathbf r=\\mathbf a+\\lambda\\mathbf d$, with $\\mathbf d=\\overrightarrow{AB}$ for two points. Plane: $\\mathbf r\\cdot\\mathbf n=\\mathbf a\\cdot\\mathbf n$, that is $n_1x+n_2y+n_3z=d$.",
+    "A normal to a plane is the vector product of two non-parallel directions in it; check it with two scalar products.",
+    "To test two lines, use different parameters, solve two components, and **test the third**. A failure with non-parallel directions means skew lines.",
+    "Angle between two lines: $|\\cos\\theta|$ of the directions. Angle between a line and a plane: **sine** with the normal. Angle between planes: the normals.",
+    "A line meets a plane by substituting its general point in the plane equation and solving for the parameter."
+   ]
+  }
+ ]
+}

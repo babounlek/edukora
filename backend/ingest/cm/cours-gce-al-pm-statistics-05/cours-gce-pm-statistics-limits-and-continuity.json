@@ -1,0 +1,170 @@
+{
+  "cours_id": "cours-gce-pm-statistics-limits-and-continuity",
+  "meta": {
+    "titre": "Limits and Continuity: Indeterminate Forms, Standard Limits and Piecewise Joins",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Evaluating limits and continuity at a point",
+    "duree_estimee_min": 35,
+    "tags": [
+      "limits and continuity"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2023-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2023-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-limits-and-continuity-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A technician filling a water tank in Bamenda watches the level rise more and more slowly as the tank nears full, and asks which level it is heading towards rather than what it is at one exact instant. Limits give a precise answer to the question 'what value is being approached?', even when the function has no value, or a different value, at that very point. In the GCE papers limits come up as expressions that first look like zero over zero, as limits at infinity, as the standard limit that defines the number e, and as piecewise functions whose constants must be chosen so that the graph has no break."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Polynomials factorise, for example $x^2 - 9 = (x-3)(x+3)$, and a common non-zero factor can be cancelled from a fraction.",
+        "The conjugate of $\\sqrt a - b$ is $\\sqrt a + b$, and their product is $a - b^2$, which removes the square root.",
+        "Angles in trigonometric limits are measured in radians.",
+        "A piecewise function is defined by different formulae on different intervals of $x$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Limits, standard limits and continuity at a point",
+      "contenu_markdown": "### Meaning of a limit\n$\\lim_{x\\to a} f(x) = L$ means that $f(x)$ can be made as close to $L$ as we please by taking $x$ close enough to $a$, with $x \\ne a$. The value $f(a)$ itself plays no part. The limit exists only if the **left-hand limit** (as $x \\to a^-$) and the **right-hand limit** (as $x \\to a^+$) both exist and are equal.\n\n### Working rules\nLimits of sums, products and quotients are the sums, products and quotients of the limits, provided that the denominator's limit is not zero. For polynomials and many standard functions you simply substitute $x = a$. If substitution gives $\\frac{0}{0}$, the expression must be rewritten first:\n- factorise and cancel the factor $(x - a)$, which is allowed because $x \\ne a$;\n- multiply by the conjugate when square roots are present;\n- use a standard limit.\n\n### Limits at infinity\nDivide the numerator and the denominator by the highest power of $x$ present. Terms such as $\\frac1x$ and $\\frac{1}{x^2}$ then tend to $0$.\n\n### Standard limits (angles in radians)\n| Limit | Value |\n|---|---|\n| $\\lim_{x\\to0}\\frac{\\sin x}{x}$ | $1$ |\n| $\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}$ | $\\frac12$ |\n| $\\lim_{x\\to0}\\frac{e^x-1}{x}$ | $1$ |\n| $\\lim_{n\\to\\infty}\\left(1+\\frac{a}{n}\\right)^n$ | $e^{a}$ |\n\nThe last row is a $1^\\infty$ form: the base tends to $1$ but the exponent grows, so the answer is not $1$.\n\n### Continuity at a point\n$f$ is continuous at $x = a$ when\n\n$$\n\\lim_{x\\to a} f(x) = f(a) \\tag{1}\n$$\n\nThis needs three things: $f(a)$ is defined, the limit exists, and the two are equal. Polynomials, sine, cosine and $e^x$ are continuous everywhere, and a rational function is continuous wherever its denominator is not zero.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Conjugates and highest powers",
+          "quand_utiliser": "When a limit contains square roots and gives 0/0, or when the variable tends to infinity.",
+          "contenu_markdown": "For $\\lim_{x\\to4}\\dfrac{\\sqrt x - 2}{x - 4}$, multiply top and bottom by $\\sqrt x + 2$. Since $(\\sqrt x - 2)(\\sqrt x + 2) = x - 4$, the fraction becomes $\\dfrac{1}{\\sqrt x + 2}$ and the limit is $\\dfrac14$. For $\\lim_{x\\to\\infty}\\dfrac{4x^2 + x}{2x^2 - 5}$, divide every term by $x^2$ to get $\\dfrac{4 + 1/x}{2 - 5/x^2} \\to \\dfrac42 = 2$. If the numerator has a higher power than the denominator, the quotient has no finite limit."
+        },
+        {
+          "nom": "Standard limits with a multiplier",
+          "quand_utiliser": "When the angle or exponent is $kx$ instead of $x$.",
+          "contenu_markdown": "Make the argument of the sine match the denominator. For example $\\dfrac{\\sin 5x}{2x} = \\dfrac52 \\cdot \\dfrac{\\sin 5x}{5x} \\to \\dfrac52$. In general $\\dfrac{\\sin kx}{x} \\to k$, $\\dfrac{\\tan x}{x} \\to 1$ and $\\dfrac{1-\\cos kx}{x^2} \\to \\dfrac{k^2}{2}$. The identity $1 - \\cos 2u = 2\\sin^2 u$ is often the way in."
+        },
+        {
+          "nom": "Piecewise functions with unknown constants",
+          "quand_utiliser": "When a question asks for the value of a constant for which a limit exists or a function is continuous.",
+          "contenu_markdown": "Find the left-hand and right-hand limits at the join, each from its own formula, and **equate** them. The equation may be a quadratic, giving two admissible values. For continuity, the value $f(a)$ given in the definition must also equal the common limit. Types of break: a **removable** one (limit exists but differs from $f(a)$, or $f(a)$ is missing), a **jump** (the one-sided limits differ) and an **infinite** one (the function grows without bound near $a$)."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A function is defined by\n$$f(x) = \\begin{cases} 5kx + 2, & x < 1,\\\\ k^2 + 7x + 1, & x > 1,\\end{cases}$$\nwhere $k$ is a constant. (a) Find the values of $k$ for which $\\lim_{x\\to1} f(x)$ exists. (b) For the larger of these values, state the value that $f(1)$ must take for $f$ to be continuous at $x = 1$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the left-hand limit at $x = 1$.",
+          "justification": "For $x < 1$ the function is the polynomial $5kx + 2$, so substitution is allowed.",
+          "resultat_markdown": "$\\lim_{x\\to1^-} f(x) = 5k + 2$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the right-hand limit at $x = 1$.",
+          "justification": "For $x > 1$ the function is $k^2 + 7x + 1$, another polynomial.",
+          "resultat_markdown": "$\\lim_{x\\to1^+} f(x) = k^2 + 8$."
+        },
+        {
+          "numero": 3,
+          "action": "Equate the two limits.",
+          "justification": "The limit exists only if the one-sided limits are equal.",
+          "resultat_markdown": "$k^2 + 8 = 5k + 2$, so $k^2 - 5k + 6 = 0$."
+        },
+        {
+          "numero": 4,
+          "action": "Solve the quadratic.",
+          "justification": "Factorising: the factors of 6 that add up to 5 are 2 and 3.",
+          "resultat_markdown": "$(k - 2)(k - 3) = 0$, so $k = 2$ or $k = 3$."
+        },
+        {
+          "numero": 5,
+          "action": "Find the value of the limit for each $k$.",
+          "justification": "Substitute each value into the left-hand limit and check it with the right-hand one.",
+          "resultat_markdown": "$k = 2$: $5(2) + 2 = 12 = 4 + 8$. $k = 3$: $5(3) + 2 = 17 = 9 + 8$."
+        },
+        {
+          "numero": 6,
+          "action": "Apply the continuity condition (1) for $k = 3$.",
+          "justification": "Continuity needs $f(1)$ to equal the common limit, so the definition must give $f(1)$ that value.",
+          "resultat_markdown": "$f(1) = 17$."
+        }
+      ],
+      "conclusion_markdown": "The limit at $x = 1$ exists for $k = 2$ (limit $12$) and $k = 3$ (limit $17$). For $k = 3$ the function is continuous at $x = 1$ exactly when $f(1) = 17$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$\\displaystyle\\lim_{x\\to3}\\dfrac{x^2-9}{x-3}$: substituting gives $\\dfrac00$, so the limit does not exist (or is $0$).",
+          "pourquoi_faux": "$\\frac00$ is an indeterminate form, not an answer. It only says that the expression must be rewritten before the limit can be found.",
+          "correction_markdown": "Factorise: $\\dfrac{(x-3)(x+3)}{x-3} = x + 3$ for $x \\ne 3$, so the limit is $\\mathbf{6}$."
+        },
+        {
+          "erreur_markdown": "$f(x) = x + 1$ for $x < 2$ and $f(x) = x^2$ for $x \\ge 2$. Since $f(2) = 4$, $\\lim_{x\\to2} f(x) = 4$.",
+          "pourquoi_faux": "The value at the point does not decide the limit. Both sides must be examined.",
+          "correction_markdown": "The left-hand limit is $2 + 1 = 3$ and the right-hand limit is $2^2 = 4$. They differ, so the limit does not exist and $f$ has a jump at $x = 2$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\lim_{n\\to\\infty}\\left(1 + \\dfrac3n\\right)^n = 1^n = 1$",
+          "pourquoi_faux": "The exponent is also changing, so this is a $1^\\infty$ form. The base is only approximately $1$, and raising it to a very large power matters.",
+          "correction_markdown": "By the standard limit, $\\displaystyle\\lim_{n\\to\\infty}\\left(1 + \\dfrac3n\\right)^n = e^3$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\lim_{x\\to0}\\dfrac{\\sin3x}{x} = 1$",
+          "pourquoi_faux": "The standard limit needs the same expression in the denominator as in the sine.",
+          "correction_markdown": "$\\dfrac{\\sin 3x}{x} = 3\\cdot\\dfrac{\\sin3x}{3x} \\to 3\\times1 = 3$."
+        },
+        {
+          "erreur_markdown": "$\\displaystyle\\lim_{x\\to\\infty}\\dfrac{3x^2+1}{x^2-2} = \\dfrac{\\infty}{\\infty} = 1$",
+          "pourquoi_faux": "$\\frac{\\infty}{\\infty}$ is not a number. The two infinite quantities grow at a definite ratio, which must be extracted.",
+          "correction_markdown": "Divide top and bottom by $x^2$: $\\dfrac{3 + 1/x^2}{1 - 2/x^2} \\to \\dfrac31 = 3$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Evaluate $\\displaystyle\\lim_{x\\to5}\\dfrac{x^2 - 25}{x^2 - 3x - 10}$.",
+          "solution_markdown": "Direct substitution gives $\\dfrac{0}{0}$. Factorise: $x^2 - 25 = (x-5)(x+5)$ and $x^2 - 3x - 10 = (x-5)(x+2)$.\n\nFor $x \\ne 5$ the fraction equals $\\dfrac{x+5}{x+2}$, so the limit is $\\dfrac{5+5}{5+2}$.\n\n**$\\displaystyle\\lim_{x\\to5}\\dfrac{x^2 - 25}{x^2 - 3x - 10} = \\dfrac{10}{7}$**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Evaluate (a) $\\displaystyle\\lim_{x\\to0}\\dfrac{\\sqrt{x+9} - 3}{x}$ and (b) $\\displaystyle\\lim_{n\\to\\infty}\\left(1 - \\dfrac5n\\right)^{2n}$.",
+          "solution_markdown": "(a) Substitution gives $\\dfrac00$. Multiply top and bottom by the conjugate $\\sqrt{x+9} + 3$:\n$$\\frac{(x+9) - 9}{x\\left(\\sqrt{x+9} + 3\\right)} = \\frac{1}{\\sqrt{x+9} + 3}.$$\nAs $x \\to 0$ this tends to $\\dfrac{1}{3 + 3}$. **The limit is $\\dfrac16$.**\n\n(b) Write the expression as $\\left[\\left(1 + \\dfrac{-5}{n}\\right)^n\\right]^2$. By the standard limit with $a = -5$, the inner part tends to $e^{-5}$, so the whole expression tends to $\\left(e^{-5}\\right)^2$. **The limit is $e^{-10}$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $g(x) = \\dfrac{1 - \\cos4x}{x\\sin2x}$ for $x \\ne 0$.\n\n(a) Show that $\\displaystyle\\lim_{x\\to0} g(x) = 4$.\n\n(b) The function $g$ is extended by defining $g(0) = c$. Find the value of $c$ for which $g$ is continuous at $x = 0$.\n\n(c) Using a standard limit, state $\\displaystyle\\lim_{x\\to0}\\dfrac{1-\\cos4x}{x^2}$.",
+          "solution_markdown": "(a) Use $1 - \\cos 4x = 2\\sin^2 2x$. Then\n$$g(x) = \\frac{2\\sin^2 2x}{x\\sin2x} = \\frac{2\\sin2x}{x} = 4\\cdot\\frac{\\sin2x}{2x}$$\nfor $x \\ne 0$ near $0$. Since $\\dfrac{\\sin 2x}{2x} \\to 1$, **$g(x) \\to 4$**.\n\n(b) For continuity, $g(0)$ must equal the limit found in (a). **$c = 4$**.\n\n(c) With $k = 4$ the standard limit gives $\\dfrac{k^2}{2}$. Check: $\\dfrac{1-\\cos4x}{x^2} = \\dfrac{2\\sin^2 2x}{x^2} = 8\\left(\\dfrac{\\sin2x}{2x}\\right)^2 \\to 8$. **The limit is $8$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A limit describes the value approached, not the value reached; it exists only if the left-hand and right-hand limits are equal.",
+        "If substitution gives $\\frac00$, factorise and cancel, multiply by a conjugate, or use a standard limit. For limits at infinity, divide by the highest power of $x$.",
+        "Learn the standard limits: $\\frac{\\sin x}{x} \\to 1$, $\\frac{1-\\cos x}{x^2} \\to \\frac12$, $\\frac{e^x - 1}{x} \\to 1$ and $\\left(1 + \\frac an\\right)^n \\to e^a$. Adjust for a multiplier $k$ inside the function.",
+        "$f$ is continuous at $a$ when $\\lim_{x\\to a} f(x) = f(a)$: the value is defined, the limit exists and they are equal.",
+        "For a piecewise function with an unknown constant, equate the one-sided limits at the join, solve (a quadratic may give two values), then check each solution."
+      ]
+    }
+  ]
+}

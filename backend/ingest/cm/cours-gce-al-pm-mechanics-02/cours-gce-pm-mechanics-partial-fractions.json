@@ -1,0 +1,170 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-partial-fractions",
+ "meta": {
+  "titre": "Partial Fractions: setting up the form and using it in integration",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Decomposing rational functions",
+  "duree_estimee_min": 35,
+  "tags": [
+   "partial fractions"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-partial-fractions-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A maths teacher in Yaoundé is asked to integrate a fraction whose denominator is a product of two brackets, and finds that no standard rule fits. Splitting the fraction into two simpler pieces turns it into logarithms that can be integrated at once. The same splitting makes a binomial expansion possible. Partial fractions come up at Advanced Level in many papers, either as a stand-alone question on finding constants or as the first part of an integration question."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Factorising a quadratic or a cubic expression into linear factors.",
+    "Polynomial long division gives a quotient and a remainder of lower degree than the divisor.",
+    "$\\int\\dfrac{1}{ax+b}\\,dx=\\dfrac1a\\ln|ax+b|+c$, and powers of $x$ integrate by raising the power by one.",
+    "The binomial series $(1+u)^{n}=1+nu+\\dfrac{n(n-1)}{2!}u^{2}+\\dots$ is valid for $|u|<1$ when $n$ is not a positive integer."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Partial fractions: forms, constants and integration",
+   "contenu_markdown": "### Why and when\n\nA fraction $\\dfrac{N(x)}{D(x)}$ is **proper** if the degree of $N$ is less than the degree of $D$. A proper fraction with a denominator that factorises can be written as a sum of simpler fractions, its **partial fractions**. This makes integration, binomial expansion and summation of series possible.\n\n### Setting up the form\n\n| Factor in the denominator | Partial fractions to write |\n|---|---|\n| distinct linear factor $(x-a)$ | $\\dfrac{A}{x-a}$ |\n| repeated linear factor $(x-a)^{2}$ | $\\dfrac{A}{x-a}+\\dfrac{B}{(x-a)^{2}}$ |\n| irreducible quadratic factor $(x^{2}+c)$ | $\\dfrac{Bx+C}{x^{2}+c}$ |\n\nA repeated factor needs one term for **every power** up to the highest, and a quadratic factor needs a **linear numerator**. An improper fraction (degree of the numerator at least the degree of the denominator) must be divided out first, which gives a polynomial plus a proper fraction.\n\n### Finding the constants\n\nMultiply through by the denominator, so that the two numerators agree for **every** value of $x$:\n\n$$\n\\frac{3x+1}{(x-3)(x+2)}\\equiv\\frac{A}{x-3}+\\frac{B}{x+2}\\ \\Longrightarrow\\ 3x+1\\equiv A(x+2)+B(x-3) \\tag{1}\n$$\n\nTwo methods work, and using both is a good check. **Substitute convenient values:** $x=3$ removes $B$ and gives $10=5A$, so $A=2$; $x=-2$ removes $A$ and gives $-5=-5B$, so $B=1$. **Equate coefficients:** the coefficient of $x$ gives $A+B=3$, which agrees.\n\n### Use in integration\n\nEach part integrates separately:\n\n$$\n\\int\\frac{A}{ax+b}\\,dx=\\frac{A}{a}\\ln|ax+b|+c,\\qquad \\int\\frac{B}{(x+k)^{2}}\\,dx=-\\frac{B}{x+k}+c \\tag{2}\n$$\n\nA squared factor never gives a logarithm. Once the fraction is in partial fractions, a binomial expansion of each part also becomes available.\n",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Repeated linear factor",
+     "quand_utiliser": "When the denominator contains a squared factor such as $x^{2}$ or $(x+2)^{2}$.",
+     "contenu_markdown": "For $\\dfrac{4x^{2}+3x+2}{x^{2}(x+1)}$ write $\\dfrac{A}{x}+\\dfrac{B}{x^{2}}+\\dfrac{C}{x+1}$, so that $4x^{2}+3x+2\\equiv Ax(x+1)+B(x+1)+Cx^{2}$. Putting $x=0$ gives $B=2$; putting $x=-1$ gives $C=3$; the coefficient of $x^{2}$ gives $A+C=4$, so $A=1$. Hence the fraction is $\\dfrac1x+\\dfrac{2}{x^{2}}+\\dfrac{3}{x+1}$. The substitution method fixes the constants of the highest power and of the other factors, and one coefficient comparison gives the remaining constant."
+    },
+    {
+     "nom": "Irreducible quadratic factor",
+     "quand_utiliser": "When the denominator has a factor such as $x^{2}+4$ that has no real roots.",
+     "contenu_markdown": "For $\\dfrac{3x^{2}-3x+5}{(x-1)(x^{2}+4)}$ write $\\dfrac{A}{x-1}+\\dfrac{Bx+C}{x^{2}+4}$, so that $3x^{2}-3x+5\\equiv A(x^{2}+4)+(Bx+C)(x-1)$. Putting $x=1$ gives $5=5A$, so $A=1$. Equating coefficients of $x^{2}$ gives $A+B=3$, so $B=2$, and the constant terms give $4A-C=5$, so $C=-1$. The result is $\\dfrac{1}{x-1}+\\dfrac{2x-1}{x^{2}+4}$. When integrating, the part whose numerator is the derivative of $x^{2}+4$ gives $\\ln(x^{2}+4)$, and the constant part gives an inverse tangent."
+    },
+    {
+     "nom": "Improper fractions",
+     "quand_utiliser": "When the numerator has a degree greater than or equal to the degree of the denominator.",
+     "contenu_markdown": "Divide first. For $\\dfrac{x^{3}+3x^{2}+6x-2}{(x-1)(x+3)}$ the denominator expands to $x^{2}+2x-3$, and long division gives quotient $x+1$ and remainder $7x+1$. Then $\\dfrac{7x+1}{(x-1)(x+3)}=\\dfrac{2}{x-1}+\\dfrac{5}{x+3}$, so the fraction equals $x+1+\\dfrac{2}{x-1}+\\dfrac{5}{x+3}$. If the degrees are equal, the polynomial part is a constant. Trying the partial-fraction form without dividing first leads to constants that cannot be matched."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "(a) Express $\\dfrac{3x^{2}+6x+9}{(x-1)(x+2)^{2}}$ in partial fractions.\n\n(b) Hence evaluate $\\displaystyle\\int_2^3\\frac{3x^{2}+6x+9}{(x-1)(x+2)^{2}}\\,dx$, giving the answer in the form $\\ln a-b$.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Write the form of the partial fractions.",
+     "justification": "There is one distinct linear factor and one repeated linear factor, so the repeated factor needs terms in both $(x+2)$ and $(x+2)^{2}$. The fraction is proper, so no division is needed.",
+     "resultat_markdown": "$\\dfrac{3x^{2}+6x+9}{(x-1)(x+2)^{2}}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+2}+\\dfrac{C}{(x+2)^{2}}$"
+    },
+    {
+     "numero": 2,
+     "action": "Multiply through by $(x-1)(x+2)^{2}$ to remove the denominators.",
+     "justification": "The result is an identity, true for every $x$, which allows substitution of any value.",
+     "resultat_markdown": "$$\n3x^{2}+6x+9\\equiv A(x+2)^{2}+B(x-1)(x+2)+C(x-1) \\tag{3}\n$$"
+    },
+    {
+     "numero": 3,
+     "action": "Substitute $x=1$ and $x=-2$, then compare the coefficient of $x^{2}$.",
+     "justification": "$x=1$ makes the $B$ and $C$ terms vanish; $x=-2$ makes the $A$ and $B$ terms vanish. The coefficient of $x^{2}$ on the right is $A+B$.",
+     "resultat_markdown": "$x=1$: $18=9A$, so $A=2$. $\\ x=-2$: $9=-3C$, so $C=-3$. Coefficient of $x^{2}$: $3=A+B$, so $B=1$."
+    },
+    {
+     "numero": 4,
+     "action": "Check the constants with another value of $x$.",
+     "justification": "Using a value not used before tests all three constants together.",
+     "resultat_markdown": "$x=0$: left side $9$. Right side $4A-2B-C=8-2+3=9$. The constants are correct, and the fraction equals $\\dfrac{2}{x-1}+\\dfrac{1}{x+2}-\\dfrac{3}{(x+2)^{2}}$."
+    },
+    {
+     "numero": 5,
+     "action": "Integrate each term.",
+     "justification": "Use equation (2). The squared term integrates to $\\dfrac{3}{x+2}$, because $\\int-3(x+2)^{-2}\\,dx=3(x+2)^{-1}$.",
+     "resultat_markdown": "$\\displaystyle\\int\\left(\\dfrac{2}{x-1}+\\dfrac{1}{x+2}-\\dfrac{3}{(x+2)^{2}}\\right)dx=2\\ln(x-1)+\\ln(x+2)+\\dfrac{3}{x+2}$"
+    },
+    {
+     "numero": 6,
+     "action": "Apply the limits $x=3$ and $x=2$ and simplify the logarithms.",
+     "justification": "At $x=3$: $2\\ln2+\\ln5+\\frac35$. At $x=2$: $2\\ln1+\\ln4+\\frac34$. Use $\\ln4=2\\ln2$ so that the $\\ln2$ terms cancel.",
+     "resultat_markdown": "$\\left(2\\ln2+\\ln5+\\dfrac35\\right)-\\left(0+2\\ln2+\\dfrac34\\right)=\\ln5+\\dfrac{12-15}{20}=\\ln5-\\dfrac{3}{20}$"
+    }
+   ],
+   "conclusion_markdown": "(a) $\\dfrac{2}{x-1}+\\dfrac{1}{x+2}-\\dfrac{3}{(x+2)^{2}}$. (b) The integral equals $\\ln 5-\\dfrac{3}{20}\\approx1.459$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "$\\dfrac{x^{3}+3x^{2}+6x-2}{(x-1)(x+3)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+3}$.",
+     "pourquoi_faux": "The numerator has a higher degree than the denominator, so the fraction is improper. The right side tends to $0$ for large $x$, while the left side grows like $x$.",
+     "correction_markdown": "Divide first: the fraction equals $x+1+\\dfrac{2}{x-1}+\\dfrac{5}{x+3}$."
+    },
+    {
+     "erreur_markdown": "$\\dfrac{4x^{2}+3x+2}{x^{2}(x+1)}\\equiv\\dfrac{A}{x^{2}}+\\dfrac{C}{x+1}$.",
+     "pourquoi_faux": "A repeated factor needs a term for each power. Without the term in $\\dfrac1x$ the form is not general enough and the equations for the constants have no solution.",
+     "correction_markdown": "Use $\\dfrac{A}{x}+\\dfrac{B}{x^{2}}+\\dfrac{C}{x+1}$."
+    },
+    {
+     "erreur_markdown": "$\\dfrac{3x^{2}-3x+5}{(x-1)(x^{2}+4)}\\equiv\\dfrac{A}{x-1}+\\dfrac{C}{x^{2}+4}$.",
+     "pourquoi_faux": "An irreducible quadratic denominator needs a numerator of degree $1$. A constant numerator does not give enough freedom to match the $x^{2}$ and $x$ terms.",
+     "correction_markdown": "Use $\\dfrac{A}{x-1}+\\dfrac{Bx+C}{x^{2}+4}$."
+    },
+    {
+     "erreur_markdown": "$\\displaystyle\\int\\frac{4}{(x+2)^{2}}\\,dx=4\\ln(x+2)^{2}$.",
+     "pourquoi_faux": "A logarithm arises only from a first power in the denominator. Differentiating $\\ln(x+2)^{2}$ gives $\\dfrac{2}{x+2}$, which is not $\\dfrac{4}{(x+2)^{2}}$.",
+     "correction_markdown": "Write $4(x+2)^{-2}$ and integrate as a power: $-\\dfrac{4}{x+2}+c$."
+    },
+    {
+     "erreur_markdown": "To find the constant for the factor $(x+3)$, substitute $x=3$.",
+     "pourquoi_faux": "The substituted value must make the factor equal to zero. $(x+3)$ is zero when $x=-3$, not when $x=3$.",
+     "correction_markdown": "Substitute $x=-3$. In general, solve factor $=0$ and use that value."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "(a) Express $\\dfrac{2x+14}{(x-2)(x+4)}$ in partial fractions.\n\n(b) Hence show that $\\displaystyle\\int_3^6\\frac{2x+14}{(x-2)(x+4)}\\,dx=\\ln\\frac{224}{5}$.",
+     "solution_markdown": "(a) Write $\\dfrac{2x+14}{(x-2)(x+4)}\\equiv\\dfrac{A}{x-2}+\\dfrac{B}{x+4}$, so $2x+14\\equiv A(x+4)+B(x-2)$.\n\n$x=2$: $18=6A$, so $A=3$. $\\ x=-4$: $6=-6B$, so $B=-1$. Check with the coefficient of $x$: $A+B=2$.\n\nThe result is **$\\dfrac{3}{x-2}-\\dfrac{1}{x+4}$**.\n\n(b) $\\displaystyle\\int_3^6\\left(\\frac{3}{x-2}-\\frac{1}{x+4}\\right)dx=\\Big[3\\ln(x-2)-\\ln(x+4)\\Big]_3^6$.\n\nAt $x=6$: $3\\ln4-\\ln10$. At $x=3$: $3\\ln1-\\ln7=-\\ln7$. The difference is $3\\ln4-\\ln10+\\ln7=\\ln\\dfrac{64\\times7}{10}=$ **$\\ln\\dfrac{224}{5}$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "(a) Express $\\dfrac{x^{3}-2x^{2}+5x+5}{(x-2)(x+1)}$ in the form $px+q+\\dfrac{A}{x-2}+\\dfrac{B}{x+1}$.\n\n(b) Hence show that $\\displaystyle\\int_3^4\\frac{x^{3}-2x^{2}+5x+5}{(x-2)(x+1)}\\,dx=\\frac52+\\ln 40$.",
+     "solution_markdown": "(a) The denominator expands to $x^{2}-x-2$. Dividing $x^{3}-2x^{2}+5x+5$ by it gives quotient $x-1$ and remainder $6x+3$.\n\nCheck: $(x^{2}-x-2)(x-1)=x^{3}-x^{2}-x^{2}+x-2x+2=x^{3}-2x^{2}-x+2$, and $x^{3}-2x^{2}+5x+5-(x^{3}-2x^{2}-x+2)=6x+3$.\n\nNow $\\dfrac{6x+3}{(x-2)(x+1)}\\equiv\\dfrac{A}{x-2}+\\dfrac{B}{x+1}$ gives $6x+3\\equiv A(x+1)+B(x-2)$. With $x=2$: $15=3A$, so $A=5$. With $x=-1$: $-3=-3B$, so $B=1$.\n\nThe result is **$x-1+\\dfrac{5}{x-2}+\\dfrac{1}{x+1}$**.\n\n(b) $\\displaystyle\\int_3^4\\left(x-1+\\frac{5}{x-2}+\\frac{1}{x+1}\\right)dx=\\Big[\\tfrac{x^{2}}{2}-x+5\\ln(x-2)+\\ln(x+1)\\Big]_3^4$.\n\nAt $x=4$: $8-4+5\\ln2+\\ln5=4+5\\ln2+\\ln5$. At $x=3$: $4.5-3+0+\\ln4=1.5+2\\ln2$.\n\nThe difference is $2.5+3\\ln2+\\ln5=\\dfrac52+\\ln8+\\ln5=$ **$\\dfrac52+\\ln40$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Let $f(x)=\\dfrac{6x^{2}+6x+6}{(1-x)(1+2x)^{2}}$.\n\n(a) Express $f(x)$ in the form $\\dfrac{A}{1-x}+\\dfrac{B}{1+2x}+\\dfrac{C}{(1+2x)^{2}}$.\n\n(b) Hence expand $f(x)$ in ascending powers of $x$ as far as the term in $x^{2}$.\n\n(c) State the range of values of $x$ for which the expansion is valid.",
+     "solution_markdown": "(a) Multiplying through, $6x^{2}+6x+6\\equiv A(1+2x)^{2}+B(1-x)(1+2x)+C(1-x)$.\n\n$x=1$: $18=9A$, so $A=2$. $\\ x=-\\tfrac12$: $6\\cdot\\tfrac14-3+6=4.5=C\\cdot\\tfrac32$, so $C=3$. Coefficient of $x^{2}$: $6=4A-2B$, so $6=8-2B$ and $B=1$. Check with $x=0$: $A+B+C=6$, which agrees with the constant term $6$.\n\nSo $f(x)=$ **$\\dfrac{2}{1-x}+\\dfrac{1}{1+2x}+\\dfrac{3}{(1+2x)^{2}}$**.\n\n(b) Use the binomial series for each part:\n\n- $\\dfrac{2}{1-x}=2(1+x+x^{2}+\\dots)$\n- $\\dfrac{1}{1+2x}=1-2x+4x^{2}-\\dots$\n- $\\dfrac{3}{(1+2x)^{2}}=3\\left(1-2(2x)+3(2x)^{2}-\\dots\\right)=3-12x+36x^{2}-\\dots$\n\nAdding: constant $2+1+3=6$; coefficient of $x$: $2-2-12=-12$; coefficient of $x^{2}$: $2+4+36=42$.\n\nSo $f(x)\\approx$ **$6-12x+42x^{2}$**.\n\n(c) The series of $\\dfrac{1}{1-x}$ needs $|x|<1$ and those in $(1+2x)$ need $|2x|<1$. Both hold when **$|x|<\\dfrac12$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Choose the form from the denominator: distinct linear gives $\\dfrac{A}{x-a}$; repeated gives one term per power; irreducible quadratic gives $\\dfrac{Bx+C}{x^{2}+c}$.",
+    "An improper fraction is divided first; the partial fractions apply only to the proper remainder.",
+    "Find the constants by substituting the roots of the factors (the value that makes the factor $0$) and by equating coefficients; check with one more value of $x$.",
+    "Integration: $\\int\\dfrac{A}{ax+b}\\,dx=\\dfrac Aa\\ln|ax+b|$, and $\\int\\dfrac{B}{(x+k)^{2}}\\,dx=-\\dfrac{B}{x+k}$ (no logarithm).",
+    "For a binomial expansion, expand each partial fraction separately and give the range of validity: the most restrictive condition among the parts."
+   ]
+  }
+ ]
+}

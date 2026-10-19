@@ -1,0 +1,158 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-properties-of-functions",
+  "meta": {
+    "titre": "Properties of Functions: Parity, Composition and Bijections",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Even and odd functions, injective and surjective functions, inverses",
+    "duree_estimee_min": 35,
+    "tags": [
+      "properties of functions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2022-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2022-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-properties-of-functions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "When you send money by mobile transfer, the fee usually depends on the amount: one amount in, one fee out. That idea of one input giving exactly one output is a function, and Advanced Level questions go on to ask about its properties. Is it symmetric about the axes? Can two different amounts produce the same fee? Can every fee value actually occur? What happens when two such rules are applied one after the other? These questions are answered by parity, injectivity, surjectivity and composition, and each has a reliable method that earns full marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A function $f:A\\to B$ gives each $x$ in the domain $A$ exactly one value $f(x)$ in the codomain $B$, and the range is the set of values actually obtained.",
+        "Solving a linear equation for $x$ and rearranging a formula to make a letter the subject.",
+        "Completing the square, $x^{2}-4x+7=(x-2)^{2}+3$, shows the lowest value of a quadratic."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parity, composition, injective, surjective and bijective functions",
+      "contenu_markdown": "**Parity.** A function is **even** if $f(-x)=f(x)$ for every $x$ in its domain (its graph is symmetric about the $y$-axis), and **odd** if $f(-x)=-f(x)$ (symmetric under a half turn about the origin). The domain must be symmetric about $0$. Most functions are neither, so test with a value: for $f(x)=x^{2}+x$, $f(1)=2$ and $f(-1)=0$, which is neither $2$ nor $-2$.\n\n| Combination | Parity |\n|---|---|\n| even + even, odd + odd | even, odd (the same) |\n| even $\\times$ even, odd $\\times$ odd | even |\n| even $\\times$ odd | odd |\n| $f\\circ g$ with $g$ even | even |\n| $f\\circ g$ with $f$ and $g$ odd | odd |\n\n**Composition.** $(f\\circ g)(x)=f(g(x))$: apply $g$ first. It is defined only where $g(x)$ lies in the domain of $f$, and in general $f\\circ g\\ne g\\circ f$.\n\n**Injective, surjective, bijective.** A function is **injective** (one-to-one) if different inputs give different outputs:\n\n$$\nf(a)=f(b)\\Rightarrow a=b \\tag{1}\n$$\n\nIt is **surjective** (onto) if its range equals its codomain: for every $y$ in the codomain, the equation $y=f(x)$ has a solution $x$ in the domain. It is **bijective** if it is both. Only a bijective function has an inverse $f^{-1}$, and then\n\n$$\nf^{-1}\\!\\left(f(x)\\right)=x,\\qquad \\operatorname{domain}\\left(f^{-1}\\right)=\\operatorname{range}(f) \\tag{2}\n$$\n\nTo find $f^{-1}$: write $y=f(x)$, make $x$ the subject, then replace $y$ by $x$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Testing injective and surjective",
+          "quand_utiliser": "When the question says determine whether f is one-to-one, onto or bijective.",
+          "contenu_markdown": "**Injective:** assume $f(a)=f(b)$ and show $a=b$ algebraically; one counter-example such as $f(2)=f(-2)$ for $f(x)=x^{2}$ disproves it (a horizontal line meeting the graph twice). **Surjective:** let $y$ be in the codomain, solve $y=f(x)$ for $x$, and look for values of $y$ that give no valid $x$. For $f(x)=\\dfrac{2x-1}{x+2}$ with $x\\ne-2$: $y(x+2)=2x-1$ gives $x=\\dfrac{-(2y+1)}{y-2}$, which fails for $y=2$ (the equation $2x-1=2x+4$ has no solution). So $f$ is not surjective onto $\\mathbb{R}$, but it is onto $\\mathbb{R}\\setminus\\{2\\}$."
+        },
+        {
+          "nom": "Inverse functions and restricting domains",
+          "quand_utiliser": "When f is not injective on its whole domain but the question asks for an inverse.",
+          "contenu_markdown": "Restrict the domain to an interval where $f$ is one-to-one, and take the codomain equal to the resulting range. For $f(x)=x^{2}$ the domain $x\\ge0$ gives the inverse $f^{-1}(x)=\\sqrt{x}$. Check an inverse by showing $f(f^{-1}(x))=x$. A function with $f\\circ f(x)=x$ on its domain is **self-inverse**."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Let $f(x)=x^{3}+2x$ and $g(x)=x^{2}+1$, both defined for all real $x$. Determine whether each of the following is even, odd or neither: (a) $f\\circ g$, (b) $g\\circ f$, (c) the product $fg$, (d) the sum $f+g$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Test $f$ and $g$ separately.",
+          "justification": "The domain of both is $\\mathbb{R}$, symmetric about $0$. Odd powers of $x$ change sign when $x$ is replaced by $-x$, and even powers do not.",
+          "resultat_markdown": "$f(-x)=(-x)^{3}+2(-x)=-f(x)$, so $f$ is odd. $g(-x)=(-x)^{2}+1=g(x)$, so $g$ is even."
+        },
+        {
+          "numero": 2,
+          "action": "Parity of $f\\circ g$.",
+          "justification": "Since $g(-x)=g(x)$, the input to $f$ is the same for $x$ and $-x$.",
+          "resultat_markdown": "$(f\\circ g)(-x)=f(g(-x))=f(g(x))=(f\\circ g)(x)$, so $f\\circ g$ is **even**."
+        },
+        {
+          "numero": 3,
+          "action": "Parity of $g\\circ f$.",
+          "justification": "$f$ is odd, so $f(-x)=-f(x)$; then $g$ squares this value, and $g$ is even.",
+          "resultat_markdown": "$(g\\circ f)(-x)=g(-f(x))=\\left(-f(x)\\right)^{2}+1=g(f(x))$, so $g\\circ f$ is **even**."
+        },
+        {
+          "numero": 4,
+          "action": "Parity of the product $fg$.",
+          "justification": "An odd function times an even function changes sign when $x$ is replaced by $-x$.",
+          "resultat_markdown": "$(fg)(-x)=f(-x)g(-x)=-f(x)g(x)=-(fg)(x)$, so $fg$ is **odd**."
+        },
+        {
+          "numero": 5,
+          "action": "Parity of the sum $f+g$.",
+          "justification": "Test with a value, since an odd function plus an even function is usually neither.",
+          "resultat_markdown": "$(f+g)(1)=3+2=5$ and $(f+g)(-1)=-3+2=-1$. Since $-1\\ne5$ and $-1\\ne-5$, the sum is **neither even nor odd**."
+        }
+      ],
+      "conclusion_markdown": "$f\\circ g$ is even, $g\\circ f$ is even, $fg$ is odd and $f+g$ is neither even nor odd."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "$f(x)=x^{2}+x$ is even because it contains $x^{2}$, and anything that is not even is odd.",
+          "pourquoi_faux": "One even term does not make the function even; every term must be even. Also a function can be neither: $f(1)=2$ but $f(-1)=0$, which is neither $2$ nor $-2$.",
+          "correction_markdown": "Test $f(-x)$ against $f(x)$ and $-f(x)$; if neither works, state that $f$ is neither even nor odd."
+        },
+        {
+          "erreur_markdown": "The function $f:\\mathbb{R}\\to\\mathbb{R}$, $f(x)=x^{2}$, is surjective because every real number has a real square.",
+          "pourquoi_faux": "Surjective concerns every element of the codomain being an output, not every input having an output. The number $-1$ is in the codomain but is never obtained, since $x^{2}\\ge0$.",
+          "correction_markdown": "The range is $[0,\\infty)$, which is not $\\mathbb{R}$, so $f$ is not surjective onto $\\mathbb{R}$."
+        },
+        {
+          "erreur_markdown": "$f(x)=x^{2}$ is injective because $f(2)=4$ and $f(3)=9$ are different.",
+          "pourquoi_faux": "Injectivity must hold for every pair of inputs, and checking two values proves nothing. One bad pair is enough to fail it.",
+          "correction_markdown": "$f(2)=f(-2)=4$ with $2\\ne-2$, so $f$ is not injective on $\\mathbb{R}$."
+        },
+        {
+          "erreur_markdown": "$f(x)=2x$ and $g(x)=x+3$, so $(f\\circ g)(x)=2x+3$.",
+          "pourquoi_faux": "In $f\\circ g$ the function $g$ is applied first, and the result is the input to $f$. The answer given is $g(f(x))$ instead.",
+          "correction_markdown": "$(f\\circ g)(x)=f(x+3)=2(x+3)=2x+6$, whereas $(g\\circ f)(x)=2x+3$."
+        },
+        {
+          "erreur_markdown": "The inverse of $f(x)=\\dfrac{x+1}{x-3}$ is $\\dfrac{x-3}{x+1}$.",
+          "pourquoi_faux": "The reciprocal $\\frac{1}{f(x)}$ is not the inverse function. The inverse undoes $f$, so it satisfies $f^{-1}(f(x))=x$, and it is found by solving $y=f(x)$ for $x$.",
+          "correction_markdown": "From $y(x-3)=x+1$ we get $x=\\dfrac{3y+1}{y-1}$, so $f^{-1}(x)=\\dfrac{3x+1}{x-1}$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Determine whether each function is even, odd or neither: (a) $f(x)=x^{4}-3x^{2}+1$, (b) $g(x)=x^{5}+x^{3}$, (c) $h(x)=x^{2}+x$, (d) $k(x)=x\\sin x$.",
+          "solution_markdown": "(a) $f(-x)=(-x)^{4}-3(-x)^{2}+1=x^{4}-3x^{2}+1=f(x)$: **even**.\n\n(b) $g(-x)=(-x)^{5}+(-x)^{3}=-x^{5}-x^{3}=-g(x)$: **odd**.\n\n(c) $h(1)=2$ and $h(-1)=1-1=0$; $0$ is neither $2$ nor $-2$: **neither**.\n\n(d) $x$ is odd and $\\sin x$ is odd, so $k(-x)=(-x)\\sin(-x)=(-x)(-\\sin x)=x\\sin x=k(x)$: **even**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The function $f:\\mathbb{R}\\to\\mathbb{R}$ is given by $f(x)=x^{2}-4x+7$. (a) Show that $f$ is not injective. (b) Find the range of $f$ and state why $f$ is not surjective. (c) The domain is restricted to $x\\ge2$ and the codomain to $[3,\\infty)$. Show that $f$ is then bijective and find $f^{-1}(x)$.",
+          "solution_markdown": "(a) $f(0)=7$ and $f(4)=16-16+7=7$, with $0\\ne4$, so **$f$ is not injective**.\n\n(b) Completing the square, $f(x)=(x-2)^{2}+3\\ge3$, with equality at $x=2$, so the range is **$[3,\\infty)$**. This is not all of $\\mathbb{R}$ (for example $0$ is never obtained), so $f$ is not surjective.\n\n(c) For $x\\ge2$, $f(x)=(x-2)^{2}+3$ is increasing, so one-to-one, and it takes every value in $[3,\\infty)$, so it is onto: bijective. Put $y=(x-2)^{2}+3$, so $(x-2)^{2}=y-3$ and, because $x-2\\ge0$, $x=2+\\sqrt{y-3}$. Hence **$f^{-1}(x)=2+\\sqrt{x-3}$**, for $x\\ge3$. Check: $f\\left(2+\\sqrt{x-3}\\right)=(x-3)+3=x$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $f(x)=\\dfrac{3x+2}{x-3}$ for $x\\in\\mathbb{R}$, $x\\ne3$. (a) Prove that $f$ is injective. (b) Find the value that $f(x)$ can never take, and give the range of $f$. (c) Find $f^{-1}(x)$. (d) Show that $f(f(x))=x$ for $x\\ne3$, and explain how this agrees with (c).",
+          "solution_markdown": "(a) Suppose $f(a)=f(b)$. Then $(3a+2)(b-3)=(3b+2)(a-3)$, i.e. $3ab-9a+2b-6=3ab-9b+2a-6$, so $11b=11a$ and **$a=b$**: injective.\n\n(b) Solve $y=\\dfrac{3x+2}{x-3}$: $yx-3y=3x+2$, so $x(y-3)=3y+2$. If $y=3$ this reads $0=11$, impossible, so **$3$ is never taken**. For $y\\ne3$, $x=\\dfrac{3y+2}{y-3}$, which is never $3$ (that would need $3y+2=3y-9$). The range is **$\\mathbb{R}\\setminus\\{3\\}$**.\n\n(c) From (b), $f^{-1}(x)=$ **$\\dfrac{3x+2}{x-3}$**, $x\\ne3$, so $f^{-1}=f$.\n\n(d) $f(f(x))=\\dfrac{3\\cdot\\frac{3x+2}{x-3}+2}{\\frac{3x+2}{x-3}-3}=\\dfrac{3(3x+2)+2(x-3)}{(3x+2)-3(x-3)}=\\dfrac{11x}{11}=$ **$x$**. This agrees with (c): a function equal to its own inverse satisfies $f\\circ f=\\text{identity}$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Even means $f(-x)=f(x)$ and odd means $f(-x)=-f(x)$, on a domain symmetric about $0$; otherwise test with a value and say neither.",
+        "Odd $\\times$ even is odd, even $\\times$ even and odd $\\times$ odd are even, and $f\\circ g$ is even whenever $g$ is even.",
+        "$(f\\circ g)(x)=f(g(x))$: apply $g$ first; in general $f\\circ g\\ne g\\circ f$.",
+        "Injective: $f(a)=f(b)\\Rightarrow a=b$ (one counter-example disproves it). Surjective: solve $y=f(x)$ for $x$ and look for values of $y$ with no solution.",
+        "An inverse exists only for a bijection: solve $y=f(x)$ for $x$, restrict the domain if needed, and remember that the domain of $f^{-1}$ is the range of $f$."
+      ]
+    }
+  ]
+}

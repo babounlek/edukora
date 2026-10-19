@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-ict-ict-relational-databases",
+  "meta": {
+    "titre": "Relational Databases: reading tables, enforcing integrity and querying linked data with SQL",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Tables, relationships and queries",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict relational databases"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-relational-databases-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "An interurban bus company runs trips between Yaounde, Douala and Bafoussam. It keeps one table of drivers and one table of trips, and the number of the driver on each trip links the two. To know which driver carried the most passengers this week, nobody searches through paper: a query joins the tables and adds the figures. Questions on relational databases ask you to read the structure of such tables (how many records, fields and key fields), to write a query, and to explain what the system refuses to accept. All three rest on the same few definitions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A table is made of records (rows) and fields (columns), and each field has a data type.",
+        "A primary key identifies each record of a table uniquely.",
+        "A foreign key holds the primary key value of a record in another table."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Tables, integrity and SQL queries",
+      "contenu_markdown": "### Vocabulary and counting\n| Term | Meaning |\n|---|---|\n| Table (relation) | data about one subject, such as drivers |\n| Record (row, tuple) | all the facts about one item |\n| Field (attribute, column) | one fact about every item, with a name and a data type |\n\nTo count: records are the rows of data (the heading row is not a record); the number of fields equals the number of attributes, because they are the same columns; key fields are the fields that form the primary key, and a composite key of two fields counts as two key fields. A foreign key is a field of the table that holds it. Read the question to see whether foreign keys are to be counted too.\n\n### Integrity\n- **Entity integrity**: a primary key value is unique and never empty.\n- **Referential integrity**: a foreign key value must match an existing primary key value in the parent table. The system therefore refuses to add a child record whose parent does not exist, and refuses to delete a parent record that still has child records (unless cascading deletion has been chosen).\n\n### Query language (SQL)\n```sql\nSELECT field1, field2 FROM table WHERE condition ORDER BY field1;\nSELECT t1.f, t2.g FROM t1 JOIN t2 ON t1.id = t2.t1_id;\nINSERT INTO table VALUES (value1, value2);\nUPDATE table SET field = value WHERE condition;\nDELETE FROM table WHERE condition;\n```\n- Text values go in single quotes. `LIKE 'A%'` matches text that begins with A. Conditions use `=`, `<>`, `>`, `<`, `>=`, `<=`, `AND`, `OR`.\n- `COUNT`, `SUM`, `AVG`, `MIN` and `MAX` summarise records; `GROUP BY` makes one result row per group; `HAVING` filters the groups, whereas `WHERE` filters the records before grouping.\n- Without a `WHERE` clause, `UPDATE` and `DELETE` affect every record.\n\n### Database objects\nA **query** extracts or changes data, a **form** gives a screen for entering and viewing records, and a **report** presents selected data for printing.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Counting records, fields and keys",
+          "quand_utiliser": "When tables are described or displayed and numbers must be filled in.",
+          "contenu_markdown": "Count the data rows only, count the columns for fields and attributes, and list the primary key fields of each table. Write the foreign key separately, since it is also an ordinary field of its own table. A table whose primary key is made of two fields has two key fields."
+        },
+        {
+          "nom": "A query on two linked tables",
+          "quand_utiliser": "When the answer needs fields from more than one table.",
+          "contenu_markdown": "Join the tables on the key pair: parent primary key = child foreign key. Name the fields with their table (Driver.DriverName) if a name exists in both tables. Add WHERE for a record condition, GROUP BY with an aggregate for totals per group, HAVING for a condition on a total, and ORDER BY last."
+        },
+        {
+          "nom": "Updating data and integrity rules",
+          "quand_utiliser": "When records are inserted, changed or deleted and the question asks what the system does.",
+          "contenu_markdown": "Check each change against the two integrity rules. A new child record with an unknown foreign key value is rejected; deleting a parent with children is rejected; a new record that repeats an existing primary key is rejected. A change that satisfies the rules is accepted."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A bus company has two tables.\n\nDriver(DriverID, DriverName, BaseTown), primary key DriverID:\n\n| DriverID | DriverName | BaseTown |\n|---|---|---|\n| 1 | Ngu | Yaounde |\n| 2 | Fotso | Douala |\n| 3 | Abena | Bafoussam |\n\nTrip(TripID, TripDate, Route, DriverID, Passengers), primary key TripID, foreign key DriverID:\n\n| TripID | TripDate | Route | DriverID | Passengers |\n|---|---|---|---|---|\n| T01 | 2026-05-02 | Douala-Yaounde | 2 | 48 |\n| T02 | 2026-05-02 | Yaounde-Bafoussam | 1 | 35 |\n| T03 | 2026-05-03 | Douala-Yaounde | 2 | 52 |\n| T04 | 2026-05-03 | Bafoussam-Douala | 3 | 40 |\n| T05 | 2026-05-04 | Yaounde-Bafoussam | 1 | 44 |\n| T06 | 2026-05-04 | Douala-Yaounde | 1 | 50 |\n\n(a) State the number of records and fields in each table.\n\n(b) Write an SQL query that lists each driver's name, number of trips and total passengers, only for drivers who carried more than 90 passengers in total, with the highest total first, and give its result.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the records and fields of each table.",
+          "justification": "Records are the data rows and fields are the columns; the heading row is not a record.",
+          "resultat_markdown": "Driver: **3 records, 3 fields**. Trip: **6 records, 5 fields**."
+        },
+        {
+          "numero": 2,
+          "action": "Identify the link and the fields needed.",
+          "justification": "The names are in Driver and the passengers are in Trip, so both tables are needed and they are linked by DriverID (primary key in Driver, foreign key in Trip).",
+          "resultat_markdown": "Output: DriverName, number of trips (`COUNT`), total passengers (`SUM`). One result row per driver, so `GROUP BY` the driver."
+        },
+        {
+          "numero": 3,
+          "action": "Write the join.",
+          "justification": "Without the condition on the key pair every driver would be paired with every trip.",
+          "resultat_markdown": "`FROM Driver JOIN Trip ON Driver.DriverID = Trip.DriverID`"
+        },
+        {
+          "numero": 4,
+          "action": "Add the condition on the total and the order.",
+          "justification": "The condition applies to a sum of a group, so it belongs in HAVING, not in WHERE.",
+          "resultat_markdown": "```sql\nSELECT Driver.DriverName, COUNT(*) AS Trips, SUM(Trip.Passengers) AS TotalPassengers\nFROM Driver JOIN Trip ON Driver.DriverID = Trip.DriverID\nGROUP BY Driver.DriverName\nHAVING SUM(Trip.Passengers) > 90\nORDER BY TotalPassengers DESC;\n```"
+        },
+        {
+          "numero": 5,
+          "action": "Run the query on the data.",
+          "justification": "Totals per driver: Ngu 35 + 44 + 50, Fotso 48 + 52, Abena 40. Abena (40) is removed by the HAVING condition.",
+          "resultat_markdown": "| DriverName | Trips | TotalPassengers |\n|---|---|---|\n| Ngu | 3 | **129** |\n| Fotso | 2 | **100** |"
+        }
+      ],
+      "conclusion_markdown": "The query joins the tables on the key pair, groups the trips by driver, keeps only the groups whose total exceeds 90, and sorts them. The result has two rows: Ngu (3 trips, 129 passengers) and Fotso (2 trips, 100 passengers)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Writing `SELECT ... FROM Driver, Trip` (or a JOIN without the ON condition) to combine two tables.",
+          "pourquoi_faux": "Every record of the first table is paired with every record of the second: 3 drivers and 6 trips would give 18 rows, most of them meaningless.",
+          "correction_markdown": "Add the join condition on the key pair: `ON Driver.DriverID = Trip.DriverID`."
+        },
+        {
+          "erreur_markdown": "`WHERE SUM(Passengers) > 90`",
+          "pourquoi_faux": "WHERE filters single records before they are grouped, so an aggregate cannot be used there and the query is rejected.",
+          "correction_markdown": "Use `GROUP BY` with `HAVING SUM(Passengers) > 90`."
+        },
+        {
+          "erreur_markdown": "`WHERE Route = Douala-Yaounde` (text without quotes).",
+          "pourquoi_faux": "Without quotes the text is read as field names and a subtraction, and the query fails.",
+          "correction_markdown": "Put text between single quotes: `WHERE Route = 'Douala-Yaounde'`."
+        },
+        {
+          "erreur_markdown": "\"The Trip table has 7 records\" when the display has a heading row and six lines of data.",
+          "pourquoi_faux": "The heading row holds the field names; it is not a record.",
+          "correction_markdown": "Count only the data rows: 6 records. The 5 columns are the 5 fields."
+        },
+        {
+          "erreur_markdown": "`DELETE FROM Trip;` to remove one trip.",
+          "pourquoi_faux": "With no WHERE clause the statement removes every record of the table.",
+          "correction_markdown": "`DELETE FROM Trip WHERE TripID = 'T04';`"
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A school database has three tables. Form(FormCode, FormName) has 3 records, primary key FormCode. Student(StudentID, Name, FormCode) has 6 records, primary key StudentID, foreign key FormCode. Fee(StudentID, Term, AmountPaid) has 8 records, primary key (StudentID, Term), foreign key StudentID.\n\nComplete this table for the three tables.\n\n| | Form | Student | Fee |\n|---|---|---|---|\n| Number of records | | | |\n| Number of fields | | | |\n| Number of key fields (primary key) | | | |\n| Number of foreign key fields | | | |",
+          "solution_markdown": "| | Form | Student | Fee |\n|---|---|---|---|\n| Number of records | **3** | **6** | **8** |\n| Number of fields | **2** | **3** | **3** |\n| Number of key fields (primary key) | **1** | **1** | **2** |\n| Number of foreign key fields | **0** | **1** | **1** |\n\nFee has a composite primary key made of two fields, StudentID and Term, so it has two key fields; StudentID in Fee is at the same time a foreign key."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Use these two tables.\n\n| FormCode | FormName |\n|---|---|\n| F1 | Lower Sixth |\n| F2 | Upper Sixth |\n| F3 | Form Five |\n\n| StudentID | Name | FormCode |\n|---|---|---|\n| S1 | Awa | F1 |\n| S2 | Bella | F2 |\n| S3 | Chia | F1 |\n| S4 | Dione | F3 |\n| S5 | Eto | F1 |\n| S6 | Fon | F2 |\n\n(a) Write a query that lists, in alphabetical order, the names of the students in Lower Sixth, and give the result.\n\n(b) Write a query that gives the number of students in each form, largest number first, and give the result.",
+          "solution_markdown": "(a)\n```sql\nSELECT Student.Name\nFROM Student JOIN Form ON Student.FormCode = Form.FormCode\nWHERE Form.FormName = 'Lower Sixth'\nORDER BY Student.Name;\n```\nThe Form table is needed because the name Lower Sixth is stored there, and the join is made on FormCode. Result: **Awa, Chia, Eto**.\n\n(b)\n```sql\nSELECT Form.FormName, COUNT(*) AS Students\nFROM Student JOIN Form ON Student.FormCode = Form.FormCode\nGROUP BY Form.FormName\nORDER BY Students DESC;\n```\nResult: **Lower Sixth 3, Upper Sixth 2, Form Five 1**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Use the three tables below. Referential integrity is enforced.\n\n| FormCode | FormName |\n|---|---|\n| F1 | Lower Sixth |\n| F2 | Upper Sixth |\n| F3 | Form Five |\n\n| StudentID | Name | FormCode |\n|---|---|---|\n| S1 | Awa | F1 |\n| S2 | Bella | F2 |\n| S3 | Chia | F1 |\n| S4 | Dione | F3 |\n| S5 | Eto | F1 |\n| S6 | Fon | F2 |\n\n| StudentID | Term | AmountPaid |\n|---|---|---|\n| S1 | T1 | 20000 |\n| S1 | T2 | 15000 |\n| S2 | T1 | 25000 |\n| S3 | T1 | 10000 |\n| S3 | T2 | 10000 |\n| S4 | T1 | 30000 |\n| S5 | T1 | 12000 |\n| S6 | T2 | 8000 |\n\n(a) Write a query that gives, for each form, the total fees paid, only for forms with more than 30000 FCFA in total, with the largest total first. Give the result.\n\n(b) A clerk runs `INSERT INTO Fee VALUES ('S9', 'T1', 5000);`. What happens and why?\n\n(c) The clerk then runs `DELETE FROM Form WHERE FormCode = 'F3';`. What happens and why?",
+          "solution_markdown": "(a)\n```sql\nSELECT Form.FormName, SUM(Fee.AmountPaid) AS Total\nFROM Fee JOIN Student ON Fee.StudentID = Student.StudentID\nJOIN Form ON Student.FormCode = Form.FormCode\nGROUP BY Form.FormName\nHAVING SUM(Fee.AmountPaid) > 30000\nORDER BY Total DESC;\n```\nTotals: Lower Sixth 20000 + 15000 + 10000 + 10000 + 12000 = 67000; Upper Sixth 25000 + 8000 = 33000; Form Five 30000. The condition is strictly greater than 30000, so Form Five is removed. Result: **Lower Sixth 67000, Upper Sixth 33000**.\n\n(b) The record is **rejected**: there is no student S9 in the Student table, so the foreign key value has no matching primary key (referential integrity).\n\n(c) The deletion is **rejected**: the student Dione (S4) still belongs to form F3, so deleting the parent record would leave a foreign key value with no parent."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Records are the data rows, fields (attributes) are the columns, and the heading row is not a record; a composite primary key counts as several key fields.",
+        "Entity integrity: the primary key is unique and never empty. Referential integrity: every foreign key value matches an existing primary key value, so orphan records and deletions of parents with children are refused.",
+        "To query two tables, join them on parent key = foreign key; without the ON condition the result is every possible pairing.",
+        "WHERE filters records before grouping; HAVING filters groups after an aggregate; text values are in single quotes; UPDATE and DELETE without WHERE affect every record.",
+        "Queries extract or change data, forms enter and view records, reports print selected data."
+      ]
+    }
+  ]
+}

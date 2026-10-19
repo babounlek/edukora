@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-pm-mechanics-limits-and-continuity",
+  "meta": {
+    "titre": "Limits and Continuity: Evaluating Limits and Matching Pieces",
+    "matiere": "Pure Mathematics with Mechanics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Evaluating limits, one-sided limits and continuity of piecewise functions",
+    "duree_estimee_min": 35,
+    "tags": [
+      "limits and continuity"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-mechanics-2024-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-mechanics-2024-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-mechanics-limits-and-continuity-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Imagine a bus company that charges one fare up to a certain distance and a different fare beyond it, so the price jumps at a fixed point. Mathematicians ask what value a rule is approaching at such a point, and whether the two rules meet there. That question is the idea of a limit, and a function whose pieces meet without a gap or a jump is called continuous. At the GCE Advanced Level you will meet this theme in multiple-choice limits, in piecewise functions with an unknown constant, and in questions on continuity at a point."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Factorising quadratics and the difference of two squares, $a^{2}-b^{2}=(a-b)(a+b)$.",
+        "A piecewise function uses a different formula on each interval of its domain.",
+        "As $x$ becomes very large, $\\frac{1}{x}$, $\\frac{1}{x^{2}}$ and similar terms become very small.",
+        "Trigonometric functions of an angle in radians are used in all calculus work."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Limits, one-sided limits and continuity",
+      "contenu_markdown": "**Limit.** $\\lim_{x\\to a}f(x)=L$ means that $f(x)$ gets as close to $L$ as we like when $x$ is close enough to $a$ (with $x\\ne a$). The limit describes behaviour **near** $a$, so it can exist even when $f(a)$ is undefined. The **one-sided limits** are $\\lim_{x\\to a^-}f(x)$ (from the left) and $\\lim_{x\\to a^+}f(x)$ (from the right), and\n\n$$\n\\lim_{x\\to a}f(x)\\ \\text{exists}\\iff\\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x) \\tag{1}\n$$\n\n**Continuity.** A function $f$ is continuous at $x=a$ when three things hold: $f(a)$ is defined, $\\lim_{x\\to a}f(x)$ exists, and the limit equals $f(a)$:\n\n$$\n\\lim_{x\\to a^-}f(x)=\\lim_{x\\to a^+}f(x)=f(a) \\tag{2}\n$$\n\nPolynomials, $\\sin x$ and $\\cos x$ are continuous everywhere, and a rational function is continuous wherever its denominator is not zero.\n\n**Choosing a method.**\n\n| Situation | Method |\n|---|---|\n| Denominator not zero at $a$ | Substitute $x=a$ |\n| Form $\\frac{0}{0}$ | Factorise and cancel $(x-a)$, or multiply by the conjugate of a surd |\n| $x\\to\\infty$, rational function | Divide top and bottom by the highest power of $x$ |\n| Involves $\\sin kx$ near $0$ | Use $\\lim_{x\\to0}\\frac{\\sin x}{x}=1$ with $x$ in radians |\n| Function defined in pieces | Find the left and right limits using the matching piece of each side |\n\n**Discontinuities.** At a removable discontinuity the limit exists but differs from $f(a)$ or $f(a)$ is undefined; at a jump the left and right limits differ; at an infinite discontinuity $f(x)\\to\\pm\\infty$.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Form 0/0: factorise or rationalise",
+          "quand_utiliser": "When direct substitution gives 0 over 0, for a rational function or an expression with a square root.",
+          "contenu_markdown": "A result $\\frac{0}{0}$ is not an answer: it means $(x-a)$ is a common factor. Factorise and cancel, then substitute. For a surd, multiply top and bottom by the conjugate, using $(\\sqrt{u}-v)(\\sqrt{u}+v)=u-v^{2}$. For example $\\lim_{x\\to4}\\dfrac{x^{2}-16}{x-4}=\\lim_{x\\to4}(x+4)=8$ and $\\lim_{x\\to1}\\dfrac{\\sqrt{x+3}-2}{x-1}=\\lim_{x\\to1}\\dfrac{1}{\\sqrt{x+3}+2}=\\dfrac{1}{4}$."
+        },
+        {
+          "nom": "Limits as x tends to infinity",
+          "quand_utiliser": "When the question asks for the behaviour of a quotient, or a difference of surds, for very large x.",
+          "contenu_markdown": "Divide numerator and denominator by the highest power of $x$ in the denominator, then use $\\frac{1}{x^{n}}\\to0$. For example $\\lim_{x\\to\\infty}\\dfrac{4x^{2}-x}{2x^{2}+7}=\\lim_{x\\to\\infty}\\dfrac{4-\\frac{1}{x}}{2+\\frac{7}{x^{2}}}=2$. A difference of two surds such as $\\sqrt{x^{2}+x}-x$ is first multiplied by its conjugate; the result is a quotient to which the same division applies."
+        },
+        {
+          "nom": "Piecewise functions and unknown constants",
+          "quand_utiliser": "When a function is defined by different rules on each side of a point and the question asks for a constant so that a limit exists or the function is continuous.",
+          "contenu_markdown": "Put the two one-sided limits at the join into an equation. For a limit to exist, set left limit $=$ right limit. For continuity, also set both equal to the value of $f$ at the join. With a squared constant you may get a quadratic and two solutions; test each value against the extra condition about $f(a)$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A function $f$ is defined for all real $x$ by $f(x)=3x+2p$ for $x<1$, $f(1)=9$, and $f(x)=p^{2}x^{2}$ for $x>1$, where $p$ is a constant. (a) Find the values of $p$ for which $f$ has a limit at $x=1$. (b) Determine the value of $p$ for which $f$ is continuous at $x=1$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Find the left-hand limit.",
+          "justification": "For $x<1$ the rule is $3x+2p$, and it is a polynomial in $x$, so substitute $x=1$.",
+          "resultat_markdown": "$\\lim_{x\\to1^-}f(x)=3(1)+2p=3+2p$."
+        },
+        {
+          "numero": 2,
+          "action": "Find the right-hand limit.",
+          "justification": "For $x>1$ the rule is $p^{2}x^{2}$; substitute $x=1$.",
+          "resultat_markdown": "$\\lim_{x\\to1^+}f(x)=p^{2}(1)^{2}=p^{2}$."
+        },
+        {
+          "numero": 3,
+          "action": "Equate the one-sided limits and solve.",
+          "justification": "A limit exists at $x=1$ exactly when the two sides agree. Rearrange to a quadratic in $p$ and factorise.",
+          "resultat_markdown": "$p^{2}=3+2p\\Rightarrow p^{2}-2p-3=0\\Rightarrow(p-3)(p+1)=0$, so $p=3$ or $p=-1$."
+        },
+        {
+          "numero": 4,
+          "action": "Find the limit for each value.",
+          "justification": "Substitute back into either one-sided limit; for $p=3$ the left limit is $3+6$, and for $p=-1$ it is $3-2$.",
+          "resultat_markdown": "$p=3$: limit $=9$. $p=-1$: limit $=1$."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the continuity condition.",
+          "justification": "Continuity at $x=1$ also requires the limit to equal $f(1)=9$.",
+          "resultat_markdown": "Only $p=3$ gives limit $9$; for $p=-1$ the limit is $1\\ne9$, a removable discontinuity."
+        }
+      ],
+      "conclusion_markdown": "(a) $f$ has a limit at $x=1$ when $p=3$ (limit $9$) or $p=-1$ (limit $1$). (b) $f$ is continuous at $x=1$ only for $p=3$, because then the limit $9$ equals $f(1)$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Substituting $x=2$ into $\\dfrac{x^{2}-4}{x-2}$ gives $\\frac{0}{0}$, so the limit does not exist.",
+          "pourquoi_faux": "The form $\\frac{0}{0}$ is undetermined, not undefined. The numerator and denominator share the factor $(x-2)$, which makes both zero at $x=2$ but is not zero for $x$ near $2$.",
+          "correction_markdown": "Factorise: $\\dfrac{(x-2)(x+2)}{x-2}=x+2$ for $x\\ne2$, so the limit is $4$."
+        },
+        {
+          "erreur_markdown": "If $f(x)=x+1$ for $x\\ne3$ and $f(3)=10$, then $\\lim_{x\\to3}f(x)=10$.",
+          "pourquoi_faux": "A limit depends only on values of $f$ near $3$, not at $3$. Near $3$ the function is $x+1$, which tends to $4$; the value $10$ only shows a removable discontinuity.",
+          "correction_markdown": "$\\lim_{x\\to3}f(x)=4$, while $f(3)=10\\ne4$ so $f$ is not continuous at $3$."
+        },
+        {
+          "erreur_markdown": "Using $x$ in degrees, $\\lim_{x\\to0}\\dfrac{\\sin x}{x}=1$ still holds.",
+          "pourquoi_faux": "The limit $1$ is true only when $x$ is in radians. With $x$ in degrees, $\\sin x^{\\circ}=\\sin\\frac{\\pi x}{180}$, and the limit of $\\frac{\\sin x^{\\circ}}{x}$ is $\\frac{\\pi}{180}$.",
+          "correction_markdown": "Work in radians for all calculus limits."
+        },
+        {
+          "erreur_markdown": "$\\lim_{x\\to\\infty}\\dfrac{3x^{2}+1}{x^{2}-5}=\\dfrac{\\infty}{\\infty}=1$.",
+          "pourquoi_faux": "Infinity is not a number, so $\\frac{\\infty}{\\infty}$ has no fixed value. The two expressions grow at a related rate which must be compared.",
+          "correction_markdown": "Divide by $x^{2}$: $\\dfrac{3+\\frac{1}{x^{2}}}{1-\\frac{5}{x^{2}}}\\to\\dfrac{3}{1}=3$."
+        },
+        {
+          "erreur_markdown": "A piecewise function is continuous at the join if the left piece equals $f(a)$.",
+          "pourquoi_faux": "Continuity needs the right-hand limit as well. If the right piece tends to a different value, there is a jump even though the left side matches $f(a)$.",
+          "correction_markdown": "Check left limit $=$ right limit $=f(a)$, using the piece on each side."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Evaluate $\\lim_{x\\to2}\\dfrac{x^{2}-5x+6}{x-2}$. (b) Evaluate $\\lim_{x\\to\\infty}\\dfrac{3x^{2}+x}{5x^{2}-2}$. (c) Is $g(x)=\\dfrac{x^{2}-5x+6}{x-2}$ continuous at $x=2$? Give a reason.",
+          "solution_markdown": "(a) Substitution gives $\\frac{0}{0}$. Factorising, $x^{2}-5x+6=(x-2)(x-3)$, so the expression equals $x-3$ for $x\\ne2$ and the limit is $2-3=$ **$-1$**.\n\n(b) Divide by $x^{2}$: $\\dfrac{3+\\frac{1}{x}}{5-\\frac{2}{x^{2}}}\\to$ **$\\dfrac{3}{5}$**.\n\n(c) **No**: $g(2)$ is undefined, so the first condition of continuity fails, although the limit $-1$ exists. It is a removable discontinuity."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Evaluate (a) $\\lim_{x\\to0}\\dfrac{\\sqrt{x+9}-3}{x}$, (b) $\\lim_{x\\to0}\\dfrac{\\sin5x}{2x}$, and (c) $\\lim_{x\\to\\infty}\\left(\\sqrt{x^{2}+4x}-x\\right)$.",
+          "solution_markdown": "(a) Multiply top and bottom by $\\sqrt{x+9}+3$: the numerator becomes $(x+9)-9=x$, so the expression is $\\dfrac{x}{x\\left(\\sqrt{x+9}+3\\right)}=\\dfrac{1}{\\sqrt{x+9}+3}\\to$ **$\\dfrac{1}{6}$**.\n\n(b) $\\dfrac{\\sin5x}{2x}=\\dfrac{5}{2}\\cdot\\dfrac{\\sin5x}{5x}$, and $\\frac{\\sin u}{u}\\to1$ as $u=5x\\to0$, so the limit is **$\\dfrac{5}{2}$**.\n\n(c) Multiply by the conjugate: $\\dfrac{(x^{2}+4x)-x^{2}}{\\sqrt{x^{2}+4x}+x}=\\dfrac{4x}{\\sqrt{x^{2}+4x}+x}$. Divide by $x$ (for $x>0$): $\\dfrac{4}{\\sqrt{1+\\frac{4}{x}}+1}\\to\\dfrac{4}{2}=$ **2**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A function $f$ is defined by $f(x)=\\dfrac{2x^{2}-5x-3}{x-3}$ for $x<3$, $f(x)=px+q$ for $3\\le x\\le5$, and $f(x)=3x-4$ for $x>5$, where $p$ and $q$ are constants. (a) Simplify the rule for $x<3$ and find $\\lim_{x\\to3^-}f(x)$. (b) Find $p$ and $q$ so that $f$ is continuous at $x=3$ and at $x=5$. (c) For these values find $f(4)$ and state whether $f$ is continuous for all real $x$.",
+          "solution_markdown": "(a) $2x^{2}-5x-3=(2x+1)(x-3)$, so $f(x)=2x+1$ for $x<3$ and $\\lim_{x\\to3^-}f(x)=$ **7**.\n\n(b) At $x=3$: the left limit is $7$ and $f(3)=3p+q$, so $3p+q=7$. At $x=5$: $f(5)=5p+q$ and the right limit is $3(5)-4=11$, so $5p+q=11$. Subtracting, $2p=4$, so **$p=2$** and $q=7-6=$ **1**.\n\n(c) $f(4)=2(4)+1=$ **9**. Each piece is a polynomial, continuous on its own interval, and the joins at $3$ and $5$ are continuous by (b), so **$f$ is continuous for all real $x$**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A limit depends on values near $a$, not at $a$; it exists when the left and right limits are equal.",
+        "Continuity at $a$ needs $f(a)$ defined, the limit existing, and the limit equal to $f(a)$.",
+        "Form $\\frac{0}{0}$ means a common factor $(x-a)$: factorise, or multiply by the conjugate of a surd.",
+        "For $x\\to\\infty$ divide numerator and denominator by the highest power of $x$; $\\frac{\\infty}{\\infty}$ is not $1$.",
+        "For a piecewise function, build equations from the left limit, right limit and $f(a)$, and check every solution against all the conditions."
+      ]
+    }
+  ]
+}

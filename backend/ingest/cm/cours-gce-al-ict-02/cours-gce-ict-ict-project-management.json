@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-ict-ict-project-management",
+  "meta": {
+    "titre": "Managing an ICT Project: tasks, Gantt charts, PERT networks and the critical path",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Gantt charts, PERT and the critical path",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict project management"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-project-management-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A school in Bamenda plans to put a computer room into service before the start of the new term. The cabling cannot begin before the computers are chosen, the software cannot be tested before the network works, and the teachers cannot be trained before the system is tested. If one early task slips, the opening date may slip with it. Examination questions on this theme ask you to read or draw a Gantt chart, to find the critical path and the duration of a project, and to name the strengths and limits of the planning tools."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A task is a piece of work with a duration, and a predecessor is a task that must finish before another can start.",
+        "A project has a goal, a start date, an end date and a budget.",
+        "A flow of work can be shown as boxes joined by arrows to show the order."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Project planning tools and critical path analysis",
+      "contenu_markdown": "### Project, constraints and stages\nA **project** is a temporary piece of work with a defined goal, a start and an end, such as installing a computer network. It is limited by three **constraints**: time, cost and scope (the quality and amount of work). The **project manager** plans the tasks, estimates durations, assigns people and equipment, monitors progress, manages risks and reports. The usual stages are initiation, planning, execution, monitoring and control, and closure.\n\n### Planning tools\nA **Gantt chart** has one row for each task and a time scale across the page: a bar starts at the task's start and its length is the duration. It shows what runs at the same time and how far each task has progressed, and it is easy to read. Its weakness is that dependencies become hard to see when there are many tasks, and it does not by itself find the critical path.\n\nA **PERT chart** (network diagram) shows the tasks as a network joined by arrows that give the order of work. PERT uses three time estimates for a task: optimistic $O$, most likely $M$ and pessimistic $P$, combined as $E = \\frac{O + 4M + P}{6}$. Its limitations are that a large network is complex to draw and update, and that the times are only estimates.\n\n### Critical path analysis\nThe **critical path** is the longest path, in total duration, through the network from the first task to the last. Its length is the **minimum duration of the project**. Work it out with two passes:\n\n- **Forward pass**: earliest start $ES$ = the largest earliest finish of the predecessors (0 if none); earliest finish $EF = ES + \\text{duration}$. The project duration is the largest $EF$.\n- **Backward pass**: latest finish $LF$ = the smallest latest start of the successors (the project duration for the last task); latest start $LS = LF - \\text{duration}$.\n- **Float** = $LS - ES$. Tasks with float 0 are **critical**: any delay to them delays the project. A task with float 2 can slip by up to 2 days with no effect.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Drawing a Gantt chart",
+          "quand_utiliser": "When asked to draw or read a Gantt chart for a table of tasks.",
+          "contenu_markdown": "Find the earliest start of every task from its predecessors, draw one bar per task starting there with a length equal to its duration, label the time axis, and mark the critical tasks. A task with several predecessors starts when the last of them has finished."
+        },
+        {
+          "nom": "Three-point estimates",
+          "quand_utiliser": "When a task has optimistic, most likely and pessimistic times.",
+          "contenu_markdown": "Compute the expected time $E = \\frac{O + 4M + P}{6}$ for every task, then use the expected times as the durations in the critical path calculation. Example: $O = 2$, $M = 4$, $P = 6$ gives $E = \\frac{2 + 16 + 6}{6} = 4$ days."
+        },
+        {
+          "nom": "Other management tools",
+          "quand_utiliser": "When asked to state another tool for managing a project.",
+          "contenu_markdown": "Name the tool, then say what it does for the project. **Project management software** keeps the schedule, resources and costs in one place and recalculates when a date changes. A **budget** compares planned and actual costs. **Milestones** mark key events used to check progress. A **risk register** lists what could go wrong, how likely it is and what will be done about it."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A school plans to install a computer room. The tasks, durations and order are:\n\n| Task | Activity | Duration (days) | Predecessor(s) |\n|---|---|---|---|\n| A | Agree the requirements | 3 | none |\n| B | Design the screens | 5 | A |\n| C | Buy the computers | 5 | A |\n| D | Install the network | 6 | C |\n| E | Write the software | 12 | B |\n| F | Set up the computers | 4 | D |\n| G | Test the system | 5 | E, F |\n| H | Train the staff | 2 | G |\n\n(a) Draw the Gantt chart for the earliest start of each task. [3 marks] (b) Determine the critical path and the minimum duration of the project. [3 marks] (c) State the float of task C and of task D. [2 marks] (d) Task D takes 9 days instead of 6. State the new duration of the project. [2 marks]",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Forward pass: find the earliest start and earliest finish of every task.",
+          "justification": "A task starts when the last of its predecessors finishes: G has two predecessors, E (finishes day 20) and F (finishes day 18).",
+          "resultat_markdown": "ES and EF: A 0-3, B 3-8, C 3-8, D 8-14, E 8-20, F 14-18, G 20-25, H 25-27."
+        },
+        {
+          "numero": 2,
+          "action": "Read off the project duration.",
+          "justification": "The project is complete when its last task finishes.",
+          "resultat_markdown": "Largest EF = 27 days."
+        },
+        {
+          "numero": 3,
+          "action": "Backward pass: find the latest start and latest finish.",
+          "justification": "Start from the project duration of 27 days at the end and subtract durations, taking the smallest latest start where there are several successors.",
+          "resultat_markdown": "LS and LF are given in the table of times in the conclusion."
+        },
+        {
+          "numero": 4,
+          "action": "Find the float and the critical path.",
+          "justification": "Float = LS - ES; tasks with float 0 are critical.",
+          "resultat_markdown": "Float 0 for A, B, E, G, H. Float 2 for C, D and F. Critical path A, B, E, G, H."
+        },
+        {
+          "numero": 5,
+          "action": "Draw the Gantt chart.",
+          "justification": "Each bar starts at the earliest start and has a length equal to the duration.",
+          "resultat_markdown": "See the chart in the conclusion."
+        },
+        {
+          "numero": 6,
+          "action": "Test the effect of a delay on D.",
+          "justification": "D has a float of 2 days, so a delay of 3 days uses the float and then pushes the project on by 1 day.",
+          "resultat_markdown": "Path A, C, D, F, G, H becomes 3 + 5 + 9 + 4 + 5 + 2 = 28 days, which is longer than 27."
+        }
+      ],
+      "conclusion_markdown": "Table of times (ES, EF, LS, LF in days; float = LS - ES):\n\n| Task | Duration | Predecessors | ES | EF | LS | LF | Float |\n|---|---|---|---|---|---|---|---|\n| A | 3 | none | 0 | 3 | 0 | 3 | 0 |\n| B | 5 | A | 3 | 8 | 3 | 8 | 0 |\n| C | 5 | A | 3 | 8 | 5 | 10 | 2 |\n| D | 6 | C | 8 | 14 | 10 | 16 | 2 |\n| E | 12 | B | 8 | 20 | 8 | 20 | 0 |\n| F | 4 | D | 14 | 18 | 16 | 20 | 2 |\n| G | 5 | E, F | 20 | 25 | 20 | 25 | 0 |\n| H | 2 | G | 25 | 27 | 25 | 27 | 0 |\n\n**(a)** Gantt chart (`#` = the task is running, `.` = not running; the numbers give the last digit of each day):\n\n```\nTask Day 123456789012345678901234567\nA     3  ###........................\nB     5  ...#####...................\nC     5  ...#####...................\nD     6  ........######.............\nE    12  ........############.......\nF     4  ..............####.........\nG     5  ....................#####..\nH     2  .........................##\n```\n\n**(b)** The critical path is **A, B, E, G, H** and the minimum duration is **27 days** (3 + 5 + 12 + 5 + 2 = 27). The other path A, C, D, F, G, H is 3 + 5 + 6 + 4 + 5 + 2 = 25 days. **(c)** Float of C = **2 days**, float of D = **2 days**. **(d)** The path through D becomes 28 days, so the project takes **28 days**, one day longer."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Adding all the durations (3 + 5 + 5 + 6 + 12 + 4 + 5 + 2 = 42) to give the project duration.",
+          "pourquoi_faux": "Tasks that do not depend on each other run at the same time, so the project is shorter than the sum of the durations.",
+          "correction_markdown": "The project duration is the length of the longest path (the critical path), here 27 days."
+        },
+        {
+          "erreur_markdown": "Choosing the path with the most tasks as the critical path.",
+          "pourquoi_faux": "Critical means longest in time, not largest in number of tasks.",
+          "correction_markdown": "Add the durations along each path and choose the largest total."
+        },
+        {
+          "erreur_markdown": "\"Critical tasks are the most important or the most difficult tasks.\"",
+          "pourquoi_faux": "A critical task is one with zero float: a delay of any length delays the whole project.",
+          "correction_markdown": "Say that a critical task has no float, so its delay delays the project."
+        },
+        {
+          "erreur_markdown": "Calculating the expected time as $(O + M + P) \\div 3$.",
+          "pourquoi_faux": "PERT gives the most likely time a weight of four.",
+          "correction_markdown": "$E = (O + 4M + P) \\div 6$, for example $(2 + 16 + 6) \\div 6 = 4$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "A small project has these tasks.\n\n| Task | Duration (days) | Predecessor(s) |\n|---|---|---|\n| P | 4 | none |\n| Q | 6 | P |\n| R | 3 | P |\n| S | 5 | Q, R |\n\n(a) List every path from the start to the end with its length. (b) State the critical path and the minimum duration of the project. (c) State the earliest start of task S.",
+          "solution_markdown": "(a) P, Q, S: $4 + 6 + 5 = 15$ days. P, R, S: $4 + 3 + 5 = 12$ days.\n\n(b) The longest path is P, Q, S, so the critical path is **P, Q, S** and the minimum duration is **15 days**.\n\n(c) S needs both Q and R. Q finishes on day 10 and R on day 7, so S starts at the end of day **10**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A project has these tasks.\n\n| Task | Duration (days) | Predecessor(s) |\n|---|---|---|\n| J | 2 | none |\n| K | 7 | J |\n| L | 4 | J |\n| M | 2 | L |\n| N | 6 | K, M |\n\n(a) Find the minimum duration and the critical path. (b) Find the float of task L. (c) Task M takes 4 days instead of 2. State the new duration of the project and explain your answer.",
+          "solution_markdown": "(a) J, K, N: $2 + 7 + 6 = 15$ days. J, L, M, N: $2 + 4 + 2 + 6 = 14$ days. The minimum duration is **15 days** and the critical path is **J, K, N**.\n\n(b) The path through L is 1 day shorter than the critical path, so L (and M) has a float of **1 day**.\n\n(c) The path J, L, M, N becomes $2 + 4 + 4 + 6 = 16$ days. It is now the longest path, so the project takes **16 days**: the delay of 2 days used the float of 1 day and the remaining 1 day delays the project."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A project manager has three-point estimates (in days) for five tasks.\n\n| Task | O | M | P | Predecessor(s) |\n|---|---|---|---|---|\n| X | 2 | 4 | 6 | none |\n| Y | 3 | 6 | 9 | X |\n| Z | 2 | 3 | 10 | X |\n| V | 1 | 4 | 7 | Y |\n| W | 1 | 2 | 3 | Y, Z |\n\n(a) Calculate the expected time of each task. (b) Using the expected times as durations, find the critical path and the duration of the project. (c) Task Y is shortened by 4 days. Find the new duration and the new critical path(s), and explain why shortening Y by more than 4 days would not shorten the project further. (d) State ONE limitation of a PERT chart.",
+          "solution_markdown": "(a) $E = (O + 4M + P) \\div 6$. X: $(2 + 16 + 6) \\div 6 = 4$. Y: $(3 + 24 + 9) \\div 6 = 6$. Z: $(2 + 12 + 10) \\div 6 = 4$. V: $(1 + 16 + 7) \\div 6 = 4$. W: $(1 + 8 + 3) \\div 6 = 2$.\n\n(b) X, Y, V: $4 + 6 + 4 = 14$. X, Y, W: $4 + 6 + 2 = 12$. X, Z, W: $4 + 4 + 2 = 10$. The critical path is **X, Y, V** and the project takes **14 days**.\n\n(c) Y now lasts 2 days. X, Y, V: $4 + 2 + 4 = 10$. X, Z, W: $4 + 4 + 2 = 10$. X, Y, W: $4 + 2 + 2 = 8$. The new duration is **10 days** and there are **two critical paths**, X, Y, V and X, Z, W. A further reduction of Y would not help because the path X, Z, W is also 10 days long and would then be the longest.\n\n(d) Any one: a large network is complex to draw and update; the times are only estimates, so the critical path may change; it does not show progress against dates as simply as a Gantt chart."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A project has a start, an end and a goal, and is limited by time, cost and scope.",
+        "A Gantt chart shows tasks as bars against time; a PERT chart shows the order of tasks as a network.",
+        "The critical path is the longest path through the network and its length is the minimum duration of the project.",
+        "Float = latest start - earliest start; critical tasks have float 0 and a delay to them delays the project.",
+        "The PERT expected time is (O + 4M + P) divided by 6.",
+        "The sum of all durations is not the project duration, because independent tasks run at the same time."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-integration-of-rational-functions",
+ "meta": {
+  "titre": "Integration of Rational Functions: partial fractions and logarithms",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Partial fractions and logarithmic integrals",
+  "duree_estimee_min": 40,
+  "tags": [
+   "integration of rational functions"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p2-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-integration-of-rational-functions-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A cooperative in Bafoussam models how the cost of an extra bag of maize flour changes with the number of bags already made, and the model is a fraction with the number of bags in the denominator. The total cost of raising output from one level to another is the integral of that fraction. Unlike a polynomial, a fraction such as $\\dfrac{1}{x+2}$ integrates to a logarithm, and a more complicated fraction must first be split into simple pieces. The A Level papers ask for exactly this: split into partial fractions, integrate, and give the answer as a single logarithm."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "The derivative of $\\ln x$ is $\\dfrac1x$, so $\\displaystyle\\int\\frac1x\\,dx=\\ln|x|+c$.",
+    "The laws of logarithms: $\\ln a+\\ln b=\\ln(ab)$, $\\ln a-\\ln b=\\ln\\dfrac ab$ and $n\\ln a=\\ln a^{n}$.",
+    "Factorising a quadratic and carrying out polynomial long division.",
+    "A definite integral is evaluated as $F(b)-F(a)$ where $F$ is an antiderivative."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Splitting a fraction, then integrating each part",
+   "contenu_markdown": "### Two basic integrals\n\nFor constants $a\\ne0$ and a differentiable function $f$,\n\n$$\n\\int\\frac{1}{ax+b}\\,dx=\\frac1a\\ln|ax+b|+c\n\\tag{1}\n$$\n\n$$\n\\int\\frac{f'(x)}{f(x)}\\,dx=\\ln|f(x)|+c\n\\tag{2}\n$$\n\nForm (2) applies when the numerator is the derivative of the denominator, or a constant multiple of it. For example the numerator $x$ is half the derivative of $x^{2}+3$.\n\n### Partial fractions\n\nA fraction whose numerator has lower degree than its denominator (a **proper** fraction) is split according to the factors of the denominator.\n\n| Factor in the denominator | Terms in the split |\n|---|---|\n| $(x-p)$ | $\\dfrac{A}{x-p}$ |\n| $(x-p)^{2}$ | $\\dfrac{B}{x-p}+\\dfrac{C}{(x-p)^{2}}$ |\n| $(x^{2}+q)$, with no real roots | $\\dfrac{Dx+E}{x^{2}+q}$ |\n\nFind the constants by multiplying through by the denominator and either substituting convenient values of $x$ (the roots of the factors) or comparing coefficients. An **improper** fraction (numerator degree at least that of the denominator) must be divided first, leaving a polynomial plus a proper fraction.\n\n### Integrating and finishing\n\nEach simple term is integrated with (1). A squared factor gives $\\displaystyle\\int\\frac{C}{(x-p)^{2}}\\,dx=-\\frac{C}{x-p}$, with no logarithm. A term $\\dfrac{Dx+E}{x^{2}+q}$ is split into a multiple of $\\dfrac{2x}{x^{2}+q}$, which gives a logarithm by (2), and a multiple of $\\dfrac{1}{x^{2}+q}$, which gives an inverse tangent. After substituting the limits, combine the logarithms with the laws of logarithms to give one term such as $\\ln\\dfrac{243}{8}$. The interval of integration must not contain a root of the denominator, because the integrand is undefined there.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Improper fractions: divide first",
+     "quand_utiliser": "When the degree of the numerator is greater than or equal to the degree of the denominator.",
+     "contenu_markdown": "For $\\displaystyle\\int_{0}^{2}\\frac{x^{2}+1}{x+1}\\,dx$, write $x^{2}+1=(x+1)(x-1)+2$, so the integrand is $x-1+\\dfrac{2}{x+1}$. Then\n\n$$\n\\int_{0}^{2}\\left(x-1+\\frac{2}{x+1}\\right)dx=\\left[\\frac{x^{2}}{2}-x+2\\ln(x+1)\\right]_{0}^{2}=(2-2+2\\ln3)-0=2\\ln3\n\\tag{3}\n$$\n\nTrying to write the whole improper fraction as $\\dfrac{A}{x+1}$ alone fails, because a polynomial part is missing."
+    },
+    {
+     "nom": "Repeated factors",
+     "quand_utiliser": "When the denominator contains a factor to the second power, such as $(x-2)^{2}$.",
+     "contenu_markdown": "The fraction $\\dfrac{3(x^{2}-x+1)}{(x+1)(x-2)^{2}}$ splits as $\\dfrac{A}{x+1}+\\dfrac{B}{x-2}+\\dfrac{C}{(x-2)^{2}}$. Putting $x=-1$ gives $9=9A$, so $A=1$; putting $x=2$ gives $9=3C$, so $C=3$; comparing the coefficients of $x^{2}$ gives $3=A+B$, so $B=2$. Then\n\n$$\n\\int_{3}^{4}\\left(\\frac{1}{x+1}+\\frac{2}{x-2}+\\frac{3}{(x-2)^{2}}\\right)dx=\\left[\\ln(x+1)+2\\ln(x-2)-\\frac{3}{x-2}\\right]_{3}^{4}=\\ln5+\\frac32\n\\tag{4}\n$$"
+    },
+    {
+     "nom": "Numerator proportional to the derivative",
+     "quand_utiliser": "When the numerator is a constant multiple of the derivative of the denominator, so no splitting is needed.",
+     "contenu_markdown": "For $\\displaystyle\\int_{0}^{1}\\frac{4x}{2x^{2}+3}\\,dx$ the derivative of $2x^{2}+3$ is $4x$, exactly the numerator, so by (2) the integral is $\\Big[\\ln(2x^{2}+3)\\Big]_{0}^{1}=\\ln5-\\ln3=\\ln\\dfrac53$. If the numerator is only a constant multiple of the derivative, for example $x$ over $2x^{2}+3$, multiply and divide by the constant: $\\dfrac{x}{2x^{2}+3}=\\dfrac14\\cdot\\dfrac{4x}{2x^{2}+3}$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "epreuve_source": false,
+   "enonce_markdown": "Express $\\dfrac{5x+1}{(x-1)(x+2)}$ in partial fractions. Hence show that $\\displaystyle\\int_{2}^{4}\\frac{5x+1}{(x-1)(x+2)}\\,dx=\\ln\\frac{243}{8}$.",
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Choose the form of the split.",
+     "justification": "The fraction is proper and the denominator has two different linear factors, so each factor gets one constant.",
+     "resultat_markdown": "$\\dfrac{5x+1}{(x-1)(x+2)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+2}$."
+    },
+    {
+     "numero": 2,
+     "action": "Clear the denominators and find $A$ and $B$.",
+     "justification": "Multiplying through gives an identity that holds for every $x$, so substituting the roots of the factors isolates each constant.",
+     "resultat_markdown": "$5x+1\\equiv A(x+2)+B(x-1)$. Put $x=1$: $6=3A$, so $A=2$. Put $x=-2$: $-9=-3B$, so $B=3$. Hence the fraction is $\\dfrac{2}{x-1}+\\dfrac{3}{x+2}$."
+    },
+    {
+     "numero": 3,
+     "action": "Integrate each term.",
+     "justification": "Equation (1) applies to each term with $a=1$. The limits $2$ to $4$ keep $x-1$ and $x+2$ positive.",
+     "resultat_markdown": "$\\displaystyle\\int\\left(\\frac{2}{x-1}+\\frac{3}{x+2}\\right)dx=2\\ln(x-1)+3\\ln(x+2)$."
+    },
+    {
+     "numero": 4,
+     "action": "Substitute the limits.",
+     "justification": "Evaluate the antiderivative at $4$ and at $2$ and subtract.",
+     "resultat_markdown": "$\\left[2\\ln3+3\\ln6\\right]-\\left[2\\ln1+3\\ln4\\right]=2\\ln3+3\\ln6-3\\ln4$, since $\\ln1=0$."
+    },
+    {
+     "numero": 5,
+     "action": "Combine into one logarithm.",
+     "justification": "Use $n\\ln a=\\ln a^{n}$ and then $\\ln a-\\ln b=\\ln\\dfrac ab$.",
+     "resultat_markdown": "$2\\ln3+3(\\ln6-\\ln4)=2\\ln3+3\\ln\\tfrac32=\\ln9+\\ln\\tfrac{27}{8}=\\ln\\dfrac{243}{8}$."
+    }
+   ],
+   "conclusion_markdown": "The partial fractions are $\\dfrac{2}{x-1}+\\dfrac{3}{x+2}$ and the integral over $[2,4]$ equals $\\ln\\dfrac{243}{8}$, as required."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Writing $\\displaystyle\\int\\frac{1}{2x+1}\\,dx=\\ln|2x+1|+c$.",
+     "pourquoi_faux": "Differentiating $\\ln|2x+1|$ gives $\\dfrac{2}{2x+1}$, which is twice the integrand: the factor from the chain rule is missing.",
+     "correction_markdown": "$\\displaystyle\\int\\frac{1}{2x+1}\\,dx=\\frac12\\ln|2x+1|+c$, by equation (1)."
+    },
+    {
+     "erreur_markdown": "Writing $\\displaystyle\\int\\frac{3}{(x-2)^{2}}\\,dx=3\\ln|x-2|+c$.",
+     "pourquoi_faux": "A squared denominator does not give a logarithm; it is a power of $(x-2)$ that integrates by raising the power.",
+     "correction_markdown": "$\\dfrac{3}{(x-2)^{2}}=3(x-2)^{-2}$, so the integral is $-\\dfrac{3}{x-2}+c$."
+    },
+    {
+     "erreur_markdown": "Splitting $\\dfrac{1}{(x-1)(x+2)}$ as $\\dfrac{1}{x-1}+\\dfrac{1}{x+2}$ without finding constants.",
+     "pourquoi_faux": "The constants $A$ and $B$ are not both $1$; adding the two fractions gives a numerator $2x+1$, not $1$.",
+     "correction_markdown": "Solve $1\\equiv A(x+2)+B(x-1)$: $A=\\tfrac13$ and $B=-\\tfrac13$, so the fraction is $\\dfrac13\\left(\\dfrac{1}{x-1}-\\dfrac{1}{x+2}\\right)$."
+    },
+    {
+     "erreur_markdown": "Splitting $\\dfrac{2x^{2}+3x+1}{(x-1)(x+2)}$ directly as $\\dfrac{A}{x-1}+\\dfrac{B}{x+2}$.",
+     "pourquoi_faux": "The numerator and denominator have the same degree, so the fraction is improper and a constant term is missing from the split.",
+     "correction_markdown": "Divide first: $\\dfrac{2x^{2}+3x+1}{(x-1)(x+2)}=2+\\dfrac{x+5}{(x-1)(x+2)}$, and only then split the proper fraction."
+    },
+    {
+     "erreur_markdown": "Simplifying $\\ln6-\\ln2$ as $\\ln4$.",
+     "pourquoi_faux": "The law is $\\ln a-\\ln b=\\ln\\dfrac ab$; the arguments are divided, not subtracted.",
+     "correction_markdown": "$\\ln6-\\ln2=\\ln\\dfrac62=\\ln3$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Evaluate, giving exact answers: (a) $\\displaystyle\\int_{0}^{2}\\frac{6}{3x+2}\\,dx$ and (b) $\\displaystyle\\int_{0}^{2}\\frac{x}{x^{2}+1}\\,dx$.",
+     "solution_markdown": "(a) By (1) with $a=3$: $\\displaystyle\\int\\frac{6}{3x+2}\\,dx=2\\ln(3x+2)$. Then $2\\ln8-2\\ln2=2\\ln4=$ **$4\\ln2$**.\n\n(b) The derivative of $x^{2}+1$ is $2x$, so $\\dfrac{x}{x^{2}+1}=\\dfrac12\\cdot\\dfrac{2x}{x^{2}+1}$ and the integral is $\\dfrac12\\Big[\\ln(x^{2}+1)\\Big]_{0}^{2}=\\dfrac12(\\ln5-\\ln1)=$ **$\\tfrac12\\ln5$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Express $\\dfrac{x+11}{(x-1)(x+3)}$ in partial fractions and hence show that $\\displaystyle\\int_{2}^{5}\\frac{x+11}{(x-1)(x+3)}\\,dx=\\ln25$.",
+     "solution_markdown": "Let $\\dfrac{x+11}{(x-1)(x+3)}\\equiv\\dfrac{A}{x-1}+\\dfrac{B}{x+3}$, so $x+11\\equiv A(x+3)+B(x-1)$. Put $x=1$: $12=4A$, so $A=3$. Put $x=-3$: $8=-4B$, so $B=-2$. The fraction is **$\\dfrac{3}{x-1}-\\dfrac{2}{x+3}$**.\n\nIntegrating, $\\Big[3\\ln(x-1)-2\\ln(x+3)\\Big]_{2}^{5}=(3\\ln4-2\\ln8)-(3\\ln1-2\\ln5)=3\\ln4-2\\ln8+2\\ln5$.\n\nThen $3\\ln4=\\ln64$, $2\\ln8=\\ln64$ and $2\\ln5=\\ln25$, so the value is $\\ln64-\\ln64+\\ln25=$ **$\\ln25$**."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Show that $\\dfrac{2x^{2}+3x+1}{(x-1)(x+2)}\\equiv2+\\dfrac{2}{x-1}-\\dfrac{1}{x+2}$, and hence find the exact value of $\\displaystyle\\int_{2}^{3}\\frac{2x^{2}+3x+1}{(x-1)(x+2)}\\,dx$ in the form $p+\\ln q$.",
+     "solution_markdown": "The denominator expands to $(x-1)(x+2)=x^{2}+x-2$. Dividing, $2x^{2}+3x+1=2(x^{2}+x-2)+(x+5)$, so the fraction is $2+\\dfrac{x+5}{(x-1)(x+2)}$.\n\nSplit the proper part: $x+5\\equiv A(x+2)+B(x-1)$. Put $x=1$: $6=3A$, so $A=2$. Put $x=-2$: $3=-3B$, so $B=-1$. Therefore **$2+\\dfrac{2}{x-1}-\\dfrac{1}{x+2}$**, as required.\n\nIntegrating, $\\Big[2x+2\\ln(x-1)-\\ln(x+2)\\Big]_{2}^{3}=(6+2\\ln2-\\ln5)-(4+2\\ln1-\\ln4)=2+2\\ln2+\\ln4-\\ln5$.\n\nSince $2\\ln2=\\ln4$, this is $2+\\ln4+\\ln4-\\ln5=$ **$2+\\ln\\dfrac{16}{5}$**, so $p=2$ and $q=\\dfrac{16}{5}$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\displaystyle\\int\\frac{1}{ax+b}\\,dx=\\frac1a\\ln|ax+b|+c$; do not forget the factor $\\dfrac1a$, and use $\\displaystyle\\int\\frac{f'}{f}\\,dx=\\ln|f|+c$ when the numerator is the derivative of the denominator.",
+    "Divide first if the numerator's degree is at least the denominator's; only a proper fraction is split into partial fractions.",
+    "A distinct linear factor gives $\\dfrac{A}{x-p}$, a squared factor gives $\\dfrac{B}{x-p}+\\dfrac{C}{(x-p)^{2}}$, and an irreducible quadratic gives $\\dfrac{Dx+E}{x^{2}+q}$.",
+    "Find the constants by substituting the roots of the factors and, if needed, comparing coefficients; check the result at one more value of $x$.",
+    "A squared denominator integrates to $-\\dfrac{C}{x-p}$, not to a logarithm.",
+    "Combine the logarithms at the end with $n\\ln a=\\ln a^{n}$, $\\ln a+\\ln b=\\ln ab$ and $\\ln a-\\ln b=\\ln\\dfrac ab$."
+   ]
+  }
+ ]
+}

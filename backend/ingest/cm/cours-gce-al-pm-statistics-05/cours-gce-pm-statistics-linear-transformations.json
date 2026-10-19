@@ -1,0 +1,165 @@
+{
+  "cours_id": "cours-gce-pm-statistics-linear-transformations",
+  "meta": {
+    "titre": "Linear Transformations: Matrices, Images of Lines and Area Scale Factors",
+    "matiere": "Pure Mathematics with Statistics",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "Matrices as transformations of the plane and space",
+    "duree_estimee_min": 35,
+    "tags": [
+      "linear transformations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-pm-statistics-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L Pure Mathematics with Statistics past paper (Cameroon)",
+    "epreuve_source": "gce-al-pm-statistics-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-pm-statistics-linear-transformations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A graphic designer in Yaounde who stretches, turns or mirrors a logo on screen is applying a linear transformation: the software multiplies the coordinates of every point by a matrix. Understanding what a matrix does to points and lines lets you predict the result without drawing it. In the GCE papers this appears as finding the image of a point or of a line, combining two transformations, and using the determinant to say how areas change. The same ideas carry over to three dimensions, where the matrices are 3 by 3."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Matrix multiplication: the product of a $2\\times2$ matrix and a column vector is $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}\\begin{pmatrix}x\\\\y\\end{pmatrix} = \\begin{pmatrix}ax+by\\\\cx+dy\\end{pmatrix}$.",
+        "The determinant of $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ is $ad - bc$, and when it is not zero the inverse is $\\dfrac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$.",
+        "A straight line in the plane can be written as $y = mx + c$, and a line in space as a point plus a multiple of a direction vector.",
+        "The area of a triangle with vertices $(0,0)$, $(p,q)$ and $(r,s)$ is $\\frac12|ps - qr|$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Matrices as transformations: images, combinations and the determinant",
+      "contenu_markdown": "### A matrix as a transformation\nA $2\\times2$ matrix $\\mathbf M$ sends the point with position vector $\\begin{pmatrix}x\\\\y\\end{pmatrix}$ to its image:\n\n$$\n\\begin{pmatrix}x'\\\\y'\\end{pmatrix} = \\mathbf M\\begin{pmatrix}x\\\\y\\end{pmatrix} \\tag{1}\n$$\n\nThe **columns** of $\\mathbf M$ are the images of the unit vectors: if $\\mathbf M = \\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ then $(1,0)$ goes to $(a,c)$ and $(0,1)$ goes to $(b,d)$. The origin is fixed, straight lines map to straight lines and parallel lines stay parallel.\n\n### Standard matrices\n- Rotation through $\\theta$ anticlockwise about $O$: $\\begin{pmatrix}\\cos\\theta&-\\sin\\theta\\\\ \\sin\\theta&\\cos\\theta\\end{pmatrix}$\n- Reflection in the $x$-axis: $\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$; in the $y$-axis: $\\begin{pmatrix}-1&0\\\\0&1\\end{pmatrix}$; in $y = x$: $\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$\n- Enlargement, scale factor $k$, centre $O$: $\\begin{pmatrix}k&0\\\\0&k\\end{pmatrix}$\n- Shear keeping the $x$-axis fixed: $\\begin{pmatrix}1&k\\\\0&1\\end{pmatrix}$\n\n### Combining transformations\nIf $\\mathbf A$ is applied first and $\\mathbf B$ second, the single matrix is\n\n$$\n\\mathbf B\\mathbf A \\tag{2}\n$$\n\nThe matrix of the transformation done **last** is written on the **left**.\n\n### Area and the determinant\n$$\n\\text{area of image} = |\\det\\mathbf M| \\times \\text{area of object} \\tag{3}\n$$\n\nA negative determinant means the orientation is reversed (as in a reflection). If $\\det\\mathbf M = 0$ the matrix is **singular**: it has no inverse and flattens the whole plane onto a line or a point. For $3\\times3$ matrices $|\\det\\mathbf M|$ is the volume scale factor.\n\n### Image of a line\nEither map two points of the line and join them, or write $\\mathbf M^{-1}$ explicitly: from $(x,y)^T = \\mathbf M^{-1}(x',y')^T$, substitute for $x$ and $y$ in the equation of the line and simplify.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Image of a line in three dimensions",
+          "quand_utiliser": "When a line is given as r = a + t d and a 3 by 3 matrix is applied.",
+          "contenu_markdown": "A point maps to $\\mathbf M\\mathbf a$ and a direction vector to $\\mathbf M\\mathbf d$, so the image of $\\mathbf r = \\mathbf a + t\\mathbf d$ is $\\mathbf r' = \\mathbf M\\mathbf a + t\\,\\mathbf M\\mathbf d$. For example, with\n$$\\mathbf M = \\begin{pmatrix}1&2&0\\\\0&1&1\\\\2&0&1\\end{pmatrix}, \\quad \\mathbf a = \\begin{pmatrix}1\\\\1\\\\0\\end{pmatrix}, \\quad \\mathbf d = \\begin{pmatrix}1\\\\0\\\\-1\\end{pmatrix},$$\n$\\mathbf M\\mathbf a = \\begin{pmatrix}3\\\\1\\\\2\\end{pmatrix}$ and $\\mathbf M\\mathbf d = \\begin{pmatrix}1\\\\-1\\\\1\\end{pmatrix}$. The image is the line $\\mathbf r' = \\begin{pmatrix}3\\\\1\\\\2\\end{pmatrix} + t\\begin{pmatrix}1\\\\-1\\\\1\\end{pmatrix}$. Here $\\det\\mathbf M = 5 \\ne 0$, so a line cannot collapse to a point. When the line is given in the form $\\frac{x-x_0}{l} = \\frac{y-y_0}{m} = \\frac{z-z_0}{n}$, read off the point and the direction first."
+        },
+        {
+          "nom": "Invariant points and invariant lines",
+          "quand_utiliser": "When a question asks for lines, or points, that the transformation leaves unchanged.",
+          "contenu_markdown": "An **invariant point** satisfies $\\mathbf M\\mathbf p = \\mathbf p$. A line through the origin $y = mx$ is an **invariant line** if the image of $(1, m)$ lies on the same line, that is, if $\\mathbf M\\begin{pmatrix}1\\\\m\\end{pmatrix}$ is a multiple of $\\begin{pmatrix}1\\\\m\\end{pmatrix}$. For $\\mathbf M = \\begin{pmatrix}3&1\\\\0&2\\end{pmatrix}$ the image of $(1,m)$ is $(3+m,\\,2m)$. It is on $y = mx$ when $2m = m(3+m)$, so $m^2 + m = 0$ and $m = 0$ or $m = -1$. The invariant lines through the origin are $y = 0$ and $y = -x$."
+        },
+        {
+          "nom": "Singular matrices",
+          "quand_utiliser": "When the determinant is zero, or when a question says the image of the plane is a line.",
+          "contenu_markdown": "For $\\mathbf S = \\begin{pmatrix}2&4\\\\1&2\\end{pmatrix}$, $\\det\\mathbf S = 0$ and $\\mathbf S\\begin{pmatrix}x\\\\y\\end{pmatrix} = (x + 2y)\\begin{pmatrix}2\\\\1\\end{pmatrix}$. Every point of the plane is sent to a point on the line $y = \\frac12 x$, many points sharing the same image, so there is no inverse. Any area is multiplied by $|\\det\\mathbf S| = 0$."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A transformation $T$ is represented by the matrix $\\mathbf M = \\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}$. Find the equation of the image of the line $y = x + 2$ under $T$, and state how $T$ changes areas.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the image coordinates in terms of $x$ and $y$.",
+          "justification": "Equation (1) with the given matrix.",
+          "resultat_markdown": "$x' = 3x + y,\\quad y' = 2x + y$."
+        },
+        {
+          "numero": 2,
+          "action": "Find $\\det\\mathbf M$ and the inverse.",
+          "justification": "$\\det\\mathbf M = 3(1) - 1(2) = 1 \\ne 0$, so the inverse exists and the area scale factor is $|1| = 1$.",
+          "resultat_markdown": "$\\mathbf M^{-1} = \\begin{pmatrix}1&-1\\\\-2&3\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "action": "Express $x$ and $y$ in terms of $x'$ and $y'$.",
+          "justification": "Apply $\\mathbf M^{-1}$ to the column $(x', y')^T$.",
+          "resultat_markdown": "$x = x' - y',\\quad y = -2x' + 3y'$."
+        },
+        {
+          "numero": 4,
+          "action": "Substitute into $y = x + 2$.",
+          "justification": "A point $(x', y')$ is on the image exactly when the point it came from satisfies the original equation.",
+          "resultat_markdown": "$-2x' + 3y' = x' - y' + 2$."
+        },
+        {
+          "numero": 5,
+          "action": "Simplify and drop the dashes.",
+          "justification": "The result is the equation of the image line.",
+          "resultat_markdown": "$4y' = 3x' + 2$, so the image is the line $4y = 3x + 2$."
+        },
+        {
+          "numero": 6,
+          "action": "Check with two points.",
+          "justification": "Points $(0,2)$ and $(1,3)$ lie on $y = x + 2$; their images must lie on the new line.",
+          "resultat_markdown": "$\\mathbf M(0,2)^T = (2, 2)$ and $4(2) = 3(2) + 2$. $\\mathbf M(1,3)^T = (6, 5)$ and $4(5) = 3(6) + 2$."
+        }
+      ],
+      "conclusion_markdown": "The image of $y = x + 2$ is the line $4y = 3x + 2$. Since $\\det\\mathbf M = 1$, areas are unchanged by $T$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The matrix of a rotation through $90^\\circ$ anticlockwise is $\\begin{pmatrix}0&1\\\\-1&0\\end{pmatrix}$ because $(1,0)$ goes to $(0,1)$ and $(0,1)$ goes to $(-1,0)$.",
+          "pourquoi_faux": "The images of $(1,0)$ and $(0,1)$ were written as the rows of the matrix. They must be its columns. The matrix written actually rotates clockwise: it sends $(1,0)$ to $(0,-1)$.",
+          "correction_markdown": "Write the images as columns: $\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$, which sends $(1,0)$ to $(0,1)$ and $(0,1)$ to $(-1,0)$."
+        },
+        {
+          "erreur_markdown": "A is a reflection in the $x$-axis, then B is a rotation through $90^\\circ$ anticlockwise, and the single matrix is $\\mathbf{AB}$.",
+          "pourquoi_faux": "Matrices act on the vector from the left, so the transformation applied **second** must be on the left of the product. $\\mathbf{AB}$ would mean rotating first and reflecting second.",
+          "correction_markdown": "The correct matrix is $\\mathbf{BA} = \\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$ (the order matters: $\\mathbf{AB} = \\begin{pmatrix}0&-1\\\\-1&0\\end{pmatrix}$ is a different transformation)."
+        },
+        {
+          "erreur_markdown": "To find the image of $y = x + 2$ under $\\begin{pmatrix}3&1\\\\2&1\\end{pmatrix}$, replace $x$ by $3x + y$ and $y$ by $2x + y$ in the equation, obtaining $2x + y = 3x + y + 2$, that is $x = -2$.",
+          "pourquoi_faux": "Replacing $x$ and $y$ by the image expressions produces the equation of the original points (the pre-image) of the given line, not its image. Here the points on $x = -2$ are the ones sent onto $y = x + 2$.",
+          "correction_markdown": "Use the inverse: $x = x' - y'$ and $y = -2x' + 3y'$ go into the original equation, giving $4y = 3x + 2$."
+        },
+        {
+          "erreur_markdown": "$\\det\\mathbf M = -3$, so a triangle of area $4$ is sent to a triangle of area $-12$.",
+          "pourquoi_faux": "An area is never negative. The sign of the determinant records whether orientation is reversed; the area scale factor is its absolute value.",
+          "correction_markdown": "Area of image $= |-3| \\times 4 = 12$, and the image triangle is a mirror-reversed version of the original."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The matrix $\\mathbf R = \\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$ represents a transformation. Find the image of the point $A(3, 2)$ and describe the transformation fully.",
+          "solution_markdown": "$\\mathbf R\\begin{pmatrix}3\\\\2\\end{pmatrix} = \\begin{pmatrix}0(3) - 1(2)\\\\1(3) + 0(2)\\end{pmatrix} = \\begin{pmatrix}-2\\\\3\\end{pmatrix}$.\n\nThe image of $(1,0)$ is the first column $(0,1)$ and the image of $(0,1)$ is the second column $(-1,0)$, so each unit vector turns through a right angle anticlockwise. Distances from $O$ are preserved: $OA = \\sqrt{13}$ and $OA' = \\sqrt{13}$.\n\n**The image of $A$ is $A'(-2, 3)$; $\\mathbf R$ is a rotation through $90^\\circ$ anticlockwise about the origin.**"
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "$\\mathbf A$ is the matrix of a reflection in the $x$-axis and $\\mathbf B$ is the matrix of a rotation through $90^\\circ$ anticlockwise about the origin.\n\n(a) Find the single matrix representing $\\mathbf A$ followed by $\\mathbf B$, and describe the transformation it represents.\n\n(b) Find the matrix representing $\\mathbf B$ followed by $\\mathbf A$ and say whether it is the same transformation.",
+          "solution_markdown": "$\\mathbf A = \\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}$ and $\\mathbf B = \\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}$.\n\n(a) $\\mathbf A$ first, then $\\mathbf B$: the matrix is $\\mathbf{BA} = \\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix}\\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix} = \\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$. Check with $(2,1)$: reflection gives $(2,-1)$, rotation gives $(1,2)$, and $\\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}\\begin{pmatrix}2\\\\1\\end{pmatrix} = \\begin{pmatrix}1\\\\2\\end{pmatrix}$. **$\\mathbf{BA} = \\begin{pmatrix}0&1\\\\1&0\\end{pmatrix}$, a reflection in the line $y = x$.**\n\n(b) $\\mathbf B$ first, then $\\mathbf A$: $\\mathbf{AB} = \\begin{pmatrix}1&0\\\\0&-1\\end{pmatrix}\\begin{pmatrix}0&-1\\\\1&0\\end{pmatrix} = \\begin{pmatrix}0&-1\\\\-1&0\\end{pmatrix}$, which sends $(1,0)$ to $(0,-1)$: a reflection in the line $y = -x$. **It is not the same transformation: $\\mathbf{AB} \\ne \\mathbf{BA}$.**"
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The matrix $\\mathbf M = \\begin{pmatrix}2&1\\\\k&3\\end{pmatrix}$ maps every point of the line $y = 2x$ to a point of the same line.\n\n(a) Find the value of $k$.\n\n(b) For this value of $k$, the triangle with vertices $O(0,0)$, $P(2,0)$ and $Q(0,3)$ is mapped to triangle $OP'Q'$. Find the coordinates of $P'$ and $Q'$ and the area of $OP'Q'$, and check it with the determinant.",
+          "solution_markdown": "(a) The point $(1,2)$ is on the line. $\\mathbf M\\begin{pmatrix}1\\\\2\\end{pmatrix} = \\begin{pmatrix}2+2\\\\k+6\\end{pmatrix} = \\begin{pmatrix}4\\\\k+6\\end{pmatrix}$. This must lie on $y = 2x$, so $k + 6 = 8$ and **$k = 2$**. Then $\\mathbf M\\begin{pmatrix}t\\\\2t\\end{pmatrix} = \\begin{pmatrix}4t\\\\8t\\end{pmatrix}$, which is on the line for every $t$.\n\n(b) With $k = 2$: $\\mathbf M\\begin{pmatrix}2\\\\0\\end{pmatrix} = \\begin{pmatrix}4\\\\4\\end{pmatrix}$ and $\\mathbf M\\begin{pmatrix}0\\\\3\\end{pmatrix} = \\begin{pmatrix}3\\\\9\\end{pmatrix}$. **$P'(4,4)$ and $Q'(3,9)$.**\n\nArea of $OP'Q'$ $= \\frac12|4\\times9 - 3\\times4| = \\frac12 \\times 24 = 12$.\n\nCheck: $\\det\\mathbf M = 2(3) - 1(2) = 4$ and the original area is $\\frac12 \\times 2 \\times 3 = 3$, so $4 \\times 3 = 12$. **The area of $OP'Q'$ is $12$.**"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "The columns of a matrix are the images of $(1,0)$ and $(0,1)$; the image of a point is $\\mathbf M$ times its position vector.",
+        "For 'first $\\mathbf A$, then $\\mathbf B$' the single matrix is $\\mathbf{BA}$, and the order matters.",
+        "Area (or volume) scale factor is $|\\det\\mathbf M|$; a negative determinant means orientation is reversed; $\\det\\mathbf M = 0$ means singular, no inverse.",
+        "Image of a line in the plane: use $\\mathbf M^{-1}$ to express $x, y$ in terms of $x', y'$ and substitute. In 3D, map a point and the direction vector.",
+        "Invariant line through the origin $y = mx$: the image of $(1, m)$ must be a multiple of $(1, m)$."
+      ]
+    }
+  ]
+}

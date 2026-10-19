@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-gce-pm-mechanics-de-moivre-theorem",
+ "meta": {
+  "titre": "De Moivre's Theorem: powers, multiple angles and roots",
+  "matiere": "Pure Mathematics with Mechanics",
+  "pays": "cm",
+  "serie": "GCE A/L",
+  "sous_theme": "Powers, identities and roots",
+  "duree_estimee_min": 35,
+  "tags": [
+   "de moivre theorem"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-al-pm-mechanics-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE A/L Pure Mathematics with Mechanics past paper (Cameroon)",
+  "epreuve_source": "gce-al-pm-mechanics-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-pm-mechanics-de-moivre-theorem-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "The mains supply in a home in Yaounde swings smoothly up and down, and engineers describe such a signal by an arrow turning in the complex plane at a steady rate. Doubling or tripling the angle of that arrow corresponds to squaring or cubing the complex number, and De Moivre's theorem is the tool that turns this idea into one line of working. At Advanced Level it appears as quick simplification of products and quotients of numbers written with cosines and sines, as the proof of multiple-angle identities such as the one for $\\sin3\\theta$, and as the method for finding roots of complex numbers."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A complex number $z=x+iy$ has modulus $r=\\sqrt{x^{2}+y^{2}}$ and argument $\\theta$, with $x=r\\cos\\theta$ and $y=r\\sin\\theta$, so $z=r(\\cos\\theta+i\\sin\\theta)$.",
+    "$i^{2}=-1$, so $i^{3}=-i$ and $i^{4}=1$.",
+    "The binomial expansion $(a+b)^{4}=a^{4}+4a^{3}b+6a^{2}b^{2}+4ab^{3}+b^{4}$, and the identity $\\cos^{2}\\theta+\\sin^{2}\\theta=1$.",
+    "$\\cos(-\\theta)=\\cos\\theta$ and $\\sin(-\\theta)=-\\sin\\theta$."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "De Moivre's theorem and its three standard uses",
+   "contenu_markdown": "### The theorem\n\nFor every integer $n$ and every real $\\theta$,\n\n$$\n(\\cos\\theta+i\\sin\\theta)^{n}=\\cos n\\theta+i\\sin n\\theta\n\\tag{1}\n$$\n\nIn words: raising a number of modulus $1$ to the power $n$ multiplies its argument by $n$. For positive $n$ it follows by induction from the addition formulae for sine and cosine, and for negative $n$ from $(\\cos\\theta+i\\sin\\theta)^{-1}=\\cos\\theta-i\\sin\\theta$. Two companion rules give products and quotients:\n\n$$\n(\\cos\\alpha+i\\sin\\alpha)(\\cos\\beta+i\\sin\\beta)=\\cos(\\alpha+\\beta)+i\\sin(\\alpha+\\beta)\n\\tag{2}\n$$\n\n$$\n\\frac{\\cos\\alpha+i\\sin\\alpha}{\\cos\\beta+i\\sin\\beta}=\\cos(\\alpha-\\beta)+i\\sin(\\alpha-\\beta)\n\\tag{3}\n$$\n\n**Sign check.** Rules (1) to (3) need the form $\\cos\\varphi+i\\sin\\varphi$ with a **plus** sign. A factor such as $\\cos\\alpha-i\\sin\\alpha$ must first be rewritten as $\\cos(-\\alpha)+i\\sin(-\\alpha)$. Dividing by a factor raised to a negative power is the same as multiplying by that factor raised to the positive power.\n\n### Use 1: powers of a complex number\n\nWrite $z=r(\\cos\\theta+i\\sin\\theta)$, then $z^{n}=r^{n}(\\cos n\\theta+i\\sin n\\theta)$. The modulus is raised to the power $n$ as well as the argument multiplied by $n$. Take the argument in the correct quadrant before applying the theorem.\n\n### Use 2: multiple-angle identities\n\nExpand $(\\cos\\theta+i\\sin\\theta)^{n}$ with the binomial theorem, set it equal to $\\cos n\\theta+i\\sin n\\theta$, and equate real parts and imaginary parts (legitimate because $\\theta$ is real). Then use $\\sin^{2}\\theta=1-\\cos^{2}\\theta$ (or the reverse) to write the result in one function of $\\theta$.\n\n### Use 3: roots and powers of cosine and sine\n\nThese are the two variants below.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Roots of a complex number",
+     "quand_utiliser": "When asked to solve $z^{n}=w$ for a given complex number $w$.",
+     "contenu_markdown": "Write $w=r(\\cos\\varphi+i\\sin\\varphi)$. Because adding $2\\pi k$ to the argument gives the same number, the $n$ solutions are\n\n$$\nz_{k}=r^{1/n}\\left[\\cos\\frac{\\varphi+2\\pi k}{n}+i\\sin\\frac{\\varphi+2\\pi k}{n}\\right],\\qquad k=0,1,\\dots,n-1\n\\tag{4}\n$$\n\nThey lie on a circle of radius $r^{1/n}$ and are equally spaced, a fraction $\\tfrac{1}{n}$ of a full turn apart. For $z^{3}=8$, we have $r=8$ and $\\varphi=0$, so $z_{k}=2\\left(\\cos\\tfrac{2\\pi k}{3}+i\\sin\\tfrac{2\\pi k}{3}\\right)$, giving $z=2$, $z=-1+i\\sqrt3$ and $z=-1-i\\sqrt3$. Always give **all** $n$ roots; for $n\\ge2$ they sum to zero, which is a useful check."
+    },
+    {
+     "nom": "Powers of cosine and sine",
+     "quand_utiliser": "When asked to express $\\cos^{n}\\theta$ or $\\sin^{n}\\theta$ in terms of multiples of $\\theta$.",
+     "contenu_markdown": "Let $z=\\cos\\theta+i\\sin\\theta$, so $z^{-1}=\\cos\\theta-i\\sin\\theta$. Adding and subtracting, and using (1),\n\n$$\nz+\\frac1z=2\\cos\\theta,\\qquad z-\\frac1z=2i\\sin\\theta,\\qquad z^{k}+\\frac{1}{z^{k}}=2\\cos k\\theta\n\\tag{5}\n$$\n\nExpand $(2\\cos\\theta)^{3}=\\left(z+\\tfrac1z\\right)^{3}=z^{3}+3z+\\tfrac3z+\\tfrac1{z^{3}}=\\left(z^{3}+z^{-3}\\right)+3\\left(z+z^{-1}\\right)=2\\cos3\\theta+6\\cos\\theta$. Hence $\\cos^{3}\\theta=\\dfrac{\\cos3\\theta+3\\cos\\theta}{4}$. The pairing of terms $z^{k}$ with $z^{-k}$ is what turns the expansion into cosines of multiple angles."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "epreuve_source": false,
+   "enonce_markdown": "Use De Moivre's theorem to show that $\\cos4\\theta\\equiv8\\cos^{4}\\theta-8\\cos^{2}\\theta+1$.",
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Apply De Moivre's theorem with $n=4$.",
+     "justification": "Equation (1) gives the left side as a single complex number whose real part is $\\cos4\\theta$.",
+     "resultat_markdown": "$(\\cos\\theta+i\\sin\\theta)^{4}=\\cos4\\theta+i\\sin4\\theta$."
+    },
+    {
+     "numero": 2,
+     "action": "Expand the left side with the binomial theorem, writing $c=\\cos\\theta$ and $s=\\sin\\theta$.",
+     "justification": "Each power of $i$ is reduced with $i^{2}=-1$, $i^{3}=-i$, $i^{4}=1$.",
+     "resultat_markdown": "$c^{4}+4c^{3}(is)+6c^{2}(is)^{2}+4c(is)^{3}+(is)^{4}=\\left(c^{4}-6c^{2}s^{2}+s^{4}\\right)+i\\left(4c^{3}s-4cs^{3}\\right)$."
+    },
+    {
+     "numero": 3,
+     "action": "Equate real parts.",
+     "justification": "Two complex numbers are equal only if their real parts are equal, and $\\theta$ is real so $c$ and $s$ are real.",
+     "resultat_markdown": "$\\cos4\\theta=c^{4}-6c^{2}s^{2}+s^{4}$."
+    },
+    {
+     "numero": 4,
+     "action": "Replace $s^{2}$ by $1-c^{2}$.",
+     "justification": "The target is an expression in $\\cos\\theta$ only.",
+     "resultat_markdown": "$c^{4}-6c^{2}(1-c^{2})+(1-c^{2})^{2}=c^{4}-6c^{2}+6c^{4}+1-2c^{2}+c^{4}$."
+    },
+    {
+     "numero": 5,
+     "action": "Collect like terms.",
+     "justification": "Add the coefficients of $c^{4}$ and of $c^{2}$ separately.",
+     "resultat_markdown": "$8c^{4}-8c^{2}+1$, so $\\cos4\\theta=8\\cos^{4}\\theta-8\\cos^{2}\\theta+1$."
+    }
+   ],
+   "conclusion_markdown": "The identity is proved. A check at $\\theta=\\tfrac{\\pi}{4}$ gives $8\\cdot\\tfrac14-8\\cdot\\tfrac12+1=-1=\\cos\\pi$. Equating imaginary parts in step 2 would give $\\sin4\\theta=4\\cos^{3}\\theta\\sin\\theta-4\\cos\\theta\\sin^{3}\\theta$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Writing $(\\cos\\theta+i\\sin\\theta)^{n}=\\cos^{n}\\theta+i\\sin^{n}\\theta$.",
+     "pourquoi_faux": "The power applies to the whole complex number, so it multiplies the angle; it does not become a power of each trigonometric function.",
+     "correction_markdown": "$(\\cos\\theta+i\\sin\\theta)^{n}=\\cos n\\theta+i\\sin n\\theta$. Test with $n=2$, $\\theta=\\tfrac{\\pi}{2}$: the left side is $i^{2}=-1$, but the wrong rule gives $i$."
+    },
+    {
+     "erreur_markdown": "Computing $(1+i)^{4}$ as $\\cos\\pi+i\\sin\\pi=-1$.",
+     "pourquoi_faux": "De Moivre's theorem in form (1) is for modulus $1$. The number $1+i$ has modulus $\\sqrt2$, and the modulus must be raised to the power $4$ as well.",
+     "correction_markdown": "$1+i=\\sqrt2\\left(\\cos\\tfrac{\\pi}{4}+i\\sin\\tfrac{\\pi}{4}\\right)$, so $(1+i)^{4}=(\\sqrt2)^{4}(\\cos\\pi+i\\sin\\pi)=-4$."
+    },
+    {
+     "erreur_markdown": "Simplifying $(\\cos3\\theta-i\\sin3\\theta)(\\cos2\\theta+i\\sin2\\theta)$ as $\\cos5\\theta+i\\sin5\\theta$.",
+     "pourquoi_faux": "The first factor has a minus sign, so its argument is $-3\\theta$ and the arguments must be added with that sign.",
+     "correction_markdown": "$\\cos3\\theta-i\\sin3\\theta=\\cos(-3\\theta)+i\\sin(-3\\theta)$, so the product is $\\cos(-\\theta)+i\\sin(-\\theta)=\\cos\\theta-i\\sin\\theta$."
+    },
+    {
+     "erreur_markdown": "Taking the argument of $-1-i$ to be $\\tan^{-1}(1)=\\tfrac{\\pi}{4}$.",
+     "pourquoi_faux": "The calculator value is in the first quadrant, but $-1-i$ lies in the third quadrant, so the argument is wrong by $\\pi$.",
+     "correction_markdown": "The argument is $-\\tfrac{3\\pi}{4}$ (or $\\tfrac{5\\pi}{4}$), and the modulus is $\\sqrt2$."
+    },
+    {
+     "erreur_markdown": "Solving $z^{3}=8$ and giving only $z=2$.",
+     "pourquoi_faux": "A complex equation of degree $3$ has three roots, which come from adding $2\\pi k$ to the argument before dividing by $3$.",
+     "correction_markdown": "Use $k=0,1,2$ in formula (4): $z=2$, $z=-1+i\\sqrt3$, $z=-1-i\\sqrt3$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Simplify (a) $\\dfrac{(\\cos4\\theta+i\\sin4\\theta)^{3}}{\\cos2\\theta+i\\sin2\\theta}$ and (b) $(\\cos\\theta-i\\sin\\theta)^{5}(\\cos3\\theta+i\\sin3\\theta)^{2}$, giving each answer in the form $\\cos k\\theta\\pm i\\sin k\\theta$.",
+     "solution_markdown": "(a) The numerator is $\\cos12\\theta+i\\sin12\\theta$. Dividing by $\\cos2\\theta+i\\sin2\\theta$ subtracts the angles: **$\\cos10\\theta+i\\sin10\\theta$**.\n\n(b) Rewrite $\\cos\\theta-i\\sin\\theta=\\cos(-\\theta)+i\\sin(-\\theta)$, so the first factor is $\\cos(-5\\theta)+i\\sin(-5\\theta)$. The second factor is $\\cos6\\theta+i\\sin6\\theta$. Adding the angles, $-5\\theta+6\\theta=\\theta$: **$\\cos\\theta+i\\sin\\theta$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Express $\\left(\\sqrt3-i\\right)^{5}$ in the form $a+ib$, giving $a$ and $b$ exactly.",
+     "solution_markdown": "The modulus of $\\sqrt3-i$ is $\\sqrt{3+1}=2$. It lies in the fourth quadrant and $\\tan\\varphi=-\\dfrac{1}{\\sqrt3}$, so $\\varphi=-\\dfrac{\\pi}{6}$. Thus $\\sqrt3-i=2\\left(\\cos\\left(-\\tfrac{\\pi}{6}\\right)+i\\sin\\left(-\\tfrac{\\pi}{6}\\right)\\right)$.\n\nBy De Moivre's theorem, $(\\sqrt3-i)^{5}=2^{5}\\left(\\cos\\left(-\\tfrac{5\\pi}{6}\\right)+i\\sin\\left(-\\tfrac{5\\pi}{6}\\right)\\right)=32\\left(-\\tfrac{\\sqrt3}{2}-\\tfrac{i}{2}\\right)$.\n\nHence $(\\sqrt3-i)^{5}=$ **$-16\\sqrt3-16i$**, that is $a=-16\\sqrt3$ and $b=-16$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "(a) Use De Moivre's theorem, with $z=\\cos\\theta+i\\sin\\theta$, to show that $\\cos^{4}\\theta\\equiv\\dfrac18\\left(\\cos4\\theta+4\\cos2\\theta+3\\right)$. (b) Hence evaluate $\\displaystyle\\int_{0}^{\\pi/2}\\cos^{4}\\theta\\,d\\theta$.",
+     "solution_markdown": "(a) By (5), $2\\cos\\theta=z+z^{-1}$, so $16\\cos^{4}\\theta=\\left(z+z^{-1}\\right)^{4}=z^{4}+4z^{2}+6+4z^{-2}+z^{-4}=\\left(z^{4}+z^{-4}\\right)+4\\left(z^{2}+z^{-2}\\right)+6$.\n\nUsing $z^{k}+z^{-k}=2\\cos k\\theta$, this is $2\\cos4\\theta+8\\cos2\\theta+6$. Dividing by $16$, **$\\cos^{4}\\theta=\\dfrac18\\left(\\cos4\\theta+4\\cos2\\theta+3\\right)$**. (Check at $\\theta=0$: $\\tfrac18(1+4+3)=1$.)\n\n(b) $\\displaystyle\\int_{0}^{\\pi/2}\\cos^{4}\\theta\\,d\\theta=\\dfrac18\\left[\\dfrac{\\sin4\\theta}{4}+2\\sin2\\theta+3\\theta\\right]_{0}^{\\pi/2}$. At $\\theta=\\tfrac{\\pi}{2}$ both sine terms are $0$, and at $\\theta=0$ everything is $0$, so the value is $\\dfrac18\\cdot\\dfrac{3\\pi}{2}=$ **$\\dfrac{3\\pi}{16}$**."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "De Moivre: $(\\cos\\theta+i\\sin\\theta)^{n}=\\cos n\\theta+i\\sin n\\theta$ for integer $n$; the argument is multiplied by $n$, not the cosine and sine separately.",
+    "Products add arguments and quotients subtract them, but only for factors written with a plus sign; rewrite $\\cos\\alpha-i\\sin\\alpha$ as $\\cos(-\\alpha)+i\\sin(-\\alpha)$ first.",
+    "For a power of a general complex number, raise the modulus to the power $n$ as well, and find the argument in the correct quadrant.",
+    "Multiple-angle identities come from expanding $(\\cos\\theta+i\\sin\\theta)^{n}$ binomially and equating real and imaginary parts, then using $\\sin^{2}\\theta=1-\\cos^{2}\\theta$.",
+    "Roots of $z^{n}=w$ come from adding $2\\pi k$ to the argument before dividing by $n$; there are exactly $n$ of them, equally spaced on a circle.",
+    "Powers of $\\cos\\theta$ come from $z+z^{-1}=2\\cos\\theta$ and $z^{k}+z^{-k}=2\\cos k\\theta$."
+   ]
+  }
+ ]
+}

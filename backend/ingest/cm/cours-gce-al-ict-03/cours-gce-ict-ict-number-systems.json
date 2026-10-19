@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-ict-ict-number-systems",
+  "meta": {
+    "titre": "ICT Number Systems: binary, octal, hexadecimal, two's complement and units of time",
+    "matiere": "ICT",
+    "pays": "cm",
+    "serie": "GCE A/L",
+    "sous_theme": "base conversions, two's complement, reasons for binary and unit conversion",
+    "duree_estimee_min": 40,
+    "tags": [
+      "ict number systems"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-al-ict-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE A/L ICT past paper (Cameroon)",
+    "epreuve_source": "gce-al-ict-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-ict-ict-number-systems-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A phone in a Douala shop shows a storage size of 64 GB, while a technician reading the memory of a device writes a short code made of digits and letters such as 3F. Computers store everything as patterns of 0s and 1s, but people prefer notations that are shorter or familiar. Examination questions on number systems ask you to convert between binary, octal, hexadecimal and decimal, to represent a negative number by its two's complement, to explain why computers use binary, and to convert units of size and time. Each of these is a method that you can apply step by step and check."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Decimal is a base 10 system with digits 0 to 9, and each place is worth ten times the place on its right.",
+        "A bit is a binary digit (0 or 1) and a byte is a group of 8 bits.",
+        "Powers of 2 are $2^0 = 1$, $2^1 = 2$, $2^2 = 4$, and so on up to $2^{10} = 1024$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Bases, conversions, two's complement and units",
+      "contenu_markdown": "### Bases and place values\n| System | Base | Digits | One digit stands for |\n|---|---|---|---|\n| Binary | 2 | 0 and 1 | 1 bit |\n| Octal | 8 | 0 to 7 | 3 bits |\n| Hexadecimal | 16 | 0 to 9 and A to F (A = 10, B = 11, C = 12, D = 13, E = 14, F = 15) | 4 bits |\n\nBinary place values, from the right, are 1, 2, 4, 8, 16, 32, 64, 128 (powers of 2).\n\n### Conversions\n- **To decimal**: add the place value of every digit that is not zero. For example $2F_{16} = 2 \\times 16 + 15 = 47$.\n- **Decimal to binary**: divide by 2 repeatedly and read the remainders from the last to the first.\n- **Binary to octal or hexadecimal**: group the bits in threes (octal) or fours (hexadecimal) **starting from the right**, add zeros on the left to complete the last group, and replace each group by its digit.\n- **Octal or hexadecimal to binary**: replace each digit by its group of 3 or 4 bits.\n\n### Negative integers: two's complement\nFor a word of $n$ bits, write the positive number in $n$ bits, reverse every bit, then add 1. A negative number starts with 1. The range is $-2^{n-1}$ to $2^{n-1}-1$, which is $-128$ to $127$ for 8 bits. Its use: the computer subtracts by adding the two's complement, so one adder circuit does both operations, and negative numbers can be stored. In an addition, a carry out of the leftmost bit is discarded.\n\n### Why computers use binary\nElectronic circuits have two reliable states (current on or off, high or low voltage), so binary digits are simple and cheap to build, dependable, and less affected by electrical noise than circuits that must tell ten levels apart. Binary also matches true and false in logic. Octal and hexadecimal are only shorthand for binary: they are shorter for people to read and write.\n\n### Units\nSize: 8 bits = 1 byte; $1\\ \\mathrm{KB} = 1024$ bytes; $1\\ \\mathrm{MB} = 1024\\ \\mathrm{KB}$.\nTime: $1\\ \\mathrm{ms} = 10^{-3}$ s, $1\\ \\mu\\mathrm{s} = 10^{-6}$ s, $1\\ \\mathrm{ns} = 10^{-9}$ s, $1\\ \\mathrm{ps} = 10^{-12}$ s. In increasing order: picosecond, nanosecond, microsecond, millisecond. Each step is a factor of 1000.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Two's complement and subtraction",
+          "quand_utiliser": "When a negative number is to be represented or a subtraction is done by addition.",
+          "contenu_markdown": "Represent $-45$ in 8 bits. $45 = 00101101$; reverse every bit: $11010010$; add 1: $11010011$. Check: $256 - 45 = 211 = 11010011_2$. To compute $52 - 45$, add $52 = 00110100$ and $11010011$: the 9-bit sum is $1\\,00000111$; discard the carry and keep $00000111 = 7$. The answer is correct. If a question gives the method, follow its steps and show every line."
+        },
+        {
+          "nom": "“Explain why” questions on binary and hexadecimal",
+          "quand_utiliser": "When a reason for the use of a number system is asked.",
+          "contenu_markdown": "Give a reason and its consequence. Binary: a circuit with two states (on or off) is easy and cheap to build and is reliable, so data and instructions are stored as bits. Hexadecimal: four bits are written as one digit, so a long binary pattern becomes short and less likely to be copied wrongly. Never say that the computer “cannot understand” decimal without giving the reason."
+        },
+        {
+          "nom": "Conversion of units of size and time",
+          "quand_utiliser": "When a value is to be expressed in a smaller or larger unit.",
+          "contenu_markdown": "Going to a smaller unit gives a larger number, so multiply; going to a larger unit, divide. Each step in the time ladder is 1000. $3\\ \\mathrm{ms}$ in ns is two steps: $3 \\times 1000 \\times 1000 = 3 \\times 10^{6}$ ns. Write the unit in every line and check that the size of the answer is sensible."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A technician records the binary pattern $1101011011_2$ from a device. (a) Convert it to decimal. (b) Convert it to hexadecimal. (c) Convert it to octal. (d) Check the hexadecimal and the octal answers by converting them back to decimal.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convert to decimal by adding place values.",
+          "justification": "The ones are in the places 512, 256, 64, 16, 8, 2 and 1.",
+          "resultat_markdown": "$512 + 256 + 64 + 16 + 8 + 2 + 1 = 859$."
+        },
+        {
+          "numero": 2,
+          "action": "Group in fours from the right for hexadecimal.",
+          "justification": "One hexadecimal digit stands for 4 bits, and the left group is completed with zeros: $0011\\ 0101\\ 1011$.",
+          "resultat_markdown": "$0011 = 3$, $0101 = 5$, $1011 = \\mathrm{B}$, so the answer is $35\\mathrm{B}_{16}$."
+        },
+        {
+          "numero": 3,
+          "action": "Group in threes from the right for octal.",
+          "justification": "One octal digit stands for 3 bits, and the left group is completed with zeros: $001\\ 101\\ 011\\ 011$.",
+          "resultat_markdown": "$1\\ 5\\ 3\\ 3$, so the answer is $1533_8$."
+        },
+        {
+          "numero": 4,
+          "action": "Check the hexadecimal value in decimal.",
+          "justification": "If the conversion is right, the decimal value must be 859 again.",
+          "resultat_markdown": "$3 \\times 256 + 5 \\times 16 + 11 = 768 + 80 + 11 = 859$."
+        },
+        {
+          "numero": 5,
+          "action": "Check the octal value in decimal.",
+          "justification": "The same test applies to the octal answer.",
+          "resultat_markdown": "$1 \\times 512 + 5 \\times 64 + 3 \\times 8 + 3 = 512 + 320 + 24 + 3 = 859$."
+        }
+      ],
+      "conclusion_markdown": "**Answer**: $1101011011_2 = 859_{10} = 35\\mathrm{B}_{16} = 1533_8$. Both checks give 859."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "“To convert $1101011011_2$ to hexadecimal, group the bits in fours from the left: $1101\\ 0110\\ 11$, read as D63.”",
+          "pourquoi_faux": "Grouping must start from the right, because the right-hand bits are the least significant. Starting from the left changes the value: D63 is 3427, not 859.",
+          "correction_markdown": "Group from the right and complete the left group with zeros: $0011\\ 0101\\ 1011 = 35\\mathrm{B}_{16}$."
+        },
+        {
+          "erreur_markdown": "“The two's complement of $00100101$ is $11011010$.”",
+          "pourquoi_faux": "Reversing the bits gives only the one's complement. The step “add 1” has been forgotten.",
+          "correction_markdown": "$11011010 + 1 = 11011011$."
+        },
+        {
+          "erreur_markdown": "“F in hexadecimal is worth 16.”",
+          "pourquoi_faux": "A hexadecimal digit must be smaller than the base. F is worth 15, and 16 is written 10 in hexadecimal.",
+          "correction_markdown": "A = 10, B = 11, C = 12, D = 13, E = 14, F = 15."
+        },
+        {
+          "erreur_markdown": "“$5\\ \\mu\\mathrm{s}$ is $0.005$ ns, because you divide by 1000 to go to nanoseconds.”",
+          "pourquoi_faux": "A nanosecond is smaller than a microsecond, so the same time is a larger number of nanoseconds. The step must multiply by 1000.",
+          "correction_markdown": "$5\\ \\mu\\mathrm{s} = 5 \\times 1000 = 5000$ ns."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Convert $10110101_2$ to decimal. (b) Convert $45_{10}$ to binary.",
+          "solution_markdown": "(a) $128 + 32 + 16 + 4 + 1 = $ **181**. (b) $45 = 32 + 8 + 4 + 1$, so $45_{10} = $ **101101**$_2$ (repeated division by 2 gives the remainders 1, 0, 1, 1, 0, 1, and read from the last to the first they give 101101)."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Convert $2\\mathrm{F}8_{16}$ to binary, to decimal and to octal.",
+          "solution_markdown": "Binary: $2 = 0010$, $\\mathrm{F} = 1111$, $8 = 1000$, so $001011111000$, which is **1011111000**$_2$. Decimal: $2 \\times 256 + 15 \\times 16 + 8 = 512 + 240 + 8 = $ **760**. Octal: group the binary in threes from the right, $1\\ 011\\ 111\\ 000$, which gives **1370**$_8$. Check: $1 \\times 512 + 3 \\times 64 + 7 \\times 8 + 0 = 512 + 192 + 56 = 760$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Use 8-bit words. (a) Find the two's complement representation of $-37$. (b) Add $90$ to it in binary, discard any carry out of the leftmost bit, and give the result in binary and decimal. (c) Express $7 \\times 10^{5}$ ps in ns.",
+          "solution_markdown": "(a) $37 = 00100101$; reverse: $11011010$; add 1: **11011011**. (b) $90 = 01011010$. The sum $01011010 + 11011011$ is $1\\,00110101$; discard the carry: **00110101**, which is **53** in decimal, and $90 - 37 = 53$. (c) 1 ns $= 1000$ ps, so $7 \\times 10^{5} \\div 1000 = $ **700 ns**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Binary is base 2, octal base 8, hexadecimal base 16; one hex digit is 4 bits and one octal digit is 3 bits.",
+        "Group bits from the right, completing the left group with zeros; check a conversion by returning to decimal.",
+        "Two's complement: write the number in n bits, reverse every bit, add 1; negatives start with 1, and subtraction becomes addition with the carry out discarded.",
+        "Computers use binary because two-state circuits are simple, cheap and reliable; hexadecimal and octal are shorthand for binary.",
+        "A = 10 to F = 15 in hexadecimal; F is never 16.",
+        "Time ladder from the smallest: ps, ns, microsecond, ms, each step 1000 times the previous one; multiply when going to a smaller unit."
+      ]
+    }
+  ]
+}
