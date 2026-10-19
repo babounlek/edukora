@@ -10,7 +10,9 @@ const { getMatieres, definirAffichageMatieres, utilisateur, cursusDeclare } = vi
   cursusDeclare: { current: null as unknown },
 }))
 vi.mock("@/api/endpoints", () => ({ getMatieres, definirMatieres: vi.fn(), definirAffichageMatieres }))
-vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: utilisateur.current }) }))
+vi.mock("@/context/AuthContext", () => ({
+  useAuth: () => ({ user: utilisateur.current, isAuthenticated: Boolean(utilisateur.current) }),
+}))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/cursusAccueil", () => ({ useCursusPrepareDeclare: () => cursusDeclare.current }))
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }))
@@ -41,7 +43,7 @@ function afficher(entree: string) {
 }
 
 function compte(abonne: boolean) {
-  utilisateur.current = { id: 1, a_un_abonnement_actif: abonne, cursus_prepare: CURSUS }
+  utilisateur.current = { id: 1, a_un_abonnement_actif: abonne, abonne_profil_actif: abonne, cursus_prepare: CURSUS }
   cursusDeclare.current = CURSUS
 }
 
@@ -55,24 +57,35 @@ beforeEach(() => {
 })
 
 describe("BandeauVue", () => {
-  it("dit l'examen ET les matières en une phrase", async () => {
+  it("abonné : seulement ses matières et le lien pour les modifier - ni examen, ni sortie, ni « tout voir »", async () => {
     afficher("/epreuves?cursus=7")
-    expect(await screen.findByText(/tes 2 matières/)).toBeInTheDocument()
-    expect(screen.getByText("GCE O Level")).toBeInTheDocument()
+    expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
+    expect(screen.queryByText("GCE O Level")).not.toBeInTheDocument()
     expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/mes-acces")
+    expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
-  it("un abonné n'a aucune sortie d'examen : son accès est celui de son examen", async () => {
+  it("abonné sans matières choisies : aucun bandeau", async () => {
+    getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES })
+    const { container } = afficher("/epreuves?cursus=7")
+    await waitFor(() => expect(getMatieres).toHaveBeenCalled())
+    expect(container.querySelector("p")).toBeNull()
+  })
+
+  it("abonné, interrupteur éteint dans Mes accès : le bandeau le dit, sans bouton", async () => {
+    getMatieres.mockResolvedValue({ choisies: [1, 2], disponibles: DISPONIBLES, seulement_mes_matieres: false })
     afficher("/epreuves?cursus=7")
-    expect(await screen.findByText("GCE O Level")).toBeInTheDocument()
-    expect(screen.queryByRole("button", { name: "Voir tout le catalogue" })).not.toBeInTheDocument()
-    expect(screen.queryByRole("button", { name: /autre examen/ })).not.toBeInTheDocument()
+    expect(await screen.findByText("Tu vois toutes les matières.")).toBeInTheDocument()
+    expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
-  it("sans abonnement, la sortie reste « Voir tout le catalogue »", async () => {
+  it("visiteur : l'examen, les matières s'il y en a, et « Voir tout le catalogue »", async () => {
     compte(false)
     afficher("/epreuves?cursus=7")
-    expect(await screen.findByRole("button", { name: "Voir tout le catalogue" })).toBeInTheDocument()
+    expect(await screen.findByText("GCE O Level")).toBeInTheDocument()
+    expect(await screen.findByText(/tes 2 matières/)).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Voir tout le catalogue" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Voir toutes les matières" })).not.toBeInTheDocument()
   })
 
   it("pour un visiteur, la sortie d'examen retire le cursus et mémorise le choix d'élargir", async () => {
@@ -88,24 +101,6 @@ describe("BandeauVue", () => {
     expect(await screen.findByText("Tu vois tous les examens.")).toBeInTheDocument()
     fireEvent.click(screen.getByRole("button", { name: "Revenir à mon examen" }))
     await waitFor(() => expect(screen.getByTestId("lieu")).not.toHaveTextContent("tout=1"))
-  })
-
-  it("l'interrupteur de matières garde l'examen et passe à « toutes les matières »", async () => {
-    definirAffichageMatieres.mockResolvedValue({ choisies: [1, 2], disponibles: DISPONIBLES, seulement_mes_matieres: false })
-    afficher("/epreuves?cursus=7")
-    getMatieres.mockResolvedValue({ choisies: [1, 2], disponibles: DISPONIBLES, seulement_mes_matieres: false })
-    fireEvent.click(await screen.findByRole("button", { name: "Voir toutes les matières" }))
-    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false))
-    expect(await screen.findByText(/toutes les matières/, { selector: "span" })).toBeInTheDocument()
-    expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=7")
-  })
-
-  it("sans matières choisies, le bandeau ne parle que de l'examen", async () => {
-    getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES })
-    afficher("/epreuves?cursus=7")
-    expect(await screen.findByText("GCE O Level")).toBeInTheDocument()
-    expect(screen.queryByText(/matières/)).not.toBeInTheDocument()
-    expect(screen.queryByRole("link", { name: "Modifier mes matières" })).not.toBeInTheDocument()
   })
 
   it("se tait sans examen déclaré, et quand rien n'est filtré ni élargi", async () => {

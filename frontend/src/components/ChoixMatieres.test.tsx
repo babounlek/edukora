@@ -271,23 +271,20 @@ describe("« Voir seulement mes matières »", () => {
     expect(screen.queryByRole("switch")).not.toBeInTheDocument()
   })
 
-  it("le bandeau dit combien de matières sont montrées et propose de tout voir", async () => {
+  it("le bandeau dit combien de matières sont montrées et renvoie vers Mes accès, sans bouton « tout voir »", async () => {
     getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
-    definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
     afficher(<BandeauMatieres />)
     expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
     expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/mes-acces")
-    fireEvent.click(screen.getByRole("button", { name: "Voir toutes les matières" }))
-    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false))
+    expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
-  it("une fois tout montré, le bandeau reste pour revenir à ses matières", async () => {
+  it("avec l'interrupteur éteint, le bandeau le dit et garde le lien de modification", async () => {
     getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
-    definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
     afficher(<BandeauMatieres />)
     expect(await screen.findByText("Tu vois toutes les matières.")).toBeInTheDocument()
-    fireEvent.click(screen.getByRole("button", { name: "Voir seulement mes matières" }))
-    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(true))
+    expect(screen.getByRole("link", { name: "Modifier mes matières" })).toBeInTheDocument()
+    expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
   it("se tait sans choix, hors GCE, ou quand le filtre n'agit pas", async () => {

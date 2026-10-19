@@ -63,8 +63,6 @@ export const fr = {
   "matieres.bandeau_seulement_one": "Tu vois seulement ta matière.",
   "matieres.bandeau_seulement_other": "Tu vois seulement tes {n} matières.",
   "matieres.bandeau_toutes": "Tu vois toutes les matières.",
-  "matieres.bandeau_voir_toutes": "Voir toutes les matières",
-  "matieres.bandeau_voir_miennes": "Voir seulement mes matières",
   "matieres.bandeau_modifier": "Modifier mes matières",
   "matieres.enregistrer": "Enregistrer",
   "matieres.toutes": "Toutes les matières",

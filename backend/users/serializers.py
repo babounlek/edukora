@@ -83,6 +83,7 @@ class UserSerializer(serializers.ModelSerializer):
     cursus_prepare = CursusSerializer(read_only=True)
     compte_a_rebours = serializers.SerializerMethodField()
     a_un_abonnement_actif = serializers.SerializerMethodField()
+    abonne_profil_actif = serializers.SerializerMethodField()
     rappels_invite_refusee = serializers.SerializerMethodField()
     profil_actif = serializers.SerializerMethodField()
     pin_parent_actif = serializers.SerializerMethodField()
@@ -94,7 +95,7 @@ class UserSerializer(serializers.ModelSerializer):
             "id", "phone_number", "email", "email_verified", "full_name", "pseudo",
             "date_joined", "referral_code", "filleuls_count", "auth_methods",
             "credit_parrainage_disponible", "cursus_prepare", "compte_a_rebours", "langue",
-            "a_un_abonnement_actif", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
+            "a_un_abonnement_actif", "abonne_profil_actif", "rappels_actifs", "rappels_invite_refusee", "bilan_parent_actif",
             "profil_actif", "pin_parent_actif", "session_restreinte",
         ]
 
@@ -154,6 +155,28 @@ class UserSerializer(serializers.ModelSerializer):
         from subscriptions.models import Subscription
 
         return Subscription.objects.filter(user=obj, expires_at__gt=timezone.now()).exists()
+
+    def get_abonne_profil_actif(self, obj):
+        """
+        Le profil ACTIF a-t-il un abonnement en cours sur l'examen qu'il prépare ? Contrairement à
+        `a_un_abonnement_actif` (compte entier, pour le Header), c'est ce qui décide si ce profil se voit encore
+        proposer d'autres examens : dans une famille, l'enfant abonné ne les voit plus, celui qui ne l'est pas
+        garde le choix pour s'abonner.
+        """
+        from subscriptions.models import Subscription
+
+        from .profils import profil_actif
+
+        request = self.context.get("request")
+        if request is not None and getattr(request.user, "pk", None) == obj.pk:
+            profil = profil_actif(request)
+        else:
+            profil = obj.profils.first()
+        if profil is None or obj.cursus_prepare_id is None:
+            return False
+        return Subscription.objects.filter(
+            user=obj, profil=profil, cursus_id=obj.cursus_prepare_id, expires_at__gt=timezone.now(),
+        ).exists()
 
     def get_pin_parent_actif(self, obj):
         return bool(obj.pin_parent_hash)

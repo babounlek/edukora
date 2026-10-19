@@ -2079,3 +2079,52 @@ class BackfillProfilDepuisUserTests(TestCase):
         self.assertEqual(profil.prenom, "Junior")
         self.assertEqual(profil.cursus_prepare_id, cursus.id)
         self.assertTrue(profil.rappels_actifs)
+
+
+class AbonneProfilActifTests(TestCase):
+    """`abonne_profil_actif` : l'abonnement du profil ACTIF sur son examen, pas celui du compte entier."""
+
+    def setUp(self):
+        from rest_framework.test import APIClient
+
+        self.parent = User.objects.create_user(phone_number="677400301", password="x")
+        self.aine = self.parent.profils.first()
+        self.cadet = Profil.objects.create(compte=self.parent, prenom="Cadet", ordre=1)
+        self.bepc = Cursus.objects.filter(examen=Examen.BEPC, series__isnull=True).first()
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.parent)
+
+    def _me(self):
+        return self.client.get("/auth/me/").data
+
+    def test_faux_sans_abonnement_ni_examen(self):
+        self.assertFalse(self._me()["abonne_profil_actif"])
+
+    def test_vrai_pour_le_profil_abonne_faux_pour_celui_qui_ne_l_est_pas(self):
+        Subscription.objects.create(
+            user=self.parent, profil=self.aine, cursus=self.bepc, expires_at=timezone.now() + timedelta(days=30),
+        )
+        self.parent.cursus_prepare = self.bepc
+        self.parent.save(update_fields=["cursus_prepare"])
+        me = self._me()
+        # Le profil actif par défaut est l'aîné, abonné ; le compte l'est aussi.
+        self.assertTrue(me["abonne_profil_actif"])
+        self.assertTrue(me["a_un_abonnement_actif"])
+        # Le cadet, actif sur le même examen mais sans abonnement : le compte reste « abonné », pas lui.
+        from rest_framework_simplejwt.tokens import AccessToken
+
+        jeton = AccessToken.for_user(self.parent)
+        jeton["profil_id"] = self.cadet.id
+        cadet = self.client.__class__()
+        cadet.credentials(HTTP_AUTHORIZATION=f"Bearer {jeton}")
+        me_cadet = cadet.get("/auth/me/").data
+        self.assertTrue(me_cadet["a_un_abonnement_actif"])
+        self.assertFalse(me_cadet["abonne_profil_actif"])
+
+    def test_faux_si_l_abonnement_est_expire(self):
+        Subscription.objects.create(
+            user=self.parent, profil=self.aine, cursus=self.bepc, expires_at=timezone.now() - timedelta(days=1),
+        )
+        self.parent.cursus_prepare = self.bepc
+        self.parent.save(update_fields=["cursus_prepare"])
+        self.assertFalse(self._me()["abonne_profil_actif"])

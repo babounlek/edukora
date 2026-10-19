@@ -31,6 +31,9 @@ export interface User {
   compte_a_rebours: CompteARebours | null
   // Tous cursus confondus - sert au Header à masquer "Tarifs" pour qui a déjà payé.
   a_un_abonnement_actif: boolean
+  // Le profil ACTIF a un abonnement en cours sur son examen (voir UserSerializer.get_abonne_profil_actif) : décide s'il se
+  // voit encore proposer d'autres examens, à la différence du drapeau du compte entier ci-dessus.
+  abonne_profil_actif: boolean
   // Rappel quotidien de la séance par e-mail (voir relances.services) : jamais actif sans
   // e-mail confirmé, et jamais activé d'office.
   rappels_actifs: boolean

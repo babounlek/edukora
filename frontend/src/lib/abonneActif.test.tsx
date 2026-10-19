@@ -14,13 +14,13 @@ function pour(isAuthenticated: boolean, user: unknown) {
 }
 
 describe("useAbonneActif", () => {
-  it("vrai pour un compte connecté, abonné, avec un examen préparé", () => {
-    expect(pour(true, { a_un_abonnement_actif: true, cursus_prepare: CURSUS })).toBe(true)
+  it("vrai pour le profil actif abonné à l'examen qu'il prépare", () => {
+    expect(pour(true, { abonne_profil_actif: true, cursus_prepare: CURSUS })).toBe(true)
   })
 
-  it("faux pour un visiteur, un compte sans abonnement, ou sans examen préparé : ils gardent le choix d'examen", () => {
+  it("faux pour un visiteur, un profil non abonné (même si le compte l'est), ou sans examen préparé", () => {
     expect(pour(false, null)).toBe(false)
-    expect(pour(true, { a_un_abonnement_actif: false, cursus_prepare: CURSUS })).toBe(false)
-    expect(pour(true, { a_un_abonnement_actif: true, cursus_prepare: null })).toBe(false)
+    expect(pour(true, { a_un_abonnement_actif: true, abonne_profil_actif: false, cursus_prepare: CURSUS })).toBe(false)
+    expect(pour(true, { abonne_profil_actif: true, cursus_prepare: null })).toBe(false)
   })
 })

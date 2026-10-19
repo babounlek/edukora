@@ -235,15 +235,14 @@ export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => vo
 }
 
 /**
- * Dit où l'on en est (« Tu vois seulement tes 6 matières ») et comment en sortir d'un clic, depuis la liste elle-même :
- * sans cette phrase, une liste soudain plus courte se lit comme du contenu manquant. Reste affiché quand l'élève a
- * choisi de tout voir, pour qu'il puisse revenir à ses matières. Absent quand rien ne se restreint (aucun choix,
- * choix sans contenu sur cet examen) et hors GCE.
+ * Dit où l'on en est (« Tu vois seulement tes 6 matières ») avec le lien pour les modifier, sur les pages du quiz et du
+ * parcours : sans cette phrase, une liste soudain plus courte se lit comme du contenu manquant. Pas de bouton « voir toutes
+ * les matières » ici (un clic trop facile) : l'interrupteur vit dans « Mes accès ». Absent quand rien ne se restreint (aucun
+ * choix, choix sans contenu sur cet examen) et hors GCE.
  */
 export function BandeauMatieres() {
   const { t, tn } = useI18n()
-  const { actif, cursusId, data } = useMatieres()
-  const affichage = useAffichageMatieres(cursusId)
+  const { actif, data } = useMatieres()
 
   if (!actif || !data || data.choisies.length === 0) return null
   const seulement = data.seulement_mes_matieres ?? true
@@ -253,14 +252,6 @@ export function BandeauMatieres() {
   return (
     <p className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
       <span>{seulement ? tn("matieres.bandeau_seulement", data.nb_affichees ?? 0) : t("matieres.bandeau_toutes")}</span>
-      <button
-        type="button"
-        disabled={affichage.isPending}
-        onClick={() => affichage.mutate(!seulement)}
-        className="underline underline-offset-4 transition-colors hover:text-primary"
-      >
-        {seulement ? t("matieres.bandeau_voir_toutes") : t("matieres.bandeau_voir_miennes")}
-      </button>
       <Link to="/mes-acces" className="underline underline-offset-4 transition-colors hover:text-primary">
         {t("matieres.bandeau_modifier")}
       </Link>

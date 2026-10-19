@@ -58,8 +58,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "matieres.bandeau_seulement_one": "You are seeing only your subject.",
   "matieres.bandeau_seulement_other": "You are seeing only your {n} subjects.",
   "matieres.bandeau_toutes": "You are seeing every subject.",
-  "matieres.bandeau_voir_toutes": "Show all subjects",
-  "matieres.bandeau_voir_miennes": "Show only my subjects",
   "matieres.bandeau_modifier": "Edit my subjects",
   "matieres.enregistrer": "Save",
   "matieres.toutes": "All subjects",
