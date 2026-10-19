@@ -39,7 +39,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { BandeauVue } from "@/components/BandeauVue"
-import { useAbonneActif } from "@/lib/abonneActif"
+import { useAbonneActif, useCursusAbonne } from "@/lib/abonneActif"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
@@ -146,6 +146,7 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
 
 export function EpreuvesListPage() {
   const abonne = useAbonneActif()
+  const cursusAbonne = useCursusAbonne()
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
@@ -397,7 +398,9 @@ export function EpreuvesListPage() {
         for (const key of FILTER_KEYS) next.delete(key)
         // « Tout effacer » veut dire tout le catalogue : on garde `tout=1` (et on le mémorise en
         // session) pour que le cursus par défaut ne revienne pas au prochain rendu.
-        if (cursusPrepare) desactiverFiltreCursus(next)
+        // Un abonné garde son examen ; sinon « tout effacer » veut dire tout le catalogue.
+        if (cursusAbonne) next.set("cursus", String(cursusAbonne))
+        else if (cursusPrepare) desactiverFiltreCursus(next)
         try {
           if (cursusPrepare) sessionStorage.setItem(FILTERS_SESSION_KEY, next.toString())
           else sessionStorage.removeItem(FILTERS_SESSION_KEY)
@@ -416,7 +419,8 @@ export function EpreuvesListPage() {
       label: subjects.find((s) => s.code === subjectFilter)?.label ?? subjectFilter,
       clear: () => updateFilter("subject", ""),
     },
-    cursusFilter && {
+    // Un abonné n'a que son examen : sa puce (et sa croix) n'apporte rien, et le retirer ouvrirait tout le catalogue.
+    cursusFilter && cursusFilter !== String(cursusAbonne) && {
       key: "cursus",
       label: (() => {
         const c = cursusList.find((c) => String(c.id) === cursusFilter)

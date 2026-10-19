@@ -7,6 +7,11 @@ import { useAuth } from "@/context/AuthContext"
  * c'est ce qui les aide à décider (voir BandeauVue).
  */
 export function useAbonneActif(): boolean {
+  return useCursusAbonne() !== null
+}
+
+/** L'examen du profil actif quand il est abonné (voir useAbonneActif), sinon null : de quoi masquer sa puce de filtre. */
+export function useCursusAbonne(): number | null {
   const { isAuthenticated, user } = useAuth()
-  return Boolean(isAuthenticated && user?.abonne_profil_actif && user.cursus_prepare)
+  return isAuthenticated && user?.abonne_profil_actif && user.cursus_prepare ? user.cursus_prepare.id : null
 }
