@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-add-maths-logarithms-and-exponential-equations",
+  "meta": {
+    "titre": "Logarithms and Exponential Equations: Laws of Logs and Hidden Quadratics",
+    "matiere": "Additional Mathematics",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "exponential and log equations",
+    "duree_estimee_min": 35,
+    "tags": [
+      "logarithms and exponential equations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-additional-maths-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-ol-additional-maths-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-add-maths-logarithms-and-exponential-equations-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A savings group in Yaounde sees a deposit grow by the same percentage each year, and the members want to know after how many years the amount reaches a target. The unknown is then in the power, and ordinary algebra cannot reach it. Logarithms are the tool that brings the unknown down from the power. In the GCE Paper 2 they appear as equations in $x$ where a substitution turns the problem into a quadratic."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The laws of indices: $a^m\\times a^n=a^{m+n}$, $(a^m)^n=a^{mn}$ and $a^{-n}=\\frac{1}{a^n}$.",
+        "Solving a quadratic equation by factorising.",
+        "A logarithm answers the question: to which power must the base be raised?"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Laws of logarithms and the substitution method",
+      "contenu_markdown": "### Definition\n$\\log_a b=c$ means $a^c=b$, for $a>0$, $a\\neq1$ and $b>0$. So $\\log_2 8=3$ because $2^3=8$. Two special values: $\\log_a 1=0$ and $\\log_a a=1$.\n\n### The three laws (same base $a$)\n$$\n\\log_a(xy)=\\log_a x+\\log_a y,\\qquad \\log_a\\frac{x}{y}=\\log_a x-\\log_a y \\tag{1}\n$$\n\n$$\n\\log_a(x^n)=n\\log_a x \\tag{2}\n$$\n\nThere is no law for $\\log_a(x+y)$. The argument of a logarithm must be positive, so a root that makes it zero or negative is rejected.\n\n### Solving $a^x=b$\nTake logarithms of both sides, or use change of base: $x=\\dfrac{\\log b}{\\log a}$ (any base on the calculator, usually base $10$). For example $3^x=7$ gives $x=\\frac{\\lg7}{\\lg3}\\approx1.77$.\n\n### Hidden quadratics\nWhen two powers of the same base appear, one being the square of the other, put $u=a^x$. Then $a^{2x}=u^2$ and the equation becomes an ordinary quadratic in $u$. Solve it, then return to $x$ by solving $a^x=u$.\n\n| Expression | Equals |\n|---|---|\n| $4^x$ | $(2^x)^2$ |\n| $2^{x+1}$ | $2\\times2^x$ |\n| $2^{x-1}$ | $\\frac{2^x}{2}$ |\n\nRemember that $u=a^x$ is always positive, so a negative value of $u$ gives no solution.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Equations containing logarithms",
+          "quand_utiliser": "When several logs of the same base appear on one side.",
+          "contenu_markdown": "Combine them with the laws into a single logarithm, convert to a power form, solve, then test every root in the original equation. For example $\\log_2x+\\log_2(x-2)=3$ gives $x(x-2)=8$, so $x^2-2x-8=0$, so $x=4$ or $x=-2$. The value $-2$ is rejected because $\\log_2(-2)$ does not exist. Only $x=4$ stays."
+        },
+        {
+          "nom": "Change of base",
+          "quand_utiliser": "When the unknown is an exponent and the calculator has only base 10.",
+          "contenu_markdown": "Use $\\log_a b=\\frac{\\lg b}{\\lg a}$. Always give the answer to the accuracy requested, usually 3 significant figures or 2 decimal places."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Solve $4^x-6(2^x)+8=0$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Rewrite $4^x$ as a power of $2$.",
+          "justification": "Both terms must use the same base.",
+          "resultat_markdown": "$4^x=(2^2)^x=(2^x)^2$."
+        },
+        {
+          "numero": 2,
+          "action": "Put $u=2^x$.",
+          "justification": "The equation becomes a quadratic in $u$.",
+          "resultat_markdown": "$u^2-6u+8=0$."
+        },
+        {
+          "numero": 3,
+          "action": "Factorise and solve for $u$.",
+          "justification": "Product $8$, sum $-6$ gives $-2$ and $-4$.",
+          "resultat_markdown": "$(u-2)(u-4)=0$, so $u=2$ or $u=4$."
+        },
+        {
+          "numero": 4,
+          "action": "Return to $x$ with $2^x=u$.",
+          "justification": "The question asks for $x$, not $u$.",
+          "resultat_markdown": "$2^x=2$ gives $x=1$. $2^x=4$ gives $x=2$."
+        },
+        {
+          "numero": 5,
+          "action": "Check both values in the original equation.",
+          "justification": "A substitution can introduce errors.",
+          "resultat_markdown": "$x=1$: $4-12+8=0$. $x=2$: $16-24+8=0$."
+        }
+      ],
+      "conclusion_markdown": "The solutions are $x=1$ and $x=2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "The student writes $\\log(x+y)=\\log x+\\log y$.",
+          "pourquoi_faux": "The sum law applies to a product inside the log, not to a sum. For instance with base $10$, $\\lg(10+10)=\\lg20$, which is not $\\lg10+\\lg10=2$.",
+          "correction_markdown": "$\\log(xy)=\\log x+\\log y$; there is no simplification of $\\log(x+y)$."
+        },
+        {
+          "erreur_markdown": "The student simplifies $\\dfrac{\\log x}{\\log y}$ to $\\log(x-y)$.",
+          "pourquoi_faux": "The quotient law is $\\log x-\\log y=\\log\\frac{x}{y}$. A quotient of two logs is not a log of a difference.",
+          "correction_markdown": "Leave $\\frac{\\log x}{\\log y}$ alone, or use it as the change-of-base formula for $\\log_y x$."
+        },
+        {
+          "erreur_markdown": "The student keeps the root $x=-2$ in the equation $\\log_2x+\\log_2(x-2)=3$.",
+          "pourquoi_faux": "The logarithm of a negative number is not defined, so the root does not belong to the original equation.",
+          "correction_markdown": "Test every root and reject $x=-2$; keep $x=4$."
+        },
+        {
+          "erreur_markdown": "The student writes $2^{x+1}=2^x+1$.",
+          "pourquoi_faux": "The law is $a^{m+n}=a^m\\times a^n$. A sum in the exponent becomes a product, not a sum.",
+          "correction_markdown": "$2^{x+1}=2\\times2^x$."
+        },
+        {
+          "erreur_markdown": "After finding $u=2$ and $u=4$ the student gives them as the final answers.",
+          "pourquoi_faux": "The substitution $u=2^x$ is a tool. The question asks for $x$, so you must solve $2^x=2$ and $2^x=4$.",
+          "correction_markdown": "Return to $x$: $x=1$ and $x=2$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Solve $5^x=125$. (b) Solve $3^x=7$, giving your answer correct to 2 decimal places.",
+          "solution_markdown": "(a) $125=5^3$, so **$x=3$**.\n\n(b) $x=\\frac{\\lg7}{\\lg3}=\\frac{0.8451}{0.4771}=1.7712...$, so **$x\\approx1.77$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Solve $\\log_3(x+6)-\\log_3x=2$.",
+          "solution_markdown": "Using the quotient law, $\\log_3\\frac{x+6}{x}=2$, so $\\frac{x+6}{x}=3^2=9$. Then $x+6=9x$, $6=8x$ and **$x=\\frac{3}{4}$**. Check: $\\frac{0.75+6}{0.75}=9$ and $\\log_39=2$. The argument of each log is positive."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Solve the simultaneous equations $\\log_2x+\\log_2y=5$ and $x-y=4$.",
+          "solution_markdown": "The first equation gives $\\log_2(xy)=5$, so $xy=2^5=32$. From the second, $x=y+4$. Then $y(y+4)=32$, so $y^2+4y-32=0$, $(y+8)(y-4)=0$. So $y=-8$ or $y=4$. The value $y=-8$ is rejected because $\\log_2y$ would not exist. So **$y=4$ and $x=8$**. Check: $8\\times4=32=2^5$ and $8-4=4$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\log_ab=c$ means $a^c=b$, and the argument of a log must be positive.",
+        "Laws: $\\log(xy)=\\log x+\\log y$, $\\log\\frac{x}{y}=\\log x-\\log y$, $\\log x^n=n\\log x$.",
+        "For $a^x=b$ take logs, or use $x=\\frac{\\lg b}{\\lg a}$.",
+        "When $a^{2x}$ and $a^x$ both appear, put $u=a^x$ to get a quadratic, then return to $x$.",
+        "Test every root of a log equation and reject those that make an argument zero or negative.",
+        "There is no law for the log of a sum."
+      ]
+    }
+  ]
+}

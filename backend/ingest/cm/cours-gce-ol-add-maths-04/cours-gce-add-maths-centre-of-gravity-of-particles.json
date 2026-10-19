@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-gce-add-maths-centre-of-gravity-of-particles",
+ "meta": {
+  "titre": "Centre of Gravity: Weighted Position of Particles by Moments",
+  "matiere": "Additional Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Centre of gravity of a set of particles in a plane",
+  "duree_estimee_min": 30,
+  "tags": [
+   "centre of gravity of particles"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-additional-maths-2026-p2-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-additional-maths-2026-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-add-maths-centre-of-gravity-of-particles-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A trader in the market at Bafoussam hangs three sacks of different masses along a light plank and wants to know where one rope must be tied so that the plank stays level. That balance point is the centre of gravity of the loads. In Additional Mathematics the sacks become particles, the plank becomes the plane, and the balance point is found with a weighted average. This calculation appears in the mechanics question of Paper 2, where the marks go to a tidy table and a final answer in the form that the question asks for."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "A position vector $x\\mathbf{i}+y\\mathbf{j}$ describes the point $(x,y)$ from the origin.",
+    "A particle is an object whose size is ignored, so all of its mass is at one point.",
+    "The mean of some numbers is their sum divided by how many there are.",
+    "Weight is proportional to mass at the same place, so masses can be used in place of weights."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Weighted average of position vectors",
+   "contenu_markdown": "### The centre of gravity\n\nThe **centre of gravity** $G$ of a set of particles is the point where the whole weight acts, so the set balances there. Heavier particles pull $G$ towards themselves, so $G$ is not the ordinary mean of the positions but a **weighted mean**, with the masses as weights.\n\nFor particles of masses $m_1,m_2,\\dots,m_n$ at position vectors $\\mathbf{r}_1,\\mathbf{r}_2,\\dots,\\mathbf{r}_n$ the position vector of $G$ is\n\n$$\n\\mathbf{g}=\\frac{m_1\\mathbf{r}_1+m_2\\mathbf{r}_2+\\cdots+m_n\\mathbf{r}_n}{m_1+m_2+\\cdots+m_n} \\tag{1}\n$$\n\nIn coordinates, with the particle $m_k$ at $(x_k,y_k)$, this says\n\n$$\n\\bar{x}=\\frac{\\sum m_k x_k}{\\sum m_k},\\qquad \\bar{y}=\\frac{\\sum m_k y_k}{\\sum m_k} \\tag{2}\n$$\n\nThe numerator of each fraction is a sum of **moments**: mass times coordinate. The denominator is the **total mass**.\n\n### Method\n\n1. Add the masses to get the total mass.\n2. Work out $m_kx_k$ for every particle and add them. Do the same with $m_ky_k$. Keep every sign.\n3. Divide each sum by the total mass.\n4. Give the answer in the form of the question: a position vector $\\bar{x}\\mathbf{i}+\\bar{y}\\mathbf{j}$, or coordinates $(\\bar{x},\\bar{y})$.\n\nA table with columns for mass, $x$, $y$, $mx$ and $my$ keeps the work clear. Two quick checks: $G$ lies inside the smallest rectangle containing all the particles, and with equal masses it is the plain mean of the positions.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Two particles on a line",
+     "quand_utiliser": "When there are only two particles, or when you only want a distance.",
+     "contenu_markdown": "$G$ lies on the line joining them, nearer to the heavier one, and it balances the moments: $m_1d_1=m_2d_2$, where $d_1$ and $d_2$ are the distances from $G$. For $2$ kg at $x=0$ and $6$ kg at $x=8$: $\\bar{x}=\\dfrac{2(0)+6(8)}{8}=6$. Check: $2\\times 6=12$ and $6\\times 2=12$."
+    },
+    {
+     "nom": "Unknown mass or unknown position",
+     "quand_utiliser": "When the centre of gravity is given and one mass or one position is missing.",
+     "contenu_markdown": "Write the total mass using the unknown, for example $8+m$, then write equation (2) with the known value of $\\bar{x}$ and solve. Use the second coordinate as a check, since both equations must give the same value."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Particles of mass $4$ kg, $1$ kg and $5$ kg are at the points with position vectors $(3\\mathbf{i}+\\mathbf{j})$, $(-2\\mathbf{i}+6\\mathbf{j})$ and $(\\mathbf{i}-2\\mathbf{j})$ respectively. The three particles are fixed together. Calculate the position vector of the point where they balance.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Find the total mass.",
+     "justification": "This is the denominator in both coordinates.",
+     "resultat_markdown": "$4+1+5=10$ kg"
+    },
+    {
+     "numero": 2,
+     "action": "Find the sum of the moments in the $\\mathbf{i}$ direction.",
+     "justification": "Multiply each mass by its $x$-coordinate, keeping the sign of $-2$.",
+     "resultat_markdown": "$4(3)+1(-2)+5(1)=12-2+5=15$"
+    },
+    {
+     "numero": 3,
+     "action": "Find the sum of the moments in the $\\mathbf{j}$ direction.",
+     "justification": "Multiply each mass by its $y$-coordinate, keeping the sign of $-2$.",
+     "resultat_markdown": "$4(1)+1(6)+5(-2)=4+6-10=0$"
+    },
+    {
+     "numero": 4,
+     "action": "Divide by the total mass.",
+     "justification": "Apply equation (1) in each direction.",
+     "resultat_markdown": "$\\bar{x}=\\dfrac{15}{10}=\\dfrac{3}{2}$ and $\\bar{y}=\\dfrac{0}{10}=0$"
+    },
+    {
+     "numero": 5,
+     "action": "Check that the answer is sensible.",
+     "justification": "The point must lie inside the rectangle containing the particles, and nearer to the $5$ kg and $4$ kg particles.",
+     "resultat_markdown": "$-2\\le\\dfrac{3}{2}\\le 3$ and $-2\\le 0\\le 6$, so the point is inside"
+    }
+   ],
+   "conclusion_markdown": "The position vector of the centre of gravity is $\\dfrac{3}{2}\\mathbf{i}$, that is, the point $\\left(\\dfrac{3}{2},0\\right)$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "For three particles, writing $\\bar{x}=\\dfrac{x_1+x_2+x_3}{3}$.",
+     "pourquoi_faux": "This divides by the number of particles and ignores the masses. It is correct only if all masses are equal.",
+     "correction_markdown": "$\\bar{x}=\\dfrac{m_1x_1+m_2x_2+m_3x_3}{m_1+m_2+m_3}$."
+    },
+    {
+     "erreur_markdown": "Forgetting to multiply one coordinate by its mass, for instance $5\\times 1$ is written as $1$ for the particle of mass $5$ kg at $x=1$.",
+     "pourquoi_faux": "Every term in the numerator must be mass times coordinate. A missing factor changes the sum and the answer.",
+     "correction_markdown": "Write the table with a column $mx$ and fill it for every particle: $5\\times 1=5$."
+    },
+    {
+     "erreur_markdown": "Writing $1\\times(-2)=2$ when finding a moment.",
+     "pourquoi_faux": "A positive mass times a negative coordinate is negative. Dropping the sign moves $G$ to the wrong side.",
+     "correction_markdown": "$1\\times(-2)=-2$."
+    },
+    {
+     "erreur_markdown": "Adding the mass to the coordinate, as in $4+3$, instead of multiplying.",
+     "pourquoi_faux": "A moment is a product. Adding mass and distance has no physical meaning and gives a wrong value.",
+     "correction_markdown": "$4\\times 3=12$."
+    },
+    {
+     "erreur_markdown": "Leaving an answer such as $\\bar{x}=3.4$, $\\bar{y}=-1$ when the question asks for a position vector.",
+     "pourquoi_faux": "The method is right, but the answer must be in the requested form to earn the last mark.",
+     "correction_markdown": "Write $3.4\\mathbf{i}-\\mathbf{j}$ for a position vector and $(3.4,-1)$ for coordinates."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "A particle of mass $2$ kg is at the point $(1,5)$ and a particle of mass $3$ kg is at the point $(6,0)$. Find the coordinates of their centre of gravity.",
+     "solution_markdown": "Total mass $=2+3=5$ kg. $\\bar{x}=\\dfrac{2(1)+3(6)}{5}=\\dfrac{20}{5}=4$ and $\\bar{y}=\\dfrac{2(5)+3(0)}{5}=\\dfrac{10}{5}=2$. **The centre of gravity is $(4,2)$.**"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "Particles of mass $1$ kg, $2$ kg and $3$ kg have position vectors $(2\\mathbf{i}+\\mathbf{j})$, $(-\\mathbf{i}+4\\mathbf{j})$ and $(3\\mathbf{i}-2\\mathbf{j})$ respectively. Calculate the position vector of the point at which this system balances.",
+     "solution_markdown": "Total mass $=1+2+3=6$ kg. Moments in the $\\mathbf{i}$ direction: $1(2)+2(-1)+3(3)=2-2+9=9$. Moments in the $\\mathbf{j}$ direction: $1(1)+2(4)+3(-2)=1+8-6=3$. So $\\bar{x}=\\dfrac{9}{6}=\\dfrac{3}{2}$ and $\\bar{y}=\\dfrac{3}{6}=\\dfrac{1}{2}$. **The position vector is $\\dfrac{3}{2}\\mathbf{i}+\\dfrac{1}{2}\\mathbf{j}$.**"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "Particles of mass $2$ kg, $6$ kg and $m$ kg are at the points $(1,3)$, $(5,-1)$ and $(-3,7)$ respectively. The centre of gravity of the three particles is the point $(2,2)$. Find $m$, and show that both coordinates give the same value.",
+     "solution_markdown": "The total mass is $8+m$. From the $x$-coordinates: $2(1)+6(5)+m(-3)=2(8+m)$, so $32-3m=16+2m$, giving $5m=16$ and $m=3.2$. From the $y$-coordinates: $2(3)+6(-1)+m(7)=2(8+m)$, so $7m=16+2m$, giving $5m=16$ and $m=3.2$. Both coordinates give the same value. **$m=3.2$ kg, that is, $\\dfrac{16}{5}$ kg.**"
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "The centre of gravity is a **weighted** mean: $\\mathbf{g}=\\dfrac{\\sum m_k\\mathbf{r}_k}{\\sum m_k}$, never just the mean of the positions unless the masses are equal.",
+    "Build a table: mass, $x$, $y$, $mx$, $my$, with a totals row. Keep every negative sign.",
+    "Divide the sum of moments by the **total mass**, not by the number of particles.",
+    "Give the answer in the form of the question: position vector $\\bar{x}\\mathbf{i}+\\bar{y}\\mathbf{j}$ or coordinates $(\\bar{x},\\bar{y})$.",
+    "For two particles, $G$ is on the line joining them and nearer the heavier one, with $m_1d_1=m_2d_2$.",
+    "With an unknown mass, write the total mass with the unknown, solve for it from one coordinate, and confirm with the other."
+   ]
+  }
+ ]
+}

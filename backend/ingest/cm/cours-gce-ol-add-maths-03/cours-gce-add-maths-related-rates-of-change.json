@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-add-maths-related-rates-of-change",
+  "meta": {
+    "titre": "Related Rates of Change: Linking Two Rates with the Chain Rule",
+    "matiere": "Additional Mathematics",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "chain rule and rates",
+    "duree_estimee_min": 35,
+    "tags": [
+      "related rates of change"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-additional-maths-2026-p2-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-ol-additional-maths-2026-p2-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-add-maths-related-rates-of-change-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A water vendor in Douala watches a round plastic ball swell as air is pumped into it. The pump pushes air at a steady speed, yet the ball does not grow at a steady speed. Questions on related rates ask you to connect the speed at which one quantity changes to the speed at which another quantity changes. They appear in recent Additional Mathematics Paper 2 papers because they combine differentiation with careful reading."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The derivative $\\dfrac{dy}{dx}$ measures how fast $y$ changes when $x$ changes.",
+        "The volume of a sphere is $\\frac{4}{3}\\pi r^3$ and its surface area is $4\\pi r^2$.",
+        "The chain rule: if $y$ depends on $u$ and $u$ depends on $x$, then $\\dfrac{dy}{dx}=\\dfrac{dy}{du}\\times\\dfrac{du}{dx}$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Rates with respect to time and the chain rule",
+      "contenu_markdown": "### Rates are derivatives with respect to time\nA rate of change per second (or per minute) is a derivative with respect to time $t$. For example, $\\frac{dr}{dt}$ is the rate at which a radius changes. When two quantities both depend on $t$ and one depends on the other, the chain rule connects their rates:\n\n$$\n\\frac{dV}{dt}=\\frac{dV}{dr}\\times\\frac{dr}{dt} \\tag{1}\n$$\n\n### Derivatives you will need\n| Shape | Formula | Derivative with respect to the size |\n|---|---|---|\n| Sphere (volume) | $V=\\frac{4}{3}\\pi r^3$ | $\\frac{dV}{dr}=4\\pi r^2$ |\n| Sphere (surface) | $A=4\\pi r^2$ | $\\frac{dA}{dr}=8\\pi r$ |\n| Circle (area) | $A=\\pi r^2$ | $\\frac{dA}{dr}=2\\pi r$ |\n| Cube (volume) | $V=x^3$ | $\\frac{dV}{dx}=3x^2$ |\n| Cube (surface) | $A=6x^2$ | $\\frac{dA}{dx}=12x$ |\n\n### Method in five steps\n1. Write the formula that links the quantities.\n2. Differentiate it with respect to the size variable ($r$ or $x$), keeping $r$ as a letter.\n3. Write the chain rule with the unknown rate as the subject.\n4. Only now substitute the value of $r$ or $x$ at the given instant.\n5. Decide the sign: a rate of increase is positive, a rate of decrease is negative. Give the unit, such as $\\text{cm}^3\\text{s}^{-1}$ for a volume rate.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Two links in a chain",
+          "quand_utiliser": "When the question gives the rate of one quantity and asks for a third one, for example volume rate given and surface-area rate wanted.",
+          "contenu_markdown": "First find the rate of the middle variable. Use $\\frac{dr}{dt}=\\frac{dV/dt}{dV/dr}$, then use $\\frac{dA}{dt}=\\frac{dA}{dr}\\times\\frac{dr}{dt}$. Never skip the middle step: the radius is the bridge between volume and area."
+        },
+        {
+          "nom": "Rate of decrease",
+          "quand_utiliser": "When air escapes, ice melts or a liquid drains away.",
+          "contenu_markdown": "The given rate is negative in the formula (for instance $\\frac{dV}{dt}=-12$). When the question says 'rate of decrease', you may state the answer as a positive number with the word decrease, or keep the minus sign and say what it means. Whichever you choose, make the meaning explicit in a sentence."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A solid ball of ice is melting and stays spherical. When its radius is $4$ cm, its volume is falling by $32\\pi$ cubic centimetres every second. Find, in terms of $\\pi$ where necessary, (a) the rate of decrease of the radius, (b) the rate of decrease of the surface area at that instant.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the link between volume and radius and differentiate with respect to $r$.",
+          "justification": "Volume depends on the radius only, so we need $\\frac{dV}{dr}$ first.",
+          "resultat_markdown": "$V=\\frac{4}{3}\\pi r^3$, so $\\frac{dV}{dr}=4\\pi r^2$."
+        },
+        {
+          "numero": 2,
+          "action": "Write the chain rule and put in the given rate. The volume is decreasing, so $\\frac{dV}{dt}=-32\\pi$.",
+          "justification": "A decrease is a negative rate.",
+          "resultat_markdown": "$-32\\pi=4\\pi r^2\\times\\frac{dr}{dt}$."
+        },
+        {
+          "numero": 3,
+          "action": "Substitute $r=4$ and solve for $\\frac{dr}{dt}$.",
+          "justification": "Substitution comes only after differentiating.",
+          "resultat_markdown": "$-32\\pi=4\\pi(16)\\frac{dr}{dt}=64\\pi\\frac{dr}{dt}$, so $\\frac{dr}{dt}=-\\frac{1}{2}$."
+        },
+        {
+          "numero": 4,
+          "action": "Differentiate the surface area $A=4\\pi r^2$ with respect to $r$.",
+          "justification": "The surface area is the third quantity and the radius is the bridge.",
+          "resultat_markdown": "$\\frac{dA}{dr}=8\\pi r$."
+        },
+        {
+          "numero": 5,
+          "action": "Apply the chain rule and substitute $r=4$ and $\\frac{dr}{dt}=-\\frac{1}{2}$.",
+          "justification": "We reuse the rate found in step 3.",
+          "resultat_markdown": "$\\frac{dA}{dt}=8\\pi(4)\\times\\left(-\\frac{1}{2}\\right)=-16\\pi$."
+        }
+      ],
+      "conclusion_markdown": "(a) The radius is decreasing at $\\frac{1}{2}\\ \\text{cm s}^{-1}$. (b) The surface area is decreasing at $16\\pi\\ \\text{cm}^2\\text{s}^{-1}$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "A student writes $A=4\\pi(3)^2=36\\pi$ first and then differentiates to get $\\frac{dA}{dt}=0$.",
+          "pourquoi_faux": "Replacing $r$ by a number before differentiating turns the area into a constant, and the derivative of a constant is zero. The radius is changing, so it must stay a letter.",
+          "correction_markdown": "Differentiate first, $\\frac{dA}{dr}=8\\pi r$, and substitute $r=3$ at the end."
+        },
+        {
+          "erreur_markdown": "To find $\\frac{dr}{dt}$ from $\\frac{dV}{dt}$ the student writes $\\frac{dr}{dt}=\\frac{dV}{dt}\\times\\frac{dV}{dr}$.",
+          "pourquoi_faux": "The chain rule is $\\frac{dV}{dt}=\\frac{dV}{dr}\\times\\frac{dr}{dt}$. To isolate $\\frac{dr}{dt}$ you must divide by $\\frac{dV}{dr}$, not multiply.",
+          "correction_markdown": "$\\frac{dr}{dt}=\\frac{dV/dt}{dV/dr}$."
+        },
+        {
+          "erreur_markdown": "The student gives the rate for melting ice as a positive number and writes 'the volume is increasing'.",
+          "pourquoi_faux": "Ignoring the sign reverses the physical meaning. Melting, draining and escaping gas all mean a negative rate.",
+          "correction_markdown": "Put a minus sign in $\\frac{dV}{dt}$ when the quantity decreases, or write the word 'decrease' with the positive value."
+        },
+        {
+          "erreur_markdown": "The student differentiates $V=\\frac{4}{3}\\pi r^3$ and gets $\\frac{4}{3}\\pi r^2$.",
+          "pourquoi_faux": "The power rule multiplies by the exponent $3$ and lowers it to $2$. The factor $3$ cancels the $3$ in the denominator of $\\frac{4}{3}$.",
+          "correction_markdown": "$\\frac{dV}{dr}=\\frac{4}{3}\\pi\\times 3r^2=4\\pi r^2$."
+        },
+        {
+          "erreur_markdown": "The final answer is a bare number with no unit.",
+          "pourquoi_faux": "A rate of change always has a unit, and the unit shows whether you found a volume rate, an area rate or a length rate.",
+          "correction_markdown": "Write $\\text{cm}^3\\text{s}^{-1}$, $\\text{cm}^2\\text{s}^{-1}$ or $\\text{cm s}^{-1}$ as appropriate."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "The side of a square metal plate increases at $0.3\\ \\text{cm s}^{-1}$. Find the rate of increase of its area at the instant when the side is $10$ cm.",
+          "solution_markdown": "$A=x^2$, so $\\frac{dA}{dx}=2x$. Then $\\frac{dA}{dt}=2x\\frac{dx}{dt}=2(10)(0.3)=6$. The area increases at **$6\\ \\text{cm}^2\\text{s}^{-1}$**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "The volume of a cube of side $x$ cm is increasing at $12\\ \\text{cm}^3\\text{s}^{-1}$. When $x=2$, find (a) the rate of increase of $x$, (b) the rate of increase of the total surface area.",
+          "solution_markdown": "(a) $V=x^3$, $\\frac{dV}{dx}=3x^2$. So $12=3x^2\\frac{dx}{dt}$. At $x=2$: $12=12\\frac{dx}{dt}$, so $\\frac{dx}{dt}=$ **$1\\ \\text{cm s}^{-1}$**.\n\n(b) $A=6x^2$, $\\frac{dA}{dx}=12x$. So $\\frac{dA}{dt}=12(2)(1)=$ **$24\\ \\text{cm}^2\\text{s}^{-1}$**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A spherical balloon is inflated so that its volume increases at the constant rate of $36\\pi\\ \\text{cm}^3\\text{s}^{-1}$. Find (a) the rate of increase of the radius when $r=3$ cm, (b) the rate of increase of the surface area at that instant, (c) the rate of increase of the radius when $r=6$ cm.",
+          "solution_markdown": "(a) $\\frac{dV}{dt}=4\\pi r^2\\frac{dr}{dt}$. At $r=3$: $36\\pi=36\\pi\\frac{dr}{dt}$, so $\\frac{dr}{dt}=$ **$1\\ \\text{cm s}^{-1}$**.\n\n(b) $\\frac{dA}{dt}=8\\pi r\\frac{dr}{dt}=8\\pi(3)(1)=$ **$24\\pi\\ \\text{cm}^2\\text{s}^{-1}$**.\n\n(c) At $r=6$: $36\\pi=4\\pi(36)\\frac{dr}{dt}=144\\pi\\frac{dr}{dt}$, so $\\frac{dr}{dt}=$ **$\\frac{1}{4}\\ \\text{cm s}^{-1}$**. The radius grows more slowly as the balloon gets bigger, even though the volume rate is constant."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A related-rate question always uses $\\frac{dV}{dt}=\\frac{dV}{dr}\\times\\frac{dr}{dt}$ or its area version.",
+        "Differentiate with respect to the size variable first, substitute the instant's value last.",
+        "$\\frac{dV}{dr}=4\\pi r^2$ and $\\frac{dA}{dr}=8\\pi r$ for a sphere; $\\frac{dA}{dr}=2\\pi r$ for a circle.",
+        "A quantity that decreases has a negative rate; check the sign and the word in the question.",
+        "When a third quantity is wanted, find the radius rate first and use it as the bridge.",
+        "Always finish with the correct unit."
+      ]
+    }
+  ]
+}

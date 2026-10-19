@@ -1,0 +1,158 @@
+{
+ "cours_id": "cours-gce-add-maths-differentiation-rules",
+ "meta": {
+  "titre": "Differentiation Rules: Chain, Product and Quotient in Practice",
+  "matiere": "Additional Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Power rule, chain rule, product and quotient rules",
+  "duree_estimee_min": 35,
+  "tags": [
+   "differentiation rules"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-additional-maths-2019-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-additional-maths-2019-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-add-maths-differentiation-rules-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A moto-taxi driver in Bamenda notices that the fare he earns changes faster on some stretches of road than on others. In mathematics, how fast one quantity changes with another is measured by the derivative. At the GCE you must differentiate quickly and without sign slips, because a single wrong power ruins the rest of the question. Mastering a few rules and applying them in the right order wins easy marks."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "$x^{3}$ means $x\\times x\\times x$, and roots and fractions can be written with fractional or negative powers.",
+    "The gradient of a curve at a point is the gradient of its tangent there.",
+    "Expressions can be expanded and factorised, and angles in calculus are in radians."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Rules of differentiation",
+   "contenu_markdown": "### Basic rules\n\nFor a constant $k$ and a number $n$ (whole or fractional, positive or negative):\n\n$$\n\\frac{d}{dx}\\left(kx^{n}\\right)=knx^{n-1} \\tag{1}\n$$\n\nThe derivative of a constant is $0$, and a sum or difference is differentiated term by term. Rewrite roots and fractions as powers first: $\\sqrt{x}=x^{1/2}$ and $\\dfrac{1}{x^{2}}=x^{-2}$. For trigonometric functions of a multiple of $x$ (angle in radians):\n\n$$\n\\frac{d}{dx}(\\sin ax)=a\\cos ax,\\qquad \\frac{d}{dx}(\\cos ax)=-a\\sin ax \\tag{2}\n$$\n\n### Function of a function (chain rule)\n\nIf $y$ depends on $u$ and $u$ depends on $x$:\n\n$$\n\\frac{dy}{dx}=\\frac{dy}{du}\\times\\frac{du}{dx} \\tag{3}\n$$\n\nFor $y=(ax+b)^{n}$ put $u=ax+b$: the result is $n\\,a\\,(ax+b)^{n-1}$. The inner derivative must never be forgotten.\n\n### Product and quotient\n\nFor $y=uv$ and for $y=\\dfrac{u}{v}$:\n\n$$\n\\frac{d(uv)}{dx}=u\\frac{dv}{dx}+v\\frac{du}{dx} \\tag{4}\n$$\n\n$$\n\\frac{d}{dx}\\!\\left(\\frac{u}{v}\\right)=\\frac{v\\dfrac{du}{dx}-u\\dfrac{dv}{dx}}{v^{2}} \\tag{5}\n$$\n\nIn the quotient the order in the numerator matters: the **denominator times the derivative of the numerator** comes first, then subtract.\n\n### Gradient and tangent\n\nThe gradient of a curve at $x=a$ is the value of $\\dfrac{dy}{dx}$ at $x=a$, and it is also the gradient of the tangent there. If the curve passes through $(a,b)$ the tangent has equation $y-b=m(x-a)$ with $m$ the gradient. At a stationary point $\\dfrac{dy}{dx}=0$. For example, $y=x^{3}-3x$ has $\\dfrac{dy}{dx}=3x^{2}-3$, which is zero at $x=1$ and $x=-1$.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Chain rule with a bracket",
+     "quand_utiliser": "When a bracket or a trigonometric expression is raised to a power or has an inner multiple of $x$.",
+     "contenu_markdown": "Differentiate the outside as if the bracket were a single letter, then multiply by the derivative of the inside. Example: $\\dfrac{d}{dx}(3x-1)^{5}=5(3x-1)^{4}\\times3=15(3x-1)^{4}$."
+    },
+    {
+     "nom": "Product or quotient, then simplify",
+     "quand_utiliser": "When two factors containing $x$ are multiplied or divided.",
+     "contenu_markdown": "Name the two parts $u$ and $v$ and write down $u'$ and $v'$ before combining. Then take out common factors, which makes it easy to solve $\\dfrac{dy}{dx}=0$ or to substitute a value. Gradient of a tangent at $x=a$: substitute $a$ into $\\dfrac{dy}{dx}$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Find the gradient of the curve $y=x(2x+1)^{3}$ at the point where $x=1$.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Recognise the structure.",
+     "justification": "The curve is the product of $x$ and a bracket raised to a power, so use the product rule, and the chain rule inside it.",
+     "resultat_markdown": "$u=x,\\; v=(2x+1)^{3}$"
+    },
+    {
+     "numero": 2,
+     "action": "Differentiate each part.",
+     "justification": "$v'$ needs the chain rule: outside $3(\\ldots)^{2}$, inside $2$.",
+     "resultat_markdown": "$u'=1,\\quad v'=3(2x+1)^{2}\\times2=6(2x+1)^{2}$"
+    },
+    {
+     "numero": 3,
+     "action": "Apply the product rule.",
+     "justification": "Use $\\dfrac{dy}{dx}=uv'+vu'$.",
+     "resultat_markdown": "$\\dfrac{dy}{dx}=x\\cdot6(2x+1)^{2}+(2x+1)^{3}\\cdot1$"
+    },
+    {
+     "numero": 4,
+     "action": "Factorise.",
+     "justification": "Take out the common factor $(2x+1)^{2}$.",
+     "resultat_markdown": "$\\dfrac{dy}{dx}=(2x+1)^{2}\\left[6x+(2x+1)\\right]=(2x+1)^{2}(8x+1)$"
+    },
+    {
+     "numero": 5,
+     "action": "Substitute $x=1$.",
+     "justification": "The gradient at a point is the value of $\\dfrac{dy}{dx}$ there.",
+     "resultat_markdown": "$3^{2}\\times9=81$"
+    }
+   ],
+   "conclusion_markdown": "The gradient of the curve at $x=1$ is **81**. A direct check from the unfactorised form gives $27+6\\times9=81$."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "$\\dfrac{d}{dx}(2x+1)^{3}=3(2x+1)^{2}$.",
+     "pourquoi_faux": "The derivative of the inside bracket, $2$, is missing. The chain rule multiplies by it.",
+     "correction_markdown": "$\\dfrac{d}{dx}(2x+1)^{3}=3(2x+1)^{2}\\times2=6(2x+1)^{2}$."
+    },
+    {
+     "erreur_markdown": "For $y=x\\sin 2x$, writing $\\dfrac{dy}{dx}=(1)(2\\cos 2x)$.",
+     "pourquoi_faux": "A product is not differentiated factor by factor. Both terms $uv'$ and $vu'$ are needed.",
+     "correction_markdown": "$\\dfrac{dy}{dx}=x\\cdot2\\cos 2x+\\sin 2x\\cdot1=2x\\cos 2x+\\sin 2x$."
+    },
+    {
+     "erreur_markdown": "For $y=\\dfrac{u}{v}$, writing the numerator as $u\\,v'-v\\,u'$.",
+     "pourquoi_faux": "The order is reversed, so the final answer has the wrong sign.",
+     "correction_markdown": "The numerator is $v\\,u'-u\\,v'$, then divide by $v^{2}$."
+    },
+    {
+     "erreur_markdown": "$\\dfrac{d}{dx}(5)=5$.",
+     "pourquoi_faux": "A constant does not change with $x$, so its gradient is zero.",
+     "correction_markdown": "$\\dfrac{d}{dx}(5)=0$."
+    },
+    {
+     "erreur_markdown": "$\\dfrac{d}{dx}\\left(\\dfrac{4}{x^{2}}\\right)=\\dfrac{4}{2x}$.",
+     "pourquoi_faux": "The expression was not written as a power first, so the power rule was misapplied.",
+     "correction_markdown": "$\\dfrac{4}{x^{2}}=4x^{-2}$, so the derivative is $-8x^{-3}=-\\dfrac{8}{x^{3}}$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Differentiate $y=4x^{3}-6\\sqrt{x}+\\dfrac{2}{x}$ with respect to $x$.",
+     "solution_markdown": "Rewrite as $y=4x^{3}-6x^{1/2}+2x^{-1}$. Then $\\dfrac{dy}{dx}=12x^{2}-3x^{-1/2}-2x^{-2}$, that is **$\\dfrac{dy}{dx}=12x^{2}-\\dfrac{3}{\\sqrt{x}}-\\dfrac{2}{x^{2}}$**."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "(a) Differentiate $y=(5-2x)^{4}$ and find the gradient at $x=2$. (b) Differentiate $y=\\sin 3x+\\cos 2x$.",
+     "solution_markdown": "(a) Chain rule: $\\dfrac{dy}{dx}=4(5-2x)^{3}\\times(-2)=-8(5-2x)^{3}$. At $x=2$: $5-4=1$, so the gradient is $-8\\times1=\\mathbf{-8}$. (b) $\\dfrac{dy}{dx}=\\mathbf{3\\cos 3x-2\\sin 2x}$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A curve has equation $y=\\dfrac{x^{2}+1}{x-1}$ for $x\\neq1$. (a) Find $\\dfrac{dy}{dx}$. (b) Find the gradient and the equation of the tangent at $x=2$. (c) Find, in exact form, the $x$-coordinates of the stationary points.",
+     "solution_markdown": "(a) With $u=x^{2}+1$ and $v=x-1$: $\\dfrac{dy}{dx}=\\dfrac{(x-1)(2x)-(x^{2}+1)(1)}{(x-1)^{2}}=\\dfrac{x^{2}-2x-1}{(x-1)^{2}}$. (b) At $x=2$: $\\dfrac{4-4-1}{1}=\\mathbf{-1}$, and $y=\\dfrac{5}{1}=5$. Tangent: $y-5=-(x-2)$, so **$y=7-x$**. (c) Put $\\dfrac{dy}{dx}=0$: $x^{2}-2x-1=0$, so $x=\\dfrac{2\\pm\\sqrt{4+4}}{2}=\\mathbf{1\\pm\\sqrt{2}}$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Power rule: $\\dfrac{d}{dx}(kx^{n})=knx^{n-1}$; constants give $0$; differentiate sums term by term after rewriting roots and fractions as powers.",
+    "Chain rule: differentiate the outside, then multiply by the derivative of the inside, for example $\\dfrac{d}{dx}(ax+b)^{n}=na(ax+b)^{n-1}$.",
+    "Trigonometry: $\\dfrac{d}{dx}(\\sin ax)=a\\cos ax$ and $\\dfrac{d}{dx}(\\cos ax)=-a\\sin ax$.",
+    "Product: $uv'+vu'$. Quotient: $\\dfrac{vu'-uv'}{v^{2}}$, with the denominator times $u'$ first.",
+    "Factorise the result before substituting a value or solving $\\dfrac{dy}{dx}=0$."
+   ]
+  }
+ ]
+}

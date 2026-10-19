@@ -1,0 +1,158 @@
+{
+ "cours_id": "cours-gce-add-maths-counting-with-permutations-and-combinations",
+ "meta": {
+  "titre": "Permutations and Combinations: Choosing, Arranging and Counting Cases",
+  "matiere": "Additional Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Arrangements, selections and mixed groups",
+  "duree_estimee_min": 30,
+  "tags": [
+   "counting with permutations and combinations"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-additional-maths-2023-p2-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-additional-maths-2023-p2-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-add-maths-counting-with-permutations-and-combinations-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A teacher in Garoua has to form a delegation for a regional quiz and wonders how many different delegations are possible. A market trader in Douala wants to know how many ways she can display her goods in a row. Both questions are about counting without listing every case. At the GCE you must tell at once whether the order matters, and then apply the correct formula without slips."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Multiplication of whole numbers and simplifying fractions.",
+    "The product $5\\times4\\times3\\times2\\times1$ can be written $5!$.",
+    "A word is a row of letters, and different orders of the same letters can give different words."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Counting: arrangements and selections",
+   "contenu_markdown": "### The counting principle\n\nIf one task can be done in $m$ ways and a second, independent task in $n$ ways, then \"first **and** second\" can be done in $m\\times n$ ways. If the tasks are alternatives (\"either ... **or** ...\"), the numbers of ways are **added**.\n\n### Factorials, arrangements and selections\n\nThe factorial is $n!=n(n-1)(n-2)\\cdots 3\\times 2\\times 1$, and $0!=1$. The key question is always: **does the order matter?**\n\nAn **arrangement** (permutation) of $r$ objects taken from $n$ different objects, where order matters:\n\n$$\n{}^{n}P_{r}=\\frac{n!}{(n-r)!} \\tag{1}\n$$\n\nA **selection** (combination) of $r$ objects from $n$ different objects, where order does not matter:\n\n$$\n{}^{n}C_{r}=\\frac{n!}{r!\\,(n-r)!} \\tag{2}\n$$\n\nThere are always $r!$ times as many arrangements as selections: ${}^{n}P_{r}=r!\\times{}^{n}C_{r}$. Also ${}^{n}C_{r}={}^{n}C_{n-r}$, which saves work: ${}^{10}C_{8}={}^{10}C_{2}$.\n\n| Situation | Order matters? | Tool |\n|---|---|---|\n| Choose a team of 4 from 9 players | No | ${}^{9}C_{4}$ |\n| Award first, second and third prizes among 9 players | Yes | ${}^{9}P_{3}$ |\n| Choose 2 boys **and** 3 girls | No, for each group | multiply two combinations |\n\n### Mixed groups\n\nWhen a group must contain given numbers from different sets, choose from each set separately and **multiply**.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Arrangements with repeated letters",
+     "quand_utiliser": "When some of the objects (for example letters of a word) are identical.",
+     "contenu_markdown": "If $n$ objects include $p$ identical objects of one kind and $q$ of another, the number of different arrangements is $\\dfrac{n!}{p!\\,q!}$. For the letters of LEVEL, $L$ appears twice and $E$ appears twice, so the number is $\\dfrac{5!}{2!\\,2!}=\\dfrac{120}{4}=30$. Dividing removes the arrangements that differ only by swapping identical letters."
+    },
+    {
+     "nom": "Conditions: at least, at most, a given person",
+     "quand_utiliser": "When a selection carries a restriction.",
+     "contenu_markdown": "For a given person who **must** be in the group, choose the remaining places from the other $n-1$ people. For 'at least', either add the allowed cases one by one or subtract the forbidden cases from the total: $\\text{total}-\\text{(none)}-\\text{(exactly one)}$. Choose the shorter route and check it with the other when you can."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "A school choir group is made of 3 girls and 2 boys, chosen from 8 girls and 5 boys who volunteered at a school in Bafoussam. (a) In how many ways can the group be chosen? (b) From the 5 members of a chosen group, a leader and a deputy leader are named. In how many ways can this be done?",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Decide whether order matters for the group.",
+     "justification": "Choosing members of a group gives no rank to anyone, so use combinations.",
+     "resultat_markdown": "Girls: ${}^{8}C_{3}$ ways. Boys: ${}^{5}C_{2}$ ways"
+    },
+    {
+     "numero": 2,
+     "action": "Count the girls' choices.",
+     "justification": "Apply formula (2).",
+     "resultat_markdown": "${}^{8}C_{3}=\\dfrac{8\\times7\\times6}{3\\times2\\times1}=56$"
+    },
+    {
+     "numero": 3,
+     "action": "Count the boys' choices.",
+     "justification": "Same formula with $n=5$, $r=2$.",
+     "resultat_markdown": "${}^{5}C_{2}=\\dfrac{5\\times4}{2\\times1}=10$"
+    },
+    {
+     "numero": 4,
+     "action": "Combine the two independent choices.",
+     "justification": "The group needs girls **and** boys, so multiply.",
+     "resultat_markdown": "$56\\times10=560$"
+    },
+    {
+     "numero": 5,
+     "action": "Treat part (b).",
+     "justification": "Here the order matters (leader first, deputy second), so use arrangements of 2 from 5.",
+     "resultat_markdown": "${}^{5}P_{2}=5\\times4=20$"
+    }
+   ],
+   "conclusion_markdown": "(a) There are **560** possible groups. (b) A leader and a deputy can be named in **20** ways."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Choosing a committee of 3 from 8 people: ${}^{8}P_{3}=336$.",
+     "pourquoi_faux": "A committee has no ranks, so ABC and CBA are the same committee. Permutations count each committee $3!$ times.",
+     "correction_markdown": "Use combinations: ${}^{8}C_{3}=\\dfrac{336}{6}=56$."
+    },
+    {
+     "erreur_markdown": "Choosing 2 boys from 7 **and** 2 girls from 5: ${}^{7}C_{2}+{}^{5}C_{2}=31$.",
+     "pourquoi_faux": "'And' means both choices are made together, so the numbers of ways multiply. Addition is only for alternatives.",
+     "correction_markdown": "${}^{7}C_{2}\\times{}^{5}C_{2}=21\\times10=210$."
+    },
+    {
+     "erreur_markdown": "Arranging the letters of BANANA: $6!=720$.",
+     "pourquoi_faux": "Swapping the three identical A's, or the two identical N's, gives the same word, so 720 over-counts.",
+     "correction_markdown": "$\\dfrac{6!}{3!\\,2!}=60$."
+    },
+    {
+     "erreur_markdown": "Writing ${}^{n}C_{r}=\\dfrac{n!}{(n-r)!}$.",
+     "pourquoi_faux": "This is the formula for ${}^{n}P_{r}$. It forgets to divide by $r!$ for the orderings inside the selection.",
+     "correction_markdown": "${}^{n}C_{r}=\\dfrac{n!}{r!\\,(n-r)!}$."
+    },
+    {
+     "erreur_markdown": "Taking $0!=0$ when evaluating ${}^{5}C_{5}$.",
+     "pourquoi_faux": "By definition $0!=1$. With $0!=0$ the fraction would involve division by zero.",
+     "correction_markdown": "${}^{5}C_{5}=\\dfrac{5!}{5!\\,0!}=1$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Evaluate ${}^{8}P_{3}$ and ${}^{8}C_{3}$, and explain in one sentence why the first is larger.",
+     "solution_markdown": "${}^{8}P_{3}=8\\times7\\times6=\\mathbf{336}$. ${}^{8}C_{3}=\\dfrac{336}{3!}=\\dfrac{336}{6}=\\mathbf{56}$. Each selection of 3 people can be ordered in $3!=6$ ways, so there are 6 times more arrangements than selections."
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "(a) How many different arrangements are there of all the letters of the word BANANA? (b) How many of them begin with the letter B?",
+     "solution_markdown": "(a) There are 6 letters with A three times and N twice: $\\dfrac{6!}{3!\\,2!}=\\dfrac{720}{12}=\\mathbf{60}$. (b) Fix B in first place; the letters AANAN remain, with A three times and N twice: $\\dfrac{5!}{3!\\,2!}=\\dfrac{120}{12}=\\mathbf{10}$."
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "A football club in Buea has 6 men and 4 women who are all willing to join a committee of 5 people. (a) How many committees contain at least 2 women? (b) How many committees of 5 include one particular man, Mr Fon?",
+     "solution_markdown": "(a) Total committees: ${}^{10}C_{5}=252$. Committees with no woman: ${}^{6}C_{5}=6$. Committees with exactly one woman: ${}^{4}C_{1}\\times{}^{6}C_{4}=4\\times15=60$. So at least 2 women: $252-6-60=\\mathbf{186}$. Check by cases: $\\;{}^{4}C_{2}{}^{6}C_{3}+{}^{4}C_{3}{}^{6}C_{2}+{}^{4}C_{4}{}^{6}C_{1}=120+60+6=186$. (b) Mr Fon is in, so choose the other 4 members from the remaining 9 people: ${}^{9}C_{4}=\\mathbf{126}$."
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "Multiply the numbers of ways for tasks done together ('and'), and add them for alternatives ('or').",
+    "Order matters: use ${}^{n}P_{r}=\\dfrac{n!}{(n-r)!}$. Order does not matter: use ${}^{n}C_{r}=\\dfrac{n!}{r!(n-r)!}$.",
+    "For a mixed group, choose from each set separately and multiply.",
+    "Repeated letters: divide $n!$ by the factorial of each repeat count.",
+    "For 'at least' questions, compare the direct cases with the complement; ${}^{n}C_{r}={}^{n}C_{n-r}$ shortens many calculations."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-add-maths-matrices-and-inverses-additional-maths",
+  "meta": {
+    "titre": "Matrices and Inverses: Determinant, Singular Cases and Matrix Equations",
+    "matiere": "Additional Mathematics",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "2 by 2 inverse and equations",
+    "duree_estimee_min": 30,
+    "tags": [
+      "matrices and inverses (additional maths)"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-additional-maths-2026-p1-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+    "epreuve_source": "gce-ol-additional-maths-2026-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-add-maths-matrices-and-inverses-additional-maths-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "At a shop in Bamenda, the prices of two kinds of notebook and the totals paid on two different days give two linked equations. A matrix packs those equations into one object, and its inverse unpacks them in a single move. The GCE Paper 1 repeatedly asks for the inverse of a 2 by 2 matrix, a determinant, or the value that makes a matrix singular. Each question is a short, exact calculation that rewards a clear routine."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A 2 by 2 matrix is a square array with two rows and two columns.",
+        "Two matrices are multiplied row by column: $\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}\\begin{pmatrix}p\\\\q\\end{pmatrix}=\\begin{pmatrix}ap+bq\\\\cp+dq\\end{pmatrix}$.",
+        "The identity matrix is $I=\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}$ and $MI=IM=M$."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Determinant and inverse of a 2 by 2 matrix",
+      "contenu_markdown": "### Determinant\nFor $M=\\begin{pmatrix}a&b\\\\c&d\\end{pmatrix}$ the determinant is $\\det M=ad-bc$. It is a single number.\n\n### Inverse\nIf $\\det M\\neq 0$, the inverse is found in three moves: swap $a$ and $d$, change the signs of $b$ and $c$, divide everything by the determinant.\n\n$$\nM^{-1}=\\frac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix} \\tag{1}\n$$\n\nThe test is $MM^{-1}=M^{-1}M=I$. Always check one product before you move on; it takes ten seconds.\n\n### Singular matrices\nIf $ad-bc=0$, there is no inverse and $M$ is called singular. Questions often say 'has no inverse' or 'is singular' and ask for an unknown, so you set $ad-bc=0$ and solve.\n\n### Useful facts\n| Fact | Example |\n|---|---|\n| Multiplying every entry by $k$ multiplies the determinant by $k^2$ (for a 2 by 2 matrix). | $\\det(2M)=4\\det M$ |\n| Matrix multiplication is not commutative. | In general $AB\\neq BA$ |\n| $A^{-1}A=I$ | used to solve equations |",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Solving simultaneous equations",
+          "quand_utiliser": "When two linear equations are written as a matrix equation $AX=B$.",
+          "contenu_markdown": "Multiply both sides on the LEFT by $A^{-1}$: $A^{-1}AX=A^{-1}B$, so $X=A^{-1}B$. The inverse goes first on both sides, because order matters."
+        },
+        {
+          "nom": "Finding an unknown from a singular matrix",
+          "quand_utiliser": "When the question says the matrix has no inverse.",
+          "contenu_markdown": "Calculate $ad-bc$ in terms of the unknown, set it equal to $0$ and solve. If the result is a quadratic, you may get two values, and both are valid unless the question restricts them."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Given $M=\\begin{pmatrix}4&3\\\\2&2\\end{pmatrix}$, (a) find $M^{-1}$, (b) use it to solve the simultaneous equations $4x+3y=10$ and $2x+2y=6$.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculate the determinant.",
+          "justification": "The inverse exists only when the determinant is not zero.",
+          "resultat_markdown": "$\\det M=4\\times2-3\\times2=8-6=2$."
+        },
+        {
+          "numero": 2,
+          "action": "Swap the diagonal entries, change the signs of the other two, divide by $2$.",
+          "justification": "This is formula (1).",
+          "resultat_markdown": "$M^{-1}=\\frac{1}{2}\\begin{pmatrix}2&-3\\\\-2&4\\end{pmatrix}=\\begin{pmatrix}1&-\\frac{3}{2}\\\\-1&2\\end{pmatrix}$."
+        },
+        {
+          "numero": 3,
+          "action": "Check one product.",
+          "justification": "A quick test catches sign slips.",
+          "resultat_markdown": "$MM^{-1}=\\begin{pmatrix}4-3&-6+6\\\\2-2&-3+4\\end{pmatrix}=\\begin{pmatrix}1&0\\\\0&1\\end{pmatrix}$."
+        },
+        {
+          "numero": 4,
+          "action": "Write the equations as a matrix equation with coefficient matrix $M$ and multiply on the left by $M^{-1}$.",
+          "justification": "The coefficient matrix of the system is exactly $M$.",
+          "resultat_markdown": "$\\begin{pmatrix}x\\\\y\\end{pmatrix}=\\begin{pmatrix}1&-\\frac{3}{2}\\\\-1&2\\end{pmatrix}\\begin{pmatrix}10\\\\6\\end{pmatrix}=\\begin{pmatrix}10-9\\\\-10+12\\end{pmatrix}=\\begin{pmatrix}1\\\\2\\end{pmatrix}$."
+        },
+        {
+          "numero": 5,
+          "action": "Substitute back to confirm.",
+          "justification": "Both original equations must hold.",
+          "resultat_markdown": "$4(1)+3(2)=10$ and $2(1)+2(2)=6$. Both are true."
+        }
+      ],
+      "conclusion_markdown": "$M^{-1}=\\begin{pmatrix}1&-\\frac{3}{2}\\\\-1&2\\end{pmatrix}$, and the solution is $x=1$, $y=2$."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "For $M=\\begin{pmatrix}4&3\\\\2&2\\end{pmatrix}$ a student writes $M^{-1}=\\frac{1}{2}\\begin{pmatrix}2&3\\\\2&4\\end{pmatrix}$.",
+          "pourquoi_faux": "The off-diagonal entries must change sign. Here the signs of $3$ and $2$ were not changed.",
+          "correction_markdown": "$M^{-1}=\\frac{1}{2}\\begin{pmatrix}2&-3\\\\-2&4\\end{pmatrix}$."
+        },
+        {
+          "erreur_markdown": "The student forgets to divide by the determinant and gives $\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$ as the inverse.",
+          "pourquoi_faux": "That matrix is the adjugate. Only when the determinant equals $1$ is it the inverse.",
+          "correction_markdown": "Multiply the adjugate by $\\frac{1}{ad-bc}$ and verify with $MM^{-1}=I$."
+        },
+        {
+          "erreur_markdown": "The student computes the determinant as $ad+bc$.",
+          "pourquoi_faux": "The determinant is the difference of the two diagonal products, not their sum.",
+          "correction_markdown": "$\\det M=ad-bc$."
+        },
+        {
+          "erreur_markdown": "To solve $AX=B$ the student writes $X=BA^{-1}$.",
+          "pourquoi_faux": "Matrix multiplication is not commutative. Multiplying $AX=B$ on the left by $A^{-1}$ gives $X=A^{-1}B$, and $BA^{-1}$ may be a different matrix.",
+          "correction_markdown": "$X=A^{-1}B$, with the inverse on the left."
+        },
+        {
+          "erreur_markdown": "The student says $\\det(3M)=3\\det M$ for a 2 by 2 matrix.",
+          "pourquoi_faux": "Both rows are multiplied by $3$, so the determinant is multiplied by $3\\times3=9$.",
+          "correction_markdown": "$\\det(3M)=9\\det M$."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Find the inverse of $N=\\begin{pmatrix}6&1\\\\5&1\\end{pmatrix}$.",
+          "solution_markdown": "$\\det N=6(1)-1(5)=1$. So $N^{-1}=\\frac{1}{1}\\begin{pmatrix}1&-1\\\\-5&6\\end{pmatrix}=$ **$\\begin{pmatrix}1&-1\\\\-5&6\\end{pmatrix}$**. Check: $NN^{-1}=\\begin{pmatrix}6-5&-6+6\\\\5-5&-5+6\\end{pmatrix}=I$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "(a) Given $P=\\begin{pmatrix}2&3\\\\1&4\\end{pmatrix}$, find $\\det P$ and $\\det(3P)$. (b) The matrix $Q=\\begin{pmatrix}k&3\\\\4&k+1\\end{pmatrix}$ has no inverse. Find the possible values of $k$.",
+          "solution_markdown": "(a) $\\det P=8-3=5$. Then $\\det(3P)=9\\times5=$ **$45$**. Check: $3P=\\begin{pmatrix}6&9\\\\3&12\\end{pmatrix}$ and $72-27=45$.\n\n(b) $\\det Q=k(k+1)-12=0$, so $k^2+k-12=0$, $(k+4)(k-3)=0$. Hence **$k=3$ or $k=-4$**. Check $k=3$: $3\\times4-12=0$. Check $k=-4$: $(-4)(-3)-12=0$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Let $A=\\begin{pmatrix}2&1\\\\5&3\\end{pmatrix}$ and $B=\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}$. (a) Find $A^{-1}$. (b) Find the matrix $X$ such that $AX=B$. (c) Use $A^{-1}$ to solve $2x+y=7$ and $5x+3y=19$.",
+          "solution_markdown": "(a) $\\det A=6-5=1$, so $A^{-1}=$ **$\\begin{pmatrix}3&-1\\\\-5&2\\end{pmatrix}$**.\n\n(b) $X=A^{-1}B=\\begin{pmatrix}3&-1\\\\-5&2\\end{pmatrix}\\begin{pmatrix}1&2\\\\0&1\\end{pmatrix}=$ **$\\begin{pmatrix}3&5\\\\-5&-8\\end{pmatrix}$**. Check: $AX=\\begin{pmatrix}6-5&10-8\\\\15-15&25-24\\end{pmatrix}=B$.\n\n(c) $\\begin{pmatrix}x\\\\y\\end{pmatrix}=A^{-1}\\begin{pmatrix}7\\\\19\\end{pmatrix}=\\begin{pmatrix}21-19\\\\-35+38\\end{pmatrix}=$ **$\\begin{pmatrix}2\\\\3\\end{pmatrix}$**, so $x=2$, $y=3$. Check: $4+3=7$ and $10+9=19$."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "$\\det M=ad-bc$, and an inverse exists only if this is not zero.",
+        "$M^{-1}=\\frac{1}{ad-bc}\\begin{pmatrix}d&-b\\\\-c&a\\end{pmatrix}$: swap the diagonal, change signs of the other two, divide.",
+        "A singular matrix has $ad-bc=0$; use this to find unknown constants.",
+        "To solve $AX=B$, write $X=A^{-1}B$ with the inverse on the left.",
+        "For a 2 by 2 matrix, $\\det(kM)=k^2\\det M$.",
+        "Check your inverse by multiplying: you must obtain the identity matrix."
+      ]
+    }
+  ]
+}

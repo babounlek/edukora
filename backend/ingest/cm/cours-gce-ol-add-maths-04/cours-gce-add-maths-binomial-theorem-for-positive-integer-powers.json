@@ -1,0 +1,165 @@
+{
+ "cours_id": "cours-gce-add-maths-binomial-theorem-for-positive-integer-powers",
+ "meta": {
+  "titre": "Binomial Expansion: Pascal's Triangle, Coefficients and Estimates",
+  "matiere": "Additional Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Expanding (a+b)^n, coefficients, and a short note on a negative index",
+  "duree_estimee_min": 35,
+  "tags": [
+   "binomial theorem for positive integer powers"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-additional-maths-2019-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-additional-maths-2019-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-add-maths-binomial-theorem-for-positive-integer-powers-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A savings group in Yaounde keeps money in an account that grows by $2\\%$ each month. After five months the amount is multiplied by $1.02$ five times, a power that is tedious to compute by hand without a calculator. The binomial theorem expands a power of a bracket into a sum of simple terms, and it lets you estimate such powers quickly by keeping only the first few terms. At the GCE you are asked to write the first terms of an expansion in ascending powers, to find one coefficient, or to use an expansion to estimate a number."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "Factorial notation: $n!=n(n-1)(n-2)\\cdots 2\\times 1$, for example $4!=24$.",
+    "Laws of indices: $(ab)^{r}=a^{r}b^{r}$ and $(-x)^{r}$ is negative when $r$ is odd.",
+    "Expanding a product of brackets, such as $(a+b)^{2}=a^{2}+2ab+b^{2}$.",
+    "Ascending powers of $x$ means starting with the constant term, then $x$, $x^{2}$, and so on."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "The binomial theorem for (a+b)^n",
+   "contenu_markdown": "### Pascal's triangle and the coefficients\n\nThe expansion of $(a+b)^{n}$, with $n$ a positive integer, has $n+1$ terms. The numbers in front of the terms are the **binomial coefficients**. Each row of Pascal's triangle gives them, and each entry is the sum of the two entries above it.\n\n| $n$ | Coefficients |\n|---|---|\n| 0 | 1 |\n| 1 | 1 1 |\n| 2 | 1 2 1 |\n| 3 | 1 3 3 1 |\n| 4 | 1 4 6 4 1 |\n| 5 | 1 5 10 10 5 1 |\n| 6 | 1 6 15 20 15 6 1 |\n\nFor a larger $n$ use the formula for the coefficient in front of the term with $b^{r}$:\n\n$$\n\\binom{n}{r}=\\frac{n!}{r!\\,(n-r)!} \\tag{1}\n$$\n\n### The theorem\n\n$$\n(a+b)^{n}=a^{n}+\\binom{n}{1}a^{n-1}b+\\binom{n}{2}a^{n-2}b^{2}+\\cdots+b^{n} \\tag{2}\n$$\n\nPowers of $a$ go down by one at each step and powers of $b$ go up by one. The term in $b^{r}$ is $\\binom{n}{r}a^{n-r}b^{r}$. When the first term is $1$:\n\n$$\n(1+x)^{n}=1+nx+\\frac{n(n-1)}{2}x^{2}+\\frac{n(n-1)(n-2)}{6}x^{3}+\\cdots \\tag{3}\n$$\n\n### Method for a bracket such as $(2+3x)^{n}$\n\nTreat $a=2$ and $b=3x$ as whole quantities. Write each term as coefficient times a power of $a$ times a power of $b$, put brackets round $b$ (and round negative terms), then simplify numbers and powers of $x$ separately. A minus sign in the bracket gives alternating signs, because an odd power of a negative number is negative.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Using an expansion to estimate a number",
+     "quand_utiliser": "When the question says to use the expansion to find a numerical value.",
+     "contenu_markdown": "Write the number as $(1+x)^{n}$ with a small $x$, for example $1.03^{4}=(1+0.03)^{4}$. Substitute the small value of $x$ in the first few terms; the terms that follow are much smaller, so the estimate is accurate to the number of decimal places that the extra terms do not touch."
+    },
+    {
+     "nom": "Finding one term or one coefficient",
+     "quand_utiliser": "When only the coefficient of a given power of $x$ is needed.",
+     "contenu_markdown": "Do not expand everything. The term in $x^{r}$ of $(a+bx)^{n}$ is $\\binom{n}{r}a^{n-r}b^{r}x^{r}$. For the coefficient of $x^{2}$ in $(1+ax)^{6}$: $\\binom{6}{2}a^{2}=15a^{2}$."
+    },
+    {
+     "nom": "A negative index (extension)",
+     "quand_utiliser": "When the index is not a positive integer, for example $(1+x)^{-1}$.",
+     "contenu_markdown": "Formula (3) still holds, but the series does not stop, and it is valid for $|x|<1$. For $n=-1$ the coefficients are $\\dfrac{(-1)(-2)}{2}=1$, then $-1$, and so on: $(1+x)^{-1}=1-x+x^{2}-x^{3}+\\cdots$. For $n=-2$: $(1+x)^{-2}=1-2x+3x^{2}-4x^{3}+\\cdots$. Replacing $x$ by $-x$ gives $(1-x)^{-1}=1+x+x^{2}+\\cdots$."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "(a) Expand $(1+2x)^{5}$ in ascending powers of $x$ up to and including the term in $x^{3}$. (b) Use your expansion, with a suitable value of $x$, to estimate $1.02^{5}$ correct to $5$ decimal places.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Write the binomial coefficients.",
+     "justification": "Use the row for $n=5$ in Pascal's triangle: $1,5,10,10,5,1$.",
+     "resultat_markdown": "Needed: $\\binom{5}{0}=1$, $\\binom{5}{1}=5$, $\\binom{5}{2}=10$, $\\binom{5}{3}=10$"
+    },
+    {
+     "numero": 2,
+     "action": "Write each power of $2x$ with brackets.",
+     "justification": "Here $a=1$ and $b=2x$, so the powers of $b$ must be computed with the number and the $x$ together.",
+     "resultat_markdown": "$(2x)^{1}=2x$, $(2x)^{2}=4x^{2}$, $(2x)^{3}=8x^{3}$"
+    },
+    {
+     "numero": 3,
+     "action": "Multiply coefficient by power.",
+     "justification": "Each term is $\\binom{5}{r}(2x)^{r}$ because the power of $1$ is $1$.",
+     "resultat_markdown": "$1,\\ 5(2x)=10x,\\ 10(4x^{2})=40x^{2},\\ 10(8x^{3})=80x^{3}$"
+    },
+    {
+     "numero": 4,
+     "action": "Choose $x$ for the estimate.",
+     "justification": "$1.02=1+2x$ gives $x=0.01$.",
+     "resultat_markdown": "$1+10(0.01)+40(0.01)^{2}+80(0.01)^{3}=1+0.1+0.004+0.00008$"
+    },
+    {
+     "numero": 5,
+     "action": "Add and round.",
+     "justification": "The next term is $80x^{4}=0.0000008$, which does not change the fifth decimal place.",
+     "resultat_markdown": "$1.10408$ to $5$ decimal places"
+    }
+   ],
+   "conclusion_markdown": "(a) $(1+2x)^{5}=1+10x+40x^{2}+80x^{3}+\\cdots$. (b) $1.02^{5}\\approx 1.10408$ to $5$ decimal places."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Expanding $(1+2x)^{5}$ with the term in $x^{2}$ written as $10\\times 2x^{2}=20x^{2}$.",
+     "pourquoi_faux": "Only $x$ has been squared. The whole of $2x$ must be squared, so $(2x)^{2}=4x^{2}$.",
+     "correction_markdown": "$10\\times 4x^{2}=40x^{2}$."
+    },
+    {
+     "erreur_markdown": "Writing $(a+b)^{4}=a^{4}+b^{4}$.",
+     "pourquoi_faux": "A power of a sum is not the sum of the powers. The middle terms with binomial coefficients are missing. For example $(3+2)^{4}=625$ but $3^{4}+2^{4}=97$.",
+     "correction_markdown": "$(a+b)^{4}=a^{4}+4a^{3}b+6a^{2}b^{2}+4ab^{3}+b^{4}$."
+    },
+    {
+     "erreur_markdown": "Expanding $(2-x)^{3}$ with all plus signs: $8+12x+6x^{2}+x^{3}$.",
+     "pourquoi_faux": "The second term of the bracket is $-x$. Odd powers of $-x$ are negative, so the signs alternate.",
+     "correction_markdown": "$(2-x)^{3}=8-12x+6x^{2}-x^{3}$."
+    },
+    {
+     "erreur_markdown": "Reading the coefficient $\\binom{6}{2}$ as $6\\times 2=12$.",
+     "pourquoi_faux": "The formula is $\\dfrac{6!}{2!\\,4!}=\\dfrac{6\\times 5}{2}$. It is not a simple product of $n$ and $r$.",
+     "correction_markdown": "$\\binom{6}{2}=15$, the third entry of the row $1,6,15,20,15,6,1$."
+    },
+    {
+     "erreur_markdown": "Giving a finite expansion for $(1+x)^{-1}$ such as $1-x$ and stopping.",
+     "pourquoi_faux": "The series for a negative index never stops. The first three terms are $1-x+x^{2}$ and only a stated number of terms is asked for.",
+     "correction_markdown": "$(1+x)^{-1}=1-x+x^{2}-\\cdots$ for $|x|<1$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Expand $(x+2)^{4}$ in full.",
+     "solution_markdown": "The coefficients for $n=4$ are $1,4,6,4,1$. The powers of $2$ are $1,2,4,8,16$. So $(x+2)^{4}=x^{4}+4(2)x^{3}+6(4)x^{2}+4(8)x+16=x^{4}+8x^{3}+24x^{2}+32x+16$. **$x^{4}+8x^{3}+24x^{2}+32x+16$.**"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "(a) Find the first three terms, in ascending powers of $x$, in the expansion of $(2+3x)^{6}$. (b) Find the coefficient of $x^{3}$ in the expansion of $(3-2x)^{5}$.",
+     "solution_markdown": "(a) The terms are $2^{6}=64$, then $\\binom{6}{1}2^{5}(3x)=6(32)(3x)=576x$, then $\\binom{6}{2}2^{4}(3x)^{2}=15(16)(9x^{2})=2160x^{2}$. (b) The term in $x^{3}$ is $\\binom{5}{3}(3)^{2}(-2x)^{3}=10(9)(-8x^{3})=-720x^{3}$. **(a) $64+576x+2160x^{2}$; (b) $-720$.**"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "The coefficient of $x^{2}$ in the expansion of $(1+ax)^{6}$ is $60$, where $a>0$. (a) Find the value of $a$. (b) Find the coefficient of $x^{3}$ in $(1+ax)^{6}$. (c) Find the coefficient of $x^{2}$ in the expansion of $(1-x)(1+ax)^{6}$.",
+     "solution_markdown": "(a) The term in $x^{2}$ is $\\binom{6}{2}a^{2}x^{2}=15a^{2}x^{2}$. So $15a^{2}=60$, $a^{2}=4$ and $a=2$ because $a>0$. (b) $\\binom{6}{3}a^{3}=20(8)=160$. (c) The $x^{2}$ terms of the product come from $1\\times 60x^{2}$ and from $(-x)\\times(\\text{term in }x)$. The term in $x$ of $(1+2x)^{6}$ is $6(2x)=12x$. So the coefficient is $60-12=48$. **(a) $a=2$; (b) $160$; (c) $48$.**"
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$(a+b)^{n}$ has $n+1$ terms. The coefficient of $a^{n-r}b^{r}$ is $\\binom{n}{r}=\\dfrac{n!}{r!(n-r)!}$, found from Pascal's triangle for small $n$.",
+    "Powers of $a$ go down and powers of $b$ go up. Put brackets round $b$, for example $(2x)^{2}=4x^{2}$.",
+    "A minus sign in the bracket gives alternating signs in the expansion.",
+    "For one coefficient, use the general term $\\binom{n}{r}a^{n-r}b^{r}$ rather than expanding everything.",
+    "To estimate a power, write the number as $(1+x)^{n}$ with small $x$ and keep the first few terms.",
+    "For a negative index the series is infinite and valid for $|x|<1$: $(1+x)^{-1}=1-x+x^{2}-\\cdots$."
+   ]
+  }
+ ]
+}

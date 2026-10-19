@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-computer-science-character-codes",
+  "meta": {
+    "titre": "Character Codes: how ASCII, EBCDIC, BCD and Unicode store text",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "Meaning, length in bits and binary values of character codes",
+    "duree_estimee_min": 30,
+    "tags": [
+      "character codes"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-computer-science-2024-p1-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-ol-computer-science-2024-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-character-codes-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A secretary in Buea types a name and an amount on a computer. The machine does not store the letters as shapes: it stores each one as a pattern of 0s and 1s according to an agreed table. If two computers used different tables, the same file would appear as nonsense. This is why character codes matter and why the GCE asks you to expand their names, to give their lengths in bits and to find the binary code of a given letter."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "The binary system uses only the digits 0 and 1.",
+        "A byte is a group of 8 bits.",
+        "A binary number can be converted to decimal by adding the place values of the 1s."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Character codes: how ASCII, EBCDIC, BCD and Unicode store text",
+      "contenu_markdown": "### What a character code is\n\nA computer stores everything in binary. A **character code** is a system that gives every character (a letter, digit, punctuation mark or control symbol) its own unique binary number, so that text can be stored and exchanged. The number of different characters a code can hold depends on its number of bits: $n$ bits give $2^n$ different codes.\n\n### The main codes\n\n| Code | Full name | Bits per character | Number of characters |\n|---|---|---|---|\n| **BCD** | Binary Coded Decimal | 4 bits for each decimal digit; the extended character versions used 6 bits | 16 with 4 bits; 64 with 6 bits |\n| **EBCDIC** | Extended Binary Coded Decimal Interchange Code | 8 | $2^8 = 256$ |\n| **ASCII** | American Standard Code for Information Interchange | 7 in the standard code, usually stored in an 8-bit byte; extended ASCII uses 8 | $2^7 = 128$ (256 for extended) |\n| **Unicode** | Unicode | 8, 16 or 32 bits depending on the form | Characters of most writing systems, including accented letters |\n\n### Patterns in ASCII\n\n- The capital letters are in alphabetical order: A is 65, B is 66 and so on. The lowercase letters are also in order: a is 97, b is 98 and so on.\n- A lowercase letter is its capital plus **32**.\n- The digit characters are in order, from 0 at 48 to 9 at 57. The character 5 therefore has the code 53, not the number 5.\n- The space character has code 32.\n\n### Finding a code by counting\n\nTake the code you are given, count how many letters you must move forward in the alphabet, add that number to the decimal value and convert the result to binary. Moving from capital K to capital N is three steps, so you add 3.\n\n### Why different lengths are used\n\nA larger set of characters needs more bits. Six bits give only 64 codes, while 26 capitals, 26 lowercase letters and 10 digits already make 62 characters, leaving almost no room for punctuation. Seven or eight bits give enough room, and Unicode uses even more to cover many languages. The cost of longer codes is that text takes more storage.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Finding the code of another letter",
+          "quand_utiliser": "When one letter's code is given and you must find another",
+          "contenu_markdown": "Count the distance between the two letters, add it to (or subtract it from) the decimal value, and convert back to binary. Check with the pattern: capitals are in order and lowercase is capital plus 32. Write the answer with the same number of bits as the code given."
+        },
+        {
+          "nom": "Explaining why lengths differ",
+          "quand_utiliser": "When asked why one code uses more bits than another, with an example",
+          "contenu_markdown": "More bits means more possible characters: $2^n$. A code for capitals only needs fewer bits than one for capitals, lowercase, digits and symbols. Give the figures: for example 6 bits allow 64 characters but 62 are used by letters and digits alone, so 7 or 8 bits are needed for a full set."
+        },
+        {
+          "nom": "Size of a text in bits and bytes",
+          "quand_utiliser": "When asked for the storage needed by a message",
+          "contenu_markdown": "Multiply the number of characters (spaces count) by the bits per character. With an 8-bit code, the number of bytes equals the number of characters."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "In 8-bit ASCII the capital letter K is stored as 01001011. (a) Convert this code to decimal. (b) Use counting to find the code of capital N. (c) Find the code of the lowercase letter k. (d) How many bits are needed to store the word KNOB?",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Convert K to decimal.",
+          "justification": "Add the place values of the 1s: 64, 8, 2 and 1.",
+          "resultat_markdown": "$64 + 8 + 2 + 1 = 75$, so K is **75**."
+        },
+        {
+          "numero": 2,
+          "action": "Count from K to N.",
+          "justification": "The letters K, L, M, N are consecutive, so N is three steps after K.",
+          "resultat_markdown": "$75 + 3 = 78$."
+        },
+        {
+          "numero": 3,
+          "action": "Convert 78 to 8-bit binary.",
+          "justification": "$78 = 64 + 8 + 4 + 2$.",
+          "resultat_markdown": "N is **01001110**."
+        },
+        {
+          "numero": 4,
+          "action": "Find lowercase k.",
+          "justification": "A lowercase letter is its capital plus 32.",
+          "resultat_markdown": "$75 + 32 = 107 = 64 + 32 + 8 + 2 + 1$, so k is **01101011**."
+        },
+        {
+          "numero": 5,
+          "action": "Find the storage for KNOB.",
+          "justification": "Each of the 4 characters takes 8 bits.",
+          "resultat_markdown": "$4 \\times 8 = 32$ bits."
+        }
+      ],
+      "conclusion_markdown": "K is 75, N is 01001110 (78), lowercase k is 01101011 (107), and the word KNOB needs 32 bits (4 bytes)."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "ASCII always uses 8 bits and has 256 characters.",
+          "pourquoi_faux": "Standard ASCII is a 7-bit code with 128 characters. It is usually stored in a byte, and extended ASCII uses all 8 bits.",
+          "correction_markdown": "Standard ASCII: **7 bits, 128 characters**; extended: 8 bits, 256 characters."
+        },
+        {
+          "erreur_markdown": "The digit 5 is stored as 00000101 when it is typed as text.",
+          "pourquoi_faux": "That is the number five. The character 5 has the code 53, which is 00110101.",
+          "correction_markdown": "The character 5 is stored as **00110101**."
+        },
+        {
+          "erreur_markdown": "To go from d to g, add 4.",
+          "pourquoi_faux": "Counting d, e, f, g gives three steps after d, so you add 3.",
+          "correction_markdown": "Add **3**. Count the steps between the letters, not the letters themselves."
+        },
+        {
+          "erreur_markdown": "Capital A and lowercase a have the same code.",
+          "pourquoi_faux": "They are different characters, 65 and 97, and differ by 32.",
+          "correction_markdown": "A is 65 and a is **97**."
+        },
+        {
+          "erreur_markdown": "ASCII stands for American Standard Computer Information Code.",
+          "pourquoi_faux": "The words are wrong. The mark is lost for any wrong word.",
+          "correction_markdown": "ASCII is **American Standard Code for Information Interchange**."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "How many different characters can a code with 5 bits represent? What is the least number of bits needed for a code with 100 different characters?",
+          "solution_markdown": "5 bits: $2^5 = 32$ characters.\n\nFor 100 characters: $2^6 = 64$ is too small and $2^7 = 128$ is enough, so the least number is **7 bits**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "In 8-bit ASCII the capital letter C is 01000011. Find the 8-bit code of capital F and of lowercase c.",
+          "solution_markdown": "C is 67. F is three letters later (D, E, F), so $67 + 3 = 70 = 64 + 4 + 2$, which is **01000110**.\n\nLowercase c is $67 + 32 = 99 = 64 + 32 + 2 + 1$, which is **01100011**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The text BUEA 2000 (with the space) is stored in 8-bit ASCII. Calculate the number of characters, the number of bits, the number of bits if a 7-bit code were used, and the binary code of the first letter B, given that capital A is 01000001. Then explain why Unicode may need more bits than ASCII.",
+          "solution_markdown": "The text has 4 letters, 1 space and 4 digits: **9 characters**.\n\n8-bit storage: $9 \\times 8 = 72$ bits (9 bytes).\n\n7-bit storage: $9 \\times 7 = 63$ bits.\n\nA is 65 and B is one letter later, so B is 66 = 64 + 2, which is **01000010**.\n\nUnicode must give a separate code to the characters of many writing systems, which is far more than 128 or 256, so some of its forms use 16 or 32 bits."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A character code gives each character a unique binary number; $n$ bits give $2^n$ codes.",
+        "ASCII: American Standard Code for Information Interchange, 7 bits (128 characters), commonly stored in 8-bit bytes.",
+        "EBCDIC: Extended Binary Coded Decimal Interchange Code, 8 bits; BCD: Binary Coded Decimal, 4 bits per digit (6 bits in character versions).",
+        "In ASCII capitals and lowercase letters are in alphabetical order and a lowercase letter is its capital plus 32; the character 5 is code 53.",
+        "More bits per character means more different characters but more storage; Unicode uses more bits to cover many languages."
+      ]
+    }
+  ]
+}

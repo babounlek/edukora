@@ -1,0 +1,152 @@
+{
+  "cours_id": "cours-gce-computer-science-control-systems",
+  "meta": {
+    "titre": "Control Systems: sensors, feedback, open loop and closed loop",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "Sensor, controller and actuator; open-loop and closed-loop systems; on/off control",
+    "duree_estimee_min": 30,
+    "tags": [
+      "control systems"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-computer-science-2024-p1-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-ol-computer-science-2024-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-control-systems-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "In a shop in Douala, the refrigerator starts its motor when the inside becomes warm and stops it when the inside is cold enough. Nobody presses a button: a sensor measures the temperature and a small controller decides. The GCE asks you to recognise this kind of system, to name its parts, and to say whether it is open loop or closed loop. The same pattern is found in automatic doors, street lamps and water pumps, so one clear idea answers many questions."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "An input device sends data to a computer and an output device receives results from it.",
+        "A computer processes data by following the instructions of a program.",
+        "Temperature is measured in degrees Celsius."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Parts and types of control systems",
+      "contenu_markdown": "### What a control system is\n\nA **control system** keeps a condition (a temperature, a light level, a water level) at the wanted value, or makes a machine act when something happens, without a person doing it by hand. It has three linked parts:\n\n| Part | Job | Examples |\n|---|---|---|\n| Input: **sensor** | Measures a physical condition | Temperature, light, pressure, moisture, infrared (movement), level sensors |\n| Process: **controller** | Compares the reading with the stored value (the set point) and decides what to do | A microprocessor or a computer running a program |\n| Output: **actuator** | Carries out the decision | Heater, fan, motor, pump, valve, lamp, buzzer |\n\nSensors give analogue signals, but a computer works with digital values. An **analogue-to-digital converter (ADC)** changes the sensor signal into digital data for the computer. A **digital-to-analogue converter (DAC)** changes digital output into an analogue signal when the actuator needs one.\n\n### Open loop and closed loop\n\nAn **open-loop** system has no feedback: it follows its instructions whatever happens, so the result is never checked. A lamp that a timer switches on at fixed hours, whether it is dark or not, is an example. A **closed-loop** (feedback) system uses a sensor to measure the effect of its own output and feeds the reading back to the controller, which adjusts the output. An air conditioner that holds a room near the wanted temperature is an example.\n\n### On/off control with two limits\n\nThe simplest closed-loop system switches an actuator fully on or fully off. A thermostat, for example, may switch a heater on below a lower limit and off above an upper limit. Between the two limits the actuator **keeps its previous state**. Using two different limits stops the actuator from switching on and off again and again around a single value, which wears it out.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Open-loop or closed-loop?",
+          "quand_utiliser": "When the question asks you to classify a system",
+          "contenu_markdown": "Ask one question: does a sensor check the result and send it back to the controller? If yes, the system is closed loop (feedback). If the system runs on a fixed timer or fixed instructions and never checks the result, it is open loop."
+        },
+        {
+          "nom": "Describing a system: input, process, output",
+          "quand_utiliser": "When you must explain how a system works",
+          "contenu_markdown": "Write three short statements: the sensor measures (input), the controller compares the reading with the set point and decides (process), the actuator acts (output). Name the real devices of the scenario, for example a temperature sensor and a heater."
+        },
+        {
+          "nom": "Logic, advantages and disadvantages",
+          "quand_utiliser": "When you must write the rule of a system or discuss computer control",
+          "contenu_markdown": "The pump rule can be written as the following logic. It is an example of the logic only, not the code of a particular language:\n\n```\nIF level < 20 THEN pump = ON\nELSE IF level > 80 THEN pump = OFF\n(otherwise the pump keeps its previous state)\n```\n\nComputer control works day and night without tiring, reacts quickly, is accurate, and can work in places that are dangerous for people. Its disadvantages are the cost of installing it, the need for skilled maintenance, the loss of some jobs, and the fact that it stops working if the power or a sensor fails."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A water tank in a school has a level sensor. A controller switches the pump ON when the level reading falls below 20 percent and OFF when it rises above 80 percent. Between these limits the pump stays as it was. The pump is OFF at the start. The readings arrive in this order: 50, 15, 40, 85, 60.\n\n(a) Name the input, the process and the output of the system.\n\n(b) Is it open loop or closed loop? Give a reason.\n\n(c) State the state of the pump after each reading.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Name the three parts.",
+          "justification": "A control system is always input, process and output.",
+          "resultat_markdown": "Input: the level sensor. Process: the controller compares each reading with 20 and 80. Output: the pump."
+        },
+        {
+          "numero": 2,
+          "action": "Classify the system.",
+          "justification": "The level sensor measures the effect of the pump and reports it back to the controller.",
+          "resultat_markdown": "Closed loop, because the sensor feeds the water level back to the controller."
+        },
+        {
+          "numero": 3,
+          "action": "Apply the rule to each reading in turn.",
+          "justification": "Below 20 means ON, above 80 means OFF, and in between the pump keeps its previous state.",
+          "resultat_markdown": "| Level reading (%) | Rule applied | Pump |\n|---|---|---|\n| 50 | between the limits, stays OFF | OFF |\n| 15 | below 20, switches ON | ON |\n| 40 | between the limits, stays ON | ON |\n| 85 | above 80, switches OFF | OFF |\n| 60 | between the limits, stays OFF | OFF |"
+        },
+        {
+          "numero": 4,
+          "action": "Explain why two limits are used.",
+          "justification": "A single limit would make the pump switch repeatedly when the level hovers around it.",
+          "resultat_markdown": "The gap between 20 and 80 stops rapid switching, which would wear out the pump."
+        }
+      ],
+      "conclusion_markdown": "(a) Input: level sensor; process: comparison with 20 and 80; output: pump. (b) Closed loop, because the output (water added) changes the reading that is fed back. (c) After the five readings the pump is OFF, ON, ON, OFF, OFF."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Saying that a light switched on and off by a timer is a closed-loop system.",
+          "pourquoi_faux": "No sensor checks the result, so there is no feedback. The timer follows fixed instructions whatever the conditions.",
+          "correction_markdown": "It is an open-loop system."
+        },
+        {
+          "erreur_markdown": "Writing that the heater is the sensor and the thermometer is the actuator.",
+          "pourquoi_faux": "A sensor measures a condition and belongs to the input. An actuator carries out the action and belongs to the output.",
+          "correction_markdown": "The temperature sensor is the input; the heater is the output (actuator)."
+        },
+        {
+          "erreur_markdown": "Saying that the computer reads the signal of a temperature sensor directly.",
+          "pourquoi_faux": "A sensor gives an analogue signal and the computer only works with digital values.",
+          "correction_markdown": "An analogue-to-digital converter changes the sensor signal into digital data first."
+        },
+        {
+          "erreur_markdown": "Believing that a pump with limits 20 and 80 switches OFF as soon as the level passes 20.",
+          "pourquoi_faux": "It switches OFF only above the upper limit of 80. Between the limits it keeps its previous state.",
+          "correction_markdown": "ON below 20, OFF above 80, unchanged in between."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) Say whether each device is a sensor or an actuator: an infrared sensor, a fan, a buzzer, a light sensor, a motor.\n\n(b) Say whether each system is open loop or closed loop: a school bell rung by a timer at fixed hours; an air conditioner holding a room near 22 degrees; a washing machine that always runs for 30 minutes whatever the state of the clothes; an electric kettle that switches itself off when the water boils.",
+          "solution_markdown": "(a) Infrared sensor: **sensor**. Fan: **actuator**. Buzzer: **actuator**. Light sensor: **sensor**. Motor: **actuator**.\n\n(b) Timer bell: **open loop**. Air conditioner: **closed loop**. Washing machine with a fixed running time: **open loop**. Kettle that switches off when the water boils: **closed loop**, because the system reacts to a measured condition."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "A computer in a greenhouse switches a heater ON when the temperature is below 18 degrees Celsius and a fan ON when it is above 30 degrees. Between 18 and 30 both are OFF.\n\n(a) Name the sensor and the two actuators.\n(b) State what the computer does for readings of 12, 22, 35 and 9 degrees.",
+          "solution_markdown": "(a) Sensor: a **temperature sensor**. Actuators: the **heater** and the **fan**.\n\n(b) 12 degrees: **heater ON, fan OFF**. 22 degrees: **heater OFF, fan OFF**. 35 degrees: **fan ON, heater OFF**. 9 degrees: **heater ON, fan OFF**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "The fan of a computer room is controlled by a temperature sensor. The fan switches ON above 28 degrees and OFF below 24 degrees and keeps its state in between. It is OFF at the start and the readings are 27, 29, 27, 29, 27, 29.\n\n(a) Give the state of the fan after each reading.\n(b) How many times does the fan change state?\n(c) A simpler controller uses one limit: fan ON when the reading is above 28, otherwise OFF. How many times does it change state for the same readings, and why is the two-limit design better?",
+          "solution_markdown": "(a) With two limits: 27 -> OFF, 29 -> ON, 27 -> ON, 29 -> ON, 27 -> ON, 29 -> ON. At 27 the fan stays OFF at first (between the limits) and then stays ON once it has started.\n\n(b) The fan changes state only once (OFF to ON at the first 29), so **1 change**.\n\n(c) With one limit the states are OFF, ON, OFF, ON, OFF, ON, so the fan changes state **5 times**. The two-limit design is better because it avoids rapid switching, which wears out the fan and wastes energy."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A control system has a sensor (input), a controller (process) and an actuator (output).",
+        "A closed-loop system feeds the measured result back to the controller; an open-loop system has no feedback.",
+        "A computer needs an ADC to read an analogue sensor signal.",
+        "On/off control with two limits keeps the previous state between them and prevents rapid switching.",
+        "To classify a system, ask: does a sensor check the result and send it back?"
+      ]
+    }
+  ]
+}
