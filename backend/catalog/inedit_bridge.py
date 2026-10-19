@@ -163,7 +163,8 @@ def _apercu_enonce(epreuve):
     Renvoie aussi le numéro de cet exercice (ExerciceInedite.numero_exercice) - affiché
     en référence sous l'aperçu côté fiche détail, pour que le lecteur sache de quel
     exercice provient l'extrait montré."""
-    premier_exercice = epreuve.exercices.order_by("numero_exercice").first()
+    exercices = epreuve.exercices_ordonnes()
+    premier_exercice = exercices[0] if exercices else None
     if premier_exercice is None:
         return None, None
     premiere_question = premier_exercice.questions.order_by("ordre").first()

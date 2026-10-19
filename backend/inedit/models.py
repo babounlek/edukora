@@ -1,9 +1,18 @@
+import re
+
 from django.db import models
 from django.utils.text import slugify
 
 from catalog.models import Difficulte, StatutContenu, TypeReponse, generate_unique_slug
 
 from .storage import protected_storage
+
+
+def cle_numero_exercice(numero):
+    """Clé de tri NATUREL d'un `numero_exercice` : « 2 » avant « 10 », les numéros purs avant les préfixés
+    (« B1 », « B2 »). Le tri SQL `order_by("numero_exercice")` compare du texte et mettait « 10 » avant « 2 » : sans
+    effet pour une épreuve de moins de dix exercices, mais un Paper 2 de GCE en a quatorze."""
+    return tuple((0, int(t)) if t.isdigit() else (1, t) for t in re.split(r"(\d+)", str(numero)) if t != "")
 
 
 def _corrige_pdf_upload_to(epreuve, filename):
@@ -219,6 +228,10 @@ class EpreuveInedite(models.Model):
                 kwargs["update_fields"] = [*update_fields, "slug"]
         super().save(*args, **kwargs)
 
+    def exercices_ordonnes(self, *prefetch):
+        """Les exercices de l'épreuve dans l'ordre naturel de leur numéro (voir cle_numero_exercice), en liste."""
+        return sorted(self.exercices.prefetch_related(*prefetch), key=lambda e: cle_numero_exercice(e.numero_exercice))
+
     def compile_from_exercices(self):
         """
         Aplatit les ExerciceInedite/QuestionInedite rattachés en enonce_markdown/
@@ -234,7 +247,7 @@ class EpreuveInedite(models.Model):
         autonome - illisible seul si la question n'y est pas restituée. Jamais exposé en
         PDF (voir sujet_pdf pour le seul PDF généré côté épreuve inédite, sujet uniquement).
         """
-        exercices = self.exercices.prefetch_related("questions").order_by("numero_exercice")
+        exercices = self.exercices_ordonnes("questions")
         enonce_parts = []
         corrige_parts = []
         for exercice in exercices:

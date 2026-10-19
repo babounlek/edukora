@@ -1984,6 +1984,33 @@ class CompileFromExercicesTests(TestCase):
         self.assertNotIn("Réponse QCM.", epreuve.enonce_markdown)
         self.assertIn("Réponse QCM.", epreuve.corrige_markdown)
 
+    def test_exercices_are_ordered_naturally_not_alphabetically(self):
+        """Un paper de quatorze exercices (Section A « 1 » à « 10 », Section B « B1 » à « B4 ») doit se lire dans
+        l'ordre : le tri SQL sur le texte mettait « 10 » avant « 2 »."""
+        blueprint, _ = ingest_blueprint(_blueprint_payload(), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        epreuve = EpreuveInedite.objects.create(blueprint=blueprint, subject=blueprint.subject, titre="Test ordre")
+        epreuve.cursus.set(blueprint.cursus.all())
+        # créés dans le désordre : l'ordre ne doit dépendre ni de l'insertion ni du tri alphabétique
+        for numero in ("B2", "10", "2", "1", "B1", "9"):
+            exercice = ExerciceInedite.objects.create(epreuve=epreuve, numero_exercice=numero, points="1")
+            QuestionInedite.objects.create(
+                exercice=exercice, numero="1", ordre=1, enonce_markdown=f"Énoncé {numero}.", corrige_markdown="R.",
+            )
+
+        self.assertEqual(
+            [e.numero_exercice for e in epreuve.exercices_ordonnes()], ["1", "2", "9", "10", "B1", "B2"],
+        )
+        epreuve.compile_from_exercices()
+        positions = [epreuve.enonce_markdown.index(f"Énoncé {n}.") for n in ("1", "2", "9", "10", "B1", "B2")]
+        self.assertEqual(positions, sorted(positions))
+
+    def test_cle_numero_exercice_keeps_zero_padded_and_plain_numbers_in_order(self):
+        from .models import cle_numero_exercice
+        for suite in (["1", "2", "10"], ["01", "02", "10", "B1", "B2"], ["1", "A1", "A2", "A10"]):
+            self.assertEqual(sorted(reversed(suite), key=cle_numero_exercice), suite)
+
 
 class ReprendreTentativeAPITests(TestCase):
     """start_tentative reprend la copie en cours au lieu d'en créer une nouvelle à chaque

@@ -99,7 +99,7 @@ def _question_payload(question, reponse, *, correction_disponible, exercice=None
 
 
 def _exercices_pour_notation(epreuve):
-    return list(epreuve.exercices.prefetch_related("questions__themes").order_by("numero_exercice"))
+    return epreuve.exercices_ordonnes("questions__themes")
 
 
 def _question_payload_avec_notation(tentative, question, reponse):
@@ -275,11 +275,7 @@ def _resume_tentative_en_cours(tentative):
 
 def _tentative_payload(tentative):
     correction_disponible = _correction_disponible(tentative)
-    exercices = list(
-        tentative.epreuve.exercices
-        .prefetch_related("questions__themes", "rappels_de_methode__cours")
-        .order_by("numero_exercice")
-    )
+    exercices = tentative.epreuve.exercices_ordonnes("questions__themes", "rappels_de_methode__cours")
     reponses_by_question = {r.question_id: r for r in tentative.reponses.all()}
     points_by_question = notation.points_par_question(exercices)
     bilan = notation.calculer(tentative, exercices)
