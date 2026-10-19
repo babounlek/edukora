@@ -51,6 +51,19 @@ const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
   "BAC:D": { slug: "mathematiques-bac-d-2026", exercice: "2", question1Seule: true, coupeParRepere: true },
 }
 
+/**
+ * Idem en anglais, par examen seulement : la branche technique d'un niveau (série « GCE_TECHNICAL ») n'a pas
+ * d'épreuve de mathématiques gratuite propre et prépare le même niveau, elle montre donc l'exemple du niveau.
+ *
+ * - O Level : l'exemple par défaut de la langue (Mathematics 2019, Paper 2).
+ * - A Level : l'exercice 4 de « Pure Mathematics with Mechanics 2023, Paper 2 » (dérivée d'un produit puis intégrale par
+ *   changement de variable) : deux questions courtes, un corrigé complet de 1 600 caractères. Écartés : les exercices à
+ *   cinq parties ou à preuve par récurrence, trop longs pour une page d'accueil.
+ */
+const EXEMPLES_EN_PAR_EXAMEN: Record<string, ExempleCorrige> = {
+  GCE_AL: { slug: "pure-mathematics-with-mechanics-gce-a-level-2023-paper-2", exercice: "4", question1Seule: false },
+}
+
 export function exempleDuCursus(
   langue: Langue,
   cursus: { examen: string; series: { code: string } | null } | null | undefined,
@@ -59,6 +72,7 @@ export function exempleDuCursus(
     const cle = cursus.series ? `${cursus.examen}:${cursus.series.code}` : cursus.examen
     return EXEMPLES_FR_PAR_CURSUS[cle] ?? EXEMPLES_CORRIGE.fr
   }
+  if (langue === "en" && cursus) return EXEMPLES_EN_PAR_EXAMEN[cursus.examen] ?? EXEMPLES_CORRIGE.en
   return EXEMPLES_CORRIGE[langue]
 }
 

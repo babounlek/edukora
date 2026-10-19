@@ -76,6 +76,29 @@ describe("exempleDuCursus", () => {
   it("en anglais, jamais un exemple français, quel que soit l'examen déclaré", () => {
     expect(exempleDuCursus("en", bac("C"))).toBe(EXEMPLES_CORRIGE.en)
   })
+
+  it("GCE A Level : une mathématique gratuite de l'A Level, branches générale et technique", () => {
+    const general = exempleDuCursus("en", { examen: "GCE_AL", series: null })
+    expect(general.slug).toBe("pure-mathematics-with-mechanics-gce-a-level-2023-paper-2")
+    expect(general.slug).toMatch(/a-level/)
+    expect(exempleDuCursus("en", { examen: "GCE_AL", series: { code: "GCE_TECHNICAL" } })).toBe(general)
+  })
+
+  it("GCE O Level (générale ou technique) ou sans examen déclaré : l'exemple par défaut de l'anglais", () => {
+    expect(exempleDuCursus("en", { examen: "GCE_OL", series: null })).toBe(EXEMPLES_CORRIGE.en)
+    expect(exempleDuCursus("en", { examen: "GCE_OL", series: { code: "GCE_TECHNICAL" } })).toBe(EXEMPLES_CORRIGE.en)
+    expect(exempleDuCursus("en", null)).toBe(EXEMPLES_CORRIGE.en)
+  })
+
+  it("l'exemple A Level retient l'exercice entier : l'exercice 4, avec ses deux questions", () => {
+    const AL = exempleDuCursus("en", { examen: "GCE_AL", series: null })
+    const Q_I = "**i.** A"
+    const Q_II = "**ii.** B"
+    const quatre = exercice("4", `${Q_I}\n\n${Q_II}`, `${Q_I}\n\nRéponse 1\n\n${Q_II}\n\nRéponse 2`)
+    const extrait = extraireExempleCorrige(epreuve(exercice("1", "x", "y"), quatre), AL)
+    expect(extrait?.exercice).toBe(quatre)
+    expect(extrait?.corrigeMarkdown).toBe(quatre.corrige_markdown)
+  })
 })
 
 describe("extraireExempleCorrige : coupe par repère de sous-question", () => {
