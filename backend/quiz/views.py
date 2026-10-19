@@ -19,7 +19,9 @@ from programme.models import Savoir
 from subscriptions.models import Subscription
 from users.profils import profil_actif
 
-from .matieres import avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription
+from .matieres import (
+    avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription, sujets_a_afficher,
+)
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
@@ -714,6 +716,9 @@ def list_quiz_subjects(request):
         .distinct()
         .order_by("label"),
     )
+    # « Voir seulement mes matières » : les matières de l'inscription (voir quiz.matieres).
+    if (visibles := sujets_a_afficher(profil_actif(request), cursus.id)) is not None:
+        subjects = [s for s in subjects if s.id in visibles]
 
     # Thème vitrine de chaque matière (voir CompetenceItem.est_vitrine), pour que le
     # frontend puisse proposer un essai gratuit en entier plutôt qu'un simple "abonne-
@@ -1107,21 +1112,40 @@ def matieres_view(request):
     ids_autorises = ids_disponibles | {m.id for m in officielles}
 
     if request.method == "PUT":
-        ids = request.data.get("matieres")
-        if not isinstance(ids, list) or any(isinstance(i, bool) or not isinstance(i, int) for i in ids):
-            return Response({"error": "« matieres » doit être une liste d'identifiants."}, status=400)
-        if set(ids) - ids_autorises:
-            return Response({"error": "Une de ces matières n'est pas disponible pour ce cursus."}, status=400)
-        # Remplace le choix de CE cursus seulement : celui d'un autre examen déjà préparé reste intact.
-        profil.matieres_passees.remove(*ids_autorises)
-        profil.matieres_passees.add(*ids)
+        # Deux réglages indépendants, l'un ou l'autre (ou les deux) par appel : la DONNÉE (« matieres », ce que
+        # l'élève passe) et la PRÉFÉRENCE d'affichage (« seulement_mes_matieres », voir Profil).
+        if "matieres" not in request.data and "seulement_mes_matieres" not in request.data:
+            return Response({"error": "Rien à modifier : « matieres » ou « seulement_mes_matieres »."}, status=400)
+        seulement = request.data.get("seulement_mes_matieres")
+        if "seulement_mes_matieres" in request.data and not isinstance(seulement, bool):
+            return Response({"error": "« seulement_mes_matieres » doit être un booléen."}, status=400)
+        if "matieres" in request.data:
+            ids = request.data.get("matieres")
+            if not isinstance(ids, list) or any(isinstance(i, bool) or not isinstance(i, int) for i in ids):
+                return Response({"error": "« matieres » doit être une liste d'identifiants."}, status=400)
+            if set(ids) - ids_autorises:
+                return Response({"error": "Une de ces matières n'est pas disponible pour ce cursus."}, status=400)
+            # Remplace le choix de CE cursus seulement : celui d'un autre examen déjà préparé reste intact.
+            profil.matieres_passees.remove(*ids_autorises)
+            profil.matieres_passees.add(*ids)
+        if "seulement_mes_matieres" in request.data and profil.voir_seulement_mes_matieres != seulement:
+            profil.voir_seulement_mes_matieres = seulement
+            profil.save(update_fields=["voir_seulement_mes_matieres"])
 
     choisies = set(profil.matieres_passees.values_list("id", flat=True)) & ids_autorises
     regles = regles_inscription(cursus)
     codes_obligatoires = set(regles["obligatoires"]) if regles else set()
     sujets_choisis = list({m.id: m for m in (*officielles, *disponibles) if m.id in choisies}.values())
+    affichees = sujets_a_afficher(profil, cursus.id)
     return Response({
         "choisies": sorted(choisies),
+        # Préférence d'affichage du profil (voir Profil.voir_seulement_mes_matieres).
+        "seulement_mes_matieres": profil.voir_seulement_mes_matieres,
+        # Les listes sont-elles réellement réduites ? Non si l'interrupteur est éteint, rien de choisi, ou un choix
+        # sans contenu sur cet examen (voir sujets_a_afficher) : le bandeau du frontend ne doit pas promettre un filtre
+        # qui n'agit pas.
+        "affichage_restreint": affichees is not None,
+        "nb_affichees": len(affichees or ()),
         "disponibles": [{"id": m.id, "code": m.code, "label": m.label} for m in disponibles],
         # Règles d'inscription du Board (None hors GCE général) et les matières du Board à ce niveau : `couverte`
         # = EduKora a du contenu dessus ; `obligatoire` = exigée à l'inscription ; `code_officiel` = code du jury.

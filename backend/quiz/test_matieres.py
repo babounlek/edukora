@@ -7,7 +7,7 @@ from users.models import User
 
 from .matieres import (
     avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription,
-    restreindre_items, restreindre_matieres,
+    restreindre_items, restreindre_matieres, sujets_a_afficher,
 )
 from .models import ModeQuiz
 from .priorites import priorites_examen
@@ -79,6 +79,109 @@ class RestreindreTests(_Base):
     def test_matieres_disponibles_seulement_avec_du_contenu(self):
         codes = {m.code for m in matieres_disponibles(self.cursus)}
         self.assertEqual(codes, {"GCE_MATHS", "GCE_PHYSICS", "GCE_HISTORY"})
+
+
+class VoirSeulementMesMatieresTests(_Base):
+    """L'interrupteur d'affichage (Profil.voir_seulement_mes_matieres), distinct de l'inscription."""
+
+    def setUp(self):
+        super().setUp()
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+        self.cursus_id = self.cursus.id
+
+    def _eteindre(self):
+        self.profil.voir_seulement_mes_matieres = False
+        self.profil.save(update_fields=["voir_seulement_mes_matieres"])
+
+    def test_actif_par_defaut(self):
+        self.assertTrue(self.profil.voir_seulement_mes_matieres)
+        self.assertTrue(self.client.get("/quiz/matieres/").data["seulement_mes_matieres"])
+
+    def test_eteint_le_coach_revoit_tout_le_cursus_sans_toucher_a_l_inscription(self):
+        self._choisir(self.maths)
+        sujets = [self.maths, self.physique, self.histoire]
+        self.assertEqual(restreindre_matieres(self.profil, sujets), [self.maths])
+        self._eteindre()
+        self.assertEqual(restreindre_matieres(self.profil, sujets), sujets)
+        self.assertEqual(set(self.profil.matieres_passees.values_list("id", flat=True)), {self.maths.id})
+
+    def test_put_de_l_interrupteur_seul_ne_modifie_pas_les_matieres(self):
+        self._choisir(self.maths, self.physique)
+        reponse = self.client.put("/quiz/matieres/", {"seulement_mes_matieres": False}, format="json")
+        self.assertEqual(reponse.status_code, 200)
+        self.assertFalse(reponse.data["seulement_mes_matieres"])
+        self.assertEqual(reponse.data["choisies"], sorted([self.maths.id, self.physique.id]))
+        self.profil.refresh_from_db()
+        self.assertFalse(self.profil.voir_seulement_mes_matieres)
+
+    def test_put_des_matieres_seules_ne_touche_pas_l_interrupteur(self):
+        self._eteindre()
+        self.client.put("/quiz/matieres/", {"matieres": [self.maths.id]}, format="json")
+        self.profil.refresh_from_db()
+        self.assertFalse(self.profil.voir_seulement_mes_matieres)
+
+    def test_put_refuse_un_interrupteur_non_booleen(self):
+        for valeur in ("non", 0, None):
+            reponse = self.client.put("/quiz/matieres/", {"seulement_mes_matieres": valeur}, format="json")
+            self.assertEqual(reponse.status_code, 400, valeur)
+
+    def test_sujets_a_afficher(self):
+        self.assertIsNone(sujets_a_afficher(self.profil, self.cursus_id))  # rien de choisi
+        self._choisir(self.maths, self.histoire)
+        self.assertEqual(sujets_a_afficher(self.profil, self.cursus_id), {self.maths.id, self.histoire.id})
+        self.assertIsNone(sujets_a_afficher(self.profil, None))
+        self.assertIsNone(sujets_a_afficher(self.profil, "abc"))
+        self.assertIsNone(sujets_a_afficher(None, self.cursus_id))
+        autre = Cursus.objects.get(examen=Examen.GCE_OL, series__isnull=True)
+        self.assertIsNone(sujets_a_afficher(self.profil, autre.id))  # pas l'examen préparé
+        self._eteindre()
+        self.assertIsNone(sujets_a_afficher(self.profil, self.cursus_id))
+
+    def test_un_choix_sans_contenu_sur_l_examen_ne_vide_pas_les_listes(self):
+        self._choisir(Subject.objects.get(country=self.cursus.country, code="GCE_BIOLOGY"))
+        self.assertIsNone(sujets_a_afficher(self.profil, self.cursus_id))
+
+    def test_pastilles_de_matiere_du_catalogue(self):
+        self._choisir(self.maths)
+        codes = lambda: {s["code"] for s in self.client.get("/catalog/subjects/", {"cursus": self.cursus_id}).json()}
+        self.assertEqual(codes(), {"GCE_MATHS"})
+        self._eteindre()
+        self.assertEqual(codes(), {"GCE_MATHS", "GCE_PHYSICS", "GCE_HISTORY"})
+
+    def test_liste_des_epreuves(self):
+        self._choisir(self.maths)
+        titres = lambda **p: {
+            e["title"] for e in self.client.get("/catalog/lessons/", {"cursus": self.cursus_id, **p}).json()["results"]
+        }
+        self.assertEqual(titres(), {"Paper GCE_MATHS"})
+        # Une matière demandée explicitement n'est jamais masquée.
+        self.assertEqual(titres(subject="GCE_PHYSICS"), {"Paper GCE_PHYSICS"})
+        self._eteindre()
+        self.assertEqual(titres(), {"Paper GCE_MATHS", "Paper GCE_PHYSICS", "Paper GCE_HISTORY"})
+
+    def test_get_dit_si_les_listes_sont_reellement_reduites(self):
+        reponse = self.client.get("/quiz/matieres/").data
+        self.assertEqual((reponse["affichage_restreint"], reponse["nb_affichees"]), (False, 0))  # rien de choisi
+        self._choisir(self.maths, self.histoire)
+        reponse = self.client.get("/quiz/matieres/").data
+        self.assertEqual((reponse["affichage_restreint"], reponse["nb_affichees"]), (True, 2))
+        self._eteindre()
+        reponse = self.client.get("/quiz/matieres/").data
+        self.assertEqual((reponse["affichage_restreint"], reponse["nb_affichees"]), (False, 0))
+        self.assertEqual(len(reponse["choisies"]), 2)  # l'inscription est intacte
+
+    def test_visiteur_anonyme_voit_tout(self):
+        self._choisir(self.maths)
+        reponse = APIClient().get("/catalog/subjects/", {"cursus": self.cursus_id})
+        self.assertEqual({s["code"] for s in reponse.json()}, {"GCE_MATHS", "GCE_PHYSICS", "GCE_HISTORY"})
+
+    def test_matieres_du_quiz(self):
+        self._choisir(self.maths)
+        codes = lambda: {s["code"] for s in self.client.get("/quiz/subjects/", {"cursus": self.cursus_id}).json()}
+        self.assertEqual(codes(), {"GCE_MATHS"})
+        self._eteindre()
+        self.assertEqual(codes(), {"GCE_MATHS", "GCE_PHYSICS", "GCE_HISTORY"})
 
 
 class CoachRespecteLesMatieresTests(_Base):

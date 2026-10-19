@@ -5,8 +5,11 @@ matière simplement présente dans le cursus.
 Au BEPC, au Probatoire et au BAC, la série fixe les matières : tout le cursus est « à l'élève », et
 `Profil.matieres_passees` reste vide. Le GCE n'a pas de séries : un élève choisit ses matières
 parmi celles du Board (6 à 11 au O Level, 5 au plus à l'A Level : voir REGLES_INSCRIPTION_GCE). Le plan du jour, les priorités, la progression et le
-diagnostic se limitent alors à ce choix ; la bibliothèque (épreuves, cours, recherche) reste ouverte
-à toutes les matières du cursus.
+diagnostic se limitent alors à ce choix, ainsi que les listes de la bibliothèque (épreuves, cours,
+pastilles de matière, voir sujets_a_afficher) - tant que le profil garde actif « voir seulement mes
+matières » (`Profil.voir_seulement_mes_matieres`, une préférence d'affichage séparée de l'inscription).
+La recherche reste ouverte à tout le cursus : on y nomme ce qu'on cherche. Rien n'est un contrôle d'accès :
+un lien direct vers une épreuve d'une autre matière s'ouvre toujours.
 
 Règle de repli, partout la même : un choix qui ne recoupe AUCUNE matière du périmètre considéré
 (il porte sur un autre cursus, ou sur des matières sans contenu) est ignoré plutôt que de laisser
@@ -35,9 +38,32 @@ REGLES_INSCRIPTION_GCE = {
 
 
 def _choix(profil):
-    if profil is None:
+    """Les matières à ne montrer QUE : le choix du profil tant que « voir seulement mes matières » est actif,
+    rien (donc tout le cursus) sinon. L'inscription elle-même (`matieres_passees`) n'est jamais touchée."""
+    if profil is None or not profil.voir_seulement_mes_matieres:
         return frozenset()
     return frozenset(profil.matieres_passees.values_list("id", flat=True))
+
+
+def sujets_a_afficher(profil, cursus_id):
+    """
+    Les identifiants de matières à garder dans une liste de la bibliothèque (épreuves, cours, pastilles de
+    matière) de l'examen `cursus_id`, ou None quand rien ne se restreint : visiteur anonyme, interrupteur éteint,
+    aucune matière choisie, examen autre que celui que prépare le profil, ou choix sans contenu sur cet examen
+    (même règle de repli que restreindre_matieres : jamais une liste vide à cause d'un choix).
+    """
+    if profil is None or not cursus_id or not str(cursus_id).isdigit():
+        return None
+    # `User.cursus_prepare` est le champ lu partout (celui du profil n'en est que le point de départ, voir
+    # users.views._realigner_cursus_prepare).
+    cursus = profil.compte.cursus_prepare
+    if cursus is None or cursus.id != int(cursus_id):
+        return None
+    choix = _choix(profil)
+    if not choix:
+        return None
+    gardees = choix & {m.id for m in matieres_disponibles(cursus)}
+    return frozenset(gardees) or None
 
 
 def restreindre_matieres(profil, subjects):

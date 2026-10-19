@@ -18,6 +18,7 @@ import { pourcent } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
+import { BandeauMatieres } from "@/components/ChoixMatieres"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
  * sans contenu n'est pas un échec de l'élève - l'inclure ferait mentir la barre, et
@@ -244,6 +245,7 @@ export function ParcoursPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      <BandeauMatieres />
       <Ecrin>
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">

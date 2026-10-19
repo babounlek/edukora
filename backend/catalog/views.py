@@ -14,6 +14,7 @@ from access.services import (
     has_access_jusqua_examen,
 )
 from inedit.models import EpreuveInedite
+from quiz.matieres import sujets_a_afficher
 from quiz.models import CompetenceItem
 from users.profils import profil_actif
 
@@ -173,6 +174,8 @@ class LessonListView(generics.ListAPIView):
             qs = qs.filter(cursus__id=cursus_id)
         else:
             qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))
+        if (visibles := _matieres_visibles(self.request)) is not None:
+            qs = qs.filter(subject_id__in=visibles)
         if country := params.get("country"):
             qs = qs.filter(cursus__country__code__iexact=country)
         if lesson_type := params.get("lesson_type"):
@@ -285,6 +288,8 @@ class LessonListView(generics.ListAPIView):
 
         lesson_qs = self.get_queryset()
         inedit_qs = build_inedit_queryset(request.query_params, min_popular_readers=MIN_POPULAR_READERS)
+        if (visibles := _matieres_visibles(request)) is not None:
+            inedit_qs = inedit_qs.filter(subject_id__in=visibles)
 
         lesson_value_fields = ["id", "year", "title", "created_at"]
         if ordering == "popular":
@@ -432,6 +437,8 @@ class CoursListView(generics.ListAPIView):
         if not (cursus_id and cursus_id.isdigit()):
             # Sans examen choisi, la langue de l'interface limite la liste (voir _filtre_langue).
             qs = qs.filter(**_filtre_langue(self.request, "subject__langue"))
+        if (visibles := _matieres_visibles(self.request)) is not None:
+            qs = qs.filter(subject_id__in=visibles)
         if savoir_id := params.get("savoir"):
             # Même relation que quiz.services.construire_parcours (Cours.tags ->
             # Tag.savoir_officiel) - permet à /parcours de proposer "voir tous les
@@ -596,6 +603,19 @@ def _filtre_langue(request, champ):
     return {champ: langue} if langue in Langue.values else {}
 
 
+def _matieres_visibles(request):
+    """
+    Les matières à garder dans une liste d'après « voir seulement mes matières » du profil actif (voir
+    quiz.matieres.sujets_a_afficher), ou None : pas de restriction. Une matière demandée explicitement
+    (?subject= / ?discipline=), un thème, un savoir ou une recherche texte ne se restreignent jamais - l'élève
+    nomme ce qu'il veut, et un lien partagé ne doit pas s'ouvrir sur une liste vide.
+    """
+    params = request.query_params
+    if any(params.get(nom) for nom in ("subject", "discipline", "theme", "savoir", "search")):
+        return None
+    return sujets_a_afficher(profil_actif(request), params.get("cursus"))
+
+
 class SubjectListView(generics.ListAPIView):
     serializer_class = SubjectListSerializer
     permission_classes = [permissions.AllowAny]
@@ -670,6 +690,9 @@ class SubjectListView(generics.ListAPIView):
             examen = Cursus.objects.filter(pk=cursus_id).values_list("examen", flat=True).first()
             if examen:
                 qs = qs.filter(langue=langue_examen(examen))
+            # Pastilles de matière d'un examen : celles de l'inscription du profil (voir _matieres_visibles).
+            if (visibles := _matieres_visibles(self.request)) is not None:
+                qs = qs.filter(pk__in=visibles)
         return qs
 
 
@@ -999,6 +1022,8 @@ class ThemesFrequentsMatieresView(APIView):
             .filter(nb_sessions__gt=0)
             .order_by("-nb_sessions", "label")
         )
+        if (visibles := sujets_a_afficher(profil_actif(request), cursus.id)) is not None:
+            matieres = matieres.filter(pk__in=visibles)
         return Response([
             {
                 "code": s.code,

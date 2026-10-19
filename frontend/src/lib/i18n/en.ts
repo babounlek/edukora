@@ -51,7 +51,16 @@ export const en: Partial<Record<CleI18n, string>> = {
 
   "matieres.titre": "My subjects",
   "matieres.aide":
-    "Tick the subjects you are sitting: your daily session, priorities and progress will focus on them. The library stays open to every subject.",
+    "Tick the subjects you are sitting: your daily session, priorities, progress and lists (papers, courses, quizzes) will focus on them. You can see everything again at any time, without changing your registration.",
+  "matieres.affichage_titre": "Show only my subjects",
+  "matieres.affichage_texte":
+    "On, lists are limited to the subjects above. Off, you see every subject, without changing your registration.",
+  "matieres.bandeau_seulement_one": "You are seeing only your subject.",
+  "matieres.bandeau_seulement_other": "You are seeing only your {n} subjects.",
+  "matieres.bandeau_toutes": "You are seeing every subject.",
+  "matieres.bandeau_voir_toutes": "Show all subjects",
+  "matieres.bandeau_voir_miennes": "Show only my subjects",
+  "matieres.bandeau_modifier": "Edit my subjects",
   "matieres.enregistrer": "Save",
   "matieres.toutes": "All subjects",
   "matieres.enregistre": "Your subjects are saved.",

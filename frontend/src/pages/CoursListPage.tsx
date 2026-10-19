@@ -37,6 +37,7 @@ import { CoursListRow } from "@/components/CoursListRow"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { BandeauMatieres } from "@/components/ChoixMatieres"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
@@ -408,6 +409,7 @@ export function CoursListPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauFiltreCursus />
+      <BandeauMatieres suitFiltreCursus />
       {/* Même hero compact que /epreuves : les résultats doivent apparaître sans défiler, et le
           volume du catalogue est la preuve qu'il y a de quoi chercher. */}
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">

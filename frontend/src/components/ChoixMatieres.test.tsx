@@ -1,17 +1,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-const { getMatieres, definirMatieres, utilisateur } = vi.hoisted(() => ({
+const { getMatieres, definirMatieres, definirAffichageMatieres, utilisateur } = vi.hoisted(() => ({
   getMatieres: vi.fn(),
   definirMatieres: vi.fn(),
+  definirAffichageMatieres: vi.fn(),
   utilisateur: { current: null as unknown },
 }))
-vi.mock("@/api/endpoints", () => ({ getMatieres, definirMatieres }))
+vi.mock("@/api/endpoints", () => ({ getMatieres, definirMatieres, definirAffichageMatieres }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: utilisateur.current }) }))
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }))
 
-import { ChoixMatieres, InvitationMatieres } from "./ChoixMatieres"
+import { BandeauMatieres, ChoixMatieres, InvitationMatieres } from "./ChoixMatieres"
 
 const DISPONIBLES = [
   { id: 1, code: "GCE_MATHS", label: "Mathematics" },
@@ -19,9 +21,13 @@ const DISPONIBLES = [
   { id: 3, code: "GCE_HISTORY", label: "History" },
 ]
 
-function afficher(ui: React.ReactElement) {
+function afficher(ui: React.ReactElement, entree = "/") {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-  return render(<QueryClientProvider client={client}>{ui}</QueryClientProvider>)
+  return render(
+    <QueryClientProvider client={client}>
+      <MemoryRouter initialEntries={[entree]}>{ui}</MemoryRouter>
+    </QueryClientProvider>,
+  )
 }
 
 function eleve(examen: string) {
@@ -31,6 +37,7 @@ function eleve(examen: string) {
 beforeEach(() => {
   getMatieres.mockReset()
   definirMatieres.mockReset()
+  definirAffichageMatieres.mockReset()
   getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES })
   eleve("GCE_AL")
 })
@@ -238,5 +245,79 @@ describe("ChoixMatieres : règles du Board", () => {
     })
     afficher(<InvitationMatieres />)
     expect(await screen.findByText("Choisis les matières que tu passes")).toBeInTheDocument()
+  })
+})
+
+describe("« Voir seulement mes matières »", () => {
+  const CHOIX = { choisies: [1, 2], disponibles: DISPONIBLES }
+
+  it("l'interrupteur enregistre la préférence seule, sans toucher aux matières", async () => {
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
+    definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
+    afficher(<ChoixMatieres />)
+    const interrupteur = await screen.findByRole("switch", { name: "Voir seulement mes matières" })
+    expect(interrupteur).toHaveAttribute("aria-checked", "true")
+    // Après l'écriture, les listes sont relues : le serveur répond désormais avec le nouvel état.
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
+    fireEvent.click(interrupteur)
+    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false))
+    expect(definirMatieres).not.toHaveBeenCalled()
+    await waitFor(() => expect(screen.getByRole("switch")).toHaveAttribute("aria-checked", "false"))
+  })
+
+  it("pas d'interrupteur tant qu'aucun choix n'est enregistré, ni dans l'onboarding", async () => {
+    afficher(<ChoixMatieres />)
+    await screen.findByRole("button", { name: "Mathematics" })
+    expect(screen.queryByRole("switch")).not.toBeInTheDocument()
+  })
+
+  it("le bandeau dit combien de matières sont montrées et propose de tout voir", async () => {
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
+    definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
+    afficher(<BandeauMatieres />)
+    expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/compte")
+    fireEvent.click(screen.getByRole("button", { name: "Voir toutes les matières" }))
+    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false))
+  })
+
+  it("une fois tout montré, le bandeau reste pour revenir à ses matières", async () => {
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
+    definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
+    afficher(<BandeauMatieres />)
+    expect(await screen.findByText("Tu vois toutes les matières.")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Voir seulement mes matières" }))
+    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(true))
+  })
+
+  it("se tait sans choix, hors GCE, ou quand le filtre n'agit pas", async () => {
+    getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES })
+    const sans = afficher(<BandeauMatieres />)
+    await waitFor(() => expect(getMatieres).toHaveBeenCalled())
+    expect(sans.container).toBeEmptyDOMElement()
+    sans.unmount()
+
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: false })
+    const sansEffet = afficher(<BandeauMatieres />)
+    await waitFor(() => expect(getMatieres).toHaveBeenCalledTimes(2))
+    expect(sansEffet.container).toBeEmptyDOMElement()
+    sansEffet.unmount()
+
+    eleve("BAC")
+    getMatieres.mockClear()
+    const bac = afficher(<BandeauMatieres />)
+    await Promise.resolve()
+    expect(bac.container).toBeEmptyDOMElement()
+    expect(getMatieres).not.toHaveBeenCalled()
+  })
+
+  it("sur une liste filtrée par examen, le bandeau n'apparaît que si le cursus de l'URL est celui de l'élève", async () => {
+    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
+    const autre = afficher(<BandeauMatieres suitFiltreCursus />, "/epreuves?cursus=99")
+    await waitFor(() => expect(getMatieres).toHaveBeenCalled())
+    expect(autre.container).toBeEmptyDOMElement()
+    autre.unmount()
+    afficher(<BandeauMatieres suitFiltreCursus />, "/epreuves?cursus=7")
+    expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
   })
 })

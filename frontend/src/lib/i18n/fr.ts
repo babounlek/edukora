@@ -56,7 +56,16 @@ export const fr = {
 
   "matieres.titre": "Mes matières",
   "matieres.aide":
-    "Coche les matières que tu passes : ta séance du jour, tes priorités et ta progression se limitent à elles. La bibliothèque reste ouverte à toutes.",
+    "Coche les matières que tu passes : ta séance du jour, tes priorités, ta progression et tes listes (épreuves, cours, quiz) se limitent à elles. Tu peux tout revoir à tout moment, sans changer ton inscription.",
+  "matieres.affichage_titre": "Voir seulement mes matières",
+  "matieres.affichage_texte":
+    "Activé, les listes se limitent aux matières ci-dessus. Désactivé, tu vois toutes les matières, sans changer ton inscription.",
+  "matieres.bandeau_seulement_one": "Tu vois seulement ta matière.",
+  "matieres.bandeau_seulement_other": "Tu vois seulement tes {n} matières.",
+  "matieres.bandeau_toutes": "Tu vois toutes les matières.",
+  "matieres.bandeau_voir_toutes": "Voir toutes les matières",
+  "matieres.bandeau_voir_miennes": "Voir seulement mes matières",
+  "matieres.bandeau_modifier": "Modifier mes matières",
   "matieres.enregistrer": "Enregistrer",
   "matieres.toutes": "Toutes les matières",
   "matieres.enregistre": "Tes matières sont enregistrées.",

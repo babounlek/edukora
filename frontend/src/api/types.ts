@@ -248,6 +248,12 @@ export interface Tag {
 export interface MatieresChoix {
   /** Ids choisis ; vide = toutes les matières du cursus. */
   choisies: number[]
+  /** Préférence d'affichage « voir seulement mes matières » (distincte de l'inscription) ; vrai par défaut. */
+  seulement_mes_matieres?: boolean
+  /** Les listes sont réellement réduites : interrupteur actif ET un choix qui recoupe du contenu sur cet examen. */
+  affichage_restreint?: boolean
+  /** Nombre de matières montrées quand `affichage_restreint`. */
+  nb_affichees?: number
   disponibles: { id: number; code: string; label: string }[]
   /** Règles d'inscription du GCE Board pour ce niveau ; null hors branche générale du GCE (voir quiz.matieres). */
   regles?: ReglesInscription | null

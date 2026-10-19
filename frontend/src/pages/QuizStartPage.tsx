@@ -20,6 +20,7 @@ import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types
 import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
+import { BandeauMatieres } from "@/components/ChoixMatieres"
 import { StatChip } from "@/components/Configurateur"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { QuizCompletVisiteur } from "@/components/QuizCompletVisiteur"
@@ -492,6 +493,7 @@ export function QuizStartPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
+      <BandeauMatieres />
       {/* Hero : même gabarit que /epreuves et /themes-frequents. */}
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div

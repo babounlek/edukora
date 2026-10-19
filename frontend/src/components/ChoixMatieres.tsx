@@ -1,9 +1,10 @@
 import { useState } from "react"
+import { Link, useSearchParams } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { BookOpen, Check, Lock } from "lucide-react"
 import { toast } from "sonner"
 
-import { definirMatieres, getMatieres } from "@/api/endpoints"
+import { definirAffichageMatieres, definirMatieres, getMatieres } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import type { AvertissementInscription, MatiereOfficielle } from "@/api/types"
@@ -15,7 +16,7 @@ import { cn } from "@/lib/utils"
 /** Données qui dépendent des matières choisies : à relire après un changement. */
 const CLES_A_RELIRE = [["accueil"], ["plan-du-jour"], ["parcours-resume"], ["priorites"]] as const
 
-function useMatieres() {
+export function useMatieres() {
   const { user } = useAuth()
   const cursusId = user?.cursus_prepare?.id
   const actif = estGce(user?.cursus_prepare)
@@ -25,6 +26,24 @@ function useMatieres() {
     enabled: actif && Boolean(cursusId),
   })
   return { actif, cursusId, ...requete }
+}
+
+/**
+ * « Voir seulement mes matières » : la préférence d'affichage, enregistrée tout de suite (un interrupteur n'a pas de
+ * bouton « Enregistrer »). Elle change ce que montrent toutes les listes : on relit donc tout, pas seulement les clés
+ * de CLES_A_RELIRE. L'inscription (les matières cochées) n'est jamais touchée.
+ */
+function useAffichageMatieres(cursusId: number | undefined) {
+  const { t } = useI18n()
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (seulement: boolean) => definirAffichageMatieres(seulement),
+    onSuccess: (reponse) => {
+      queryClient.setQueryData(["matieres", cursusId], reponse)
+      queryClient.invalidateQueries()
+    },
+    onError: () => toast.error(t("matieres.erreur")),
+  })
 }
 
 /** Phrase d'un avertissement d'inscription : toujours un conseil, jamais un blocage. */
@@ -42,14 +61,16 @@ function texteAvertissement(
 
 /**
  * « Mes matières » : au GCE il n'y a pas de série qui fixe le programme, l'élève passe 5 à 8
- * matières qu'il choisit. Le plan du jour, les priorités et la progression se limitent à ce choix
- * (voir quiz.matieres côté serveur) ; la bibliothèque reste ouverte à tout. Aucun choix = toutes
- * les matières, comme pour un élève du BAC.
+ * matières qu'il choisit. Le plan du jour, les priorités, la progression et les listes (épreuves, cours,
+ * quiz) se limitent à ce choix (voir quiz.matieres côté serveur) tant que « voir seulement mes matières »
+ * est actif - l'élève peut tout revoir d'un clic sans toucher à son inscription (BandeauMatieres).
+ * Aucun choix = toutes les matières, comme pour un élève du BAC.
  */
 export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
   const { t } = useI18n()
   const queryClient = useQueryClient()
   const { cursusId, data, isError } = useMatieres()
+  const affichage = useAffichageMatieres(cursusId)
   // null = rien touché : on montre le choix enregistré.
   const [brouillon, setBrouillon] = useState<number[] | null>(null)
   const enregistrees = data?.choisies ?? []
@@ -177,7 +198,76 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
           </Button>
         )}
       </div>
+      {/* Pas dans l'onboarding (rien d'enregistré, rien à masquer encore) : seulement une fois un choix en place. */}
+      {!onEnregistre && enregistrees.length > 0 && (
+        <div className="mt-1 flex items-center justify-between gap-4 border-t border-border pt-4">
+          <div className="min-w-0">
+            <p className="font-medium">{t("matieres.affichage_titre")}</p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{t("matieres.affichage_texte")}</p>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={data.seulement_mes_matieres ?? true}
+            aria-label={t("matieres.affichage_titre")}
+            disabled={affichage.isPending}
+            onClick={() => affichage.mutate(!(data.seulement_mes_matieres ?? true))}
+            className={cn(
+              "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full border transition-colors after:absolute after:-inset-2 after:content-['']",
+              data.seulement_mes_matieres ?? true ? "border-primary bg-primary" : "border-border bg-muted",
+            )}
+          >
+            <span
+              aria-hidden
+              className={cn(
+                "inline-block size-5 rounded-full bg-background shadow transition-transform",
+                data.seulement_mes_matieres ?? true ? "translate-x-6" : "translate-x-1",
+              )}
+            />
+          </button>
+        </div>
+      )}
     </div>
+  )
+}
+
+/**
+ * Dit où l'on en est (« Tu vois seulement tes 6 matières ») et comment en sortir d'un clic, depuis la liste elle-même :
+ * sans cette phrase, une liste soudain plus courte se lit comme du contenu manquant. Reste affiché quand l'élève a
+ * choisi de tout voir, pour qu'il puisse revenir à ses matières. Absent quand rien ne se restreint (aucun choix,
+ * choix sans contenu sur cet examen) et hors GCE.
+ *
+ * `suitFiltreCursus` : pour les listes dont le cursus est un paramètre d'URL (épreuves, cours) - la restriction ne vaut
+ * que sur l'examen de l'élève, donc le bandeau aussi.
+ */
+export function BandeauMatieres({ suitFiltreCursus = false }: { suitFiltreCursus?: boolean }) {
+  const { t, tn } = useI18n()
+  const { user } = useAuth()
+  const [searchParams] = useSearchParams()
+  const { actif, cursusId, data } = useMatieres()
+  const affichage = useAffichageMatieres(cursusId)
+
+  if (!actif || !data || data.choisies.length === 0) return null
+  if (suitFiltreCursus && searchParams.get("cursus") !== String(user?.cursus_prepare?.id)) return null
+  const seulement = data.seulement_mes_matieres ?? true
+  // Interrupteur actif mais sans effet (choix sans contenu ici) : rien à raconter.
+  if (seulement && !data.affichage_restreint) return null
+
+  return (
+    <p className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+      <span>{seulement ? tn("matieres.bandeau_seulement", data.nb_affichees ?? 0) : t("matieres.bandeau_toutes")}</span>
+      <button
+        type="button"
+        disabled={affichage.isPending}
+        onClick={() => affichage.mutate(!seulement)}
+        className="underline underline-offset-4 transition-colors hover:text-primary"
+      >
+        {seulement ? t("matieres.bandeau_voir_toutes") : t("matieres.bandeau_voir_miennes")}
+      </button>
+      <Link to="/compte" className="underline underline-offset-4 transition-colors hover:text-primary">
+        {t("matieres.bandeau_modifier")}
+      </Link>
+    </p>
   )
 }
 

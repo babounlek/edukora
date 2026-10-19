@@ -931,6 +931,14 @@ export function definirMatieres(matieres: number[]) {
   return apiRequest<MatieresChoix>("/quiz/matieres/", { method: "PUT", body: { matieres } })
 }
 
+/** « Voir seulement mes matières » : la préférence d'affichage seule, sans toucher à l'inscription. */
+export function definirAffichageMatieres(seulementMesMatieres: boolean) {
+  return apiRequest<MatieresChoix>("/quiz/matieres/", {
+    method: "PUT",
+    body: { seulement_mes_matieres: seulementMesMatieres },
+  })
+}
+
 export function proposerAutreChose() {
   return apiRequest<PlanDuJour>("/quiz/plan-du-jour/autre-chose/", { method: "POST" })
 }

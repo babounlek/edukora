@@ -299,6 +299,13 @@ class Profil(models.Model):
                   "plan du jour, les priorités et la progression se limitent à elles. Voir "
                   "quiz.matieres.",
     )
+    voir_seulement_mes_matieres = models.BooleanField(
+        default=True,
+        help_text="Préférence d'affichage, distincte de `matieres_passees` (la donnée : ce que l'élève passe vraiment). "
+                  "Activée, les listes (épreuves, cours, matières, quiz, parcours, plan du jour) se limitent aux matières "
+                  "choisies ; désactivée, tout le catalogue du cursus reste visible sans toucher à l'inscription. "
+                  "Sans effet tant qu'aucune matière n'est choisie. Voir quiz.matieres.",
+    )
     rappels_actifs = models.BooleanField(
         default=False,
         help_text="Rappel quotidien de LA séance de ce profil par e-mail (voir "
