@@ -24,7 +24,7 @@ import { t } from "@/lib/i18n"
 import { Callout } from "@/components/Callout"
 import { LienCours } from "@/components/LienCours"
 import { SolutionToggle } from "@/components/SolutionToggle"
-import { extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
+import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
 import { API_BASE_URL } from "@/api/client"
 
 const CALLOUT_SENTINEL = /^\[CALLOUT:(piege|conseil|rappel)\]$/
@@ -274,7 +274,10 @@ const REHYPE_PLUGINS = [rehypeRaw, rehypeKatex]
 function EpreuveMarkdownBase({ markdown, directCoursLinks = false }: EpreuveMarkdownProps) {
   // Le prétraitement est coûteux sur un long corrigé : refait seulement si le texte change.
   const source = useMemo(
-    () => italicizeQuotes(normalizeMathBlocks(extractSolutionToggles(groupBareCoursLinks(extractCallouts(markdown))))),
+    () =>
+      italicizeQuotes(
+        agrandirFractionsEnLigne(normalizeMathBlocks(extractSolutionToggles(groupBareCoursLinks(extractCallouts(markdown))))),
+      ),
     [markdown],
   )
 

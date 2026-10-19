@@ -1,6 +1,42 @@
 import { describe, expect, it } from "vitest"
 
-import { extractCallouts, extractSolutionToggles, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks } from "./markdown"
+import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks } from "./markdown"
+
+describe("agrandirFractionsEnLigne", () => {
+  it("passe en \\dfrac une chaîne d'égalités en ligne (test élève P1)", () => {
+    const source = "Donc $\\frac{x^2-25}{x^2+10x+25} = \\frac{(x-5)(x+5)}{(x+5)^2} = \\frac{x-5}{x+5}$."
+    expect(agrandirFractionsEnLigne(source)).toBe(
+      "Donc $\\dfrac{x^2-25}{x^2+10x+25} = \\dfrac{(x-5)(x+5)}{(x+5)^2} = \\dfrac{x-5}{x+5}$.",
+    )
+  })
+
+  it("agrandit aussi une seule fraction quand la formule contient une égalité", () => {
+    expect(agrandirFractionsEnLigne("On a $f(x) = \\frac{1}{x}$.")).toBe("On a $f(x) = \\dfrac{1}{x}$.")
+  })
+
+  it("agrandit deux fractions sans égalité", () => {
+    expect(agrandirFractionsEnLigne("$\\frac{a}{b} + \\frac{c}{d}$")).toBe("$\\dfrac{a}{b} + \\dfrac{c}{d}$")
+  })
+
+  it("laisse une fraction isolée dans une phrase à sa taille de texte", () => {
+    const source = "Un demi s'écrit $\\frac{1}{2}$ dans le texte."
+    expect(agrandirFractionsEnLigne(source)).toBe(source)
+  })
+
+  it("ne touche ni les formules display, ni \\dfrac, ni \\tfrac, ni le code", () => {
+    const display = "$$\\frac{a}{b} = \\frac{c}{d}$$"
+    expect(agrandirFractionsEnLigne(display)).toBe(display)
+    const deja = "$\\dfrac{a}{b} = \\tfrac{c}{d}$"
+    expect(agrandirFractionsEnLigne(deja)).toBe(deja)
+    const code = "`$\\frac{a}{b} = \\frac{c}{d}$`"
+    expect(agrandirFractionsEnLigne(code)).toBe(code)
+  })
+
+  it("ne confond pas une commande qui commence par frac", () => {
+    const source = "$\\fracture = \\frac{1}{2}$"
+    expect(agrandirFractionsEnLigne(source)).toBe("$\\fracture = \\dfrac{1}{2}$")
+  })
+})
 
 describe("extractSolutionToggles", () => {
   it("garde une solution multi-ligne entière dans le toggle, fence de code compris", () => {
@@ -236,6 +272,33 @@ describe("code protégé des transformations de rendu", () => {
     expect(result).toContain('`echo " ";`')
     expect(result).toContain('echo "a";')
     expect(result).toContain("*«texte»*".replace("«texte»", "« texte »"))
+  })
+})
+
+describe("normalizeMathBlocks : formule `$$...$$` d'une ligne", () => {
+  it("passe en bloc display une chaîne de fractions seule sur sa ligne (test élève P1)", () => {
+    const markdown = "Donc :\n\n$$\\frac{a}{b} = \\frac{c}{d}$$\n\nVérification."
+    expect(normalizeMathBlocks(markdown)).toBe("Donc :\n\n$$\n\\frac{a}{b} = \\frac{c}{d}\n$$\n\nVérification.")
+  })
+
+  it("couvre aussi les sommes, intégrales et limites", () => {
+    expect(normalizeMathBlocks("$$\\int_0^1 f(x)\\,dx$$")).toBe("$$\n\\int_0^1 f(x)\\,dx\n$$")
+    expect(normalizeMathBlocks("$$\\lim_{x\\to 0} \\sin x$$")).toBe("$$\n\\lim_{x\\to 0} \\sin x\n$$")
+  })
+
+  it("laisse une formule d'une ligne sans fraction, somme ni intégrale telle quelle", () => {
+    const markdown = "$$x^2 = 4$$"
+    expect(normalizeMathBlocks(markdown)).toBe(markdown)
+  })
+
+  it("laisse une formule $$...$$ prise dans une phrase", () => {
+    const markdown = "On pose $$\\frac{a}{b} = 2$$ puis on continue."
+    expect(normalizeMathBlocks(markdown)).toBe(markdown)
+  })
+
+  it("laisse une formule d'une ligne dans une citation", () => {
+    const markdown = "> $$\\frac{a}{b} = 2$$"
+    expect(normalizeMathBlocks(markdown)).toBe(markdown)
   })
 })
 

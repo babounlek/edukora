@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
@@ -96,6 +96,18 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const [choixEnCours, setChoixEnCours] = useState<string | null>(null)
   // Toujours la dernière version des gestionnaires, pour un écouteur clavier posé une seule fois.
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {})
+  // Posé quand une réponse vient d'être enregistrée : le retour qui apparaît alors est amené à l'écran (voir
+  // amenerLeRetour). Jamais pour une question déjà répondue qu'on rouvre : la page ne doit pas sauter à l'ouverture.
+  const retourARegarderRef = useRef(false)
+  // Callback de ref (identité stable) : appelé une seule fois, au moment où le message de retour apparaît. Sur mobile, une
+  // longue correction repliée sous la barre fixe « Question suivante » le laissait hors de l'écran, sans autre signe que
+  // des boutons qui disparaissaient. `nearest` : ne bouge pas s'il est déjà visible ; la marge basse laisse la place à la barre.
+  const amenerLeRetour = useCallback((el: HTMLElement | null) => {
+    if (!el || !retourARegarderRef.current) return
+    retourARegarderRef.current = false
+    const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
+    el.scrollIntoView({ block: "nearest", behavior: reduit ? "auto" : "smooth" })
+  }, [])
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => keyHandlerRef.current(e)
@@ -167,6 +179,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const questionCorrige = revealed[question.id]
 
   function updateQuestion(updated: QuizSession["questions"][number]) {
+    retourARegarderRef.current = true
     // Essai : la réponse corrigée est réécrite dans le navigateur, seule mémoire de ce quiz.
     if (essai) memoriserEssai(avecQuestionCorrigee(session!, updated))
     setSession((prev) => {
@@ -513,8 +526,9 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         <div role="status" aria-live="polite">
         {answered && (
           <div
+            ref={amenerLeRetour}
             className={cn(
-              "animate-fade-up mt-5 flex items-start gap-3 rounded-xl border px-4 py-3",
+              "animate-fade-up mt-5 flex scroll-mb-28 items-start gap-3 rounded-xl border px-4 py-3",
               correct ? "border-success/40 bg-success/10" : "border-border bg-muted/50",
             )}
           >

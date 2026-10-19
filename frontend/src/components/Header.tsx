@@ -319,7 +319,7 @@ export function Header() {
    * d'acheter ce qu'on possède déjà n'est plus de la navigation.
    */
   const suitUnPlan = isAuthenticated && Boolean(user?.cursus_prepare)
-  const navLinks = suitUnPlan
+  const navLinks: { to: string; label: string; active: boolean; badge: boolean; menuSeulement?: boolean }[] = suitUnPlan
     ? [
         { to: catalogueHomePath(country), label: t("nav.aujourdhui"), active: isAccueil, badge: false },
         { to: epreuvesListPath(country), label: t("nav.reviser"), active: isReviserSection, badge: nouvellesInedites },
@@ -329,8 +329,14 @@ export function Header() {
           : [{ to: "/tarifs", label: t("nav.prix"), active: isTarifsSection, badge: false }]),
       ]
     : [
+        // « Accueil » seulement dans le menu mobile : sur grand écran le logo y mène déjà, et l'entrée doublerait la barre.
+        // Un visiteur arrivé par un lien partagé (un quiz, un corrigé) n'a pas d'autre moyen évident de voir de quoi parle le site.
+        { to: catalogueHomePath(country), label: t("nav.accueil"), active: isAccueil, badge: false, menuSeulement: true },
         { to: epreuvesListPath(country), label: t("nav.epreuves"), active: isEpreuvesSection, badge: nouvellesInedites },
         { to: coursListPath(country), label: t("nav.cours"), active: isCoursSection, badge: false },
+        // Le quiz d'essai sans compte est ce qui fait goûter le site à un visiteur : pour lui c'est une destination (voir le
+        // commentaire ci-dessus, qui ne vaut que pour l'élève qui suit un plan).
+        { to: "/quiz", label: t("nav.quiz"), active: pathname.startsWith("/quiz"), badge: false },
         { to: "/tarifs", label: t("nav.prix"), active: isTarifsSection, badge: false },
       ]
 
@@ -419,7 +425,7 @@ export function Header() {
               écrites deux fois côte à côte, et un lien ajouté d'un seul côté suffisait
               à les faire diverger silencieusement. Le point or des inédites reste
               porté par l'entrée qui les contient, sans consommer de largeur. */}
-          {navLinks.map((link) => (
+          {navLinks.filter((link) => !link.menuSeulement).map((link) => (
             <span key={link.to} className="relative hidden lg:inline-flex">
               <Button asChild variant={link.active ? "secondary" : "ghost"} size="sm">
                 <Link to={link.to} title={link.badge ? t("nav.nouvelles_inedites") : undefined}>

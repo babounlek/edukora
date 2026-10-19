@@ -15,8 +15,17 @@
  */
 export function normalizeMathBlocks(markdown: string): string {
   return mapOutsideCode(markdown, (text) =>
-    text.replace(/(^[ \t]*(?:>[ \t]?)+)?\$\$([\s\S]*?)\$\$/gm, (match, quotePrefix: string | undefined, inner: string) => {
-      if (!match.includes("\n")) return match
+    text.replace(/(^[ \t]*(?:>[ \t]?)+)?\$\$([\s\S]*?)\$\$/gm, (match, quotePrefix: string | undefined, inner: string, offset: number) => {
+      if (!match.includes("\n")) {
+        // `$$...$$` sur UNE ligne, seul dans son paragraphe : remark-math le lit comme une formule EN LIGNE, donc composée
+        // petit (fractions à 70 %, bornes des sommes et intégrales en exposant). C'est bien un bloc voulu : on le passe en
+        // display, mais seulement quand il contient de tels éléments (test élève P1) - les autres formules d'une ligne
+        // n'ont rien à y gagner et gardent leur rendu.
+        if (!quotePrefix && estSeuleSurSaLigne(text, offset, match.length) && A_BESOIN_DU_DISPLAY_RE.test(inner)) {
+          return `\n\n$$\n${inner.trim()}\n$$\n\n`
+        }
+        return match
+      }
 
       if (quotePrefix) {
         // Bloc display DANS une citation (solution masquée, encadré) : chaque ligne
@@ -38,6 +47,17 @@ export function normalizeMathBlocks(markdown: string): string {
   )
     .replace(/\n{3,}/g, "\n\n")
     .trim()
+}
+
+/** Constructions que KaTeX réduit en mode « en ligne » : fractions, sommes, intégrales, limites, produits, binomiaux. */
+const A_BESOIN_DU_DISPLAY_RE = /\\(?:d?frac|sum|int|lim|prod|binom)(?![a-zA-Z])/
+
+/** Le segment [debut, debut + longueur[ occupe-t-il toute sa ligne (hors espaces) ? */
+function estSeuleSurSaLigne(texte: string, debut: number, longueur: number): boolean {
+  const debutLigne = texte.lastIndexOf("\n", debut - 1) + 1
+  const finBrute = texte.indexOf("\n", debut + longueur)
+  const finLigne = finBrute === -1 ? texte.length : finBrute
+  return texte.slice(debutLigne, debut).trim() === "" && texte.slice(debut + longueur, finLigne).trim() === ""
 }
 
 const CODE_SEGMENT_RE = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`)/g
@@ -77,6 +97,28 @@ export function italicizeQuotes(markdown: string): string {
           .replace(STRAIGHT_QUOTE_RE, (_match, inner: string) => `*"${inner}"*`)
       })
       .join(""),
+  )
+}
+
+const FRAC_EN_LIGNE_RE = /\\frac(?![a-zA-Z])/g
+
+/**
+ * Les fractions d'une formule EN LIGNE (`$...$`) sont composées en petit par KaTeX : numérateur et dénominateur à 70 %, soit
+ * environ 10 px sur mobile. Pour une fraction isolée dans une phrase c'est la norme, et grossir toutes les fractions
+ * écarterait les lignes du texte courant. Mais une chaîne de calcul écrite en ligne (« \frac{a}{b} = \frac{c}{d} = \frac{e}{f} »,
+ * fréquente dans les corrigés) devenait illisible sans zoom (test élève P1, 2026-10-19).
+ *
+ * On passe donc en `\dfrac` (taille normale) uniquement les formules en ligne qui comptent au moins deux fractions ou une
+ * égalité. Jamais les formules display `$$...$$` (déjà en grand), ni le code.
+ */
+export function agrandirFractionsEnLigne(markdown: string): string {
+  return mapOutsideCode(markdown, (text) =>
+    text.replace(MATH_SPAN_RE, (span) => {
+      if (span.startsWith("$$")) return span
+      const nbFractions = (span.match(FRAC_EN_LIGNE_RE) ?? []).length
+      if (nbFractions === 0 || (nbFractions < 2 && !span.includes("="))) return span
+      return span.replace(FRAC_EN_LIGNE_RE, "\\dfrac")
+    }),
   )
 }
 

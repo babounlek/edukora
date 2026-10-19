@@ -35,6 +35,8 @@ export const fr = {
   "nav.prix": "Prix",
   "nav.epreuves": "Épreuves",
   "nav.cours": "Cours",
+  "nav.quiz": "Quiz",
+  "nav.accueil": "Accueil",
   "nav.connexion": "Connexion",
   "nav.menu": "Menu",
   "nav.menu_description": "Navigation principale d'{site}",

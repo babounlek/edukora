@@ -30,6 +30,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "nav.prix": "Pricing",
   "nav.epreuves": "Past papers",
   "nav.cours": "Lessons",
+  "nav.quiz": "Quiz",
+  "nav.accueil": "Home",
   "nav.connexion": "Log in",
   "nav.menu": "Menu",
   "nav.menu_description": "Main navigation for {site}",
