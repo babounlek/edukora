@@ -126,10 +126,26 @@ def nettoyer(markdown, limite=None):
     return texte
 
 
+def _sans_repetition_initiale(brut):
+    """`brut` sans la répétition immédiate de son ouverture : « Exercice 3 (9 marks) Exercice 3 (9 marks) a. ... » devient
+    « Exercice 3 (9 marks) a. ... ». Les données répètent l'en-tête d'un exercice au début de son énoncé, et le préambule
+    puis l'énoncé sont mis bout à bout (voir enonce_public) : l'élève lisait deux fois la même ligne dans le résultat de
+    recherche. Ne touche que le tout début du texte, et seulement quand la copie est mot pour mot la même."""
+    limite = min(len(brut) // 2, 300)
+    debut = brut[:12]
+    position = brut.find(debut, 1, limite + 12)
+    while position > 0:
+        ouverture = brut[:position].rstrip()
+        if len(ouverture) >= 12 and brut[position:].startswith(ouverture):
+            return brut[position:]
+        position = brut.find(debut, position + 1, limite + 12)
+    return brut
+
+
 def apercu(markdown, longueur=170):
     """Extrait court affichable (texte déjà nettoyé, jamais du LaTeX tronqué en plein milieu),
     avec des points de suspension s'il a été coupé."""
-    brut = nettoyer(markdown)
+    brut = _sans_repetition_initiale(nettoyer(markdown))
     if len(brut) <= longueur:
         return brut
     return nettoyer(brut, limite=longueur) + "…"
@@ -157,7 +173,7 @@ def extrait(markdown, jetons, longueur=170):
     """Passage de `markdown` autour de la première occurrence d'un des `jetons` (insensible aux
     accents et à la casse), coupé aux limites de mots, avec « … » aux extrémités tronquées. Chaîne
     vide si aucun jeton n'apparaît : l'appelant garde alors l'ouverture du texte."""
-    brut = nettoyer(markdown)
+    brut = _sans_repetition_initiale(nettoyer(markdown))
     if not brut:
         return ""
     plie = _plier(brut)

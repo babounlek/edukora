@@ -68,6 +68,10 @@ SELECTION = [
     ("CM", "BAC", "C", "INFORMATIQUE", "SQL"),
     ("CM", "BAC", "C", "LITTERATURE", "discussion argumentée"),
     ("CM", "BAC", "C", "SVT", "méiose"),
+    # Physique (2026-10-19, test élève F5) : absente jusque-là alors que c'est une matière majeure de la série C.
+    # « radioactivité » est déjà gratuit en TI (items partagés) : 5 items sur 6 l'étaient déjà en C, le 6e
+    # (id 5494, C et D seulement) les complète - sans cela le thème restait partiel, donc invisible.
+    ("CM", "BAC", "C", "PHYSIQUE", "radioactivité"),
     # BAC série D
     ("CM", "BAC", "D", "MATHS", "tableau de variation"),
     ("CM", "BAC", "D", "ANGLAIS", "collocations"),
@@ -75,6 +79,7 @@ SELECTION = [
     ("CM", "BAC", "D", "FRANCAIS", "connecteurs logiques"),
     ("CM", "BAC", "D", "SVT", "Lymphocyte T4"),
     ("CM", "BAC", "D", "CHIMIE", "pKa"),
+    ("CM", "BAC", "D", "PHYSIQUE", "radioactivité"),  # mêmes items que la série C (voir plus haut)
     ("CM", "BAC", "D", "INFORMATIQUE", "SQL"),
     ("CM", "BAC", "D", "LITTERATURE", "dissertation littéraire"),
     # BAC série E

@@ -82,6 +82,25 @@ class TexteTests(SimpleTestCase):
     def test_extrait_vide_si_aucun_jeton_present(self):
         self.assertEqual(texte.extrait("rien à voir ici", ["thales"]), "")
 
+    def test_apercu_ne_repete_pas_l_en_tete_de_l_exercice(self):
+        # Le préambule (« **Exercice 3 (9 marks)** ») puis l'énoncé, qui reprend le même en-tête.
+        source = "**Exercice 3 (9 marks)**\n**Exercice 3 (9 marks)** a. A polythene rod is rubbed."
+        self.assertEqual(texte.apercu(source), "Exercice 3 (9 marks) a. A polythene rod is rubbed.")
+
+    def test_apercu_ne_repete_pas_un_en_tete_plus_long(self):
+        entete = "PARTIE I : ÉVALUATION DES RESSOURCES (24 points) EXERCICE 1 : Vérification des savoirs (8 points)"
+        apercu = texte.apercu(f"{entete} {entete} Texte de l'énoncé.")
+        self.assertEqual(apercu, f"{entete} Texte de l'énoncé.")
+
+    def test_apercu_garde_un_texte_qui_se_repete_plus_loin(self):
+        # Seule la répétition immédiate de l'ouverture est retirée : une phrase reprise plus loin reste.
+        source = "Exercice 1 (5 points) On considère une suite. Calculer. Exercice 1 (5 points) encore."
+        self.assertEqual(texte.apercu(source), "Exercice 1 (5 points) On considère une suite. Calculer. Exercice 1 (5 points) encore.")
+
+    def test_extrait_ne_repete_pas_l_en_tete(self):
+        source = "Exercise 5 (6 marks) Exercise 5 (6 marks) a. Distinguish between semiconductors."
+        self.assertEqual(texte.extrait(source, ["semiconductors"], longueur=120), "Exercise 5 (6 marks) a. Distinguish between semiconductors.")
+
     def test_ancre_exercice_suit_la_regle_du_frontend(self):
         self.assertEqual(texte.ancre_exercice("3a"), "exercice-3a")
         self.assertEqual(texte.ancre_exercice("Problème IIA"), "exercice-probleme-iia")
