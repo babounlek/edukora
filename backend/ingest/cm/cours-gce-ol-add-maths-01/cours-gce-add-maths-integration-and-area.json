@@ -1,0 +1,160 @@
+{
+ "cours_id": "cours-gce-add-maths-integration-and-area",
+ "meta": {
+  "titre": "Integration and Area: Primitives, Definite Integrals and Regions",
+  "matiere": "Additional Mathematics",
+  "pays": "cm",
+  "serie": "GCE O/L",
+  "sous_theme": "Primitives, definite integrals, area under a curve",
+  "duree_estimee_min": 35,
+  "tags": [
+   "integration and area"
+  ],
+  "savoir_officiel": null,
+  "statut": "brouillon"
+ },
+ "source": {
+  "epreuve_id": "gce-ol-additional-maths-2026-p1-officiel-cameroun",
+  "epreuve_titre": "GCE O/L Additional Mathematics past paper (Cameroon)",
+  "epreuve_source": "gce-ol-additional-maths-2026-p1-officiel-cameroun.pdf",
+  "exercice_numero": "1",
+  "rappel_id": "rdm-gce-add-maths-integration-and-area-0",
+  "rappels_lies": [],
+  "correction_id": null
+ },
+ "sections": [
+  {
+   "type": "accroche",
+   "contenu_markdown": "A farmer near Dschang wants to know the area of a field whose boundary on one side is a curved stream, while the other sides are straight. Integration is the tool that turns a curved boundary into an exact area, and it is also the reverse of differentiation. At the GCE you are asked to integrate simple expressions, to evaluate definite integrals with trigonometric terms, and to find an area bounded by a curve. The work is short but every sign and every limit counts."
+  },
+  {
+   "type": "prerequis",
+   "items": [
+    "To differentiate $x^{n}$ you multiply by $n$ and reduce the power by $1$.",
+    "The derivative of $\\sin x$ is $\\cos x$ and the derivative of $\\cos x$ is $-\\sin x$.",
+    "Fractions such as $\\dfrac{1}{x^{2}}$ can be written with a negative power: $x^{-2}$.",
+    "A quadratic equation can be solved by factorising, and angles in calculus are measured in radians."
+   ]
+  },
+  {
+   "type": "regle",
+   "titre": "Integration and area under a curve",
+   "contenu_markdown": "### Integration as the reverse of differentiation\n\nIf $\\dfrac{dF}{dx}=f(x)$ then $\\int f(x)\\,dx=F(x)+k$, where $k$ is the **constant of integration**. For powers, and for sine and cosine of a multiple of $x$:\n\n$$\n\\int x^{n}\\,dx=\\frac{x^{n+1}}{n+1}+k\\qquad (n\\neq -1) \\tag{1}\n$$\n\n$$\n\\int \\sin ax\\,dx=-\\frac{1}{a}\\cos ax+k,\\qquad \\int \\cos ax\\,dx=\\frac{1}{a}\\sin ax+k \\tag{2}\n$$\n\nA constant factor stays in front and the terms of a sum are integrated one by one. Rewrite roots and fractions as powers first: $\\int\\dfrac{1}{x^{2}}\\,dx=\\int x^{-2}\\,dx=-\\dfrac{1}{x}+k$. You can always check an answer by differentiating it.\n\n### Definite integrals and area\n\nIf $F$ is a primitive of $f$, then\n\n$$\n\\int_{p}^{q} f(x)\\,dx=\\left[F(x)\\right]_{p}^{q}=F(q)-F(p) \\tag{3}\n$$\n\nNo constant $k$ is needed. The area between the curve $y=f(x)$, the $x$-axis and the lines $x=p$ and $x=q$ is $\\int_{p}^{q} y\\,dx$ when the curve is above the axis. Where the curve is **below** the axis the integral is negative, and the area is its positive value.\n\n### A curve with a given gradient\n\nIf $\\dfrac{dy}{dx}$ is known, integrate to get $y$ with a constant $k$, then substitute the coordinates of a given point to find $k$.",
+   "formule_principale": null,
+   "variantes": [
+    {
+     "nom": "Finding the equation of a curve",
+     "quand_utiliser": "When the gradient function and one point on the curve are given.",
+     "contenu_markdown": "For $\\dfrac{dy}{dx}=4x-3$ and a curve through $(1,2)$: $y=2x^{2}-3x+k$. Substitute $x=1$, $y=2$: $2-3+k=2$, so $k=3$ and $y=2x^{2}-3x+3$. Check: at $x=1$, $y=2-3+3=2$."
+    },
+    {
+     "nom": "Area when the curve crosses the x-axis",
+     "quand_utiliser": "When the region lies partly above and partly below the $x$-axis.",
+     "contenu_markdown": "Find where the curve meets the axis (put $y=0$), then integrate **separately** between consecutive roots, take the positive value of each part and add them. One integral across a root lets the positive and negative parts cancel and gives the wrong area."
+    },
+    {
+     "nom": "Area between a curve and a line",
+     "quand_utiliser": "When a region is enclosed by a curve and a straight line.",
+     "contenu_markdown": "Solve the two equations together for the limits. Then area $=\\int_{p}^{q}(\\text{upper}-\\text{lower})\\,dx$. Decide which is upper by testing a value between the limits. The area is positive when the upper curve is taken first."
+    }
+   ]
+  },
+  {
+   "type": "exemple_resolu",
+   "enonce_markdown": "Find the area of the region enclosed by the curve $y=x^{2}-4x+3$ and the $x$-axis.",
+   "epreuve_source": false,
+   "etapes": [
+    {
+     "numero": 1,
+     "action": "Find where the curve meets the $x$-axis.",
+     "justification": "Put $y=0$ and factorise; these roots are the limits of the region.",
+     "resultat_markdown": "$x^{2}-4x+3=(x-1)(x-3)=0$, so $x=1$ and $x=3$"
+    },
+    {
+     "numero": 2,
+     "action": "Decide whether the region is above or below the axis.",
+     "justification": "Test a value between the roots, for example $x=2$.",
+     "resultat_markdown": "At $x=2$: $y=4-8+3=-1<0$, so the region is below the axis"
+    },
+    {
+     "numero": 3,
+     "action": "Integrate.",
+     "justification": "Use the power rule on each term; no constant is needed for a definite integral.",
+     "resultat_markdown": "$\\int (x^{2}-4x+3)\\,dx=\\dfrac{x^{3}}{3}-2x^{2}+3x$"
+    },
+    {
+     "numero": 4,
+     "action": "Substitute the limits.",
+     "justification": "Evaluate at the upper limit and subtract the value at the lower limit.",
+     "resultat_markdown": "At $x=3$: $9-18+9=0$. At $x=1$: $\\dfrac{1}{3}-2+3=\\dfrac{4}{3}$. Integral $=0-\\dfrac{4}{3}=-\\dfrac{4}{3}$"
+    },
+    {
+     "numero": 5,
+     "action": "State the area.",
+     "justification": "The integral is negative because the region is below the axis; an area is positive.",
+     "resultat_markdown": "Area $=\\left|-\\dfrac{4}{3}\\right|=\\dfrac{4}{3}$ square units"
+    }
+   ],
+   "conclusion_markdown": "The area enclosed by the curve and the $x$-axis is $\\dfrac{4}{3}$ square units."
+  },
+  {
+   "type": "erreurs_classiques",
+   "items": [
+    {
+     "erreur_markdown": "Writing $\\int (2x+1)\\,dx=x^{2}+x$ in an indefinite integral.",
+     "pourquoi_faux": "The constant of integration is missing. Many functions have the same derivative, and they differ by a constant.",
+     "correction_markdown": "$\\int (2x+1)\\,dx=x^{2}+x+k$."
+    },
+    {
+     "erreur_markdown": "Writing $\\int \\sin 2x\\,dx=\\dfrac{1}{2}\\cos 2x+k$.",
+     "pourquoi_faux": "The sign is wrong. The derivative of $\\cos 2x$ is $-2\\sin 2x$, so the primitive of $\\sin 2x$ is $-\\dfrac{1}{2}\\cos 2x$. A factor of $\\dfrac{1}{a}$ is needed, not a factor of $a$.",
+     "correction_markdown": "$\\int \\sin 2x\\,dx=-\\dfrac{1}{2}\\cos 2x+k$. Differentiate to check: $-\\dfrac{1}{2}(-2\\sin 2x)=\\sin 2x$."
+    },
+    {
+     "erreur_markdown": "Finding $\\int_{0}^{3}(x^{2}-4x+3)\\,dx=0$ and concluding that the area under the curve from $x=0$ to $x=3$ is zero.",
+     "pourquoi_faux": "The curve is above the axis from $0$ to $1$ and below it from $1$ to $3$. The positive and negative parts cancel, but an area cannot be zero.",
+     "correction_markdown": "Split at the root $x=1$: $\\int_{0}^{1}=\\dfrac{4}{3}$ and $\\left|\\int_{1}^{3}\\right|=\\dfrac{4}{3}$, so the area is $\\dfrac{4}{3}+\\dfrac{4}{3}=\\dfrac{8}{3}$ square units."
+    },
+    {
+     "erreur_markdown": "Writing $\\int 4x^{3}\\,dx=12x^{2}+k$.",
+     "pourquoi_faux": "This differentiates instead of integrating. Integration raises the power by one and divides by the new power.",
+     "correction_markdown": "$\\int 4x^{3}\\,dx=\\dfrac{4x^{4}}{4}+k=x^{4}+k$."
+    }
+   ]
+  },
+  {
+   "type": "exercices_application",
+   "items": [
+    {
+     "numero": 1,
+     "difficulte": "facile",
+     "enonce_markdown": "Find (a) $\\int (6x^{2}-4x+5)\\,dx$, (b) $\\int_{1}^{2}3x^{2}\\,dx$, (c) $\\int \\cos 3x\\,dx$.",
+     "solution_markdown": "(a) $\\dfrac{6x^{3}}{3}-\\dfrac{4x^{2}}{2}+5x+k=2x^{3}-2x^{2}+5x+k$. (b) $\\left[x^{3}\\right]_{1}^{2}=8-1=7$. (c) $\\dfrac{1}{3}\\sin 3x+k$. **(a) $2x^{3}-2x^{2}+5x+k$, (b) $7$, (c) $\\dfrac{1}{3}\\sin 3x+k$.**"
+    },
+    {
+     "numero": 2,
+     "difficulte": "moyen",
+     "enonce_markdown": "A curve has gradient function $\\dfrac{dy}{dx}=3x^{2}-2x$ and passes through the point $(2,5)$. (a) Find the equation of the curve. (b) Evaluate $\\int_{0}^{\\pi/6}\\cos 2x\\,dx$, leaving the answer as a surd.",
+     "solution_markdown": "(a) $y=x^{3}-x^{2}+k$. At $(2,5)$: $8-4+k=5$, so $k=1$. The curve is $y=x^{3}-x^{2}+1$. Check at $x=1$: $y=1$. (b) $\\left[\\dfrac{1}{2}\\sin 2x\\right]_{0}^{\\pi/6}=\\dfrac{1}{2}\\sin\\dfrac{\\pi}{3}-0=\\dfrac{1}{2}\\times\\dfrac{\\sqrt{3}}{2}=\\dfrac{\\sqrt{3}}{4}$. **(a) $y=x^{3}-x^{2}+1$; (b) $\\dfrac{\\sqrt{3}}{4}$.**"
+    },
+    {
+     "numero": 3,
+     "difficulte": "approfondissement",
+     "enonce_markdown": "The line $y=x+2$ cuts the curve $y=x^{2}$ at two points. Find the coordinates of these points and the area of the region enclosed between the line and the curve.",
+     "solution_markdown": "Put $x^{2}=x+2$, so $x^{2}-x-2=0$ and $(x-2)(x+1)=0$. The points are $(-1,1)$ and $(2,4)$. At $x=0$ the line gives $2$ and the curve gives $0$, so the line is above the curve between the points. Area $=\\int_{-1}^{2}(x+2-x^{2})\\,dx=\\left[\\dfrac{x^{2}}{2}+2x-\\dfrac{x^{3}}{3}\\right]_{-1}^{2}$. At $x=2$: $2+4-\\dfrac{8}{3}=\\dfrac{10}{3}$. At $x=-1$: $\\dfrac{1}{2}-2+\\dfrac{1}{3}=-\\dfrac{7}{6}$. Area $=\\dfrac{10}{3}+\\dfrac{7}{6}=\\dfrac{27}{6}=\\dfrac{9}{2}$. **Points $(-1,1)$ and $(2,4)$; area $\\dfrac{9}{2}$ square units.**"
+    }
+   ]
+  },
+  {
+   "type": "synthese",
+   "items_markdown": [
+    "$\\int x^{n}\\,dx=\\dfrac{x^{n+1}}{n+1}+k$ for $n\\neq -1$: raise the power by one and divide by the new power.",
+    "$\\int \\sin ax\\,dx=-\\dfrac{1}{a}\\cos ax+k$ and $\\int \\cos ax\\,dx=\\dfrac{1}{a}\\sin ax+k$.",
+    "An indefinite integral always ends with $+k$; a definite integral is $F(q)-F(p)$ and has no $k$.",
+    "To find a curve from its gradient, integrate and use a given point to find $k$.",
+    "Find the roots first; areas below the axis come out negative, so split at each root and take positive values.",
+    "Between a curve and a line the area is the integral of upper minus lower, between the intersection points."
+   ]
+  }
+ ]
+}

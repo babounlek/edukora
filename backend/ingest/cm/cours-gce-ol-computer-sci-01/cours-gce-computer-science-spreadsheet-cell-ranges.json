@@ -1,0 +1,164 @@
+{
+  "cours_id": "cours-gce-computer-science-spreadsheet-cell-ranges",
+  "meta": {
+    "titre": "Spreadsheet Cell Ranges: naming, counting and using blocks of cells",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "Writing, counting, selecting and formatting cell ranges",
+    "duree_estimee_min": 30,
+    "tags": [
+      "spreadsheet cell ranges"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-computer-science-2025-p3-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-ol-computer-science-2025-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-spreadsheet-cell-ranges-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A teacher in Bafoussam has thirty marks to add up for each class and does not want to click on every cell. She selects the whole block of marks in one movement and writes a single short formula. That block of cells is a range. In the GCE practical paper you are often told to apply a format to a range or to copy a formula into one, and the written paper asks how many cells a range holds. A candidate who writes the range correctly saves time and wins marks."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A cell address is a column letter followed by a row number.",
+        "Columns are named A, B, C ... Z, then AA, AB and so on.",
+        "A function such as SUM adds the numbers given to it.",
+        "A format changes how a value looks in a cell, not the value itself."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Naming, counting and using cell ranges",
+      "contenu_markdown": "### What a range is\n\nA **cell range** is a block of neighbouring cells treated as one group. It is written as the **first cell, a colon and the last cell**, where the first cell is the top-left corner and the last is the bottom-right corner. The colon is read as \"to\". So `B2:D6` means every cell from B2 to D6. A range can also be a single column, such as `C3:C7`, or a single row, such as `B4:F4`.\n\n### Counting the cells in a range\n\nNumber of cells = number of columns x number of rows.\n\n- Columns: count the letters from the first to the last, **including both ends**. Letters have positions A = 1, B = 2, C = 3 ... Z = 26, then AA = 27, AB = 28.\n- Rows: last row number - first row number + 1.\n\nFor `B2:D6` the columns are B, C and D (3) and the rows are 2, 3, 4, 5 and 6 (5), so the range holds 3 x 5 = 15 cells. For `Y1:AB2` the columns are Y, Z, AA and AB (4) and the rows are 1 and 2 (2), giving 8 cells.\n\n### Selecting ranges\n\n- Drag the mouse over the cells, or click the first cell, hold **Shift** and click the last.\n- Hold **Ctrl** and select again to add a separate block that does not touch the first one.\n- Click a column letter or a row number to select the whole column or row.\n\n### Using a range in a function\n\nFunctions such as SUM, AVERAGE, MAX, MIN and COUNT accept ranges: `=SUM(B2:B9)` adds the eight cells from B2 to B9. Separate ranges with a comma: `=SUM(B2:B4,D2:D4)` adds both blocks. (In some regional settings the separator is a semicolon.)\n\n### Formatting a range\n\nSelect the range first, then apply the format once: percentage format, number of decimal places, currency, bold, borders or alignment. The percentage format shows 0.25 as 25%. If two blocks need the same format, select the first, hold Ctrl, select the second and format both together.\n\n### Copying into a range\n\nA task such as \"copy the formula to cells E3:E8\" means fill the formula into each of the six cells from E3 down to E8.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Single block",
+          "quand_utiliser": "When the question gives one range and asks how many cells or what it covers",
+          "contenu_markdown": "Find the number of columns and the number of rows, including both ends, then multiply. Check by listing the first row of cells if you are unsure."
+        },
+        {
+          "nom": "Several ranges at once",
+          "quand_utiliser": "When the same action is needed on separate blocks",
+          "contenu_markdown": "Select the first block, hold Ctrl, select the next block and so on, then apply the format or the command once. Do not drag across the cells between the blocks."
+        },
+        {
+          "nom": "Range inside a function",
+          "quand_utiliser": "When you must total, average or find the largest value of a block",
+          "contenu_markdown": "Write the function name, the opening bracket, the range and the closing bracket. Make sure the range starts at the first data cell and stops at the last, and does not include the heading."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A teacher records the scores of four pupils in three subjects.\n\n| Row | A | B | C | D |\n|---|---|---|---|---|\n| 1 | Pupil | Maths | English | Computer |\n| 2 | Ako | 14 | 12 | 16 |\n| 3 | Beri | 9 | 11 | 8 |\n| 4 | Che | 17 | 15 | 13 |\n| 5 | Dola | 10 | 7 | 12 |\n\n(a) How many cells does the range B2:D5 contain?\n(b) Write the formula for Ako's total score and give its value.\n(c) Write the formula for the average Maths score.\n(d) Write the formula for the highest score in the whole table of marks.\n(e) Write one formula that adds the Maths and Computer scores of all four pupils.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Count the cells of B2:D5.",
+          "justification": "Columns B, C and D make 3 columns, and rows 2, 3, 4 and 5 make 4 rows.",
+          "resultat_markdown": "3 x 4 = 12 cells."
+        },
+        {
+          "numero": 2,
+          "action": "Write the total for Ako.",
+          "justification": "Ako's scores are the cells of row 2 from column B to column D.",
+          "resultat_markdown": "`=SUM(B2:D2)` gives 42."
+        },
+        {
+          "numero": 3,
+          "action": "Write the average Maths score.",
+          "justification": "The Maths scores are in column B from row 2 to row 5; the heading in B1 is excluded.",
+          "resultat_markdown": "`=AVERAGE(B2:B5)` gives 12.5."
+        },
+        {
+          "numero": 4,
+          "action": "Find the highest score overall.",
+          "justification": "MAX can read the whole block at once.",
+          "resultat_markdown": "`=MAX(B2:D5)` gives 17."
+        },
+        {
+          "numero": 5,
+          "action": "Add two separate columns in one formula.",
+          "justification": "Two ranges are separated by a comma inside the same function.",
+          "resultat_markdown": "`=SUM(B2:B5,D2:D5)` gives 99."
+        }
+      ],
+      "conclusion_markdown": "B2:D5 holds 12 cells. Ako's total is **42**, the Maths average is **12.5**, the highest score is **17** and the Maths and Computer scores together add up to **99**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Writing B2-D6 to mean the block of cells from B2 to D6.",
+          "pourquoi_faux": "A hyphen is the subtraction operator, so the spreadsheet reads B2 minus D6.",
+          "correction_markdown": "Use a colon: `B2:D6`."
+        },
+        {
+          "erreur_markdown": "Counting the columns of B2:D6 as D - B = 2 columns.",
+          "pourquoi_faux": "Subtracting positions forgets the first column itself. B, C and D are three columns.",
+          "correction_markdown": "Columns = last position - first position + 1 = 4 - 2 + 1 = 3, so the range holds 3 x 5 = 15 cells."
+        },
+        {
+          "erreur_markdown": "Adding the number of columns and the number of rows to find the number of cells.",
+          "pourquoi_faux": "A range is a rectangle, so every column holds as many cells as there are rows. 3 + 5 = 8 counts only the edges.",
+          "correction_markdown": "Multiply: 3 x 5 = 15 cells."
+        },
+        {
+          "erreur_markdown": "Writing `=SUM(B2:B8)` for a list of marks that ends in B9.",
+          "pourquoi_faux": "The range stops one cell too early, so the last mark is left out of the total.",
+          "correction_markdown": "Include every data cell: `=SUM(B2:B9)`."
+        },
+        {
+          "erreur_markdown": "Dragging the mouse from G2 to J9 to format only column G and column J.",
+          "pourquoi_faux": "The drag also selects the columns H and I in between, which then receive the format by mistake.",
+          "correction_markdown": "Select G2:G9, hold Ctrl and select J2:J9 separately."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "(a) How many cells are in the range D4:H9?\n(b) Write the range that covers column C from row 3 to row 7, and say how many cells it holds.\n(c) Write a formula that adds the numbers in that range.",
+          "solution_markdown": "(a) Columns D, E, F, G and H make 5 columns; rows 4 to 9 make 6 rows. 5 x 6 = **30 cells**.\n\n(b) **`C3:C7`**. It is a single column of rows 3, 4, 5, 6 and 7, so it holds **5 cells**.\n\n(c) **`=SUM(C3:C7)`**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Four shops sold bags of rice in three weeks. Week 1 is column B, week 2 column C and week 3 column D, with the shops in rows 2 to 5.\n\n| Row | B | C | D |\n|---|---|---|---|\n| 2 | 5 | 8 | 6 |\n| 3 | 7 | 4 | 9 |\n| 4 | 3 | 10 | 2 |\n| 5 | 6 | 5 | 8 |\n\nWrite a formula and give the value for each of these.\n\n(a) The total number of bags sold in the whole table.\n(b) The average for week 2.\n(c) The largest number of bags sold by one shop in one week.\n(d) The number of cells that contain a number.\n(e) The total for week 1 and week 3 together, using one formula.",
+          "solution_markdown": "(a) `=SUM(B2:D5)` gives **73**.\n\n(b) `=AVERAGE(C2:C5)` gives 27 divided by 4 = **6.75**.\n\n(c) `=MAX(B2:D5)` gives **10**.\n\n(d) `=COUNT(B2:D5)` gives **12** (3 columns x 4 rows).\n\n(e) `=SUM(B2:B5,D2:D5)` gives 21 + 25 = **46**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Two blocks of cells are selected: B2:D6 and C4:F8.\n\n(a) How many cells does each block contain?\n(b) Some cells belong to both blocks. Write the range they form and say how many cells it holds.\n(c) How many different cells are selected in total?\n(d) How many cells does the range Y1:AB2 contain?",
+          "solution_markdown": "(a) B2:D6 has 3 columns x 5 rows = **15 cells**. C4:F8 has 4 columns (C, D, E, F) x 5 rows (4 to 8) = **20 cells**.\n\n(b) The shared cells are in columns C and D (common to both blocks) and rows 4, 5 and 6 (common to both). The shared range is **C4:D6**, which holds 2 x 3 = **6 cells**.\n\n(c) The cells counted twice must be removed once: 15 + 20 - 6 = **29 different cells**.\n\n(d) The columns are Y, Z, AA and AB (4) and there are 2 rows, so the range holds 4 x 2 = **8 cells**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A range is written first cell, colon, last cell (top-left to bottom-right), for example B2:D6.",
+        "Number of cells = columns x rows, counting both ends: last position - first position + 1 for each.",
+        "Columns after Z continue as AA, AB and so on: Z is 26, AA is 27.",
+        "Use a range in a function such as SUM, AVERAGE, MAX, MIN or COUNT; separate several ranges with a comma.",
+        "Select a range first and then format it; use Ctrl to select blocks that are not neighbours."
+      ]
+    }
+  ]
+}

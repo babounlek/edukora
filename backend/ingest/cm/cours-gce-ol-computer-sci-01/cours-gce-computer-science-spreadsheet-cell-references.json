@@ -1,0 +1,163 @@
+{
+  "cours_id": "cours-gce-computer-science-spreadsheet-cell-references",
+  "meta": {
+    "titre": "Spreadsheet Cell References: relative, absolute and mixed",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "How cell addresses behave when a formula is copied",
+    "duree_estimee_min": 30,
+    "tags": [
+      "spreadsheet cell references"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-computer-science-2025-p1-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-ol-computer-science-2025-p1-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-spreadsheet-cell-references-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A shopkeeper in Buea wants to raise every price by the same percentage. If she types the rate in a formula on each line she must retype everything when the rate changes. If she stores the rate in one cell and uses it in every formula, a single change updates the whole list. The trick is to tell the spreadsheet which addresses may move when a formula is copied and which must stay put. The GCE tests this in the multiple-choice paper with questions on the types of reference, and in the practical paper when you copy a formula down a column."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A cell address is a column letter followed by a row number, such as C5.",
+        "A formula starts with = and can use cell addresses instead of typed numbers.",
+        "Dragging the fill handle copies a formula to the cells next to it."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Relative, absolute and mixed cell references",
+      "contenu_markdown": "### Cell addresses\n\nEvery cell has an **address** made of its column letter and its row number, for example B2. Columns run A to Z and then AA, AB and so on. A formula reads a value by using the address of the cell that holds it.\n\n### Why the type of reference matters\n\nWhen you copy a formula to another cell, the spreadsheet **rewrites the addresses** inside it, moving them by the same distance as the copy. Sometimes this is exactly what you want and sometimes you need an address to stay still. The dollar sign placed in front of a column letter or a row number is a **lock**: it has nothing to do with money.\n\n| Type | Written as | Copied one row down | Copied one column right |\n|---|---|---|---|\n| Relative | `B2` | `B3` | `C2` |\n| Absolute | `$B$2` | `$B$2` | `$B$2` |\n| Mixed, column locked | `$B2` | `$B3` | `$B2` |\n| Mixed, row locked | `B$2` | `B$2` | `C$2` |\n\n### Relative references\n\nA **relative reference** such as B2 changes when the formula is copied. If `=B2*C2` is in D2 and you copy it one row down to D3, it becomes `=B3*C3`. Copied one column right to E2 it becomes `=C2*D2`. This is why one formula can be filled down a whole column of different rows.\n\n### Absolute references\n\nAn **absolute reference** such as `$B$2` locks both the column and the row, so the address never changes wherever the formula is copied. Use it for a single value used by many formulas, such as a tax rate, a rate of increase or an exchange rate.\n\n### Mixed references\n\nA **mixed reference** locks only one part: `$B2` keeps column B but lets the row move, and `B$2` keeps row 2 but lets the column move. Mixed references are useful in a table that has values along the top and down the left side.\n\nIn Microsoft Excel, pressing the F4 key while the cursor is on a reference adds the lock signs step by step, so you do not need to type them.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Relative reference",
+          "quand_utiliser": "When each row or column uses its own values",
+          "contenu_markdown": "Type the address normally, for example `=B4*C4`, and fill down. Row 5 will use B5 and C5, row 6 will use B6 and C6, and so on. Most formulas in a list are of this kind."
+        },
+        {
+          "nom": "Absolute reference",
+          "quand_utiliser": "When many formulas need the same single cell",
+          "contenu_markdown": "Lock the cell holding the constant, for example a rate in B1 written `$B$1`. Whichever cell receives the copy, it still points to B1."
+        },
+        {
+          "nom": "Mixed reference",
+          "quand_utiliser": "When a table has one set of values across the top and another down the side",
+          "contenu_markdown": "Lock the column for the side values and the row for the top values, for example `=$A2*B$1`. The formula can then be copied both across and down."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A shop in Buea raises all its prices by the same percentage. The rate of increase is typed once in cell B1 (10, meaning 10%). The old prices in FCFA are in B4 to B7 and the new prices must appear in C4 to C7.\n\n| Row | A | B | C |\n|---|---|---|---|\n| 1 | Increase (%) | 10 | |\n| 3 | Item | Old price | New price |\n| 4 | Soap | 400 | |\n| 5 | Notebook | 1000 | |\n| 6 | Pen | 250 | |\n| 7 | Bucket | 1500 | |\n\nWrite the formula for C4 so that it can be copied down to C7, and give the new prices.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Decide which address must stay fixed and which must move.",
+          "justification": "The prices change from row to row, but every row must use the same rate in B1.",
+          "resultat_markdown": "Old price: relative. Rate: absolute."
+        },
+        {
+          "numero": 2,
+          "action": "Write the formula for C4.",
+          "justification": "A price rising by 10% is multiplied by (100 + 10) and divided by 100. The rate is locked with dollar signs.",
+          "resultat_markdown": "`=B4*(100+$B$1)/100`"
+        },
+        {
+          "numero": 3,
+          "action": "Copy C4 down to C7 and read the rewritten formulas.",
+          "justification": "The relative row number in B4 moves down by one for each row, while $B$1 does not move.",
+          "resultat_markdown": "C5: `=B5*(100+$B$1)/100`; C6: `=B6*(100+$B$1)/100`; C7: `=B7*(100+$B$1)/100`"
+        },
+        {
+          "numero": 4,
+          "action": "Read the results.",
+          "justification": "Each formula uses its own old price and the same rate.",
+          "resultat_markdown": "C4 = 440, C5 = 1 100, C6 = 275, C7 = 1 650 FCFA."
+        },
+        {
+          "numero": 5,
+          "action": "Check what would go wrong without the lock.",
+          "justification": "If B1 were written without dollar signs, it would be treated as relative and would slide down.",
+          "resultat_markdown": "C5 would become `=B5*(100+B2)/100`. B2 is empty, so the price would not change; C6 would point to B3, which holds text, and show an error."
+        }
+      ],
+      "conclusion_markdown": "With the rate locked as `$B$1`, one formula copied down gives the new prices **440, 1 100, 275 and 1 650 FCFA**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Thinking that `$B$1` means an amount of money in dollars.",
+          "pourquoi_faux": "In a cell address the dollar sign is a lock symbol. It does not change the currency or the value of the cell.",
+          "correction_markdown": "Read `$B$1` as \"column B and row 1 are both locked\"."
+        },
+        {
+          "erreur_markdown": "Writing `=B4*(100+B1)/100` for the price increase and copying it down.",
+          "pourquoi_faux": "The address B1 is relative, so it moves to B2, B3 and so on in the rows below. Only the first row is correct.",
+          "correction_markdown": "Lock the rate: `=B4*(100+$B$1)/100`."
+        },
+        {
+          "erreur_markdown": "Locking everything in a formula that must be copied down, for example `=$B$4*$C$4`.",
+          "pourquoi_faux": "Every row then reads the same two cells, so the whole column shows the same answer.",
+          "correction_markdown": "Leave the row-by-row values relative: `=B4*C4`."
+        },
+        {
+          "erreur_markdown": "Writing `=A2*B1` for a two-way table and copying it across and down.",
+          "pourquoi_faux": "Both addresses are relative. Copied across, A2 drifts away from column A, and copied down, B1 drifts away from row 1, so the formula reads the wrong cells.",
+          "correction_markdown": "Lock column A and row 1 with `=$A2*B$1`."
+        },
+        {
+          "erreur_markdown": "Believing that an absolute reference means the value in the cell can never change.",
+          "pourquoi_faux": "The lock fixes the address of the cell, not its content. You can still type a new value there.",
+          "correction_markdown": "When the rate in B1 is changed, every formula that uses `$B$1` recalculates."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Classify each reference as relative, absolute or mixed, and say which part (column, row or both) is locked: `C5`, `$C$5`, `C$5`, `$C5`.",
+          "solution_markdown": "- `C5` is **relative**: nothing is locked.\n- `$C$5` is **absolute**: column and row are both locked.\n- `C$5` is **mixed**: only the row is locked.\n- `$C5` is **mixed**: only the column is locked."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Give the formula produced by each copy.\n\n(a) `=A2*$D$1` is typed in B2 and copied to B4.\n(b) `=A$2*D$1` is typed in B2 and copied to C3.\n(c) `=$A2+B$1` is typed in C2 and copied to E4.",
+          "solution_markdown": "Move each unlocked part by the distance of the copy, and leave the locked parts alone.\n\n(a) Two rows down, no column change: **`=A4*$D$1`**. The locked cell `$D$1` stays.\n\n(b) One column right and one row down: A becomes B, 2 is locked, D becomes E, 1 is locked: **`=B$2*E$1`**.\n\n(c) Two columns right and two rows down: `$A2` keeps column A but its row becomes 4; `B$1` keeps row 1 but its column becomes D: **`=$A4+D$1`**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "(a) The marks of five pupils are in B2 to B6: 10, 14, 20, 24 and 12. B7 holds `=SUM(B2:B6)`. Write the formula for C2 that gives the share of each mark in the total, so that it can be copied down to C6, and give the five shares as percentages.\n\n(b) Unit prices in FCFA are in A2 to A4 (500, 800, 1200). Quantities are in B1 to D1 (2, 5, 10). Write one formula for B2 that gives the cost when copied to the whole block B2:D4, and give the values.",
+          "solution_markdown": "(a) The total in B7 must be locked, the mark must be relative: C2 is `=B2/$B$7`. B7 holds 80. The shares are 10/80, 14/80, 20/80, 24/80 and 12/80, which as percentages are **12.5%, 17.5%, 25%, 30% and 15%**. They add up to 100%.\n\n(b) The price column must be locked and the quantity row must be locked: B2 is **`=$A2*B$1`**. For instance C3 becomes `=$A3*C$1`. The block is:\n\n| Row | B | C | D |\n|---|---|---|---|\n| 2 | 1 000 | 2 500 | 5 000 |\n| 3 | 1 600 | 4 000 | 8 000 |\n| 4 | 2 400 | 6 000 | 12 000 |"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "A relative reference such as B2 moves with the formula when it is copied; an absolute reference such as $B$2 never moves.",
+        "A mixed reference locks one part only: $B2 locks the column and B$2 locks the row.",
+        "The dollar sign is a lock, not money. It fixes the address, not the value stored in the cell.",
+        "Lock a single constant used by many formulas (a rate, a tax); keep row-by-row data relative.",
+        "To predict a copied formula, move every unlocked column letter and row number by the distance of the copy."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,159 @@
+{
+  "cours_id": "cours-gce-computer-science-spreadsheet-formulas-and-functions",
+  "meta": {
+    "titre": "Spreadsheet Formulas and Functions: calculating with SUM, IF and more",
+    "matiere": "Computer Science",
+    "pays": "cm",
+    "serie": "GCE O/L",
+    "sous_theme": "Writing formulas and using built-in functions in a spreadsheet",
+    "duree_estimee_min": 35,
+    "tags": [
+      "spreadsheet formulas and functions"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "gce-ol-computer-science-2025-p3-officiel-cameroun",
+    "epreuve_titre": "GCE O/L Computer Science past paper (Cameroon)",
+    "epreuve_source": "gce-ol-computer-science-2025-p3-officiel-cameroun.pdf",
+    "exercice_numero": "1",
+    "rappel_id": "rdm-gce-computer-science-spreadsheet-formulas-and-functions-0",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "A trader in Mokolo market keeps her sales on paper and spends an hour every evening adding columns with a calculator. In a spreadsheet she types one formula, copies it down the column and the totals appear at once. The practical paper of the GCE tests exactly this: you open a file, enter formulas in named cells, copy them down and sometimes add a function such as SUM or IF. Each correct formula earns marks, and a formula with a wrong cell address earns none, so precision matters."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "A spreadsheet is arranged in rows (numbers) and columns (letters), and a cell is named by its column letter and row number, such as B2.",
+        "Multiplication and division are done before addition and subtraction.",
+        "A percentage means a number out of 100, so 10% is 10 out of 100.",
+        "A range such as B2:B9 means all the cells from B2 down to B9."
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "Writing formulas and using functions",
+      "contenu_markdown": "### What a formula is\n\nA **formula** is an instruction that **starts with the equals sign (=)**. The cell shows the result of the calculation, while the formula itself stays visible in the formula bar. A good formula uses **cell addresses** such as B2 instead of typed numbers, so the result updates by itself when a value changes.\n\n### Operators and order of work\n\n| Operator | Meaning | Example | Result |\n|---|---|---|---|\n| `+` | add | `=5+3` | 8 |\n| `-` | subtract | `=9-4` | 5 |\n| `*` | multiply | `=4*6` | 24 |\n| `/` | divide | `=12/4` | 3 |\n| `^` | power | `=2^3` | 8 |\n\nThe spreadsheet works in this order: brackets first, then powers, then multiplication and division, then addition and subtraction, going from left to right. So `=2+3*4` gives 14, but `=(2+3)*4` gives 20.\n\n### Common functions\n\nA **function** is a ready-made formula with a name, followed by brackets that hold its arguments.\n\n| Function | Job | Example |\n|---|---|---|\n| `SUM` | adds numbers | `=SUM(B2:B9)` |\n| `AVERAGE` | mean of numbers | `=AVERAGE(B2:B9)` |\n| `MAX` / `MIN` | largest / smallest value | `=MAX(B2:B9)` |\n| `COUNT` | counts cells that contain numbers | `=COUNT(B2:B9)` |\n| `ROUND` | rounds to a number of decimal places | `=ROUND(B2,0)` |\n| `IF` | chooses between two results | `=IF(B2>=10,\"Pass\",\"Fail\")` |\n\n`IF` has three parts separated by commas: the **test**, the result **if true** and the result **if false**. Text results go between double quotes.\n\n### Copying a formula\n\nType the formula once, then drag the **fill handle** (the small square at the corner of the selected cell) down or across. The spreadsheet adjusts the cell addresses for each new row or column, so the same formula works for the whole list.",
+      "formule_principale": null,
+      "variantes": [
+        {
+          "nom": "Arithmetic formula",
+          "quand_utiliser": "When the answer comes from a calculation on cells",
+          "contenu_markdown": "Write = then the cell addresses joined by operators, for example `=B2*C2` for quantity times unit price. Use brackets when an addition or subtraction must be done before a multiplication or division."
+        },
+        {
+          "nom": "Function on a range",
+          "quand_utiliser": "When you total, average or compare a whole list",
+          "contenu_markdown": "Use the function name and the first and last cell of the list separated by a colon: `=SUM(D2:D5)` adds D2, D3, D4 and D5. This is shorter and safer than `=D2+D3+D4+D5`."
+        },
+        {
+          "nom": "Percentages",
+          "quand_utiliser": "When a question asks for a percentage or a rate",
+          "contenu_markdown": "A percentage of a value is `=B2*15/100` (15% of B2). To show a fraction as a percentage, divide, for example `=B2/C2`, then apply the **percentage format** to the cell: 0.25 is then displayed as 25%."
+        }
+      ]
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "A shopkeeper in Douala records a delivery in a spreadsheet. Column A holds the item, column B the quantity and column C the unit price in FCFA.\n\n| Row | A | B | C | D |\n|---|---|---|---|---|\n| 1 | Item | Qty | Unit price | Amount |\n| 2 | Sugar | 4 | 700 | |\n| 3 | Cooking oil | 2 | 1500 | |\n| 4 | Rice | 5 | 600 | |\n| 5 | Salt | 6 | 150 | |\n\n(a) Write the formula for D2 and copy it down to D5.\n(b) Write the formula in D6 for the total.\n(c) A discount of 10% is given when the total is at least 9000 FCFA, otherwise nothing. Write the formula in D7.\n(d) Write the formula in D8 for the amount to pay and give all the results.",
+      "epreuve_source": false,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Write the amount formula in D2.",
+          "justification": "Amount is quantity multiplied by unit price, and cell addresses let the result update.",
+          "resultat_markdown": "`=B2*C2`; copied down it gives 2 800, 3 000, 3 000 and 900 FCFA."
+        },
+        {
+          "numero": 2,
+          "action": "Total the amounts in D6.",
+          "justification": "SUM adds the whole range D2:D5 in one step.",
+          "resultat_markdown": "`=SUM(D2:D5)` gives 9 700 FCFA."
+        },
+        {
+          "numero": 3,
+          "action": "Write the discount in D7 with IF.",
+          "justification": "The test is whether the total reaches 9000 (at least means greater than or equal to). If true, the discount is 10 out of 100 of the total.",
+          "resultat_markdown": "`=IF(D6>=9000,D6*10/100,0)` gives 970 FCFA."
+        },
+        {
+          "numero": 4,
+          "action": "Write the amount to pay in D8.",
+          "justification": "The amount to pay is the total minus the discount.",
+          "resultat_markdown": "`=D6-D7` gives 8 730 FCFA."
+        }
+      ],
+      "conclusion_markdown": "The amounts are 2 800, 3 000, 3 000 and 900 FCFA, the total is 9 700 FCFA, the discount is 970 FCFA and the customer pays **8 730 FCFA**."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Typing B2+B3 in a cell without the equals sign.",
+          "pourquoi_faux": "Without = the spreadsheet stores the entry as ordinary text, so the cell displays B2+B3 instead of a number.",
+          "correction_markdown": "Start every formula with **=**: `=B2+B3`."
+        },
+        {
+          "erreur_markdown": "Typing numbers into the formula, such as `=700*4`, when the numbers are already in cells.",
+          "pourquoi_faux": "The result no longer follows the cells. If the price in C2 changes, the answer stays the same, and the formula cannot be copied down.",
+          "correction_markdown": "Use the cell addresses: `=B2*C2`."
+        },
+        {
+          "erreur_markdown": "Writing `=B2+B3/2` to find the average of two marks, B2 being 10 and B3 being 20.",
+          "pourquoi_faux": "Division is done before addition, so the cell gives 10 + 10 = 20, not the average 15.",
+          "correction_markdown": "Use brackets, `=(B2+B3)/2`, or the function `=AVERAGE(B2:B3)`, which gives 15."
+        },
+        {
+          "erreur_markdown": "Finding 15% of the value in B2 with `=B2*15`.",
+          "pourquoi_faux": "This multiplies by 15 instead of by 15 out of 100, so the answer is 100 times too large. If B2 holds 2000 the cell shows 30000 instead of 300.",
+          "correction_markdown": "Use `=B2*15/100` or `=B2*0.15`."
+        },
+        {
+          "erreur_markdown": "Using `COUNT` to find how many names are in a column.",
+          "pourquoi_faux": "COUNT only counts cells that contain numbers, so a column of names gives 0.",
+          "correction_markdown": "Use `COUNTA`, which counts all cells that are not empty."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Cells B2, B3, B4 and B5 hold the numbers 12, 18, 24 and 30. Write the formula for each result and give its value.\n\n(a) The total of the four cells.\n(b) Their average.\n(c) The largest number.\n(d) The smallest number.",
+          "solution_markdown": "(a) `=SUM(B2:B5)` gives **84**.\n\n(b) `=AVERAGE(B2:B5)` gives **21** (84 divided by 4).\n\n(c) `=MAX(B2:B5)` gives **30**.\n\n(d) `=MIN(B2:B5)` gives **12**."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Five pupils obtained these marks out of 20 in column B: B2 = 14, B3 = 9, B4 = 10, B5 = 7, B6 = 12. A pupil passes with 10 or more.\n\n(a) Write the formula for C2 that shows Pass or Fail, and give C2 to C6 after copying it down.\n(b) Write the formula for the average mark and give its value.\n(c) Write a formula that rounds the average to a whole number and give the result.",
+          "solution_markdown": "(a) `=IF(B2>=10,\"Pass\",\"Fail\")`. Because 10 itself passes, the test uses greater than or equal to. After copying: **Pass, Fail, Pass, Fail, Pass**. 3 pupils pass.\n\n(b) `=AVERAGE(B2:B6)` gives 52 divided by 5 = **10.4**.\n\n(c) `=ROUND(AVERAGE(B2:B6),0)` gives **10**."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "A workshop pays staff per hour. Column A holds the name, B the hours worked, C the rate per hour in FCFA.\n\n| Row | A | B | C |\n|---|---|---|---|\n| 2 | Ako | 45 | 800 |\n| 3 | Beri | 38 | 900 |\n| 4 | Che | 40 | 1000 |\n\nD is the pay (hours times rate). E is a bonus of 10% of the pay for staff who worked **more than** 40 hours, otherwise 0. F is the total pay (D plus E).\n\n(a) Write the formulas for D2, E2 and F2.\n(b) Give D, E and F for the three workers.\n(c) Write the formula for the total of column F and for its average rounded to a whole number, and give their values.",
+          "solution_markdown": "(a) D2: `=B2*C2`. E2: `=IF(B2>40,D2*10/100,0)`. F2: `=D2+E2`.\n\n(b) Ako: D = 36 000, E = 3 600, F = **39 600**. Beri: D = 34 200, E = 0, F = **34 200**. Che: D = 40 000, E = 0, F = **40 000**. Che worked exactly 40 hours, which is not more than 40, so there is no bonus.\n\n(c) `=SUM(F2:F4)` gives **113 800 FCFA**. `=ROUND(AVERAGE(F2:F4),0)` gives 113 800 divided by 3 = 37 933.33, rounded to **37 933 FCFA**."
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Every formula starts with =. Use cell addresses, not typed numbers, so results update when data changes.",
+        "Order of work: brackets, powers, then multiplication and division, then addition and subtraction.",
+        "SUM, AVERAGE, MAX, MIN and COUNT work on a range such as B2:B9; COUNT only counts cells holding numbers.",
+        "IF(test, value if true, value if false) chooses between two results; text answers go between double quotes.",
+        "For a percentage of a value multiply by the rate and divide by 100; the percentage format displays 0.25 as 25%.",
+        "Drag the fill handle to copy a formula down a column so that it works for every row."
+      ]
+    }
+  ]
+}
