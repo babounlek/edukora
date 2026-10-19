@@ -77,6 +77,16 @@ class Plan(models.Model):
     def __str__(self):
         return f"{self.name} ({self.price} FCFA / {self.duration_days}j)"
 
+    def save(self, *args, **kwargs):
+        # Jusqu'à l'Examen inclut TOUJOURS les épreuves inédites, quel que soit le cursus : on ne dépend pas
+        # d'une case à cocher à la main dans l'admin ni d'un plan semé (c'est ainsi que le GCE l'avait perdu).
+        if self.product_type == ProductType.ABONNEMENT and self.duration_mode == DureeMode.JUSQUA_EXAMEN:
+            self.inclut_inedit = True
+            update_fields = kwargs.get("update_fields")
+            if update_fields is not None and "inclut_inedit" not in update_fields:
+                kwargs["update_fields"] = [*update_fields, "inclut_inedit"]
+        super().save(*args, **kwargs)
+
     def effective_duration_days(self):
         """
         Durée réelle en jours à appliquer à l'activation/l'affichage. Pour

@@ -19,13 +19,21 @@ class PlanGceOLevelTests(TestCase):
         self.assertEqual(self.plan.name, NOM)
         self.assertEqual(self.plan.price, 15000)
         self.assertEqual(self.plan.duration_mode, DureeMode.JUSQUA_EXAMEN)
-        self.assertFalse(self.plan.inclut_inedit)
+        self.assertTrue(self.plan.inclut_inedit)
 
     def test_seme_desactive_donc_absent_du_catalogue(self):
         self.assertFalse(self.plan.is_active)
         reponse = self.client.get(reverse("subscriptions:plan-list"))
         self.assertEqual(reponse.status_code, 200)
         self.assertNotIn(self.plan.id, [p["id"] for p in reponse.json()])
+
+    def test_jusqua_examen_inclut_toujours_les_inedites_meme_si_on_decoche(self):
+        Plan.objects.filter(pk=self.plan.pk).update(inclut_inedit=False)
+        plan = Plan.objects.get(pk=self.plan.pk)
+        plan.is_active = True
+        plan.save(update_fields=["is_active"])
+        plan.refresh_from_db()
+        self.assertTrue(plan.inclut_inedit)
 
     def test_un_plan_par_niveau_et_aucun_pour_les_cursus_sans_contenu(self):
         """Un plan O Level et un plan A Level, tous deux sur le cursus général (sans série ni branche technique)."""
@@ -44,7 +52,7 @@ class PlanGceOLevelTests(TestCase):
         self.assertGreaterEqual(ligne["effective_duration_days"], 1)
         self.assertEqual(ligne["prix_enfant_supplementaire"], 12000)
         self.assertEqual(ligne["cursus"]["examen"], "GCE_OL")
-        self.assertFalse(ligne["inclut_inedit"])
+        self.assertTrue(ligne["inclut_inedit"])
 
 
 NOM_AL = "GCE A Level - Jusqu'à l'Examen"
@@ -61,7 +69,7 @@ class PlanGceALevelTests(TestCase):
         self.assertEqual(self.plan.name, NOM_AL)
         self.assertEqual(self.plan.price, 15000)
         self.assertEqual(self.plan.duration_mode, DureeMode.JUSQUA_EXAMEN)
-        self.assertFalse(self.plan.inclut_inedit)
+        self.assertTrue(self.plan.inclut_inedit)
 
     def test_seme_desactive_donc_absent_du_catalogue(self):
         self.assertFalse(self.plan.is_active)
@@ -77,4 +85,4 @@ class PlanGceALevelTests(TestCase):
         self.assertEqual(ligne["effective_price"], 15000)
         self.assertGreaterEqual(ligne["effective_duration_days"], 1)
         self.assertEqual(ligne["cursus"]["examen"], "GCE_AL")
-        self.assertFalse(ligne["inclut_inedit"])
+        self.assertTrue(ligne["inclut_inedit"])

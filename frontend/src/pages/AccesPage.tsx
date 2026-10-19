@@ -22,7 +22,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
-import { localeCourante, t, useI18n } from "@/lib/i18n"
+import { langueCourante, localeCourante, t, useI18n } from "@/lib/i18n"
 
 // En dessous, la fin de l'abonnement se voit : la jauge passe à l'orange et "Prolonger" devient
 // l'action principale de la ligne. Assez tôt pour renouveler sans coupure, assez tard pour ne pas
@@ -293,8 +293,9 @@ export function AccesPage() {
   // sa propre échéance ne ferait donc que dupliquer celle de l'abonnement - inutile et
   // source de confusion ("deux abonnements actifs ?"). On s'en sert seulement pour
   // savoir SUR QUEL cursus l'afficher comme un simple badge sur la ligne d'abonnement.
+  // Rapproché par (profil, cursus) : dans une famille, un enfant ne doit pas hériter du badge d'un autre.
   const cursusAvecInedit = new Set(
-    (inscriptionsInedites ?? []).filter((i) => i.is_active).map((i) => i.cursus.id),
+    (inscriptionsInedites ?? []).filter((i) => i.is_active).map((i) => `${i.profil.id}-${i.cursus.id}`),
   )
 
   // Les deux sources d'accès restantes (abonnement, add-on répétiteur) partagent la même
@@ -304,7 +305,12 @@ export function AccesPage() {
     ...(subscriptions ?? []).map((sub) => ({
       key: `sub-${sub.id}`,
       titre: libelleCursus(sub.cursus),
-      sous_titre: sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? t("prix.formule") : t("ac.mensuel")),
+      // Le nom du plan vient du serveur, en français : hors français, la formule unique est traduite
+      // (même règle que SubscribePage.nomPlan).
+      sous_titre:
+        sub.duration_mode === "JUSQUA_EXAMEN" && langueCourante() !== "fr"
+          ? t("prix.formule")
+          : sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? t("prix.formule") : t("ac.mensuel")),
       expiresAt: sub.expires_at,
       actif: sub.is_active,
       cursusId: sub.cursus.id,
@@ -312,7 +318,7 @@ export function AccesPage() {
       // Un accès "Jusqu'à l'Examen" couvre déjà l'échéance : lui proposer de prolonger n'aurait
       // aucun sens tant qu'il est actif.
       renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
-      inclutInedit: cursusAvecInedit.has(sub.cursus.id),
+      inclutInedit: cursusAvecInedit.has(`${sub.profil.id}-${sub.cursus.id}`),
     })),
     ...(inscriptionsRepetiteur ?? []).map((i) => ({
       key: `repet-${i.id}`,
