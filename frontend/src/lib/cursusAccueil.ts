@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { listCursus, listEpreuves } from "@/api/endpoints"
+import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
-import { estDeLangue } from "@/lib/cursusLangue"
+import { estDeLangue, useCursusListe } from "@/lib/cursusLangue"
 import { langueCourante } from "@/lib/i18n"
 
 /**
@@ -16,6 +17,22 @@ export function useCursusDeclare(): number | null {
   // pas s'appeler selon une condition qui change d'un rendu à l'autre.
   const enAttente = useCursusPrepareEnAttente()
   return isAuthenticated ? user?.cursus_prepare?.id ?? null : enAttente
+}
+
+/**
+ * L'examen déclaré, en entier (libellé, série, langue) : celui du compte pour un élève connecté, sinon celui que le visiteur
+ * a choisi et que le navigateur garde en attente (voir cursusPrepare.ts), retrouvé dans la liste des examens du pays.
+ * Null sans déclaration, ou si l'examen gardé n'est pas de ce pays. `useCursusDeclare` ne rend que l'id : à utiliser quand
+ * seul l'id compte. Sans cette lecture, les listes (épreuves, cours, thèmes) ne se pré-filtraient que pour un compte et un
+ * visiteur ayant choisi sa série retrouvait tout le catalogue (test élève, 2026-10-19).
+ */
+export function useCursusPrepareDeclare(country: string | undefined): Cursus | null {
+  const { isAuthenticated, user } = useAuth()
+  const enAttente = useCursusPrepareEnAttente()
+  // La liste n'est demandée que pour un visiteur qui a déclaré quelque chose : même clé de cache que le reste du site.
+  const { tous } = useCursusListe(country, { langue: undefined, enabled: !isAuthenticated && enAttente !== null })
+  if (isAuthenticated) return user?.cursus_prepare ?? null
+  return tous.find((c) => c.id === enAttente) ?? null
 }
 
 /**

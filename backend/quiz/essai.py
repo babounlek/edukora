@@ -22,12 +22,17 @@ from rest_framework.decorators import api_view, permission_classes, throttle_cla
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
-from catalog.models import Cursus, StatutContenu, Subject, Tag, TypeReponse
+from catalog.models import Cursus, Examen, StatutContenu, Subject, Tag, TypeReponse
 
 from .models import CompetenceItem, ModeQuiz, ResultatDeclare
 from .gratuits import themes_gratuits_par_matiere
 from .services import _items_eligibles, perimetre_est_vitrine
 from .views import _competence_item_corrige, _cursus_display
+
+# Même ordre pédagogique que le frontend (lib/cursus.ts, EXAMEN_ORDER) : collège, intermédiaire, lycée, puis le GCE.
+ORDRE_EXAMENS = {
+    code: i for i, code in enumerate([Examen.BEPC, Examen.PROBATOIRE, Examen.BAC, Examen.GCE_OL, Examen.GCE_AL])
+}
 
 # Un thème offert compte 5 à 9 items : 15 laisse de la marge sans autoriser de gros tirages.
 ESSAI_N_MAX = 15
@@ -117,8 +122,12 @@ def liste_essais(request):
         }
         for c, s, t, n in complets
     ]
-    # L'ordre des cursus est celui du référentiel (examen puis série), pas celui des ids.
-    rang = {c.id: i for i, c in enumerate(sorted(cursus.values(), key=lambda x: (x.examen, x.series.code if x.series else "")))}
+    # L'ordre des cursus est celui du parcours scolaire (BEPC, Probatoire, BAC, puis le GCE), puis la série - ni
+    # alphabétique, qui ouvrait la liste sur « BAC - A » et reléguait le BEPC en 6e pastille (test élève P1), ni celui des ids.
+    rang = {
+        c.id: i
+        for i, c in enumerate(sorted(cursus.values(), key=lambda x: (ORDRE_EXAMENS.get(x.examen, len(ORDRE_EXAMENS)), x.examen, x.series.code if x.series else "")))
+    }
     essais.sort(key=lambda e: (rang[e["cursus"]], e["subject_label"]))
     return Response(essais)
 

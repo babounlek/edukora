@@ -1,7 +1,8 @@
 import { useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
 
-import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
+import { useCursusPrepareDeclare } from "@/lib/cursusAccueil"
 import { estDeLangue } from "@/lib/cursusLangue"
 import { langueCourante, t, useI18n } from "@/lib/i18n"
 
@@ -50,10 +51,11 @@ export function desactiverFiltreCursus(params: URLSearchParams): URLSearchParams
  * renoncerait. La page applique, le bandeau se contente de raconter.
  */
 function useEtatFiltreCursus() {
-  const { isAuthenticated, user } = useAuth()
+  const { country } = useCountry()
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const cursusPrepare = isAuthenticated ? user?.cursus_prepare ?? null : null
+  // Compte ou visiteur : un visiteur qui a choisi sa série à l'arrivée retrouve ses listes déjà réduites.
+  const cursusPrepare = useCursusPrepareDeclare(country)
   const cursusDansUrl = searchParams.get("cursus") ?? ""
   const voirTout = searchParams.get(PARAM_VOIR_TOUT) === "1"
 

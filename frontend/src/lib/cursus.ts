@@ -14,6 +14,21 @@ function joinFr(items: string[]): string {
 // cette liste (indexOf = -1) passerait sinon en tête.
 export const EXAMEN_ORDER = ["BEPC", "PROBATOIRE", "BAC", "GCE_OL", "GCE_AL", "AUTRE"]
 
+/**
+ * Les cursus dans l'ordre du parcours scolaire (BEPC, Probatoire, BAC, puis le GCE), puis par série. L'API les renvoie
+ * dans l'ordre alphabétique du champ `examen` (« BAC » < « BEPC »), qui ouvrait une rangée de pastilles sur « BAC A » et
+ * reléguait le BEPC en sixième position (test élève P1). Ne modifie pas la liste reçue.
+ */
+export function trierCursus<T extends { examen: string; series: { code: string } | null }>(liste: T[]): T[] {
+  const rang = (examen: string) => {
+    const i = EXAMEN_ORDER.indexOf(examen)
+    return i === -1 ? EXAMEN_ORDER.length : i
+  }
+  return [...liste].sort(
+    (a, b) => rang(a.examen) - rang(b.examen) || (a.series?.code ?? "").localeCompare(b.series?.code ?? ""),
+  )
+}
+
 /** Le cursus relève-t-il du GCE (sous-système anglophone) ? Pas de séries : on y choisit ses matières. */
 export function estGce(cursus: { examen: string } | null | undefined): boolean {
   return cursus?.examen === "GCE_OL" || cursus?.examen === "GCE_AL"

@@ -120,3 +120,22 @@ Mesurées sur /quiz au rechargement (cache navigateur chaud, réseau local non b
 | F7, F8, F9, F10, F11, F13 | nouvelles, S3-S4 | F11 (impression unique) et F13 (message GCE sur l'arrivée) sont à faible confiance. |
 
 Rien n'a été vérifié en phase B ni corrigé pour ce second rapport.
+
+## 10. Persistance de l'examen choisi sur tous les filtres (2026-10-19, non committé)
+
+**Diagnostic** (code puis navigateur) : l'examen déclaré par un visiteur vit dans `localStorage` (`edukamer_cursus_prepare_en_attente`), celui d'un élève connecté sur son compte. Un seul hook (`useCursusDeclare`) les unifiait, mais seuls l'accueil, la recherche, les inédites et les essais du quiz le lisaient. `useFiltreCursusParDefaut` (`lib/filtreCursus.tsx`) faisait `isAuthenticated ? user.cursus_prepare : null` : pour un visiteur, le pré-filtrage valait toujours null. Mesuré avant correction, visiteur ayant déclaré BAC C : `/cm/epreuves` 1 326 épreuves sans `?cursus=`, `/cm/cours` et `/cm/themes-frequents` non filtrés, `/tarifs` sans présélection.
+
+**Correction** (une source de vérité) :
+- `lib/cursusAccueil.ts` : `useCursusPrepareDeclare(country)` rend l'examen en entier, celui du compte ou celui du visiteur retrouvé dans la liste des examens du pays (la liste n'est demandée que si un visiteur a déclaré quelque chose).
+- `lib/filtreCursus.tsx` : le pré-filtrage des listes (épreuves, cours, thèmes fréquents) utilise ce hook. Règles conservées : un défaut et jamais une frontière (« Voir tout le catalogue », `tout=1`), un `?cursus=` explicite l'emporte, un examen d'une autre langue que l'interface ne filtre pas, un examen d'un autre pays ne filtre rien.
+- `pages/PricingPage.tsx` : l'examen du visiteur est présélectionné comme celui d'un compte (le compte à rebours s'affiche).
+- Ordre des examens : `trierCursus` (`lib/cursus.ts`) donne BEPC, Probatoire, BAC, puis le GCE, dans le bandeau « Choisis ton examen » ; côté serveur, `quiz/essai.py` trie la liste des essais gratuits dans le même ordre (alphabétique, elle ouvrait la carte d'essai sur « BAC - A » : F1 du rapport P1).
+- `components/BandeauCursus.tsx` : masqué pendant un essai de quiz (`/quiz/essai`), F2 du rapport P1.
+
+**Vérifié dans le navigateur** (visiteur BAC C) : `/cm/epreuves` passe à 309 épreuves avec `?cursus=20` et « Voir tout le catalogue », `/cm/cours` et `/cm/themes-frequents` reçoivent `cursus=20`, `/tarifs` présélectionne BAC C (« 249 jours avant ton BAC »). Visiteur sans examen sur `/quiz` : le bandeau commence par BEPC, la carte d'essai présélectionne BEPC, et le bandeau disparaît dès le début d'un essai.
+
+**Tests** : filtreCursus (6 cas visiteur et 4 existants adaptés), `trierCursus` (2), `test_essai` (ordre scolaire). Frontend : 83 fichiers, 760 tests verts ; backend `quiz` : 508 verts.
+
+**Décisions prises sans vous redemander**, selon ma recommandation : invite non bloquante pour un lien direct (le bandeau, déjà existant, avec BEPC en tête) plutôt que d'ouvrir la fenêtre d'examen ; pas de puce supplémentaire dans les listes (le bandeau « Tu vois les épreuves de … » existant suffit).
+
+**Restent** : la fenêtre d'examen qui n'apparaît que sur `/cm` (F12 du rapport P1, volontaire) ; les pages Parcours et Historique lisent encore seulement le compte (réservées aux connectés) ; synchronisation entre onglets (le magasin local n'écoute pas l'évènement `storage`).

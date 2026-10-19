@@ -18,8 +18,8 @@ import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
 import { codeSerieAffiche } from "@/lib/cursus"
-import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -235,7 +235,6 @@ export function PricingPage() {
 
   const navigate = useNavigate()
   const { country } = useCountry()
-  const { user } = useAuth()
   // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
   const { campayActif } = usePaymentConfig()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
@@ -264,10 +263,11 @@ export function PricingPage() {
   // examen. Le prix, lui, est le même pour tous les cursus.
   // Il reste libre d'en choisir un autre - le sélecteur n'est pas verrouillé, et son choix
   // manuel gagne (la condition `!selectedCursus` ci-dessous ne le réécrit jamais).
+  const cursusDeclare = useCursusDeclare()
   useEffect(() => {
-    if (!user?.cursus_prepare || selectedCursus) return
-    setSelectedCursus(String(user.cursus_prepare.id))
-  }, [user, selectedCursus])
+    if (cursusDeclare === null || selectedCursus) return
+    setSelectedCursus(String(cursusDeclare))
+  }, [cursusDeclare, selectedCursus])
   const cursusRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

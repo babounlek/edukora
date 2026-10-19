@@ -4,6 +4,7 @@ import { X } from "lucide-react"
 import { toast } from "sonner"
 import type { Cursus } from "@/api/types"
 import { useCursusListe } from "@/lib/cursusLangue"
+import { trierCursus } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -18,7 +19,7 @@ const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 // Pages où un bandeau gênerait ce que l'élève est en train de faire : lecture,
 // quiz en cours, paiement, connexion. Ailleurs il reste visible, y compris quand
 // l'élève arrive directement sur un cours ou une épreuve depuis un PDF ou une recherche.
-const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/tarifs/
+const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/quiz\/essai|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/tarifs/
 
 // L'accueil d'un pays (/cm, /sn...) : même motif que celui de l'onboarding (OnboardingModal).
 const ACCUEIL_PAYS_RE = /^\/[a-z]{2}\/?$/i
@@ -91,7 +92,7 @@ export function BandeauCursus() {
         <div className="min-w-0 flex-1">
           <p className="text-sm font-medium">{t("bandeau.titre")}</p>
           <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
-            {cursusList.map((cursus) => (
+            {trierCursus(cursusList).map((cursus) => (
               <Button
                 key={cursus.id}
                 variant="outline"

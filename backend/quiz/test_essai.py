@@ -55,6 +55,21 @@ class EssaiGratuitTests(TestCase):
         self.assertEqual(par_cursus[self.cursus.id], "fr")
         self.assertEqual(par_cursus[gce.id], "en")
 
+    def test_les_examens_suivent_l_ordre_du_parcours_scolaire_et_non_l_alphabet(self):
+        """BEPC avant le Probatoire avant le BAC : alphabétique, la liste s'ouvrait sur « BAC - A » (test élève P1)."""
+        bepc = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        maths_bepc = Subject.objects.get(country__code="CM", code="MATHS")
+        theme_bepc = Tag.objects.create(name="theme-essai-bepc")
+        for i in range(3):
+            _make_competence_item(maths_bepc, bepc, theme=theme_bepc, numero=f"b{i}", est_vitrine=True)
+
+        ordre = []
+        for essai in self.client.get("/quiz/essais/").json():
+            if essai["cursus"] not in ordre:
+                ordre.append(essai["cursus"])
+
+        self.assertLess(ordre.index(bepc.id), ordre.index(self.cursus.id))
+
     def test_liste_ecarte_un_theme_dont_un_seul_item_est_payant(self):
         _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="intrus")  # non vitrine
 
