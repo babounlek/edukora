@@ -229,6 +229,27 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   - **Pas de fuite d'un paper vers l'autre** : un énoncé ou une option du Paper 1 ne doit pas donner la réponse d'une question du Paper 2 de la même session (ex. « la lentille devient
     plus épaisse » en QCM alors que le Paper 2 demande d'expliquer l'accommodation). Les 7 questions du Paper 1 qui recoupaient le Paper 2 ont été remplacées.
 
+- **Étalon produit le 2026-10-19 : session Physics O Level n°1** (`ep-cm-gce-ol-physics-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_physics_p1.py` et `_p2.py`, questions
+  `questions_physics_p1.py` et `_p2.py`, figures `figs_physics_p1.py` et `_p2.py`, vérificateurs `verifier_reponses_physics_p1.py` et `_p2.py`). Mesuré sur 14 vrais papers 2019-2026 :
+  - **Paper 1** : 50 QCM, ordre mélangé par grappes de 1 à 3 questions d'un même chapitre, 66 % de questions faibles / 33 % moyennes / 1 % élevées, clés a 23 % / b 24 % /
+    c 25 % / d 25 %, 6 à 11 figures (schémas d'appareils, circuits, graphiques à choisir parmi A à D), un tiers des questions chiffrées. Inédite : 29 faibles / 20 moyennes / 1 élevée,
+    6 figures calculées (vitesse-temps, règle en équilibre, courbe de chauffe, réflexion, circuit, quatre graphiques en options), **36 questions sur 50 recalculées** (la clé d'une
+    question dont les options sont les panneaux A à D d'une figure est FIXÉE par la figure : le générateur place les autres clés autour).
+  - **Paper 2** : Section I de 6 questions courtes (8, 7, 9, 5, 6, 5 = 40 points), Section II de 3 questions de 20 points avec « EITHER a, b and c OR d, e and f » ; 2 h 30. Inédite :
+    même structure, **une seule branche par question de la Section II** (version « answer ALL »), 46 sous-questions, 21 réponses chiffrées recalculées sur les constantes des figures
+    (circuit, ressort), graphique de Hooke tracé dans le corrigé seulement (points, droite des moindres carrés passant par l'origine, pente), tolérances de lecture écrites dans les
+    critères (« toute valeur de 1,9 à 2,0 N/cm »).
+  - Calcul : toute question chiffrée a une **erreur type par distracteur** (oubli du facteur ½, temps en minutes pris pour des secondes, distance aller-retour non divisée par deux,
+    rapport inversé) ; `g = 10 m/s²` écrit dans l'énoncé quand il sert.
+- **Incident d'originalité (2026-10-19) : un contrôle aveugle laisse passer une question identique à une vraie.** Le premier contrôle comparait l'énoncé de l'inédite à l'énoncé de la
+  vraie question **précédé de la consigne de l'exercice** (« Multiple choice questions ... ») : cette consigne diluait la ressemblance et un énoncé court identique mot pour mot
+  (« Which of the following electromagnetic waves has the longest wavelength? ») passait. Le score plateforme (`score_originalite` à 0) l'a révélé après publication, et le contrôle
+  corrigé a trouvé 3 questions de Biology et 2 de Physics déjà publiées qui reformulaient des questions réelles (mêmes faits, mêmes options). Règles désormais appliquées par
+  `controle_inedite_gce.py` : (1) comparer l'énoncé avec ET sans la consigne ; (2) refuser tout énoncé de 40 caractères ou plus, sans nombres, à 0,90 ou plus d'un énoncé réel ;
+  (3) un jeu de 3 options communes n'est une copie que si l'énoncé ressemble aussi à 0,60 ou plus ; (4) le plus proche énoncé réel est retenu à part, indépendamment du score
+  combiné (les nombres communs masquaient l'identité). **Pour une matière de pur rappel de cours (Biology, Physics, Chemistry, History...), changer le FAIT demandé, jamais seulement les
+  mots** : « où se fait l'échange gazeux ? » devient « pourquoi la paroi des alvéoles est-elle mince ? ».
+
 ### D. Essais (History, Religious Studies, Philosophy, Literature, Geography, Economics)
 
 - Un sujet de dissertation inédit **n'est jamais l'intitulé d'un sujet réel reformulé** (règle du skill pour les matières argumentatives). Les

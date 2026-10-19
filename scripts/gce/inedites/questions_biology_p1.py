@@ -193,10 +193,10 @@ def questions():
         piege="Lactic acid is the product of anaerobic respiration in animal muscles, not in yeast."))
 
     a(Q("b35", ["gaseous exchange in humans"], "faible",
-        "Gaseous exchange in the lungs takes place in the",
-        "Alveoli.", ["Bronchi.", "Trachea.", "Bronchioles."],
-        "The air sacs, the alveoli, have thin walls and a rich blood supply, so gases diffuse quickly between air and blood.",
-        "Oxygen diffuses from the alveolar air into the blood, and carbon dioxide diffuses the other way. The trachea, bronchi and bronchioles are only air passages."))
+        "The walls of the alveoli are very thin so that",
+        "Gases can diffuse across them quickly.", ["Blood is filtered through them.", "Food is absorbed through them.", "Air is warmed as it enters them."],
+        "Surfaces for gaseous exchange are thin, moist and well supplied with blood, so that diffusion is fast.",
+        "The wall of an alveolus and the wall of the capillary next to it are each one cell thick. Oxygen and carbon dioxide therefore have only a very short distance to diffuse."))
 
     a(Q("b36", ["gaseous exchange in humans"], "moyenne",
         "During inhalation, the",
@@ -213,10 +213,10 @@ def questions():
         piege="The difference between the two percentages, $3.96$, is not the factor asked for."))
 
     a(Q("b38", ["blood circulation"], "faible",
-        "Which blood vessel carries oxygenated blood from the lungs to the heart?",
-        "Pulmonary vein.", ["Pulmonary artery.", "Aorta.", "Vena cava."],
-        "Arteries carry blood away from the heart and veins carry blood to the heart; the pulmonary vessels are the only ones where this does not match the oxygen content.",
-        "The pulmonary vein brings oxygenated blood from the lungs to the left atrium. The pulmonary artery carries deoxygenated blood to the lungs."))
+        "Which chamber of the heart pumps blood to the whole body?",
+        "Left ventricle.", ["Right ventricle.", "Left atrium.", "Right atrium."],
+        "The ventricles pump blood out of the heart and the atria receive it; the left side supplies the body and the right side supplies the lungs.",
+        "The left ventricle has the thickest muscular wall because it pumps blood at high pressure through the aorta to the whole body. The right ventricle pumps blood only to the lungs."))
 
     a(Q("b39", ["mammalian heart"], "faible",
         "The valve that prevents blood from flowing back from the left ventricle into the left atrium is the",
@@ -275,10 +275,10 @@ def questions():
         "High pressure in the glomerulus forces water, glucose, salts and urea out of the blood into the capsule, while blood cells and large proteins stay in the blood."))
 
     a(Q("b51", ["human reproductive system"], "faible",
-        "In humans, fertilisation normally takes place in the",
-        "Oviduct.", ["Uterus.", "Vagina.", "Ovary."],
-        "The sperm swim up through the uterus and meet the egg cell in the oviduct, where fertilisation occurs.",
-        "The fertilised egg then travels down the oviduct and implants in the wall of the uterus."))
+        "In a man, sperm cells are produced in the",
+        "Testes.", ["Prostate gland.", "Urethra.", "Seminal vesicles."],
+        "Gametes are made in the gonads: sperm cells in the testes and egg cells in the ovaries.",
+        "The testes, held in the scrotum, produce the sperm cells and the male hormone testosterone. The glands such as the prostate and the seminal vesicles make the fluid that carries the sperm."))
 
     a(Q("b52", ["monohybrid inheritance"], "moyenne",
         "In pea plants the allele for tall stems $(T)$ is dominant to the allele for dwarf stems $(t)$. A heterozygous tall plant is crossed with a dwarf plant. The percentage of dwarf plants expected in the offspring is",

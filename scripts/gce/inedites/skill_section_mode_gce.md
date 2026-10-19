@@ -49,7 +49,7 @@ Chaque donnée d'une figure est écrite aussi dans son `<desc>`. Fabrication par
   inédites. Écrire la version **« answer ALL »** limitée aux questions réellement à traiter, la règle réelle dans le blueprint et l'intro. Étalon : session Biology O Level
   n°1 (`ep-cm-gce-ol-biology-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 2 de 5 questions de 20 points en trois parties (3 en Section A, 2 en Section B), schémas anatomiques
   remplacés par des figures de **données** au Paper 1 et par une **description du dessin attendu** dans le corrigé au Paper 2, thèmes pris dans la forme la plus fréquente
-  des `Tag` existants. **Aucune fuite entre les deux papers** : un énoncé ou une option du Paper 1 ne donne jamais la réponse d'une question du Paper 2.
+  des `Tag` existants. **Aucune fuite entre les deux papers** : un énoncé ou une option du Paper 1 ne donne jamais la réponse d'une question du Paper 2. **Matière de pur rappel de cours : changer le FAIT demandé, jamais seulement les mots** ; le contrôle refuse un énoncé quasi identique à un énoncé réel (étalon Physics O Level n°1 : `ep-cm-gce-ol-physics-p1-1-2026-s1` et `-p2-1-2026-s1`, Section II en une seule branche par question).
 - **Essais** (History, Religious Studies, Philosophy) : jamais un sujet réel reformulé, faits exacts, corrigé = plan et essai modèle, grille par
   contenu, exactitude, structure, exemples, langue.
 - **Langues** : textes **originaux** (jamais un extrait publié), une seule réponse défendable par QCM, composition notée sur contenu, organisation,

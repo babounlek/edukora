@@ -87,7 +87,7 @@ def charger_corpus(dossier, matiere):
             for q in j["questions"]:
                 enonce = (j.get("enonce_intro_markdown") or "") + " " + (q.get("enonce_markdown") or "")
                 opts = " ".join(c.get("texte", "") for c in q.get("choix") or [])
-                refs.append({"src": f"{os.path.basename(d)}#{q.get('numero')}", "stem": normaliser(enonce),
+                refs.append({"src": f"{os.path.basename(d)}#{q.get('numero')}", "stem": normaliser(enonce), "stem0": normaliser(q.get("enonce_markdown") or ""),
                              "texte": enonce + " " + opts, "opts": frozenset(normaliser(c.get("texte", "")) for c in q.get("choix") or [])})
     return refs
 
@@ -104,15 +104,21 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
         # options « riches » seulement : « 2 », « 13 » reviennent partout et ne prouvent rien
         opts_n = frozenset(o for o in (normaliser(c["texte"]) for c in q.get("choix") or []) if len(o) >= 5)
         meilleur = (0.0, 0.0, None)
+        plus_proche = (0.0, None)  # enonce le plus ressemblant, quel que soit le score (les nombres communs peuvent masquer un enonce identique)
         for r in refs:
-            ratio = difflib.SequenceMatcher(None, stem, r["stem"]).quick_ratio()
+            # l'enonce reel est compare avec ET sans la consigne generale de l'exercice qui le precede (« Multiple choice questions ... »),
+            # sinon cette consigne dilue la ressemblance d'un enonce court identique
+            cibles = [r["stem"]] + ([r["stem0"]] if r.get("stem0") else [])
+            ratio = max(difflib.SequenceMatcher(None, stem, c).quick_ratio() for c in cibles)
             if ratio < 0.5:
                 continue
-            ratio = difflib.SequenceMatcher(None, stem, r["stem"]).ratio()
+            ratio = max(difflib.SequenceMatcher(None, stem, c).ratio() for c in cibles)
             # un jeu d'options commun ne prouve une copie que si l'ENONCE se ressemble aussi : le vocabulaire d'une matiere est
             # ferme (Xylem, Phloem, Cambium reviennent d'une annee a l'autre dans des questions differentes)
-            if ratio >= 0.5 and len(opts_n & {o for o in r["opts"] if len(o) >= 5}) >= 3:
+            if ratio >= 0.6 and len(opts_n & {o for o in r["opts"] if len(o) >= 5}) >= 3:
                 rap.err(f"Q{q['numero']}: au moins 3 options identiques (non triviales) et un enonce proche de {r['src']} (texte {ratio:.2f})")
+            if ratio > plus_proche[0]:
+                plus_proche = (ratio, r["src"])
             communs = len(nums & nombres(r["texte"])) / max(1, len(nums | nombres(r["texte"])))
             score = 0.6 * ratio + 0.4 * communs
             if score > meilleur[0]:
@@ -121,7 +127,11 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
             pires.append((meilleur[0], q["numero"], meilleur))
             # un énoncé qui ne porte que 0 à 2 nombres (« Solve the equation f(x)=0 ») ne prouve rien par ses nombres communs :
             # ERREUR seulement avec au moins 3 nombres en jeu, sinon AVERTISSEMENT
-            if meilleur[1] >= seuil_err and meilleur[3] >= 0.5 and len(nums) >= 3:
+            # un énoncé court SANS nombres (« Which of the following ... has the longest wavelength ? ») identique ou presque à un énoncé réel est
+            # la même question : la plateforme le voit (score d'originalité 0), le contrôle doit le voir avant
+            if plus_proche[0] >= 0.9 and len(nums) < 3 and len(stem) >= 40:
+                rap.err(f"Q{q['numero']}: énoncé quasi identique à un énoncé réel, {plus_proche[1]} (texte {plus_proche[0]:.2f}) : changer de question, pas de mots")
+            elif meilleur[1] >= seuil_err and meilleur[3] >= 0.5 and len(nums) >= 3:
                 rap.err(f"Q{q['numero']}: trop proche de {meilleur[2]} (texte {meilleur[1]:.2f}, nombres communs {meilleur[3]:.2f})")
             elif meilleur[1] >= seuil_warn and meilleur[3] >= 0.5:
                 rap.warn(f"Q{q['numero']}: ressemble a {meilleur[2]} (texte {meilleur[1]:.2f}, nombres communs {meilleur[3]:.2f}) : a relire")
