@@ -105,12 +105,14 @@ def originalite(questions, refs, rap, seuil_err=0.82, seuil_warn=0.66):
         opts_n = frozenset(o for o in (normaliser(c["texte"]) for c in q.get("choix") or []) if len(o) >= 5)
         meilleur = (0.0, 0.0, None)
         for r in refs:
-            if len(opts_n & {o for o in r["opts"] if len(o) >= 5}) >= 3:
-                rap.err(f"Q{q['numero']}: au moins 3 options identiques (non triviales) a {r['src']}")
             ratio = difflib.SequenceMatcher(None, stem, r["stem"]).quick_ratio()
             if ratio < 0.5:
                 continue
             ratio = difflib.SequenceMatcher(None, stem, r["stem"]).ratio()
+            # un jeu d'options commun ne prouve une copie que si l'ENONCE se ressemble aussi : le vocabulaire d'une matiere est
+            # ferme (Xylem, Phloem, Cambium reviennent d'une annee a l'autre dans des questions differentes)
+            if ratio >= 0.5 and len(opts_n & {o for o in r["opts"] if len(o) >= 5}) >= 3:
+                rap.err(f"Q{q['numero']}: au moins 3 options identiques (non triviales) et un enonce proche de {r['src']} (texte {ratio:.2f})")
             communs = len(nums & nombres(r["texte"])) / max(1, len(nums | nombres(r["texte"])))
             score = 0.6 * ratio + 0.4 * communs
             if score > meilleur[0]:
@@ -163,6 +165,11 @@ def controler(ep, bp, refs, type_paper, rap, sections_attendues=None):
             rap.err("Paper 1 QCM : pas de groupes (structure plate)")
     # --- style et syntaxe
     for chemin, t in champs_texte(ep):
+        # un « \r », « \t » ou « \b » écrit dans une chaîne Python non brute devient un caractère de contrôle : « \rightarrow »
+        # s'affiche « ightarrow », « \times » perd son « t ». Le rendu KaTeX ne le voit pas (texte ordinaire).
+        ctrl = sorted({hex(ord(c)) for c in t if ord(c) < 32 and c != "\n"})
+        if ctrl:
+            rap.err(f"{chemin}: caractère(s) de contrôle {ctrl} (commande LaTeX à backslash simple dans une chaîne non brute ?)")
         if chemin.endswith(".titre"):
             continue
         for tiret in ("\u2014", "\u2013"):

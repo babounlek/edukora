@@ -49,10 +49,11 @@ Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/inges
   `### Exercice`. Pour une épreuve à exercice unique, l'en-tête n'apporte rien.
 - **DÉFAUT 4 : ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit.** Les règles de choix (`parmi`, `ou`, `total`,
   `section_unique`) n'existent que pour les épreuves classiques (`catalog/choix.py`, `simulations/choix.py`). Conséquence de conception au §4.
-- **DÉFAUT 5 : les exercices sont triés par `numero_exercice` en texte** (`inedit/views.py` lignes 102 et 281, `EpreuveInedite.compile_from_exercices`) :
-  « 10 » passe avant « 2 ». Sans effet pour un Paper 1 (un seul exercice) ; pour un Paper 2 de 14 exercices, le lecteur, la copie et le PDF
-  mélangent l'ordre. Contournement appliqué dans le générateur du Paper 2 : `numero_exercice` écrit sur deux chiffres (`01` à `10`, puis `B1` à `B4`).
-  Correctif propre : un tri naturel (`re.split(r"(\d+)", numero)`) aux trois endroits. À corriger avant tout paper de plus de 9 exercices.
+- **DÉFAUT 5 (corrigé le 2026-10-19, non committé) : les exercices étaient triés par `numero_exercice` en texte** : « 10 » passait avant « 2 ». Sans effet pour un
+  Paper 1 (un seul exercice) ; pour un Paper 2 de 14 exercices, le lecteur, la copie et le PDF mélangeaient l'ordre. Correctif : `EpreuveInedite.exercices_ordonnes()`
+  (clé `cle_numero_exercice` : « 2 » avant « 10 », les numéros purs avant « B1 ») utilisée par la compilation, le lecteur et la notation (`inedit/models.py`,
+  `inedit/views.py`) et par l'aperçu de la fiche (`catalog/inedit_bridge.py`) ; deux tests. Les numéros à deux chiffres du Paper 2 étalon (`01` à `10`) n'étaient
+  qu'un contournement : ils restent valides, mais un nouveau paper peut numéroter `1` à `10`. En production : reconstruire l'image `backend`.
 - Pas d'image PNG : figures SVG calculées seulement (`figures_svg.py`). Cartes, schémas anatomiques ou de verrerie, microphotographies restent
   hors de portée.
 - Le barème est **exact** : la somme des `points` des questions d'un exercice vaut `exercices[].points`. Les sujets réels, eux, ne somment pas
@@ -103,7 +104,8 @@ choix la règle réelle en clair. Un blueprint sans ce plan chiffré est incompl
 **Fidélité au vrai paper : la STRUCTURE se copie, le CONTENU ne se copie jamais.** On reproduit le nombre de questions, l'ordre du syllabus, le
 format des options, la répartition de difficulté, la densité de figures, la durée, les consignes. On ne reprend aucune donnée, aucun contexte, aucun
 nom, aucune figure, aucun jeu d'options d'un sujet réel. Le gabarit de question de syllabus (« The median of ... is ») revient forcément : le test
-est « les mêmes données ou le même contexte ? », pas « le même début de phrase ? ». Contrôle outillé `controle_inedite_gce.py` :
+est « les mêmes données ou le même contexte ? », pas « le même début de phrase ? ». Contrôle outillé `controle_inedite_gce.py` (il refuse aussi tout caractère de contrôle dans le contenu : un `
+ightarrow` écrit dans une chaîne Python non brute devient « ightarrow » à l'écran et passe le rendu KaTeX sans erreur) :
 énoncé + options + nombres contre toutes les questions réelles de la matière, ERREUR si texte ≥ 0,82 et nombres communs ≥ 0,5 ou si 3 options non
 triviales sont identiques ; AVERTISSEMENT dès 0,66. Les avertissements se relisent à la main (Étalon : deux, des gabarits de matrices avec d'autres
 valeurs).
@@ -208,6 +210,25 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   et Economics, étiqueter « Source: adapted data » seulement si les chiffres sont réellement des données publiées, sinon les présenter comme
   un cas d'étude fictif).
 
+- **Étalon produit le 2026-10-19 : session Biology O Level n°1** (`ep-cm-gce-ol-biology-p1-1-2026-s1` et `ep-cm-gce-ol-biology-p2-1-2026-s1`, générateurs
+  `generer_biology_p1.py` et `generer_biology_p2.py`, questions dans `questions_biology_p1.py` et `questions_biology_p2.py`, figures `figs_biology_p1.py` et
+  `figs_biology_p2.py`, vérificateurs `verifier_reponses_biology_p1.py` et `_p2.py`). Mesuré sur 14 vrais papers de Biology 2019-2026 :
+  - **Paper 1** : 50 QCM, ordre **mélangé** (aucun bloc par chapitre, contrairement aux Maths), 57 % de questions faibles, 41 % moyennes, 1 % élevées, clés a 26 % / b 23 % /
+    c 25 % / d 25 %, 4 à 8 figures par sujet (schémas de cellules, d'organes, de cycles), énoncés en « ? » 16 à 38 %, « all / none of the above » sous 10 %. Inédite : 50 QCM,
+    62 % faibles / 36 % moyennes / 2 % élevée, 40 thèmes, 5 figures de **données** (activité d'une enzyme selon la température, photosynthèse selon la lumière, transpiration au
+    cours de la journée, rythme cardiaque après l'effort, réseau trophique) à la place des schémas anatomiques. 10 questions sur 50 se recalculent (grandeurs, lecture de données,
+    croisements, comptage de chaînes alimentaires) ; les 40 autres sont du rappel de cours relu à la main : une clé fausse n'y est détectable que par relecture, d'où la règle
+    « un seul fait par question, une seule option défendable ».
+  - **Paper 2** : 7 questions de 20 points, chacune en trois parties `a`, `b`, `c` à points imprimés (5-9), « ALL THREE of Section A and any TWO of Section B », 2 h 30. Types de
+    parties : définitions, « describe/explain », conception d'expérience, comparaison en tableau, **dessin annoté** (un par sujet). Inédite : **5 questions** (3 en Section A, 2 en
+    Section B, version « answer ALL »), 100 points, 15 sous-questions, grilles de 3 à 6 critères, tableau de résultats pour 2 questions, un seul tracé (le réseau trophique, dans le
+    corrigé). Le **dessin** demandé (coupe de l'œil) n'est pas produit : le corrigé décrit ce qui doit figurer, partie par partie, comme le font les corrigés réels ingérés, et la
+    grille note le dessin sur la copie (« grand, titré, étiquettes à la règle »).
+  - Vocabulaire de thèmes : 210 `Tag` O Level en base, très fragmentés (« transpiration » et « transpiration in plants », « food chains » et « food webs »...). Toujours reprendre la
+    **forme la plus fréquente** de la notion ; 25 seulement ont un `Cours` O Level, les autres rappels portent une compétence sans cours (à générer ensuite).
+  - **Pas de fuite d'un paper vers l'autre** : un énoncé ou une option du Paper 1 ne doit pas donner la réponse d'une question du Paper 2 de la même session (ex. « la lentille devient
+    plus épaisse » en QCM alors que le Paper 2 demande d'expliquer l'accommodation). Les 7 questions du Paper 1 qui recoupaient le Paper 2 ont été remplacées.
+
 ### D. Essais (History, Religious Studies, Philosophy, Literature, Geography, Economics)
 
 - Un sujet de dissertation inédit **n'est jamais l'intitulé d'un sujet réel reformulé** (règle du skill pour les matières argumentatives). Les
@@ -288,7 +309,6 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
 - Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).
-- Corriger DÉFAUT 5 (tri naturel des exercices) : le Paper 2 étalon contourne par des numéros à deux chiffres.
 - Étalonner un paper de chaque type C, D, E, F, G avec les mêmes quatre contrôles ; l'étalon est entièrement chiffré pour A et B (Maths O/L P1 et P2), qualitatif
   pour les autres (aucun paper inédit de ces types n'a encore été produit).
 - Cours des 2 thèmes sans cours (`change of subject`, `circle`) : leurs rappels portent une compétence sans `Cours` existant.

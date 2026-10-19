@@ -34,19 +34,22 @@ aucune figure, aucun jeu d'options d'un sujet réel dans l'inédite ; le gabarit
 ### Paper 1 QCM (toutes matières)
 
 1 exercice `"1"`, 50 questions `"1"` à `"50"`, `type_reponse: "qcm"`, 4 options `a`-`d`, 1 point chacune, exercice `points "50"`, `groupes: []`,
-`duree_minutes: 90`, jamais de `criteres_notation`. Ordre du syllabus, du plus simple au plus difficile à l'intérieur de chaque bloc. Difficulté :
-45 à 70 % faibles, 1 à 4 élevées. Clés équilibrées (12-13 par lettre, jamais 3 de suite) **placées par le générateur**, jamais tapées. Distracteurs =
+`duree_minutes: 90`, jamais de `criteres_notation`. **Ordre : mesurer celui du vrai paper** (Maths : ordre du syllabus, du plus simple au plus difficile dans
+chaque bloc ; Biology : ordre mélangé, aucun bloc par chapitre). Difficulté : 45 à 70 % faibles, 1 à 4 élevées. Clés équilibrées (12-13 par lettre, jamais 3 de suite) **placées par le générateur**, jamais tapées. Distracteurs =
 erreurs types nommées dans le piège du corrigé. Jamais « all/none of the above » en Maths, Physics, Chemistry, Computer Science, Economics, Commerce.
 Chaque donnée d'une figure est écrite aussi dans son `<desc>`. Fabrication par un script générateur, voir l'étalon.
 
 ### Autres papers (règle clé de chacun ; détail dans le guide §5)
 
 - **Structuré, tout obligatoire** (Maths P2 : Section A 10 questions de 4 à 5 points, total 45, Section B 4 questions de 15 points, total 60, soit 105 comme les
-  sujets réels récents ; étalon `ep-cm-gce-ol-maths-p2-1-2026-s1`) : `groupes ["SECTION A"]`, `numero_exercice` **sur deux chiffres** `"01"`-`"10"` puis
-  `"B1"`-`"B4"` (la plateforme trie ce champ en texte : `"10"` passerait avant `"2"`), sous-questions `a`, `b`, `c` avec `points` et `criteres_notation` exacts, parties
+  sujets réels récents ; étalon `ep-cm-gce-ol-maths-p2-1-2026-s1`) : `groupes ["SECTION A"]`, `numero_exercice` continu `"1"`-`"10"` puis
+  `"B1"`-`"B4"` (le tri est naturel depuis le 2026-10-19 ; l'étalon garde `"01"`-`"10"`, hérité de l'ancien tri en texte), sous-questions `a`, `b`, `c` avec `points` et `criteres_notation` exacts, parties
   `(i)`, `(ii)` dans `groupe_local`, tracé attendu dans le corrigé seulement.
 - **Structuré avec choix** (Biology, Chemistry, History, Geography, Economics, Commerce...) : la plateforme ne code pas les règles de choix des
-  inédites. Écrire la version **« answer ALL »** limitée aux questions réellement à traiter, la règle réelle dans le blueprint et l'intro.
+  inédites. Écrire la version **« answer ALL »** limitée aux questions réellement à traiter, la règle réelle dans le blueprint et l'intro. Étalon : session Biology O Level
+  n°1 (`ep-cm-gce-ol-biology-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 2 de 5 questions de 20 points en trois parties (3 en Section A, 2 en Section B), schémas anatomiques
+  remplacés par des figures de **données** au Paper 1 et par une **description du dessin attendu** dans le corrigé au Paper 2, thèmes pris dans la forme la plus fréquente
+  des `Tag` existants. **Aucune fuite entre les deux papers** : un énoncé ou une option du Paper 1 ne donne jamais la réponse d'une question du Paper 2.
 - **Essais** (History, Religious Studies, Philosophy) : jamais un sujet réel reformulé, faits exacts, corrigé = plan et essai modèle, grille par
   contenu, exactitude, structure, exemples, langue.
 - **Langues** : textes **originaux** (jamais un extrait publié), une seule réponse défendable par QCM, composition notée sur contenu, organisation,
@@ -78,7 +81,7 @@ partagés ; générer un paper après l'autre (chacun avec ses contrôles, `--ju
 ### Défauts de plateforme connus (ne pas les contourner dans le JSON)
 
 `score_originalite` non discriminant pour un QCM court (13 sur l'étalon sans aucun
-doublon réel) ; « Exercice 1 » non traduit dans le PDF anglais ; exercices triés par numéro en texte (`10` avant `2`, contourné par des numéros à deux chiffres) ; ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit. Les
+doublon réel) ; « Exercice 1 » non traduit dans le PDF anglais ; ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit. Les
 signaler dans le compte rendu, ne pas les « réparer » en dupliquant du texte. (Les options de QCM absentes du PDF, relevées à l'étalon, sont
 corrigées dans `compile_from_exercices` ; ne jamais les recopier dans `enonce_markdown`.)
 
