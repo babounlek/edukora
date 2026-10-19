@@ -276,7 +276,7 @@ describe("« Voir seulement mes matières »", () => {
     definirAffichageMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: false, affichage_restreint: false })
     afficher(<BandeauMatieres />)
     expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/compte")
+    expect(screen.getByRole("link", { name: "Modifier mes matières" })).toHaveAttribute("href", "/mes-acces")
     fireEvent.click(screen.getByRole("button", { name: "Voir toutes les matières" }))
     await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false))
   })
@@ -310,14 +310,27 @@ describe("« Voir seulement mes matières »", () => {
     expect(bac.container).toBeEmptyDOMElement()
     expect(getMatieres).not.toHaveBeenCalled()
   })
+})
 
-  it("sur une liste filtrée par examen, le bandeau n'apparaît que si le cursus de l'URL est celui de l'élève", async () => {
-    getMatieres.mockResolvedValue({ ...CHOIX, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2 })
-    const autre = afficher(<BandeauMatieres suitFiltreCursus />, "/epreuves?cursus=99")
-    await waitFor(() => expect(getMatieres).toHaveBeenCalled())
-    expect(autre.container).toBeEmptyDOMElement()
-    autre.unmount()
-    afficher(<BandeauMatieres suitFiltreCursus />, "/epreuves?cursus=7")
-    expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
+describe("ChoixMatieres sur un profil précis (« Mes accès »)", () => {
+  const CIBLE = { profilId: 32, cursusId: 1414 }
+
+  it("lit et écrit les matières de CE profil, sans dépendre de l'examen du profil actif", async () => {
+    eleve("BAC") // le profil actif n'est pas au GCE : la cible suffit
+    definirMatieres.mockResolvedValue({ choisies: [1], disponibles: DISPONIBLES })
+    afficher(<ChoixMatieres cible={CIBLE} />)
+    fireEvent.click(await screen.findByRole("button", { name: "Mathematics" }))
+    expect(getMatieres).toHaveBeenCalledWith(expect.anything(), CIBLE)
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([1], CIBLE))
+  })
+
+  it("l'interrupteur vise le même profil", async () => {
+    eleve("BAC")
+    getMatieres.mockResolvedValue({ choisies: [1], disponibles: DISPONIBLES, seulement_mes_matieres: true })
+    definirAffichageMatieres.mockResolvedValue({ choisies: [1], disponibles: DISPONIBLES, seulement_mes_matieres: false })
+    afficher(<ChoixMatieres cible={CIBLE} />)
+    fireEvent.click(await screen.findByRole("switch", { name: "Voir seulement mes matières" }))
+    await waitFor(() => expect(definirAffichageMatieres).toHaveBeenCalledWith(false, CIBLE))
   })
 })

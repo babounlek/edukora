@@ -59,6 +59,15 @@ def sujets_a_afficher(profil, cursus_id):
     cursus = profil.compte.cursus_prepare
     if cursus is None or cursus.id != int(cursus_id):
         return None
+    return sujets_effectifs(profil, cursus)
+
+
+def sujets_effectifs(profil, cursus):
+    """
+    Ce que la restriction garderait pour ce profil sur CE cursus (même règle que sujets_a_afficher, sans exiger que
+    ce soit l'examen actif du compte) : sert à dire, depuis « Mes accès », ce que verrait un profil qui n'est pas
+    le profil actif.
+    """
     choix = _choix(profil)
     if not choix:
         return None

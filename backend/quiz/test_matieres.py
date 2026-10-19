@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils import timezone
 from rest_framework.test import APIClient
 
 from catalog.models import Cursus, Difficulte, Examen, Lesson, LessonType, Origine, StatutContenu, Subject, Tag
@@ -170,6 +171,61 @@ class VoirSeulementMesMatieresTests(_Base):
         reponse = self.client.get("/quiz/matieres/").data
         self.assertEqual((reponse["affichage_restreint"], reponse["nb_affichees"]), (False, 0))
         self.assertEqual(len(reponse["choisies"]), 2)  # l'inscription est intacte
+
+    def _cadet_abonne(self):
+        """Un second profil du compte, abonné à l'A Level, qui n'est PAS le profil actif."""
+        from users.models import Profil
+
+        cadet = Profil.objects.create(compte=self.user, prenom="Cadet", ordre=1)
+        Subscription.objects.create(
+            user=self.user, profil=cadet, cursus=self.cursus, duration_mode="JUSQUA_EXAMEN",
+            expires_at=timezone.now() + timezone.timedelta(days=100),
+        )
+        return cadet
+
+    def test_choisir_les_matieres_d_un_autre_profil_du_compte(self):
+        cadet = self._cadet_abonne()
+        url = f"/quiz/matieres/?profil={cadet.id}&cursus={self.cursus_id}"
+        reponse = self.client.put(url, {"matieres": [self.physique.id]}, format="json")
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["choisies"], [self.physique.id])
+        self.assertEqual(set(cadet.matieres_passees.values_list("id", flat=True)), {self.physique.id})
+        self.assertFalse(self.profil.matieres_passees.exists())  # le profil actif n'a pas bougé
+        # Et l'interrupteur de CE profil, pas celui du profil actif.
+        self.client.put(url, {"seulement_mes_matieres": False}, format="json")
+        cadet.refresh_from_db()
+        self.profil.refresh_from_db()
+        self.assertFalse(cadet.voir_seulement_mes_matieres)
+        self.assertTrue(self.profil.voir_seulement_mes_matieres)
+        lecture = self.client.get(url).data
+        self.assertEqual((lecture["choisies"], lecture["seulement_mes_matieres"]), ([self.physique.id], False))
+
+    def test_autre_profil_sans_cursus_ou_sans_abonnement_ou_d_un_autre_compte(self):
+        from users.models import Profil
+
+        cadet = self._cadet_abonne()
+        self.assertEqual(self.client.get(f"/quiz/matieres/?profil={cadet.id}").status_code, 400)
+        ol = Cursus.objects.get(examen=Examen.GCE_OL, series__isnull=True)
+        self.assertEqual(self.client.get(f"/quiz/matieres/?profil={cadet.id}&cursus={ol.id}").status_code, 400)
+        etranger = User.objects.create_user(phone_number="677400102", password="x").profils.first()
+        self.assertEqual(self.client.get(f"/quiz/matieres/?profil={etranger.id}&cursus={self.cursus_id}").status_code, 404)
+        self.assertIsInstance(Profil.objects.get(pk=cadet.id), Profil)
+
+    def test_une_session_enfant_ne_touche_pas_a_un_autre_profil(self):
+        from rest_framework_simplejwt.tokens import AccessToken
+
+        cadet = self._cadet_abonne()
+        jeton = AccessToken.for_user(self.user)
+        jeton["profil_id"], jeton["restreint"] = cadet.id, True
+        enfant = APIClient()
+        enfant.credentials(HTTP_AUTHORIZATION=f"Bearer {jeton}")
+        # Son propre profil : permis. Celui d'un frère ou du parent : refusé.
+        self.assertEqual(enfant.get(f"/quiz/matieres/?profil={cadet.id}&cursus={self.cursus_id}").status_code, 200)
+        reponse = enfant.put(
+            f"/quiz/matieres/?profil={self.profil.id}&cursus={self.cursus_id}", {"matieres": [self.maths.id]}, format="json",
+        )
+        self.assertEqual(reponse.status_code, 403)
+        self.assertFalse(self.profil.matieres_passees.exists())
 
     def test_visiteur_anonyme_voit_tout(self):
         self._choisir(self.maths)

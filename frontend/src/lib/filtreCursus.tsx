@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusPrepareDeclare } from "@/lib/cursusAccueil"
 import { estDeLangue } from "@/lib/cursusLangue"
-import { langueCourante, t, useI18n } from "@/lib/i18n"
+import { langueCourante } from "@/lib/i18n"
 
 /**
  * Pré-filtre les listes du catalogue sur l'examen que l'élève a déclaré.
@@ -14,7 +14,7 @@ import { langueCourante, t, useI18n } from "@/lib/i18n"
  * concernent pas, à re-filtrer à la main à chaque visite.
  *
  * Un DÉFAUT, jamais une frontière : le filtre est annoncé et se retire d'un clic
- * (voir BandeauFiltreCursus). Trois usages réels cassent sous un masquage dur - un
+ * (voir BandeauVue). Trois usages réels cassent sous un masquage dur - un
  * élève de Terminale révise aussi le programme de Première, un répétiteur enseigne
  * plusieurs séries (voir subscriptions.InscriptionRepetiteur), un redoublant change de
  * filière. Et les robots d'indexation n'ayant jamais de session, le catalogue reste
@@ -50,7 +50,7 @@ export function desactiverFiltreCursus(params: URLSearchParams): URLSearchParams
  * recherche en session, qui se croirait alors devant une URL déjà filtrée et
  * renoncerait. La page applique, le bandeau se contente de raconter.
  */
-function useEtatFiltreCursus() {
+export function useEtatFiltreCursus() {
   const { country } = useCountry()
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -89,30 +89,9 @@ export function useFiltreCursusParDefaut() {
   return etat
 }
 
-/** Dit à l'élève que la liste est réduite à son examen, et comment en sortir. Sans
- * cette phrase, un catalogue soudain trois fois plus court se lit comme un contenu
- * manquant plutôt que comme une aide. */
-export function BandeauFiltreCursus() {
-  useI18n()
-  const { applique, cursusPrepare, searchParams, setSearchParams } = useEtatFiltreCursus()
-  if (!applique || !cursusPrepare) return null
-
-  const libelle = `${cursusPrepare.examen_display}${cursusPrepare.series ? ` ${cursusPrepare.series.code}` : ""}`
-  const montrerTout = () => {
-    setSearchParams(desactiverFiltreCursus(new URLSearchParams(searchParams)))
-  }
-  return (
-    <p className="mb-4 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
-      <span>
-        {t("ep.filtre_cursus_avant")} <span className="font-medium text-foreground">{libelle}</span>.
-      </span>
-      <button
-        type="button"
-        onClick={montrerTout}
-        className="underline underline-offset-4 transition-colors hover:text-primary"
-      >
-        {t("ep.voir_catalogue")}
-      </button>
-    </p>
-  )
+/** Retour au filtre par défaut : retire `tout=1`, et useFiltreCursusParDefaut repose aussitôt le cursus de l'élève. */
+export function retablirFiltreCursus(params: URLSearchParams): URLSearchParams {
+  params.delete(PARAM_VOIR_TOUT)
+  params.delete("cursus")
+  return params
 }

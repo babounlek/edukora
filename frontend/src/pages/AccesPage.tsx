@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { ArrowRight, CalendarClock, Check, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
   createProfil,
@@ -14,12 +14,14 @@ import {
 import { ApiError } from "@/api/client"
 import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { ChoixMatieres } from "@/components/ChoixMatieres"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SecuriteProfils } from "@/components/SecuriteProfils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { estGce } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { langueCourante, localeCourante, t, useI18n } from "@/lib/i18n"
@@ -48,7 +50,7 @@ function libelleCursus(cursus: Subscription["cursus"]): string {
  * l'échéance existante (voir Subscription.extend) : rien n'est perdu à le faire tôt.
  */
 function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, profilId, renouvelable = true, inclutInedit = false,
+  titre, sous_titre, expiresAt, actif, cursusId, profilId, renouvelable = true, inclutInedit = false, gce = false,
 }: {
   titre: string
   sous_titre?: string
@@ -58,7 +60,10 @@ function LigneAcces({
   profilId: number
   renouvelable?: boolean
   inclutInedit?: boolean
+  /** Examen du GCE : l'élève y choisit ses matières (voir ChoixMatieres). */
+  gce?: boolean
 }) {
+  const [matieresOuvertes, setMatieresOuvertes] = useState(false)
   const jours = joursRestants(expiresAt)
   const bientot = actif && jours <= JOURS_AVANT_RENOUVELLEMENT
   return (
@@ -106,6 +111,28 @@ function LigneAcces({
             <ArrowRight className="size-3.5" />
           </Link>
         </Button>
+      )}
+
+      {/* Au GCE, aucune série ne fixe le programme : le choix (et la correction) des matières de CE profil se fait
+          ici, sur sa ligne, quel que soit le profil actif - pas seulement depuis la page du compte. */}
+      {gce && actif && (
+        <div className="mt-3 border-t border-border pt-3">
+          <button
+            type="button"
+            aria-expanded={matieresOuvertes}
+            onClick={() => setMatieresOuvertes((o) => !o)}
+            className="inline-flex min-h-9 items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            <BookOpen className="size-4" aria-hidden="true" />
+            {t("matieres.titre")}
+            <ChevronDown className={cn("size-4 transition-transform", matieresOuvertes && "rotate-180")} aria-hidden="true" />
+          </button>
+          {matieresOuvertes && (
+            <div className="mt-3">
+              <ChoixMatieres cible={{ profilId, cursusId }} />
+            </div>
+          )}
+        </div>
       )}
     </li>
   )
@@ -319,6 +346,7 @@ export function AccesPage() {
       // aucun sens tant qu'il est actif.
       renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
       inclutInedit: cursusAvecInedit.has(`${sub.profil.id}-${sub.cursus.id}`),
+      gce: estGce(sub.cursus),
     })),
     ...(inscriptionsRepetiteur ?? []).map((i) => ({
       key: `repet-${i.id}`,

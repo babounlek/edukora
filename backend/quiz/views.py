@@ -17,10 +17,12 @@ from catalog.rendering import annotate_single_cours_link
 from catalog.serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, SubjectWithQuizCountSerializer
 from programme.models import Savoir
 from subscriptions.models import Subscription
+from users.parent import session_restreinte
 from users.profils import profil_actif
 
 from .matieres import (
     avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription, sujets_a_afficher,
+    sujets_effectifs,
 )
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
@@ -1092,18 +1094,58 @@ def objectif_xp_view(request):
     return Response(etat)
 
 
+def _cible_matieres(request):
+    """
+    (profil, cursus) sur lesquels porte /quiz/matieres/, ou une Response d'erreur.
+
+    Par défaut : le profil actif et l'examen du compte. `?profil=<id>&cursus=<id>` (ou les mêmes clés dans le corps)
+    visent un profil précis du compte sur l'un de SES examens abonnés - c'est ce qui permet de choisir ou de corriger
+    les matières de chaque enfant depuis « Mes accès », quel que soit le profil actif. Réservé au compte lui-même :
+    une session enfant (limitée à son profil) ne touche jamais à un autre profil.
+    """
+    def entier(cle):
+        brut = request.query_params.get(cle) or request.data.get(cle)
+        return int(brut) if str(brut or "").isdigit() else None
+
+    actif = profil_actif(request)
+    profil_id, cursus_id = entier("profil"), entier("cursus")
+    profil = actif
+    if profil_id is not None and profil_id != actif.id:
+        if session_restreinte(request):
+            return Response({"error": "Cette action est réservée au parent.", "code": "session_restreinte"}, status=403)
+        profil = request.user.profils.filter(pk=profil_id).first()
+        if profil is None:
+            return Response({"error": "Profil introuvable."}, status=404)
+    if cursus_id is None:
+        if profil.id != actif.id:
+            return Response({"error": "« cursus » est requis pour un autre profil."}, status=400)
+        cursus = request.user.cursus_prepare
+        if cursus is None:
+            return Response({"error": "Aucun cursus déclaré."}, status=400)
+        return profil, cursus
+    # Un examen que ce profil a réellement (ou a eu) en abonnement : jamais un cursus quelconque du catalogue.
+    abonnement = (
+        Subscription.objects.filter(user=request.user, profil=profil, cursus_id=cursus_id)
+        .select_related("cursus__country", "cursus__series").first()
+    )
+    if abonnement is None:
+        return Response({"error": "Ce profil n'a pas d'abonnement sur ce cursus."}, status=400)
+    return profil, abonnement.cursus
+
+
 @api_view(["GET", "PUT"])
 def matieres_view(request):
     """
-    Les matières que passe le profil actif (voir quiz.matieres) : GET renvoie le choix et les matières
+    Les matières que passe un profil (voir quiz.matieres) : GET renvoie le choix et les matières
     qu'on peut déclarer sur son cursus ; PUT {"matieres": [ids]} remplace le choix (liste vide = toutes
-    les matières du cursus, le cas normal hors GCE). Pas réservé au mode parent : c'est un réglage
+    les matières du cursus, le cas normal hors GCE). Par défaut le profil actif ; `profil` + `cursus` visent
+    un autre profil du compte (voir _cible_matieres). Pas réservé au mode parent : c'est un réglage
     d'étude, comme l'objectif quotidien, que l'élève fait lui-même - y compris sur une session enfant.
     """
-    cursus = request.user.cursus_prepare
-    if cursus is None:
-        return Response({"error": "Aucun cursus déclaré."}, status=400)
-    profil = profil_actif(request)
+    cible = _cible_matieres(request)
+    if isinstance(cible, Response):
+        return cible
+    profil, cursus = cible
     disponibles = matieres_disponibles(cursus)
     ids_disponibles = {m.id for m in disponibles}
     # Au GCE (branche générale) : toutes les matières du Board à ce niveau, couvertes ou non (voir quiz.matieres).
@@ -1136,7 +1178,7 @@ def matieres_view(request):
     regles = regles_inscription(cursus)
     codes_obligatoires = set(regles["obligatoires"]) if regles else set()
     sujets_choisis = list({m.id: m for m in (*officielles, *disponibles) if m.id in choisies}.values())
-    affichees = sujets_a_afficher(profil, cursus.id)
+    affichees = sujets_effectifs(profil, cursus)
     return Response({
         "choisies": sorted(choisies),
         # Préférence d'affichage du profil (voir Profil.voir_seulement_mes_matieres).

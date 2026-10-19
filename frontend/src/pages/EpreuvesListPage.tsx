@@ -38,7 +38,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { BandeauMatieres } from "@/components/ChoixMatieres"
+import { BandeauVue } from "@/components/BandeauVue"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
@@ -51,7 +51,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { ReviserTabs } from "@/components/ReviserTabs"
-import { BandeauFiltreCursus, desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
+import { desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { useInedites } from "@/lib/cursusAccueil"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SITE_NAME } from "@/lib/site"
@@ -461,8 +461,7 @@ export function EpreuvesListPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
-      <BandeauFiltreCursus />
-      <BandeauMatieres suitFiltreCursus />
+      <BandeauVue />
       {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
           ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
           chercher avant même d'avoir cherché. */}

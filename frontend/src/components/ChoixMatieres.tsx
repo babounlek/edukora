@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { Link, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { BookOpen, Check, Lock } from "lucide-react"
 import { toast } from "sonner"
 
-import { definirAffichageMatieres, definirMatieres, getMatieres } from "@/api/endpoints"
+import { definirAffichageMatieres, definirMatieres, getMatieres, type CibleMatieres } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import type { AvertissementInscription, MatiereOfficielle } from "@/api/types"
@@ -16,13 +16,15 @@ import { cn } from "@/lib/utils"
 /** Données qui dépendent des matières choisies : à relire après un changement. */
 const CLES_A_RELIRE = [["accueil"], ["plan-du-jour"], ["parcours-resume"], ["priorites"]] as const
 
-export function useMatieres() {
+/** `cible` : un profil précis du compte sur l'un de ses examens (« Mes accès »), sinon le profil actif. */
+export function useMatieres(cible?: CibleMatieres) {
   const { user } = useAuth()
-  const cursusId = user?.cursus_prepare?.id
-  const actif = estGce(user?.cursus_prepare)
+  const cursusId = cible?.cursusId ?? user?.cursus_prepare?.id
+  // Une cible vient d'une ligne GCE de « Mes accès » : pas besoin de redeviner l'examen du profil actif.
+  const actif = cible ? true : estGce(user?.cursus_prepare)
   const requete = useQuery({
-    queryKey: ["matieres", cursusId],
-    queryFn: ({ signal }) => getMatieres(signal),
+    queryKey: ["matieres", cursusId, cible?.profilId ?? null],
+    queryFn: ({ signal }) => (cible ? getMatieres(signal, cible) : getMatieres(signal)),
     enabled: actif && Boolean(cursusId),
   })
   return { actif, cursusId, ...requete }
@@ -33,13 +35,14 @@ export function useMatieres() {
  * bouton « Enregistrer »). Elle change ce que montrent toutes les listes : on relit donc tout, pas seulement les clés
  * de CLES_A_RELIRE. L'inscription (les matières cochées) n'est jamais touchée.
  */
-function useAffichageMatieres(cursusId: number | undefined) {
+export function useAffichageMatieres(cursusId: number | undefined, cible?: CibleMatieres) {
   const { t } = useI18n()
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (seulement: boolean) => definirAffichageMatieres(seulement),
+    mutationFn: (seulement: boolean) =>
+      cible ? definirAffichageMatieres(seulement, cible) : definirAffichageMatieres(seulement),
     onSuccess: (reponse) => {
-      queryClient.setQueryData(["matieres", cursusId], reponse)
+      queryClient.setQueryData(["matieres", cursusId, cible?.profilId ?? null], reponse)
       queryClient.invalidateQueries()
     },
     onError: () => toast.error(t("matieres.erreur")),
@@ -66,11 +69,11 @@ function texteAvertissement(
  * est actif - l'élève peut tout revoir d'un clic sans toucher à son inscription (BandeauMatieres).
  * Aucun choix = toutes les matières, comme pour un élève du BAC.
  */
-export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
+export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => void; cible?: CibleMatieres }) {
   const { t } = useI18n()
   const queryClient = useQueryClient()
-  const { cursusId, data, isError } = useMatieres()
-  const affichage = useAffichageMatieres(cursusId)
+  const { cursusId, data, isError } = useMatieres(cible)
+  const affichage = useAffichageMatieres(cursusId, cible)
   // null = rien touché : on montre le choix enregistré.
   const [brouillon, setBrouillon] = useState<number[] | null>(null)
   const enregistrees = data?.choisies ?? []
@@ -82,9 +85,9 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
   const choisies = brouillon ?? (aDefaut ? idsObligatoires : enregistrees)
 
   const enregistrer = useMutation({
-    mutationFn: (ids: number[]) => definirMatieres(ids),
+    mutationFn: (ids: number[]) => (cible ? definirMatieres(ids, cible) : definirMatieres(ids)),
     onSuccess: (reponse) => {
-      queryClient.setQueryData(["matieres", cursusId], reponse)
+      queryClient.setQueryData(["matieres", cursusId, cible?.profilId ?? null], reponse)
       CLES_A_RELIRE.forEach((cle) => queryClient.invalidateQueries({ queryKey: cle }))
       setBrouillon(null)
       toast.success(t("matieres.enregistre"))
@@ -236,19 +239,13 @@ export function ChoixMatieres({ onEnregistre }: { onEnregistre?: () => void }) {
  * sans cette phrase, une liste soudain plus courte se lit comme du contenu manquant. Reste affiché quand l'élève a
  * choisi de tout voir, pour qu'il puisse revenir à ses matières. Absent quand rien ne se restreint (aucun choix,
  * choix sans contenu sur cet examen) et hors GCE.
- *
- * `suitFiltreCursus` : pour les listes dont le cursus est un paramètre d'URL (épreuves, cours) - la restriction ne vaut
- * que sur l'examen de l'élève, donc le bandeau aussi.
  */
-export function BandeauMatieres({ suitFiltreCursus = false }: { suitFiltreCursus?: boolean }) {
+export function BandeauMatieres() {
   const { t, tn } = useI18n()
-  const { user } = useAuth()
-  const [searchParams] = useSearchParams()
   const { actif, cursusId, data } = useMatieres()
   const affichage = useAffichageMatieres(cursusId)
 
   if (!actif || !data || data.choisies.length === 0) return null
-  if (suitFiltreCursus && searchParams.get("cursus") !== String(user?.cursus_prepare?.id)) return null
   const seulement = data.seulement_mes_matieres ?? true
   // Interrupteur actif mais sans effet (choix sans contenu ici) : rien à raconter.
   if (seulement && !data.affichage_restreint) return null
@@ -264,7 +261,7 @@ export function BandeauMatieres({ suitFiltreCursus = false }: { suitFiltreCursus
       >
         {seulement ? t("matieres.bandeau_voir_toutes") : t("matieres.bandeau_voir_miennes")}
       </button>
-      <Link to="/compte" className="underline underline-offset-4 transition-colors hover:text-primary">
+      <Link to="/mes-acces" className="underline underline-offset-4 transition-colors hover:text-primary">
         {t("matieres.bandeau_modifier")}
       </Link>
     </p>

@@ -405,7 +405,9 @@ export function listSubjects(country?: string, signal?: AbortSignal, cursus?: nu
   // Sans examen choisi : limite aux matières de cette langue (fr | en) - voir SubjectListView.
   if (langue && !cursus) params.set("langue", langue)
   const query = params.size ? `?${params}` : ""
-  return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: false, signal })
+  // "optional" : le jeton part s'il y en a un - « voir seulement mes matières » restreint ces pastilles à celles du
+  // profil (voir catalog.views._matieres_visibles) ; sans jeton (visiteur), la liste reste complète.
+  return apiRequest<Subject[]>(`/catalog/subjects/${query}`, { auth: "optional", signal })
 }
 
 /** Une question QCM d'une épreuve gratuite de cette langue (voir catalog.views.question_exemple_gratuite) ; 404 s'il n'y en a pas. */
@@ -432,7 +434,7 @@ export function getThemesFrequents(cursusId: number, subjectId: string, signal?:
 
 export function getThemesFrequentsMatieres(cursusId: number, signal?: AbortSignal) {
   return apiRequest<ThemesFrequentsMatiere[]>(`/catalog/cursus/${cursusId}/themes-frequents/matieres/`, {
-    auth: false,
+    auth: "optional",
     signal,
   })
 }
@@ -921,19 +923,32 @@ export function continuerSeanceDuJour() {
  * sur un thème différent (voir quiz.views.autre_chose_view). Même charge utile que
  * getPlanDuJour, avec "rien_a_proposer" quand il n'y a plus d'alternative.
  */
-/** Les matières que passe le profil actif, et celles qu'il peut déclarer sur son cursus. */
-export function getMatieres(signal?: AbortSignal) {
-  return apiRequest<MatieresChoix>("/quiz/matieres/", { signal })
+/**
+ * Un profil précis du compte sur l'un de ses examens (voir quiz.views._cible_matieres) : sans cible, le profil actif.
+ * C'est ce qui permet de choisir ou corriger les matières de chaque enfant depuis « Mes accès ».
+ */
+export interface CibleMatieres {
+  profilId: number
+  cursusId: number
+}
+
+function urlMatieres(cible?: CibleMatieres) {
+  return cible ? `/quiz/matieres/?profil=${cible.profilId}&cursus=${cible.cursusId}` : "/quiz/matieres/"
+}
+
+/** Les matières que passe un profil (par défaut l'actif), et celles qu'il peut déclarer sur son cursus. */
+export function getMatieres(signal?: AbortSignal, cible?: CibleMatieres) {
+  return apiRequest<MatieresChoix>(urlMatieres(cible), { signal })
 }
 
 /** Remplace le choix de matières (liste vide = toutes) - voir quiz.views.matieres_view. */
-export function definirMatieres(matieres: number[]) {
-  return apiRequest<MatieresChoix>("/quiz/matieres/", { method: "PUT", body: { matieres } })
+export function definirMatieres(matieres: number[], cible?: CibleMatieres) {
+  return apiRequest<MatieresChoix>(urlMatieres(cible), { method: "PUT", body: { matieres } })
 }
 
 /** « Voir seulement mes matières » : la préférence d'affichage seule, sans toucher à l'inscription. */
-export function definirAffichageMatieres(seulementMesMatieres: boolean) {
-  return apiRequest<MatieresChoix>("/quiz/matieres/", {
+export function definirAffichageMatieres(seulementMesMatieres: boolean, cible?: CibleMatieres) {
+  return apiRequest<MatieresChoix>(urlMatieres(cible), {
     method: "PUT",
     body: { seulement_mes_matieres: seulementMesMatieres },
   })
