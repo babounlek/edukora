@@ -1,0 +1,269 @@
+# Épreuves inédites GCE : règles de conception pour tous les types de papers
+
+Guide canonique du « Mode GCE » du skill `concepteur-epreuve-inedite` (le skill y renvoie, comme `correction-experte` renvoie à
+`scripts/gce/README.md`). Il est né de l'étalonnage du 2026-10-19 : conception de **Mathematics GCE O Level Paper 1, épreuve inédite n°1**
+(50 QCM, `ep-cm-gce-ol-maths-p1-1-2026-s1`), calibrée sur les 8 vrais Paper 1 de 2019 à 2026, puis relevé des 18 047 questions de papers réels
+(2 895 fichiers, 2019-2026) déjà ingérés pour en tirer le profil de CHAQUE type de paper. Tout chiffre ci-dessous est mesuré sur ce corpus (`backend/ingest/cm/gce-*`), pas
+supposé. Ce qui est une décision à prendre, ou un défaut de plateforme, est marqué **DÉCISION** ou **DÉFAUT**.
+
+Le skill actuel a été écrit pour le système francophone (BEPC, Probatoire, BAC, séries, exercices numérotés, points sur 20). Le GCE n'est pas un
+« BAC en anglais » (voir `scripts/gce/README.md` §1) : le contrat JSON reste celui du skill, mais le plan d'une épreuve, son barème, son
+vocabulaire et ses contrôles changent.
+
+## 1. Le contrat JSON, version GCE
+
+| Champ | Valeur GCE | Pourquoi |
+|---|---|---|
+| `matiere` | libellé anglais : `Mathematics`, `Physics`, `Chemistry`, `Biology`, `English Language`... (`MATIERE_MAP` de `catalog/ingestion.py`) | résolu en `GCE_*` |
+| `cursus` | `[{"examen":"gce_ol","serie":""}]` (ou `gce_al`) ; `"Technical"` seulement pour la branche technique | jamais `gce` seul, jamais de série A/C/D |
+| `savoirs_officiels` / `savoir_officiel` | **omis** | le référentiel `programme` n'existe pas pour le GCE |
+| `external_id` | `bp-cm-gce-<ol\|al>-<matiere>-p<paper>-<n>` et `ep-<id du bp>-<annee>-s<k>` | le numéro de paper entre dans l'id : le modèle n'a pas de champ `numero_paper` (DÉFAUT 4) |
+| `titre` | `<Subject> GCE <O Level\|A Level> Paper <p> – Original Paper No. <N>` | « Original Paper » est le mot de l'interface anglaise (`ep.seo_inedites`) ; « GCE O Level » rend `public_dans_titre` vrai, l'en-tête du PDF ne répète donc pas le public ; le `n°` français devient `No.` |
+| Langue du contenu | anglais clair, niveau Form 5 (O/L) ou Upper Sixth (A/L), contextes camerounais (FCFA, Buea, Bamenda, Douala...), SI, `g = 10 m s^-2`, **point décimal**, milliers par `\,` | `Subject.langue = en` : la plateforme choisit alors le PDF et l'interface anglais |
+| Repères de structure | restent **en français** dans le JSON : `### Rappel de méthode`, `### Piège à éviter`, `### Conseil` | le frontend (`lib/markdown.ts`) les détecte par ce titre exact, `catalog/pdf_textes.py` les traduit à l'affichage (`Method reminder`, `Common pitfall`, `Tip`). Les titres `### Method reminder` ne sont détectés que dans les quiz et cours |
+| `duree_minutes` / `bareme_total` | durée **réelle** du paper (90, 120, 150, 180) et total de points du paper | seuls porteurs de la durée : le chrono lit `Blueprint.duree_minutes` |
+| `competences` / `themes` | noms de `Tag` **existants**, en minuscules, vocabulaire du lot (`scripts/gce/consignes/CONSIGNES.md`) | `Tag.name` est unique et partagé avec le contenu français (collisions : README §4) |
+| `rappels_de_methode[].competence` | le **titre exact du `Cours` existant** du thème (ex. `Vectors: column vectors, magnitude and direction`) | l'égalité de chaîne est ce qui relie le rappel à un cours déjà publié sans le regénérer ; fichier `scripts/gce/inedites/cours_titres_gce_maths_ol.json` pour les Maths O/L |
+| Corrigé d'une QCM | `### Rappel de méthode` (règle générale, un paragraphe) + résolution + `**Answer: C.**` + `### Piège à éviter` + `### Conseil` si pertinents | même gabarit que `correction-experte` en Mode GCE ; la lettre est recalculée par le générateur, jamais tapée |
+| Tirets | ni cadratin ni demi-cadratin dans le contenu ; `–` seulement dans le `titre` | règle du skill et de `CONSIGNES.md` |
+
+## 2. Ce que la plateforme sait représenter aujourd'hui, et ce qu'elle ne sait pas
+
+Représentable : un exercice unique de 50 QCM ; plusieurs exercices avec `groupes` (`SECTION A`, `SECTION B`) ; barème exact par question et grille
+`criteres_notation` ; figures SVG intégrées au Markdown ; durée du paper (`Blueprint.duree_minutes`) ; PDF du sujet en anglais.
+
+Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/ingestion.py`, `inedit/views.py`) :
+
+- **DÉFAUT 1 (corrigé le 2026-10-19, non committé) : les options des QCM étaient absentes du PDF du sujet et du texte compilé.**
+  `EpreuveInedite.compile_from_exercices` n'écrivait que `question.enonce_markdown` ; le lecteur à l'écran affichait `choix`, pas le PDF
+  (constaté sur le Paper 1 étalon : 7 pages, 50 énoncés, aucune option). Correctif : pour une question `QCM` portant `choix`, une option par ligne
+  (`a) texte`) est ajoutée après l'énoncé dans `enonce_markdown` et `corrige_markdown` compilés, comme le fait
+  `catalog.rendering._render_question_enonce` ; test `CompileFromExercicesTests.test_qcm_options_are_rebuilt_from_choix_in_both_documents`.
+  Les 19 épreuves inédites à QCM (64 questions) de la base locale ont été recompilées et leurs PDF régénérés. En production : reconstruire l'image
+  `backend`, puis recompiler et régénérer de même. Ne jamais recopier les options dans `enonce_markdown` (affichées deux fois à l'écran).
+- **DÉFAUT 2 : `score_originalite` ne mesure pas l'originalité d'un QCM de syllabus.** C'est le `1 - max(difflib ratio)` entre un énoncé et 500
+  questions du corpus : les énoncés courts et gabarités (« Given that ..., the value of ... is ») atteignent 0,85 contre n'importe quel énoncé réel
+  voisin. Le Paper 1 étalon sort à **13** alors que `controle_inedite_gce.py` (comparaison énoncé + options + nombres contre 810 questions réelles de
+  Maths O/L) ne trouve aucun doublon. Le score reste informatif ; ne jamais exiger « > 80 » pour un QCM.
+- **DÉFAUT 3 : le titre d'exercice du PDF reste en français** (« Exercice 1 (50 marks) ») : `adapter_markdown` traduit `**Exercice` en gras, pas
+  `### Exercice`. Pour une épreuve à exercice unique, l'en-tête n'apporte rien.
+- **DÉFAUT 4 : ni `numero_paper`, ni `code_matiere`, ni `regles_choix` dans le modèle inédit.** Les règles de choix (`parmi`, `ou`, `total`,
+  `section_unique`) n'existent que pour les épreuves classiques (`catalog/choix.py`, `simulations/choix.py`). Conséquence de conception au §4.
+- Pas d'image PNG : figures SVG calculées seulement (`figures_svg.py`). Cartes, schémas anatomiques ou de verrerie, microphotographies restent
+  hors de portée.
+- Le barème est **exact** : la somme des `points` des questions d'un exercice vaut `exercices[].points`. Les sujets réels, eux, ne somment pas
+  toujours (Maths P2 : 103 à 144 selon l'année, parce que la transcription ne corrige jamais le sujet imprimé). Une inédite, elle, se
+  construit avec un total propre.
+
+## 3. Étalon : Paper 1 de Mathematics O Level (0570)
+
+Mesuré sur 2019-2026 (8 papers, 400 questions). C'est le patron de TOUT Paper 1 QCM ; les écarts par matière sont au §5.
+
+| Mesure | Réel | Étalon inédit n°1 |
+|---|---|---|
+| Structure | 1 exercice, 50 QCM, `points` vide (« all questions carry equal marks ») | 1 exercice `"1"`, 50 QCM, 1 point chacune, `points "50"` |
+| Durée | 1h30, calculatrice non programmable | `duree_minutes 90`, `bareme_total 50`, mêmes consignes dans `enonce_intro_markdown` |
+| Options | 4 (`a` à `d`), 391 questions sur 400 ; clés a 106 / b 99 / c 98 / d 88 | 4 options, clés a 13 / b 13 / c 12 / d 12, jamais 3 de suite |
+| Ordre | **ordre du syllabus**, identique d'une année à l'autre : nombres et rapports (1-10), ensembles et logique (11-14), fonctions (15-18), angles, mensuration, cercle (19-30), géométrie analytique et graphes (28-33), algèbre (31-41), réseaux, trigonométrie (38-45), vecteurs, matrices, transformations (42-48), statistiques puis probabilités (46-50) | même ordre, 11 blocs inscrits dans `sections_plan[0].repartition` |
+| Poids des thèmes (moyenne par sujet) | mensuration 4,5 ; angles 3,8 ; expressions algébriques 3,3 ; statistiques 3,3 ; ensembles 3,1 ; vecteurs 3,1 ; fonctions 3 ; arithmétique 2,9 ; trigonométrie 2,4 ; matrices 2,4 ; probabilités 1,3 | mêmes ordres de grandeur, 36 thèmes sur 40 présents dans le corpus |
+| Difficulté (estimée) | 61 % faible, 38 % moyenne, 0,25 % élevée | 26 faible (52 %), 22 moyenne (44 %), 2 élevée (4 %) |
+| Énoncé | 85 caractères en moyenne ; 80-90 % se terminent par « is / are / gives » ; aucune question « ? » | même gabarit, une consigne par énoncé, contexte réel seulement pour les rapports et l'arithmétique commerciale |
+| Options « all / none / both of the above » | 0 à 2 % en Maths (jusqu'à 9 % en Biologie) | aucune |
+| Figures | 14, 12, 5, 10, 9, 11, 3, 2 par sujet (tendance récente : 2-3) ; 10-30 % des questions | 12 figures SVG calculées, numérotées « Figure 1 » à « Figure 12 » dans l'ordre des questions |
+
+Méthode de fabrication retenue (à reprendre pour tout QCM) : un **générateur** (`generer_maths_p1.py`) et non du JSON tapé à la main.
+
+1. Chaque question est une entrée de données : thèmes, difficulté, énoncé, bonne option, trois distracteurs, rappel, résolution, piège, figure.
+2. Les clés sont **placées par le générateur** (suite équilibrée et déterministe), la lettre de `**Answer: X.**` est recalculée. Une clé tapée à
+   la main dérive vers « b » et « c » : mesuré sur les sujets réels (a 27 %, d 22 %).
+3. Les distracteurs sont des **erreurs types nommées**, jamais des valeurs absurdes : l'ordre des opérations de gauche à droite, le signe oublié,
+   le dénominateur pris sur la mauvaise base, la formule d'une autre grandeur, le volume au lieu de l'aire. Le bloc `### Piège à éviter` du corrigé
+   dit lequel mène à quelle option : c'est ce qui rend le corrigé utile à qui a répondu faux.
+4. **Recalcul indépendant** (`verifier_reponses_maths_p1.py`) : la valeur attendue est recalculée depuis les données de l'énoncé, les quatre options
+   sont lues (nombre, ensemble, point, vecteur, matrice, expression évaluée en plusieurs points) et la clé doit être la **seule** égale. Testé par
+   mutation (clé faussée, bonne réponse dupliquée) : les deux sont détectées. Les corrigés ne servent jamais de source du calcul.
+5. Les figures sortent d'un script à partir des constantes de l'énoncé (118°, 8-15-17, cap 072°) ; contrôle `verifier_figures.py` puis rendu PNG
+   **regardé**.
+
+Contrôles de fin (ordre) : `generer_maths_p1.py` ; `verifier_reponses_maths_p1.py` (0 écart) ; `controle_inedite_gce.py` (0 erreur) ;
+`verifier_figures.py` (0 erreur) + rendu des figures ; rendu KaTeX par le vrai moteur (`audit-rendu.test.ts` sur un dump des champs) ;
+**ingestion à blanc** dans une transaction annulée (blueprint passé VALIDE à l'intérieur de la transaction seulement) ; PDF du sujet
+regardé page par page.
+
+## 4. Règles communes à tous les papers
+
+**Blueprint d'abord, validé par un humain.** Règle inchangée du skill. Le blueprint GCE porte, dans `sections_plan`, ce que le modèle ne sait
+pas porter ailleurs : `format`, `ordre`, `repartition` (blocs et nombre de questions), `repartition_difficulte`, `figures_prevues`, et pour un paper à
+choix la règle réelle en clair. Un blueprint sans ce plan chiffré est incomplet.
+
+**Fidélité au vrai paper : la STRUCTURE se copie, le CONTENU ne se copie jamais.** On reproduit le nombre de questions, l'ordre du syllabus, le
+format des options, la répartition de difficulté, la densité de figures, la durée, les consignes. On ne reprend aucune donnée, aucun contexte, aucun
+nom, aucune figure, aucun jeu d'options d'un sujet réel. Le gabarit de question de syllabus (« The median of ... is ») revient forcément : le test
+est « les mêmes données ou le même contexte ? », pas « le même début de phrase ? ». Contrôle outillé `controle_inedite_gce.py` :
+énoncé + options + nombres contre toutes les questions réelles de la matière, ERREUR si texte ≥ 0,82 et nombres communs ≥ 0,5 ou si 3 options non
+triviales sont identiques ; AVERTISSEMENT dès 0,66. Les avertissements se relisent à la main (Étalon : deux, des gabarits de matrices avec d'autres
+valeurs).
+
+**Corrigés justes, recalculés.** Il n'existe aucun corrigé officiel : la justesse est entièrement la nôtre. Matière calculatoire : recalcul par
+script (Python, `fractions`, `math`), jamais « ça a l'air juste ». Matière factuelle : chaque fait (date, auteur, valeur) vérifié, `incertitudes` dit
+le reste. Code (Pascal, C) sans compilateur sur la machine : logique vérifiée par traduction Python, et le dire.
+
+**Pas de choix offert tant que la plateforme ne le note pas (DÉCISION, à confirmer).** Les papers réels à choix (« answer any 5 of 8 ») sont
+représentés dans le catalogue par `regles_choix`, absentes des inédites (DÉFAUT 4). Règle provisoire : l'inédite contient **exactement les
+questions que le candidat doit traiter** (version « answer ALL »), la règle réelle est rappelée dans `enonce_intro_markdown`, et le blueprint la
+consigne. Alternative non retenue : offrir les m questions, ce qui fausserait barème et rapport de fin. Chantier de plateforme : reprendre
+`catalog/choix.py` dans `inedit`.
+
+**Statut.** Brouillon à l'ingestion, toujours ; blueprint validé par un humain dans l'admin ; l'épreuve est publiée par un geste humain.
+
+**Après l'ingestion.** `bash scripts/tunnel_validation.sh <since>` (périmètre inédit : voir limites dans le skill), `manage.py indexer_recherche`,
+génération des cours manquants (un par `### Rappel de méthode` dont la compétence n'a pas de `Cours`, `type: "cours"`, `meta.serie` = `"GCE O/L"`
+ou `"GCE A/L"`, `meta.tags` = le thème seul).
+
+## 5. Profil et règles par type de paper
+
+Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, durée imprimée). **Toutes les matières ont un Paper 1 de 50 QCM de
+1h30** ; ce qui varie est le reste.
+
+| Type | Papers concernés | Structure réelle | Règle de choix réelle |
+|---|---|---|---|
+| **A. QCM** | P1 de toutes les matières O/L et A/L | 1 exercice, 50 questions, 4 options, 1h30 (Religious Studies A/L : 40-50) | aucune |
+| **B. Structuré, tout obligatoire** | Maths O/L P2 ; Further Maths A/L P2 et P3 ; Pure Maths with Mechanics / Statistics A/L P2 et P3 | Maths O/L P2 : A 10 questions courtes (4-5 points, 43-45 au total) + B 4 questions de 15 points, 2h30 | aucune (« Answer ALL ») |
+| **C. Structuré, avec choix** | Biology, Chemistry, Human Biology, Citizenship, Commerce, Economics, Food and Nutrition, Geography, History, Computer Science, Physics (`ou`), Additional Mathematics (`section_unique`) O/L P2 ; Biology, Geology, ICT, Computer Science A/L P2 | 5 à 14 questions à sous-parties `a, b, c`, souvent 2 à 4 sections | `parmi` (n sur m), `ou`, `total`, `section_unique` |
+| **D. Essai / dissertation** | History, Religious Studies, Philosophy, Geography, Economics A/L P2-P3 ; History et Geography O/L sections B-C ; Literature (aucun paper ingéré à ce jour) | 4 à 12 sujets de 15 à 25 points, un par section | `total` (« au moins une par section »), `section_unique`, `parmi 1 sur n` |
+| **E. Langue** | English Language et French O/L P2 (modèle de composition : environ 630 mots en English O/L) ; English A/L P2-P3 ; SBE French | 3 à 9 questions de 30 à 80 points : compréhension, résumé, rédaction | `parmi` |
+| **F. Pratique / applications** | Computer Science O/L et A/L P3 ; ICT A/L P3 ; Geography A/L P3 (carte) | 2 à 12 tâches ; données du jour absentes du PDF | `parmi`, parfois `ou` |
+| **G. Quantitatif multi-parties** | Economics A/L P3 ; Mechanics et Statistics A/L P3 (8 questions de 13 points) ; Physics A/L P2 | 5 à 8 questions de 13 à 25 points, tableaux et calculs | `parmi` ou aucune |
+
+### A. Paper 1 QCM (toutes matières)
+
+- 1 exercice `"1"`, 50 questions numérotées `"1"` à `"50"`, `type_reponse: "qcm"`, `points` 1, exercice `points "50"`, `groupes: []`,
+  `duree_minutes: 90`. Consignes du vrai sujet dans `enonce_intro_markdown`.
+- 4 options `a`-`d`, `reponse_correcte` en minuscule, jamais `criteres_notation`.
+- Ordre du syllabus, bloc par bloc (§3). Les 4 à 5 premières questions sont les plus simples de leur thème ; la difficulté monte à l'intérieur d'un
+  bloc, pas sur le paper entier.
+- Difficulté : 45 à 70 % faibles, 1 à 4 élevées ; le contrôle avertit hors de ces bornes.
+- Options homogènes (même nature, même format, même précision), jamais « all/none of the above » en Maths, Add. Maths, Physics, Chemistry, Computer
+  Science, Economics, Commerce ; toléré à moins de 10 % en Biologie, Human Biology, Citizenship, Geography.
+- Par matière (mesuré) : **Maths** 80-90 % d'énoncés en « is », 10-30 % de figures ; **Physics** 15-40 % de figures et 25-40 % de questions en « ? » ;
+  **Biology / Human Biology** 8-18 % de figures (schémas : hors de portée, voir §6), questions en « ? » 17-51 % ; **History / Citizenship / Commerce /
+  Food** aucune figure, faits exacts, jamais de date ou de nom non vérifié ; **English / French** aucun calcul, un énoncé ne contient jamais deux
+  réponses admissibles, textes originaux (jamais un extrait publié).
+- **A Level** : la première question d'un Paper 1 mélange les formats (meilleure réponse, affirmations numérotées `1, 2, 3` avec « 1 and 2 only »,
+  assertion et raison). Un format par bloc de questions, annoncé dans `groupes` seulement si le vrai sujet le fait ; options de combinaison
+  rédigées en toutes lettres (`a) 1 and 2 only`).
+- Une question à figure dont la clé dépend de la lecture d'un détail fin est interdite : la clé doit se retrouver par calcul sur les données
+  écrites en texte (`desc` du SVG comprise).
+
+### B. Structuré, tout obligatoire (Maths O/L P2 comme étalon)
+
+- Format récent (2023, 2025, 2026) : exercices `"1"` à `"10"` en `SECTION A` (une à trois sous-questions, 4 à 5 points chacune), exercices
+  `"B1"` à `"B4"` en `SECTION B` (15 points chacun, 5 à 8 sous-questions). Total propre de 100 : A 40 (10 × 4), B 60. Les sujets imprimés de 2019-2022
+  avaient 15 questions en A : ne pas les imiter.
+- Sous-question = une `question` de `numero` `a`, `b`, `c`... ; `points` et `criteres_notation` obligatoires : critères observables sur la copie
+  (« Writes the formula », « Substitutes correctly », « Answer with unit »), somme exacte, 2 à 5 critères.
+- Les consignes du vrai sujet y figurent : « show all steps », « 2 decimal places », « leave your answer in surd form », « give reasons ».
+- Mélange attendu en Section B : un problème de **graphe à tracer** (tableau de valeurs, courbe SVG dans le corrigé seulement), un problème de
+  **statistiques** (tableau de fréquences, moyenne, médiane, histogramme ou diagramme), une **construction ou transformation**, un problème
+  **vecteurs/matrices**. Poids mesurés dans P2 : statistics 3-6 par sujet, graphs 3-6, set theory 3-5, graph theory 2-4, matrix 2-5, probability 1-4.
+- Le corrigé est le **corrigé d'un candidat qui prend tous les points** : étapes, formules, valeurs, conclusion, `**Answer: ...**` en gras.
+- Figures : celles du `Tracé attendu` vont au corrigé uniquement (le skill) ; les figures de données d'énoncé sont SVG calculés.
+
+### C. Structuré avec choix (Biology, Chemistry, History, Geography, Economics, Commerce, Food, Human Biology, Citizenship, Computer Science)
+
+- Reproduire la **forme** : sections (`groupes`), nombre de sous-parties, points par sous-partie imprimés (Chemistry O/L P2 : 5 questions de 10 en A,
+  2 de 20 en B, 3 de 20 en C ; Biology O/L P2 : A 3 × 20, B 4 × 20 ; Human Biology : A 5 × 20, B 4 × 20).
+- **La règle de choix du vrai sujet ne se code pas** (DÉFAUT 4) : version « answer ALL » limitée aux questions à traiter (§4), règle réelle en clair
+  dans le blueprint et dans l'intro. Exemple : History O/L (« 2 en A, 1 en B, 1 en C ») donne 4 questions, pas 17.
+- Matières factuelles : corrigé = **réponse modèle complète** d'un candidat qui obtient tous les points ; chaque point de barème correspond à un fait
+  ou à une idée distincte du corrigé ; dates, auteurs, lieux et chiffres vérifiés avant d'écrire (pas de recalcul possible, aucune approximation).
+- Matières scientifiques : un support (tableau, courbe, texte expérimental) par question de données ; les données restent aussi écrites en texte ou
+  tableau ; schémas anatomiques ou de verrerie : jamais (le dire dans le compte rendu).
+- Sujets camerounais : contextes locaux réels (cultures, climat, institutions) ; aucune donnée statistique inventée présentée comme réelle (en Geography
+  et Economics, étiqueter « Source: adapted data » seulement si les chiffres sont réellement des données publiées, sinon les présenter comme
+  un cas d'étude fictif).
+
+### D. Essais (History, Religious Studies, Philosophy, Literature, Geography, Economics)
+
+- Un sujet de dissertation inédit **n'est jamais l'intitulé d'un sujet réel reformulé** (règle du skill pour les matières argumentatives). Les
+  citations d'auteurs, de textes sacrés et de faits sont exactes et attendues.
+- Corrigé = **plan détaillé et essai modèle** : introduction, 3 à 5 parties, conclusion, avec les faits, dates, exemples et références
+  qu'un correcteur cherche ; longueur calée sur les corrigés modèles déjà ingérés (médiane par question : History A/L P2 et P3 environ 740 mots, Economics A/L P2 450, History O/L P2 230 par sous-question, Philosophy A/L 220) : mesurer le corpus de la matière avant d'écrire, ne pas deviner.
+- `criteres_notation` d'un essai : contenu et connaissances, exactitude des faits, structure et argumentation, exemples et illustrations, qualité de la
+  langue. Points répartis selon le barème du vrai sujet (15-25 par essai) ; critère observable (« Defines the term in the introduction », « Gives at
+  least three dated examples »).
+- **History / Religious Studies / Literature** : périmètre du syllabus du Board seulement (Cameroon History Since 1800, Africa and World History ;
+  Literature : œuvres inscrites au programme de l'année, jamais une œuvre hors liste). Faits relus par un historien avant mise en avant (README §4,
+  History A/L).
+- Philosophy : thèse, antithèse, synthèse ; auteurs cités avec œuvre exacte.
+
+### E. Langues (English Language, French, SBE French, Literature)
+
+- Textes de compréhension et textes à résumer : **originaux**, jamais un extrait publié (droit d'auteur) ; niveau de lecture et longueur calés sur
+  le vrai sujet (mesurer le nombre de mots du texte des sujets réels avant d'écrire) ; thèmes camerounais plausibles.
+- Un Paper 1 de langue contrôle grammaire, vocabulaire, usage, synonymes, ponctuation : une seule réponse défendable par question (relecture
+  par un second passage : « existe-t-il une deuxième option acceptable ? »).
+- P2 : sections (compréhension, résumé, composition ou lettre, grammaire) avec leur barème ; composition notée sur contenu, organisation, expression,
+  orthographe ; corrigé = **texte modèle** et liste des éléments attendus.
+- Aucune figure.
+
+### F. Pratique et applications (Computer Science, ICT, Geography A/L P3)
+
+- Les données et fichiers « du jour » des vrais sujets ne sont pas dans le PDF : l'inédite doit être **complète en soi**. Toute donnée nécessaire (table,
+  fichier de valeurs, jeu d'essai) est écrite dans l'énoncé.
+- Programmation : énoncé de tâche, spécification d'entrées et sorties, jeu d'essai ; corrigé = algorithme (pseudo-code), code (ISO Pascal ou ANSI C
+  comme le vrai sujet), exemple d'exécution. **Le code est exécuté ou traduit en Python et la trace est comparée**, sinon `incertitudes` le dit
+  (aucun compilateur C/Pascal sur la machine).
+- ICT : tâches tableur (formules `=SUM(B2:B9)` en code, `$` protégé), base de données, web, présentation ; corrigé = démarche, formules, requêtes SQL
+  vérifiées avec `sqlite3`.
+- Geography A/L P3 : carte topographique hors de portée (jamais d'imitation). Si la question exige une carte, ne pas la produire : le dire.
+- Figures : algorigrammes, structures de données et tableaux de trace sont réalisables (§6).
+
+### G. Quantitatif multi-parties (Economics P3, Mechanics, Statistics, Physics A/L)
+
+- 5 à 8 questions de 13 à 25 points, chaque question en parties `(a)`, `(b)`, `(c)` avec leurs points imprimés ; données chiffrées dans un tableau
+  Markdown ; unités SI ; `g = 10 m s^-2`.
+- Calcul entièrement recalculé par script ; chaque question a un fil (le résultat de `(a)` sert à `(b)`) sans que l'erreur de `(a)` ne puisse
+  propager un faux corrigé : le corrigé donne le résultat de `(a)` avant de l'utiliser.
+- Mécanique et Statistics : la partie Pure Maths de ces papers est **partagée** entre les deux matières d'une même session (README §4) : une inédite
+  `Mechanics` et une inédite `Statistics` ne partagent aucune question entre elles.
+
+## 6. Figures : ce que le GCE permet de produire (SVG calculé)
+
+| Matière | Réalisable | Hors de portée |
+|---|---|---|
+| Mathematics, Add. Maths, Further, Pure Maths | repères, courbes, droites, histogrammes, diagrammes en barres, diagrammes de Venn, diagrammes sagittaux, réseaux, figures planes (angles, triangles, cercles avec centre et angle inscrit, polygones, solides en perspective cavalière), droites graduées, cap et nord | constructions à main levée sans coordonnées |
+| Physics, Chemistry | graphiques expérimentaux, circuits simples, schémas de montage simples | verrerie détaillée, optique à l'échelle |
+| Biology, Human Biology, Geology | graphiques de résultats, arbres généalogiques, croisements, chaînes de réactions | schémas anatomiques, cellulaires, histologiques, coupes géologiques |
+| Computer Science, ICT | algorigrammes, structures de données, tableaux de trace | captures d'écran |
+| Economics, Commerce | courbes d'offre et de demande, graphiques, diagrammes en barres, frises | tableaux photographiés |
+| Geography, History | graphiques, frises | **cartes**, photographies |
+| English, French, Literature, Religious Studies, Philosophy, Citizenship | aucune | |
+
+Règles d'un SVG de paper (en plus de celles du skill) : **point décimal** et graduations anglaises (la bibliothèque graduait avec la virgule : le
+générateur remplace `figures_svg.fmt`) ; vrai signe moins `−` ; légendes `Figure n` continues sur l'épreuve entière dans l'ordre des questions ; texte
+de figure en anglais ; les arcs et marques d'angle droit dessinés **par-dessus** le remplissage d'une forme (couche 3) ; chaque donnée utile de la figure
+répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le texte ; une figure d'énoncé ne contient jamais la réponse.
+
+## 7. Étalonnage du skill : ce qui lui manquait
+
+1. Il ne connaissait ni le Mode GCE, ni le Paper 1 de 50 QCM, ni les papers : il supposait des exercices numérotés sur 20 points et des séries.
+2. Il n'avait aucune règle de **calibrage chiffré** (nombre de questions, ordre, poids des thèmes, difficulté, options, figures) : tout vient du
+   corpus réel, désormais outillé (`controle_inedite_gce.py`).
+3. Il demandait de « re-résoudre le calcul » sans outil : `verifier_reponses_maths_p1.py` en est la version exécutable pour une QCM (la clé est la
+   seule option égale à la valeur recalculée).
+4. Il ne disait pas où va le numéro de paper, ni la règle de choix, ni le code matière : conventions §1 et §4.
+5. Il ne prévoyait pas la **lettre de la clé** : placée et citée par le générateur.
+6. Ses figures graduaient en français : correction §6.
+7. Rien ne contrôlait le PDF du sujet (c'est lui qui a révélé le DÉFAUT 1) : le contrôle visuel doit inclure le PDF, page par page.
+8. Le tunnel de validation ne regarde pas le contenu des épreuves inédites : la structure se garantit par `controle_inedite_gce.py` et l'ingestion
+   à blanc, les thèmes par le contrôle contre le corpus.
+
+## 8. Reste à faire (hors de cet étalonnage)
+
+- Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
+- Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).
+- Étalonner le **Paper 2** de Maths O/L (type B) sur le même modèle : générateur, vérificateur de calculs, grilles `criteres_notation`.
+- Étalonner un paper de chaque type C, D, E, F, G avec les mêmes quatre contrôles ; l'étalon ci-dessus est entièrement chiffré pour A et B, qualitatif
+  pour les autres (aucun paper inédit de ces types n'a encore été produit).
+- Cours des 2 thèmes sans cours (`change of subject`, `circle`) : leurs rappels portent une compétence sans `Cours` existant.

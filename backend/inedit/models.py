@@ -259,8 +259,16 @@ class EpreuveInedite(models.Model):
                     enonce_parts.append(f"**{question.groupe_local}**")
                     corrige_parts.append(f"**{question.groupe_local}**")
                 dernier_groupe_local = question.groupe_local
-                enonce_parts.append(f"**{question.numero}.** {question.enonce_markdown}")
-                corrige_parts.append(f"**{question.numero}.** {question.enonce_markdown}\n\n{question.corrige_markdown}")
+                # Les options d'une QCM vivent dans `choix`, jamais dans enonce_markdown (le lecteur
+                # les affiche depuis ce champ) : sans cette reconstruction, le sujet PDF et le corrigé
+                # autonome poseraient des QCM sans aucune proposition. Même rendu que
+                # catalog.rendering._render_question_enonce : une option par ligne.
+                enonce = question.enonce_markdown
+                if question.type_reponse == TypeReponse.QCM and question.choix:
+                    options = "\n".join(f"{choix['lettre']}) {choix['texte']}" for choix in question.choix)
+                    enonce = f"{enonce.rstrip()}\n\n{options}"
+                enonce_parts.append(f"**{question.numero}.** {enonce}")
+                corrige_parts.append(f"**{question.numero}.** {enonce}\n\n{question.corrige_markdown}")
 
         self.enonce_markdown = "\n\n".join(enonce_parts)
         self.corrige_markdown = "\n\n".join(corrige_parts)

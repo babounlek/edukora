@@ -1950,6 +1950,40 @@ class CompileFromExercicesTests(TestCase):
             self.assertEqual(document.count("**Document 1** : courbe de croissance."), 1)
             self.assertLess(document.index("Document 1"), document.index("Énoncé Q1."))
 
+    def test_qcm_options_are_rebuilt_from_choix_in_both_documents(self):
+        """Les options d'une QCM vivent dans `choix` : le sujet PDF (dérivé de enonce_markdown) et
+        le corrigé autonome doivent les porter, une option par ligne, après l'énoncé."""
+        blueprint, _ = ingest_blueprint(_blueprint_payload(), self.country)
+        blueprint.statut = StatutContenu.VALIDE
+        blueprint.save(update_fields=["statut"])
+        epreuve = EpreuveInedite.objects.create(
+            blueprint=blueprint, subject=blueprint.subject, titre="Test QCM",
+        )
+        epreuve.cursus.set(blueprint.cursus.all())
+        exercice = ExerciceInedite.objects.create(epreuve=epreuve, numero_exercice="1", points="2")
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="1", ordre=1, type_reponse=TypeReponse.QCM,
+            enonce_markdown="Énoncé QCM.", corrige_markdown="Réponse QCM.",
+            choix=[{"lettre": "a", "texte": "Premier"}, {"lettre": "b", "texte": "Second"}],
+            reponse_correcte="b",
+        )
+        QuestionInedite.objects.create(
+            exercice=exercice, numero="2", ordre=2,
+            enonce_markdown="Énoncé ouverte.", corrige_markdown="Réponse ouverte.",
+        )
+
+        epreuve.compile_from_exercices()
+
+        for document in (epreuve.enonce_markdown, epreuve.corrige_markdown):
+            self.assertIn("Énoncé QCM.\n\na) Premier\nb) Second", document)
+            self.assertEqual(document.count("a) Premier"), 1)
+            self.assertLess(document.index("b) Second"), document.index("Énoncé ouverte."))
+        # une question ouverte ne reçoit jamais d'options
+        self.assertNotIn(") ", epreuve.enonce_markdown.split("Énoncé ouverte.")[1])
+        # la réponse reste réservée au corrigé
+        self.assertNotIn("Réponse QCM.", epreuve.enonce_markdown)
+        self.assertIn("Réponse QCM.", epreuve.corrige_markdown)
+
 
 class ReprendreTentativeAPITests(TestCase):
     """start_tentative reprend la copie en cours au lieu d'en créer une nouvelle à chaque
