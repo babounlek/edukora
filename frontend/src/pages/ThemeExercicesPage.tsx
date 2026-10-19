@@ -16,6 +16,7 @@ import { AnneauFrequence } from "@/components/AnneauFrequence"
 import { StatChip } from "@/components/Configurateur"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -45,6 +46,7 @@ function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
  * laisser l'élève rechercher lui-même dans un corrigé entier.
  */
 export function ThemeExercicesPage() {
+  const abonne = useAbonneActif()
   useI18n()
   const { country = "", tagId } = useParams<{ country: string; tagId: string }>()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -102,7 +104,8 @@ export function ThemeExercicesPage() {
   const parCursus = new Map<number, number>()
   for (const c of contextes) parCursus.set(c.cursus_id, (parCursus.get(c.cursus_id) ?? 0) + c.nb_exercices)
   const examens = cursusList
-    .filter((c) => parCursus.has(c.id))
+    // Un abonné ne voit que les exercices de son examen : pas de pastilles d'examens voisins.
+    .filter((c) => parCursus.has(c.id) && (!abonne || String(c.id) === cursusId))
     .sort(
       (x, y) =>
         x.examen_display.localeCompare(y.examen_display, localeCourante()) ||
@@ -199,22 +202,26 @@ export function ThemeExercicesPage() {
       {examens.length > 1 || matieres.length > 1 ? (
         <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
           <p className="font-display text-lg font-semibold">{t("te.ton_examen")}</p>
-          <p className="text-sm text-muted-foreground">{t("te.aussi_ailleurs")}</p>
-          <FiltreLigne titre={t("quiz.examen")}>
-            {examens.map((c) => {
-              const actif = String(c.id) === cursusId
-              // Garde la matière en cours si elle existe dans cet examen, sinon la plus fournie.
-              const matiere =
-                contextes.find((x) => x.cursus_id === c.id && x.subject_code === subjectCode) ??
-                contextes.find((x) => x.cursus_id === c.id)!
-              return (
-                <PastilleFiltre key={c.id} actif={actif} onClick={() => changerSelection(String(c.id), matiere.subject_code)}>
-                  {libelleCursus(c)}
-                  <CompteurPastille actif={actif}>{parCursus.get(c.id)}</CompteurPastille>
-                </PastilleFiltre>
-              )
-            })}
-          </FiltreLigne>
+          {!abonne && (
+            <>
+            <p className="text-sm text-muted-foreground">{t("te.aussi_ailleurs")}</p>
+            <FiltreLigne titre={t("quiz.examen")}>
+              {examens.map((c) => {
+                const actif = String(c.id) === cursusId
+                // Garde la matière en cours si elle existe dans cet examen, sinon la plus fournie.
+                const matiere =
+                  contextes.find((x) => x.cursus_id === c.id && x.subject_code === subjectCode) ??
+                  contextes.find((x) => x.cursus_id === c.id)!
+                return (
+                  <PastilleFiltre key={c.id} actif={actif} onClick={() => changerSelection(String(c.id), matiere.subject_code)}>
+                    {libelleCursus(c)}
+                    <CompteurPastille actif={actif}>{parCursus.get(c.id)}</CompteurPastille>
+                  </PastilleFiltre>
+                )
+              })}
+            </FiltreLigne>
+            </>
+          )}
           <FiltreLigne titre={t("quiz.matiere")}>
             {matieres.map((m) => {
               const Icon = subjectIcon(m.subject_code)

@@ -38,6 +38,7 @@ import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { BandeauVue } from "@/components/BandeauVue"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
@@ -101,6 +102,7 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
 }
 
 export function CoursListPage() {
+  const abonne = useAbonneActif()
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
@@ -507,7 +509,7 @@ export function CoursListPage() {
           )}
         </div>
 
-        {cursusTries.length > 0 && (
+        {!abonne && cursusTries.length > 0 && (
           <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
               {t("ep.tous")}

@@ -27,6 +27,7 @@ import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -366,6 +367,7 @@ function Methode() {
  * hérités d'une autre page.
  */
 export function ThemesFrequentsPage() {
+  const abonne = useAbonneActif()
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
@@ -543,7 +545,10 @@ export function ThemesFrequentsPage() {
         <p className="font-display text-lg font-semibold">{t("te.ton_examen")}</p>
         <p className="text-sm text-muted-foreground">{t("tf.maj")}</p>
 
-        {cursusTries.length > 0 ? (
+        {abonne && cursusCourant ? (
+          // Un abonné n'a que son examen : on le nomme, sans pastilles d'autres examens.
+          <p className="mt-3 font-medium">{libelleCursus(cursusCourant)}</p>
+        ) : cursusTries.length > 0 ? (
           <FiltreLigne titre={t("quiz.examen")}>
             {cursusTries.map((c) => (
               <PastilleFiltre

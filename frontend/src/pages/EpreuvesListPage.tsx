@@ -39,6 +39,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { BandeauVue } from "@/components/BandeauVue"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
@@ -144,6 +145,7 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
 }
 
 export function EpreuvesListPage() {
+  const abonne = useAbonneActif()
   useI18n()
   const { country } = useParams<{ country: string }>()
   const { countries } = useCountry()
@@ -561,7 +563,7 @@ export function EpreuvesListPage() {
           )}
         </div>
 
-        {cursusTries.length > 0 && (
+        {!abonne && cursusTries.length > 0 && (
           <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
               {t("ep.tous")}

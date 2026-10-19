@@ -21,6 +21,7 @@ import { useCountry } from "@/context/CountryContext"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { nomPays } from "@/lib/pays"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { epreuveReaderPath } from "@/lib/countryPath"
 import {
   actionsTheme,
@@ -51,6 +52,7 @@ const PAR_GROUPE = 6
 const PAGE_TYPE = 20
 
 export function RecherchePage() {
+  const abonne = useAbonneActif()
   useI18n()
   const { country = "" } = useParams<{ country: string }>()
   const { user } = useAuth()
@@ -506,7 +508,7 @@ export function RecherchePage() {
               termes={termes}
               country={country}
               data={data}
-              onElargir={cursusLabel && !elargir ? () => majParams({ elargir: "1" }) : undefined}
+              onElargir={cursusLabel && !elargir && !abonne ? () => majParams({ elargir: "1" }) : undefined}
               onToutesLangues={data.autre_langue > 0 && !toutesLangues ? () => majParams({ [PARAM_TOUTES_LANGUES]: "toutes" }) : undefined}
               onRetenir={retenir}
             />
@@ -520,7 +522,7 @@ export function RecherchePage() {
                   </button>
                 </p>
               )}
-              {data.autres_cursus > 0 && !elargir && (
+              {data.autres_cursus > 0 && !elargir && !abonne && (
                 <p className="mt-5 rounded-lg border border-border bg-muted/40 px-3 py-2 text-sm">
                   {tn("rc.autres_cursus", data.autres_cursus)}{" "}
                   <button type="button" onClick={() => majParams({ elargir: "1" })} className="font-medium text-primary hover:underline">

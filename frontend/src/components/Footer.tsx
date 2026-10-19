@@ -10,6 +10,7 @@ import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
@@ -149,6 +150,7 @@ export function Footer() {
   // Examens de la langue de l'interface (voir lib/cursusLangue) : BEPC, Probatoire, BAC en français, GCE en anglais.
   const { data: cursusList } = useCursusListe(country, { langue: langueStats })
 
+  const abonne = useAbonneActif()
   const invitation = invitationPour(isAuthenticated ? user : null, country)
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
   // sur l'accueil) : un bouton qui ne mène nulle part affaiblit tous les autres.
@@ -160,7 +162,8 @@ export function Footer() {
   const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,
     cursus: cursusList
-      .filter((c) => c.examen_display === examen)
+      // Un abonné ne se voit proposer que son examen (voir useAbonneActif).
+      .filter((c) => c.examen_display === examen && (!abonne || c.id === user?.cursus_prepare?.id))
       .sort((a, b) => (a.series?.code ?? "").localeCompare(b.series?.code ?? "", "fr")),
   })).filter((groupe) => groupe.cursus.length > 0)
 
