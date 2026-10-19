@@ -538,6 +538,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ed.avantage2": "Linked lessons and method reminders",
   "ed.avantage3": "Quizzes and progress tracking",
   "ed.sabonner_cursus": "Subscribe ({cursus})",
+  "ed.voir_prix": "See pricing",
   "ed.au_programme": "What's in it",
   "ed.le_sujet": "The paper",
   "ed.lire_corrige_exercice": "Read the solution to this exercise",

@@ -113,6 +113,16 @@ describe("OnboardingModal", () => {
     expect(screen.getByRole("button", { name: "Oui, c'est mon examen" })).toBeInTheDocument()
   })
 
+  it("BAC série C : le choix mémorisé, l'élève reste sur l'accueil et non sur le catalogue", async () => {
+    afficherAvecLieu()
+    fireEvent.click(await screen.findByRole("button", { name: "BAC" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Série C" }))
+
+    await waitFor(() => expect(memoriser).toHaveBeenCalledWith(2))
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument())
+    expect(screen.getByTestId("lieu")).toHaveTextContent(/^\/cm$/)
+  })
+
   it("invite à passer dans l'autre sous-système, au choix de l'examen", async () => {
     afficher()
     // Version française : seuls BEPC, Probatoire et BAC sont listés, l'élève du GCE est invité à passer en anglais.
@@ -151,6 +161,12 @@ function afficherAvecLieu() {
       </MemoryRouter>
     </QueryClientProvider>,
   )
+}
+
+/** Fin de l'écran : la fenêtre est partie et l'élève est resté sur l'accueil, sans filtre d'épreuves. */
+async function finiSurLAccueil() {
+  await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument())
+  expect(screen.getByTestId("lieu")).toHaveTextContent(/^\/cm$/)
 }
 
 const MATIERES = {
@@ -193,15 +209,15 @@ describe("OnboardingModal : étape des matières (GCE, élève connecté)", () =
     expect(screen.getByTestId("lieu")).not.toHaveTextContent("cursus=")
   })
 
-  it("« Continue » emmène sur les épreuves de l'examen", async () => {
+  it("« Continue » ferme la fenêtre et reste sur l'accueil", async () => {
     eleveSansCursus()
     getMatieres.mockResolvedValue(MATIERES)
     await jusquALaBrancheGenerale()
     fireEvent.click(await screen.findByRole("button", { name: "Continue" }))
-    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=4"))
+    await finiSurLAccueil()
   })
 
-  it("enregistrer ses matières emmène aussi sur les épreuves", async () => {
+  it("enregistrer ses matières ramène aussi sur l'accueil", async () => {
     eleveSansCursus()
     getMatieres.mockResolvedValue(MATIERES)
     definirMatieres.mockResolvedValue({ ...MATIERES, choisies: [1] })
@@ -209,7 +225,7 @@ describe("OnboardingModal : étape des matières (GCE, élève connecté)", () =
     fireEvent.click(await screen.findByRole("button", { name: /Mathematics/ }))
     fireEvent.click(screen.getByRole("button", { name: "Save" }))
     await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([1]))
-    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=4"))
+    await finiSurLAccueil()
   })
 
   it("« Skip » à cette étape quitte sans rien enregistrer", async () => {
@@ -218,14 +234,14 @@ describe("OnboardingModal : étape des matières (GCE, élève connecté)", () =
     await jusquALaBrancheGenerale()
     await screen.findByText("Which subjects are you sitting?")
     fireEvent.click(screen.getByRole("button", { name: "Skip" }))
-    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=4"))
+    await finiSurLAccueil()
     expect(definirMatieres).not.toHaveBeenCalled()
   })
 
-  it("si la déclaration du cursus échoue, l'élève voit quand même ses épreuves", async () => {
+  it("si la déclaration du cursus échoue, l'élève retombe quand même sur l'accueil", async () => {
     eleveSansCursus(true)
     await jusquALaBrancheGenerale()
-    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=4"))
+    await finiSurLAccueil()
   })
 
   it("la branche technique n'a pas d'étape de matières", async () => {
@@ -234,7 +250,7 @@ describe("OnboardingModal : étape des matières (GCE, élève connecté)", () =
     afficherAvecLieu()
     fireEvent.click(await screen.findByRole("button", { name: "GCE A Level" }))
     fireEvent.click(screen.getByRole("button", { name: "Technical" }))
-    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("cursus=5"))
+    await finiSurLAccueil()
     expect(screen.queryByText("Which subjects are you sitting?")).not.toBeInTheDocument()
   })
 

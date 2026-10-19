@@ -323,6 +323,11 @@ export function EpreuveDetailPage() {
                   </Link>
                 </Button>
               ))}
+              {/* « S'abonner » mène à la connexion avant tout prix (voir SubscribePage) : sans ce lien, un
+                  visiteur devait deviner que la page des prix existe, ou la chercher au bas de l'accueil. */}
+              <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
+                <Link to="/tarifs">{t("ed.voir_prix")}</Link>
+              </Button>
             </div>
             <div className="mt-4">
               <ParrainageHint
@@ -366,14 +371,14 @@ export function EpreuveDetailPage() {
                         {tn("ed.section_questions", section.items.length)}
                       </span>
                     </summary>
-                    <ol className="grid gap-2 border-t border-border p-3 sm:grid-cols-2">
+                    <ol className="grid grid-cols-1 gap-2 border-t border-border p-3 sm:grid-cols-2">
                       {section.items.map(({ exercise, index }) => carteAuProgramme(exercise, index))}
                     </ol>
                   </details>
                 ))}
               </div>
             ) : (
-              <ol className="grid gap-2.5 sm:grid-cols-2">
+              <ol className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 {exercices.map((exercise, index) => carteAuProgramme(exercise, index))}
               </ol>
             )}

@@ -112,10 +112,10 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
                   <Icone className="size-4" aria-hidden="true" />
                 </span>
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-medium">{essai.subject_label}</span>
-                  <span className="block truncate text-xs text-muted-foreground">
-                    {capitaliserTheme(essai.theme_name)} · {tn("quiz.n_questions", essai.nb_questions)}
-                  </span>
+                  {/* Pas de `truncate` : « Sciences de la V… » ne disait pas quelle matière on essayait. Le thème, plus long, tient sur deux lignes. */}
+                  <span className="block break-words text-sm font-medium leading-snug">{essai.subject_label}</span>
+                  <span className="line-clamp-2 text-xs text-muted-foreground">{capitaliserTheme(essai.theme_name)}</span>
+                  <span className="block text-xs text-muted-foreground">{tn("quiz.n_questions", essai.nb_questions)}</span>
                 </span>
               </span>
               <Button size="sm" disabled={enCours !== null} onClick={() => lancer(essai)} className="shrink-0 rounded-full">

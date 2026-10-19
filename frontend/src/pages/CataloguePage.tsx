@@ -16,7 +16,7 @@ import { examLevelsFor, joinExamLevelsProse } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { useCursusListe } from "@/lib/cursusLangue"
-import { EXEMPLES_CORRIGE, extraireExempleCorrige } from "@/lib/exempleCorrige"
+import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
@@ -136,8 +136,10 @@ function CatalogueVitrine() {
   // seulement s'affirmer. `retry: false` : un 404 (slug renommé/retiré) doit faire
   // disparaître la section silencieusement, pas insister avec des tentatives inutiles.
   // L'épreuve d'exemple suit la langue de l'interface (voir lib/exempleCorrige) : un BEPC en français,
-  // un GCE en anglais. Le slug fait partie de la clé de cache, donc un changement de langue recharge.
-  const exemple = EXEMPLES_CORRIGE[langueCourante()]
+  // un GCE en anglais - et l'examen déclaré quand une mathématique gratuite existe pour lui (BAC C, D, E).
+  // Le slug fait partie de la clé de cache, donc un changement de langue ou d'examen recharge.
+  const cursusAccueil = useCursusAccueil(country ?? "")
+  const exemple = exempleDuCursus(langueCourante(), cursusList?.find((c) => c.id === cursusAccueil))
   const { data: exempleContent } = useQuery({
     queryKey: ["epreuve-exemple-corrige", exemple.slug],
     queryFn: () => readEpreuve(exemple.slug),
@@ -167,7 +169,6 @@ function CatalogueVitrine() {
   // pays, redécouverte à chaque chargement, donc jamais périmée si le contenu change.
   // Restreinte au cursus déclaré (compte ou onboarding) quand il y en a un : voir
   // useInedites.
-  const cursusAccueil = useCursusAccueil(country ?? "")
   const { data: inediteRecenteData } = useInedites(country ?? "", cursusAccueil, !hasLegacyFilters)
   const inediteVedetteId = inediteRecenteData?.results[0]?.slug ?? inediteRecenteData?.results[0]?.id
 

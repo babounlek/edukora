@@ -1,4 +1,16 @@
-import { Children, createContext, memo, useContext, useMemo, type CSSProperties, type ReactNode } from "react"
+import {
+  Children,
+  createContext,
+  memo,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from "react"
 import { Link } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
@@ -179,9 +191,38 @@ function MarkdownAnchor({ href, children }: { href?: string; children?: ReactNod
  * imbriqué ne réactive jamais rien (voir CoursRegleBox).
  */
 function MarkdownTable({ children }: { children?: ReactNode }) {
+  const defilant = useRef<HTMLDivElement>(null)
+  const [suiteADroite, setSuiteADroite] = useState(false)
+  const mesurer = useCallback(() => {
+    const el = defilant.current
+    if (el) setSuiteADroite(el.scrollWidth - el.clientWidth - el.scrollLeft > 1)
+  }, [])
+  useEffect(() => {
+    const el = defilant.current
+    if (!el) return
+    mesurer()
+    if (typeof ResizeObserver === "undefined") return
+    const observateur = new ResizeObserver(mesurer)
+    observateur.observe(el)
+    if (el.firstElementChild) observateur.observe(el.firstElementChild)
+    return () => observateur.disconnect()
+  }, [mesurer])
+
+  // Un tableau plus large que l'écran (tableau de variations sur mobile) défile dans son cadre, mais rien
+  // ne le disait : la dernière colonne (+∞) semblait simplement absente. Une ombre sur le bord droit signale
+  // qu'il y a une suite, et disparaît une fois le bout atteint.
   return (
-    <div className="not-prose my-4 overflow-x-auto">
-      <table className="w-full border-collapse text-sm">{children}</table>
+    <div className="not-prose relative my-4">
+      <div ref={defilant} onScroll={mesurer} className="overflow-x-auto">
+        <table className="w-full border-collapse text-sm">{children}</table>
+      </div>
+      {suiteADroite && (
+        <span
+          aria-hidden="true"
+          data-indice-defilement="droite"
+          className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-foreground/20 to-transparent"
+        />
+      )}
     </div>
   )
 }

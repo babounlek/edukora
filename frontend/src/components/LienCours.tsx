@@ -22,8 +22,10 @@ interface LienCoursProps {
 export function LienCours({ slug, to, label, className, titreSeul }: LienCoursProps) {
   const titre = useTitreCours(slug)
   return (
-    <Link to={to} className={className} aria-label={titre ? `${label} : ${titre}` : undefined}>
-      {titre && titreSeul ? titre : label}
+    // `flex-wrap` et libellé insécable : dans un encadré étroit (mobile), le long titre du cours écrasait
+    // « Voir le cours complet » sur trois lignes ; le titre passe maintenant sous le libellé s'il manque de place.
+    <Link to={to} className={`${className} flex-wrap`} aria-label={titre ? `${label} : ${titre}` : undefined}>
+      {titre && titreSeul ? titre : <span className="whitespace-nowrap">{label}</span>}
       {titre && !titreSeul && <span className="font-normal text-muted-foreground">· {titre}</span>}
       <ArrowRight className="size-3.5 shrink-0" />
     </Link>

@@ -168,7 +168,10 @@ export function SubscribePage() {
       // préserve aussi require=repetiteur au retour de connexion, sinon le filtre
       // ci-dessus se perdait silencieusement pour quiconque n'était pas déjà connecté.
       // `intent` : sans lui, l'élève arrive sur la connexion sans savoir pourquoi on la lui demande.
+      // `replace` : sans lui, « retour » depuis la connexion retombait sur /abonnement, qui renvoyait
+      // aussitôt vers la connexion - l'élève ne pouvait plus revenir à l'épreuve qu'en repartant de l'accueil.
       navigate("/connexion", {
+        replace: true,
         state: {
           from: `/abonnement?${searchParams.toString()}`,
           intent: t("sb.intent"),

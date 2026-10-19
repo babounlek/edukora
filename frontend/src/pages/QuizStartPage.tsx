@@ -24,6 +24,7 @@ import { StatChip } from "@/components/Configurateur"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { QuizCompletVisiteur } from "@/components/QuizCompletVisiteur"
 import { EssaisGratuitsQuiz } from "@/components/EssaisGratuitsQuiz"
+import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
@@ -103,7 +104,7 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
                   <span className={cn("flex size-7 shrink-0 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
                     <SubjectIcon className="size-3.5" aria-hidden="true" />
                   </span>
-                  <span className="truncate text-sm font-medium">{subject.label}</span>
+                  <span className="break-words text-sm font-medium leading-snug">{subject.label}</span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2">
                   <span className="text-xs tabular-nums text-muted-foreground">
@@ -290,6 +291,10 @@ export function QuizStartPage() {
   // payé BEPC et BAC C ne retrouve pas l'autre examen en pastille. Suit le sélecteur : si
   // l'élève change d'examen depuis le bandeau, la liste et la sélection suivent.
   const cursusPrepareId = user?.cursus_prepare?.id ?? null
+  // Un visiteur sans compte a déjà dit son examen (OnboardingModal) : il vit en localStorage, pas sur un
+  // compte. Sans ce repli, les essais gratuits s'ouvraient sur le premier cursus de la langue (BAC A) même
+  // après un choix de la série C.
+  const cursusVisiteurId = useCursusPrepareEnAttente()
   const subscriptions = useMemo(
     () => abonnementsDeLExamenPrepare(abonnementsProfil, cursusPrepareId, cursusParam),
     [abonnementsProfil, cursusPrepareId, cursusParam],
@@ -526,7 +531,7 @@ export function QuizStartPage() {
       {/* Les quiz gratuits, sans compte : seulement quand aucun aperçu de cursus déclaré n'offre déjà
           son propre essai (ApercuMatieresQuiz). */}
       {!abonne && !(previewSubjects && previewSubjects.length > 0) && (
-        <EssaisGratuitsQuiz cursusInitial={cursusParam ? Number(cursusParam) : cursusPrepareId} />
+        <EssaisGratuitsQuiz cursusInitial={cursusParam ? Number(cursusParam) : (cursusPrepareId ?? cursusVisiteurId)} />
       )}
 
       {!abonne ? (

@@ -16,6 +16,12 @@ export interface ExempleCorrige {
   slug: string
   exercice?: string
   question1Seule: boolean
+  /**
+   * Avec `question1Seule` : coupe juste avant le DEUXIÈME repère de sous-question du corrigé (« **1.** », « **I.1.** »,
+   * « **2)** »...) au lieu de retrouver l'énoncé de la question 2 mot pour mot. Les corrigés de BAC reprennent le repère
+   * mais pas l'énoncé complet, donc la recherche par énoncé échoue et l'exercice entier (6 000 caractères) s'affichait.
+   */
+  coupeParRepere?: boolean
 }
 
 export const EXEMPLES_CORRIGE: Record<Langue, ExempleCorrige> = {
@@ -26,6 +32,37 @@ export const EXEMPLES_CORRIGE: Record<Langue, ExempleCorrige> = {
   // première ligne de résolution, dont celui de l'élimination qui sert la question b : voir ajouter_rappels_gce).
   en: { slug: "mathematics-gce-ordinary-level-2019-paper-2", exercice: "2", question1Seule: false },
 }
+
+/**
+ * L'exemple de l'accueil adapté à l'examen déclaré (voir useCursusAccueil), en français : un élève de BAC C n'a que faire d'un
+ * corrigé de BEPC. Clé : « EXAMEN » ou « EXAMEN:SÉRIE » (code de série du cursus).
+ *
+ * Seules les épreuves de mathématiques GRATUITES comptent : BEPC et BAC C, D, E. Le BAC A et le BAC C et E (épreuves
+ * blanches ou à corrigé sans repères de sous-question) donneraient un exemple trop long ou mal découpé ; le Probatoire
+ * et le BAC TI n'ont pas de mathématiques gratuites. Ces cursus gardent l'exemple par défaut de la langue.
+ * Exercices retenus (mesurés le 2026-10-19) : un énoncé d'introduction court et une première question d'environ 800 caractères
+ * qui se suffit à elle-même (BAC C : exercice 3, équation en entiers ; BAC D : exercice 2, suite numérique).
+ */
+const BAC_C: ExempleCorrige = { slug: "mathematiques-bac-c-2026", exercice: "3", question1Seule: true, coupeParRepere: true }
+const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
+  "BAC:C": BAC_C,
+  // La Série E passe la même épreuve de mathématiques que la C (voir « Mathématiques BAC C et E 2026 »).
+  "BAC:E": BAC_C,
+  "BAC:D": { slug: "mathematiques-bac-d-2026", exercice: "2", question1Seule: true, coupeParRepere: true },
+}
+
+export function exempleDuCursus(
+  langue: Langue,
+  cursus: { examen: string; series: { code: string } | null } | null | undefined,
+): ExempleCorrige {
+  if (langue === "fr" && cursus) {
+    const cle = cursus.series ? `${cursus.examen}:${cursus.series.code}` : cursus.examen
+    return EXEMPLES_FR_PAR_CURSUS[cle] ?? EXEMPLES_CORRIGE.fr
+  }
+  return EXEMPLES_CORRIGE[langue]
+}
+
+const REPERE_SOUS_QUESTION = /^\*\*(?:[IVX]+[.)]?\s*)?\d+[.)]\*\*/gm
 
 /**
  * L'exercice retenu et le corrigé à montrer, ou null si l'épreuve ne contient pas cet exercice.
@@ -46,6 +83,14 @@ export function extraireExempleCorrige(
     : exercices[0]
   if (!exercice) return null
   if (!exemple.question1Seule) return { exercice, corrigeMarkdown: exercice.corrige_markdown }
+  if (exemple.coupeParRepere) {
+    const reperes = [...exercice.corrige_markdown.matchAll(REPERE_SOUS_QUESTION)]
+    const coupure = reperes[1]?.index ?? -1
+    return {
+      exercice,
+      corrigeMarkdown: coupure > 0 ? exercice.corrige_markdown.slice(0, coupure).trim() : exercice.corrige_markdown,
+    }
+  }
 
   const secondeSousQuestion = exercice.enonce_markdown.split("\n\n")[1]
   if (!secondeSousQuestion) return { exercice, corrigeMarkdown: exercice.corrige_markdown }

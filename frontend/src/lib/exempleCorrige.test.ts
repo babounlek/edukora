@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { EpreuveContent, EpreuveExercise } from "@/api/types"
-import { EXEMPLES_CORRIGE, extraireExempleCorrige } from "./exempleCorrige"
+import { EXEMPLES_CORRIGE, exempleDuCursus, extraireExempleCorrige } from "./exempleCorrige"
 
 const exercice = (numero: string, enonce: string, corrige: string): EpreuveExercise => ({
   numero_exercice: numero, titre: "", points: "", groupes: [], enonce_intro_markdown: `**Exercice ${numero}**`,
@@ -50,5 +50,51 @@ describe("extraireExempleCorrige", () => {
     expect(extraireExempleCorrige(epreuve(exercice("1", "x", "y")), EXEMPLES_CORRIGE.en)).toBeNull()
     expect(extraireExempleCorrige(undefined, EXEMPLES_CORRIGE.fr)).toBeNull()
     expect(extraireExempleCorrige(epreuve(), EXEMPLES_CORRIGE.fr)).toBeNull()
+  })
+})
+
+describe("exempleDuCursus", () => {
+  const bac = (code: string) => ({ examen: "BAC", series: { code } })
+
+  it("BAC C et D : la mathématique gratuite de leur examen", () => {
+    expect(exempleDuCursus("fr", bac("C")).slug).toBe("mathematiques-bac-c-2026")
+    expect(exempleDuCursus("fr", bac("D")).slug).toBe("mathematiques-bac-d-2026")
+  })
+
+  it("BAC E : la même épreuve que la série C", () => {
+    expect(exempleDuCursus("fr", bac("E"))).toBe(exempleDuCursus("fr", bac("C")))
+  })
+
+  it("sans épreuve gratuite adaptée (BAC A, Probatoire, BAC TI) ou sans examen déclaré : l'exemple par défaut", () => {
+    expect(exempleDuCursus("fr", bac("A"))).toBe(EXEMPLES_CORRIGE.fr)
+    expect(exempleDuCursus("fr", { examen: "PROBATOIRE", series: { code: "C" } })).toBe(EXEMPLES_CORRIGE.fr)
+    expect(exempleDuCursus("fr", { examen: "BEPC", series: null })).toBe(EXEMPLES_CORRIGE.fr)
+    expect(exempleDuCursus("fr", null)).toBe(EXEMPLES_CORRIGE.fr)
+    expect(exempleDuCursus("fr", undefined)).toBe(EXEMPLES_CORRIGE.fr)
+  })
+
+  it("en anglais, jamais un exemple français, quel que soit l'examen déclaré", () => {
+    expect(exempleDuCursus("en", bac("C"))).toBe(EXEMPLES_CORRIGE.en)
+  })
+})
+
+describe("extraireExempleCorrige : coupe par repère de sous-question", () => {
+  const BAC_C = exempleDuCursus("fr", { examen: "BAC", series: { code: "C" } })
+  const corrige = "**1.** Première\n\n### Rappel de méthode\nTexte\n\nCalcul 1\n\n**2.** Seconde\n\nCalcul 2\n\n**3.** Troisième"
+
+  it("garde la première sous-question et coupe avant le deuxième repère", () => {
+    const exo = exercice("3", "intro\n\nsuite", corrige)
+    const extrait = extraireExempleCorrige(epreuve(exo), BAC_C)
+    expect(extrait?.corrigeMarkdown).toBe("**1.** Première\n\n### Rappel de méthode\nTexte\n\nCalcul 1")
+  })
+
+  it("repères en chiffres romains (« **I.1.** »)", () => {
+    const exo = exercice("3", "intro", "**I.1.** A\n\nRéponse\n\n**I.2.** B\n\nRéponse")
+    expect(extraireExempleCorrige(epreuve(exo), BAC_C)?.corrigeMarkdown).toBe("**I.1.** A\n\nRéponse")
+  })
+
+  it("un seul repère : corrigé entier", () => {
+    const exo = exercice("3", "intro", "**1.** A\n\nRéponse")
+    expect(extraireExempleCorrige(epreuve(exo), BAC_C)?.corrigeMarkdown).toBe("**1.** A\n\nRéponse")
   })
 })

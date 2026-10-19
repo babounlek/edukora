@@ -1,6 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { MemoryRouter, Route, Routes } from "react-router-dom"
+import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMyInscriptionsInedites = vi.hoisted(() => vi.fn())
@@ -97,6 +97,32 @@ describe("SubscribePage : retour vers l'épreuve qui a motivé l'achat", () => {
 
     expect(await screen.findByText("Page de connexion")).toBeInTheDocument()
     expect(listMyInscriptionsInedites).not.toHaveBeenCalled()
+  })
+
+  it("remplace /abonnement dans l'historique : « retour » depuis la connexion revient à l'épreuve", async () => {
+    auth.isAuthenticated = false
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    function Retour() {
+      const navigate = useNavigate()
+      return <button onClick={() => navigate(-1)}>Retour</button>
+    }
+    render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={[RETOUR, "/abonnement?cursus=4"]} initialIndex={1}>
+          <Routes>
+            <Route path="/abonnement" element={<SubscribePage />} />
+            <Route path="/cm/epreuves-inedites/:id" element={<p>Fiche de l'épreuve</p>} />
+            <Route path="/connexion" element={<><p>Page de connexion</p><Retour /></>} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+
+    await screen.findByText("Page de connexion")
+    fireEvent.click(screen.getByText("Retour"))
+
+    expect(await screen.findByText("Fiche de l'épreuve")).toBeInTheDocument()
+    expect(screen.queryByText("Page de connexion")).not.toBeInTheDocument()
   })
 })
 

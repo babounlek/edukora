@@ -764,7 +764,7 @@ export function EpreuvesListPage() {
             </p>
             <div className="flex shrink-0 items-center gap-2">
             <Select value={ordering} onValueChange={(v) => updateFilter("ordering", valeurUrlDuTri(v))}>
-              <SelectTrigger className="h-8 w-36 text-sm sm:w-48" aria-label={t("ep.trier")}>
+              <SelectTrigger className="h-8 w-40 text-xs sm:w-48 sm:text-sm" aria-label={t("ep.trier")}>
                 <SelectValue placeholder={t("ep.tri_recent")} />
               </SelectTrigger>
               <SelectContent>

@@ -8,7 +8,7 @@ import { libellePays } from "@/lib/pays"
 import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { epreuvesListPath } from "@/lib/countryPath"
+import { catalogueHomePath } from "@/lib/countryPath"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { codeSerieAffiche, estGce, examCodesFor } from "@/lib/cursus"
 import { cursusDeLangue } from "@/lib/cursusLangue"
@@ -163,17 +163,21 @@ export function OnboardingModal() {
     markOnboardingDone()
     // Pendant le choix des matières, « Passer » / Échap veut dire « plus tard » : le cursus est déjà déclaré.
     if (matieresEnCours) {
-      terminer(matieresEnCours)
+      terminer()
       return
     }
     setDismissed(true)
   }
 
-  /** Fin de l'écran : on ferme et on emmène l'élève sur la liste d'épreuves de son examen. */
-  function terminer(cursus: Cursus) {
+  /**
+   * Fin de l'écran : on ferme et l'élève reste sur l'accueil, qui se personnalise d'après son examen
+   * (voir useCursusAccueil). Il l'envoyait sur la liste d'épreuves : il n'avait ainsi jamais vu la
+   * promesse du site, la réponse à « c'est quoi, ce site ? », avant d'avoir répondu à une question.
+   */
+  function terminer() {
     setMatieresEnCours(null)
     setDismissed(true)
-    navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
+    navigate(catalogueHomePath(selectedCountry), { replace: true })
   }
 
   function finish(cursus: Cursus) {
@@ -189,12 +193,12 @@ export function OnboardingModal() {
       updateMe({ cursus_prepare: cursus.id })
         .then(updateUser)
         // Jamais bloquant : si la déclaration échoue, l'élève voit ses épreuves, comme avant.
-        .catch(() => terminer(cursus))
+        .catch(() => terminer())
       return
     }
     setDismissed(true)
     declarerCursusPrepare(cursus)
-    navigate(`${epreuvesListPath(selectedCountry)}?cursus=${cursus.id}`, { replace: true })
+    navigate(catalogueHomePath(selectedCountry), { replace: true })
   }
 
   /**
@@ -416,8 +420,8 @@ export function OnboardingModal() {
             // Le cursus vient d'être déclaré : tant que le compte ne le porte pas, ChoixMatieres n'a rien à interroger.
             user?.cursus_prepare?.id === matieresEnCours.id ? (
               <>
-                <ChoixMatieres onEnregistre={() => terminer(matieresEnCours)} />
-                <Button className="min-h-11 rounded-full" onClick={() => terminer(matieresEnCours)}>
+                <ChoixMatieres onEnregistre={() => terminer()} />
+                <Button className="min-h-11 rounded-full" onClick={() => terminer()}>
                   {t("onboarding.continuer")}
                 </Button>
               </>

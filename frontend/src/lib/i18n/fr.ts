@@ -544,6 +544,7 @@ export const fr = {
   "ed.avantage2": "Cours et rappels de méthode liés",
   "ed.avantage3": "Quiz et suivi de ta progression",
   "ed.sabonner_cursus": "S'abonner ({cursus})",
+  "ed.voir_prix": "Voir les prix",
   "ed.au_programme": "Au programme",
   "ed.le_sujet": "Le sujet",
   "ed.lire_corrige_exercice": "Lire le corrigé de cet exercice",
