@@ -324,7 +324,22 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   - **Limites connues** : 7 thèmes sans `Cours` O Level (verb tenses, passive voice, reported speech, subject-verb agreement, phrasal verbs, confusable words, idioms and proverbs) : leurs rappels
     ne sont pas rattachés (compétence = le thème) tant que les cours ne sont pas générés ; la plateforme met en italique le discours direct entre guillemets droits ; dans le PDF, le numéro de la question
     qui porte le texte (1 et 11) précède le texte, et l'énoncé de cette question suit le texte sans numéro (même forme que les vrais sujets).
-  - **Paper 2 (type E, rédigé)** : à étalonner séparément (compréhension, résumé, composition ou lettre) ; ne partager aucun texte, personnage ni sujet avec le Paper 1 de la session.
+- **Étalon produit le 2026-10-20 : English Language O Level, Paper 2 n°1** (`ep-cm-gce-ol-english-p2-1-2026-s1`, blueprint `bp-cm-gce-ol-english-p2-1`, générateur `generer_english_p2.py`, contenu
+  `questions_english_p2.py`, vérificateur `verifier_reponses_english_p2.py`).
+  - **Structure mesurée sur les 8 vrais Paper 2 (2019-2026), identique d'une année à l'autre** : 2 heures, 70 points. **Section A, écriture dirigée (30 points : contenu 14, expression et correction 12,
+    orientation persuasive 4)** : une consigne de rôle et de destinataire (« You are ... Selecting relevant material from the passage below, write a talk / article / report ... »), un texte de 412 à 633 mots,
+    une réponse en DEUX paragraphes d'au plus 150 mots, orientée pour convaincre ; le texte contient toujours des points à écarter. **Section B, composition (40 points : contenu et organisation 12,
+    expression 16, correction 12)** : 8 sujets a-h dont UN SEUL à traiter : récit terminé par une phrase donnée, description, sujet en un mot, « Do you agree? », récit illustrant un proverbe, exposé
+    (effets, causes, avantages et inconvénients), lettre, et un sujet à partir d'images (h). Les corrigés réels portent, pour chaque sujet, un plan, un modèle de 451 à 499 mots, la grille et les erreurs courantes ;
+    pour la Section A un modèle de 127 à 148 mots, « pourquoi il fonctionne » (sélection et orientation), la grille et les erreurs courantes.
+  - **Inédite** : la plateforme ne code pas les choix, donc la Section B est UNE question de 40 points qui liste sept sujets a-g et dit « choose ONE », avec un plan et un modèle (451 à 497 mots) pour CHAQUE
+    sujet ; le sujet h (images) est omis, aucune figure. Deux exercices (`1` groupe SECTION A, `B1` groupe SECTION B), une question chacun, deux grilles à trois critères observables dont les points
+    font 30 et 40. Texte de la Section A de 501 mots sur un thème absent des 8 vrais sujets (déchets plastiques), un paragraphe de procédés industriels à écarter ; modèle de 125 mots en deux paragraphes.
+  - **Contrôles** : modèle A à deux paragraphes et 150 mots au plus, chacun de ses points repris d'une phrase du texte retrouvée mot pour mot, aucun point hors sujet ; modèles B de 440 à 510 mots, contrainte propre
+    à chaque sujet (le récit finit par la phrase donnée, la lettre porte adresse, date, formule d'appel et de politesse) ; aucune fuite de nom, de lieu ni de mot-clé depuis le Paper 1 de la session ;
+    aucune suite de 7 mots commune avec un vrai sujet ou le Paper 1 inédit (les gabarits d'examen imprimés sont écartés : ligne « Mark distribution », « Write in TWO paragraphs of not more than 150 words »,
+    « your address is P.O. Box », « Selecting relevant material from the passage below »). **La qualité de la langue des modèles (grammaire, ton, naturel) ne se vérifie pas par machine : relecture humaine.**
+  - **Limites** : pas de cours O Level « Directed Writing » (compétence du rappel non rattachée) ; la plateforme n'a pas de champ pour une règle de choix ; le PDF du sujet n'imprime que les énoncés.
 
 ### F. Pratique et applications (Computer Science, ICT, Geography A/L P3)
 
