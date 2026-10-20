@@ -42,6 +42,15 @@ def main():
         shutil.rmtree(racine_skill)
     os.makedirs(sortie)
     vivant = os.path.normpath(SKILL_VIVANT)
+    if not os.path.isfile(os.path.join(vivant, "SKILL.md")):
+        # Depuis octobre 2026 le Desktop range ses skills sous Local\Claude-Data (ancien emplacement : Packages\...\LocalCache\Roaming).
+        nouveau = os.path.join(
+            os.environ.get("LOCALAPPDATA", r"C:\Users\Administrateur\AppData\Local"), "Claude-Data", "claude_pzs8sxrjxfjjc",
+            "local-agent-mode-sessions", "skills-plugin", "b753a7e6-84a4-4175-9017-11ed073d6178",
+            "109e0e24-b249-4600-8c4f-284c2f0b64eb", "skills", "concepteur-epreuve-inedite",
+        )
+        if os.path.isfile(os.path.join(nouveau, "SKILL.md")):
+            vivant = nouveau
     txt = open(os.path.join(vivant, "SKILL.md"), encoding="utf8").read()
     sec = open(os.path.join(ICI, "skill_section_mode_gce.md"), encoding="utf8").read()
     assert txt.count(MARQUEUR) == 1, "marqueur de section introuvable dans le skill vivant"

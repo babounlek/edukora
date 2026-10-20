@@ -306,6 +306,26 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   orthographe ; corrigé = **texte modèle** et liste des éléments attendus.
 - Aucune figure.
 
+- **Étalon produit le 2026-10-20 : English Language O Level, Paper 1 n°1** (`ep-cm-gce-ol-english-p1-1-2026-s1`, blueprint `bp-cm-gce-ol-english-p1-1`, code du Board 0530,
+  générateur `generer_english_p1.py`, questions `questions_english_p1.py`, vérificateur `verifier_reponses_english_p1.py`, titres de cours `cours_titres_gce_english_ol.json`).
+  - **Structure mesurée sur les 5 vrais Paper 1 (2021, 2023, 2024, 2025, 2026), identique d'une année à l'autre** : 50 QCM à 4 options, 90 minutes, quatre sections
+    **A écoute 1-10** (un texte lu une seule fois par l'examinateur, en trois parties « Section One/Two/Three » de 4, 3 et 3 questions, 404 à 598 mots), **B lecture 11-25** (un ou deux
+    textes, 455 à 905 mots), **C grammaire 26-40**, **D vocabulaire 41-50**. Difficulté : 10-27 faibles, 23-31 moyennes, 0-9 élevées ; clés a 7-14, b 7-14, c 12-15, d 7-11.
+    Poids par thème et par paper : écoute, 8,6 questions de compréhension orale (le reste : accent de mot, synonymes) ; lecture, 12,8 de compréhension, 1,2 de classes de mots,
+    0,4 de figures de style ; grammaire, 1 à 1,2 chacun pour conditionnels, temps, connecteurs, discours indirect, orthographe et ponctuation, adverbes, pronoms, tags, puis 0,2 à 0,8
+    pour les autres ; vocabulaire, 3,4 de contexte, 3,4 de synonymes et antonymes, 1,4 de formation de mots, 0,8 d'idiomes.
+  - **Inédite** : 10 + 15 + 15 + 10 questions, 24 faibles / 24 moyennes / 2 élevées, 13-13-12-12 clés placées par le script, deux textes originaux (une causerie suivie d'un récit, 441 mots ;
+    un récit de lecture en six paragraphes numérotés, 532 mots), insérés dans l'énoncé de la question 1 et de la question 11 comme dans les vrais sujets. Thèmes préfixés `O Level English - ` (forme des `Tag`).
+  - **Contrôles propres à une langue** (une clé de langue ne se recalcule pas) : chaque question de texte porte une `preuve`, phrase du texte retrouvée MOT POUR MOT par le vérificateur ; chaque
+    question à trou porte sa phrase complète, comparée à l'énoncé rempli ; aucune suite de 7 mots commune à un texte ou à un énoncé de l'inédite et à un vrai sujet (les étiquettes de format et
+    « is used as a/an » sont écartées) ; la bonne option n'est la plus longue que dans 10 questions sur 50. **Il reste un second passage humain** (« existe-t-il une deuxième option
+    acceptable ? ») : il a écarté, avant écriture, les questions de figure de style ambiguës (personnification contre comparaison) et les mots à double sens (`frail`/`feeble`).
+  - **Ne pas imiter** les questions « Options as printed » des vrais sujets (7 à 8 par paper en 2025-2026) : ce sont des artefacts d'extraction du PDF, jamais une forme à reproduire.
+  - **Limites connues** : 7 thèmes sans `Cours` O Level (verb tenses, passive voice, reported speech, subject-verb agreement, phrasal verbs, confusable words, idioms and proverbs) : leurs rappels
+    ne sont pas rattachés (compétence = le thème) tant que les cours ne sont pas générés ; la plateforme met en italique le discours direct entre guillemets droits ; dans le PDF, le numéro de la question
+    qui porte le texte (1 et 11) précède le texte, et l'énoncé de cette question suit le texte sans numéro (même forme que les vrais sujets).
+  - **Paper 2 (type E, rédigé)** : à étalonner séparément (compréhension, résumé, composition ou lettre) ; ne partager aucun texte, personnage ni sujet avec le Paper 1 de la session.
+
 ### F. Pratique et applications (Computer Science, ICT, Geography A/L P3)
 
 - Les données et fichiers « du jour » des vrais sujets ne sont pas dans le PDF : l'inédite doit être **complète en soi**. Toute donnée nécessaire (table,
