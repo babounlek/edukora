@@ -20,7 +20,7 @@ import re
 import sys
 
 RACINE = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-CODES_BOARD = {"mathematics": "0570", "physics": "0580", "chemistry": "0515", "biology": "0510", "english language": "0530"}
+CODES_BOARD = {"mathematics": "0570", "physics": "0580", "chemistry": "0515", "biology": "0510", "english language": "0530", "french": "0545"}
 FORMULES_IA = [
     r"\bit is worth noting\b", r"\bit should be noted\b", r"\bnote that\b", r"\bnotice that\b", r"\bdelve\b",
     r"\bin conclusion\b", r"\bfurthermore\b", r"\bmoreover\b", r"\bit is important to note\b", r"\bin summary\b",

@@ -341,6 +341,25 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
     « your address is P.O. Box », « Selecting relevant material from the passage below »). **La qualité de la langue des modèles (grammaire, ton, naturel) ne se vérifie pas par machine : relecture humaine.**
   - **Limites** : pas de cours O Level « Directed Writing » (compétence du rappel non rattachée) ; la plateforme n'a pas de champ pour une règle de choix ; le PDF du sujet n'imprime que les énoncés.
 
+- **Étalon produit le 2026-10-20 : French O Level, session n°1** (code du Board 0545 ; `ep-cm-gce-ol-french-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_french_p1.py` et `_p2.py`, contenus
+  `questions_french_p1.py` et `questions_french_p2.py`, vérificateurs `verifier_reponses_french_p1.py` et `_p2.py`, titres de cours `cours_titres_gce_french_ol.json`, les 19 thèmes ont un cours O Level).
+  - **Paper 1 (mesuré sur 6 vrais sujets : 2020-2023, 2025, 2026)** : 50 QCM en 1h30 : 45 questions isolées (grammaire, conjugaison, accords, pronoms, articles, vocabulaire, expressions, traduction de
+    proverbes anglais, nombres) puis un texte à trous de 5 questions (46-50). Par paper : vocabulaire 7,2, temps et modes 6,8, accords 6, conjugaison 4,8, pronoms 4,7, compréhension 4,3, articles 3,8, expressions 2,8,
+    prépositions 2,5, traduction 1,8, nombres 1,8, négation 1, relatifs 1 ; difficulté 13-28 faibles, 20-33 moyennes, 2-5 élevées. Contenu en français, explications en anglais. **Pour chaque distracteur, une raison écrite
+    de son erreur** (`Q(..., [(option, raison)] x 3, ...)`) : c'est le second passage « existe-t-il une deuxième option acceptable ? » noir sur blanc, et le piège du corrigé est composé de ces raisons.
+    Écartés après relecture : « ces élèves » (peut être féminin), « calmées » (participe possible), « il ne reste personne dans le frigo » (grammatical mais absurde), une traduction littérale d'un proverbe (acceptable).
+  - **Paper 2 (mesuré sur 8 vrais sujets : 2019-2023, 2025, 2026 ; 1h30 puis 2h)** : 80 points, deux questions égales de 40. **Question 1** : traduction de l'anglais vers le français d'un texte de quatre paragraphes ;
+    corrigé = traduction modèle, tableau des pièges (forme fautive, forme correcte), note, erreurs courantes. **Question 2** : une rédaction de 140 à 150 mots (hors chiffres, mots entre parenthèses, abréviations, noms propres de
+    personnes et de lieux) à choisir parmi trois sujets : (a) récit guidé en trois puces, (b) lettre avec NOM et ADRESSE imposés (introduction de 20 mots au plus), (c) sujet fondé sur des images. Inédite : Question 2 = UNE question
+    qui liste les sujets et dit « choose ONE », avec un modèle pour chacun ; le sujet (c) à images est REMPLACÉ par un sujet guidé sans images ; deux exercices `1` et `2`, quatre critères de notation pour la traduction
+    (12 + 10 + 10 + 8) et cinq pour la rédaction (16 + 6 + 6 + 6 + 6).
+  - **Contrôles** : Paper 1 : clé unique, raison de chaque distracteur citée dans le corrigé, phrase complète recomposée depuis l'énoncé rempli (39 cas), texte à trous rempli avec les cinq réponses = texte complet ;
+    Paper 2 : même nombre de paragraphes et de phrases entre texte et traduction modèle, chaque ligne du tableau des pièges retrouvée dans le modèle, décompte des mots selon la règle du sujet (143-146), couverture de
+    chaque puce par un extrait du modèle ; aucune fuite entre papers ; aucune suite de 6 mots commune avec un vrai sujet (les consignes d'examen imprimées sont écartées). **La correction du français lui-même (accords,
+    temps, naturel) n'est pas vérifiable par machine : relecture humaine par un enseignant de français.**
+  - **Pièges de plateforme rencontrés** : `\"` dans une chaîne brute Python garde son antislash (normalisé dans `Q()`) ; une question dont l'énoncé n'est qu'une étiquette (« Space 47 ») est jugée trop proche d'un vrai sujet par
+    `controle_inedite_gce.py` quand l'étiquette est la même : reformuler l'étiquette.
+
 ### F. Pratique et applications (Computer Science, ICT, Geography A/L P3)
 
 - Les données et fichiers « du jour » des vrais sujets ne sont pas dans le PDF : l'inédite doit être **complète en soi**. Toute donnée nécessaire (table,
