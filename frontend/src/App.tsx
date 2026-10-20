@@ -61,7 +61,6 @@ const ParcoursPage = lazy(() => import("@/pages/ParcoursPage").then((m) => ({ de
 const ParcoursSubjectPage = lazy(() => import("@/pages/ParcoursSubjectPage").then((m) => ({ default: m.ParcoursSubjectPage })))
 const InediteTentativePage = lazy(() => import("@/pages/InediteTentativePage").then((m) => ({ default: m.InediteTentativePage })))
 const InediteResultPage = lazy(() => import("@/pages/InediteResultPage").then((m) => ({ default: m.InediteResultPage })))
-const FichesPage = lazy(() => import("@/pages/FichesPage").then((m) => ({ default: m.FichesPage })))
 const NotFoundPage = lazy(() => import("@/pages/NotFoundPage").then((m) => ({ default: m.NotFoundPage })))
 const RecherchePage = lazy(() => import("@/pages/RecherchePage").then((m) => ({ default: m.RecherchePage })))
 
@@ -200,7 +199,11 @@ function App({ basename = "" }: { basename?: string }) {
                           épreuves inédites, notée exercice par exercice. */}
                       <Route path="/simulation/:id" element={<InediteTentativePage source="officielle" />} />
                       <Route path="/simulation/:id/resultat" element={<InediteResultPage source="officielle" />} />
-                      <Route path="/fiches" element={<FichesPage />} />
+                      {/* Add-on Fiches (répétiteurs) en veille depuis le 2026-10-20 : la page est
+                          conservée (FichesPage) mais plus servie. Pour réveiller l'offre, remettre
+                          la route, le lien du pied de page / de "Mon compte" et réactiver les Plans
+                          ADDON_REPETITEUR. */}
+                      <Route path="/fiches" element={<Navigate to="/" replace />} />
                       <Route path="/confidentialite" element={<PrivacyPage />} />
                       <Route path="/cgu" element={<TermsPage />} />
                       <Route path="/a-propos" element={<AboutPage />} />

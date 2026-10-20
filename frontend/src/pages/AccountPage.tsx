@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import {
-  BookOpen, Check, Copy, Crown, FileText, GraduationCap,
+  BookOpen, Check, Copy, Crown, GraduationCap,
   MessageCircle, NotebookPen, Pencil, RefreshCw, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
@@ -210,11 +210,10 @@ export function AccountPage() {
             dupliquer ici. "Mes accès" vit aussi dans le menu du header (voir Header.tsx), comme
             "Mon historique" et "Mes paiements" - présent ici en plus parce que c'est l'information
             la plus naturellement attendue en arrivant sur /compte. */}
-        <nav aria-label={t("cpt.raccourcis")} className="grid grid-cols-3 gap-2 sm:grid-cols-5 sm:gap-3">
+        <nav aria-label={t("cpt.raccourcis")} className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
           <Raccourci to="/mes-acces" icone={Sparkles} libelle={t("compte.mes_acces")} />
           <Raccourci to="/carnet" icone={NotebookPen} libelle={t("cpt.carnet")} />
           <Raccourci to="/parcours" icone={TrendingUp} libelle={t("nav.progression")} />
-          <Raccourci to="/fiches" icone={FileText} libelle={t("cpt.fiches")} />
           <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle={t("cpt.inedites")} />
         </nav>
 

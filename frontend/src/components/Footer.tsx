@@ -262,7 +262,6 @@ export function Footer() {
             </span>
           </Lien>
           <Lien to="/quiz">{t("ft.quiz")}</Lien>
-          <Lien to="/fiches">{t("ft.fiches")}</Lien>
           <Lien to={`${epreuvesListPath(country)}?origine=INEDITE`}>{t("ft.inedites")}</Lien>
         </Colonne>
 
