@@ -22,10 +22,10 @@ from rest_framework.response import Response
 from access.services import has_access_inedite
 from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
 from catalog.libelles import libelle_cursus
-from catalog.models import Cursus, StatutContenu, TypeReponse
+from catalog.models import Cours, Cursus, StatutContenu, TypeReponse, langue_examen
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
-from quiz.models import ResultatDeclare
+from quiz.models import CompetenceItem, ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
 from users.parent import portee_famille
@@ -223,8 +223,26 @@ def _themes_a_reviser(tentative, bilan):
         actuelle = echeances.get(planification.theme.name)
         if actuelle is None or planification.due_at < actuelle:
             echeances[planification.theme.name] = planification.due_at
+    # Les liens « Quiz » et « Cours » du bilan ne s'affichent que si le thème a de quoi les
+    # remplir : sinon le lien lançait un quiz sans question (404) ou ouvrait une liste vide.
+    cursus = tentative.epreuve.cursus.first()
+    ids_themes = [ids[nom] for nom in echeances]
+    avec_quiz = set(
+        CompetenceItem.objects.filter(theme_id__in=ids_themes, cursus=cursus, statut=StatutContenu.VALIDE)
+        .values_list("theme_id", flat=True)
+    )
+    cours = Cours.objects.visibles().filter(tags__id__in=ids_themes)
+    if cursus is not None and cursus.examen:
+        cours = cours.filter(subject__langue=langue_examen(cursus.examen))
+    avec_cours = set(cours.values_list("tags__id", flat=True)) & set(ids_themes)
     return [
-        {"theme": nom, "theme_id": ids[nom], "echeance": echeance.isoformat()}
+        {
+            "theme": nom,
+            "theme_id": ids[nom],
+            "echeance": echeance.isoformat(),
+            "a_quiz": ids[nom] in avec_quiz,
+            "a_cours": ids[nom] in avec_cours,
+        }
         for nom, echeance in sorted(echeances.items(), key=lambda item: (item[1], item[0]))
     ]
 

@@ -10,6 +10,16 @@ export function formatDuration(totalSeconds: number): string {
   return hours > 0 ? `${hours}:${mm}:${ss}` : `${mm}:${ss}`
 }
 
+/** « 3 min 32 s », « 1 h 05 min » - un temps écoulé, que « 03:32 » laisse ambigu (minutes ou heures). */
+export function formatDureeEcoulee(totalSeconds: number): string {
+  const heures = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const secondes = totalSeconds % 60
+  if (heures > 0) return `${heures} h ${String(minutes).padStart(2, "0")} min`
+  if (minutes > 0) return secondes > 0 ? `${minutes} min ${secondes} s` : `${minutes} min`
+  return `${secondes} s`
+}
+
 /** « 2 h », « 1 h 30 », « 45 min » - la durée d'une épreuve en langage courant. */
 export function formatDureeMinutes(minutes: number): string {
   const heures = Math.floor(minutes / 60)

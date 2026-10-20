@@ -5,7 +5,8 @@ from unittest import mock
 
 from django.utils import timezone
 
-from quiz.models import RevisionSchedule
+from catalog.models import StatutContenu
+from quiz.models import CompetenceItem, RevisionSchedule
 
 from .models import TentativeInedite
 from .test_notation import NotationAPITestCase
@@ -24,8 +25,24 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         self.assertEqual(planification.due_at, timezone.localdate() + timedelta(days=1))
         self.assertEqual(
             reponse.data["themes_a_reviser"],
-            [{"theme": "Suites numériques", "theme_id": planification.theme_id, "echeance": planification.due_at.isoformat()}],
+            [{
+                "theme": "Suites numériques", "theme_id": planification.theme_id,
+                "echeance": planification.due_at.isoformat(), "a_quiz": False, "a_cours": False,
+            }],
         )
+
+    def test_les_liens_quiz_et_cours_ne_sont_proposes_que_si_le_theme_a_du_contenu(self):
+        self.rendre()
+        theme = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus).theme
+        item = CompetenceItem.objects.create(
+            subject=self.epreuve.subject, theme=theme, statut=StatutContenu.VALIDE, enonce_markdown="Q ?",
+            type_reponse="QCM", choix=[{"lettre": "a", "texte": "x"}, {"lettre": "b", "texte": "y"}],
+            reponse_correcte="a", corrige_markdown="x",
+        )
+        item.cursus.add(self.cursus)
+        autre = self.rendre()
+        self.assertTrue(autre.data["themes_a_reviser"][0]["a_quiz"])
+        self.assertFalse(autre.data["themes_a_reviser"][0]["a_cours"])
 
     def test_rendre_deux_fois_ne_replanifie_pas(self):
         self.rendre()

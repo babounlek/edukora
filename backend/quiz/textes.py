@@ -24,6 +24,16 @@ ORIGINES = {
 }
 
 TEXTES = {
+    # --- Erreur d'une séance sans question (quiz.views.start_session) ---
+    "quiz.aucune_question": {
+        FR: "Aucune question disponible pour ces critères.",
+        EN: "No questions are available for this topic yet.",
+    },
+    # --- Parcours par thème (quiz.services.construire_parcours) ---
+    "parcours.titre_themes": {
+        FR: "Les thèmes qui reviennent le plus à l'examen",
+        EN: "The topics that come up most in the exam",
+    },
     # --- Phrase du coach (quiz.accueil.phrase_coach) ---
     "coach.apres": {
         FR: "L'examen est passé. Tout ce que tu as travaillé reste à toi.",

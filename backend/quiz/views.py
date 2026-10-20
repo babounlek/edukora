@@ -489,8 +489,9 @@ def start_session(request):
     profil = profil_actif(request)
     try:
         session = generer_session(profil, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n)
-    except ValueError as exc:
-        return Response({"error": str(exc)}, status=404)
+    except ValueError:
+        # Le service lève sa phrase en français ; l'élève la lit dans la langue de son examen (voir quiz.textes).
+        return Response({"error": textes.texte("quiz.aucune_question", textes.langue_de(cursus))}, status=404)
 
     # `seance` n'est qu'un drapeau "je viens du plan du jour" posé par le lien de
     # l'étape quiz : sa valeur n'est pas de confiance (une URL se bricole), donc on ne

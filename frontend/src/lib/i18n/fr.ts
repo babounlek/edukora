@@ -932,6 +932,7 @@ export const fr = {
   "al.mi_parcours_question_one": "Mi-parcours : {n} question traitée sur {total}.",
   "al.mi_parcours_question_other": "Mi-parcours : {n} questions traitées sur {total}.",
   "al.mi_parcours_exercice_one": "Mi-parcours : {n} exercice traité sur {total}.",
+  "rp.competences_recoupees": "Une question peut compter dans plusieurs compétences : ces totaux peuvent donc dépasser le barème de l'épreuve.",
   "al.mi_parcours_exercice_other": "Mi-parcours : {n} exercices traités sur {total}.",
   "al.quinze": "Il reste 15 minutes.",
   "al.cinq_question": "Il reste 5 minutes : pense à cocher les questions que tu as traitées.",

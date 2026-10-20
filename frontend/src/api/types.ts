@@ -1428,6 +1428,9 @@ export interface ThemeARevoir {
   theme_id: number
   // AAAA-MM-JJ.
   echeance: string
+  // Le thème a-t-il de quoi remplir le lien « Quiz » / « Cours » ? Absent = on suppose que oui.
+  a_quiz?: boolean
+  a_cours?: boolean
 }
 
 export interface PertesParCause {

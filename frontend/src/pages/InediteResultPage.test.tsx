@@ -180,6 +180,47 @@ describe("InediteResultPage", () => {
   })
 
   it("répartit les points perdus par cause", async () => {
+  it("ne propose « Quiz » et « Cours » que pour un thème qui a de quoi les remplir", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({ themes_a_reviser: [{ theme: "probabilités", theme_id: 12, echeance: "2099-01-01", a_quiz: false, a_cours: true }] }),
+    )
+    afficher()
+
+    expect(await screen.findByText("Ce que tu reverras")).toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: "Quiz" })).not.toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Cours" })).toBeInTheDocument()
+  })
+
+  it("écrit le temps utilisé avec ses unités, pas en « 03:31 »", async () => {
+    completeTentative.mockResolvedValue(resultat({ temps_total_secondes: 211 }))
+    afficher()
+
+    expect(await screen.findByText(/3 min 31 s/)).toBeInTheDocument()
+  })
+
+  it("prévient quand les points par compétence dépassent le barème de l'épreuve", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        bareme: 10,
+        par_theme: [
+          { theme: "suites", theme_id: 11, total: 2, reussies: 2, points_possibles: 8, points_obtenus: 8 },
+          { theme: "probabilités", theme_id: 12, total: 2, reussies: 0, points_possibles: 6, points_obtenus: 2 },
+        ],
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText(/peut compter dans plusieurs compétences/)).toBeInTheDocument()
+  })
+
+  it("ne dit rien des compétences qui se recoupent quand les totaux tiennent dans le barème", async () => {
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    await screen.findByText("De la plus fragile à la plus solide.")
+    expect(screen.queryByText(/peut compter dans plusieurs compétences/)).not.toBeInTheDocument()
+  })
+
     completeTentative.mockResolvedValue(
       resultat({
         pertes: {

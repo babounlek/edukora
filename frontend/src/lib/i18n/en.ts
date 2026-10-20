@@ -926,6 +926,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "al.mi_parcours_question_one": "Halfway: {n} question completed out of {total}.",
   "al.mi_parcours_question_other": "Halfway: {n} questions completed out of {total}.",
   "al.mi_parcours_exercice_one": "Halfway: {n} exercise completed out of {total}.",
+  "rp.competences_recoupees": "A question can count under several skills, so these totals can add up to more than the paper's points.",
   "al.mi_parcours_exercice_other": "Halfway: {n} exercises completed out of {total}.",
   "al.quinze": "15 minutes left.",
   "al.cinq_question": "5 minutes left: remember to tick the questions you've completed.",

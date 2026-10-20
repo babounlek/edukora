@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CartePertes, CartePosition, CarteTemps } from "@/components/inedit/RapportFin"
-import { formatDuration } from "@/lib/duration"
+import { formatDureeEcoulee } from "@/lib/duration"
 import { formatPoints } from "@/lib/notation"
 import { useAuth } from "@/context/AuthContext"
 import { lienAbonnement } from "@/lib/retourAchat"
@@ -125,6 +125,10 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
     const tauxB = b.points_possibles ? (b.points_obtenus ?? 0) / b.points_possibles : 1
     return tauxA - tauxB
   })
+  // Une question qui porte plusieurs thèmes compte dans chacun : la somme des points par compétence peut alors
+  // dépasser le barème de l'épreuve, ce que l'élève prendrait pour une erreur de calcul.
+  const themesSeRecoupent =
+    result.bareme !== null && themes.reduce((somme, theme) => somme + (theme.points_possibles ?? 0), 0) > result.bareme
 
   return (
     <div className="mx-auto max-w-xl animate-fade-up px-4 py-10">
@@ -158,7 +162,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
 
         <p className="mt-3 text-sm text-muted-foreground">
           {tnu("rp.repondues", unite, result.questions_repondues, { total: result.total_questions })}
-          {result.temps_total_secondes !== null && t("rp.temps_utilise", { duree: formatDuration(result.temps_total_secondes) })}
+          {result.temps_total_secondes !== null && t("rp.temps_utilise", { duree: formatDureeEcoulee(result.temps_total_secondes) })}
         </p>
       </div>
 
@@ -227,7 +231,10 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="font-display text-lg">{t("rp.par_competence")}</CardTitle>
-            <p className="text-xs text-muted-foreground">{t("rp.fragile_solide")}</p>
+            <p className="text-xs text-muted-foreground">
+              {t("rp.fragile_solide")}
+              {themesSeRecoupent && ` ${t("rp.competences_recoupees")}`}
+            </p>
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
@@ -267,7 +274,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
                   <span className="flex shrink-0 items-center gap-3 text-muted-foreground">
                     {echeanceRelative(theme.echeance)}
                     {/* Deux façons de s'y mettre tout de suite, sans attendre la séance de demain. */}
-                    {result.cursus_id !== null && (
+                    {result.cursus_id !== null && theme.a_quiz !== false && (
                       <Link
                         to={`/quiz?cursus=${result.cursus_id}&theme=${theme.theme_id}`}
                         className="font-medium text-primary underline-offset-2 hover:underline"
@@ -275,12 +282,14 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
                         {t("qd.onglet_quiz")}
                       </Link>
                     )}
-                    <Link
-                      to={`${coursListPath(result.country.toLowerCase())}?theme=${theme.theme_id}`}
-                      className="font-medium text-primary underline-offset-2 hover:underline"
-                    >
-                      {t("nav.cours")}
-                    </Link>
+                    {theme.a_cours !== false && (
+                      <Link
+                        to={`${coursListPath(result.country.toLowerCase())}?theme=${theme.theme_id}`}
+                        className="font-medium text-primary underline-offset-2 hover:underline"
+                      >
+                        {t("nav.cours")}
+                      </Link>
+                    )}
                   </span>
                 </li>
               ))}
