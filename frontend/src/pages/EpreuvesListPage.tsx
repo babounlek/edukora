@@ -25,7 +25,7 @@ import { nomPays } from "@/lib/pays"
 import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
-import { useTotalEpreuves } from "@/lib/totauxCatalogue"
+import { cursusDesTotaux, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { useSeo } from "@/lib/seo"
 import { triDepuisUrl, triPourApi, valeurUrlDuTri } from "@/lib/triEpreuves"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -269,7 +269,12 @@ export function EpreuvesListPage() {
   // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
   // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
   const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
-  const { data: totalData } = useTotalEpreuves(country, cursusChoisi?.langue ?? langueDeListe("", toutesLangues), filtresActifs)
+  const { data: totalData } = useTotalEpreuves(
+    country,
+    cursusChoisi?.langue ?? langueDeListe("", toutesLangues),
+    filtresActifs,
+    cursusDesTotaux(cursusAbonne, cursusChoisi?.id),
+  )
 
   const debouncedSearch = useDebouncedValue(search, 300)
 

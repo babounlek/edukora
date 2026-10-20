@@ -100,6 +100,8 @@ export const fr = {
   "compte_a_rebours.titre_exact": "{cursus} - {session}, à partir du {date}.",
 
   "accueil.seo_titre": "Corrigés {examens}",
+  "accueil.seo_eleve": "Aujourd'hui",
+  "accueil.seo_eleve_description": "Ta séance du jour, ce que tu as déjà fait et où tu en es avant l'examen.",
   "accueil.seo_titre_pays": "Corrigés {examens} - {pays}",
   "accueil.seo_description":
     "{pays} : chaque jour, on te dit quoi réviser pour {examens}. Les thèmes qui tombent vraiment, avec corrigés d'annales, cours et quiz.",
@@ -376,6 +378,8 @@ export const fr = {
   "oujensuis.savoirs_sur_one": "savoir sur",
   "oujensuis.savoirs_sur_other": "savoirs sur",
   "oujensuis.voir_tout": "Voir toute ma progression",
+  "oujensuis.legende_matieres": "Tes {n} matières où il y a le plus à faire",
+  "oujensuis.voir_toutes_matieres": "Voir mes {n} matières",
   "oujensuis.jour_j": "D'ici le jour J",
   "oujensuis.themes_avant": "",
   "oujensuis.themes_lien": "Les thèmes qui tombent le plus",
@@ -2088,6 +2092,7 @@ export const fr = {
   "rc.themes_commencer": "Des thèmes pour commencer",
   "rc.chargement_themes": "Chargement des thèmes",
   "rc.astuce": "Tu peux aussi chercher une notion (« discriminant »), une épreuve ou une année (« BAC C maths 2019 »).",
+  "rc.palette_vide": "Cherche un thème (« théorème de Thalès »), une notion (« discriminant »), une épreuve (« BAC C maths 2019 »)…",
   "rc.aucun": "Aucun résultat pour « {q} »",
   "rc.aucun_texte": "Essaie un mot plus court, une autre façon de nommer la notion, ou retire un filtre.",
   "rc.chercher_tous": "Chercher dans tous les examens",

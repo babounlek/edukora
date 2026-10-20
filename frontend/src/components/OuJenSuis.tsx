@@ -12,6 +12,9 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
+/** Les matières où il y a le plus à faire, montrées sous l'anneau : les autres sont à « Ma progression ». */
+const NB_MATIERES_AFFICHEES = 2
+
 /**
  * "Où j'en suis" : l'anneau pondéré, la trajectoire, et les deux matières où il y a le
  * plus à faire.
@@ -33,7 +36,7 @@ export function OuJenSuis({
   const { preparation, trajectoire, resume, phase } = accueil
   if (!preparation) return null
 
-  const matieres = [...resume]
+  const suivies = [...resume]
     .filter((m) => m.total > m.sans_contenu)
     // Les matières où il reste le plus à faire d'abord : part maîtrisée croissante, puis
     // volume restant décroissant, puis l'alphabet pour rester stable d'une visite à l'autre.
@@ -41,7 +44,10 @@ export function OuJenSuis({
       (a, b) =>
         partMaitrisee(a) - partMaitrisee(b) || restant(b) - restant(a) || a.subject_label.localeCompare(b.subject_label, localeCourante()),
     )
-    .slice(0, 2)
+  const matieres = suivies.slice(0, NB_MATIERES_AFFICHEES)
+  // Deux cartes sur six matières, sans un mot : un élève GCE en suit six et se demandait où étaient les autres (test
+  // élève Gogo). La légende dit pourquoi celles-ci, le bouton dit combien il y en a.
+  const matieresMasquees = suivies.length > matieres.length
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("oujensuis.aria")}>
@@ -70,17 +76,24 @@ export function OuJenSuis({
         {trajectoire && phase !== "apres" && <BlocTrajectoire trajectoire={trajectoire} phase={phase} country={country} />}
 
         {matieres.length > 0 && (
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {matieres.map((matiere) => (
-              <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={cursusId} />
-            ))}
+          <div className="mt-6">
+            {matieresMasquees && (
+              <p className="mb-2 text-xs font-medium text-muted-foreground">
+                {t("oujensuis.legende_matieres", { n: matieres.length })}
+              </p>
+            )}
+            <div className="grid gap-3 sm:grid-cols-2">
+              {matieres.map((matiere) => (
+                <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={cursusId} />
+              ))}
+            </div>
           </div>
         )}
         <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
           <LegendeProgression />
           <Button asChild variant="outline" size="sm" className="group rounded-full">
             <Link to="/parcours">
-              {t("oujensuis.voir_tout")}
+              {matieresMasquees ? t("oujensuis.voir_toutes_matieres", { n: suivies.length }) : t("oujensuis.voir_tout")}
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </Button>

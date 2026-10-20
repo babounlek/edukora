@@ -9,7 +9,7 @@ from catalog.models import Cours, Cursus, Examen, StatutContenu, Subject, Tag
 
 from . import moteur
 from .indexation import reconstruire
-from .models import RechercheSansResultat, TypeResultat
+from .models import EntreeRecherche, RechercheSansResultat, TypeResultat
 from .tests import _CorpusMixin
 
 EN_COURS = "Thales and similar triangles"
@@ -107,6 +107,25 @@ class LangueMoteurTests(_CorpusBilingue, TestCase):
         self.assertEqual(en, [EN_THEME])
         self.assertNotIn(EN_THEME, fr)
         self.assertIn(FR_THEME, fr)
+
+    def test_les_suggestions_d_un_examen_gce_restent_en_anglais(self):
+        """Test élève Gogo (GCE O Level, interface anglaise) : les suggestions de la page de recherche étaient françaises.
+        Avec un cursus, les thèmes « de tous les examens » (en français, au plus fort poids) entraient dans la liste ;
+        la recherche normale écarte déjà l'autre langue (voir moteur._recherche), les suggestions non."""
+        EntreeRecherche.objects.filter(type=TypeResultat.THEME, titre=FR_THEME).update(tous_cursus=True)
+
+        titres = [s["titre"] for s in self.chercher("", cursus=self.gce.id, langue="en")["suggestions"]]
+
+        self.assertEqual(titres, [EN_THEME])
+        self.assertNotIn(FR_THEME, titres)
+
+    def test_les_suggestions_d_un_examen_francais_ne_recoivent_pas_de_theme_anglais(self):
+        bac_c = Cursus.objects.get(country=self.pays, examen=Examen.BAC, series__code="C")
+
+        titres = [s["titre"] for s in self.chercher("", cursus=bac_c.id, langue="fr")["suggestions"]]
+
+        self.assertNotIn(EN_THEME, titres)
+        self.assertIn(FR_THEME, titres)
 
     def test_completions_dans_la_langue(self):
         self.assertEqual([c["texte"] for c in moteur.completer("simil", pays=self.pays, langue="en")], [EN_THEME])

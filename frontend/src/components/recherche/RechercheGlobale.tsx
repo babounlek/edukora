@@ -10,7 +10,7 @@ import { ResultatCompact } from "@/components/recherche/ResultatRecherche"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusAccueil } from "@/lib/cursusAccueil"
-import { langueCourante } from "@/lib/i18n"
+import { langueCourante, t, useI18n } from "@/lib/i18n"
 import {
   cibleResultat,
   jetonsDeSurbrillance,
@@ -248,11 +248,11 @@ function Accueil({
   onChoisir: (requete: string) => void
   onEffacer: () => void
 }) {
+  useI18n()
   if (recentes.length === 0) {
     return (
-      <p className="px-3 py-6 text-center text-sm text-muted-foreground">
-        Cherche un thème (« théorème de Thalès »), une notion (« discriminant »), une épreuve (« BAC C maths 2019 »)…
-      </p>
+      // Traduit : les exemples (« BAC C maths 2019 ») n'ont aucun sens pour un élève GCE en interface anglaise.
+      <p className="px-3 py-6 text-center text-sm text-muted-foreground">{t("rc.palette_vide")}</p>
     )
   }
   return (

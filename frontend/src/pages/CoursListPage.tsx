@@ -43,7 +43,7 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
-import { useTotalCours } from "@/lib/totauxCatalogue"
+import { cursusDesTotaux, useTotalCours } from "@/lib/totauxCatalogue"
 
 type ViewMode = "cards" | "list"
 
@@ -202,7 +202,12 @@ export function CoursListPage() {
   // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
   // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
   const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
-  const { data: totalData } = useTotalCours(country, cursusChoisi?.langue ?? langueDeListe("", toutesLangues), filtresActifs)
+  const { data: totalData } = useTotalCours(
+    country,
+    cursusChoisi?.langue ?? langueDeListe("", toutesLangues),
+    filtresActifs,
+    cursusDesTotaux(cursusAbonne, cursusChoisi?.id),
+  )
 
   // Débounce la clé de query, pas le champ affiché : le champ reste réactif à chaque
   // frappe (il est contrôlé par `search` directement), seule la requête réseau attend

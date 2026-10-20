@@ -144,6 +144,50 @@ beforeEach(() => {
   localStorage.clear()
 })
 
+describe("AccueilEleve : titre de l'onglet", () => {
+  it("donne son propre titre à l'écran du jour et le garde hors de l'index", async () => {
+    document.title = "Ancien titre"
+    getAccueil.mockResolvedValue(accueil())
+    afficher()
+
+    await screen.findByText(/Bonjour Awa/)
+    // Avant : aucun titre posé, l'onglet gardait le titre français statique de l'index.html (test élève Gogo).
+    expect(document.title).toMatch(/^Aujourd'hui \| /)
+    expect(document.querySelector('meta[name="robots"]')?.getAttribute("content")).toBe("noindex, follow")
+  })
+})
+
+describe("AccueilEleve : où j'en suis, matières montrées", () => {
+  const matiere = (id: number, code: string, label: string, maitrises: number) => ({
+    subject_id: id, subject_code: code, subject_label: label, total: 10, maitrises, en_revision: 0, en_cours: 0,
+    a_decouvrir: 10 - maitrises, sans_contenu: 0, poids_total: 10, poids_maitrise: maitrises,
+  })
+
+  it("dit pourquoi seules 2 matières sur 6 s'affichent et nomme le total", async () => {
+    getAccueil.mockResolvedValue(
+      accueil({
+        resume: [
+          matiere(1, "MATHS", "Mathématiques", 1), matiere(2, "BIO", "Biologie", 2), matiere(3, "CHIM", "Chimie", 3),
+          matiere(4, "INFO", "Informatique", 4), matiere(5, "ANG", "Anglais", 5), matiere(6, "FR", "Français", 6),
+        ],
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText("Tes 2 matières où il y a le plus à faire")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Voir mes 6 matières/ })).toHaveAttribute("href", "/parcours")
+  })
+
+  it("ne dit rien de plus quand toutes les matières sont déjà montrées", async () => {
+    getAccueil.mockResolvedValue(accueil())
+    afficher()
+
+    await screen.findByText(/Bonjour Awa/)
+    expect(screen.queryByText(/où il y a le plus à faire/)).not.toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Voir toute ma progression/ })).toBeInTheDocument()
+  })
+})
+
 describe("AccueilEleve", () => {
   it("rend toute la page depuis une seule réponse : phrase du coach, bouton, delta, trajectoire", async () => {
     getAccueil.mockResolvedValue(accueil())

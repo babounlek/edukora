@@ -6,11 +6,11 @@ import { ArrowRight, ChevronDown, MessageCircle, ShieldCheck, Sparkles } from "l
 import { getPlatformStats } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
-import { useAbonneActif } from "@/lib/abonneActif"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
@@ -141,16 +141,20 @@ export function Footer() {
   // Dans la langue de l'interface, comme les puces du hero (voir lib/totauxCatalogue) : le pied de page est
   // sur toutes les pages, et un total des deux langues y contredisait la page. (« À propos » reste global.)
   const langueStats = langueDeListe("", false)
-  const { data: stats } = useQuery({
+  const abonne = useAbonneActif()
+  // Un élève abonné ne voit pas le total de la plateforme : « 512 épreuves, 785 cours » contredisait sa propre liste (96 épreuves,
+  // 162 cours pour son examen et ses matières). Ces chiffres sont un argument pour un visiteur, pas une information pour lui.
+  const { data: statsPlateforme } = useQuery({
     queryKey: ["platform-stats", langueStats],
     queryFn: () => getPlatformStats(langueStats),
     staleTime: 60 * 60 * 1000,
+    enabled: !abonne,
   })
+  const stats = abonne ? undefined : statsPlateforme
   // Même clé que /epreuves et /themes-frequents : déjà en cache la plupart du temps.
   // Examens de la langue de l'interface (voir lib/cursusLangue) : BEPC, Probatoire, BAC en français, GCE en anglais.
   const { data: cursusList } = useCursusListe(country, { langue: langueStats })
 
-  const abonne = useAbonneActif()
   const invitation = invitationPour(isAuthenticated ? user : null, country)
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
   // sur l'accueil) : un bouton qui ne mène nulle part affaiblit tous les autres.

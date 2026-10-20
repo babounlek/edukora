@@ -539,6 +539,11 @@ def _suggestions(pays, cursus_id, acces, nombre=NB_SUGGESTIONS, langue=None):
     if cursus_id:
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus_id)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
+        # Un examen visé fixe la langue, comme dans _recherche : sans cela, les thèmes « de tous les examens » (en français,
+        # donc au plus fort poids) entraient dans les suggestions d'un cursus GCE (test élève Gogo, 2026-10-19).
+        langue_examen_vise = _langue_des_examens([cursus_id])
+        if langue_examen_vise:
+            queryset = queryset.filter(matiere__langue=langue_examen_vise)
     elif langue:
         queryset = queryset.filter(matiere__langue=langue)
     # Une marge : quelques-uns des premiers seront écartés.

@@ -20,6 +20,7 @@ import { formatDuration } from "@/lib/duration"
 import { maintenantServeur } from "@/lib/horlogeServeur"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 import { t, tn, useI18n } from "@/lib/i18n"
+import { useSeo } from "@/lib/seo"
 
 /**
  * L'accueil d'un élève ABONNÉ, en trois zones et pas plus :
@@ -42,6 +43,10 @@ import { t, tn, useI18n } from "@/lib/i18n"
  */
 export function AccueilEleve({ country }: { country: string }) {
   useI18n()
+  // Seul composant de page sans titre : il gardait celui de la page précédente, ou, au rechargement, le titre français
+  // statique d'index.html (même pour un élève GCE sur /en). Page personnelle : jamais indexée (la vitrine reste ce que
+  // voient les robots, voir CataloguePage).
+  useSeo({ title: t("accueil.seo_eleve"), description: t("accueil.seo_eleve_description"), noindex: true })
   const { user } = useAuth()
   const queryClient = useQueryClient()
   const cursusId = user?.cursus_prepare?.id

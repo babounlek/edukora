@@ -95,6 +95,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "compte_a_rebours.titre_exact": "{cursus} - {session}, starting on {date}.",
 
   "accueil.seo_titre": "Past papers with solutions: {examens}",
+  "accueil.seo_eleve": "Today",
+  "accueil.seo_eleve_description": "Your session for today, what you have already done and where you stand before the exam.",
   "accueil.seo_titre_pays": "Past papers with solutions: {examens} - {pays}",
   "accueil.seo_description":
     "{pays}: every day, we tell you what to revise for {examens}. The topics that really come up, with past paper solutions, lessons and quizzes.",
@@ -370,6 +372,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "oujensuis.savoirs_sur_one": "skill out of",
   "oujensuis.savoirs_sur_other": "skills out of",
   "oujensuis.voir_tout": "See all my progress",
+  "oujensuis.legende_matieres": "Your {n} subjects with the most to cover",
+  "oujensuis.voir_toutes_matieres": "See all {n} subjects",
   "oujensuis.jour_j": "Between now and exam day",
   "oujensuis.themes_avant": "Start with ",
   "oujensuis.themes_lien": "the topics that come up most",
@@ -2077,7 +2081,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "rc.themes_examen": "Topics for your exam",
   "rc.themes_commencer": "Topics to get you started",
   "rc.chargement_themes": "Loading topics",
-  "rc.astuce": "You can also search for a concept (“discriminant”), a paper or a year (“BAC C maths 2019”).",
+  "rc.astuce": "You can also search for a concept (“Pythagoras”), a paper or a year (“Maths 2019”).",
+  "rc.palette_vide": "Search for a topic (“mole concept”), a concept (“Pythagoras”), a paper or a year (“Maths 2019”)…",
   "rc.aucun": "No results for “{q}”",
   "rc.aucun_texte": "Try a shorter word, another way of naming the concept, or remove a filter.",
   "rc.chercher_tous": "Search all exams",
