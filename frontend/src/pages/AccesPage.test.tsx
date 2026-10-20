@@ -82,19 +82,25 @@ describe("AccesPage - portée de la famille (code parent)", () => {
     afficher()
 
     expect(await screen.findByText(/Tu vois seulement les accès de Cadet/)).toBeTruthy()
-    expect(screen.getByRole("button", { name: "Voir toute la famille" })).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Ouvrir l'espace parent" })).toBeTruthy()
     // Pas de groupe « Aînée » qui afficherait à tort « Choisir un abonnement ».
     expect(screen.queryByText("Aînée")).toBeNull()
     expect(screen.queryByText("Choisir un abonnement")).toBeNull()
+    // Verrouillé : ni sécurité des profils ni ajout d'enfant tant que le code parent n'a pas été saisi.
+    expect(screen.queryByText("securite-profils")).toBeNull()
+    expect(screen.queryByText("Ajouter un enfant")).toBeNull()
     expect(api.listMySubscriptionsFamille).not.toHaveBeenCalled()
   })
 
-  it("« Voir toute la famille » charge les trois listes de la famille et retire le bandeau", async () => {
+  it("« Ouvrir l'espace parent » charge les trois listes de la famille et retire le bandeau", async () => {
     afficher()
-    fireEvent.click(await screen.findByRole("button", { name: "Voir toute la famille" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Ouvrir l'espace parent" }))
 
     expect(await screen.findByText("Aînée")).toBeTruthy()
     expect(screen.queryByText(/Tu vois seulement/)).toBeNull()
+    // Déverrouillé : la zone de gestion apparaît.
+    expect(screen.getByText("securite-profils")).toBeTruthy()
+    expect(screen.getByText("Ajouter un enfant")).toBeTruthy()
     expect(api.listMyInscriptionsIneditesFamille).toHaveBeenCalledTimes(1)
     expect(api.listMyInscriptionsRepetiteurFamille).toHaveBeenCalledTimes(1)
   })
@@ -102,7 +108,7 @@ describe("AccesPage - portée de la famille (code parent)", () => {
   it("annuler la saisie du code parent garde la vue limitée, sans message d'erreur", async () => {
     api.listMySubscriptionsFamille.mockRejectedValue(new ApiError(403, { code: "parent_requis" }))
     afficher()
-    fireEvent.click(await screen.findByRole("button", { name: "Voir toute la famille" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Ouvrir l'espace parent" }))
 
     await waitFor(() => expect(api.listMySubscriptionsFamille).toHaveBeenCalledTimes(1))
     expect(api.listMyInscriptionsIneditesFamille).not.toHaveBeenCalled()
@@ -117,6 +123,7 @@ describe("AccesPage - portée de la famille (code parent)", () => {
 
     expect(await screen.findByText("Aînée")).toBeTruthy()
     expect(screen.queryByText(/Tu vois seulement/)).toBeNull()
+    expect(screen.getByText("securite-profils")).toBeTruthy()
   })
 
   it("sans code parent, tout reste ouvert comme avant", async () => {
@@ -134,6 +141,6 @@ describe("AccesPage - portée de la famille (code parent)", () => {
 
     await screen.findByText("Cadet")
     expect(screen.queryByText("Aînée")).toBeNull()
-    expect(screen.queryByRole("button", { name: "Voir toute la famille" })).toBeNull()
+    expect(screen.queryByRole("button", { name: "Ouvrir l'espace parent" })).toBeNull()
   })
 })

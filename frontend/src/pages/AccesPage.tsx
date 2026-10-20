@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Lock, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
   createProfil,
@@ -406,6 +406,9 @@ export function AccesPage() {
   // été chargés, leur groupe afficherait à tort « Choisir un abonnement ».
   const porteeLimitee =
     !famille && (!!user?.session_restreinte || (!!user?.pin_parent_actif && !modeParentActif())) && (profils?.length ?? 0) > 1
+  // Verrouillé : un code parent protège le compte et le mode parent est fermé. Seuls les accès du profil actif se voient ;
+  // les autres enfants, la sécurité des profils et l'ajout d'enfant attendent le code (test élève Gogo, C-F3).
+  const verrouille = porteeLimitee && !user?.session_restreinte
   const groupes = (profils ?? [])
     .filter((profil) => !porteeLimitee || profil.id === user?.profil_actif?.id)
     .map((profil) => ({
@@ -430,6 +433,17 @@ export function AccesPage() {
       />
 
       <Section icone={Sparkles} titre={t("ac.section")}>
+        {verrouille && charge && !erreur && (
+          <div className="mb-4 flex flex-col gap-2 rounded-lg border border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-muted-foreground">
+              {t("ac.portee_limitee", { prenom: user?.profil_actif?.prenom || t("compte.profil_sans_nom") })}
+            </p>
+            <Button size="sm" variant="outline" className="h-11 sm:h-8" disabled={chargementFamille} onClick={voirFamille}>
+              {chargementFamille ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-4" />}
+              {t("ac.voir_famille")}
+            </Button>
+          </div>
+        )}
         {erreur ? (
           // Une panne n'est pas « aucun accès » : l'élève qui a payé doit voir qu'on n'a pas pu
           // lire son compte, pas qu'il n'a rien.
@@ -444,17 +458,6 @@ export function AccesPage() {
           />
         ) : (
           <div className="flex flex-col gap-5">
-            {porteeLimitee && !user?.session_restreinte && (
-              <div className="flex flex-col gap-2 rounded-lg border border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between">
-                <p className="text-sm text-muted-foreground">
-                  {t("ac.portee_limitee", { prenom: user?.profil_actif?.prenom || t("compte.profil_sans_nom") })}
-                </p>
-                <Button size="sm" variant="outline" className="h-11 sm:h-8" disabled={chargementFamille} onClick={voirFamille}>
-                  {chargementFamille && <Loader2 className="size-4 animate-spin" />}
-                  {t("ac.voir_famille")}
-                </Button>
-              </div>
-            )}
             {groupes.map(({ profil, acces: accesDuProfil }) => (
               <div key={profil.id} className="flex flex-col gap-2.5">
                 <NomProfilEditable profil={profil} onRenamed={renommer} />
@@ -475,14 +478,14 @@ export function AccesPage() {
           </div>
         )}
 
-        {charge && !user?.session_restreinte && (
+        {charge && !user?.session_restreinte && !verrouille && (
           <div className="mt-5">
             <AjouterEnfant onCreated={ajouterProfil} />
           </div>
         )}
       </Section>
 
-      {charge && profils && !user?.session_restreinte && (
+      {charge && profils && !user?.session_restreinte && !verrouille && (
         <Section icone={ShieldCheck} titre={t("ac.securite")} id="securite">
           <SecuriteProfils
             profils={profils}
