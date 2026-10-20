@@ -62,6 +62,9 @@ demande de lire est placée sur une graduation.
   Paper 2 = Section A en entier (8 questions) + deux questions de Mécanique de la Section B (100 points, version « answer ALL », la règle « A + deux de B OU de C » rappelée dans l'introduction). **Numéro de
   question unique par exercice** : garder `i-a` comme numéro de travail et convertir en `a`, `b`... avec `groupe_local` « (i) » (jamais « (i)(a) » répété dans l'énoncé) ; **fractions en `\frac` dans les options et
   les énoncés de QCM** ; comparer les DONNÉES (matrice, points, effectifs) de chaque question de syllabus au plus proche énoncé réel : le gabarit revient légitimement, pas les données.
+  **Session n°2** (`ep-cm-gce-ol-addmaths-p1-2-2026-s1` et `-p2-2-2026-s1`) : Paper 2 = Section A + deux questions de la Section C (Statistiques et Probabilités : données groupées, courbe des effectifs cumulés, loi de
+  probabilité, loi binomiale) ; **une réponse numérique identique à celle du plus proche sujet réel, ou une identité qui n'en est que l'inverse, est un défaut même si les données changent**, et aucune technique ni
+  réponse du Paper 2 ne doit déjà figurer dans le Paper 1 (`grep` des réponses du Paper 2 dans le JSON du Paper 1) ; une fonction involutive rend `f(4)` et `f^{-1}(4)` égaux : l'éviter.
 - **Human Biology O Level** (étalon : session n°1, `ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 1 de 50 QCM dans l'ordre du programme, 3 figures de données ; Paper 2 « answer ALL » de 5 questions
   de 20 points (3 en Section A, 2 en Section B), la forme « Draw ... OR Describe ... » du vrai sujet gardée telle quelle. **Choisir les sujets du Paper 2 après avoir lu les 8 vrais Paper 2 et comparer la TÂCHE
   demandée** (dessin du néphron, lutte contre la pollution de l'air...) : ces tâches reviennent d'une année à l'autre et le contrôle automatique ne les voit pas.

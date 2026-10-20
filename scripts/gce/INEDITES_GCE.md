@@ -289,7 +289,7 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
     inéquations et région, trigonométrie, vecteurs, calcul), Section B de 3 questions de Mécanique de 17 points, Section C de 3 questions de Statistiques et Probabilités de 17 points ;
     « Answer ALL of A and ANY TWO of EITHER B OR C, never a mixture », 2 h 30. Inédite : **A en entier + deux questions de Mécanique de B = 100 points** (version « answer ALL », règle réelle
     rappelée dans l'introduction), 39 sous-questions, 18 faibles / 20 moyennes / 1 élevée, 3 figures (machine d'Atwood en énoncé ; région et courbe trigonométrique dans le corrigé seulement),
-    36 sous-questions recalculées. La Section C (Statistiques et Probabilités) n'est pas couverte : à faire dans une session n°2.
+    36 sous-questions recalculées. La Section C (Statistiques et Probabilités) est couverte par la session n°2.
   - **Le gabarit de syllabus revient, les DONNÉES ne doivent jamais revenir.** Le contrôle a fait ressortir des questions de syllabus qui se répètent d'un sujet à l'autre (inverse d'une matrice 2×2, vecteur
     $\overrightarrow{AB}$, comités de 3 garçons et 2 filles) ; la lecture des plus proches énoncés réels a trouvé **quatre vraies collisions de données** : la matrice $\begin{pmatrix}2&1\\5&3\end{pmatrix}$ et son
     inverse (sujet 2021), le point $A(1,2)$, le comité de 6 garçons et 4 filles à 3 et 2 (même réponse 120), et la dérivée de $\dfrac{x^{2}}{x+1}$ (sujet 2023) ; la table d'une opération
@@ -298,6 +298,28 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   - **Mise en page des parties** : la plateforme veut un `numero` UNIQUE par exercice et imprime le `groupe_local` (« (i) ») une fois au-dessus de ses parties : le générateur garde le numéro de travail du vrai
     sujet (`i-a`) et le convertit (`NUMEROS` dans `questions_addmaths_p2_a.py` : `a`, `b`, `c`... avec groupe local « (i) », « (ii) ») ; le préfixe « (i)(a) » est retiré de l'énoncé (sinon « i-a. (i)(a) ... » en double).
     Les fractions des options et des énoncés d'un QCM s'écrivent `\frac` (style texte), pas `\dfrac` : une fraction empilée déborde de la ligne d'une option dans le PDF.
+- **Étalon produit le 2026-10-20 : session Additional Mathematics O Level n°2** (`ep-cm-gce-ol-addmaths-p1-2-2026-s1` et `-p2-2-2026-s1`, générateurs `generer_addmaths_p1n2.py` et `generer_addmaths_p2n2.py`, questions
+  `questions_addmaths_p1n2_a.py`, `_p1n2_b.py`, `questions_addmaths_p2n2_a.py` (Section A) et `_p2n2_c.py` (Section C), figures `figs_addmaths_s2.py`, vérificateurs `verifier_reponses_addmaths_p1n2.py` et `_p2n2.py`).
+  Même cadre que le n°1, **données entièrement neuves** :
+  - **Paper 1 n°2** : 50 QCM, 24 faibles / 24 moyennes / 2 élevées, clés 13 / 13 / 12 / 12, 3 figures (triangle de la règle des sinus, droite coupant les axes, région à trois droites), **50 recalculées**
+    par une voie indépendante (le vérificateur reprend les lecteurs d'options de `verifier_reponses_addmaths_p1.py` et ajoute des lecteurs d'intervalles, de systèmes d'inéquations, de matrices et d'exposants
+    fractionnaires `x^{3/2}`).
+  - **Paper 2 n°2** : Section A (8 questions, 66 points) + **deux questions de la Section C** (Statistiques et Probabilités, 17 points chacune : données groupées avec moyenne, écart-type, courbe des effectifs
+    cumulés, médiane, quartiles ; loi de probabilité `P(X=x)=k(4-x)` puis loi binomiale) = 100 points, 38 sous-questions, 19 faibles / 15 moyennes / 4 élevées, 2 figures **de corrigé seulement** (région à
+    trois droites, courbe des effectifs cumulés avec les lectures de médiane, quartiles et de 35 minutes), **38 sous-questions recalculées** (énumération des nombres pairs, balle qui rebondit, axiomes du groupe,
+    points entiers de la région, pied de la perpendiculaire par minimisation numérique, statistiques et loi binomiale par `math.comb`). Le n°1 avait la Section B : les deux sessions couvrent B et C.
+  - **Contrôle contre le corpus : le gabarit de syllabus revient, parfois avec les MÊMES MOTS.** Sur le Paper 1 le contrôle a signalé 4 erreurs : « The remainder when $x^3-2x^2+x-5$ is divided by $(x-2)$ » (sujet 2023,
+    j'avais gardé le polynôme), « Given that $(x+2)$ is a factor of ... » (2021), « The exact value of $\sin120^{\circ}$ » (2025), « The unit vector in the direction of $3\mathbf{i}-4\mathbf{j}$ » (2024) ; sur le Paper 2,
+    la lecture des plus proches énoncés a trouvé que **l'identité $\dfrac{\sin2\theta}{1+\cos2\theta}\equiv\tan\theta$ est l'inverse de celle du sujet 2025** ($\dfrac{1+\cos2A}{\sin2A}\equiv\cot A$) et que
+    la somme à l'infini $a=12$, $r=-\dfrac{1}{3}$ redonnait la MÊME réponse 9 que le sujet 2021 ($a=6$, $r=\dfrac{1}{3}$). Remèdes appliqués : autre diviseur (`2x-1`), autre énoncé, autre vecteur (`8i+15j`), autre
+    angle (`cos 150° + sin 30°`), autres données (`a=10`, `r=-1/4`), autre identité. **Une réponse numérique identique à celle du plus proche sujet réel est un défaut, même si les données changent ; un
+    gabarit déjà à 0,95 de ressemblance du texte se reformule.** Même test pour les questions qui se ressemblent DANS la session : `f(4)` et `f^{-1}(4)` donnaient la même valeur (fonction involutive
+    $\dfrac{x+2}{x-1}$) : choisir une fonction non involutive pour qu'une confusion entre image et antécédent ne donne pas la bonne réponse par hasard.
+  - **Fuite entre les deux papers** : le Paper 1 contenait déjà la technique d'une question du Paper 2 (aire entre deux courbes, $\alpha^{2}+\beta^{2}$ par somme et produit, développement de $(3-x)^{5}$ dont une
+    mauvaise option valait $-270$, polynôme $3x^{2}-4x+\ldots$ en intégration comme réponse d'une courbe) : les questions du Paper 2 ont été remplacées (racines $\alpha$ et $3\alpha$, courbe de gradient $4x-6$,
+    développement de $(1+2x)^{6}$, identité à deux fractions). Vérifier la session par `grep` des réponses du Paper 2 dans le JSON du Paper 1.
+  - **Pagination** : une figure de QCM qui ne tient pas dans la page descend entière à la suivante (grand blanc en bas de page) ; la figure du triangle avait 140 px de blanc en haut de son cadre (sommet placé
+    trop bas dans la boîte) : réduire la boîte à la hauteur de la figure. Les exposants fractionnaires empilés (`x^{\frac{3}{2}}`) se lisent mal dans une option de PDF : écrire `x^{3/2}`.
 - **Étalon produit le 2026-10-20 : session Human Biology O Level n°1** (`ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_humanbio_p1.py` et `_p2.py`, questions
   `questions_humanbio_p1.py` et `_p2.py`, figures `figs_humanbio_p1.py`, vérificateurs `verifier_reponses_humanbio_p1.py` et `_p2.py`, cours en `cours_titres_gce_human_biology_ol.json`).
   Mesuré sur 7 vrais Paper 1 (2020-2026 ; pas de 2019) et 8 Paper 2 (2019-2026) :
@@ -457,9 +479,9 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 ## 8. Reste à faire (hors de cet étalonnage)
 
-- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Additional Mathematics, Human Biology (O Level, n°1) et, produites par d'autres sessions, English Language et French.
-  Suivantes proposées : Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis une
-  session Additional Mathematics n°2 avec la Section C (Statistiques et Probabilités). Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
+- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Human Biology (O Level, n°1), Additional Mathematics (n°1 et n°2) et, produites par d'autres sessions, English Language et French.
+  Suivantes proposées : Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis Citizenship et Food and Nutrition ;
+  session Additional Mathematics n°2 avec la Section C (Statistiques et Probabilités) : FAIT le 2026-10-20 (voir §5.C). Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
 - Rejouer en production le correctif DÉFAUT 6 (rebuild backend, recompiler les épreuves à parties, régénérer leurs PDF).
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
 - Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).
