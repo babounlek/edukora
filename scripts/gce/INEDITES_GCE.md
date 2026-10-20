@@ -63,6 +63,11 @@ Non représentable (relevé le 2026-10-19 dans `inedit/models.py`, `inedit/inges
   à parties recompilées et leurs PDF régénérés en base locale (français compris : « [1.25 pts] »). En production : reconstruire l'image `backend`, puis recompiler et régénérer de même.
   La phrase « the approximate mark for each part of a question is indicated » des Paper 2 de Maths, Biology et Physics est donc VRAIE ; le Chemistry P2 ne la porte pas (retirée avant le
   correctif), sans conséquence.
+- **DÉFAUT 7 (corrigé le 2026-10-20, committé avec l'étalon Additional Maths) : une inégalité « $-3<k<3$ » cassait le PDF du sujet.** `catalog.sujet_pdf._restore_math` remettait les formules dans le HTML
+  sans les échapper : `<k` était lu comme une balise et avalait les options suivantes (Paper 1 Add. Maths, question 5 : « b) $-3 c) $-6 d) »). Seule une lettre APRÈS le signe `<` déclenche le défaut
+  (« x<3 » passait). Correctif : `html.escape(span, quote=False)` à la restauration (`catalog/sujet_pdf.py`, utilisé aussi par `inedit/sujet_pdf.py`, `fiches/pdf.py` et `quiz/pdf.py`) ; test
+  `catalog/test_sujet_pdf_math_html.py`. Balayage de la base locale : **54 leçons et 5 épreuves inédites** (dont le Maths P1 étalon, id 162) avaient un PDF touché ; tous régénérés. En production :
+  reconstruire `backend`, puis régénérer les PDF dont le Markdown contient `$...<[A-Za-z]...$` (même balayage), et vérifier les PDF des fiches et des quiz.
 - Pas d'image PNG : figures SVG calculées seulement (`figures_svg.py`). Cartes, schémas anatomiques ou de verrerie, microphotographies restent
   hors de portée.
 - Le barème est **exact** : la somme des `points` des questions d'un exercice vaut `exercices[].points`. Les sujets réels, eux, ne somment pas
@@ -273,6 +278,26 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   - Données lues sur un graphe : toute valeur qu'une sous-question demande de lire est placée sur une graduation (20 s, 60 cm³), pour qu'aucune lecture à ±1 ne change la réponse.
   - **Contrôle d'originalité** : la consigne imprimée d'un bloc spécial (« Instructions (Questions ...) » et l'en-tête « First statement / Second statement ») est retirée par `corps()` avant la comparaison ; sans cela
     deux questions d'assertion-raison étaient refusées pour 3 options identiques, alors que ces options sont la forme imposée du sujet, pas son contenu.
+- **Étalon produit le 2026-10-20 : session Additional Mathematics O Level n°1** (`ep-cm-gce-ol-addmaths-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_addmaths_p1.py` et `_p2.py`, questions
+  `questions_addmaths_p1_a.py`, `_p1_b.py`, `_p2_a.py` (Section A) et `_p2_b.py` (Section B), figures `figs_addmaths_p1.py` et `_p2.py`, vérificateurs `verifier_reponses_addmaths_p1.py` et `_p2.py`,
+  cours en `cours_titres_gce_add_maths_ol.json`). Mesuré sur 7 vrais Paper 1 (2019-2021, 2023-2026 ; pas de 2022) et 7 Paper 2 :
+  - **Paper 1** : 50 QCM dans l'ORDRE DU SYLLABUS (indices, logarithmes, polynômes, suites, binôme, dénombrement, trigonométrie, géométrie analytique, inéquations, fonctions, matrices, groupes
+    `binary operations`, vecteurs, dérivation, intégration), 57 % faibles / 40 % moyennes / 3 % élevées, clés a 24 % / b 28 % / c 24 % / d 22 %, 1 à 5 figures. Inédite : 28 / 20 / 2, 3 figures
+    (triangle de la règle des sinus, droite coupant les axes, région définie par trois droites), **50 questions sur 50 recalculées** par une voie indépendante (force brute, dérivation
+    numérique, parcours de grille pour la région, vérification des axiomes d'un sous-groupe, comparaison des fonctions en plusieurs points pour les expressions).
+  - **Paper 2** : 14 exercices, Section A de 8 questions obligatoires (7 à 10 points, 62 à 68 au total : polynômes et racines, dénombrement et binôme, suites en contexte, groupe et matrice,
+    inéquations et région, trigonométrie, vecteurs, calcul), Section B de 3 questions de Mécanique de 17 points, Section C de 3 questions de Statistiques et Probabilités de 17 points ;
+    « Answer ALL of A and ANY TWO of EITHER B OR C, never a mixture », 2 h 30. Inédite : **A en entier + deux questions de Mécanique de B = 100 points** (version « answer ALL », règle réelle
+    rappelée dans l'introduction), 39 sous-questions, 18 faibles / 20 moyennes / 1 élevée, 3 figures (machine d'Atwood en énoncé ; région et courbe trigonométrique dans le corrigé seulement),
+    36 sous-questions recalculées. La Section C (Statistiques et Probabilités) n'est pas couverte : à faire dans une session n°2.
+  - **Le gabarit de syllabus revient, les DONNÉES ne doivent jamais revenir.** Le contrôle a fait ressortir des questions de syllabus qui se répètent d'un sujet à l'autre (inverse d'une matrice 2×2, vecteur
+    $\overrightarrow{AB}$, comités de 3 garçons et 2 filles) ; la lecture des plus proches énoncés réels a trouvé **quatre vraies collisions de données** : la matrice $\begin{pmatrix}2&1\\5&3\end{pmatrix}$ et son
+    inverse (sujet 2021), le point $A(1,2)$, le comité de 6 garçons et 4 filles à 3 et 2 (même réponse 120), et la dérivée de $\dfrac{x^{2}}{x+1}$ (sujet 2023) ; la table d'une opération
+    sur $\{1,2,3,4\}$ modulo 5 (sujet 2021) et le gabarit « Taking 2 cm to represent $\pi/6$ ... draw the graph ... estimate the maximum » (sujet 2025) ont été changés pour d'autres structures. **Comparer les
+    données et la structure de chaque question de syllabus au plus proche énoncé réel, pas seulement ses mots.**
+  - **Mise en page des parties** : la plateforme veut un `numero` UNIQUE par exercice et imprime le `groupe_local` (« (i) ») une fois au-dessus de ses parties : le générateur garde le numéro de travail du vrai
+    sujet (`i-a`) et le convertit (`NUMEROS` dans `questions_addmaths_p2_a.py` : `a`, `b`, `c`... avec groupe local « (i) », « (ii) ») ; le préfixe « (i)(a) » est retiré de l'énoncé (sinon « i-a. (i)(a) ... » en double).
+    Les fractions des options et des énoncés d'un QCM s'écrivent `\frac` (style texte), pas `\dfrac` : une fraction empilée déborde de la ligne d'une option dans le PDF.
 - **Incident d'originalité (2026-10-19) : un contrôle aveugle laisse passer une question identique à une vraie.** Le premier contrôle comparait l'énoncé de l'inédite à l'énoncé de la
   vraie question **précédé de la consigne de l'exercice** (« Multiple choice questions ... ») : cette consigne diluait la ressemblance et un énoncé court identique mot pour mot
   (« Which of the following electromagnetic waves has the longest wavelength? ») passait. Le score plateforme (`score_originalite` à 0) l'a révélé après publication, et le contrôle
@@ -414,8 +439,9 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 ## 8. Reste à faire (hors de cet étalonnage)
 
-- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry (O Level, n°1). Suivantes proposées : English Language (type langue : étalonner d'abord le
-  corpus réel), puis Additional Mathematics. Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
+- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Additional Mathematics (O Level, n°1) et, produites par d'autres sessions, English Language et French.
+  Suivantes proposées : Human Biology (jumeau de Biology), Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis une
+  session Additional Mathematics n°2 avec la Section C (Statistiques et Probabilités). Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
 - Rejouer en production le correctif DÉFAUT 6 (rebuild backend, recompiler les épreuves à parties, régénérer leurs PDF).
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
 - Décider DÉFAUT 4 : porter `numero_paper`, `code_matiere` et `regles_choix` dans `inedit` (sinon les papers à choix restent en « answer ALL »).

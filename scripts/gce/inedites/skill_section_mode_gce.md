@@ -58,6 +58,10 @@ demande de lire est placée sur une graduation.
   3 figures de données ; Paper 2 « answer ALL » de 4 exercices de 10 points (Section A), 2 de 20 (Section B : un titrage avec courbe de pH, une analyse qualitative en tableau) et 2 de 20
   (Section C : vitesse de réaction avec deux courbes, organique avec calcul) = 120 points. **Relire les deux papers l'un contre l'autre, rappel et corrigé compris** : une fuite vient aussi bien
   d'un rappel (« à 450 °C ») que d'un énoncé.
+- **Additional Mathematics O Level** (étalon : session n°1, `ep-cm-gce-ol-addmaths-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 1 de 50 QCM dans l'ordre du syllabus, 3 figures calculées, toutes les réponses recalculées ;
+  Paper 2 = Section A en entier (8 questions) + deux questions de Mécanique de la Section B (100 points, version « answer ALL », la règle « A + deux de B OU de C » rappelée dans l'introduction). **Numéro de
+  question unique par exercice** : garder `i-a` comme numéro de travail et convertir en `a`, `b`... avec `groupe_local` « (i) » (jamais « (i)(a) » répété dans l'énoncé) ; **fractions en `\frac` dans les options et
+  les énoncés de QCM** ; comparer les DONNÉES (matrice, points, effectifs) de chaque question de syllabus au plus proche énoncé réel : le gabarit revient légitimement, pas les données.
 - **Essais** (History, Religious Studies, Philosophy) : jamais un sujet réel reformulé, faits exacts, corrigé = plan et essai modèle, grille par
   contenu, exactitude, structure, exemples, langue.
 - **Langues** : textes **originaux** (jamais un extrait publié), une seule réponse défendable par QCM, composition notée sur contenu, organisation,

@@ -12,6 +12,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from html import escape
 from pathlib import Path
 
 import markdown
@@ -81,8 +82,10 @@ def _protect_math(markdown_text):
 
 
 def _restore_math(html, spans):
+    """Remet les formules LaTeX dans le HTML, ECHAPPEES : « $-3<k<3$ » doit arriver au navigateur comme du texte, pas comme une
+    balise « <k< » (qui avalait les options suivantes d'une QCM dans le PDF). Le DOM redonne le texte d'origine a KaTeX."""
     for index, span in enumerate(spans):
-        html = html.replace(f"@@MATH{index}@@", span)
+        html = html.replace(f"@@MATH{index}@@", escape(span, quote=False))
     return html
 
 

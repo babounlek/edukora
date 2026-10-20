@@ -1,0 +1,95 @@
+r"""Section B (Mechanics, questions 9 et 10, 34 points) de l'epreuve inedite GCE O Level Additional Mathematics Paper 2 n.1.
+
+Le vrai sujet donne trois questions de Mecanique (B) et trois de Statistiques et Probabilites (C) : il faut traiter A en entier puis DEUX
+questions de B OU de C. Cette inedite garde deux questions de la Section B (version « answer ALL »). g = 10 m s^-2. Chaines BRUTES.
+"""
+from questions_addmaths_p2_a import S, E
+
+
+def section_b():
+    G = "SECTION B"
+    ex = []
+
+    ex.append(E("9", G, 17, "", [
+        S("i-a", r"(i)(a) Two particles $P$ and $Q$ move in the plane of the coordinate axes $Ox$ and $Oy$. At time $t$ seconds, the position vectors of $P$ and $Q$, relative to the origin $O$, are $\left(2t^{2}\mathbf{i}+6t\mathbf{j}\right)$ m and $\left((t+4)\mathbf{i}-t^{2}\mathbf{j}\right)$ m respectively. Find the velocity of $P$ when $t=2$, and the speed of $P$ at that instant.",
+          ["kinematics and motion"], "faible", 3,
+          [("You differentiate the position vector: $\\mathbf{v}_{P}=4t\\,\\mathbf{i}+6\\,\\mathbf{j}$", 1), ("You substitute $t=2$: $8\\mathbf{i}+6\\mathbf{j}$ m s$^{-1}$", 1), ("You find the speed $\\sqrt{8^{2}+6^{2}}=10$ m s$^{-1}$", 1)],
+          r"The velocity is the derivative of the position vector with respect to time; the speed is the magnitude of the velocity.",
+          r"$\mathbf{r}_{P}=2t^{2}\mathbf{i}+6t\mathbf{j}$, so $\mathbf{v}_{P}=\dfrac{d\mathbf{r}_{P}}{dt}=4t\,\mathbf{i}+6\,\mathbf{j}$. At $t=2$: $\mathbf{v}_{P}=8\mathbf{i}+6\mathbf{j}\ \text{m s}^{-1}$. The speed is $|\mathbf{v}_{P}|=\sqrt{8^{2}+6^{2}}=\sqrt{100}=10\ \text{m s}^{-1}$.",
+          ans=r"$8\mathbf{i}+6\mathbf{j}\ \text{m s}^{-1}$ and $10\ \text{m s}^{-1}$"),
+        S("i-b", r"(i)(b) For the same particles, calculate the velocity of $P$ relative to $Q$ when $t=2$.", ["kinematics and motion"], "moyenne", 3,
+          [("You differentiate the position vector of $Q$: $\\mathbf{v}_{Q}=\\mathbf{i}-2t\\,\\mathbf{j}$", 1), ("You evaluate $\\mathbf{v}_{Q}=\\mathbf{i}-4\\mathbf{j}$ at $t=2$", 1), ("You subtract: $\\mathbf{v}_{P}-\\mathbf{v}_{Q}=7\\mathbf{i}+10\\mathbf{j}$", 1)],
+          r"The velocity of $P$ relative to $Q$ is $\mathbf{v}_{P}-\mathbf{v}_{Q}$: the velocity of $P$ minus the velocity of $Q$.",
+          r"$\mathbf{r}_{Q}=(t+4)\mathbf{i}-t^{2}\mathbf{j}$, so $\mathbf{v}_{Q}=\mathbf{i}-2t\,\mathbf{j}$ and, at $t=2$, $\mathbf{v}_{Q}=\mathbf{i}-4\mathbf{j}$. Then $\mathbf{v}_{P/Q}=(8\mathbf{i}+6\mathbf{j})-(\mathbf{i}-4\mathbf{j})=7\mathbf{i}+10\mathbf{j}\ \text{m s}^{-1}$.",
+          ans=r"$7\mathbf{i}+10\mathbf{j}\ \text{m s}^{-1}$",
+          piege=r"Subtract the velocity of $Q$ from the velocity of $P$, in this order: $\mathbf{v}_{Q}-\mathbf{v}_{P}$ is the velocity of $Q$ relative to $P$."),
+        S("ii-a", r"(ii)(a) A particle $A$ of mass $3$ kg and a particle $B$ of mass $5$ kg move in the same direction along a smooth horizontal straight line, with speeds $8\ \text{m s}^{-1}$ and $2\ \text{m s}^{-1}$ respectively, $A$ being behind $B$. They collide. After the collision $A$ continues in the same direction at $3\ \text{m s}^{-1}$. Find the speed of $B$ after the collision.",
+          ["collisions and kinetic energy loss"], "moyenne", 3,
+          [("You state the conservation of momentum: total momentum before $=$ total momentum after", 1), ("You write $3(8)+5(2)=3(3)+5v$", 1), ("You obtain $v=5\\ \\text{m s}^{-1}$", 1)],
+          r"In a collision on a smooth line, the total momentum is conserved: $m_{1}u_{1}+m_{2}u_{2}=m_{1}v_{1}+m_{2}v_{2}$.",
+          r"Momentum before: $3\times8+5\times2=34$. Momentum after: $3\times3+5v=9+5v$. So $9+5v=34$, $5v=25$ and $v=5\ \text{m s}^{-1}$.",
+          ans=r"$5\ \text{m s}^{-1}$"),
+        S("ii-b", r"(ii)(b) For the same collision, calculate the loss in kinetic energy.", ["collisions and kinetic energy loss"], "moyenne", 2,
+          [("You calculate the kinetic energy before $\\left(\\dfrac{1}{2}(3)(8)^{2}+\\dfrac{1}{2}(5)(2)^{2}=106\\ \\text{J}\\right)$ and after $\\left(\\dfrac{1}{2}(3)(3)^{2}+\\dfrac{1}{2}(5)(5)^{2}=76\\ \\text{J}\\right)$", 1), ("You obtain the loss $106-76=30\\ \\text{J}$", 1)],
+          r"The kinetic energy of a particle is $\dfrac{1}{2}mv^{2}$. The loss is the total before minus the total after.",
+          r"Before: $\dfrac{1}{2}(3)(8)^{2}+\dfrac{1}{2}(5)(2)^{2}=96+10=106\ \text{J}$. After: $\dfrac{1}{2}(3)(3)^{2}+\dfrac{1}{2}(5)(5)^{2}=13.5+62.5=76\ \text{J}$. Loss $=106-76=30\ \text{J}$.",
+          ans=r"$30\ \text{J}$"),
+        S("iii-a", r"(iii)(a) Two particles of masses $3$ kg and $5$ kg are connected by a light inextensible string which passes over a smooth fixed pulley, as shown in {FIG}. The system is released from rest with both parts of the string vertical and taut. Taking the acceleration of the particles as $a\ \text{m s}^{-2}$ and the tension in the string as $T$ newtons, write down the equation of motion of the $3$ kg particle.",
+          ["pulley with connected particles"], "faible", 1,
+          [("You write $T-30=3a$ (the $3$ kg particle moves upwards)", 1)],
+          r"Newton's second law for each particle: resultant force in the direction of motion $=ma$. The lighter particle moves up, so the tension is greater than its weight.",
+          r"The $5$ kg particle is heavier, so the $3$ kg particle accelerates upwards. Forces on it: the tension $T$ upwards and its weight $3\times10=30$ N downwards. So $T-30=3a$.",
+          ans=r"$T-30=3a$", fig_enonce="atwood"),
+        S("iii-b", r"(iii)(b) Find the acceleration of the particles.", ["pulley with connected particles", "connected particles over a pulley"], "moyenne", 3,
+          [("You write the equation of motion of the $5$ kg particle: $50-T=5a$", 1), ("You add the two equations to eliminate $T$: $20=8a$", 1), ("You obtain $a=2.5\\ \\text{m s}^{-2}$", 1)],
+          r"Write Newton's second law for each particle, then add the two equations: the tension, the same on both sides of a smooth pulley, cancels.",
+          r"For the $5$ kg particle: $5\times10-T=5a$, so $50-T=5a$. Adding to $T-30=3a$: $20=8a$, so $a=2.5\ \text{m s}^{-2}$.",
+          ans=r"$2.5\ \text{m s}^{-2}$"),
+        S("iii-c", r"(iii)(c) Find the tension in the string.", ["pulley with connected particles"], "faible", 2,
+          [("You substitute $a=2.5$ into one of the equations of motion", 1), ("You obtain $T=37.5$ N", 1)],
+          r"Substitute the acceleration into either equation of motion to find the tension, and check with the other.",
+          r"From $T-30=3a$: $T=30+3(2.5)=37.5$ N. Check with the other equation: $50-37.5=12.5=5\times2.5$.",
+          ans=r"$37.5\ \text{N}$"),
+    ]))
+
+    ex.append(E("10", G, 17, "", [
+        S("i-a", r"(i)(a) The resultant of the forces $(3\mathbf{i}+2\mathbf{j})$ N, $(x\mathbf{i}-4\mathbf{j})$ N, $(-6\mathbf{i}+y\mathbf{j})$ N and $(2\mathbf{i}+5\mathbf{j})$ N is $(4\mathbf{i}-\mathbf{j})$ N. Find the values of $x$ and $y$.",
+          ["resultant of forces and equilibrium (additional maths)"], "faible", 4,
+          [("You add the $\\mathbf{i}$-components: $3+x-6+2=4$", 1), ("You obtain $x=5$", 1), ("You add the $\\mathbf{j}$-components: $2-4+y+5=-1$", 1), ("You obtain $y=-4$", 1)],
+          r"The resultant of several forces is their vector sum: add the $\mathbf{i}$-components together and the $\mathbf{j}$-components together.",
+          r"$\mathbf{i}$-components: $3+x-6+2=x-1=4$, so $x=5$. $\mathbf{j}$-components: $2-4+y+5=y+3=-1$, so $y=-4$.",
+          ans=r"$x=5$ and $y=-4$"),
+        S("i-b", r"(i)(b) A fifth force $\mathbf{F}$ is added to the four forces so that the five forces are in equilibrium. Find $\mathbf{F}$.", ["resultant of forces and equilibrium (additional maths)"], "faible", 2,
+          [("You state that in equilibrium the resultant of the five forces is zero, so $\\mathbf{F}$ is the opposite of the resultant of the other four", 1), ("You obtain $\\mathbf{F}=(-4\\mathbf{i}+\\mathbf{j})$ N", 1)],
+          r"A particle is in equilibrium when the resultant force is zero: the fifth force is equal and opposite to the resultant of the others.",
+          r"The resultant of the four forces is $4\mathbf{i}-\mathbf{j}$. For equilibrium, $4\mathbf{i}-\mathbf{j}+\mathbf{F}=\mathbf{0}$, so $\mathbf{F}=-4\mathbf{i}+\mathbf{j}$ N.",
+          ans=r"$\mathbf{F}=(-4\mathbf{i}+\mathbf{j})\ \text{N}$"),
+        S("i-c", r"(i)(c) Find the magnitude of $\mathbf{F}$ and the angle it makes with the positive direction of the $x$-axis, giving your answers to one decimal place.", ["resultant of forces and equilibrium (additional maths)"], "moyenne", 2,
+          [("You find the magnitude $\\sqrt{(-4)^{2}+1^{2}}=\\sqrt{17}=4.1$ N", 1), ("You find the angle $180^{\\circ}-\\tan^{-1}\\dfrac{1}{4}=166.0^{\\circ}$ with the positive $x$-axis (accept $14.0^{\\circ}$ above the negative $x$-axis)", 1)],
+          r"The magnitude of $a\mathbf{i}+b\mathbf{j}$ is $\sqrt{a^{2}+b^{2}}$. For the direction, find the acute angle with the $x$-axis from $\tan^{-1}\left|\dfrac{b}{a}\right|$, then place it in the correct quadrant.",
+          r"$|\mathbf{F}|=\sqrt{(-4)^{2}+1^{2}}=\sqrt{17}=4.1$ N. $\mathbf{F}=-4\mathbf{i}+\mathbf{j}$ points to the left and upwards (second quadrant). The acute angle with the negative $x$-axis is $\tan^{-1}\dfrac{1}{4}=14.0^{\circ}$, so the angle with the positive $x$-axis is $180^{\circ}-14.0^{\circ}=166.0^{\circ}$.",
+          ans=r"$4.1\ \text{N}$ at $166.0^{\circ}$ to the positive $x$-axis"),
+        S("ii", r"(ii) A box of mass $25$ kg is pulled a distance of $12$ m up a smooth plane inclined at $30^{\circ}$ to the horizontal, at constant speed, by a force acting parallel to the plane. Find the work done by this force.",
+          ["work done and power"], "moyenne", 3,
+          [("You state that at constant speed the pulling force equals the component of the weight along the plane: $F=mg\\sin30^{\\circ}$", 1), ("You calculate $F=25\\times10\\times\\dfrac{1}{2}=125$ N", 1), ("You obtain the work $125\\times12=1500$ J", 1)],
+          r"At constant speed the resultant force along the plane is zero. The work done by a constant force is the force multiplied by the distance moved in its direction.",
+          r"Constant speed means no acceleration, so $F=mg\sin30^{\circ}=25\times10\times0.5=125$ N. Work done $=F\times d=125\times12=1500$ J. (Check: the box gains potential energy $mgh=25\times10\times(12\sin30^{\circ})=250\times6=1500$ J.)",
+          ans=r"$1500\ \text{J}$"),
+        S("iii-a", r"(iii)(a) A car of mass $800$ kg travels at a constant speed of $20\ \text{m s}^{-1}$ up a straight hill inclined at an angle $\theta$ to the horizontal, where $\sin\theta=\dfrac{1}{10}$. The engine of the car works at a constant rate of $24$ kW. Find the driving force of the engine.",
+          ["power and resistance of a vehicle", "work done and power"], "faible", 2,
+          [("You use power $=$ force $\\times$ speed: $24000=F\\times20$", 1), ("You obtain $F=1200$ N", 1)],
+          r"The power of an engine is the driving force multiplied by the speed: $P=Fv$. Convert kilowatts to watts first.",
+          r"$P=24\ \text{kW}=24000$ W. $P=Fv$ gives $F=\dfrac{24000}{20}=1200$ N.",
+          ans=r"$1200\ \text{N}$"),
+        S("iii-b", r"(iii)(b) Find the resistance to the motion of the car, assumed constant.", ["power and resistance of a vehicle"], "moyenne", 2,
+          [("You write $F=R+mg\\sin\\theta$ (constant speed, so no resultant force along the hill)", 1), ("You calculate $R=1200-800\\times10\\times\\dfrac{1}{10}=400$ N", 1)],
+          r"At constant speed up the hill the driving force balances the resistance plus the component of the weight down the hill: $F=R+mg\sin\theta$.",
+          r"The component of the weight along the hill is $mg\sin\theta=800\times10\times\dfrac{1}{10}=800$ N. So $1200=R+800$ and $R=400$ N.",
+          ans=r"$400\ \text{N}$"),
+        S("iii-c", r"(iii)(c) The car now travels at a constant speed of $20\ \text{m s}^{-1}$ on a level road against the same resistance. Find the power of the engine.", ["power and resistance of a vehicle"], "faible", 2,
+          [("You state that on a level road the driving force equals the resistance, $400$ N", 1), ("You calculate $P=400\\times20=8000$ W", 1)],
+          r"On level ground at constant speed the driving force equals the resistance, and the power is $P=Fv$.",
+          r"On the level road there is no component of the weight along the road, so $F=R=400$ N. $P=Fv=400\times20=8000$ W $=8$ kW.",
+          ans=r"$8000\ \text{W}$"),
+    ]))
+    return ex
