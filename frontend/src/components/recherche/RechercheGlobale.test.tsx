@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, useLocation } from "react-router-dom"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { ReponseRecherche, ResultatRecherche } from "@/api/types"
 
@@ -14,6 +14,8 @@ vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: null }) }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/cursusAccueil", () => ({ useCursusAccueil: () => 5 }))
+
+import { definirLangue } from "@/lib/i18n"
 
 import { RechercheGlobale } from "./RechercheGlobale"
 
@@ -223,5 +225,32 @@ describe("RechercheGlobale", () => {
   it("ne rend rien tant qu'elle est fermée", () => {
     monter(false)
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument()
+  })
+})
+
+describe("RechercheGlobale en anglais (test élève Gogo : la palette restait en français)", () => {
+  afterEach(async () => {
+    await definirLangue("fr", { persister: false })
+  })
+
+  it("traduit le titre, le champ, l'aide et les raccourcis", async () => {
+    await definirLangue("en", { persister: false })
+    monter()
+
+    expect(screen.getByRole("combobox", { name: "Search" })).toHaveAttribute("placeholder", "A topic, a concept, a year…")
+    expect(screen.getByText("Search the site")).toBeInTheDocument()
+    expect(screen.getByText(/Search for a topic \(“mole concept”\)/)).toBeInTheDocument()
+    expect(screen.getByText("↑ ↓ to choose")).toBeInTheDocument()
+    expect(screen.queryByText(/pour choisir|Rechercher sur le site/)).not.toBeInTheDocument()
+  })
+
+  it("traduit « aucun résultat »", async () => {
+    await definirLangue("en", { persister: false })
+    rechercher.mockResolvedValue(reponse({ total: 0, groupes: [], indexe: true }))
+    monter()
+    await userEvent.type(screen.getByRole("combobox"), "zzzzqq")
+
+    expect(await screen.findByText("No results for “zzzzqq”")).toBeInTheDocument()
+    expect(screen.getByText("Try a shorter word, or another word for the same idea.")).toBeInTheDocument()
   })
 })

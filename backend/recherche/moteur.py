@@ -822,6 +822,11 @@ def completer(requete, *, pays, cursus=None, limite=NB_COMPLETIONS, langue=None)
     if cursus:
         lien = EntreeRecherche.cursus.through.objects.filter(entreerecherche_id=OuterRef("pk"), cursus_id=cursus)
         queryset = queryset.filter(Q(tous_cursus=True) | Exists(lien))
+        # Un examen visé fixe la langue (comme dans _recherche et _suggestions) : sans cela, les thèmes « de tous les
+        # examens », en français, se complétaient aussi sous un examen GCE.
+        langue_examen_vise = _langue_des_examens([cursus])
+        if langue_examen_vise:
+            queryset = queryset.filter(matiere__langue=langue_examen_vise)
     elif langue in Langue.values:
         # Sans examen, les compléments suivent la langue de l'interface (voir chercher).
         queryset = queryset.filter(matiere__langue=langue)

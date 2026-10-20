@@ -229,3 +229,13 @@ Demande : « corrige toutes les autres frictions ». Elles ne se valent pas : ce
 - **R-F8** (ce que couvre l'abonnement) : texte commercial, à écrire par vous.
 
 **Tests** : frontend 90 fichiers, 816 verts, `tsc` propre ; rien côté backend. Caddy reconstruit. La session de quiz 461 du profil Gogo est restée ouverte (4 réponses sur 10) dans la base locale.
+
+## 13. Restes de langue : palette de recherche, complétions GCE, titre des liens /en (2026-10-20, non committé)
+
+| Reste | Correction | Preuve |
+|---|---|---|
+| La palette de recherche (Ctrl+K) était écrite en dur en français, interface anglaise comprise (titre, aide, placeholder, états, pied de page « Entrée pour ouvrir ») | 17 clés `rc.palette_*` dans `fr.ts` / `en.ts`, `RechercheGlobale.tsx` passe par `t()` et suit la langue | 2 tests en anglais (`RechercheGlobale.test.tsx`) ; la page de recherche anglaise est vue en navigateur, la palette elle-même (ouverture au clavier, grand écran) n'a pas été rejouée |
+| L'autocomplétion d'un examen GCE proposait des thèmes français (`completer`, requête « theor ») : le filtre de langue n'existait que dans `_suggestions` | `recherche/moteur.py` : même filtre `matiere__langue` dans `completer` | `test_les_completions_d_un_examen_gce_restent_en_anglais` ; recherche 200 tests verts ; appliqué dans le conteneur local |
+| Un lien profond `/en/...` s'ouvrait avec le titre français d'`index.html` pendant ~2 s | Petit script en ligne dans `index.html` : si le chemin commence par `/en`, il règle `lang`, `<title>` et la description avant le JavaScript | `indexHtml.test.ts` (3 tests) ; en navigateur, l'onglet de `/en/cm/past-papers` porte « EduKora - Past papers and solutions for the GCE in Cameroon » dès le chargement (le HTML brut reste français : normal, c'est le script qui corrige) |
+
+Limite : les robots qui n'exécutent pas de JavaScript voient encore le titre français sur `/en` ; l'aperçu OG anglais est déjà servi par Caddy → Django.

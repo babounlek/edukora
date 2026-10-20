@@ -44,6 +44,8 @@ const idOption = (index: number) => `recherche-option-${index}`
  * Une recherche plus fine (filtres, tous les résultats) vit sur la page /:pays/recherche.
  */
 export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
+  // Jusque-là en français quelle que soit la langue de l'interface (test élève Gogo, interface anglaise).
+  useI18n()
   const { country } = useCountry()
   const { user } = useAuth()
   const navigate = useNavigate()
@@ -130,9 +132,9 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
       {/* Ancrée en HAUT, même sur mobile : le clavier virtuel couvre le bas de l'écran, une feuille
           collée en bas cacherait justement les résultats qu'on cherche à lire. */}
       <DialogContent className="top-0 bottom-auto max-h-[90vh] rounded-b-2xl rounded-t-none p-0 sm:top-[10%] sm:max-w-xl sm:-translate-y-0 sm:rounded-2xl">
-        <DialogTitle className="sr-only">Rechercher sur le site</DialogTitle>
+        <DialogTitle className="sr-only">{t("rc.palette_titre")}</DialogTitle>
         <DialogDescription className="sr-only">
-          Tape un thème, une notion, une matière ou une année. Utilise les flèches pour choisir un résultat et Entrée pour l'ouvrir.
+          {t("rc.palette_description")}
         </DialogDescription>
 
         <div className="flex items-center gap-2 border-b border-border px-4 py-3 pr-12">
@@ -142,8 +144,8 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
             value={saisie}
             onChange={(e) => setSaisie(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Un thème, une notion, une année…"
-            aria-label="Rechercher"
+            placeholder={t("rc.palette_placeholder")}
+            aria-label={t("rc.palette_aria")}
             role="combobox"
             aria-expanded={total > 0}
             aria-controls={ID_LISTE}
@@ -162,25 +164,25 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
             <Accueil recentes={recentes} onChoisir={setSaisie} onEffacer={() => { oublierRecentes(); setRecentes([]) }} />
           ) : isError ? (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">
-              La recherche est momentanément indisponible. Réessaie dans un instant.
+              {t("rc.palette_indisponible")}
             </p>
           ) : !data ? (
-            <div className="space-y-2 p-2" role="status" aria-label="Recherche en cours">
+            <div className="space-y-2 p-2" role="status" aria-label={t("rc.palette_en_cours")}>
               {[0, 1, 2].map((i) => (
                 <Skeleton key={i} className="h-12 w-full rounded-lg" />
               ))}
             </div>
           ) : !data.indexe ? (
             <p className="px-3 py-6 text-center text-sm text-muted-foreground">
-              La recherche est en cours de préparation. Réessaie dans quelques minutes.
+              {t("rc.palette_preparation")}
             </p>
           ) : aucun ? (
             <AucunResultat termes={termes} country={country} onChoisir={fermer} />
           ) : (
-            <div id={ID_LISTE} role="listbox" aria-label="Résultats de la recherche">
+            <div id={ID_LISTE} role="listbox" aria-label={t("rc.palette_resultats_aria")}>
               {data.corrige && (
                 <p className="px-3 pb-1 pt-2 text-xs text-muted-foreground">
-                  Résultats pour « {data.corrige} »
+                  {t("rc.palette_corrige", { q: data.corrige })}
                 </p>
               )}
               {groupes.map((groupe) => (
@@ -223,7 +225,8 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
                 }`}
               >
                 <span className="truncate">
-                  Voir tous les résultats{data.total > 0 ? ` (${data.total})` : ""}
+                  {t("rc.palette_voir_tous")}
+                  {data.total > 0 ? ` (${data.total})` : ""}
                 </span>
                 <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
               </Link>
@@ -232,9 +235,9 @@ export function RechercheGlobale({ open, onOpenChange }: { open: boolean; onOpen
         </div>
 
         <div className="hidden items-center gap-4 border-t border-border px-4 py-2 text-[11px] text-muted-foreground sm:flex" aria-hidden="true">
-          <span>↑ ↓ pour choisir</span>
-          <span>Entrée pour ouvrir</span>
-          <span>Échap pour fermer</span>
+          <span>{t("rc.palette_fleches")}</span>
+          <span>{t("rc.palette_entree")}</span>
+          <span>{t("rc.palette_echap")}</span>
         </div>
       </DialogContent>
     </Dialog>
@@ -258,9 +261,9 @@ function Accueil({
   return (
     <div className="p-1">
       <div className="flex items-center justify-between px-2 pb-1 pt-1">
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Recherches récentes</span>
+        <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{t("rc.palette_recentes")}</span>
         <button type="button" onClick={onEffacer} className="text-xs text-muted-foreground hover:text-foreground">
-          Effacer
+          {t("rc.effacer")}
         </button>
       </div>
       <ul>
@@ -282,17 +285,18 @@ function Accueil({
 }
 
 function AucunResultat({ termes, country, onChoisir }: { termes: string; country: string; onChoisir: () => void }) {
+  useI18n()
   return (
     <div className="flex flex-col items-center gap-2 px-4 py-8 text-center">
       <SearchX className="size-7 text-muted-foreground" aria-hidden="true" />
-      <p className="text-sm font-medium">Aucun résultat pour « {termes} »</p>
-      <p className="text-xs text-muted-foreground">Essaie un mot plus court, ou un autre mot pour la même notion.</p>
+      <p className="text-sm font-medium">{t("rc.palette_aucun", { q: termes })}</p>
+      <p className="text-xs text-muted-foreground">{t("rc.palette_aucun_astuce")}</p>
       <Link
         to={`${recherchePath(country)}?q=${encodeURIComponent(termes)}`}
         onClick={onChoisir}
         className="mt-1 text-xs font-medium text-primary hover:underline"
       >
-        Voir des suggestions
+        {t("rc.palette_suggestions")}
       </Link>
     </div>
   )

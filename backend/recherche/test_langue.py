@@ -119,6 +119,15 @@ class LangueMoteurTests(_CorpusBilingue, TestCase):
         self.assertEqual(titres, [EN_THEME])
         self.assertNotIn(FR_THEME, titres)
 
+    def test_les_completions_d_un_examen_gce_restent_en_anglais(self):
+        """Même défaut que les suggestions : les thèmes « de tous les examens » (français) entraient dans les compléments."""
+        EntreeRecherche.objects.filter(type=TypeResultat.THEME, titre=FR_THEME).update(tous_cursus=True)
+
+        textes = [c["texte"] for c in moteur.completer("theor", pays=self.pays, cursus=self.gce.id, langue="en")]
+
+        self.assertNotIn(FR_THEME, textes)
+        self.assertEqual([c["texte"] for c in moteur.completer("simil", pays=self.pays, cursus=self.gce.id, langue="en")], [EN_THEME])
+
     def test_les_suggestions_d_un_examen_francais_ne_recoivent_pas_de_theme_anglais(self):
         bac_c = Cursus.objects.get(country=self.pays, examen=Examen.BAC, series__code="C")
 

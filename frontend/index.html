@@ -22,6 +22,19 @@
       name="description"
       content="Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC au Cameroun : les thèmes qui tombent vraiment, avec corrigés d'annales et quiz. Sujets en accès libre."
     />
+    <!-- Liens profonds /en/... : le titre et la description ci-dessus sont ceux de la version française, seul état connu
+         avant l'exécution du JavaScript (l'app les remplace ensuite page par page, voir lib/seo.ts). Un élève du GCE voyait
+         donc « Corrigés BEPC, Probatoire et BAC » dans son onglet pendant le chargement, et sur toute page sans titre propre. -->
+    <script>
+      (function () {
+        var p = location.pathname;
+        if (p !== "/en" && p.indexOf("/en/") !== 0) return;
+        document.documentElement.lang = "en";
+        document.title = "%VITE_SITE_NAME% - Past papers and solutions for the GCE in Cameroon";
+        var d = document.querySelector('meta[name="description"]');
+        if (d) d.setAttribute("content", "Every day, we tell you what to revise for the GCE in Cameroon: the topics that really come up, with solved past papers and quizzes.");
+      })();
+    </script>
     <link rel="canonical" href="%VITE_SITE_URL%/" />
     <meta name="theme-color" content="#0a6e4e" />
 
