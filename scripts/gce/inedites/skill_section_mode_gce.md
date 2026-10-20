@@ -65,6 +65,10 @@ demande de lire est placée sur une graduation.
   **Session n°2** (`ep-cm-gce-ol-addmaths-p1-2-2026-s1` et `-p2-2-2026-s1`) : Paper 2 = Section A + deux questions de la Section C (Statistiques et Probabilités : données groupées, courbe des effectifs cumulés, loi de
   probabilité, loi binomiale) ; **une réponse numérique identique à celle du plus proche sujet réel, ou une identité qui n'en est que l'inverse, est un défaut même si les données changent**, et aucune technique ni
   réponse du Paper 2 ne doit déjà figurer dans le Paper 1 (`grep` des réponses du Paper 2 dans le JSON du Paper 1) ; une fonction involutive rend `f(4)` et `f^{-1}(4)` égaux : l'éviter.
+- **Commerce O Level** (étalon : session n°1, `ep-cm-gce-ol-commerce-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 1 de 50 QCM aux **thèmes mélangés (aucun ordre de syllabus)**, énoncés courts, options courtes terminées par un
+  point, 11 % de « EXCEPT / NOT », 5 calculs commerciaux recalculés, aucune figure ; Paper 2 = **4 questions de 20 points** en parties `a, b, c` (« State and explain any FOUR », « Outline », « Distinguish between », un
+  calcul), 80 points, règle « 4 sur 6 » rappelée dans l'introduction. Corrigé = réponse modèle (introduction, points numérotés en gras, exemples, remarque des réponses équivalentes) ; grille 1 point le nom + 1 point
+  l'explication. **Lister d'abord les notions du Paper 2 et vérifier par `grep` qu'aucun QCM du Paper 1 ne les définit, même dans un distracteur ou un « Piège »** ; n'écrire un fait propre au Cameroun que s'il est certain.
 - **Human Biology O Level** (étalon : session n°1, `ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 1 de 50 QCM dans l'ordre du programme, 3 figures de données ; Paper 2 « answer ALL » de 5 questions
   de 20 points (3 en Section A, 2 en Section B), la forme « Draw ... OR Describe ... » du vrai sujet gardée telle quelle. **Choisir les sujets du Paper 2 après avoir lu les 8 vrais Paper 2 et comparer la TÂCHE
   demandée** (dessin du néphron, lutte contre la pollution de l'air...) : ces tâches reviennent d'une année à l'autre et le contrôle automatique ne les voit pas.

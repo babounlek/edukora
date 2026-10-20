@@ -320,6 +320,28 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
     développement de $(1+2x)^{6}$, identité à deux fractions). Vérifier la session par `grep` des réponses du Paper 2 dans le JSON du Paper 1.
   - **Pagination** : une figure de QCM qui ne tient pas dans la page descend entière à la suivante (grand blanc en bas de page) ; la figure du triangle avait 140 px de blanc en haut de son cadre (sommet placé
     trop bas dans la boîte) : réduire la boîte à la hauteur de la figure. Les exposants fractionnaires empilés (`x^{\frac{3}{2}}`) se lisent mal dans une option de PDF : écrire `x^{3/2}`.
+- **Étalon produit le 2026-10-20 : session Commerce O Level n°1** (`ep-cm-gce-ol-commerce-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_commerce_p1.py` et `generer_commerce_p2.py`, questions
+  `questions_commerce_p1.py` et `_p2.py`, vérificateur `verifier_reponses_commerce.py` (les deux papers), cours en `cours_titres_gce_commerce_ol.json`, 25 cours existants). Mesuré sur 8 vrais Paper 1 et 8 Paper 2
+  (2019-2026, code 0520) :
+  - **Paper 1** : 50 QCM, **thèmes MÉLANGÉS d'une question à l'autre (aucun ordre de syllabus)**, 46 à 82 % de questions faibles selon l'année (45-70 % visés), 0 à 3 élevées, 1 à 4 questions SANS clé dans chaque
+    sujet du corpus (défaut d'extraction : l'inédite a toujours ses 50 clés), énoncés courts de la forme « X is: », options courtes terminées par un point, **11 % de questions « EXCEPT / NOT »**, 5,5 % de
+    questions avec un nombre (marge, majoration, rotation du stock, bilan, balance des paiements), aucune figure. Thèmes les plus fréquents : services bancaires, transport, moyens de paiement, publicité,
+    assurance, commerce de détail, calculs de profit. Inédite : 25 / 23 / 2, clés 13 / 13 / 12 / 12, **5 questions « EXCEPT / NOT »**, 5 calculs recalculés (majoration, rotation du stock, remise commerciale,
+    TVA, remise commerciale puis remise de caisse), aucun thème répété d'une question à l'autre.
+  - **Paper 2** : 6 questions de **20 points** en trois parties `a, b, c` de 4 à 12 points (8 + 8 + 4, 6 + 8 + 6, 4 + 12 + 4...), « Answer FOUR questions. All questions carry equal marks », 2 h 30, calculatrice
+    simple permise ; verbes d'énoncé « State and explain any FOUR », « Outline », « Distinguish between », « Explain », « Calculate » ; 50 % de parties faibles / 50 % moyennes ; thèmes les plus fréquents :
+    transport (16 parties sur 142), commerce de détail, formes de propriété, protection du consommateur, entrepôts, publicité, banque, assurance. Inédite : **4 questions = 80 points** (version « answer ALL »,
+    règle réelle rappelée dans l'introduction), 12 parties (7 faibles / 5 moyennes), 2 calculs recalculés (intérêt simple en quatre temps ; balance commerciale, balance des invisibles et balance des paiements
+    courants à partir d'un tableau).
+  - **Corrigé d'une matière factuelle** : réponse modèle complète d'un candidat qui obtient tous les points : introduction d'une ligne, points numérotés avec titre en gras puis explication, exemples locaux, et une
+    remarque entre parenthèses qui liste les réponses équivalentes acceptées ; la grille compte 1 point pour le nom et 1 point pour l'explication de chaque élément (4 × 2 = 8). Un fait spécifique au Cameroun
+    (COBAC, BEAC, taux de TVA) n'entre que s'il est certain ; le taux de TVA est de toute façon DONNÉ dans l'énoncé du calcul, pour ne pas dépendre de la mémoire du candidat.
+  - **Fuite entre papers dans une matière à vocabulaire** : un distracteur ou un « Piège » d'un QCM suffit à donner la définition demandée au Paper 2 (la définition d'un ordre permanent dans l'explication d'une
+    mauvaise option, alors que le Paper 2 demande « Distinguish between a standing order and a credit transfer ») ; la parade a été de lister d'abord les notions du Paper 2 (principes et avantages de l'assurance,
+    services des banques, ordre permanent et virement, intérêt simple, restrictions à l'importation, balance commerciale, conteneurisation, promotion des ventes, inconvénients de la publicité, protection des
+    consommateurs), de les écrire dans le blueprint (`session.regle`), puis de chercher leurs mots dans le JSON du Paper 1 (`grep -i`). Les mots communs aux deux papers ne sont admis que comme thème de Tag.
+  - **Le contrôle a refusé une question** parce que trois de ses quatre options étaient identiques à celles d'un vrai sujet (documents de constitution d'une société : prospectus, statuts, certificat,
+    mémorandum) : varier les distracteurs, pas seulement l'énoncé.
 - **Étalon produit le 2026-10-20 : session Human Biology O Level n°1** (`ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_humanbio_p1.py` et `_p2.py`, questions
   `questions_humanbio_p1.py` et `_p2.py`, figures `figs_humanbio_p1.py`, vérificateurs `verifier_reponses_humanbio_p1.py` et `_p2.py`, cours en `cours_titres_gce_human_biology_ol.json`).
   Mesuré sur 7 vrais Paper 1 (2020-2026 ; pas de 2019) et 8 Paper 2 (2019-2026) :
@@ -479,8 +501,8 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 ## 8. Reste à faire (hors de cet étalonnage)
 
-- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Human Biology (O Level, n°1), Additional Mathematics (n°1 et n°2) et, produites par d'autres sessions, English Language et French.
-  Suivantes proposées : Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis Citizenship et Food and Nutrition ;
+- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Human Biology, Commerce (O Level, n°1), Additional Mathematics (n°1 et n°2) et, produites par d'autres sessions, English Language et French.
+  Suivantes proposées : Computer Science (type pratique, à étalonner d'abord), une matière à essais longs (Economics ou History : Commerce n'en a pas, ses parties sont courtes), puis Citizenship et Food and Nutrition ;
   session Additional Mathematics n°2 avec la Section C (Statistiques et Probabilités) : FAIT le 2026-10-20 (voir §5.C). Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
 - Rejouer en production le correctif DÉFAUT 6 (rebuild backend, recompiler les épreuves à parties, régénérer leurs PDF).
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
