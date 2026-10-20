@@ -62,6 +62,9 @@ demande de lire est placée sur une graduation.
   Paper 2 = Section A en entier (8 questions) + deux questions de Mécanique de la Section B (100 points, version « answer ALL », la règle « A + deux de B OU de C » rappelée dans l'introduction). **Numéro de
   question unique par exercice** : garder `i-a` comme numéro de travail et convertir en `a`, `b`... avec `groupe_local` « (i) » (jamais « (i)(a) » répété dans l'énoncé) ; **fractions en `\frac` dans les options et
   les énoncés de QCM** ; comparer les DONNÉES (matrice, points, effectifs) de chaque question de syllabus au plus proche énoncé réel : le gabarit revient légitimement, pas les données.
+- **Human Biology O Level** (étalon : session n°1, `ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`) : Paper 1 de 50 QCM dans l'ordre du programme, 3 figures de données ; Paper 2 « answer ALL » de 5 questions
+  de 20 points (3 en Section A, 2 en Section B), la forme « Draw ... OR Describe ... » du vrai sujet gardée telle quelle. **Choisir les sujets du Paper 2 après avoir lu les 8 vrais Paper 2 et comparer la TÂCHE
+  demandée** (dessin du néphron, lutte contre la pollution de l'air...) : ces tâches reviennent d'une année à l'autre et le contrôle automatique ne les voit pas.
 - **Essais** (History, Religious Studies, Philosophy) : jamais un sujet réel reformulé, faits exacts, corrigé = plan et essai modèle, grille par
   contenu, exactitude, structure, exemples, langue.
 - **Langues** : textes **originaux** (jamais un extrait publié), une seule réponse défendable par QCM, composition notée sur contenu, organisation,

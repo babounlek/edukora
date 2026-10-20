@@ -298,6 +298,24 @@ Profil mesuré (2019-2026, `n` = nombre de sujets ingérés, `q` = questions, du
   - **Mise en page des parties** : la plateforme veut un `numero` UNIQUE par exercice et imprime le `groupe_local` (« (i) ») une fois au-dessus de ses parties : le générateur garde le numéro de travail du vrai
     sujet (`i-a`) et le convertit (`NUMEROS` dans `questions_addmaths_p2_a.py` : `a`, `b`, `c`... avec groupe local « (i) », « (ii) ») ; le préfixe « (i)(a) » est retiré de l'énoncé (sinon « i-a. (i)(a) ... » en double).
     Les fractions des options et des énoncés d'un QCM s'écrivent `\frac` (style texte), pas `\dfrac` : une fraction empilée déborde de la ligne d'une option dans le PDF.
+- **Étalon produit le 2026-10-20 : session Human Biology O Level n°1** (`ep-cm-gce-ol-humanbio-p1-1-2026-s1` et `-p2-1-2026-s1`, générateurs `generer_humanbio_p1.py` et `_p2.py`, questions
+  `questions_humanbio_p1.py` et `_p2.py`, figures `figs_humanbio_p1.py`, vérificateurs `verifier_reponses_humanbio_p1.py` et `_p2.py`, cours en `cours_titres_gce_human_biology_ol.json`).
+  Mesuré sur 7 vrais Paper 1 (2020-2026 ; pas de 2019) et 8 Paper 2 (2019-2026) :
+  - **Paper 1** : 50 QCM dans l'ordre du programme (cellule et tissus, squelette, système nerveux, hormones, digestion, respiration, sang, immunité, reproduction, génétique, écologie, santé
+    et premiers secours en fin de sujet), 66 % de questions faibles / 32 % moyennes / 1 % élevées, clés a 25 % / b 24 % / c 26 % / d 20 % (+ quelques questions sans clé), 0 à 5 figures. Inédite :
+    31 / 18 / 1, 3 figures de **données** (trace d'un spiromètre, pouls après un effort, arbre généalogique) à la place des schémas anatomiques, 5 questions recalculées (débit ventilatoire, chute du pouls,
+    croisements par énumération des gamètes, probabilité conditionnelle du porteur parmi les enfants sains), les 45 autres relues à la main.
+  - **Paper 2** : 9 questions de 20 points en trois parties `(a)(b)(c)` (2 à 14 points imprimés), Section A de 5 questions (corps humain, génétique, nutrition), Section B de 4 questions (santé publique,
+    environnement), « answer FIVE questions choosing THREE from Section A and TWO from Section B », 2 h 30. Le vrai sujet propose souvent **« Draw a large and neatly labelled diagram of ... OR Describe the structure
+    of ... »** : l'inédite garde la forme « OR » (le corrigé décrit ce que le dessin doit montrer, partie par partie) au lieu de supprimer le dessin. Inédite : 3 + 2 questions = 100 points (version « answer ALL »),
+    15 sous-questions, 7 faibles / 7 moyennes / 1 élevée, aucune figure.
+  - **Les sujets de Paper 2 se choisissent APRÈS lecture des 8 vrais sujets** : le premier projet (néphron, dessin et formation de l'urine ; pollution de l'air et sa lutte ; termes « allele » et « codominance » ;
+    incinération et compostage) reprenait des questions réelles, tâche pour tâche (la question 1 reproduisait la question 2 du sujet 2026) ; il a été remplacé par les dents et la carie, un tableau de nutriments, le
+    croisement ABO, la décharge contrôlée et le VIH. Pour un paper de pur rappel de cours, **comparer la TÂCHE demandée, pas seulement l'énoncé** : le contrôle automatique ne voit pas qu'un « Draw the nephron »
+    revient d'une année à l'autre.
+  - **Fuites du Paper 1 vers le Paper 2**, corrigées avant ingestion : les facts d'un QCM qui font un point de la grille d'une question du Paper 2 (la partie interne d'une dent et la carie ; la définition d'un porteur ;
+    « les lymphocytes produisent des anticorps » ; « le condom protège des infections » ; le rôle du calcium dans la coagulation) ont été remplacés ; la matière du Paper 2 (reins, groupes sanguins, vitamines, ordures, VIH)
+    n'apparaît dans le Paper 1 que par des faits que ses grilles ne reprennent pas.
 - **Incident d'originalité (2026-10-19) : un contrôle aveugle laisse passer une question identique à une vraie.** Le premier contrôle comparait l'énoncé de l'inédite à l'énoncé de la
   vraie question **précédé de la consigne de l'exercice** (« Multiple choice questions ... ») : cette consigne diluait la ressemblance et un énoncé court identique mot pour mot
   (« Which of the following electromagnetic waves has the longest wavelength? ») passait. Le score plateforme (`score_originalite` à 0) l'a révélé après publication, et le contrôle
@@ -439,8 +457,8 @@ répétée dans `<desc>` et, quand elle ne se déduit pas de l'énoncé, dans le
 
 ## 8. Reste à faire (hors de cet étalonnage)
 
-- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Additional Mathematics (O Level, n°1) et, produites par d'autres sessions, English Language et French.
-  Suivantes proposées : Human Biology (jumeau de Biology), Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis une
+- Sessions inédites publiées en base LOCALE seulement : Maths, Biology, Physics, Chemistry, Additional Mathematics, Human Biology (O Level, n°1) et, produites par d'autres sessions, English Language et French.
+  Suivantes proposées : Computer Science (type pratique, à étalonner d'abord), une matière à essais (Commerce ou Economics) pour étalonner ce type, puis une
   session Additional Mathematics n°2 avec la Section C (Statistiques et Probabilités). Rejouer en production : pousser, rebuild `backend`, `ingest_inedit_content`, valider les blueprints, publier, `save_sujet_pdf`, `indexer_recherche`.
 - Rejouer en production le correctif DÉFAUT 6 (rebuild backend, recompiler les épreuves à parties, régénérer leurs PDF).
 - Rejouer en production le correctif DÉFAUT 1 (rebuild backend, recompiler les 19 épreuves à QCM, régénérer leurs PDF).
