@@ -28,6 +28,7 @@ from catalog.serializers import CursusSerializer
 from quiz.models import ResultatDeclare
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
+from users.parent import portee_famille
 from users.profils import profil_actif
 
 from . import notation, rapport
@@ -418,10 +419,15 @@ def list_my_inscriptions_inedites(request):
     inedit) - seul le cursus imbriqué réutilise CursusSerializer, déjà la même forme
     attendue côté frontend (type Cursus) que celle exposée par MySubscriptionsView.
     """
+    refus, limiter = portee_famille(request)
+    if refus is not None:
+        return refus
     inscriptions = (
         InscriptionInedite.objects.filter(user=request.user)
         .select_related("cursus__series", "cursus__country", "profil")
     )
+    if limiter:
+        inscriptions = inscriptions.filter(profil=profil_actif(request))
     return Response([
         {
             "id": inscription.id,

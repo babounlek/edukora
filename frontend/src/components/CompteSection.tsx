@@ -32,10 +32,10 @@ export function EnteteCompte({
 
 /** Une section : titre avec pastille d'icône, action à droite, contenu dans une carte discrète. */
 export function Section({
-  icone: Icone, titre, action, children, className,
-}: { icone: LucideIcon; titre: string; action?: ReactNode; children: ReactNode; className?: string }) {
+  icone: Icone, titre, action, children, className, id,
+}: { icone: LucideIcon; titre: string; action?: ReactNode; children: ReactNode; className?: string; id?: string }) {
   return (
-    <section className={cn("rounded-2xl border border-border bg-card p-4 sm:p-5", className)}>
+    <section id={id} className={cn("scroll-mt-20 rounded-2xl border border-border bg-card p-4 sm:p-5", className)}>
       <div className="mb-3 flex items-center justify-between gap-3">
         <h2 className="flex items-center gap-2 font-display text-base font-semibold">
           <Icone className="size-4 text-primary" aria-hidden="true" />

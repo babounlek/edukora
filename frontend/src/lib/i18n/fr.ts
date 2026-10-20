@@ -964,6 +964,13 @@ export const fr = {
     "Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour.",
   "ac.choisir_abonnement": "Choisir un abonnement",
   "ac.securite": "Sécurité des profils",
+  "ac.portee_limitee": "Tu vois seulement les accès de {prenom}. Les autres enfants sont protégés par le code parent.",
+  "ac.voir_famille": "Voir toute la famille",
+  "ac.famille_erreur": "Impossible d'afficher toute la famille pour le moment. Réessaie dans un instant.",
+  "sp.rappel": "Chaque enfant peut voir les abonnements des autres et ouvrir leur profil. Un code parent garde cela pour toi.",
+  "sp.rappel_lien": "Protéger avec un code parent",
+  "sp.rappel_plus_tard": "Plus tard",
+  "compte.espace_parent": "Espace parent",
 
   "ca.erreur_retrait": "Impossible de retirer cette entrée du carnet. Réessaie.",
   "ca.titre": "Ce que tu as gardé",

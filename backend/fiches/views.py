@@ -13,6 +13,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from access.services import has_access_fiches
+from users.parent import portee_famille
 from users.profils import profil_actif
 from catalog.models import Cursus, Subject, Tag
 from catalog.serializers import CursusSerializer
@@ -50,10 +51,15 @@ def list_my_inscriptions_repetiteur(request):
     inedit.views.list_my_inscriptions_inedites, nécessaire au frontend pour savoir, par
     cursus, s'il faut proposer le formulaire ou une mise en avant de l'add-on avant même
     de le remplir (voir create_fiche pour le point réellement gaté)."""
+    refus, limiter = portee_famille(request)
+    if refus is not None:
+        return refus
     inscriptions = (
         InscriptionRepetiteur.objects.filter(user=request.user)
         .select_related("cursus__series", "cursus__country", "profil")
     )
+    if limiter:
+        inscriptions = inscriptions.filter(profil=profil_actif(request))
     return Response([
         {
             "id": inscription.id,

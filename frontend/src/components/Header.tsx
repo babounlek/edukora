@@ -55,6 +55,7 @@ function AccountMenu() {
   const { t } = useI18n()
   // L'abonnement du profil actif : nulle part ailleurs que dans « Mes accès » (page de parent) l'élève ne voyait qu'il était
   // abonné ni jusqu'à quand (test élève Gogo). Une ligne en tête du menu, sans lien : de quoi se rassurer.
+  const famille = profils.length > 1 && !user?.session_restreinte
   const abonnementActif = cursusAbonnes.find(
     (sub) => sub.profil.id === user?.profil_actif?.id && sub.cursus.id === user?.cursus_prepare?.id,
   )
@@ -150,6 +151,20 @@ function AccountMenu() {
             <DropdownMenuSeparator />
           </>
         )}
+        {/* Dans une famille, l'historique est celui de l'enfant actif ; compte, accès et paiements sont l'affaire du
+            parent : un libellé les regroupe pour qu'un enfant sache de quel côté il se trouve (test élève Gogo, C-F3). */}
+        {famille && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link to="/historique">
+                <History />
+                {t("compte.historique")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuLabel>{t("compte.espace_parent")}</DropdownMenuLabel>
+          </>
+        )}
         <DropdownMenuItem asChild>
           <Link to="/compte">
             <UserCircle />
@@ -162,12 +177,14 @@ function AccountMenu() {
             {t("compte.mes_acces")}
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link to="/historique">
-            <History />
-            {t("compte.historique")}
-          </Link>
-        </DropdownMenuItem>
+        {!famille && (
+          <DropdownMenuItem asChild>
+            <Link to="/historique">
+              <History />
+              {t("compte.historique")}
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link to="/mes-paiements">
             <Receipt />

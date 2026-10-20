@@ -1,17 +1,20 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
   createProfil,
   listMyInscriptionsInedites,
+  listMyInscriptionsIneditesFamille,
   listMyInscriptionsRepetiteur,
+  listMyInscriptionsRepetiteurFamille,
   listMySubscriptions,
+  listMySubscriptionsFamille,
   listProfils,
   renameProfil,
 } from "@/api/endpoints"
-import { ApiError } from "@/api/client"
+import { ApiError, modeParentActif } from "@/api/client"
 import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { ChoixMatieres } from "@/components/ChoixMatieres"
@@ -277,6 +280,7 @@ export function AccesPage() {
 
   const { isAuthenticated, isLoading, user } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   // null = pas encore chargé : un tableau vide initial se lisait « aucun abonnement », donc
   // « Aucun accès actif » s'affichait à tort tant que la réponse n'était pas arrivée (ou échouait).
   const [subscriptions, setSubscriptions] = useState<Subscription[] | null>(null)
@@ -284,6 +288,10 @@ export function AccesPage() {
   const [inscriptionsRepetiteur, setInscriptionsRepetiteur] = useState<InscriptionRepetiteur[] | null>(null)
   const [profils, setProfils] = useState<Profil[] | null>(null)
   const [erreur, setErreur] = useState(false)
+  // Vrai une fois la famille entière chargée en mode parent. Sinon, avec un code parent, le serveur ne rend que le profil
+  // actif : un enfant ne lit pas les abonnements de ses frères (users.parent.portee_famille).
+  const [famille, setFamille] = useState(false)
+  const [chargementFamille, setChargementFamille] = useState(false)
 
   // Les quatre appels sont indissociables : sans l'un d'eux, l'écran afficherait un état faux
   // (accès manquant, profils absents). Un seul échec suffit donc à basculer sur l'erreur.
@@ -293,6 +301,7 @@ export function AccesPage() {
     setInscriptionsInedites(null)
     setInscriptionsRepetiteur(null)
     setProfils(null)
+    setFamille(false)
     const echec = () => setErreur(true)
     listMySubscriptions().then(setSubscriptions).catch(echec)
     listMyInscriptionsInedites().then(setInscriptionsInedites).catch(echec)
@@ -308,6 +317,35 @@ export function AccesPage() {
     }
     charger()
   }, [isLoading, isAuthenticated, navigate, charger])
+
+  // Ancre « #securite » (rappel de « Qui étudie ? ») : la section n'existe qu'une fois les profils chargés.
+  const securitePrete = profils !== null
+  useEffect(() => {
+    if (location.hash !== "#securite" || !securitePrete) return
+    document.getElementById("securite")?.scrollIntoView({ block: "start" })
+  }, [location.hash, securitePrete])
+
+  // Le premier appel demande le code parent s'il manque (le client rejoue ensuite la requête) ; les deux autres partent
+  // une fois le mode parent ouvert, pour ne jamais afficher trois fois la même saisie.
+  async function voirFamille() {
+    setChargementFamille(true)
+    try {
+      const abonnements = await listMySubscriptionsFamille()
+      const [inedites, repetiteur] = await Promise.all([
+        listMyInscriptionsIneditesFamille(),
+        listMyInscriptionsRepetiteurFamille(),
+      ])
+      setSubscriptions(abonnements)
+      setInscriptionsInedites(inedites)
+      setInscriptionsRepetiteur(repetiteur)
+      setFamille(true)
+    } catch (err) {
+      // Refuser de saisir le code est un choix, pas une panne.
+      if (!(err instanceof ApiError && err.status === 403)) toast.error(t("ac.famille_erreur"))
+    } finally {
+      setChargementFamille(false)
+    }
+  }
 
   if (isLoading) return null
 
@@ -364,10 +402,16 @@ export function AccesPage() {
   // Profil.ordre) - même un compte à un seul profil en voit un, personnalisable :
   // c'est exactement ce que "nommer chaque abonnement" demande, pas seulement les
   // comptes à plusieurs enfants.
-  const groupes = (profils ?? []).map((profil) => ({
-    profil,
-    acces: acces.filter((a) => a.profilId === profil.id),
-  }))
+  // Portée limitée au profil actif (code parent défini hors mode parent, ou session enfant) : les autres enfants n'ont pas
+  // été chargés, leur groupe afficherait à tort « Choisir un abonnement ».
+  const porteeLimitee =
+    !famille && (!!user?.session_restreinte || (!!user?.pin_parent_actif && !modeParentActif())) && (profils?.length ?? 0) > 1
+  const groupes = (profils ?? [])
+    .filter((profil) => !porteeLimitee || profil.id === user?.profil_actif?.id)
+    .map((profil) => ({
+      profil,
+      acces: acces.filter((a) => a.profilId === profil.id),
+    }))
 
   function renommer(profilRenomme: Profil) {
     setProfils((prev) => (prev ?? []).map((p) => (p.id === profilRenomme.id ? profilRenomme : p)))
@@ -400,6 +444,17 @@ export function AccesPage() {
           />
         ) : (
           <div className="flex flex-col gap-5">
+            {porteeLimitee && !user?.session_restreinte && (
+              <div className="flex flex-col gap-2 rounded-lg border border-border bg-muted/30 p-3 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-muted-foreground">
+                  {t("ac.portee_limitee", { prenom: user?.profil_actif?.prenom || t("compte.profil_sans_nom") })}
+                </p>
+                <Button size="sm" variant="outline" className="h-11 sm:h-8" disabled={chargementFamille} onClick={voirFamille}>
+                  {chargementFamille && <Loader2 className="size-4 animate-spin" />}
+                  {t("ac.voir_famille")}
+                </Button>
+              </div>
+            )}
             {groupes.map(({ profil, acces: accesDuProfil }) => (
               <div key={profil.id} className="flex flex-col gap-2.5">
                 <NomProfilEditable profil={profil} onRenamed={renommer} />
@@ -428,7 +483,7 @@ export function AccesPage() {
       </Section>
 
       {charge && profils && !user?.session_restreinte && (
-        <Section icone={ShieldCheck} titre={t("ac.securite")}>
+        <Section icone={ShieldCheck} titre={t("ac.securite")} id="securite">
           <SecuriteProfils
             profils={profils}
             onProfilChange={(maj) => setProfils((prev) => (prev ?? []).map((p) => (p.id === maj.id ? maj : p)))}

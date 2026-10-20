@@ -46,6 +46,11 @@ export function clearParentToken() {
   parentToken = null
 }
 
+/** Vrai pendant que le mode parent est ouvert (jeton saisi, non expiré) : le serveur rend alors toute la famille. */
+export function modeParentActif(): boolean {
+  return currentParentToken() !== null
+}
+
 function currentParentToken(): string | null {
   if (parentToken && parentToken.expiresAt > Date.now()) return parentToken.value
   parentToken = null

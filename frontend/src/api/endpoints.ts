@@ -544,6 +544,15 @@ export function listMySubscriptions() {
   return apiRequest<Subscription[]>("/subscriptions/mine/")
 }
 
+/**
+ * Les trois listes d'accès de TOUTE la famille. Réservé au mode parent quand le compte a un code parent : le serveur
+ * répond sinon 403 `parent_requis` et le client demande le code, puis rejoue. Sans `tous`, un compte protégé ne rend
+ * que le profil actif (users.parent.portee_famille).
+ */
+export function listMySubscriptionsFamille() {
+  return apiRequest<Subscription[]>("/subscriptions/mine/?tous=1")
+}
+
 export function getMyProgression(signal?: AbortSignal) {
   return apiRequest<Progression>("/access/progression/", { signal })
 }
@@ -699,6 +708,10 @@ export function listRevisionsDues(signal?: AbortSignal) {
 
 export function listMyInscriptionsInedites() {
   return apiRequest<InscriptionInedite[]>("/inedit/mes-inscriptions/")
+}
+
+export function listMyInscriptionsIneditesFamille() {
+  return apiRequest<InscriptionInedite[]>("/inedit/mes-inscriptions/?tous=1")
 }
 
 export function listEpreuvesInedites(cursusId: number) {
@@ -862,6 +875,10 @@ export function downloadSujetPdf(epreuveId: number) {
 
 export function listMyInscriptionsRepetiteur() {
   return apiRequest<InscriptionRepetiteur[]>("/fiches/mes-inscriptions/")
+}
+
+export function listMyInscriptionsRepetiteurFamille() {
+  return apiRequest<InscriptionRepetiteur[]>("/fiches/mes-inscriptions/?tous=1")
 }
 
 export function getFicheEligibilite(cursusId: number, subjectId: number) {

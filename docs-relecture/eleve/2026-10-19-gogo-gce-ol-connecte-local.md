@@ -239,3 +239,25 @@ Demande : « corrige toutes les autres frictions ». Elles ne se valent pas : ce
 | Un lien profond `/en/...` s'ouvrait avec le titre français d'`index.html` pendant ~2 s | Petit script en ligne dans `index.html` : si le chemin commence par `/en`, il règle `lang`, `<title>` et la description avant le JavaScript | `indexHtml.test.ts` (3 tests) ; en navigateur, l'onglet de `/en/cm/past-papers` porte « EduKora - Past papers and solutions for the GCE in Cameroon » dès le chargement (le HTML brut reste français : normal, c'est le script qui corrige) |
 
 Limite : les robots qui n'exécutent pas de JavaScript voient encore le titre français sur `/en` ; l'aperçu OG anglais est déjà servi par Caddy → Django.
+
+## 14. C-F3 : profil enfant et code parent (2026-10-20, non committé)
+
+**Défaut.** Avec un code parent défini, seules les ACTIONS étaient protégées : un enfant ouvrait « Mes accès » et lisait les abonnements, les jours restants et les prénoms de ses frères. Et rien n'invitait un parent à définir ce code au moment de choisir qui étudie.
+
+**Décision.** Le code parent reste facultatif. Sans lui, rien ne change. Avec lui, la portée des listes dépend du mode parent.
+
+| Pièce | Ce qui change |
+|---|---|
+| `users/parent.py` | `portee_famille(request)` → `(refus, limiter)`. `?tous=1` = toute la famille, réservé au mode parent (`exiger_mode_parent` : 403 `parent_requis` ou `session_restreinte`). Sans `tous`, la liste se limite au profil actif pour une session enfant, ou pour un compte à code parent hors mode parent |
+| 3 listes (`/subscriptions/mine/`, `/inedit/mes-inscriptions/`, `/fiches/mes-inscriptions/`) | Filtre `profil=profil_actif(request)` quand `limiter` |
+| « Qui étudie ? » | Rappel masquable (« Plus tard », mémorisé en `localStorage`) quand ni code parent ni code d'enfant ; lien vers `/mes-acces#securite` |
+| « Mes accès » | Ancre `#securite` (défilement une fois les profils chargés). Vue limitée : un seul groupe (le profil actif), bandeau « Tu vois seulement les accès de … » et bouton « Voir toute la famille » (demande le code, puis charge les trois listes ; annuler la saisie garde la vue limitée sans erreur). Plus de faux « Choisir un abonnement » sur un frère non chargé |
+| Menu du compte | Famille de 2+ profils : « Historique » (l'enfant actif), puis un libellé **Espace parent** : Mon compte, Mes accès, Mes paiements |
+
+**Effet de bord voulu.** Les autres écrans qui lisent `listMySubscriptions` (menu « Examen préparé », quiz, parcours) ne voient plus, pour un enfant d'un compte protégé, les abonnements de ses frères : cohérent avec l'accès, qui est déjà calculé par profil actif.
+
+**Preuves.** Backend : `users/test_portee_famille.py` (7 tests : sans code tout reste ouvert, avec code l'enfant ne voit que lui, mode parent = famille, `tous` sans jeton = 403 `parent_requis`, `tous` avec jeton, session restreinte = 403 `session_restreinte`) ; suites subscriptions, inedit, fiches, users, recherche : 743 tests verts. Frontend : `AccesPage.test.tsx` (6) et `QuiEtudiePage.test.tsx` (4) ; suite complète 93 fichiers, 831 verts ; `tsc` propre.
+
+**Vu dans Chrome (2026-10-20, compte Gogo, code parent actif).** Bandeau « You only see Gogo's access. The other children are protected by the parent code. » avec un seul groupe (Gogo), sans faux « Choisir un abonnement » ; « See the whole family » ouvre UNE saisie du code parent, et l'annuler garde la vue limitée sans erreur ; menu du compte : My history, puis « Parent area » (My account, My access, My payments) ; `/en/my-access#securite` fait défiler la section sous l'en-tête. **Non vu à l'écran** : la charge de la famille après un bon code (code inconnu, couvert seulement par les tests unitaires) et le rappel de « Qui étudie ? » (il disparaît quand un code parent existe, comme ici).
+
+**À rejouer en production** : rebuild caddy + backend (3 vues + `users/parent.py`).

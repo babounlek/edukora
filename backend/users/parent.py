@@ -51,3 +51,22 @@ def exiger_mode_parent(request):
             {"error": "Saisis le code parent pour continuer.", "code": "parent_requis"}, status=403,
         )
     return None
+
+
+def portee_famille(request):
+    """
+    Portée d'une liste « de la famille » (abonnements, add-ons) : `(refus, limiter)`.
+
+    - `?tous=1` demande TOUTE la famille : réservé au mode parent (`exiger_mode_parent`), donc 403 `parent_requis` quand le
+      compte a un code parent et que le jeton manque - le client demande alors le code et rejoue la requête.
+    - Sans `tous`, `limiter` vaut True quand rien ne doit montrer les autres enfants : session enfant, ou compte protégé par
+      un code parent hors mode parent. La liste se limite alors au profil actif. Sans code parent, tout reste ouvert, comme
+      avant (le code parent est facultatif).
+
+    Avant : un enfant lisait les abonnements, jours restants et prénoms de ses frères dans « Mes accès » même avec un code
+    parent défini - seules les ACTIONS étaient protégées (test élève Gogo, 2026-10-19).
+    """
+    if request.query_params.get("tous") == "1":
+        return exiger_mode_parent(request), False
+    limiter = session_restreinte(request) or (bool(request.user.pin_parent_hash) and not jeton_parent_valide(request))
+    return None, limiter

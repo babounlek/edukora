@@ -958,6 +958,13 @@ export const en: Partial<Record<CleI18n, string>> = {
     "No active access for now. Pick your exam to unlock the solutions, the lessons and your daily session.",
   "ac.choisir_abonnement": "Choose a subscription",
   "ac.securite": "Profile security",
+  "ac.portee_limitee": "You only see {prenom}'s access. The other children are protected by the parent code.",
+  "ac.voir_famille": "See the whole family",
+  "ac.famille_erreur": "Can't show the whole family right now. Try again in a moment.",
+  "sp.rappel": "Each child can see the others' subscriptions and open their profile. A parent code keeps that for you.",
+  "sp.rappel_lien": "Protect with a parent code",
+  "sp.rappel_plus_tard": "Later",
+  "compte.espace_parent": "Parent area",
 
   "ca.erreur_retrait": "Could not remove this entry from the notebook. Try again.",
   "ca.titre": "What you've kept",

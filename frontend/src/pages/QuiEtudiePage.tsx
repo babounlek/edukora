@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { Loader2, UserCircle } from "lucide-react"
+import { Loader2, ShieldAlert, UserCircle } from "lucide-react"
 
 import { listProfils } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -9,11 +9,22 @@ import { activerProfilProtege } from "@/lib/changerProfilActif"
 import { PinAnnule } from "@/lib/pinPrompts"
 import type { Profil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useSeo } from "@/lib/seo"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useCountry } from "@/context/CountryContext"
 import { t, useI18n } from "@/lib/i18n"
+
+const CLE_RAPPEL = "qe-rappel-code-parent-masque"
+
+function rappelDejaMasque(): boolean {
+  try {
+    return localStorage.getItem(CLE_RAPPEL) === "1"
+  } catch {
+    return false
+  }
+}
 
 /**
  * "Qui étudie ?" - affiché une seule fois, juste après la connexion, pour un compte
@@ -27,7 +38,7 @@ export function QuiEtudiePage() {
   useI18n()
   useSeo({ title: t("qe.seo") })
 
-  const { isAuthenticated, isLoading, login } = useAuth()
+  const { isAuthenticated, isLoading, login, user } = useAuth()
   const { country } = useCountry()
   const navigate = useNavigate()
   const location = useLocation()
@@ -35,6 +46,7 @@ export function QuiEtudiePage() {
 
   const [profils, setProfils] = useState<Profil[] | null>(null)
   const [activatingId, setActivatingId] = useState<number | null>(null)
+  const [rappelMasque, setRappelMasque] = useState(rappelDejaMasque)
 
   useEffect(() => {
     if (isLoading) return
@@ -67,6 +79,19 @@ export function QuiEtudiePage() {
       // Annuler la saisie du code PIN est un choix de l'élève, pas une panne : pas de message.
       if (err instanceof PinAnnule) return
       toast.error(err instanceof ApiError ? err.message : t("qe.erreur"))
+    }
+  }
+
+  // Même constat que l'avertissement de « Mes accès » : ni code parent ni code d'enfant, donc chacun voit les
+  // abonnements des autres. C'est ici, au moment de choisir qui étudie, que ce constat a le plus de sens.
+  const rappel = !rappelMasque && !!profils && !user?.pin_parent_actif && profils.every((p) => !p.pin_actif)
+
+  function masquerRappel() {
+    setRappelMasque(true)
+    try {
+      localStorage.setItem(CLE_RAPPEL, "1")
+    } catch {
+      // Stockage indisponible : le rappel reste masqué pour cette visite seulement.
     }
   }
 
@@ -108,6 +133,22 @@ export function QuiEtudiePage() {
           </Card>
         ))}
       </div>
+      {rappel && (
+        <div className="mt-5 flex flex-col gap-2.5 rounded-lg border border-border bg-muted/30 p-3">
+          <p className="flex items-start gap-2 text-xs text-muted-foreground">
+            <ShieldAlert className="mt-0.5 size-4 shrink-0 text-amber-600" aria-hidden="true" />
+            {t("sp.rappel")}
+          </p>
+          <div className="flex gap-2">
+            <Button asChild size="sm" className="h-11 sm:h-8">
+              <Link to="/mes-acces#securite">{t("sp.rappel_lien")}</Link>
+            </Button>
+            <Button type="button" variant="ghost" size="sm" className="h-11 sm:h-8" onClick={masquerRappel}>
+              {t("sp.rappel_plus_tard")}
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
