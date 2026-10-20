@@ -9,6 +9,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { actionInedite, libelleFaite } from "@/lib/statutInedite"
+import { useAbonneActif } from "@/lib/abonneActif"
 import { t, useI18n } from "@/lib/i18n"
 import { libelleNature, libelleType } from "@/lib/libellesEpreuve"
 
@@ -22,6 +23,7 @@ interface EpreuveListRowProps {
  * résultats à l'écran sans dérouler autant que la grille de cartes. */
 export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProps) {
   useI18n()
+  const abonne = useAbonneActif()
   const country = epreuve.subject.country.code.toLowerCase()
   // Toujours la fiche détail, jamais le lecteur en direct - voir le même commentaire sur
   // EpreuveCard.tsx : c'est là, et seulement là, qu'un abonné découvre "Passer en conditions
@@ -54,7 +56,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
         {epreuve.year && <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>}
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
-        {epreuve.est_vitrine && <Badge variant="success">{t("ep.gratuit")}</Badge>}
+        {epreuve.est_vitrine && !abonne && <Badge variant="success">{t("ep.gratuit")}</Badge>}
         <Badge variant="secondary" className="hidden sm:inline-flex">{epreuve.subject.label}</Badge>
         {epreuve.nature_epreuve_display && (
           <Badge variant="outline" className="hidden sm:inline-flex">{libelleNature(epreuve.nature_epreuve, epreuve.nature_epreuve_display)}</Badge>

@@ -23,6 +23,7 @@ import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { chiffresNumeroLocal } from "@/lib/telephone"
+import { SITE_NAME } from "@/lib/site"
 import { t, useI18n } from "@/lib/i18n"
 
 type Step = "identifiant" | "code"
@@ -58,6 +59,9 @@ const OTP_RESEND_COOLDOWN_SECONDS = 60
 // que dit réellement le mail/SMS reçu.
 const OTP_CODE_VALIDITY_MINUTES = 5
 
+// Au-delà, l'envoi du code (e-mail ou SMS, réalisé par un tiers) est annoncé comme un peu long.
+const ENVOI_LENT_APRES_MS = 3000
+
 export function LoginPage() {
   useI18n()
   useSeo({ title: t("login.seo") })
@@ -83,6 +87,11 @@ export function LoginPage() {
   const [codeDejaRecu, setCodeDejaRecu] = useState(false)
   const [resendCooldownEndsAt, setResendCooldownEndsAt] = useState<number | null>(null)
   const [resendSecondsLeft, setResendSecondsLeft] = useState(0)
+  // Quand le code a été demandé ICI (pas avec « J'ai déjà un code », dont on ignore l'heure) : de quoi dire qu'il a expiré.
+  const [codeEnvoyeLe, setCodeEnvoyeLe] = useState<number | null>(null)
+  const [codeExpire, setCodeExpire] = useState(false)
+  // Envoi qui traîne : le bouton restait en « Envoi… » une douzaine de secondes sans un mot (test élève Gogo).
+  const [envoiLent, setEnvoiLent] = useState(false)
 
   // Recalcule chaque seconde plutôt qu'un simple setTimeout unique : la valeur
   // affichée doit rester correcte même si l'onglet passe en arrière-plan un moment
@@ -95,6 +104,28 @@ export function LoginPage() {
     const interval = setInterval(tick, 1000)
     return () => clearInterval(interval)
   }, [resendCooldownEndsAt])
+
+  useEffect(() => {
+    setCodeExpire(false)
+    if (!codeEnvoyeLe) return
+    const reste = codeEnvoyeLe + OTP_CODE_VALIDITY_MINUTES * 60_000 - Date.now()
+    if (reste <= 0) {
+      setCodeExpire(true)
+      return
+    }
+    const minuteur = setTimeout(() => setCodeExpire(true), reste)
+    return () => clearTimeout(minuteur)
+  }, [codeEnvoyeLe])
+
+  const envoiEnCours = (isSubmitting && step === "identifiant") || isResending
+  useEffect(() => {
+    if (!envoiEnCours) {
+      setEnvoiLent(false)
+      return
+    }
+    const minuteur = setTimeout(() => setEnvoiLent(true), ENVOI_LENT_APRES_MS)
+    return () => clearTimeout(minuteur)
+  }, [envoiEnCours])
 
   const { login } = useAuth()
   const navigate = useNavigate()
@@ -142,6 +173,7 @@ export function LoginPage() {
       await requestEmailCode(email)
     }
     setResendCooldownEndsAt(Date.now() + OTP_RESEND_COOLDOWN_SECONDS * 1000)
+    setCodeEnvoyeLe(Date.now())
   }
 
   /** Contrôle local de l'identifiant saisi ; renvoie le message d'erreur, ou null. */
@@ -365,6 +397,11 @@ export function LoginPage() {
               >
                 {isSubmitting ? t("login.envoi") : t("login.recevoir_code")}
               </Button>
+              {envoiLent && (
+                <p role="status" className="text-center text-xs text-muted-foreground">
+                  {t("login.envoi_lent")}
+                </p>
+              )}
               <p className="text-center text-xs text-muted-foreground">
                 {t("login.cgu_avant")}{" "}
                 <Link to="/cgu" className="underline underline-offset-4 hover:text-primary">
@@ -425,7 +462,16 @@ export function LoginPage() {
                 <p className="text-xs text-muted-foreground">
                   {t("login.code_validite", { n: OTP_CODE_VALIDITY_MINUTES })}
                 </p>
+                {/* Où chercher : l'écran du code ne disait ni la boîte à regarder ni de qui vient le message (test élève Gogo). */}
+                <p className="text-xs text-muted-foreground">
+                  {t(methode === "phone" ? "login.pas_recu_tel" : "login.pas_recu_email", { site: SITE_NAME })}
+                </p>
               </div>
+              {codeExpire && (
+                <p role="alert" className="text-sm text-destructive">
+                  {t("login.code_expire")}
+                </p>
+              )}
               {error && <p className="text-sm text-destructive">{error}</p>}
               {/* Désactivé tant que le code est incomplet : un envoi à 3 chiffres ne pouvait
                   que revenir en erreur (le code fait toujours 6 chiffres). */}
@@ -444,6 +490,11 @@ export function LoginPage() {
                     ? t("login.envoi")
                     : t("login.renvoyer")}
               </Button>
+              {isResending && envoiLent && (
+                <p role="status" className="text-center text-xs text-muted-foreground">
+                  {t("login.envoi_lent")}
+                </p>
+              )}
               <Button
                 type="button"
                 variant="ghost"
@@ -452,6 +503,7 @@ export function LoginPage() {
                   setCode("")
                   setError(null)
                   setResendCooldownEndsAt(null)
+                  setCodeEnvoyeLe(null)
                 }}
               >
                 {methode === "phone" ? t("login.changer_numero") : t("login.changer_adresse")}

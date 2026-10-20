@@ -23,7 +23,7 @@ import { t } from "@/lib/i18n"
 
 import { Callout } from "@/components/Callout"
 import { LienCours } from "@/components/LienCours"
-import { SolutionToggle } from "@/components/SolutionToggle"
+import { SolutionToggle, SolutionsOuvertesContext } from "@/components/SolutionToggle"
 import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
 import { API_BASE_URL } from "@/api/client"
 
@@ -54,6 +54,8 @@ function extractCoursLinks(items: ReactNode[]): { coursSlugs: string[]; rest: Re
 
 interface EpreuveMarkdownProps {
   markdown: string
+  /** Montre d'emblée les solutions repliées du texte (quiz : la correction vient d'être demandée). */
+  solutionsOuvertes?: boolean
   /**
    * true en lecture complète authentifiée : un Cours généré depuis cette épreuve
    * hérite toujours du même cursus (ou est "toutes séries", encore plus permissif),
@@ -271,7 +273,7 @@ const REMARK_PLUGINS = [remarkMath, remarkGfm, remarkBreaks]
 const REHYPE_PLUGINS = [rehypeRaw, rehypeKatex]
 
 /** Rendu Markdown partagé entre la lecture en ligne complète et l'aperçu public d'une épreuve. */
-function EpreuveMarkdownBase({ markdown, directCoursLinks = false }: EpreuveMarkdownProps) {
+function EpreuveMarkdownBase({ markdown, directCoursLinks = false, solutionsOuvertes = false }: EpreuveMarkdownProps) {
   // Le prétraitement est coûteux sur un long corrigé : refait seulement si le texte change.
   const source = useMemo(
     () =>
@@ -283,9 +285,11 @@ function EpreuveMarkdownBase({ markdown, directCoursLinks = false }: EpreuveMark
 
   return (
     <DirectCoursLinksContext.Provider value={directCoursLinks}>
-      <ReactMarkdown remarkPlugins={REMARK_PLUGINS} rehypePlugins={REHYPE_PLUGINS} components={MARKDOWN_COMPONENTS}>
-        {source}
-      </ReactMarkdown>
+      <SolutionsOuvertesContext.Provider value={solutionsOuvertes}>
+        <ReactMarkdown remarkPlugins={REMARK_PLUGINS} rehypePlugins={REHYPE_PLUGINS} components={MARKDOWN_COMPONENTS}>
+          {source}
+        </ReactMarkdown>
+      </SolutionsOuvertesContext.Provider>
     </DirectCoursLinksContext.Provider>
   )
 }

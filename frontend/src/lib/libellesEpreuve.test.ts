@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest"
 
 import { definirLangue } from "@/lib/i18n"
-import { libelleEnteteExercice, libelleNiveauExercice } from "./libellesEpreuve"
+import { libelleDuree, libelleEnteteExercice, libelleNiveauExercice } from "./libellesEpreuve"
 
 afterEach(async () => {
   await definirLangue("fr", { persister: false })
@@ -56,5 +56,26 @@ describe("niveau d'un exercice d'application", () => {
   it("en anglais, une valeur inconnue s'affiche brute", async () => {
     await definirLangue("en", { persister: false })
     expect(libelleNiveauExercice("expert")).toBe("expert")
+  })
+})
+
+describe("libelleDuree : un seul format (test élève Gogo : « 150 min », « 2h30 », « 2h00 », « 2h »)", () => {
+  it("ramène les saisies voisines au même libellé", () => {
+    expect(libelleDuree("150 min")).toBe("2 h 30")
+    expect(libelleDuree("2h30")).toBe("2 h 30")
+    expect(libelleDuree("2h00")).toBe("2 h")
+    expect(libelleDuree("2h")).toBe("2 h")
+    expect(libelleDuree("2 heures")).toBe("2 h")
+    expect(libelleDuree("1h30")).toBe("1 h 30")
+    expect(libelleDuree("3 h")).toBe("3 h")
+  })
+
+  it("garde les minutes seules et les durées sous l'heure", () => {
+    expect(libelleDuree("90 min")).toBe("1 h 30")
+    expect(libelleDuree("45 min")).toBe("45 min")
+  })
+
+  it("laisse un texte libre tel quel", () => {
+    expect(libelleDuree("3 h maximum")).toBe("3 h maximum")
   })
 })

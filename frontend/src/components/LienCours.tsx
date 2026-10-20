@@ -23,11 +23,12 @@ export function LienCours({ slug, to, label, className, titreSeul }: LienCoursPr
   const titre = useTitreCours(slug)
   return (
     // `flex-wrap` et libellé insécable : dans un encadré étroit (mobile), le long titre du cours écrasait
-    // « Voir le cours complet » sur trois lignes ; le titre passe maintenant sous le libellé s'il manque de place.
+    // « Voir le cours complet » sur trois lignes. Le titre a donc sa propre ligne, sous « libellé + flèche » : plus de puce
+    // « · » en tête de ligne ni de flèche seule sous le titre (test élève Gogo).
     <Link to={to} className={`${className} flex-wrap`} aria-label={titre ? `${label} : ${titre}` : undefined}>
       {titre && titreSeul ? titre : <span className="whitespace-nowrap">{label}</span>}
-      {titre && !titreSeul && <span className="font-normal text-muted-foreground">· {titre}</span>}
       <ArrowRight className="size-3.5 shrink-0" />
+      {titre && !titreSeul && <span className="basis-full font-normal text-muted-foreground">{titre}</span>}
     </Link>
   )
 }

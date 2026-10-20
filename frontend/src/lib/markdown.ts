@@ -260,3 +260,14 @@ export function extractSolutionToggles(markdown: string): string {
     return `> [SOLUTION_TOGGLE]\n>\n${quoted}\n\n`
   })
 }
+
+/**
+ * Nom accessible d'un choix de QCM (« A. 35 ») pour un texte sans formule. Les boutons de réponse n'avaient aucun nom dans
+ * l'arbre d'accessibilité : un lecteur d'écran annonçait « bouton » quatre fois de suite (test élève Gogo). `undefined` quand le
+ * texte porte du LaTeX : poser alors un libellé masquerait la formule, que le contenu du bouton (MathML) dit mieux qu'un texte brut.
+ */
+export function nomAccessibleDuChoix(lettre: string, texte: string): string | undefined {
+  const brut = texte.replace(/\$/g, "").replace(/\s+/g, " ").trim()
+  if (!brut || /[\^_{}]/.test(brut)) return undefined
+  return `${lettre.toUpperCase()}. ${brut}`
+}

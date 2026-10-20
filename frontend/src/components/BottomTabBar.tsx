@@ -81,7 +81,8 @@ export function BottomTabBar() {
           aussi sur « Aujourd'hui » : la bande du coach y dit déjà le même repère, en grand
           (voir TeteAccueil), et la pilule en double prenait de la hauteur à la barre. */}
       <div className="flex justify-center pt-1.5 empty:hidden">
-        {!estAccueil && <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />}
+        {/* Pas sur l'accueil (la bande y est déjà), ni pendant un quiz : la pastille se posait sur les réponses C et D (test élève Gogo). */}
+        {!estAccueil && !pathname.startsWith("/quiz/") && <CompteAReboursBadge variant="pilule" className="whitespace-nowrap" />}
       </div>
       <div className="flex items-stretch">
         {onglets.map((onglet) => (

@@ -27,6 +27,7 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { libellePoints } from "@/lib/notation"
 import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
+import { nomAccessibleDuChoix } from "@/lib/markdown"
 import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { cheminDansLangue, langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
@@ -430,6 +431,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                 <button
                   key={choix.lettre}
                   type="button"
+                  aria-label={nomAccessibleDuChoix(choix.lettre, choix.texte)}
                   aria-busy={enCours || undefined}
                   disabled={submitting || answered}
                   onClick={() => handleAnswerQcm(choix.lettre)}
@@ -491,7 +493,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
 
             {(questionCorrige || answered) && (
               <article className="prose prose-neutral max-w-none rounded-xl border-l-4 border-primary/50 bg-muted/40 py-3 pl-4 pr-3 dark:prose-invert">
-                <EpreuveMarkdown markdown={question.corrige_markdown ?? questionCorrige?.corrige_markdown ?? ""} />
+                <EpreuveMarkdown markdown={question.corrige_markdown ?? questionCorrige?.corrige_markdown ?? ""} solutionsOuvertes />
               </article>
             )}
 
@@ -574,7 +576,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           <details className="mt-4 rounded-xl border bg-muted/30 px-4 py-3" open={!correct}>
             <summary className="cursor-pointer text-sm font-medium">{t("qs.comprendre")}</summary>
             <article className="prose prose-neutral mt-3 max-w-none dark:prose-invert">
-              <EpreuveMarkdown markdown={question.corrige_markdown} />
+              <EpreuveMarkdown markdown={question.corrige_markdown} solutionsOuvertes />
             </article>
           </details>
         )}

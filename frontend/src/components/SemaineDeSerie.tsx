@@ -12,6 +12,7 @@ import { t, useI18n } from "@/lib/i18n"
 export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; className?: string }) {
   useI18n()
   const initiales = t("gl.sem_initiales").split(",")
+  const noms = t("gl.sem_noms").split(",")
   const semaine = serie.semaine
   if (!semaine || semaine.length !== 7) return null
 
@@ -32,7 +33,10 @@ export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; clas
       <ol className="mt-2 grid grid-cols-7 gap-1.5" aria-label={t("gl.sem_aria")}>
         {semaine.map((jour, i) => (
           <li key={jour.date} className="flex flex-col items-center gap-1 text-[0.7rem] text-muted-foreground">
-            <span className={cn(jour.aujourdhui && "font-semibold text-foreground")}>{initiales[i]}</span>
+            {/* Deux T et deux S dans « M T W T F S S » : le nom entier est dans l'info-bulle et dans le nom accessible (test élève Gogo). */}
+            <span className={cn(jour.aujourdhui && "font-semibold text-foreground")} title={noms[i]} aria-hidden="true">
+              {initiales[i]}
+            </span>
             <span
               className={cn(
                 "flex size-8 items-center justify-center rounded-full border",
@@ -40,7 +44,7 @@ export function SemaineDeSerie({ serie, className }: { serie: SerieDeJours; clas
                 jour.aujourdhui && !jour.fait && "border-dashed border-primary/60",
               )}
               role="img"
-              aria-label={jour.fait ? t("gl.sem_travaille") : jour.aujourdhui ? t("gl.sem_aujourdhui") : t("gl.sem_non")}
+              aria-label={`${noms[i]}, ${jour.fait ? t("gl.sem_travaille") : jour.aujourdhui ? t("gl.sem_aujourdhui") : t("gl.sem_non")}`}
             >
               {jour.fait && <Check className="size-4" aria-hidden="true" />}
             </span>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight,
   BadgeCheck,
@@ -15,7 +15,7 @@ import {
 } from "lucide-react"
 
 import { getThemesFrequents, getThemesFrequentsMatieres } from "@/api/endpoints"
-import type { Cursus, ThemeFrequent, ThemesFrequentsMatiere } from "@/api/types"
+import type { Cursus, PlanDuJour, ThemeFrequent, ThemesFrequentsMatiere } from "@/api/types"
 import { useSeo } from "@/lib/seo"
 import { nomPays } from "@/lib/pays"
 import { useCountry } from "@/context/CountryContext"
@@ -446,14 +446,18 @@ export function ThemesFrequentsPage() {
   // fournie : on arrive directement sur un classement, jamais sur un écran à compléter.
   // La matière en cours est gardée d'un cursus à l'autre quand elle y existe (Maths en
   // BAC C puis en BAC D).
+  // Elle s'ouvre d'abord sur la matière de la séance du jour quand elle est connue (plan déjà en cache depuis l'accueil) : un
+  // élève qui venait de faire des maths arrivait sur l'informatique, simplement la plus fournie (test élève Gogo).
+  const queryClient = useQueryClient()
   useEffect(() => {
     if (!matieres || matieres.some((m) => m.code === subjectFilter)) return
-    const premiere = matieres.find((m) => m.disponible)
+    const codeSeance = queryClient.getQueryData<PlanDuJour>(["plan-du-jour"])?.seance?.subject?.code
+    const premiere = matieres.find((m) => m.code === codeSeance && m.disponible) ?? matieres.find((m) => m.disponible)
     if (!premiere) return
     const next = new URLSearchParams(searchParams)
     next.set("subject", premiere.code)
     setSearchParams(next, { replace: true })
-  }, [matieres, subjectFilter, searchParams, setSearchParams])
+  }, [matieres, subjectFilter, searchParams, setSearchParams, queryClient])
 
   const disponible = themesData?.disponible === true
   const themes = disponible ? themesData.themes : []

@@ -18,7 +18,7 @@ import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
 import { SITE_NAME } from "@/lib/site"
-import { langueCourante, useI18n } from "@/lib/i18n"
+import { langueCourante, localeCourante, useI18n } from "@/lib/i18n"
 import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
@@ -53,6 +53,11 @@ function AccountMenu() {
   const profils = useProfils()
   const changerProfil = useChangerProfilActif()
   const { t } = useI18n()
+  // L'abonnement du profil actif : nulle part ailleurs que dans « Mes accès » (page de parent) l'élève ne voyait qu'il était
+  // abonné ni jusqu'à quand (test élève Gogo). Une ligne en tête du menu, sans lien : de quoi se rassurer.
+  const abonnementActif = cursusAbonnes.find(
+    (sub) => sub.profil.id === user?.profil_actif?.id && sub.cursus.id === user?.cursus_prepare?.id,
+  )
 
   function handleLogout() {
     logout()
@@ -80,6 +85,19 @@ function AccountMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
+        {abonnementActif && (
+          <>
+            <DropdownMenuLabel className="font-normal text-muted-foreground">
+              {t("compte.abonnement_jusqua", {
+                cursus: formatCursus(abonnementActif.cursus),
+                date: new Date(abonnementActif.expires_at).toLocaleDateString(localeCourante(), {
+                  day: "numeric", month: "long", year: "numeric",
+                }),
+              })}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+          </>
+        )}
         {/* Seulement si le compte a déjà déclaré 2+ enfants : sinon il n'y a rien à
             basculer, profil_actif retombe silencieusement sur l'unique profil. */}
         {profils.length > 1 && !user?.session_restreinte && (

@@ -229,7 +229,7 @@ describe("AccueilEleve", () => {
     const commencer = screen.getByRole("link", { name: /Commencer :/ })
     expect(commencer.compareDocumentPosition(screen.getByText("10 / 20 points"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(screen.getByText("3 jours de suite")).toBeInTheDocument()
-    expect(screen.getAllByRole("img", { name: "Travaillé" })).toHaveLength(2)
+    expect(screen.getAllByRole("img", { name: /, Travaillé$/ })).toHaveLength(2)
   })
 
   it("dit « Objectif atteint » plutôt que 35 / 20 points", async () => {

@@ -23,6 +23,8 @@ import { useChangerLangue } from "@/components/SelecteurLangue"
  * Aucune détection par la langue du navigateur (décision du 2026-10-13) : sur beaucoup de téléphones
  * africains elle est réglée sur l'anglais chez des élèves francophones.
  */
+const INVITE_GCE_EN = "Preparing the GCE (English-language system)?"
+
 export function InviteAutreSousSysteme({
   disponible,
   variante = "ligne",
@@ -42,13 +44,23 @@ export function InviteAutreSousSysteme({
   const cible = langue === "fr" ? "en" : "fr"
   const texte = t(cible === "en" ? "invite_ss.vers_gce" : "invite_ss.vers_francophone")
   const action = t(cible === "en" ? "invite_ss.vers_gce_action" : "invite_ss.vers_francophone_action")
+  // Un élève anglophone arrivé sur l'interface française lisait une phrase française dont seul le bouton était en anglais :
+  // il ne reconnaissait pas que l'invitation était pour lui (test élève Gogo). La phrase d'ouverture est donc aussi en anglais.
+  const texteEn = cible === "en" ? INVITE_GCE_EN : null
 
   if (variante === "bloc") {
     return (
       <div className={cn("mt-1 flex flex-col gap-2 rounded-md border border-dashed border-border px-3.5 py-3", className)}>
         <p className="flex items-start gap-2 text-sm text-muted-foreground">
           <Languages className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-          {texte}
+          <span>
+            {texteEn && (
+              <span lang="en" className="block font-medium text-foreground">
+                {texteEn}
+              </span>
+            )}
+            {texte}
+          </span>
         </p>
         <button
           type="button"
@@ -64,6 +76,11 @@ export function InviteAutreSousSysteme({
 
   return (
     <p className={cn("text-sm text-muted-foreground", className)}>
+      {texteEn && (
+        <>
+          <span lang="en">{texteEn}</span>{" "}
+        </>
+      )}
       {texte}{" "}
       <button
         type="button"

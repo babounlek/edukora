@@ -1,7 +1,14 @@
-import { useId, useState, type ReactNode } from "react"
+import { createContext, useContext, useId, useState, type ReactNode } from "react"
 import { Eye, EyeOff } from "lucide-react"
 
 import { t, useI18n } from "@/lib/i18n"
+
+/**
+ * Vrai quand l'élève a DÉJÀ demandé la correction (quiz : « Voir la correction ») : un second bouton « Afficher la solution »
+ * à l'intérieur de ce corrigé faisait demander deux fois la même chose (test élève Gogo). La solution est alors montrée
+ * directement, sans bouton.
+ */
+export const SolutionsOuvertesContext = createContext(false)
 
 interface SolutionToggleProps {
   children?: ReactNode
@@ -23,6 +30,15 @@ export function SolutionToggle({ children }: SolutionToggleProps) {
   useI18n()
   const [open, setOpen] = useState(false)
   const idContenu = useId()
+  const ouvertesDOffice = useContext(SolutionsOuvertesContext)
+
+  if (ouvertesDOffice) {
+    return (
+      <div className="prose prose-neutral my-4 max-w-none text-justify border-l-2 border-border pl-4 dark:prose-invert">
+        {children}
+      </div>
+    )
+  }
 
   return (
     <div className="my-4">

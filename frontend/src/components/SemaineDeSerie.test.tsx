@@ -21,9 +21,17 @@ describe("SemaineDeSerie", () => {
   it("affiche sept jours, les jours travaillés et le jour courant", () => {
     render(<SemaineDeSerie serie={serie()} />)
     expect(screen.getByText("Série de 3 jours")).toBeInTheDocument()
-    expect(screen.getAllByRole("img", { name: "Travaillé" })).toHaveLength(2)
-    expect(screen.getAllByRole("img", { name: "Non travaillé" })).toHaveLength(4)
-    expect(screen.getAllByRole("img", { name: "Aujourd'hui, pas encore" })).toHaveLength(1)
+    expect(screen.getAllByRole("img", { name: /, Travaillé$/ })).toHaveLength(2)
+    expect(screen.getAllByRole("img", { name: /, Non travaillé$/ })).toHaveLength(4)
+    expect(screen.getAllByRole("img", { name: /, Aujourd'hui, pas encore$/ })).toHaveLength(1)
+  })
+
+  it("nomme chaque jour en entier : « M T W T F S S » a deux T et deux S (test élève Gogo)", () => {
+    render(<SemaineDeSerie serie={serie()} />)
+    expect(screen.getByRole("img", { name: "Lundi, Travaillé" })).toBeInTheDocument()
+    expect(screen.getByRole("img", { name: "Mercredi, Aujourd'hui, pas encore" })).toBeInTheDocument()
+    expect(screen.getByRole("img", { name: "Dimanche, Non travaillé" })).toBeInTheDocument()
+    expect(screen.getByTitle("Jeudi")).toBeInTheDocument()
   })
 
   it("dit que l'objectif du jour prolonge la série tant qu'aujourd'hui n'est pas fait", () => {

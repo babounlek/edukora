@@ -1,3 +1,4 @@
+import { formatDureeMinutes } from "@/lib/duration"
 import { langueCourante, t, tn, type CleI18n } from "@/lib/i18n"
 
 /**
@@ -32,9 +33,22 @@ function traduit(table: Record<string, CleI18n>, code: string | null | undefined
   return t(table[code])
 }
 
+/** « 2h30 », « 2 h », « 2 heures », « 150 min » → un nombre de minutes ; null pour un texte libre (« 3 h maximum »). */
+function minutesDeDuree(texte: string): number | null {
+  const brut = texte.trim().toLowerCase()
+  const heures = brut.match(/^(\d+)\s*(?:h|heures?|hours?)\s*(?:et\s*)?(\d{1,2})?\s*(?:min(?:utes?)?)?$/)
+  if (heures) return Number(heures[1]) * 60 + Number(heures[2] ?? 0)
+  const minutes = brut.match(/^(\d+)\s*(?:min(?:utes?)?|mn)$/)
+  return minutes ? Number(minutes[1]) : null
+}
+
 /** « 2 heures » → « 2 hours » : la durée est un texte saisi à la transcription ; seuls les mots
  * français sont remplacés, « 2h » et « 90 min » passent tels quels. */
 export function libelleDuree(texte: string): string {
+  // Un seul format pour toutes les épreuves (« 2 h 30 », « 2 h », « 45 min ») : la liste mélangeait « 150 min », « 2h30 »,
+  // « 2h00 » et « 2h » pour des durées voisines (test élève Gogo).
+  const minutes = minutesDeDuree(texte)
+  if (minutes !== null) return formatDureeMinutes(minutes)
   if (langueCourante() === "fr") return texte
   return texte.replace(/(\d+)\s*heures?/gi, (_m, n: string) => `${n} ${Number(n) === 1 ? "hour" : "hours"}`)
 }

@@ -129,6 +129,8 @@ function Lien({ to, children, vedette }: { to: string; children: ReactNode; vede
   )
 }
 
+const PAGES_SANS_PIED = /^\/quiz\/(session|essai)/
+
 export function Footer() {
   useI18n()
   const year = new Date().getFullYear()
@@ -170,6 +172,10 @@ export function Footer() {
       .filter((c) => c.examen_display === examen && (!abonne || c.id === user?.cursus_prepare?.id))
       .sort((a, b) => (a.series?.code ?? "").localeCompare(b.series?.code ?? "", "fr")),
   })).filter((groupe) => groupe.cursus.length > 0)
+
+  // Pendant un quiz (séance ou essai) : ni pied de page ni invitation « Commencer ma séance » sous le bouton « Question suivante »
+  // (test élève Gogo) - l'élève est déjà dans sa séance, et la page n'a plus à vendre quoi que ce soit.
+  if (PAGES_SANS_PIED.test(pathname)) return null
 
   return (
     <footer className="mt-auto border-t border-border/80 bg-secondary/30">

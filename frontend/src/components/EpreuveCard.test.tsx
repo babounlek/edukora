@@ -4,6 +4,10 @@ import { beforeAll, describe, expect, it, vi } from "vitest"
 
 import type { Epreuve, MesTentatives } from "@/api/types"
 
+// « Gratuit » ne s'affiche pas à un abonné (voir useAbonneActif) : le hook lit le contexte d'authentification, absent ici.
+const eleve = vi.hoisted(() => ({ abonne: false }))
+vi.mock("@/lib/abonneActif", () => ({ useAbonneActif: () => eleve.abonne }))
+
 import { EpreuveCard } from "./EpreuveCard"
 import { EpreuveListRow } from "./EpreuveListRow"
 
@@ -79,5 +83,29 @@ describe("EpreuveListRow, épreuve inédite", () => {
 
     render(<MemoryRouter><EpreuveListRow epreuve={inedite({ mes_tentatives: mes({ en_cours: true }) })} /></MemoryRouter>)
     expect(screen.getByText("En cours")).toBeInTheDocument()
+  })
+})
+
+describe("EpreuveCard et EpreuveListRow : badge « Gratuit » (test élève Gogo)", () => {
+  const gratuite = () => inedite({ kind: "classique", est_vitrine: true, has_access: true, slug: "maths-2019", title: "Maths 2019" })
+
+  it("le montre à un visiteur", () => {
+    eleve.abonne = false
+    carte(gratuite())
+    expect(screen.getByText("Gratuit")).toBeInTheDocument()
+  })
+
+  it("ne le montre pas à un abonné, pour qui tout est ouvert", () => {
+    eleve.abonne = true
+    carte(gratuite())
+    expect(screen.queryByText("Gratuit")).not.toBeInTheDocument()
+    expect(screen.queryByText("Lecture libre")).not.toBeInTheDocument()
+  })
+
+  it("même règle dans la liste", () => {
+    eleve.abonne = true
+    render(<MemoryRouter><EpreuveListRow epreuve={gratuite()} /></MemoryRouter>)
+    expect(screen.queryByText("Gratuit")).not.toBeInTheDocument()
+    eleve.abonne = false
   })
 })

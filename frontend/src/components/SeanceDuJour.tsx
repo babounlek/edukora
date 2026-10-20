@@ -815,14 +815,18 @@ function RaisonsSeance({ seance, sansRaisonsDites }: { seance: Seance; sansRaiso
   if (raisons.length === 0) return null
   return (
     <ul className="mt-3 flex flex-col gap-1">
-      {raisons.map((raison) => (
-        <li key={raison.code} className="flex items-start gap-2 text-xs text-muted-foreground">
-          <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15">
-            <Check className="size-2.5 text-primary" strokeWidth={3} />
-          </span>
-          {raison.texte}
-        </li>
-      ))}
+      {raisons.map((raison) => {
+        // Une coche dit « fait » : devant « Tu ne l'as encore jamais travaillé » elle disait l'inverse (test élève Gogo).
+        const Icone = raison.code === "jamais" ? Sparkles : Check
+        return (
+          <li key={raison.code} className="flex items-start gap-2 text-xs text-muted-foreground">
+            <span className="mt-px flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15">
+              <Icone className="size-2.5 text-primary" strokeWidth={3} aria-hidden="true" />
+            </span>
+            {raison.texte}
+          </li>
+        )
+      })}
     </ul>
   )
 }

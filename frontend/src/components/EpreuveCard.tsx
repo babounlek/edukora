@@ -10,6 +10,8 @@ import { epreuveDetailPath, epreuveInediteDetailPath } from "@/lib/countryPath"
 import { useIsTruncated } from "@/lib/useIsTruncated"
 import { actionInedite, libelleAction, libelleFaite } from "@/lib/statutInedite"
 import { t, tn, useI18n } from "@/lib/i18n"
+import { useAbonneActif } from "@/lib/abonneActif"
+import { formatDureeMinutes } from "@/lib/duration"
 import { libelleDuree, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -36,12 +38,14 @@ interface EpreuveCardProps {
  * (Blueprint.duree_minutes) - jamais les deux, jamais une durée inventée. */
 function dureeAffichee(epreuve: Epreuve): string | null {
   if (epreuve.duree_epreuve) return libelleDuree(epreuve.duree_epreuve)
-  if (epreuve.duree_minutes) return `${epreuve.duree_minutes} min`
+  if (epreuve.duree_minutes) return formatDureeMinutes(epreuve.duree_minutes)
   return null
 }
 
 export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, niveauTitre = 3 }: EpreuveCardProps) {
   useI18n()
+  // « Gratuit » et « Lecture libre » n'informent pas un abonné, pour qui tout est ouvert (test élève Gogo).
+  const abonne = useAbonneActif()
   const Titre = niveauTitre === 2 ? "h2" : "h3"
   const [titleRef, isTitleTruncated] = useIsTruncated<HTMLHeadingElement>()
   const country = epreuve.subject.country.code.toLowerCase()
@@ -138,7 +142,7 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                   {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}
                 </Badge>
               ))}
-            {epreuve.est_vitrine && (
+            {epreuve.est_vitrine && !abonne && (
               <Badge variant="success" className="gap-1">
                 <Sparkles className="size-3" />
                 {t("ep.gratuit")}
@@ -178,7 +182,7 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                       ? epreuve.has_access
                         ? libelleAction(actionInedite(epreuve.mes_tentatives))
                         : t("qd.essayer_gratuit")
-                      : epreuve.est_vitrine ? t("ep.lire_libre") : t("ep.lire_corrige")}
+                      : epreuve.est_vitrine && !abonne ? t("ep.lire_libre") : t("ep.lire_corrige")}
                   </span>
                 </>
               ) : (

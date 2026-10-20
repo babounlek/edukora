@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks } from "./markdown"
+import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, groupBareCoursLinks, italicizeQuotes, nomAccessibleDuChoix, normalizeMathBlocks } from "./markdown"
 
 describe("agrandirFractionsEnLigne", () => {
   it("passe en \\dfrac une chaîne d'égalités en ligne (test élève P1)", () => {
@@ -321,5 +321,21 @@ describe("normalizeMathBlocks dans une citation", () => {
     expect(lignes.every((l) => l.startsWith(">"))).toBe(true)
     expect(result).toContain("> \hline")
     expect(result.match(/> \$\$/g)).toHaveLength(2)
+  })
+})
+
+describe("nomAccessibleDuChoix", () => {
+  it("nomme un choix en texte simple avec sa lettre", () => {
+    expect(nomAccessibleDuChoix("a", "35")).toBe("A. 35")
+    expect(nomAccessibleDuChoix("b", "$128$ m")).toBe("B. 128 m")
+  })
+
+  it("ne pose rien sur un choix qui porte une formule : le contenu du bouton la dit mieux", () => {
+    expect(nomAccessibleDuChoix("c", "$\dfrac{1}{2}$")).toBeUndefined()
+    expect(nomAccessibleDuChoix("d", "$x^2$")).toBeUndefined()
+  })
+
+  it("ne pose rien sur un choix vide", () => {
+    expect(nomAccessibleDuChoix("a", "  ")).toBeUndefined()
   })
 })

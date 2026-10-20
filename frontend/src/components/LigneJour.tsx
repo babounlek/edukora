@@ -14,6 +14,7 @@ import { t, useI18n } from "@/lib/i18n"
 export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }) {
   useI18n()
   const initiales = t("ligne.initiales").split(",")
+  const noms = t("gl.sem_noms").split(",")
   const semaine = serie.semaine
   const part = etat.objectif > 0 ? Math.min(100, Math.round((100 * etat.xp) / etat.objectif)) : 0
 
@@ -61,7 +62,8 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
               <li
                 key={jour.date}
                 role="img"
-                aria-label={jour.fait ? t("ligne.travaille") : jour.aujourdhui ? t("ligne.aujourdhui_pas_encore") : t("ligne.non_travaille")}
+                aria-label={`${noms[i]}, ${jour.fait ? t("ligne.travaille") : jour.aujourdhui ? t("ligne.aujourdhui_pas_encore") : t("ligne.non_travaille")}`}
+                title={noms[i]}
                 className={cn(
                   "flex size-5 items-center justify-center rounded-full border text-[0.6rem] font-semibold",
                   jour.fait ? "border-gold/50 bg-gold/20 text-gold-text" : "border-border bg-card text-muted-foreground",

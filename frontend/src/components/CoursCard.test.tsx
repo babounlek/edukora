@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import type { Cours } from "@/api/types"
+
+// « Gratuit » ne s'affiche pas à un abonné (voir useAbonneActif) : le hook lit le contexte d'authentification, absent ici.
+vi.mock("@/lib/abonneActif", () => ({ useAbonneActif: () => false }))
 
 import { CoursCard } from "./CoursCard"
 import { CoursListRow } from "./CoursListRow"
