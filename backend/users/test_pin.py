@@ -176,10 +176,30 @@ class ModeParentTests(FamilleTestCase):
         demande = self.client_parent.post("/auth/parent/reinitialiser/demander/")
         self.assertEqual(demande.status_code, 200)
         mock_request.assert_called_once()
+        # L'écran de saisie doit dire par où le code est parti, sans afficher le numéro en entier.
+        self.assertEqual(demande.data["canal"], "sms")
+        self.assertTrue(demande.data["destination"].endswith("001"))
+        self.assertNotIn("677400", demande.data["destination"])
 
         confirmation = self.client_parent.post("/auth/parent/reinitialiser/confirmer/", {"code": "123456"}, format="json")
         self.assertEqual(confirmation.status_code, 200)
         self.assertFalse(confirmation.data["pin_parent_actif"])
+
+
+    @patch("users.views.request_email_code")
+    def test_reset_code_sent_by_email_says_so_with_a_masked_address(self, mock_request):
+        self.definir_pin_parent()
+        self.parent.phone_number = None
+        self.parent.email = "parent@exemple.com"
+        self.parent.email_verified = True
+        self.parent.save()
+
+        demande = self.client_parent.post("/auth/parent/reinitialiser/demander/")
+
+        self.assertEqual(demande.status_code, 200)
+        mock_request.assert_called_once()
+        self.assertEqual(demande.data["canal"], "email")
+        self.assertEqual(demande.data["destination"], "p•••@exemple.com")
 
 
 class SessionEnfantTests(FamilleTestCase):

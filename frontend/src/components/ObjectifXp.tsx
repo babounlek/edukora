@@ -25,7 +25,8 @@ export function ObjectifXp({ etat, compact = false, className }: { etat: EtatXp;
           {compact ? "" : t("gl.xp_objectif")}
         </span>
         <span className={cn("tabular-nums", etat.atteint ? "font-semibold text-success" : "text-muted-foreground")}>
-          {t("gl.xp_points", { xp: etat.xp, objectif: etat.objectif })}
+          {/* Au-delà de l'objectif, « 35 / 20 points » se lit comme un score au-dessus du maximum (test élève Gogo) : on dit « atteint ». */}
+          {etat.xp > etat.objectif ? t("gl.xp_depasse", { xp: etat.xp }) : t("gl.xp_points", { xp: etat.xp, objectif: etat.objectif })}
         </span>
       </div>
       <div

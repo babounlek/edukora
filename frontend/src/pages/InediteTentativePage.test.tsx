@@ -84,6 +84,32 @@ beforeEach(() => {
 })
 
 describe("InediteTentativePage", () => {
+  it("en relecture, une QCM laissée sans réponse le dit, une QCM répondue non", async () => {
+    api.getTentativeInedite.mockResolvedValue(
+      tentative({
+        submitted_at: "2026-09-26T11:00:00Z",
+        notation: notation({ definitive: true }),
+        exercices: [{
+          id: 1, numero_exercice: "1", points: "2", groupes: [], enonce_intro_markdown: "",
+          questions: [
+            question(1, "1", {
+              type_reponse: "QCM", points: 1, reponse_correcte: "A", traitee: true,
+              choix: [{ lettre: "A", texte: "Oui" }, { lettre: "B", texte: "Non" }],
+              reponse: { reponse_choisie: "A", resultat_declare: "", notee: true },
+            }),
+            question(2, "2", {
+              type_reponse: "QCM", points: 1, reponse_correcte: "B", traitee: false,
+              choix: [{ lettre: "A", texte: "Oui" }, { lettre: "B", texte: "Non" }],
+            }),
+          ],
+        }],
+      }),
+    )
+    afficher()
+
+    expect(await screen.findAllByText("Non traitée : cette question vaut 0 point.")).toHaveLength(1)
+  })
+
   it("marque une question traitée : appel serveur, avancement et note mis à jour", async () => {
     api.getTentativeInedite.mockResolvedValue(tentative())
     api.noterTentativeQuestion.mockResolvedValue({
@@ -113,6 +139,50 @@ describe("InediteTentativePage", () => {
     expect(screen.getAllByRole("checkbox", { name: /J'ai traité cette question/ })).toHaveLength(2)
   })
 
+  it("garde « Ex. 2 · Q1 » dans un paper à plusieurs exercices", async () => {
+    api.getTentativeInedite.mockResolvedValue(
+      tentative({
+        exercices: [
+          { id: 1, numero_exercice: "1", points: "4", groupes: [], enonce_intro_markdown: "", questions: [question(1, "1")] },
+          { id: 2, numero_exercice: "2", points: "4", groupes: [], enonce_intro_markdown: "", questions: [question(2, "1")] },
+        ],
+      }),
+    )
+    afficher()
+
+    await userEvent.click(await screen.findByRole("button", { name: /Terminer/ }))
+
+    const dialogue = await screen.findByRole("dialog")
+    expect(within(dialogue).getByRole("button", { name: "Ex. 2 · Q1" })).toBeInTheDocument()
+  })
+
+  it("après la copie rendue, la carte distingue juste, fausse et non traitée pour une QCM", async () => {
+    const choix = [{ lettre: "a", texte: "A" }, { lettre: "b", texte: "B" }]
+    const qcm = (id: number, extra: Partial<TentativeInediteQuestion>) =>
+      question(id, String(id), { type_reponse: "QCM", choix, reponse_correcte: "a", ...extra })
+    api.getTentativeInedite.mockResolvedValue(
+      tentative({
+        submitted_at: "2026-09-26T11:00:00Z",
+        notation: notation({ definitive: true }),
+        exercices: [{
+          id: 1, numero_exercice: "1", points: "3", groupes: [], enonce_intro_markdown: "",
+          questions: [
+            qcm(1, { traitee: true, reponse: { reponse_choisie: "a", resultat_declare: "", est_correcte: true } }),
+            qcm(2, { traitee: true, reponse: { reponse_choisie: "b", resultat_declare: "", est_correcte: false } }),
+            qcm(3, {}),
+          ],
+        }],
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByRole("button", { name: /question 1, juste/ })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /question 2, fausse/ })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /question 3, non traitée/ })).toBeInTheDocument()
+    // La légende ne propose que les états présents : pas de « à noter » dans un paper de QCM.
+    expect(screen.queryByText("à noter")).toBeNull()
+  })
+
   it("demande confirmation avant de rendre la copie et liste les questions non traitées", async () => {
     api.getTentativeInedite.mockResolvedValue(tentative())
     api.completeTentative.mockResolvedValue({})
@@ -122,7 +192,8 @@ describe("InediteTentativePage", () => {
 
     const dialogue = await screen.findByRole("dialog")
     expect(within(dialogue).getByText(/2 questions non traitées valent 0 point/)).toBeInTheDocument()
-    expect(within(dialogue).getByRole("button", { name: "Ex. 1 · Q1" })).toBeInTheDocument()
+    // Un seul exercice : « Q1 » suffit, « Ex. 1 » devant chaque numéro n'apprend rien.
+    expect(within(dialogue).getByRole("button", { name: "Q1" })).toBeInTheDocument()
     expect(api.completeTentative).not.toHaveBeenCalled()
 
     api.getTentativeInedite.mockResolvedValue(

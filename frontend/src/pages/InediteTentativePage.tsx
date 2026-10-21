@@ -78,11 +78,15 @@ function flattenQuestions(tentative: TentativeInedite): FlatQuestion[] {
   )
 }
 
-function repere(question: FlatQuestion, unite: "question" | "exercice") {
-  return {
-    id: question.id,
-    label: unite === "exercice" ? t("ed.exercice_n", { n: question.numero_exercice }) : t("ct.repere_question", { n: question.numero_exercice, q: question.numero }),
-  }
+// Un paper à un seul exercice (le Paper 1 d'un GCE : 50 QCM) n'a pas besoin de dire « Ex. 1 » devant chaque numéro.
+function repere(question: FlatQuestion, unite: "question" | "exercice", unSeulExercice = false) {
+  const label =
+    unite === "exercice"
+      ? t("ed.exercice_n", { n: question.numero_exercice })
+      : unSeulExercice
+        ? t("ct.repere_question_seule", { q: question.numero })
+        : t("ct.repere_question", { n: question.numero_exercice, q: question.numero })
+  return { id: question.id, label }
 }
 
 function scrollToQuestion(questionId: number) {
@@ -97,11 +101,15 @@ const REPONSE_VIDE = { reponse_choisie: "", resultat_declare: "" }
 /** Ce qui attend le retour du réseau pour une question (voir fileHorsLigne). */
 type EnvoiEnAttente = { type: "qcm"; lettre: string } | { type: "noter"; corps: NoterTentativeQuestionParams }
 
-/** Avant la copie rendue : traitée ou pas. Après : à noter, notée, ou non traitée. */
+/** Avant la copie rendue : traitée ou pas. Après : non faite, à noter, notée, ou (une QCM) juste ou fausse. */
 function etatPastille(question: FlatQuestion, rendue: boolean): EtatPastille {
-  if (!question.traitee) return "a_traiter"
+  if (!question.traitee) return rendue ? "non_faite" : "a_traiter"
   if (!rendue) return "traitee"
-  return estANoter(question) ? "a_noter" : "notee"
+  if (estANoter(question)) return "a_noter"
+  if (question.type_reponse === "QCM" && typeof question.reponse?.est_correcte === "boolean") {
+    return question.reponse.est_correcte ? "juste" : "fausse"
+  }
+  return "notee"
 }
 
 export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpreuve }) {
@@ -398,8 +406,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const rendue = tentative.submitted_at !== null
   const enExamen = tentative.exam_mode_started_at !== null && !rendue
   const traiteesCount = questions.filter((q) => q.traitee).length
-  const nonTraitees = questions.filter((q) => !q.traitee).map((q) => repere(q, unite))
-  const aRevoir = questions.filter((q) => flaggedIds.has(q.id)).map((q) => repere(q, unite))
+  const unSeulExercice = tentative.exercices.length === 1
+  const nonTraitees = questions.filter((q) => !q.traitee).map((q) => repere(q, unite, unSeulExercice))
+  const aRevoir = questions.filter((q) => flaggedIds.has(q.id)).map((q) => repere(q, unite, unSeulExercice))
   const pourcentageTraitees = questions.length ? (traiteesCount / questions.length) * 100 : 0
   const enPapier = enExamen && tentative.mode_papier
   // Le briefing ne s'affiche que tant que rien n'est engagé : ni chrono, ni question traitée.
@@ -771,7 +780,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
 
             {!rendue ? (
               <Button size="sm" disabled={finishing} onClick={handleTerminerClick}>
-                {t("ct.terminer")}<span className="hidden sm:inline">{t("ct.terminer_suite")}</span>
+                <span>
+                  {t("ct.terminer")}
+                  <span className="hidden sm:inline">{t("ct.terminer_suite")}</span>
+                </span>
               </Button>
             ) : (
               <Button asChild size="sm">
@@ -986,7 +998,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                             "flex min-h-11 items-center justify-between gap-2 rounded-md border px-3.5 py-2.5 text-left text-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-default",
                             isCorrectChoice && "border-success bg-success/10",
                             isWrongSelected && "border-destructive bg-destructive/10",
-                            !showCorrection && isSelected && "border-primary bg-primary/5",
+                            !showCorrection && isSelected && "border-primary bg-primary/10 ring-1 ring-primary",
                             !showCorrection && !isSelected && "border-border hover:bg-accent/40",
                             showCorrection && !isSelected && !isCorrectChoice && "border-border opacity-60",
                           )}
@@ -994,11 +1006,15 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                           <span>
                             <span className="font-medium">{choix.lettre.toUpperCase()}.</span> <ChoixText texte={choix.texte} />
                           </span>
+                          {!showCorrection && isSelected && <Check aria-hidden="true" className="size-4 shrink-0 text-primary" />}
                           {isCorrectChoice && <Check className="size-4 shrink-0 text-success" />}
                           {isWrongSelected && <X className="size-4 shrink-0 text-destructive" />}
                         </button>
                       )
                     })}
+                    {showCorrection && !question.traitee && (
+                      <p className="text-sm text-muted-foreground">{tu("ct.non_traite", unite)}</p>
+                    )}
                   </div>
                 ) : (
                   <div className="mt-3 flex flex-col gap-3">

@@ -64,7 +64,9 @@ const SAVOIRS_PAGE_SIZE = 25
  * n'aiderait personne, il n'y a rien à y faire (voir compterBuckets, même critère
  * pour "sans_contenu"). */
 function prochainesEtapes(savoirs: SavoirEnrichi[]): SavoirEnrichi[] | "diagnostic" {
-  const aUnHistorique = savoirs.some((s) => s.taux !== null)
+  // Un thème en révision est déjà un historique : une épreuve rendue n'alimente que la file de révision (pas de `taux`, qui vient
+  // des quiz). Sans cela, l'élève qui venait de passer un paper de 50 questions lisait « tu n'as encore rien tenté » (test élève Gogo).
+  const aUnHistorique = savoirs.some((s) => s.taux !== null || s.en_revision)
   if (!aUnHistorique) return "diagnostic"
   const actionnables = savoirs.filter((s) => s.has_quiz || s.cours.length > 0)
   const enRevision = actionnables.filter((s) => s.en_revision)

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest"
 
 import { definirLangue } from "@/lib/i18n"
-import { libelleDuree, libelleEnteteExercice, libelleNiveauExercice } from "./libellesEpreuve"
+import { libelleDuree, libelleEnteteExercice, libelleNiveauExercice, libelleTitreExercice } from "./libellesEpreuve"
 
 afterEach(async () => {
   await definirLangue("fr", { persister: false })
@@ -27,6 +27,15 @@ describe("niveau d'un exercice d'application", () => {
     expect(libelleNiveauExercice("élevée")).toBe("Hard")
     expect(libelleNiveauExercice("Élevé")).toBe("Hard")
     expect(libelleNiveauExercice("difficile")).toBe("Hard")
+  })
+
+  it("titre d'exercice : inchangé en français, « Exercise N » en anglais, les autres titres gardés", async () => {
+    expect(libelleTitreExercice("Exercice 4")).toBe("Exercice 4")
+    await definirLangue("en", { persister: false })
+    expect(libelleTitreExercice("Exercice 4")).toBe("Exercise 4")
+    expect(libelleTitreExercice("Exercice IV")).toBe("Exercise IV")
+    expect(libelleTitreExercice("Problème")).toBe("Problème")
+    expect(libelleTitreExercice("")).toBe("")
   })
 
   it("en-tête d'exercice : inchangé en français", () => {

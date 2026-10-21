@@ -308,6 +308,33 @@ def _classer(lignes, termes, signaux):
 ECART_PHONETIQUE_MAX = 4
 
 
+def proposer(jeton, maximum=4):
+    """Les mots du catalogue les plus proches de `jeton` (qui n'existe nulle part, même pas comme début de mot),
+    du plus proche au moins proche : d'abord ceux de même PRONONCIATION, puis ceux à une ou deux fautes de frappe.
+    Liste vide si le mot existe ou n'a pas de voisin. Voir `corriger` pour les règles de proximité."""
+    if len(jeton) < 4 or TermeRecherche.objects.filter(terme__startswith=jeton).exists():
+        return []
+    candidats = {}
+    cle = texte.phonetique(jeton)
+    if len(cle) >= 3:
+        for terme, frequence in TermeRecherche.objects.filter(phonetique=cle).values_list("terme", "frequence"):
+            ecart = texte.distance(jeton, terme, ECART_PHONETIQUE_MAX)
+            if ecart <= ECART_PHONETIQUE_MAX:
+                candidats[terme] = (0, ecart, -frequence)
+    tolerance = 1 if len(jeton) <= 5 else 2
+    proches = (
+        TermeRecherche.objects.filter(terme__startswith=jeton[0])
+        .annotate(longueur=Length("terme"))
+        .filter(longueur__gte=len(jeton) - tolerance, longueur__lte=len(jeton) + tolerance)
+        .values_list("terme", "frequence")
+    )
+    for terme, frequence in proches:
+        ecart = texte.distance(jeton, terme, tolerance)
+        if ecart <= tolerance and terme not in candidats:
+            candidats[terme] = (1, ecart, -frequence)
+    return sorted(candidats, key=candidats.get)[:maximum]
+
+
 def corriger(jetons):
     """{jeton: mot du catalogue le plus proche} pour les jetons qui n'existent nulle part (même
     pas comme début de mot).
@@ -319,30 +346,25 @@ def corriger(jetons):
     À égalité, le mot le plus fréquent du catalogue gagne."""
     corrections = {}
     for jeton in jetons:
-        if len(jeton) < 4 or TermeRecherche.objects.filter(terme__startswith=jeton).exists():
-            continue
-        meilleur = None
-        cle = texte.phonetique(jeton)
-        if len(cle) >= 3:
-            for terme, frequence in TermeRecherche.objects.filter(phonetique=cle).values_list("terme", "frequence"):
-                ecart = texte.distance(jeton, terme, ECART_PHONETIQUE_MAX)
-                if ecart <= ECART_PHONETIQUE_MAX and (meilleur is None or (ecart, -frequence) < meilleur[0]):
-                    meilleur = ((ecart, -frequence), terme)
-        if meilleur is None:
-            tolerance = 1 if len(jeton) <= 5 else 2
-            proches = (
-                TermeRecherche.objects.filter(terme__startswith=jeton[0])
-                .annotate(longueur=Length("terme"))
-                .filter(longueur__gte=len(jeton) - tolerance, longueur__lte=len(jeton) + tolerance)
-                .values_list("terme", "frequence")
-            )
-            for terme, frequence in proches:
-                ecart = texte.distance(jeton, terme, tolerance)
-                if ecart <= tolerance and (meilleur is None or (ecart, -frequence) < meilleur[0]):
-                    meilleur = ((ecart, -frequence), terme)
-        if meilleur:
-            corrections[jeton] = meilleur[1]
+        voisins = proposer(jeton, maximum=1)
+        if voisins:
+            corrections[jeton] = voisins[0]
     return corrections
+
+
+# Combien de corrections différentes on essaie avant de s'arrêter : chaque essai est une recherche complète.
+ESSAIS_CORRECTION_MAX = 6
+
+
+def _essais_de_correction(propositions):
+    """Les jeux de corrections à tester : le plus proche de chaque mot, puis chaque mot remplacé tour à tour par son
+    voisin suivant (les autres restant au plus proche)."""
+    premiers = {jeton: voisins[0] for jeton, voisins in propositions.items()}
+    essais = [premiers]
+    for jeton, voisins in propositions.items():
+        for voisin in voisins[1:]:
+            essais.append({**premiers, jeton: voisin})
+    return essais[:ESSAIS_CORRECTION_MAX]
 
 
 
@@ -602,13 +624,19 @@ def _recherche(pays, jetons, intention, *, cursus, matiere, type_, corriger_auto
     corrige = None
     if not lignes and corriger_auto:
         requis = [t.texte for t in termes if t.requis]
-        corrections = corriger(requis)
-        if corrections:
+        propositions = {jeton: voisins for jeton in requis if (voisins := proposer(jeton))}
+        # Le mot le plus proche (et le plus fréquent du catalogue) peut venir d'une autre langue : « pythagorus » donnait
+        # « pythagore » (1 résultat) au lieu de « pythagoras » (16) pour un élève de GCE. On garde donc, parmi quelques
+        # voisins, la correction qui donne le plus de résultats DANS les filtres de la recherche (examen, langue).
+        meilleur = None
+        for corrections in _essais_de_correction(propositions) if propositions else []:
             termes_corriges = _termes([corrections.get(t.texte, t.texte) for t in termes])
             lignes_corrigees = _lignes(pays, termes_corriges, **filtres)
-            if lignes_corrigees:
-                lignes, termes = lignes_corrigees, termes_corriges
-                corrige = _requete_corrigee(requete, corrections, langue)
+            if lignes_corrigees and (meilleur is None or len(lignes_corrigees) > len(meilleur[0])):
+                meilleur = (lignes_corrigees, termes_corriges, corrections)
+        if meilleur:
+            lignes, termes, corrections = meilleur
+            corrige = _requete_corrigee(requete, corrections, langue)
     return lignes, termes, corrige
 
 

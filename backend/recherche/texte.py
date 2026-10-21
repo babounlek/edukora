@@ -108,17 +108,77 @@ def enonce_public(intro, enonce, langue):
     return f"{traduire_entete_exercice(intro, langue) or ''}\n{traduire_entete_exercice(enonce, langue) or ''}"
 
 
-def nettoyer(markdown, limite=None):
+_SYMBOLES = {
+    "times": "×", "cdot": "·", "div": "÷", "pm": "±", "leq": "≤", "le": "≤", "geq": "≥", "ge": "≥", "neq": "≠",
+    "ne": "≠", "approx": "≈", "pi": "π", "theta": "θ", "alpha": "α", "beta": "β", "gamma": "γ", "Delta": "Δ",
+    "circ": "°", "angle": "∠", "triangle": "△", "rightarrow": "→", "to": "→", "infty": "∞", "in": "∈",
+    "perp": "⟂", "parallel": "∥", "%": "%", "cup": "∪", "cap": "∩", "sum": "Σ", "lambda": "λ", "mu": "μ",
+    "sigma": "σ", "omega": "ω", "Omega": "Ω", "ldots": "…", "dots": "…",
+}
+_MOT_FORMULE = re.compile(r"\\([A-Za-z]+|%)")
+_ENVELOPPE = re.compile(r"\\(?:text|mathrm|mathbf|mathit|textbf|operatorname|boxed|overrightarrow|vec|overline)\{([^{}]*)\}")
+_FRACTION = re.compile(r"\\d?frac\{([^{}]*)\}\{([^{}]*)\}")
+_RACINE_CARREE = re.compile(r"\\sqrt\{([^{}]*)\}")
+_EXPOSANT = {"2": "²", "3": "³"}
+_LONGUEUR_FORMULE_MAX = 60
+
+
+def _atome(morceau):
+    """`morceau` tel quel s'il se lit d'un trait (« 25 », « a »), entre parenthèses sinon (« a + b »)."""
+    morceau = morceau.strip()
+    return morceau if re.fullmatch(r"[\w.,]+", morceau) else f"({morceau})"
+
+
+def formule_lisible(formule):
+    """Une formule LaTeX (délimiteurs compris) en texte lisible pour un extrait de recherche : « $a^2+b^2=c^2$ » donne
+    « a² + b² = c² », « \\frac{3}{4} » donne « 3/4 ». Une approximation : jamais du LaTeX brut affiché, jamais une formule
+    longue (« … » à la place, l'élève l'ouvrira dans le contenu). Les extraits retiraient avant toute formule, d'où
+    « gives the length of the hypotenuse: . in a right-angled triangle » (test élève Gogo)."""
+    brut = formule.strip()
+    if brut.startswith("$$"):
+        brut = brut.strip("$")
+    elif brut.startswith("$"):
+        brut = brut.strip("$")
+    elif brut[:2] in ("\\(", "\\["):
+        brut = brut[2:-2]
+    brut = _ENVELOPPE.sub(r"\1", brut)
+    for _ in range(3):
+        brut = _FRACTION.sub(lambda m: f"{_atome(m.group(1))}/{_atome(m.group(2))}", brut)
+    brut = _RACINE_CARREE.sub(lambda m: "√" + _atome(m.group(1)), brut)
+    brut = re.sub(r"\^\s*\\circ", "°", brut)
+    brut = re.sub(r"\^\{?([23])\}?", lambda m: _EXPOSANT[m.group(1)], brut)
+    brut = re.sub(r"\^\{([^{}]*)\}", r"^\1", brut)
+    brut = re.sub(r"_\{([^{}]*)\}", r"_\1", brut)
+    brut = re.sub(r"\\[,;: ]|\\q?quad|\\left|\\right", " ", brut)
+    brut = _MOT_FORMULE.sub(lambda m: _SYMBOLES.get(m.group(1), ""), brut)
+    brut = brut.replace("{", "").replace("}", "")
+    brut = _ESPACES.sub(" ", brut).strip()
+    return brut if len(brut) <= _LONGUEUR_FORMULE_MAX else "…"
+
+
+def nettoyer(markdown, limite=None, formules=False):
     """Texte brut lisible d'un contenu Markdown/LaTeX : formules, images, liens (le libellé
-    est gardé), marqueurs internes et syntaxe retirés. `limite` tronque au dernier mot."""
+    est gardé), marqueurs internes et syntaxe retirés. `limite` tronque au dernier mot.
+
+    `formules=True` (extraits affichés à l'élève) garde les formules, en texte lisible (voir formule_lisible) ;
+    par défaut elles sont retirées, comme dans le texte indexé : leurs lettres seules (a, b, c, x) ne sont pas des mots à chercher."""
     if not markdown:
         return ""
     texte = str(markdown)
-    for motif in (_MATH_BLOC, _MATH_PAREN, _MATH_LIGNE, _IMAGE):
-        texte = motif.sub(" ", texte)
+    gardees = []
+
+    def garder(trouve):
+        gardees.append(formule_lisible(trouve.group(0)))
+        return f" \ue000{len(gardees) - 1}\ue001 "
+
+    for motif in (_MATH_BLOC, _MATH_PAREN, _MATH_LIGNE):
+        texte = motif.sub(garder if formules else " ", texte)
+    texte = _IMAGE.sub(" ", texte)
     texte = _LIEN.sub(r"\1", texte)
     for motif in (_MARQUEUR, _CALLOUT, _HTML, _SYNTAXE):
         texte = motif.sub(" ", texte)
+    # Les formules reviennent APRÈS le nettoyage : leurs « < », « > » ou « _ » ne doivent pas être pris pour du HTML ou de la syntaxe.
+    texte = re.sub("\ue000(\\d+)\ue001", lambda m: gardees[int(m.group(1))], texte)
     texte = _ESPACES.sub(" ", texte).strip()
     if limite is not None and len(texte) > limite:
         coupe = texte[:limite]
@@ -145,7 +205,7 @@ def _sans_repetition_initiale(brut):
 def apercu(markdown, longueur=170):
     """Extrait court affichable (texte déjà nettoyé, jamais du LaTeX tronqué en plein milieu),
     avec des points de suspension s'il a été coupé."""
-    brut = _sans_repetition_initiale(nettoyer(markdown))
+    brut = _sans_repetition_initiale(nettoyer(markdown, formules=True))
     if len(brut) <= longueur:
         return brut
     return nettoyer(brut, limite=longueur) + "…"
@@ -173,7 +233,7 @@ def extrait(markdown, jetons, longueur=170):
     """Passage de `markdown` autour de la première occurrence d'un des `jetons` (insensible aux
     accents et à la casse), coupé aux limites de mots, avec « … » aux extrémités tronquées. Chaîne
     vide si aucun jeton n'apparaît : l'appelant garde alors l'ouverture du texte."""
-    brut = _sans_repetition_initiale(nettoyer(markdown))
+    brut = _sans_repetition_initiale(nettoyer(markdown, formules=True))
     if not brut:
         return ""
     plie = _plier(brut)

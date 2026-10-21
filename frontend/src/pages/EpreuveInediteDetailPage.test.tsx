@@ -182,6 +182,18 @@ describe("fiche d'une épreuve inédite, pour un abonné", () => {
     auth.isAuthenticated = true
   })
 
+  it("dit que l'épreuve est comprise dans l'accès, mais pas quand elle est offerte (badge Gratuite)", async () => {
+    getEpreuveInedite.mockResolvedValue(epreuve({ has_access: true }))
+    const { unmount } = afficher()
+    expect(await screen.findByText("Cette épreuve est comprise dans ton accès.")).toBeInTheDocument()
+    unmount()
+
+    getEpreuveInedite.mockResolvedValue(epreuve({ has_access: true, est_vitrine: true }))
+    afficher()
+    await screen.findByText("Comment veux-tu la passer ?")
+    expect(screen.queryByText("Cette épreuve est comprise dans ton accès.")).not.toBeInTheDocument()
+  })
+
   it("propose le choix du mode sur la fiche, sans bouton « Commencer » intermédiaire", async () => {
     getEpreuveInedite.mockResolvedValue(epreuve({ has_access: true }))
     afficher()

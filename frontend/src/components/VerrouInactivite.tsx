@@ -4,7 +4,7 @@ import { Loader2, Lock, UserCircle } from "lucide-react"
 import { ApiError } from "@/api/client"
 import type { Profil } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
-import { activerProfilProtege, useProfils } from "@/lib/changerProfilActif"
+import { activerProfilProtege, rechargerSurAccueil, useProfils } from "@/lib/changerProfilActif"
 import { PinAnnule } from "@/lib/pinPrompts"
 import { useModeExamen } from "@/lib/modeExamen"
 import { Button } from "@/components/ui/button"
@@ -109,7 +109,7 @@ export function VerrouInactivite() {
       } else {
         // Un autre enfant : toutes les données scopées par profil changent, comme pour
         // le sélecteur du menu (voir useChangerProfilActif).
-        window.location.reload()
+        rechargerSurAccueil()
       }
     } catch (err) {
       if (!(err instanceof PinAnnule)) {

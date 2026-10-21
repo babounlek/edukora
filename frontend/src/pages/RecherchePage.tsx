@@ -175,6 +175,12 @@ export function RecherchePage() {
   const attente = termes.length >= LONGUEUR_MIN_RECHERCHE && (cursusDeclare === undefined || ensemble.isLoading)
   // Les filtres (matière, type) n'existent qu'une fois des résultats connus : ils s'en déduisent.
   const filtrable = data !== undefined && data.indexe && data.total > 0
+  // Dans un onglet (Cours, Quiz...), le nombre en tête est celui de l'onglet - pas celui de toute la recherche, qui
+  // annonçait « 37 résultats » au-dessus de 3 cartes. Un onglet resté dans l'adresse alors que la recherche ne donne
+  // rien dans ce type (autre examen, autre requête) n'est pas une page vide : on le dit, avec la sortie.
+  const totalOnglet = famille
+    ? groupes.filter((g) => famille.types.includes(g.type)).reduce((somme, g) => somme + g.total, 0)
+    : (data?.total ?? 0)
 
   // Le meilleur thème de la vue d'ensemble : mis en avant avec de quoi agir (cours, exercices, quiz).
   // Seulement s'il a de quoi proposer, et jamais dans une vue filtrée par type - la carte est une porte
@@ -479,10 +485,10 @@ export function RecherchePage() {
         </p>
       ) : data ? (
         <div aria-busy={ensemble.isFetching}>
-          {data.total > 0 && (
+          {data.total > 0 && totalOnglet > 0 && (
             <p className="mt-5 text-sm text-muted-foreground" aria-live="polite">
-              <strong className="font-display text-base font-semibold text-foreground">{data.total}</strong>{" "}
-              {tn("rc.resultats_pour", data.total, { q: termes })}
+              <strong className="font-display text-base font-semibold text-foreground">{totalOnglet}</strong>{" "}
+              {tn("rc.resultats_pour", totalOnglet, { q: termes })}
             </p>
           )}
           {data.corrige && (
@@ -593,6 +599,17 @@ export function RecherchePage() {
                       )
                     })}
                   </div>
+                </div>
+              ) : totalOnglet === 0 ? (
+                <div role="status" className="mt-6 rounded-xl border border-dashed border-border bg-muted/30 px-4 py-6 text-center">
+                  <p className="text-sm font-medium">{t("rc.famille_vide", { famille: famille.libelle, q: termes })}</p>
+                  <button
+                    type="button"
+                    onClick={() => majParams({ type: null })}
+                    className="mt-2 text-sm font-medium text-primary hover:underline"
+                  >
+                    {tn("rc.voir_tout", data.total)}
+                  </button>
                 </div>
               ) : (
                 <div className="mt-6 space-y-9">

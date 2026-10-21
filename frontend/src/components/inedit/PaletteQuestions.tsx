@@ -7,7 +7,9 @@ import { cn } from "@/lib/utils"
 import { tu, libellesUnite, type Unite } from "@/lib/vocabulaire"
 import { t, useI18n } from "@/lib/i18n"
 
-export type EtatPastille = "a_traiter" | "traitee" | "a_noter" | "notee"
+// Après la copie rendue, une QCM est « juste » ou « fausse » (on la voit tout de suite) ; une question jamais traitée est « non_faite » :
+// elle ne se confond ni avec une faute ni avec une question encore à faire.
+export type EtatPastille = "a_traiter" | "traitee" | "a_noter" | "notee" | "juste" | "fausse" | "non_faite"
 
 export interface PastilleQuestion {
   id: number
@@ -27,6 +29,9 @@ function libelleEtat(unite: Unite): Record<EtatPastille, string> {
     traitee: tu("pa.traitee", unite),
     a_noter: t("pa.a_noter"),
     notee: tu("pa.notee", unite),
+    juste: t("pa.juste"),
+    fausse: t("pa.fausse"),
+    non_faite: tu("pa.non_faite", unite),
   }
 }
 
@@ -35,6 +40,9 @@ const STYLE_ETAT: Record<EtatPastille, string> = {
   traitee: "border-primary bg-primary text-primary-foreground",
   a_noter: "border-warning bg-warning/10 text-foreground",
   notee: "border-success bg-success/15 text-foreground",
+  juste: "border-success bg-success/15 text-foreground",
+  fausse: "border-destructive bg-destructive/10 text-foreground",
+  non_faite: "border-dashed border-border text-muted-foreground hover:bg-accent/40",
 }
 
 interface PaletteProps {
@@ -55,7 +63,10 @@ export function PaletteQuestions({ groupes, courante, rendue, unite = "question"
   useI18n()
   const m = libellesUnite(unite)
   const LIBELLE_ETAT = libelleEtat(unite)
-  const legende: EtatPastille[] = rendue ? ["a_noter", "notee", "a_traiter"] : ["traitee", "a_traiter"]
+  // Copie rendue : seulement les états qui existent dans cette épreuve (une épreuve de QCM n'a rien « à noter »).
+  const presents = new Set(groupes.flatMap((groupe) => groupe.pastilles.map((pastille) => pastille.etat)))
+  const ORDRE_RENDUE: EtatPastille[] = ["juste", "fausse", "a_noter", "notee", "non_faite"]
+  const legende: EtatPastille[] = rendue ? ORDRE_RENDUE.filter((etat) => presents.has(etat)) : ["traitee", "a_traiter"]
 
   return (
     <nav aria-label={t("pa.aria")} className="flex flex-col gap-4">
@@ -80,7 +91,7 @@ export function PaletteQuestions({ groupes, courante, rendue, unite = "question"
                   {pastille.aRevoir && (
                     <Flag
                       aria-hidden="true"
-                      className="absolute -right-1 -top-1 size-3.5 fill-gold text-gold-text drop-shadow-sm"
+                      className="absolute -right-1.5 -top-1.5 size-4 fill-gold text-gold-text drop-shadow-sm"
                     />
                   )}
                 </button>

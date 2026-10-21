@@ -947,7 +947,8 @@ def construire_parcours(profil, cursus, subject):
     if themes is not None:
         return [{
             "numero": "",
-            "titre": "Les thèmes qui reviennent le plus à l'examen",
+            # Dans la langue du cursus : l'élève du GCE lisait ce titre en français (test élève Gogo).
+            "titre": textes.texte("parcours.titre_themes", textes.langue_de(cursus)),
             "savoirs": themes,
         }]
 

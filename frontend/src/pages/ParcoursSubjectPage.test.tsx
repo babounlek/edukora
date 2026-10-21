@@ -69,6 +69,31 @@ describe("ParcoursSubjectPage - pastilles d'examen", () => {
     expect(getParcours).not.toHaveBeenCalledWith(20, 5)
   })
 
+  describe("prochaine étape", () => {
+    const savoir = (id: number, extra: Partial<Record<string, unknown>> = {}) => ({
+      id, numero: String(id), intitule: `Thème ${id}`, taux: null, en_revision: false, a_lu_le_cours: false,
+      has_quiz: true, cours: [], ...extra,
+    })
+    const parcours = (...savoirs: ReturnType<typeof savoir>[]) => [{ numero: "", titre: "Les thèmes", savoirs }]
+
+    it("propose le test de positionnement quand rien n'a été tenté", async () => {
+      getParcours.mockResolvedValue(parcours(savoir(1), savoir(2)))
+      afficher("/parcours/5")
+
+      expect(await screen.findByText("Commence par te situer")).toBeTruthy()
+    })
+
+    it("ne dit pas « rien tenté » quand une épreuve rendue a mis des thèmes en révision", async () => {
+      // Une épreuve rendue alimente la file de révision, pas le taux de quiz.
+      getParcours.mockResolvedValue(parcours(savoir(1, { en_revision: true }), savoir(2, { en_revision: true }), savoir(3)))
+      afficher("/parcours/5")
+
+      // Le thème en révision est recommandé en tête de page (carte « à faire ») ET listé en dessous.
+      expect((await screen.findAllByText("Thème 1")).length).toBeGreaterThanOrEqual(2)
+      expect(screen.queryByText("Commence par te situer")).toBeNull()
+    })
+  })
+
   it("garde un lien direct ?cursus= vers l'autre examen", async () => {
     afficher("/parcours/5?cursus=20")
     await waitFor(() => expect(getParcours).toHaveBeenCalledWith(20, 5))

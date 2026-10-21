@@ -223,7 +223,10 @@ export function retirerPinParent(pinActuel: string) {
 
 /** PIN parent oublié : un code part vers le numéro (ou l'e-mail confirmé) du compte. */
 export function demanderReinitialisationPinParent() {
-  return apiRequest<{ message: string }>("/auth/parent/reinitialiser/demander/", { method: "POST" })
+  return apiRequest<{ message: string; canal: "sms" | "email"; destination: string }>(
+    "/auth/parent/reinitialiser/demander/",
+    { method: "POST" },
+  )
 }
 
 export function confirmerReinitialisationPinParent(code: string) {

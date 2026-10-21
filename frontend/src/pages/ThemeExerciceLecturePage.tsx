@@ -34,6 +34,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { Button } from "@/components/ui/button"
@@ -113,7 +114,7 @@ export function ThemeExerciceLecturePage() {
 
   useSeo({
     title: data
-      ? `${data.exercise.titre || t("ed.exercice_n", { n: data.exercise.numero_exercice })} - ${capitaliserTheme(data.theme.name)}`
+      ? `${libelleTitreExercice(data.exercise.titre) || t("ed.exercice_n", { n: data.exercise.numero_exercice })} - ${capitaliserTheme(data.theme.name)}`
       : t("tl.seo_defaut"),
   })
 
@@ -313,7 +314,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
               {` · ${t(ORIGINES[lesson.origine] ?? ORIGINES.AUTRE)}`}
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
-              {exercise.titre || t("ed.exercice_n", { n: exercise.numero_exercice })}
+              {libelleTitreExercice(exercise.titre) || t("ed.exercice_n", { n: exercise.numero_exercice })}
               {exercise.points && (
                 <span className="ml-3 inline-block translate-y-[-0.2em] rounded-full bg-card px-2.5 py-0.5 align-middle font-sans text-sm font-medium tabular-nums text-muted-foreground shadow-xs">
                   {exercise.points.replace(/\.0+$/, "")} pts
@@ -382,7 +383,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
 
       {data.enonce_intro_markdown && (
         <div className={cn(PROSE, "mb-5 rounded-2xl border border-border bg-card p-4 sm:p-6")}>
-          <EpreuveMarkdown markdown={data.enonce_intro_markdown} />
+          <EpreuveMarkdown markdown={libelleEnteteExercice(data.enonce_intro_markdown)} />
         </div>
       )}
 
@@ -409,7 +410,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
           <CarteQuestion
             question={{
               numero: "*",
-              enonce_markdown: data.enonce_markdown,
+              enonce_markdown: libelleEnteteExercice(data.enonce_markdown),
               corrige_markdown: data.corrige_markdown,
               sur_le_theme: false,
             }}

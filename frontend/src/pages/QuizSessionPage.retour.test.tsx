@@ -106,3 +106,27 @@ describe("QuizSessionPage : le retour après l'auto-évaluation est amené à l'
     expect(defiler).not.toHaveBeenCalled()
   })
 })
+
+describe("QuizSessionPage : le pont vers les exercices du thème", () => {
+  beforeEach(() => {
+    sessionStorage.clear()
+    Element.prototype.scrollIntoView = vi.fn()
+  })
+  afterEach(() => sessionStorage.clear())
+
+  it("s'ouvre dans le même onglet : un lien de l'application, sans nouvel onglet", async () => {
+    // Test élève Gogo : le lien s'ouvrait dans un nouvel onglet, sans signe visible.
+    const repondue = (id: number) =>
+      question(id, {
+        corrige_markdown: "Le corrigé", theme_id: 7, subject_code: "MATHS",
+        reponse: { est_correcte: true, resultat_declare: "REUSSI", xp_gagne: 0 },
+      })
+    poserEssai([repondue(1), repondue(2)])
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: /Exercices corrigés/ })
+
+    expect(lien).toHaveAttribute("href", "/cm/themes-frequents/7/exercices?subject=MATHS&cursus=14")
+    expect(lien).not.toHaveAttribute("target")
+  })
+})

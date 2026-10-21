@@ -355,6 +355,14 @@ export function EpreuveInediteDetailPage() {
         <div ref={actionsRef} className="flex flex-wrap gap-2">
           {epreuve.has_access ? (
             <div className="flex w-full flex-col gap-3">
+              {/* Un abonné ne savait pas si cette épreuve était comprise dans son accès (test élève Gogo) :
+                  la gratuité a son badge, l'accès payé n'avait rien. */}
+              {!epreuve.est_vitrine && (
+                <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <Check className="size-4 shrink-0 text-success" aria-hidden="true" />
+                  {t("ine.comprise_acces")}
+                </p>
+              )}
               {reprise ? (
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-wrap items-center gap-2">

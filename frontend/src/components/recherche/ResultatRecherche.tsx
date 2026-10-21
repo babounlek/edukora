@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Surbrillance } from "@/components/recherche/Surbrillance"
 import { actionsTheme, cibleResultat, LIBELLES_TYPE } from "@/lib/recherche"
 import { couleurMatiere } from "@/lib/matiereCouleur"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n, langueCourante } from "@/lib/i18n"
 import { libelleType } from "@/lib/libellesEpreuve"
 import { cn } from "@/lib/utils"
 
@@ -37,8 +37,15 @@ const VERBE: Record<TypeResultatRecherche, string> = {
   get QUIZ() { return t("rc.verbe_quiz") },
 }
 
-// Le serveur nomme le type d'une épreuve en français (« Sujet », « Corrigé »...) : on le retrouve par son code.
-const CODE_TYPE_EPREUVE: Record<string, string> = { Fiche: "FICHE", "Corrigé": "CORR", Sujet: "SUJET" }
+// Le serveur nomme le type d'une épreuve en français (« Fiche de révision », « Corrigé d'annale », « Sujet inédit »...) :
+// on le retrouve par son début, pour le dire dans la langue de l'interface. Le libellé exact n'était pas reconnu, donc
+// « Corrigé d'annale » s'affichait en français sur une page anglaise (test élève Gogo).
+function codeTypeEpreuve(libelle: string): string | undefined {
+  if (libelle.startsWith("Fiche")) return "FICHE"
+  if (libelle.startsWith("Corrig")) return "CORR"
+  if (libelle.startsWith("Sujet")) return "SUJET"
+  return undefined
+}
 
 /** « BAC C · BAC E +2 », « Tous les examens » - les examens auxquels le résultat est proposé. */
 function libelleExamens(resultat: Resultat): string {
@@ -52,7 +59,9 @@ function libelleExamens(resultat: Resultat): string {
 function ligneMeta(resultat: Resultat): string {
   const parties = [
     resultat.type === "EPREUVE" && resultat.details.type_libelle
-      ? libelleType(CODE_TYPE_EPREUVE[resultat.details.type_libelle], resultat.details.type_libelle)
+      ? (langueCourante() === "fr"
+        ? resultat.details.type_libelle
+        : libelleType(codeTypeEpreuve(resultat.details.type_libelle), resultat.details.type_libelle))
       : LIBELLES_TYPE[resultat.type].singulier,
     resultat.matiere.label,
     libelleExamens(resultat),
@@ -64,10 +73,11 @@ function ligneMeta(resultat: Resultat): string {
  * indice - c'est la page du contenu qui applique la vraie règle. */
 export function IndiceAcces({ resultat, compact = false }: { resultat: Resultat; compact?: boolean }) {
   useI18n()
-  if (resultat.acces === "libre") return <Badge variant="success">{t("rc.gratuit")}</Badge>
+  // Une infobulle dit ce que « Gratuit » et « Inclus » veulent dire : sans elle, un élève ne savait pas ce qui devient payant (test élève Gogo).
+  if (resultat.acces === "libre") return <Badge variant="success" title={t("rc.gratuit_titre")}>{t("rc.gratuit")}</Badge>
   if (resultat.acces === "ouvert") {
     return compact ? null : (
-      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary">
+      <span className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary" title={t("rc.inclus_titre")}>
         <Check className="size-3.5" aria-hidden="true" />
         {t("rc.inclus")}
       </span>

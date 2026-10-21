@@ -74,3 +74,19 @@ class ParcoursGcePhysiqueTests(TestCase):
         alias = TAGS_ALIAS_PAR_MATIERE["GCE_PHYSICS"]
         for sous_theme in ("pulleys", "pressure in fluids", "speed of sound", "wave phenomena", "graph plotting"):
             self.assertNotIn(sous_theme, alias)
+
+    # Le titre de la vue « par thème » suit la langue du cursus : un élève du GCE ne le lit plus en français.
+    def test_le_titre_est_en_anglais_pour_le_gce(self):
+        from .services import construire_parcours
+
+        self._epreuves(["temperature scales", "moments of forces"])
+
+        modules = construire_parcours(self.profil, self.cursus, self.subject)
+
+        self.assertEqual(modules[0]["titre"], "The topics that come up most in the exam")
+
+    def test_le_titre_reste_en_francais_pour_un_examen_francophone(self):
+        from .textes import texte
+
+        self.assertEqual(texte("parcours.titre_themes", "fr"), "Les thèmes qui reviennent le plus à l'examen")
+        self.assertEqual(texte("parcours.titre_themes", "xx"), "Les thèmes qui reviennent le plus à l'examen")

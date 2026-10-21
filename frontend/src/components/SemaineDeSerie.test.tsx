@@ -80,6 +80,8 @@ describe("ObjectifXp", () => {
   it("plafonne la barre une fois l'objectif dépassé", () => {
     render(<ObjectifXp etat={etat({ xp: 35, atteint: true })} />)
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "20")
-    expect(screen.getByText("35 / 20 points")).toBeInTheDocument()
+    // Jamais « 35 / 20 » : un score au-dessus du maximum se lit comme une erreur.
+    expect(screen.getByText("35 points · objectif atteint")).toBeInTheDocument()
+    expect(screen.queryByText("35 / 20 points")).not.toBeInTheDocument()
   })
 })

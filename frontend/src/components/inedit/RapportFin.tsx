@@ -2,7 +2,27 @@ import type { ComparaisonCandidats, PertesParCause, TempsExercice } from "@/api/
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { formatPoints, libellePoints } from "@/lib/notation"
 import { cn } from "@/lib/utils"
-import { t, useI18n } from "@/lib/i18n"
+import { t, useI18n, type CleI18n } from "@/lib/i18n"
+import type { Unite } from "@/lib/vocabulaire"
+
+// Les libellés de cause viennent du serveur, en français : on les traduit d'après le CODE de cause, selon la langue
+// de l'interface (test élève Gogo : « Questions non traitées » sur un bilan en anglais). Un code inconnu garde le
+// libellé du serveur.
+const CLES_CAUSES: Record<string, CleI18n> = {
+  NON_TRAITEE: "rf.cause_NON_TRAITEE",
+  TEMPS: "rf.cause_TEMPS",
+  CONNAISSANCE: "rf.cause_CONNAISSANCE",
+  METHODE: "rf.cause_METHODE",
+  CALCUL: "rf.cause_CALCUL",
+  INATTENTION: "rf.cause_INATTENTION",
+  NON_PRECISEE: "rf.cause_NON_PRECISEE",
+}
+
+function libelleCause(cause: string, libelleServeur: string, unite: Unite): string {
+  if (cause === "NON_TRAITEE" && unite === "exercice") return t("rf.cause_NON_TRAITEE_exercice")
+  const cle = CLES_CAUSES[cause]
+  return cle ? t(cle) : libelleServeur
+}
 
 /** « 42 min », « 1 h 05 » - un temps de travail, jamais des secondes brutes. */
 function formatMinutes(secondes: number): string {
@@ -16,7 +36,7 @@ function formatMinutes(secondes: number): string {
  * manque de temps, par erreur de calcul ou par ignorance ne se rattrapent pas de la même
  * façon - c'est cette répartition, plus que le total, qui dit quoi travailler.
  */
-export function CartePertes({ pertes }: { pertes: PertesParCause }) {
+export function CartePertes({ pertes, unite = "question" }: { pertes: PertesParCause; unite?: Unite }) {
   useI18n()
   if (pertes.causes.length === 0) {
     return (
@@ -42,14 +62,14 @@ export function CartePertes({ pertes }: { pertes: PertesParCause }) {
           {pertes.causes.map((cause) => (
             <li key={cause.cause}>
               <div className="mb-1.5 flex items-center justify-between gap-3 text-sm">
-                <span>{cause.libelle}</span>
+                <span>{libelleCause(cause.cause, cause.libelle, unite)}</span>
                 <span className="shrink-0 tabular-nums text-muted-foreground">
                   {t("gn.pts_court", { p: formatPoints(cause.points) })} · {t("oujensuis.pct", { pct: cause.part })}
                 </span>
               </div>
               <div
                 role="progressbar"
-                aria-label={cause.libelle}
+                aria-label={libelleCause(cause.cause, cause.libelle, unite)}
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-valuenow={cause.part}

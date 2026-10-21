@@ -351,7 +351,7 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
     if bilan is None:
         bilan, exercices = _bilan(simulation)
     resume = _resume(simulation, bilan)
-    temps = rapport.temps_par_exercice(bilan["lignes"], simulation.exam_mode_started_at)
+    temps = rapport.temps_par_exercice(bilan["lignes"], simulation.exam_mode_started_at, simulation.submitted_at)
     cursus = _cursus(simulation)
     return {
         "id": simulation.id,
@@ -371,9 +371,7 @@ def _resultat_payload(simulation, bilan=None, exercices=None):
         "mode": (
             "libre" if simulation.exam_mode_started_at is None else "papier" if simulation.mode_papier else "examen"
         ),
-        "temps_total_secondes": (
-            int((simulation.submitted_at - simulation.started_at).total_seconds()) if simulation.submitted_at else None
-        ),
+        "temps_total_secondes": rapport.temps_passe_secondes(simulation.exam_mode_started_at, simulation.submitted_at),
         "pertes": rapport.pertes_par_cause(bilan["lignes"], unite="question" if par_question else "exercice"),
         "granularite": "question" if par_question else "exercice",
         "temps_par_exercice": temps,

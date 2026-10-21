@@ -45,6 +45,28 @@ class TexteTests(SimpleTestCase):
         brut = "Soit $x^2+1$ et $$\\frac{a}{b}$$. Voir [le cours](COURS_REF:abc) [COURS_LINK:12] **gras**."
         self.assertEqual(texte.nettoyer(brut), "Soit et . Voir le cours gras .")
 
+    def test_une_formule_devient_un_texte_lisible_dans_les_extraits_seulement(self):
+        # Les extraits affichés gardent les formules, en texte (test élève Gogo : « the length of the hypotenuse: . in a
+        # right-angled triangle ») ; le texte indexé les retire toujours (leurs lettres ne sont pas des mots à chercher).
+        brut = "La longueur est $c = \\sqrt{a^2 + b^2}$ dans un triangle."
+        self.assertEqual(texte.nettoyer(brut, formules=True), "La longueur est c = √(a² + b²) dans un triangle.")
+        self.assertEqual(texte.nettoyer(brut), "La longueur est dans un triangle.")
+        self.assertEqual(texte.apercu(brut), "La longueur est c = √(a² + b²) dans un triangle.")
+
+    def test_formule_lisible(self):
+        self.assertEqual(texte.formule_lisible("$a^2 + b^2 = c^2$"), "a² + b² = c²")
+        self.assertEqual(texte.formule_lisible("$$\\frac{3}{4} + \\sqrt{25}$$"), "3/4 + √25")
+        self.assertEqual(texte.formule_lisible("$\\angle ABC = 90^\\circ$"), "∠ ABC = 90°")
+        self.assertEqual(texte.formule_lisible("$\\text{aire} = \\frac{1}{2} \\times b \\times h$"), "aire = 1/2 × b × h")
+        self.assertEqual(texte.formule_lisible("\\(x < 5\\)"), "x < 5")
+
+    def test_une_formule_trop_longue_est_remplacee_par_des_points_de_suspension(self):
+        longue = "$" + " + ".join(f"x_{i}" for i in range(40)) + "$"
+        self.assertEqual(texte.formule_lisible(longue), "…")
+
+    def test_les_symboles_html_d_une_formule_ne_sont_pas_pris_pour_une_balise(self):
+        self.assertEqual(texte.nettoyer("Si $x < 5$ et $y > 3$ alors", formules=True), "Si x < 5 et y > 3 alors")
+
     def test_nettoyer_tronque_au_dernier_mot(self):
         self.assertEqual(texte.nettoyer("un deux trois quatre", limite=11), "un deux")
 

@@ -162,9 +162,12 @@ function FenetreModeParent({
   const [code, setCode] = useState("")
   const [envoi, setEnvoi] = useState(false)
   const [erreur, setErreur] = useState<string | null>(null)
+  // Par où le code est parti (SMS ou e-mail) et vers quelle adresse, masquée : l'écran de saisie le dit.
+  const [envoye, setEnvoye] = useState<{ canal: "sms" | "email"; destination: string } | null>(null)
 
   useEffect(() => {
     setEtape("pin")
+    setEnvoye(null)
     setPin("")
     setCode("")
     setErreur(null)
@@ -196,7 +199,8 @@ function FenetreModeParent({
     setEnvoi(true)
     setErreur(null)
     try {
-      await demanderReinitialisationPinParent()
+      const { canal, destination } = await demanderReinitialisationPinParent()
+      setEnvoye(canal && destination ? { canal, destination } : null)
       setEtape("code")
     } catch (err) {
       setErreur(err instanceof ApiError ? err.message : t("sp.envoi_erreur"))
@@ -232,7 +236,10 @@ function FenetreModeParent({
           <DialogDescription className="text-sm text-muted-foreground">
             {etape === "pin" && t("pin.reserve_parent")}
             {etape === "oublie" && t("pin.oublie_texte")}
-            {etape === "code" && t("pin.code_texte")}
+            {etape === "code" &&
+              (envoye
+                ? t(envoye.canal === "sms" ? "pin.code_texte_sms" : "pin.code_texte_email", { destination: envoye.destination })
+                : t("pin.code_texte"))}
           </DialogDescription>
         </div>
 

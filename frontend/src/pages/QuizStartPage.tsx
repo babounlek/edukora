@@ -420,8 +420,12 @@ export function QuizStartPage() {
    * bas) ou depuis un thème fréquent - toujours en pratique libre (un test de niveau
    * sur un thème unique n'a pas de sens) et sans filtre matière, déjà impliqué par le
    * thème lui-même.
+   *
+   * `depuisLeLien` : la séance part toute seule à l'arrivée sur `/quiz?...&theme=...`. Cette adresse est alors un simple
+   * relais : sans `replace`, « Retour » depuis la séance y revenait et relançait UNE AUTRE séance (la 467 devenait 468,
+   * test élève Gogo). Remplacée, elle laisse « Retour » ramener à la page d'où l'élève venait.
    */
-  async function lancer(theme?: number) {
+  async function lancer(theme?: number, depuisLeLien = false) {
     if (!selectedCursus || (!theme && !selectedSubject)) return
     if (theme) setStartingThemeId(theme)
     else setStarting(true)
@@ -437,7 +441,7 @@ export function QuizStartPage() {
         seance: seanceParam ? Number(seanceParam) : undefined,
       })
       trackEvent("quiz_started", { cursus_id: Number(selectedCursus), mode: modeEffectif })
-      navigate(`/quiz/session/${session.id}`)
+      navigate(`/quiz/session/${session.id}`, { replace: depuisLeLien })
     } catch (err) {
       setError(
         err instanceof ApiError
@@ -460,7 +464,7 @@ export function QuizStartPage() {
     if (themeAutoLanceRef.current) return
     if (!themeParam || !cursusParam || selectedCursus !== cursusParam) return
     themeAutoLanceRef.current = true
-    lancer(Number(themeParam))
+    lancer(Number(themeParam), true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCursus, cursusParam, themeParam])
 

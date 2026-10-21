@@ -90,6 +90,16 @@ export function libelleEnteteExercice(markdown: string): string {
   )
 }
 
+const TITRE_EXERCICE = /^Exercice\s+(\S+)$/
+
+/** Le titre d'un exercice (« Exercice 4 ») tel que le serveur l'a lu dans l'énoncé : un contenu anglais (GCE) porte
+ * parfois l'en-tête français des données. Hors français, « Exercise 4 ». Les autres titres sont gardés tels quels. */
+export function libelleTitreExercice(titre: string): string {
+  if (langueCourante() === "fr") return titre
+  const trouve = TITRE_EXERCICE.exec(titre.trim())
+  return trouve ? t("ed.exercice_n", { n: trouve[1] }) : titre
+}
+
 export const libelleType = (code: string | null | undefined, affiche: string) => traduit(TYPES, code, affiche)
 export const libelleOrigine = (code: string | null | undefined, affiche: string) => traduit(ORIGINES, code, affiche)
 export const libelleNature = (code: string | null | undefined, affiche: string) => traduit(NATURES, code, affiche)

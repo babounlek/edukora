@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { activerProfil, listProfils } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
+import { cheminDansLangue, langueDuChemin } from "@/lib/i18n"
 import { demanderPinProfil, PinAnnule } from "@/lib/pinPrompts"
 
 /**
@@ -42,8 +43,18 @@ export async function activerProfilProtege(profilId: number, prenom: string, cur
 }
 
 /**
+ * Recharge l'application sur la page d'accueil (dans la langue de l'URL courante) : la page
+ * ouverte appartenait à l'ancien profil (une épreuve, une séance, un parcours...) et n'a pas
+ * de sens pour le nouveau.
+ */
+export function rechargerSurAccueil() {
+  const langue = langueDuChemin(window.location.pathname) ?? "fr"
+  window.location.assign(cheminDansLangue("/", langue))
+}
+
+/**
  * Change le profil actif du compte (voir users.views.activer_profil_view) - un
- * rechargement complet suit toujours le succès plutôt qu'une invalidation React
+ * rechargement complet sur la page d'accueil (rechargerSurAccueil) suit toujours le succès plutôt qu'une invalidation React
  * Query clé par clé : changer d'enfant touche toutes les données scopées par profil
  * (séance, progression, bilan, carnet...), et un rechargement est plus sûr qu'une
  * invalidation qui en oublierait une. Basculer d'enfant reste une action déclarée et
@@ -64,7 +75,7 @@ export function useChangerProfilActif() {
       activerProfilProtege(profilId, prenom ?? "ce profil", cursusId),
     onSuccess: (response) => {
       login(response.access, response.user)
-      window.location.reload()
+      rechargerSurAccueil()
     },
     onError: (err) => {
       // Annuler la saisie du code n'est pas une erreur à signaler.

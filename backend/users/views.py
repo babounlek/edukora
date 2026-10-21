@@ -716,25 +716,39 @@ def parent_pin_view(request):
     return Response(UserSerializer(user, context={"request": request}).data)
 
 
+def _masquer_contact(valeur, canal):
+    """« 677400001 » -> « ••••••001 » ; « parent@exemple.com » -> « p•••@exemple.com » : de quoi reconnaître sans tout révéler."""
+    if canal == "email":
+        local, _, domaine = valeur.partition("@")
+        return f"{local[:1]}•••@{domaine}"
+    return "•" * max(len(valeur) - 3, 0) + valeur[-3:]
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def parent_reinitialiser_demander_view(request):
-    """PIN parent oublié : envoie un code de vérification au numéro (ou à l'e-mail confirmé) du compte."""
+    """
+    PIN parent oublié : envoie un code de vérification au numéro (ou à l'e-mail confirmé) du compte.
+    La réponse dit PAR QUELLE VOIE il est parti (`canal` « sms » ou « email » et `destination` masquée) : sans cela
+    l'écran de saisie ne pouvait pas dire où regarder (test élève Gogo).
+    """
     if (refus := _refus_session_enfant(request)) is not None:
         return refus
     user = request.user
     try:
         if user.phone_number:
             request_otp(user.phone_number, ip_address=_client_ip(request))
+            canal, destination = "sms", user.phone_number
         elif user.email and user.email_verified:
             request_email_code(user.email, ip_address=_client_ip(request))
+            canal, destination = "email", user.email
         else:
             return Response({"error": "Aucun moyen de te joindre n'est enregistré sur ce compte."}, status=400)
     except (OTPThrottled, EmailThrottled) as exc:
         return Response({"error": str(exc)}, status=429)
     except (OTPCapReached, OTPSendFailed, EmailCapReached, EmailSendFailed) as exc:
         return Response({"error": str(exc)}, status=503)
-    return Response({"message": "Code envoyé."})
+    return Response({"message": "Code envoyé.", "canal": canal, "destination": _masquer_contact(destination, canal)})
 
 
 @api_view(["POST"])

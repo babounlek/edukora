@@ -189,7 +189,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         </p>
       )}
 
-      <CartePertes pertes={result.pertes} />
+      <CartePertes pertes={result.pertes} unite={unite} />
       {result.temps_par_exercice && (
         <CarteTemps temps={result.temps_par_exercice} chronophage={result.exercice_chronophage} />
       )}

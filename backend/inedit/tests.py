@@ -1863,8 +1863,20 @@ class ExamModeAPITests(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_complete_tentative_exposes_temps_total_secondes_on_first_call(self):
+        # Copie créée il y a une heure, chrono lancé il y a 5 minutes : le temps passé est celui du chrono.
+        self.tentative.exam_mode_started_at = timezone.now() - timezone.timedelta(minutes=5)
+        self.tentative.save(update_fields=["exam_mode_started_at"])
+        TentativeInedite.objects.filter(pk=self.tentative.pk).update(
+            started_at=timezone.now() - timezone.timedelta(hours=1),
+        )
+
         response = self.client.post(f"/inedit/tentatives/{self.tentative.id}/completer/")
-        self.assertIsNotNone(response.data["temps_total_secondes"])
+
+        self.assertAlmostEqual(response.data["temps_total_secondes"], 5 * 60, delta=5)
+
+    def test_temps_total_secondes_is_null_in_free_practice(self):
+        response = self.client.post(f"/inedit/tentatives/{self.tentative.id}/completer/")
+        self.assertIsNone(response.data["temps_total_secondes"])
 
     def test_temps_total_secondes_is_null_before_submission(self):
         # Aucun endpoint HTTP n'expose _tentative_resultat_payload avant soumission

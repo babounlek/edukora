@@ -581,13 +581,12 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           </details>
         )}
 
-        {/* Pour aller plus loin : un vrai sujet d'examen sur la même notion, dans un
-            nouvel onglet pour ne pas perdre le fil de la séance. */}
+        {/* Pour aller plus loin : un vrai sujet d'examen sur la même notion. Dans le MÊME onglet : la séance est enregistrée et
+            se rouvre par son adresse, donc « Retour » la retrouve ; un onglet de plus, sans signe visible, déroutait sur
+            téléphone (test élève Gogo). */}
         {answered && lienExercicesTheme && (
-          <a
-            href={lienExercicesTheme}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to={lienExercicesTheme}
             className="mt-4 flex items-center gap-3 rounded-xl border border-border px-4 py-3 text-sm transition-colors hover:border-primary/40 hover:bg-accent/40"
           >
             <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -600,7 +599,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               </span>
             </span>
             <ArrowRight className="size-4 shrink-0 text-primary" />
-          </a>
+          </Link>
         )}
 
         {actionError && (

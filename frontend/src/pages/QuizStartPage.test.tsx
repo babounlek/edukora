@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { MemoryRouter } from "react-router-dom"
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMySubscriptions = vi.hoisted(() => vi.fn())
@@ -30,6 +30,7 @@ vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" 
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 
+import { startQuizSession } from "@/api/endpoints"
 import { QuizStartPage } from "./QuizStartPage"
 
 const abonnement = (id: number, cursus: typeof BEPC | typeof BAC_C, profilId = 9) => ({
@@ -98,5 +99,50 @@ describe("QuizStartPage - pastilles d'examen", () => {
     afficher()
     expect(await screen.findByRole("button", { name: "BEPC" })).toBeTruthy()
     expect(screen.getByRole("button", { name: "BAC C" })).toBeTruthy()
+  })
+})
+
+describe("QuizStartPage - lancement automatique depuis un lien", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    auth.user.cursus_prepare = { id: 14 }
+    listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
+    listQuizSubjects.mockResolvedValue([])
+    vi.mocked(startQuizSession).mockResolvedValue({ id: 467 } as never)
+  })
+
+  function Seance() {
+    const navigate = useNavigate()
+    const lieu = useLocation()
+    return (
+      <div>
+        <p data-testid="lieu">{lieu.pathname}</p>
+        <button type="button" onClick={() => navigate(-1)}>Retour</button>
+      </div>
+    )
+  }
+
+  it("« Retour » depuis la séance lancée par un lien sort du quiz au lieu de relancer une séance", async () => {
+    // Test élève Gogo : /quiz/session/467 puis Retour donnait /quiz/session/468 (la page relais relançait une séance).
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    render(
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={["/recherche", "/quiz?cursus=14&theme=7"]} initialIndex={1}>
+          <Routes>
+            <Route path="/quiz" element={<QuizStartPage />} />
+            <Route path="/quiz/session/:id" element={<Seance />} />
+            <Route path="/recherche" element={<Seance />} />
+          </Routes>
+        </MemoryRouter>
+      </QueryClientProvider>,
+    )
+
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("/quiz/session/467"))
+    expect(startQuizSession).toHaveBeenCalledTimes(1)
+
+    screen.getByRole("button", { name: "Retour" }).click()
+
+    await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("/recherche"))
+    expect(startQuizSession).toHaveBeenCalledTimes(1)
   })
 })

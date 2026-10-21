@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type MouseEvent } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -51,6 +51,20 @@ function buildSidebarRows(entries: SommaireEntry[]): SidebarRow[] {
     precedent = chemin
   })
   return rows
+}
+
+/**
+ * Un clic sur le sommaire fait défiler jusqu'à la section et met l'adresse à jour SANS ajouter d'entrée à l'historique :
+ * avec le comportement natif d'une ancre, chaque clic en ajoutait une et « Retour » demandait plusieurs essais pour quitter
+ * le cours (test élève Gogo). Sans cible dans la page, le lien natif reprend la main.
+ */
+function allerALaSection(evenement: MouseEvent<HTMLAnchorElement>, id: string) {
+  const cible = document.getElementById(id)
+  if (!cible) return
+  evenement.preventDefault()
+  const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+  cible.scrollIntoView({ behavior: reduit ? "auto" : "smooth", block: "start" })
+  window.history.replaceState(window.history.state, "", `#${id}`)
 }
 
 interface SommaireNavProps {
@@ -113,6 +127,7 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
             <li key={entry.id}>
               <a
                 href={`#${entry.id}`}
+                onClick={(e) => allerALaSection(e, entry.id)}
                 aria-current={activeId === entry.id ? "true" : undefined}
                 className={cn(
                   "flex min-h-9 items-center whitespace-nowrap rounded-full border px-3.5 py-1 text-xs font-medium transition-colors",
@@ -146,6 +161,7 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
               <li key={row.key} style={{ paddingLeft: row.depth * 12 }}>
                 <a
                   href={`#${row.entry.id}`}
+                  onClick={(e) => allerALaSection(e, row.entry!.id)}
                   aria-current={activeId === row.entry.id ? "true" : undefined}
                   title={row.entry.title ?? row.entry.long}
                   className={cn(

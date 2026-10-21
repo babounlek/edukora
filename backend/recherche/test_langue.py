@@ -180,3 +180,43 @@ class LangueVueTests(_CorpusBilingue, TestCase):
         self.assertEqual(reponse.json()["completions"], [])
         reponse = self.client.get("/recherche/completer/", {"q": "simil", "pays": "cm", "langue": "en"})
         self.assertEqual([c["texte"] for c in reponse.json()["completions"]], [EN_THEME])
+
+
+class CorrectionDansLaLangueDeLExamenTests(_CorpusBilingue, TestCase):
+    """Test élève Gogo : « pythagorus » proposait « pythagore » (le mot français, le plus fréquent du catalogue, 1 résultat)
+    au lieu de « pythagoras » (16 résultats) à un élève de GCE : la correction ne regardait ni la langue ni les résultats."""
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        for i in range(4):
+            cours = Cours.objects.create(
+                external_id=f"c-pyth-fr-{i}", titre=f"Le théorème de Pythagore, partie {i}", subject=cls.maths,
+                statut=StatutContenu.VALIDE,
+            )
+            cours.cursus.add(cls.bac_c)
+        cours_en = Cours.objects.create(
+            external_id="c-pyth-en", titre="Pythagoras theorem and right-angled triangles", subject=cls.maths_gce,
+            statut=StatutContenu.VALIDE,
+        )
+        cours_en.cursus.add(cls.gce)
+        reconstruire()
+
+    def test_un_eleve_de_gce_est_corrige_vers_le_mot_anglais(self):
+        reponse = self.chercher("pythagorus", cursus=self.gce.id, langue="en")
+
+        self.assertEqual(reponse["corrige"], "pythagoras")
+        self.assertEqual(self.titres(reponse, TypeResultat.COURS), ["Pythagoras theorem and right-angled triangles"])
+
+    def test_un_eleve_francophone_reste_corrige_vers_le_mot_francais(self):
+        reponse = self.chercher("pythagorus", cursus=self.bac_c.id, langue="fr")
+
+        self.assertEqual(reponse["corrige"], "pythagore")
+        self.assertEqual(len(self.titres(reponse, TypeResultat.COURS)), 4)
+
+    def test_proposer_classe_les_voisins_du_plus_proche_au_moins_proche(self):
+        voisins = moteur.proposer("pythagorus")
+
+        self.assertIn("pythagore", voisins)
+        self.assertIn("pythagoras", voisins)
+        self.assertEqual(moteur.corriger(["pythagorus"]), {"pythagorus": voisins[0]})

@@ -64,11 +64,28 @@ def pertes_par_cause(lignes, unite="question"):
     return {"total_perdu": en_nombre(total), "causes": causes}
 
 
-def temps_par_exercice(lignes, debut):
+def temps_passe_secondes(debut_chrono, rendu):
+    """Temps passé sur l'épreuve : du lancement du chrono au rendu de la copie - la même durée que
+    celle que le minuteur a décomptée. None sans chrono (entraînement libre) ou avant le rendu.
+
+    Avant : rendu - création de la copie. Or une copie encore vide est réutilisée (voir
+    views.start_tentative) : celle d'un élève qui avait ouvert l'épreuve une demi-heure avant de
+    lancer le chrono affichait 34 min pour 5 min de travail, et une copie libre reprise le
+    lendemain affichait des heures (test élève Gogo, 2026-10-20)."""
+    if debut_chrono is None or rendu is None:
+        return None
+    return max(int((rendu - debut_chrono).total_seconds()), 0)
+
+
+def temps_par_exercice(lignes, debut, fin=None):
     """Temps passé par exercice, estimé depuis les instants où l'élève a coché ses questions :
     l'intervalle qui précède chaque case est attribué à l'exercice de cette question. Une
     estimation - il n'y a pas de chronomètre par question - mais elle suffit à montrer un
     exercice qui a englouti la moitié du temps pour peu de points.
+
+    `fin` (le rendu) prolonge le dernier intervalle jusqu'à la remise de la copie : le temps
+    passé après la dernière case cochée (relecture) est du temps de l'exercice où l'élève s'est
+    arrêté, et le total de la carte rejoint ainsi `temps_passe_secondes`.
 
     None quand l'estimation n'aurait aucun sens : pas de chrono (entraînement libre), ou moins
     de trois questions cochées."""
@@ -84,6 +101,9 @@ def temps_par_exercice(lignes, debut):
         intervalle = max((quand - precedent).total_seconds(), 0)
         secondes[exercice] = secondes.get(exercice, 0) + intervalle
         precedent = quand
+        dernier_exercice = exercice
+    if fin is not None and fin > precedent:
+        secondes[dernier_exercice] = secondes.get(dernier_exercice, 0) + (fin - precedent).total_seconds()
 
     points = {}
     for ligne in lignes:
@@ -132,5 +152,5 @@ def situer(ma_note, notes_des_autres, minimum=EFFECTIF_MIN_COMPARAISON):
 
 __all__ = [
     "EFFECTIF_MIN_COMPARAISON", "LIBELLES_CAUSES", "NON_PRECISEE", "NON_TRAITEE", "exercice_chronophage",
-    "pertes_par_cause", "situer", "temps_par_exercice",
+    "pertes_par_cause", "situer", "temps_par_exercice", "temps_passe_secondes",
 ]

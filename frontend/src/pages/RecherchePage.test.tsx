@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { ReponseRecherche, ResultatRecherche } from "@/api/types"
+import { definirLangue } from "@/lib/i18n"
 
 const rechercher = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
@@ -193,6 +194,57 @@ describe("onglets de résultats harmonisés avec « Réviser »", () => {
       ],
     })
   }
+
+  it("dans un onglet, le nombre en tête est celui de l'onglet", async () => {
+    // Test élève Gogo : « 37 results » au-dessus de 3 cartes de l'onglet Quiz.
+    rechercher.mockImplementation((filtres: { type?: string }) =>
+      Promise.resolve(filtres.type ? reponse({ groupes: complet().groupes.filter((g) => g.type === filtres.type) }) : complet()),
+    )
+    monter("/cm/recherche?q=tange&type=QUIZ")
+
+    expect(await screen.findByText(/résultats pour « tange »/)).toHaveTextContent("2 résultats pour « tange »")
+  })
+
+  it("un onglet sans résultat dit pourquoi la page est vide et propose de voir tout", async () => {
+    // Test élève Gogo : l'onglet Quiz resté dans l'adresse, la recherche suivante n'en donne pas : page vide, sans un mot.
+    rechercher.mockResolvedValue(reponse())
+    monter("/cm/recherche?q=tange&type=QUIZ")
+
+    const texte = await screen.findByText(/Aucun résultat de type « Quiz »/)
+    expect(texte).toHaveTextContent("Aucun résultat de type « Quiz » pour « tange » avec ces filtres.")
+    const message = texte.closest<HTMLElement>("[role=status]")!
+    await userEvent.click(within(message).getByRole("button", { name: /Voir les 30 résultats, tous types confondus/ }))
+    expect(screen.getByTestId("lieu")).toHaveTextContent("/cm/recherche?q=tange")
+    expect(screen.getByTestId("lieu")).not.toHaveTextContent("type=")
+  })
+
+  it("nomme le type d'une épreuve dans la langue de l'interface (« Corrigé d'annale » restait en français)", async () => {
+    const epreuve = resultat({
+      id: 40, type: "EPREUVE", titre: "Mathematics GCE O Level 2023 - Paper 2", acces: "ouvert",
+      details: { type_libelle: "Corrigé d'annale", slug: "maths-2023" },
+    })
+    rechercher.mockResolvedValue(reponse({ groupes: [{ type: "EPREUVE", libelle: "Épreuves", total: 1, resultats: [epreuve] }] }))
+    monter()
+    expect(await screen.findByText(/Corrigé d'annale · Mathématiques/)).toBeInTheDocument()
+
+    await definirLangue("en", { persister: false })
+    try {
+      monter()
+      expect(await screen.findByText(/^Solution · Mathématiques/)).toBeInTheDocument()
+    } finally {
+      await definirLangue("fr", { persister: false })
+    }
+  })
+
+  it("explique « Gratuit » et « Inclus » par une infobulle", async () => {
+    const libre = resultat({ id: 41, titre: "Cours libre", acces: "libre" })
+    const ouvert = resultat({ id: 42, titre: "Cours inclus", acces: "ouvert" })
+    rechercher.mockResolvedValue(reponse({ groupes: [{ type: "COURS", libelle: "Cours", total: 2, resultats: [libre, ouvert] }] }))
+    monter()
+
+    expect(await screen.findByTitle("Gratuit pour tous, sans abonnement.")).toBeInTheDocument()
+    expect(screen.getByTitle("Compris dans ton abonnement.")).toBeInTheDocument()
+  })
 
   it("mêmes onglets et même ordre que Réviser, les exercices rejoignant les épreuves", async () => {
     rechercher.mockResolvedValue(complet())

@@ -363,7 +363,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
     if bilan is None:
         bilan = notation.calculer(tentative, _exercices_pour_notation(tentative.epreuve))
     resume = notation.resume(tentative, bilan)
-    temps = rapport.temps_par_exercice(bilan["lignes"], tentative.exam_mode_started_at)
+    temps = rapport.temps_par_exercice(bilan["lignes"], tentative.exam_mode_started_at, tentative.submitted_at)
 
     return {
         "id": tentative.id,
@@ -390,10 +390,8 @@ def _tentative_resultat_payload(tentative, bilan=None):
         "mode": (
             "libre" if tentative.exam_mode_started_at is None else "papier" if tentative.mode_papier else "examen"
         ),
-        "temps_total_secondes": (
-            int((tentative.submitted_at - tentative.started_at).total_seconds())
-            if tentative.submitted_at else None
-        ),
+        # Du lancement du chrono au rendu (rien en entraînement libre) : voir rapport.temps_passe_secondes.
+        "temps_total_secondes": rapport.temps_passe_secondes(tentative.exam_mode_started_at, tentative.submitted_at),
         # Où sont partis les points, où est passé le temps, où l'élève se situe.
         "pertes": rapport.pertes_par_cause(bilan["lignes"]),
         "granularite": "question",

@@ -12,6 +12,7 @@ const auth = vi.hoisted(() => ({ user: { a_un_abonnement_actif: true } as { a_un
 vi.mock("@/api/endpoints", () => ({ completeTentative, completeSimulation, getTentativeInedite, getSimulation }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
+import { definirLangue } from "@/lib/i18n"
 import { InediteResultPage } from "./InediteResultPage"
 
 function resultat(extra: Partial<TentativeInediteResult> = {}): TentativeInediteResult {
@@ -179,7 +180,6 @@ describe("InediteResultPage", () => {
     expect(screen.getByRole("link", { name: "Cours" })).toHaveAttribute("href", "/cm/cours?theme=12")
   })
 
-  it("répartit les points perdus par cause", async () => {
   it("ne propose « Quiz » et « Cours » que pour un thème qui a de quoi les remplir", async () => {
     completeTentative.mockResolvedValue(
       resultat({ themes_a_reviser: [{ theme: "probabilités", theme_id: 12, echeance: "2099-01-01", a_quiz: false, a_cours: true }] }),
@@ -221,6 +221,7 @@ describe("InediteResultPage", () => {
     expect(screen.queryByText(/peut compter dans plusieurs compétences/)).not.toBeInTheDocument()
   })
 
+  it("répartit les points perdus par cause", async () => {
     completeTentative.mockResolvedValue(
       resultat({
         pertes: {
@@ -238,6 +239,45 @@ describe("InediteResultPage", () => {
     expect(screen.getByText(/Tu as perdu 7,5 points/)).toBeInTheDocument()
     expect(screen.getByText("Erreur de calcul")).toBeInTheDocument()
     expect(screen.getByText("4,5 pts · 60 %")).toBeInTheDocument()
+  })
+
+  it("traduit les causes d'après leur code quand l'interface est en anglais", async () => {
+    await definirLangue("en", { persister: false })
+    try {
+      completeTentative.mockResolvedValue(
+        resultat({
+          pertes: {
+            total_perdu: 7.5,
+            causes: [
+              { cause: "NON_TRAITEE", libelle: "Questions non traitées", points: 3, part: 40 },
+              { cause: "NON_PRECISEE", libelle: "Cause non précisée", points: 4.5, part: 60 },
+            ],
+          },
+        }),
+      )
+      afficher()
+
+      expect(await screen.findByText("Questions not attempted")).toBeInTheDocument()
+      expect(screen.getByText("Reason not given")).toBeInTheDocument()
+      expect(screen.queryByText("Questions non traitées")).not.toBeInTheDocument()
+    } finally {
+      await definirLangue("fr", { persister: false })
+    }
+  })
+
+  it("dit « Exercices non traités » pour une annale simulée par exercice", async () => {
+    completeSimulation.mockResolvedValue(
+      resultat({
+        granularite: "exercice",
+        pertes: {
+          total_perdu: 3,
+          causes: [{ cause: "NON_TRAITEE", libelle: "Exercices non traités", points: 3, part: 100 }],
+        },
+      }),
+    )
+    afficher("officielle")
+
+    expect(await screen.findByText("Exercices non traités")).toBeInTheDocument()
   })
 
   it("félicite quand aucun point n'est perdu", async () => {

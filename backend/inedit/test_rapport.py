@@ -49,6 +49,21 @@ class PertesParCauseTests(SimpleTestCase):
         self.assertEqual(rapport.pertes_par_cause([ligne("1", 2, 2)]), {"total_perdu": 0.0, "causes": []})
 
 
+class TempsPasseTests(SimpleTestCase):
+    def test_c_est_la_duree_du_chrono_pas_celle_de_la_copie(self):
+        # Copie créée à 8 h 54, chrono lancé à 9 h 23, rendue à 9 h 29 : 6 minutes, pas 35.
+        chrono = DEBUT + timedelta(minutes=23)
+        rendu = DEBUT + timedelta(minutes=29)
+        self.assertEqual(rapport.temps_passe_secondes(chrono, rendu), 6 * 60)
+
+    def test_rien_en_entrainement_libre_ni_avant_le_rendu(self):
+        self.assertIsNone(rapport.temps_passe_secondes(None, DEBUT))
+        self.assertIsNone(rapport.temps_passe_secondes(DEBUT, None))
+
+    def test_jamais_negatif(self):
+        self.assertEqual(rapport.temps_passe_secondes(DEBUT + timedelta(minutes=5), DEBUT), 0)
+
+
 class TempsParExerciceTests(SimpleTestCase):
     def test_attribue_chaque_intervalle_a_l_exercice_de_la_case_cochee(self):
         lignes = [
@@ -61,6 +76,24 @@ class TempsParExerciceTests(SimpleTestCase):
         self.assertEqual([t["secondes"] for t in temps], [20 * 60, 40 * 60])
         self.assertEqual([t["part_du_temps"] for t in temps], [33, 67])
         self.assertEqual([t["part_des_points"] for t in temps], [40, 60])
+
+    def test_le_dernier_intervalle_va_jusqu_au_rendu(self):
+        lignes = [
+            ligne("1", 4, 4, minutes=10), ligne("1", 4, 4, minutes=20),
+            ligne("2", 12, 6, minutes=60),
+        ]
+
+        temps = rapport.temps_par_exercice(lignes, DEBUT, DEBUT + timedelta(minutes=70))
+
+        # 10 minutes de plus pour l'exercice 2, où l'élève s'est arrêté : le total rejoint le temps passé.
+        self.assertEqual([t["secondes"] for t in temps], [20 * 60, 50 * 60])
+        self.assertEqual(sum(t["secondes"] for t in temps), 70 * 60)
+
+    def test_un_rendu_avant_la_derniere_case_n_enleve_rien(self):
+        lignes = [ligne("1", 4, 4, minutes=10), ligne("1", 4, 4, minutes=20), ligne("2", 4, 4, minutes=30)]
+        sans = rapport.temps_par_exercice(lignes, DEBUT)
+        avec = rapport.temps_par_exercice(lignes, DEBUT, DEBUT + timedelta(minutes=5))
+        self.assertEqual(sans, avec)
 
     def test_rien_sans_chrono_ni_assez_de_cases_cochees(self):
         lignes = [ligne("1", 4, 4, minutes=10), ligne("1", 4, 4, minutes=20), ligne("2", 4, 4, minutes=30)]
