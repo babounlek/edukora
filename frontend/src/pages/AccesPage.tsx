@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { toast } from "sonner"
 import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Lock, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
@@ -431,6 +432,11 @@ export function AccesPage() {
         titre={t("compte.mes_acces")}
         sousTitre={t("ac.sous_titre")}
       />
+
+      <div className="mb-4">
+        <BoutonAide guide="examen-matieres" className="-ml-2.5" />
+        <AideContextuelle guide="examen-matieres" className="mt-1" />
+      </div>
 
       <Section icone={Sparkles} titre={t("ac.section")}>
         {verrouille && charge && !erreur && (

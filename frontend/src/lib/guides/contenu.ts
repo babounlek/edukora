@@ -33,6 +33,10 @@ const ETAPE_INTERET: EtapeGuide = {
 const COURS_LECTURE = /^\/cours\/[^/]+\/lire\/?$/
 const EXERCICE_THEME = /^\/[a-z]{2}\/themes-frequents\/[^/]+\/exercices\/[^/]+\/?$/i
 const QUIZ_DEPART = /^\/quiz\/?$/
+const ACCES = /^\/mes-acces\/?$/
+const ANNALES = /^\/[a-z]{2}\/epreuves\/?$/i
+const INEDITE = /^\/[a-z]{2}\/epreuves-inedites\/[^/]+\/?$/i
+const PROGRESSION = /^\/parcours\/?$/
 
 export const GUIDES: readonly DefinitionGuide[] = [
   {
@@ -142,6 +146,53 @@ export const GUIDES: readonly DefinitionGuide[] = [
     // La carte de réglage n'existe que pour un abonné : sans elle, l'aide décrirait des choix absents.
     condition: (contexte) => contexte.ciblePresente("quiz-config"),
     etapes: [{ id: "lancer", titre: "guide.quiz.titre", texte: "guide.quiz.texte" }],
+  },
+  {
+    id: "examen-matieres",
+    version: 1,
+    type: "aide",
+    titre: "guide.acces.titre",
+    description: "guide.acces.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    cheminRelance: "/mes-acces",
+    route: (pathname) => ACCES.test(pathname),
+    etapes: [{ id: "examen", titre: "guide.acces.titre", texte: "guide.acces.texte" }],
+  },
+  {
+    id: "annales",
+    version: 1,
+    type: "aide",
+    titre: "guide.annales.titre",
+    description: "guide.annales.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    route: (pathname) => ANNALES.test(pathname),
+    etapes: [{ id: "trouver", titre: "guide.annales.titre", texte: "guide.annales.texte" }],
+  },
+  {
+    id: "inedites",
+    version: 1,
+    type: "aide",
+    titre: "guide.inedites.titre",
+    description: "guide.inedites.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    // Liée à une épreuve précise : se relit depuis sa fiche.
+    route: (pathname) => INEDITE.test(pathname),
+    etapes: [{ id: "inedite", titre: "guide.inedites.titre", texte: "guide.inedites.texte" }],
+  },
+  {
+    id: "progression",
+    version: 1,
+    type: "aide",
+    titre: "guide.progression.titre",
+    description: "guide.progression.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    cheminRelance: "/parcours",
+    route: (pathname) => PROGRESSION.test(pathname),
+    etapes: [{ id: "lire", titre: "guide.progression.titre", texte: "guide.progression.texte" }],
   },
 ]
 

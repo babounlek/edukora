@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { ArrowLeft, Check, Clock, Crown, Gift, GraduationCap, Lock, RotateCcw, Sparkles, Unlock } from "lucide-react"
 
 import { getEpreuveInedite, listPlans, startExamMode, startTentativeInedite } from "@/api/endpoints"
@@ -305,6 +306,11 @@ export function EpreuveInediteDetailPage() {
         <ArrowLeft className="size-4" />
         {t("ed.retour_catalogue")}
       </Link>
+
+      <div className="mb-4">
+        <BoutonAide guide="inedites" className="-ml-2.5" />
+        <AideContextuelle guide="inedites" className="mt-1" />
+      </div>
 
       <div className="flex animate-fade-up flex-col gap-4">
         <div>

@@ -176,6 +176,14 @@ describe("aides de page (cours, exercice, quiz)", () => {
     ["exercice", "/cm/themes-frequents/12/exercices", false],
     ["quiz-depart", "/quiz", true],
     ["quiz-depart", "/quiz/session/3", false],
+    ["examen-matieres", "/mes-acces", true],
+    ["examen-matieres", "/compte", false],
+    ["annales", "/cm/epreuves", true],
+    ["annales", "/cm/epreuves/bac-2020", false],
+    ["inedites", "/cm/epreuves-inedites/12", true],
+    ["inedites", "/cm/epreuves-inedites", false],
+    ["progression", "/parcours", true],
+    ["progression", "/parcours/4", false],
   ])("%s sur %s : route reconnue = %s", (id, chemin, attendu) => {
     expect(trouverGuide(id)!.route(chemin)).toBe(attendu)
   })
@@ -185,6 +193,10 @@ describe("aides de page (cours, exercice, quiz)", () => {
       cours: "/cours/limites/lire",
       exercice: "/cm/themes-frequents/1/exercices/2",
       "quiz-depart": "/quiz",
+      "examen-matieres": "/mes-acces",
+      annales: "/cm/epreuves",
+      inedites: "/cm/epreuves-inedites/3",
+      progression: "/parcours",
     }
     for (const [id, pathname] of Object.entries(pages)) {
       expect(peutDeclencherAuto(trouverGuide(id)!, contexteEleve({ pathname }), situation({ memoire: bienvenueVue }))).toBe(true)

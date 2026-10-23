@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
   BookOpen,
@@ -473,6 +474,10 @@ export function EpreuvesListPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauVue />
+      <div className="mb-4">
+        <BoutonAide guide="annales" className="-ml-2.5" />
+        <AideContextuelle guide="annales" className="mt-1" />
+      </div>
       {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
           ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
           chercher avant même d'avoir cherché. */}

@@ -420,9 +420,9 @@ describe("relance manuelle et centre d'aide", () => {
     expect(panneau).toHaveTextContent("Comment lire ce cours ?")
     expect(panneau).toHaveTextContent("Comment travailler cet exercice ?")
     expect(panneau).toHaveTextContent("Comment lancer un quiz ?")
-    // Cours et exercice : un message ; bienvenue, séance du jour et quiz : un bouton chacun.
-    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(2)
-    expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(3)
+    // Cours, exercice, annales, inédites : un message ; les autres : un bouton chacun.
+    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(4)
+    expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(5)
   })
 
   it("désactiver les conseils automatiques est mémorisé, localement", async () => {

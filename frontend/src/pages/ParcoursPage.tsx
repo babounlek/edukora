@@ -1,5 +1,6 @@
 import { type CSSProperties, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ChevronRight, Compass, GraduationCap, Lock, RotateCcw, SlidersHorizontal } from "lucide-react"
 
@@ -246,6 +247,10 @@ export function ParcoursPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
       <BandeauMatieres />
+      <div className="mb-4">
+        <BoutonAide guide="progression" className="-ml-2.5" />
+        <AideContextuelle guide="progression" className="mt-1" />
+      </div>
       <Ecrin>
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">
