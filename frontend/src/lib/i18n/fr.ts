@@ -2376,12 +2376,6 @@ export const fr = {
   "qr.retour_parcours": "Retour au parcours",
   "qr.mon_compte": "Mon compte",
   "gl.aller_contenu": "Aller au contenu",
-} as const
-
-export type CleI18n = keyof typeof fr
-
-/** Clés « de base » des pluriels : `x` pour `x_one` / `x_other`. */
-export type CleAvecPluriel = CleI18n extends infer K ? (K extends `${infer B}_other` ? B : never) : never
   // Guides et centre d'aide (lib/guides, components/guides). Un texte de guide n'existe qu'ici :
   // le tutoriel, l'aide dans la page et le centre d'aide lisent les mêmes clés.
   "guide.bienvenue.titre": "Découvrir EduKora",
@@ -2400,6 +2394,28 @@ export type CleAvecPluriel = CleI18n extends infer K ? (K extends `${infer B}_ot
   "guide.seance.titre": "Comment marche ta séance ?",
   "guide.seance.description": "Les étapes de ta séance, sa durée, et que faire si le thème ne te convient pas.",
   "guide.seance.texte": "Appuie sur « Commencer » : tu passes du cours à l'exercice, puis au quiz. Tu peux changer la durée sous le bouton, ou demander autre chose si le thème ne te convient pas.",
+  "guide.cours.titre": "Comment lire ce cours ?",
+  "guide.cours.description": "L'ordre des parties d'un cours et comment suivre ta progression.",
+  "guide.cours.texte": "Lis les parties dans l'ordre : la règle à retenir, l'exemple résolu, puis les erreurs à éviter. Marque chaque partie comme comprise pour voir ta progression.",
+  "guide.exercice.titre": "Comment travailler cet exercice ?",
+  "guide.exercice.description": "Chercher d'abord, comparer ensuite avec la correction.",
+  "guide.exercice.texte": "Cherche chaque question avant d'ouvrir sa correction : en mode « Essaie d'abord », le corrigé reste replié derrière « Voir la correction ».",
+  "guide.quiz.titre": "Comment lancer un quiz ?",
+  "guide.quiz.description": "Choisir un thème et un nombre de questions.",
+  "guide.quiz.texte": "Choisis ton examen, ta matière et un thème, puis le nombre de questions. Chaque bonne réponse te rapporte des points et fait avancer ta série.",
+  "guide.centre.depuis_page": "Ce guide s'ouvre depuis la page concernée, avec « Revoir cette aide ».",
+  "guide.acces.titre": "Ton examen et tes matières",
+  "guide.acces.description": "Où retrouver tes accès, et comment choisir ton examen et tes matières.",
+  "guide.acces.texte": "Ici, tu retrouves les examens auxquels tu as accès et, pour le GCE, tu choisis tes matières. L'examen que tu prépares décide de ta séance du jour : tu peux en changer depuis le menu de ton compte.",
+  "guide.annales.titre": "Comment trouver une annale ?",
+  "guide.annales.description": "Filtrer les épreuves et ouvrir un corrigé.",
+  "guide.annales.texte": "Filtre par examen, matière ou année pour trouver une épreuve, puis ouvre-la pour lire son corrigé détaillé, exercice par exercice.",
+  "guide.inedites.titre": "Qu'est-ce qu'une épreuve inédite ?",
+  "guide.inedites.description": "Un sujet nouveau, à faire comme le jour de l'examen.",
+  "guide.inedites.texte": "C'est un sujet nouveau, écrit sur le modèle de l'examen. Tu peux le faire en mode chronométré, comme le jour J : le chrono ne démarre qu'après ta confirmation.",
+  "guide.progression.titre": "Comment lire ta progression ?",
+  "guide.progression.description": "L'anneau, les matières et les thèmes à revoir.",
+  "guide.progression.texte": "L'anneau montre la part des thèmes de ton examen que tu maîtrises déjà. Ouvre une matière pour voir quels thèmes revoir en priorité.",
   "guide.suivant": "Suivant",
   "guide.precedent": "Précédent",
   "guide.passer": "Passer",
@@ -2421,13 +2437,9 @@ export type CleAvecPluriel = CleI18n extends infer K ? (K extends `${infer B}_ot
   "guide.centre.tout_revoir": "Revoir les conseils à ma prochaine visite",
   "guide.centre.tout_revoir_fait": "C'est noté : les conseils reviendront à ta prochaine visite.",
   "guide.centre.local": "Ces réglages restent sur cet appareil.",
-  "guide.cours.titre": "Comment lire ce cours ?",
-  "guide.cours.description": "L'ordre des parties d'un cours et comment suivre ta progression.",
-  "guide.cours.texte": "Lis les parties dans l'ordre : la règle à retenir, l'exemple résolu, puis les erreurs à éviter. Marque chaque partie comme comprise pour voir ta progression.",
-  "guide.exercice.titre": "Comment travailler cet exercice ?",
-  "guide.exercice.description": "Chercher d'abord, comparer ensuite avec la correction.",
-  "guide.exercice.texte": "Cherche chaque question avant d'ouvrir sa correction : en mode « Essaie d'abord », le corrigé reste replié derrière « Voir la correction ».",
-  "guide.quiz.titre": "Comment lancer un quiz ?",
-  "guide.quiz.description": "Choisir un thème et un nombre de questions.",
-  "guide.quiz.texte": "Choisis ton examen, ta matière et un thème, puis le nombre de questions. Chaque bonne réponse te rapporte des points et fait avancer ta série.",
-  "guide.centre.depuis_page": "Ce guide s'ouvre depuis la page concernée, avec « Revoir cette aide ».",
+} as const
+
+export type CleI18n = keyof typeof fr
+
+/** Clés « de base » des pluriels : `x` pour `x_one` / `x_other`. */
+export type CleAvecPluriel = CleI18n extends infer K ? (K extends `${infer B}_other` ? B : never) : never
