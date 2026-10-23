@@ -46,7 +46,14 @@ export function CentreAide() {
     // Un guide ne se déroule qu'à sa page : on y emmène l'élève d'abord. Le changement de page
     // ne le ferme pas, puisqu'une page où il a un sens est précisément celle où l'on arrive.
     ouvrirGuide(guide.id, { explicite: true })
-    if (!guide.route(pathname)) navigate(catalogueHomePath(country))
+    const chemin = cheminDeRelance(guide)
+    if (chemin && !guide.route(pathname)) navigate(chemin)
+  }
+
+  // Où emmener l'élève pour relancer ce guide ; null : il ne se relance que depuis sa page.
+  function cheminDeRelance(guide: DefinitionGuide): string | null {
+    if (guide.cheminRelance === "accueil") return catalogueHomePath(country)
+    return guide.cheminRelance ?? null
   }
 
   return (
@@ -80,9 +87,13 @@ export function CentreAide() {
                   </li>
                 ))}
               </ol>
-              <Button type="button" variant="outline" className="mt-4 min-h-11 w-full" onClick={() => relancer(guide)}>
-                {t("guide.centre.relancer")}
-              </Button>
+              {guide.route(pathname) || cheminDeRelance(guide) ? (
+                <Button type="button" variant="outline" className="mt-4 min-h-11 w-full" onClick={() => relancer(guide)}>
+                  {t("guide.centre.relancer")}
+                </Button>
+              ) : (
+                <p className="mt-4 text-sm text-muted-foreground">{t("guide.centre.depuis_page")}</p>
+              )}
             </li>
           ))}
         </ul>

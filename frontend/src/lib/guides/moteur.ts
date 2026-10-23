@@ -19,7 +19,9 @@ import type { ContexteGuide, DefinitionGuide, DonneesGuides, EtapeGuide } from "
  * traduits avant lui, voir lib/i18n/segments-url.json) : la liste vaut pour les deux langues.
  */
 const ROUTES_SANS_AIDE_AUTO: readonly RegExp[] = [
-  /^\/quiz(\/|$)/,
+  // La page de CHOIX du quiz (/quiz) est permise ; tout ce qui est en dessous (session, essai,
+  // résultat) ne l'est pas.
+  /^\/quiz\//,
   /^\/historique\/quiz(\/|$)/,
   /^\/inedit\/tentative(\/|$)/,
   /^\/simulation(\/|$)/,

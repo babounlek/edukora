@@ -51,7 +51,6 @@ describe("définitions des guides", () => {
 
 describe("routeAutoPermise", () => {
   it.each([
-    "/quiz",
     "/quiz/session/12",
     "/quiz/essai",
     "/quiz/essai/resultat",
@@ -65,7 +64,7 @@ describe("routeAutoPermise", () => {
     expect(routeAutoPermise(chemin)).toBe(false)
   })
 
-  it.each(["/cm", "/cm/cours", "/parcours", "/compte", "/tarifs"])("%s : permise", (chemin) => {
+  it.each(["/quiz", "/cm", "/cm/cours", "/parcours", "/compte", "/tarifs"])("%s : permise", (chemin) => {
     expect(routeAutoPermise(chemin)).toBe(true)
   })
 })
@@ -159,6 +158,55 @@ describe("peutDeclencherAuto", () => {
     const memoire = memoireVide()
     memoire.guides.bienvenue = { version: bienvenue.version, statut: "ignore", date: 1 }
     expect(peutDeclencherAuto(aideSeance, contexteEleve(), situation({ memoire }))).toBe(true)
+  })
+})
+
+describe("aides de page (cours, exercice, quiz)", () => {
+  const vu = (...ids: string[]) => {
+    const memoire = memoireVide()
+    for (const id of ids) memoire.guides[id] = { version: 1, statut: "termine", date: 1 }
+    return memoire
+  }
+  const bienvenueVue = vu("bienvenue")
+
+  it.each([
+    ["cours", "/cours/limites-de-fonctions/lire", true],
+    ["cours", "/cours/limites-de-fonctions", false],
+    ["exercice", "/cm/themes-frequents/12/exercices/40", true],
+    ["exercice", "/cm/themes-frequents/12/exercices", false],
+    ["quiz-depart", "/quiz", true],
+    ["quiz-depart", "/quiz/session/3", false],
+  ])("%s sur %s : route reconnue = %s", (id, chemin, attendu) => {
+    expect(trouverGuide(id)!.route(chemin)).toBe(attendu)
+  })
+
+  it("chaque aide se lance seule sur sa page une fois la bienvenue vue", () => {
+    const pages: Record<string, string> = {
+      cours: "/cours/limites/lire",
+      exercice: "/cm/themes-frequents/1/exercices/2",
+      "quiz-depart": "/quiz",
+    }
+    for (const [id, pathname] of Object.entries(pages)) {
+      expect(peutDeclencherAuto(trouverGuide(id)!, contexteEleve({ pathname }), situation({ memoire: bienvenueVue }))).toBe(true)
+    }
+  })
+
+  it("l'aide du quiz attend la carte de réglage (réservée aux abonnés)", () => {
+    const sansCarte = contexteEleve({ pathname: "/quiz", ciblePresente: () => false })
+    expect(peutDeclencherAuto(trouverGuide("quiz-depart")!, sansCarte, situation({ memoire: bienvenueVue }))).toBe(false)
+  })
+
+  it("jamais deux aides dans la même visite", () => {
+    const cours = trouverGuide("cours")!
+    expect(
+      peutDeclencherAuto(cours, contexteEleve({ pathname: "/cours/x/lire" }), situation({ memoire: bienvenueVue, autoDejaMontre: true })),
+    ).toBe(false)
+  })
+
+  it("seules les aides liées à un contenu n'ont pas de chemin de relance", () => {
+    expect(trouverGuide("cours")!.cheminRelance).toBeUndefined()
+    expect(trouverGuide("exercice")!.cheminRelance).toBeUndefined()
+    expect(trouverGuide("quiz-depart")!.cheminRelance).toBe("/quiz")
   })
 })
 

@@ -410,6 +410,21 @@ describe("relance manuelle et centre d'aide", () => {
     unmount()
   })
 
+  it("les aides liées à un contenu (cours, exercice) ne se relancent que depuis leur page, et le centre le dit", async () => {
+    memoriser("7:3", "bienvenue", 1, "termine")
+    memoriser("7:3", "seance-du-jour", 1, "termine")
+    monter()
+    await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
+    act(() => ouvrirCentre())
+    const panneau = await screen.findByRole("dialog", { name: /Aide/ })
+    expect(panneau).toHaveTextContent("Comment lire ce cours ?")
+    expect(panneau).toHaveTextContent("Comment travailler cet exercice ?")
+    expect(panneau).toHaveTextContent("Comment lancer un quiz ?")
+    // Cours et exercice : un message ; bienvenue, séance du jour et quiz : un bouton chacun.
+    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(2)
+    expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(3)
+  })
+
   it("désactiver les conseils automatiques est mémorisé, localement", async () => {
     monter()
     await screen.findByText("Bienvenue sur EduKora")

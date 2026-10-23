@@ -28,6 +28,12 @@ const ETAPE_INTERET: EtapeGuide = {
   texte: "guide.bienvenue.interet.texte",
 }
 
+// Pages de contenu (chemins internes du routeur) : un cours ouvert en lecture, un exercice d'un
+// thème, la page de CHOIX du quiz (jamais une session en cours, voir moteur.ts).
+const COURS_LECTURE = /^\/cours\/[^/]+\/lire\/?$/
+const EXERCICE_THEME = /^\/[a-z]{2}\/themes-frequents\/[^/]+\/exercices\/[^/]+\/?$/i
+const QUIZ_DEPART = /^\/quiz\/?$/
+
 export const GUIDES: readonly DefinitionGuide[] = [
   {
     id: "bienvenue",
@@ -37,6 +43,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     description: "guide.bienvenue.description",
     declencheur: "premiere-visite",
     public: "eleve",
+    cheminRelance: "accueil",
     route: estAccueilCatalogue,
     // Le tutoriel parle de la séance du jour : sans le bouton de séance à l'écran (élève sans
     // abonnement, séance du jour absente), il décrirait quelque chose qu'on ne voit pas.
@@ -69,6 +76,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     description: "guide.visiteur.description",
     declencheur: "premiere-visite",
     public: "visiteur",
+    cheminRelance: "accueil",
     route: estAccueilCatalogue,
     etapes: [
       ETAPE_INTERET,
@@ -88,6 +96,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     description: "guide.seance.description",
     declencheur: "premiere-fonctionnalite",
     public: "eleve",
+    cheminRelance: "accueil",
     route: estAccueilCatalogue,
     etapes: [
       {
@@ -97,6 +106,42 @@ export const GUIDES: readonly DefinitionGuide[] = [
         cible: "seance-commencer",
       },
     ],
+  },
+  {
+    id: "cours",
+    version: 1,
+    type: "aide",
+    titre: "guide.cours.titre",
+    description: "guide.cours.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    route: (pathname) => COURS_LECTURE.test(pathname),
+    etapes: [{ id: "lecture", titre: "guide.cours.titre", texte: "guide.cours.texte" }],
+  },
+  {
+    id: "exercice",
+    version: 1,
+    type: "aide",
+    titre: "guide.exercice.titre",
+    description: "guide.exercice.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    route: (pathname) => EXERCICE_THEME.test(pathname),
+    etapes: [{ id: "travail", titre: "guide.exercice.titre", texte: "guide.exercice.texte" }],
+  },
+  {
+    id: "quiz-depart",
+    version: 1,
+    type: "aide",
+    titre: "guide.quiz.titre",
+    description: "guide.quiz.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    cheminRelance: "/quiz",
+    route: (pathname) => QUIZ_DEPART.test(pathname),
+    // La carte de réglage n'existe que pour un abonné : sans elle, l'aide décrirait des choix absents.
+    condition: (contexte) => contexte.ciblePresente("quiz-config"),
+    etapes: [{ id: "lancer", titre: "guide.quiz.titre", texte: "guide.quiz.texte" }],
   },
 ]
 

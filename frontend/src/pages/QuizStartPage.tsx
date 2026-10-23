@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
@@ -532,6 +533,11 @@ export function QuizStartPage() {
         </div>
       </div>
 
+      <div className="mb-4">
+        <BoutonAide guide="quiz-depart" className="-ml-2.5" />
+        <AideContextuelle guide="quiz-depart" className="mt-1" />
+      </div>
+
       <ReprendreQuiz className="mb-6" />
 
       {/* Les quiz gratuits, sans compte : seulement quand aucun aperçu de cursus déclaré n'offre déjà
@@ -552,7 +558,7 @@ export function QuizStartPage() {
         <>
           {/* Configuration : la même carte surélevée et les mêmes pastilles que
               /epreuves et /themes-frequents, lancement au pied de la carte. */}
-          <div className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
+          <div data-guide="quiz-config" className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
             <p className="font-display text-lg font-semibold">{t("qd.ta_seance")}</p>
             <p className="text-sm text-muted-foreground">{t("qd.tout_pret")}</p>
 

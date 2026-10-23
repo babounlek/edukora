@@ -37,6 +37,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
@@ -330,6 +331,11 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
             </Link>
           </Button>
         </div>
+      </div>
+
+      <div className="mb-4">
+        <BoutonAide guide="exercice" className="-ml-2.5" />
+        <AideContextuelle guide="exercice" className="mt-1" />
       </div>
 
       {/* Mode de lecture + repère du thème. */}

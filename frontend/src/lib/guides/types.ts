@@ -60,6 +60,12 @@ export interface DefinitionGuide {
   public: PublicGuide
   /** Pages (chemins internes du routeur) où le guide a un sens. */
   route: (pathname: string) => boolean
+  /**
+   * Où le centre d'aide emmène l'élève pour relancer ce guide : "accueil" (l'accueil de son pays) ou un
+   * chemin fixe. Absent : le guide est lié à une page qui dépend d'un contenu (un cours, un exercice) ;
+   * le centre ne peut alors le relancer que depuis cette page, et le dit.
+   */
+  cheminRelance?: string
   /** Condition d'affichage automatique supplémentaire (en plus du public et de la route). */
   condition?: (contexte: ContexteGuide) => boolean
   etapes: EtapeGuide[]

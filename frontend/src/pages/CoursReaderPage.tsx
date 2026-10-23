@@ -18,6 +18,7 @@ import { SITE_NAME } from "@/lib/site"
 import { CoursSection } from "@/components/CoursSection"
 import { MarquesSection } from "@/components/MarquesSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
@@ -209,6 +210,11 @@ export function CoursReaderPage() {
           {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
         </div>
       )}
+
+      <div className="mb-4">
+        <BoutonAide guide="cours" className="-ml-2.5" />
+        <AideContextuelle guide="cours" className="mt-1" />
+      </div>
 
       {etude.disponible && sectionsAComprendre.length > 0 && (
         <div className="mb-6 flex flex-col gap-1.5" aria-live="polite">
