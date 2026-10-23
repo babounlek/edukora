@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, ChevronDown, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
+import { Check, ChevronDown, CircleHelp, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
@@ -18,6 +18,7 @@ import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
 import { SITE_NAME } from "@/lib/site"
+import { ouvrirCentre } from "@/lib/guides/etat"
 import { langueCourante, localeCourante, useI18n } from "@/lib/i18n"
 import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
@@ -407,6 +408,10 @@ export function Header() {
             <Link to={recherchePath(country)} state={ETAT_FOCUS_RECHERCHE} aria-keyshortcuts="/ Control+K Meta+K">
               <Search className="size-4.5" />
             </Link>
+          </Button>
+          {/* Le centre d'aide (components/guides/CentreAide) : atteignable de toute page, pour tous. */}
+          <Button variant="ghost" size="icon" aria-label={t("guide.aide.ouvrir_label")} onClick={ouvrirCentre}>
+            <CircleHelp className="size-4.5" />
           </Button>
           <Sheet open={mobileNavOpen} onOpenChange={setMobileNavOpen}>
             <SheetTrigger asChild>

@@ -22,6 +22,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { Ecrin } from "@/components/Progression"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 
 /**
  * "Aujourd'hui : Limites de fonctions - 25 min" : une seule chose à faire, et un seul
@@ -332,7 +333,10 @@ function SeanceAFaire({
               onBascule={() => setAnneesOuvertes((ouvert) => !ouvert)}
             />
           )}
+          {/* Pas pour la séance verrouillée : ses étapes ne s'ouvrent pas, l'aide parlerait d'un bouton absent. */}
+          {!seance.verrouillee && <BoutonAide guide="seance-du-jour" className="-ml-1" />}
         </div>
+        {!seance.verrouillee && <AideContextuelle guide="seance-du-jour" />}
         {/* Les années concernées, sous les pastilles quand on les demande : sans elles, le
             chiffre de la pastille est à croire sur parole, mais elles n'ont pas à peser sur
             l'écran de qui lui fait confiance. Le "…" dit qu'il y en a d'autres plutôt que
@@ -374,6 +378,7 @@ function SeanceAFaire({
                 className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
               >
                 <Link
+                  data-guide="seance-commencer"
                   to={lienEtape(prochaine, country, plan)}
                   onClick={() => {
                     // Le démarrage ne se compte qu'une fois : reprendre n'est pas démarrer.
@@ -986,7 +991,7 @@ function EtapesParPhase({
 
   if (pliable && !detailOuvert) {
     return (
-      <div className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm">
+      <div data-guide="seance-parcours" className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1.5 text-sm">
         <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("seance.ton_parcours")}</span>
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
           {groupes.map((phase, index) => {
@@ -1016,7 +1021,7 @@ function EtapesParPhase({
   }
 
   return (
-    <div className="mt-6 rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
+    <div data-guide="seance-parcours" className="mt-6 rounded-2xl border border-border/70 bg-background/70 p-4 backdrop-blur-sm sm:p-5">
       <p className="flex items-baseline justify-between gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         {t("seance.ton_parcours")}
         <span className="flex items-baseline gap-3 font-sans normal-case tracking-normal">

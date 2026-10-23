@@ -6,6 +6,7 @@ import { ArrowRight, ChevronDown, MessageCircle, ShieldCheck, Sparkles } from "l
 import { getPlatformStats } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { ouvrirCentre } from "@/lib/guides/etat"
 import { useAbonneActif } from "@/lib/abonneActif"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
@@ -294,6 +295,13 @@ export function Footer() {
         </Colonne>
 
         <Colonne titre={t("ft.col_aide")}>
+          <button
+            type="button"
+            onClick={ouvrirCentre}
+            className="inline-flex w-fit items-center gap-1.5 text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+          >
+            {t("guide.aide.footer")}
+          </button>
           <Lien to="/tarifs">{t("ft.prix")}</Lien>
           <Lien to="/a-propos">{t("ft.a_propos")}</Lien>
           <a

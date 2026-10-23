@@ -16,6 +16,7 @@ import { langueDeListe } from "@/lib/discipline"
 import { useI18n } from "@/lib/i18n"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { ChoixMatieres } from "@/components/ChoixMatieres"
+import { signalerOnboarding } from "@/lib/guides/etat"
 import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -120,6 +121,13 @@ export function OnboardingModal() {
     && !dismissed
     && (matieresEnCours !== null || (!questionReglee && CATALOGUE_HOME_RE.test(pathname)))
     && browsableCountries.length > 0
+
+  // Dit aux guides (lib/guides) que cet écran est ouvert : aucun tutoriel ne s'affiche par-dessus
+  // ni pendant, il attend que l'élève ait dit quel examen il prépare.
+  useEffect(() => {
+    signalerOnboarding(shouldShow)
+    return () => signalerOnboarding(false)
+  }, [shouldShow])
 
   useEffect(() => {
     if (!shouldShow) return

@@ -10,6 +10,7 @@ import { BandeauHorsLigne } from "@/components/BandeauHorsLigne"
 import { useModeExamen } from "@/lib/modeExamen"
 import { BandeauReprisePaiement } from "@/components/BandeauReprisePaiement"
 import { Footer } from "@/components/Footer"
+import { GuideHost } from "@/components/guides/GuideHost"
 import { OnboardingModal } from "@/components/OnboardingModal"
 import { PinDialogs } from "@/components/PinDialogs"
 import { VerrouInactivite } from "@/components/VerrouInactivite"
@@ -222,6 +223,7 @@ function App({ basename = "" }: { basename?: string }) {
             <OnboardingModal />
             <PinDialogs />
             <VerrouInactivite />
+            <GuideHost />
           </CountryProvider>
         </RouteurDeLangue>
       </AuthProvider>
