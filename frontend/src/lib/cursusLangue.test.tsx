@@ -36,7 +36,7 @@ describe("cursusDeLangue", () => {
     expect(cursusDeLangue(LISTE, undefined)).toHaveLength(4)
   })
 
-  it("l'examen choisi ou déclaré reste proposé, même hors langue (nombre ou texte d'URL)", () => {
+  it("les ids à garder (examen choisi) restent proposés, même hors langue (nombre ou texte d'URL)", () => {
     expect(cursusDeLangue(LISTE, "en", [3]).map((c) => c.id)).toEqual([3, 4])
     expect(cursusDeLangue(LISTE, "en", ["2", null, undefined, ""]).map((c) => c.id)).toEqual([2, 4])
   })

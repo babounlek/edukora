@@ -248,11 +248,12 @@ export function EpreuvesListPage() {
     [subjects, couvertureInedites, subjectFilter],
   )
 
-  // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; l'examen
-  // déjà choisi et l'examen déclaré restent proposés quelle que soit leur langue (voir lib/cursusLangue).
+  // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; seul l'examen
+  // déjà choisi reste proposé quelle que soit sa langue. L'examen déclaré, lui, n'est pas gardé : en anglais, un
+  // « Probatoire C » parmi les pastilles du GCE n'avait rien à y faire (voir lib/cursusLangue).
   const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
-    garder: [cursusFilter, cursusPrepare?.id],
+    garder: [cursusFilter],
   })
 
   // Origine et nature sont des filtres de second rang : repliés tant qu'ils ne servent pas, mais

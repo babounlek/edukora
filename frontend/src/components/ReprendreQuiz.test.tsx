@@ -1,27 +1,25 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import { ApiError } from "@/api/client"
-
-const getQuizSession = vi.hoisted(() => vi.fn())
+const listQuizEnCours = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({ user: { id: 3, profil_actif: { id: 8 } } as unknown }))
 
-vi.mock("@/api/endpoints", () => ({ getQuizSession }))
+vi.mock("@/api/endpoints", () => ({ listQuizEnCours }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
 import { ReprendreQuiz } from "./ReprendreQuiz"
-import { lireQuizEnCours, memoriserQuizEnCours } from "@/lib/quizEnCours"
+import { lireQuizIgnores } from "@/lib/quizEnCours"
 
-const CLE = "edukora:quiz-en-cours:3:8"
+const CLE = "edukora:quiz-ignores:3:8"
 
-function session(extra: Record<string, unknown> = {}) {
+function ligne(extra: Record<string, unknown> = {}) {
   return {
-    id: 41, mode: "PRATIQUE", cursus: 1, subject: 2, cursus_display: "BAC - Série C", started_at: "2026-10-12T10:00:00Z",
-    completed_at: null, total_questions: 5,
-    questions: [1, 2, 3, 4, 5].map((i) => ({ id: i, reponse: i <= 2 ? { est_correcte: true } : null })),
+    id: 41, mode: "PRATIQUE", cursus: 1, cursus_display: "BAC - Série C", subject: 2, subject_label: "Mathématiques", theme: "",
+    started_at: "2026-10-12T10:00:00Z", derniere_reponse_at: "2026-10-12T10:05:00Z", nb_repondues: 2, total_questions: 5,
+    a_terminer: false, rejeu_de: null,
     ...extra,
   }
 }
@@ -38,78 +36,77 @@ function afficher() {
 }
 
 beforeEach(() => {
-  getQuizSession.mockReset()
+  listQuizEnCours.mockReset()
   localStorage.clear()
   auth.user = { id: 3, profil_actif: { id: 8 } }
 })
 
 describe("ReprendreQuiz", () => {
-  it("ne propose rien quand aucun quiz n'a été commencé", () => {
+  it("ne propose rien quand aucun quiz n'est en cours", async () => {
+    listQuizEnCours.mockResolvedValue([])
     afficher()
-    expect(getQuizSession).not.toHaveBeenCalled()
+
+    await vi.waitFor(() => expect(listQuizEnCours).toHaveBeenCalled())
     expect(screen.queryByRole("link")).not.toBeInTheDocument()
   })
 
-  it("propose de reprendre le quiz commencé, avec sa progression", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockResolvedValue(session())
+  it("propose de reprendre le quiz le plus récent, avec sa progression, sans rien stocker sur l'appareil", async () => {
+    listQuizEnCours.mockResolvedValue([ligne(), ligne({ id: 40 })])
     afficher()
 
     const lien = await screen.findByRole("link", { name: /Quiz en cours/ })
     expect(lien).toHaveAttribute("href", "/quiz/session/41")
     expect(lien).toHaveTextContent("2 / 5 répondues")
     expect(lien).toHaveTextContent("Reprendre")
+    expect(localStorage.length).toBe(0)
   })
 
   it("propose de terminer quand tout est répondu", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockResolvedValue(
-      session({ questions: [1, 2, 3, 4, 5].map((i) => ({ id: i, reponse: { est_correcte: true } })) }),
-    )
+    listQuizEnCours.mockResolvedValue([ligne({ nb_repondues: 5, a_terminer: true })])
     afficher()
+
     expect(await screen.findByText("Terminer")).toBeInTheDocument()
   })
 
-  it("oublie un quiz déjà terminé, sans rien afficher", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockResolvedValue(session({ completed_at: "2026-10-12T10:30:00Z" }))
+  it("nomme un rejeu en cours et un test de niveau pour ce qu'ils sont", async () => {
+    listQuizEnCours.mockResolvedValue([ligne({ rejeu_de: 12 })])
     afficher()
-
-    await waitFor(() => expect(lireQuizEnCours(CLE)).toBeNull())
-    expect(screen.queryByRole("link")).not.toBeInTheDocument()
+    expect(await screen.findByRole("link", { name: /Rejeu en cours/ })).toBeInTheDocument()
   })
 
-  it("oublie un quiz que le serveur ne connaît plus", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockRejectedValue(new ApiError(404, { detail: "Not found" }))
-    afficher()
-
-    await waitFor(() => expect(lireQuizEnCours(CLE)).toBeNull())
-  })
-
-  it("garde le souvenir quand l'API est seulement injoignable", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockRejectedValue(new TypeError("Failed to fetch"))
-    afficher()
-
-    await waitFor(() => expect(getQuizSession).toHaveBeenCalled())
-    expect(lireQuizEnCours(CLE)).toBe(41)
-  })
-
-  it("cesse de le proposer quand l'élève le décide", async () => {
-    memoriserQuizEnCours(CLE, 41)
-    getQuizSession.mockResolvedValue(session())
+  it("passe au quiz suivant quand l'élève écarte celui-ci, et le retient sur l'appareil", async () => {
+    listQuizEnCours.mockResolvedValue([ligne(), ligne({ id: 40, nb_repondues: 1 })])
     afficher()
 
     await userEvent.click(await screen.findByRole("button", { name: /Ne plus proposer/ }))
 
-    expect(screen.queryByRole("link", { name: /Quiz en cours/ })).not.toBeInTheDocument()
-    expect(lireQuizEnCours(CLE)).toBeNull()
+    expect(await screen.findByRole("link", { name: /1 \/ 5 répondues/ })).toHaveAttribute("href", "/quiz/session/40")
+    expect(lireQuizIgnores(CLE)).toEqual([41])
   })
 
-  it("ne mélange pas les élèves d'un même appareil", () => {
-    memoriserQuizEnCours("edukora:quiz-en-cours:3:9", 99)
+  it("ne propose plus un quiz écarté, même après rechargement", async () => {
+    localStorage.setItem(CLE, JSON.stringify([41]))
+    listQuizEnCours.mockResolvedValue([ligne()])
     afficher()
-    expect(getQuizSession).not.toHaveBeenCalled()
+
+    await vi.waitFor(() => expect(listQuizEnCours).toHaveBeenCalled())
+    expect(screen.queryByRole("link")).not.toBeInTheDocument()
+  })
+
+  it("ne mélange pas les élèves d'un même appareil", async () => {
+    localStorage.setItem("edukora:quiz-ignores:3:9", JSON.stringify([41]))
+    listQuizEnCours.mockResolvedValue([ligne()])
+    afficher()
+
+    expect(await screen.findByRole("link", { name: /Quiz en cours/ })).toBeInTheDocument()
+  })
+
+  it("garde la page silencieuse quand le serveur est injoignable", async () => {
+    listQuizEnCours.mockRejectedValue(new TypeError("Failed to fetch"))
+    afficher()
+
+    await vi.waitFor(() => expect(listQuizEnCours).toHaveBeenCalled())
+    expect(screen.queryByRole("link")).not.toBeInTheDocument()
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument()
   })
 })

@@ -1,6 +1,7 @@
 import re
 import unicodedata
 
+from django.db import transaction
 from django.db.models import Count, Q
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
@@ -28,7 +29,7 @@ from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
 )
-from . import accueil, xp
+from . import accueil, instantane, xp
 from .classement import classement_hebdo
 from .gratuits import themes_gratuits_par_matiere
 from .pdf import queue_quiz_fiche_pdf_generation
@@ -232,7 +233,7 @@ def _texte_item(item):
     return f"{item.enonce_markdown}\n{item.corrige_markdown}"
 
 
-def _competence_item_corrige(item, cursus_ids=None):
+def _competence_item_corrige(item, cursus_ids=None, corrige=None):
     """
     corrige_markdown d'un CompetenceItem, avec un lien "Voir le cours complet" injecté
     quand un Cours publié couvre déjà sa compétence (voir _cours_pour_theme) - jamais
@@ -241,14 +242,25 @@ def _competence_item_corrige(item, cursus_ids=None):
     lecture pour rester exact même si le Cours correspondant est publié après coup.
     Même principe que catalog.rendering._clean_exercise_corrige pour Exercise, jamais
     persisté sur item.corrige_markdown lui-même. `cursus_ids` : le cursus de la session
-    quand il est connu, à défaut ceux de l'item.
+    quand il est connu, à défaut ceux de l'item. `corrige` : le texte figé dans l'instantané
+    de la question (voir quiz.instantane), qui prime sur celui de l'item vivant ; seul le
+    lien vers le cours reste calculé à la lecture.
     """
     if cursus_ids is None:
         cursus_ids = item.cursus.values_list("id", flat=True)
+    base = item.corrige_markdown if corrige is None else corrige
     cours = _cours_pour_theme(item.theme, item.subject, cursus_ids, _texte_item(item))
     if not cours:
-        return item.corrige_markdown
-    return annotate_single_cours_link(item.corrige_markdown, cours.slug)
+        return base
+    return annotate_single_cours_link(base, cours.slug)
+
+
+def _corrige_de_la_question(quiz_question, donnees):
+    """Corrigé figé de la question, avec le lien vers le cours quand l'item existe encore."""
+    item = quiz_question.competence_item
+    if item is None:
+        return donnees["corrige_markdown"]
+    return _competence_item_corrige(item, [quiz_question.session.cursus_id], corrige=donnees["corrige_markdown"])
 
 
 def _question_payload(quiz_question):
@@ -266,46 +278,46 @@ def _question_payload(quiz_question):
     """
     answer = _get_answer(quiz_question)
     gain = getattr(answer, "gain_xp", None)
+    # Toujours l'instantané (voir quiz.instantane) : ce que l'élève lit, ce contre quoi sa
+    # réponse est jugée et ce que le rejeu rejouera sont une seule et même version.
+    donnees = instantane.donnees(quiz_question)
 
-    if quiz_question.competence_item_id:
-        item = quiz_question.competence_item
+    if donnees["source"] == "competence_item":
         payload = {
             "id": quiz_question.id,
             "ordre": quiz_question.ordre,
-            "enonce_markdown": item.enonce_markdown,
-            "type_reponse": item.type_reponse,
-            "choix": item.choix,
-            "theme": item.theme.name,
+            "enonce_markdown": donnees["enonce_markdown"],
+            "type_reponse": donnees["type_reponse"],
+            "choix": donnees["choix"],
+            "theme": donnees["theme"]["name"],
             # Id du thème et code matière : liens "Exercices corrigés sur ce thème" (page
             # /themes-frequents/<id>/exercices, qui attend le code matière) depuis le quiz.
-            "theme_id": item.theme_id,
-            "subject_code": item.subject.code,
-            "subject_label": item.subject.label,
+            "theme_id": donnees["theme"]["id"],
+            "subject_code": donnees["subject"]["code"],
+            "subject_label": donnees["subject"]["label"],
         }
         if answer:
-            payload["corrige_markdown"] = _competence_item_corrige(item, [quiz_question.session.cursus_id])
-            payload["reponse_correcte"] = item.reponse_correcte
+            payload["corrige_markdown"] = _corrige_de_la_question(quiz_question, donnees)
+            payload["reponse_correcte"] = donnees["reponse_correcte"]
     else:
-        question = quiz_question.question
-        exercise = question.exercise
         payload = {
             "id": quiz_question.id,
             "ordre": quiz_question.ordre,
-            "numero": question.numero,
-            "enonce_intro_markdown": _clean_quiz_markdown(exercise.enonce_intro_markdown),
-            "enonce_markdown": _clean_quiz_markdown(question.enonce_markdown),
-            "type_reponse": question.type_reponse,
-            "choix": question.choix,
+            "numero": donnees["numero"],
+            "enonce_intro_markdown": _clean_quiz_markdown(donnees["enonce_intro_markdown"]),
+            "enonce_markdown": _clean_quiz_markdown(donnees["enonce_markdown"]),
+            "type_reponse": donnees["type_reponse"],
+            "choix": donnees["choix"],
             # Lien "Voir la leçon d'origine" et matière - une session peut mélanger des
             # questions de plusieurs leçons/matières (mode Pratique libre sans filtre),
             # donc portés par question, pas par session (voir QuizSessionPage.tsx).
-            "lesson_id": exercise.lesson_id,
-            "lesson_title": exercise.lesson.title,
-            "subject_label": exercise.lesson.subject.label,
+            "lesson_id": donnees["lesson_id"],
+            "lesson_title": donnees["lesson_title"],
+            "subject_label": donnees["subject"]["label"],
         }
         if answer:
-            payload["corrige_markdown"] = question.corrige_markdown
-            payload["reponse_correcte"] = question.reponse_correcte
+            payload["corrige_markdown"] = donnees["corrige_markdown"]
+            payload["reponse_correcte"] = donnees["reponse_correcte"]
 
     if answer:
         payload["reponse"] = {
@@ -387,11 +399,12 @@ def _resultat_payload(session, request):
             serie = 0
         # CompetenceItem : un seul theme (FK) ; catalog.Question historique : plusieurs
         # (M2M) - voir QuizQuestion.contenu et CompetenceItem.theme.
-        themes = (
-            [quiz_question.competence_item.theme]
-            if quiz_question.competence_item_id
-            else list(quiz_question.question.themes.all())
-        )
+        if quiz_question.competence_item_id:
+            themes = [quiz_question.competence_item.theme]
+        elif quiz_question.question_id:
+            themes = list(quiz_question.question.themes.all())
+        else:
+            themes = []  # contenu supprimé depuis : seul l'instantané reste, sans objet Tag à lier
         for theme in themes:
             stats = par_theme.setdefault(
                 theme.name, {"total": 0, "reussies": 0, "theme": None, "competence_item": None, "theme_id": theme.pk},
@@ -520,11 +533,11 @@ def reveal_corrige(request, session_id, quiz_question_id):
         QuizQuestion.objects.select_related("question", "competence_item"),
         pk=quiz_question_id, session_id=session_id, session__profil=profil_actif(request),
     )
-    contenu = quiz_question.contenu
+    donnees = instantane.donnees(quiz_question)
     corrige_markdown = (
-        _competence_item_corrige(contenu, [quiz_question.session.cursus_id]) if quiz_question.competence_item_id else contenu.corrige_markdown
+        _corrige_de_la_question(quiz_question, donnees) if donnees["source"] == "competence_item" else donnees["corrige_markdown"]
     )
-    return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": contenu.reponse_correcte})
+    return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": donnees["reponse_correcte"]})
 
 
 @api_view(["POST"])
@@ -536,7 +549,7 @@ def answer_question(request, session_id, quiz_question_id):
         ),
         pk=quiz_question_id, session_id=session_id, session__profil=profil,
     )
-    contenu = quiz_question.contenu
+    type_reponse = instantane.type_et_cle(quiz_question)[0]
 
     defaults = {}
     temps = request.data.get("temps_secondes")
@@ -546,7 +559,7 @@ def answer_question(request, session_id, quiz_question_id):
         except (TypeError, ValueError):
             return Response({"error": "temps_secondes doit être un entier."}, status=400)
 
-    if contenu.type_reponse == TypeReponse.QCM:
+    if type_reponse == TypeReponse.QCM:
         reponse_choisie = str(request.data.get("reponse_choisie") or "")
         if not reponse_choisie:
             return Response({"error": "reponse_choisie est requis pour une question QCM."}, status=400)
@@ -559,15 +572,34 @@ def answer_question(request, session_id, quiz_question_id):
             )
         defaults["resultat_declare"] = resultat
 
-    answer, creee = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
+    with transaction.atomic():
+        # Verrou sur la session : sérialise cette réponse avec complete_session. Une tentative
+        # terminée est un historique immuable - une réponse qui arrive après la clôture (onglet
+        # resté ouvert, requête rejouée) est refusée au lieu de réécrire la note.
+        session = QuizSession.objects.select_for_update().get(pk=quiz_question.session_id)
+        if session.completed_at:
+            return Response(
+                {"error": textes.texte("quiz.session_terminee", textes.langue_de(session.cursus))}, status=409,
+            )
+        answer, creee = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
 
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
         cursus = quiz_question.session.cursus
-        # AVANT la mise à jour de l'échéance : elle fait cesser le thème d'être « dû ».
-        du_en_revision = xp.theme_du_en_revision(profil, cursus, item.theme)
-        enregistrer_resultat_pour_revision(profil, cursus, item.subject, item.theme, answer.est_correcte)
-        gain = xp.crediter_reponse(profil, quiz_question, answer, premiere_reponse=creee, bonus_revision=du_en_revision)
+        if quiz_question.session.rejeu_de_id:
+            # Rejeu : neutre pour la progression (voir quiz.historique). Les réponses justes ne
+            # rapportent ni XP ni palier - l'élève connaît déjà les questions. Une erreur reste un
+            # vrai signal de faiblesse : elle (ré)ouvre quand même le suivi du thème.
+            if not answer.est_correcte:
+                enregistrer_resultat_pour_revision(profil, cursus, item.subject, item.theme, False)
+            gain = None
+        else:
+            # AVANT la mise à jour de l'échéance : elle fait cesser le thème d'être « dû ».
+            du_en_revision = xp.theme_du_en_revision(profil, cursus, item.theme)
+            enregistrer_resultat_pour_revision(profil, cursus, item.subject, item.theme, answer.est_correcte)
+            gain = xp.crediter_reponse(
+                profil, quiz_question, answer, premiere_reponse=creee, bonus_revision=du_en_revision,
+            )
     else:
         gain = None
 
@@ -584,10 +616,16 @@ def answer_question(request, session_id, quiz_question_id):
 
 @api_view(["POST"])
 def complete_session(request, session_id):
-    session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
-    if not session.completed_at:
-        session.completed_at = timezone.now()
-        session.save(update_fields=["completed_at"])
+    get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
+    with transaction.atomic():
+        # Verrou de ligne : deux clôtures simultanées (double clic, requête rejouée) ne passent
+        # pas toutes deux le test `completed_at` - une seule clôture, une seule séance validée.
+        session = QuizSession.objects.select_for_update().get(pk=session_id)
+        cloture_ici = not session.completed_at
+        if cloture_ici:
+            session.completed_at = timezone.now()
+            session.save(update_fields=["completed_at"])
+    if cloture_ici:
         # Le quiz est toujours la dernière étape d'une séance : le boucler, c'est
         # avoir fait la séance. Sous le `if` : une session rouverte plus tard ne doit
         # pas reclôturer quoi que ce soit.

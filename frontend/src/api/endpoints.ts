@@ -39,7 +39,10 @@ import type {
   Profil,
   Progression,
   QuizCorrige,
+  QuizEnCoursItem,
   QuizFichePdfStatus,
+  QuizHistoriqueDetail,
+  QuizHistoriqueItem,
   QuizQuestion,
   QuizResult,
   QuizEssai,
@@ -1129,4 +1132,37 @@ export function completerRecherche(
     auth: false,
     signal,
   })
+}
+
+/** Les tentatives de quiz terminées du profil actif, la plus récente d'abord (voir quiz.historique). */
+// Une réponse qui n'a pas la forme attendue (ex. une page HTML renvoyée à la place de l'API par un proxy
+// mal configuré : apiRequest rend alors null) doit devenir une ERREUR de chargement, que la page sait
+// afficher et réessayer - pas un plantage de rendu de toute la page.
+function reponseInattendue(): never {
+  throw new Error("Réponse inattendue du serveur")
+}
+
+export async function listQuizHistorique(page = 1, signal?: AbortSignal) {
+  const donnees = await apiRequest<Paginated<QuizHistoriqueItem>>(`/quiz/historique/?page=${page}`, { signal })
+  if (!donnees || !Array.isArray(donnees.results)) reponseInattendue()
+  return donnees
+}
+
+/** Une tentative terminée en lecture seule : questions, réponses données, corrections, score. */
+export async function getQuizHistoriqueDetail(sessionId: number, signal?: AbortSignal) {
+  const donnees = await apiRequest<QuizHistoriqueDetail>(`/quiz/historique/${sessionId}/`, { signal })
+  if (!donnees || !Array.isArray(donnees.questions)) reponseInattendue()
+  return donnees
+}
+
+/** Rejoue une tentative terminée : une NOUVELLE session, mêmes questions, sans toucher à l'ancienne. */
+export function rejouerQuiz(sessionId: number) {
+  return apiRequest<QuizSession>(`/quiz/historique/${sessionId}/rejouer/`, { method: "POST" })
+}
+
+/** Les quiz commencés et pas terminés du profil actif - « Reprendre le quiz ». */
+export async function listQuizEnCours(signal?: AbortSignal) {
+  const donnees = await apiRequest<QuizEnCoursItem[]>("/quiz/en-cours/", { signal })
+  if (!Array.isArray(donnees)) reponseInattendue()
+  return donnees
 }

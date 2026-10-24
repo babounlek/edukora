@@ -1676,3 +1676,80 @@ export type RegleChoix =
   | { type: "total"; portee: string; repondre: number; minimum: number; groupes: string[]; exercices?: number[] }
   // Consigne qu'aucune autre forme n'exprime ; texte dans la langue du sujet, sans effet sur la note.
   | { type: "consigne"; portee: string; texte: string }
+
+/** Une tentative de quiz terminée, vue depuis l'historique (voir quiz.historique côté backend). */
+export interface QuizHistoriqueItem {
+  id: number
+  mode: ModeQuiz
+  cursus: number
+  cursus_display: string
+  subject: number | null
+  subject_label: string
+  theme: string
+  started_at: string
+  completed_at: string
+  // Somme des temps de réponse, absente si une question n'a pas de temps (jamais une durée partielle).
+  duree_secondes: number | null
+  score: number
+  total_questions: number
+  pourcentage: number
+  // Session d'origine quand c'est un rejeu, sinon null.
+  rejeu_de: number | null
+  numero_tentative: number
+  nb_tentatives: number
+}
+
+/** Une question telle qu'elle a été présentée lors de la tentative : tout vient de l'instantané figé. */
+export interface QuizHistoriqueQuestion {
+  id: number
+  ordre: number
+  enonce_markdown: string
+  type_reponse: TypeReponse
+  choix: QuizChoix[]
+  theme: string
+  theme_id: number | null
+  subject_code: string | null
+  subject_label: string
+  reponse_correcte: string
+  corrige_markdown: string
+  // Faux si le contenu d'origine a été supprimé depuis : l'instantané suffit à la consultation.
+  contenu_disponible: boolean
+  // La clé actuelle diffère de celle de cette tentative : simple mention, la note ne change jamais.
+  cle_modifiee: boolean
+  snapshot_retroactif: boolean
+  // Historique pré-bascule uniquement.
+  numero?: string
+  enonce_intro_markdown?: string
+  // Null si la question n'a pas reçu de réponse.
+  reponse: {
+    reponse_choisie: string
+    resultat_declare: string
+    est_correcte: boolean
+    temps_secondes: number | null
+  } | null
+}
+
+export interface QuizHistoriqueDetail extends QuizHistoriqueItem {
+  // Instantané rempli après coup : le contenu affiché peut différer de ce que l'élève a vu.
+  snapshot_retroactif: boolean
+  peut_rejouer: boolean
+  questions: QuizHistoriqueQuestion[]
+}
+
+/** Une tentative commencée et pas terminée, à reprendre (voir quiz.historique.en_cours côté backend). */
+export interface QuizEnCoursItem {
+  id: number
+  mode: ModeQuiz
+  cursus: number
+  cursus_display: string
+  subject: number | null
+  subject_label: string
+  theme: string
+  started_at: string
+  derniere_reponse_at: string
+  nb_repondues: number
+  total_questions: number
+  // Tout est répondu mais le quiz n'est pas rendu : reprendre mène à « terminer ».
+  a_terminer: boolean
+  rejeu_de: number | null
+}

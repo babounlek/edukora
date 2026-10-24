@@ -955,7 +955,7 @@ class QuizQuestionDeletionTests(TestCase):
     parce qu'un item a été pioché dans un quiz - régression sur ce point précis, côté
     historique (question) comme côté source actuelle (competence_item)."""
 
-    def test_deleting_exercise_cascades_through_quiz_question_without_protected_error(self):
+    def test_deleting_exercise_keeps_the_quiz_history_without_protected_error(self):
         user = User.objects.create_user(phone_number="677200005", password="x")
         subject = Subject.objects.get(country__code="CM", code="MATHS")
         cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
@@ -970,9 +970,12 @@ class QuizQuestionDeletionTests(TestCase):
 
         exercise.delete()
 
-        self.assertFalse(QuizQuestion.objects.filter(pk=quiz_question.pk).exists())
+        # Plus de cascade : l'historique survit au contenu (voir quiz.instantane, figer_puis_detacher).
+        quiz_question.refresh_from_db()
+        self.assertIsNone(quiz_question.question_id)
+        self.assertIn(question.enonce_markdown, quiz_question.snapshot["enonce_markdown"])
 
-    def test_deleting_competence_item_cascades_through_quiz_question_without_protected_error(self):
+    def test_deleting_competence_item_keeps_the_quiz_history_without_protected_error(self):
         user = User.objects.create_user(phone_number="677200007", password="x")
         subject = Subject.objects.get(country__code="CM", code="MATHS")
         cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
@@ -982,7 +985,9 @@ class QuizQuestionDeletionTests(TestCase):
 
         item.delete()
 
-        self.assertFalse(QuizQuestion.objects.filter(pk=quiz_question.pk).exists())
+        quiz_question.refresh_from_db()
+        self.assertIsNone(quiz_question.competence_item_id)
+        self.assertEqual(quiz_question.snapshot["enonce_markdown"], "Énoncé 1.")
 
 
 class QuizAnswerModelTests(TestCase):

@@ -289,7 +289,7 @@ export function QuizResultPage() {
         // donc rien ne déclenchait de rafraîchissement. Le travail était bien
         // enregistré côté serveur - il ne se voyait simplement pas, ce qui est pire
         // qu'une erreur : l'élève croit que son quiz n'a servi à rien.
-        for (const cle of ["parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour", "priorites", "bilan-periode"]) {
+        for (const cle of ["parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour", "priorites", "bilan-periode", "quiz-historique", "quiz-en-cours"]) {
           queryClient.invalidateQueries({ queryKey: [cle] })
         }
       })
@@ -497,6 +497,13 @@ export function QuizResultPage() {
           <Link to="/compte">{t("qr.mon_compte")}</Link>
         </Button>
       </div>
+      {id && (
+        <p className="mt-3 text-center text-sm">
+          <Link to={`/historique/quiz/${id}`} className="font-medium text-primary hover:underline">
+            {t("hq.voir_reponses")}
+          </Link>
+        </p>
+      )}
     </div>
   )
 }

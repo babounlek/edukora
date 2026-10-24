@@ -10,11 +10,6 @@ vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" 
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 vi.mock("@/lib/retours", () => ({ jouerRetour: vi.fn() }))
-vi.mock("@/lib/quizEnCours", () => ({
-  memoriserQuizEnCours: vi.fn(),
-  oublierQuizEnCours: vi.fn(),
-  useCleQuizEnCours: () => null,
-}))
 // KaTeX et le rendu Markdown complet n'ont rien à voir ici : le texte brut suffit.
 vi.mock("@/components/EpreuveMarkdown", () => ({ EpreuveMarkdown: ({ markdown }: { markdown: string }) => <div>{markdown}</div> }))
 vi.mock("@/components/BoutonPartager", () => ({ BoutonPartager: () => null }))

@@ -234,7 +234,7 @@ PARCOURS_FREQUENCE_OCCURRENCES_MIN = 2
 # déjà courts (BAC A, TI : plancher 2).
 PARCOURS_FREQUENCE_THEMES_MAX = 130
 
-from . import textes, xp
+from . import instantane, textes, xp
 from .models import (
     CompetenceItem, ModeQuiz, ObjectifMatiere, OrigineSeance, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare,
     RevisionSchedule,
@@ -407,6 +407,7 @@ def _poids_par_theme(profil, cursus):
             quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
         )
         .select_related("quiz_question__competence_item")
     )
@@ -479,11 +480,24 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
         selection = _selection_ponderee_par_theme(items, poids_par_theme, n)
 
     session = QuizSession.objects.create(profil=profil, cursus=cursus, subject=subject, theme=theme, mode=mode)
-    QuizQuestion.objects.bulk_create([
-        QuizQuestion(session=session, competence_item=item, ordre=ordre)
-        for ordre, item in enumerate(selection, start=1)
-    ])
+    creer_questions(session, selection)
     return session
+
+
+def creer_questions(session, items):
+    """
+    Pose les questions d'une session dans l'ordre donné, chacune avec son instantané (voir
+    quiz.instantane) - seul point de création des QuizQuestion, pour qu'aucune session ne
+    naisse sans la copie figée de ce que l'élève va voir.
+    """
+    items = list(items)
+    charges = CompetenceItem.objects.select_related("theme", "subject").in_bulk([item.pk for item in items])
+    QuizQuestion.objects.bulk_create([
+        QuizQuestion(
+            session=session, competence_item=item, ordre=ordre, snapshot=instantane.figer_item(charges[item.pk]),
+        )
+        for ordre, item in enumerate(items, start=1)
+    ])
 
 
 def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte):
@@ -556,7 +570,10 @@ def maitrise_par_theme(profil, cursus=None):
     le plus d'attention en premier, cohérent avec la file de révision.
     """
     reponses = (
-        QuizAnswer.objects.filter(quiz_question__session__profil=profil, quiz_question__competence_item__isnull=False)
+        QuizAnswer.objects.filter(
+            quiz_question__session__profil=profil, quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+        )
         .select_related("quiz_question__competence_item__theme", "quiz_question__competence_item__subject")
     )
     if cursus:
@@ -613,6 +630,7 @@ def maitrise_par_savoir(profil, cursus=None):
             quiz_question__session__profil=profil,
             quiz_question__competence_item__isnull=False,
             quiz_question__competence_item__theme__savoir_officiel__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
         )
         .select_related("quiz_question__competence_item__theme")
     )
@@ -840,6 +858,7 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
             quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__theme_id__in=tous_tag_ids,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
         )
         .select_related("quiz_question__competence_item")
     ):
@@ -1648,6 +1667,7 @@ def _theme_deja_maitrise(profil, cursus, theme):
         quiz_question__session__profil=profil,
         quiz_question__session__cursus=cursus,
         quiz_question__competence_item__theme=theme,
+        quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
     ):
         stats["total"] += 1
         if reponse.est_correcte:
@@ -2012,6 +2032,7 @@ def _maitrise_par_subject(profil, cursus):
             quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
         )
         .select_related("quiz_question__competence_item")
     ):
@@ -2395,7 +2416,5 @@ def session_des_ratees(profil, session):
     refaite = QuizSession.objects.create(
         profil=profil, cursus=session.cursus, subject=session.subject, mode=ModeQuiz.PRATIQUE,
     )
-    QuizQuestion.objects.bulk_create([
-        QuizQuestion(session=refaite, competence_item=item, ordre=ordre) for ordre, item in enumerate(items, start=1)
-    ])
+    creer_questions(refaite, items)
     return refaite

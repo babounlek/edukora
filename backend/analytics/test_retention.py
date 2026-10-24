@@ -86,14 +86,27 @@ class RetentionTests(TestCase):
         jours = jours_actifs_par_profil()
         self.assertEqual(jours[profil.id], {timezone.localtime(self.maintenant - timedelta(days=3)).date()})
 
+    def session_quiz(self, profil, *, repondue, terminee=False):
+        self._n += 1
+        session = QuizSession.objects.create(
+            profil=profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE, completed_at=self.maintenant if terminee else None,
+        )
+        item = _make_competence_item(Subject.objects.get(country__code="CM", code="MATHS"), self.cursus, numero=f"r{self._n}")
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        if repondue:
+            QuizAnswer.objects.create(quiz_question=quiz_question)
+        return session
+
     def test_quiz_termines_et_abandons(self):
         profil = self.eleve()
-        QuizSession.objects.create(profil=profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE, completed_at=self.maintenant)
-        QuizSession.objects.create(profil=profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        self.session_quiz(profil, repondue=True, terminee=True)
+        self.session_quiz(profil, repondue=True)  # commencé puis laissé : un vrai abandon
+        self.session_quiz(profil, repondue=False)  # ouvert sans répondre : pas une tentative
         AnalyticsEvent.objects.create(name=EventName.QUIZ_ABANDONNE, user=profil.compte)
 
         quiz = retention(30)["quiz"]
         self.assertEqual((quiz["commences"], quiz["termines"], quiz["part_terminee"]), (2, 1, 50.0))
+        self.assertEqual(quiz["ouverts_sans_reponse"], 1)
         self.assertEqual(quiz["abandons_declares"], 1)
 
     def test_frequence_sans_activite_ne_divise_pas_par_zero(self):

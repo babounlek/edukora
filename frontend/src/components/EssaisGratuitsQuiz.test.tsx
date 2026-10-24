@@ -56,11 +56,11 @@ describe("EssaisGratuitsQuiz : examens de la langue de l'interface", () => {
     expect(screen.queryByText("Mathématiques")).not.toBeInTheDocument()
   })
 
-  it("l'examen déclaré dans l'autre langue reste proposé sans devenir le choix par défaut", async () => {
+  it("l'examen déclaré dans l'autre langue n'est pas proposé", async () => {
     await definirLangue("en", { persister: false })
     afficher(14)
     expect(await screen.findByText("Mathematics")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "BEPC" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "BEPC" })).not.toBeInTheDocument()
     expect(screen.queryByText("Géographie")).not.toBeInTheDocument()
     expect(screen.queryByRole("button", { name: "BAC - A" })).not.toBeInTheDocument()
   })

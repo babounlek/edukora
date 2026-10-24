@@ -37,15 +37,12 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
   const [erreur, setErreur] = useState("")
 
   // Les essais proposés suivent la langue de l'interface, comme les listes (voir lib/cursusLangue) : en anglais le
-  // GCE, en français BEPC, Probatoire et BAC. L'examen déclaré reste proposé en pastille, sans devenir le choix par
-  // défaut s'il est de l'autre langue. Changer de langue abandonne l'examen choisi à la main.
+  // GCE, en français BEPC, Probatoire et BAC. Un examen de l'autre langue (même déclaré sur le compte) n'est pas
+  // proposé en pastille. Changer de langue abandonne l'examen choisi à la main.
   const langue = langueDeListe("", false)
   useEffect(() => setChoisi(null), [langue])
 
-  const proposes = useMemo(
-    () => (essais ?? []).filter((e) => estDeLangue(e, langue) || e.cursus === cursusInitial),
-    [essais, langue, cursusInitial],
-  )
+  const proposes = useMemo(() => (essais ?? []).filter((e) => estDeLangue(e, langue)), [essais, langue])
   const cursus = useMemo(() => {
     const vus = new Map<number, string>()
     // Pastilles courtes : « BAC - A » suffit, le mot « Série(s) » n'apporte rien dans un filtre d'examen.

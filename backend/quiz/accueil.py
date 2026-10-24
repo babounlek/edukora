@@ -179,6 +179,7 @@ def _rejouer_reponses(profil, cursus, depuis_dt):
             quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
         )
         .select_related("quiz_question__competence_item__theme", "quiz_question__competence_item__subject")
         .order_by("answered_at")

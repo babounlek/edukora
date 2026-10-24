@@ -29,6 +29,15 @@ TEXTES = {
         FR: "Aucune question disponible pour ces critères.",
         EN: "No questions are available for this topic yet.",
     },
+    # --- Historique et rejeu (quiz.views.answer_question, quiz.historique) ---
+    "quiz.session_terminee": {
+        FR: "Ce quiz est terminé : tes réponses ne peuvent plus être modifiées. Tu peux le rejouer.",
+        EN: "This quiz is finished: your answers can no longer be changed. You can replay it.",
+    },
+    "quiz.rejeu_session_en_cours": {
+        FR: "Termine d'abord ce quiz avant de le rejouer.",
+        EN: "Finish this quiz before replaying it.",
+    },
     # --- Parcours par thème (quiz.services.construire_parcours) ---
     "parcours.titre_themes": {
         FR: "Les thèmes qui reviennent le plus à l'examen",

@@ -1,46 +1,30 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import { Play, X } from "lucide-react"
 
-import { getQuizSession } from "@/api/endpoints"
-import { ApiError } from "@/api/client"
-import { lireQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
+import { ignorerQuiz, lireQuizIgnores, useCleQuizEnCours, useQuizEnCours } from "@/lib/quizEnCours"
 import { t, useI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
 
 /**
  * « Reprendre mon quiz » : la séance commencée et pas terminée passe avant d'en lancer une autre.
- * Rien ne s'affiche s'il n'y en a pas, si elle est déjà rendue, ou si le serveur ne la connaît plus.
+ * La liste vient du serveur (voir lib/quizEnCours) : elle suit l'élève d'un appareil à l'autre. Rien ne
+ * s'affiche s'il n'y en a pas, ou si l'élève a demandé à ne plus se voir proposer celle-ci.
  */
 export function ReprendreQuiz({ className, enveloppe = false }: { className?: string; enveloppe?: boolean }) {
   useI18n()
   const cle = useCleQuizEnCours()
-  // Relit le stockage quand l'élève abandonne (le stockage seul ne déclenche aucun rendu).
+  const { data } = useQuizEnCours()
+  // Relit le stockage quand l'élève ferme la carte (le stockage seul ne déclenche aucun rendu).
   const [, setVersion] = useState(0)
-  const id = cle ? lireQuizEnCours(cle) : null
 
-  const { data: session, error } = useQuery({
-    queryKey: ["quiz-en-cours", id],
-    queryFn: () => getQuizSession(id as number),
-    enabled: id !== null,
-    // Une séance finie dans un autre onglet ne doit plus être proposée.
-    staleTime: 0,
-    retry: false,
-  })
+  const ignores = cle ? lireQuizIgnores(cle) : []
+  const session = data?.find((s) => !ignores.includes(s.id))
+  if (!cle || !session) return null
 
-  const introuvable = error instanceof ApiError && (error.status === 404 || error.status === 403)
-  const terminee = Boolean(session?.completed_at)
-  useEffect(() => {
-    if (cle && id !== null && (terminee || introuvable)) oublierQuizEnCours(cle, id)
-  }, [cle, id, terminee, introuvable])
-
-  if (!cle || id === null || !session || terminee) return null
-
-  const total = session.total_questions || session.questions.length
-  const repondues = session.questions.filter((q) => q.reponse).length
-  const aTerminer = repondues >= total
-  const nom = session.mode === "DIAGNOSTIC" ? t("quiz_en_cours.test_niveau") : t("quiz_en_cours.quiz")
+  const nom = session.mode === "DIAGNOSTIC"
+    ? t("quiz_en_cours.test_niveau")
+    : session.rejeu_de !== null ? t("hq.rejeu") : t("quiz_en_cours.quiz")
 
   const carte = (
     <div
@@ -58,16 +42,18 @@ export function ReprendreQuiz({ className, enveloppe = false }: { className?: st
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {t("quiz_en_cours.titre", { nom, repondues, total })}
+            {t("quiz_en_cours.titre", { nom, repondues: session.nb_repondues, total: session.total_questions })}
           </span>
           <span className="block truncate text-sm font-medium">{traduireLibelleSerie(session.cursus_display)}</span>
         </span>
-        <span className="shrink-0 text-sm font-medium text-primary">{aTerminer ? t("quiz_en_cours.terminer") : t("seance.reprendre")}</span>
+        <span className="shrink-0 text-sm font-medium text-primary">
+          {session.a_terminer ? t("quiz_en_cours.terminer") : t("seance.reprendre")}
+        </span>
       </Link>
       <button
         type="button"
         onClick={() => {
-          oublierQuizEnCours(cle)
+          ignorerQuiz(cle, session.id)
           setVersion((v) => v + 1)
         }}
         aria-label={t("quiz_en_cours.oublier_aria")}

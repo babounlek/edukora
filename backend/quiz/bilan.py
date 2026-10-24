@@ -83,6 +83,7 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
             quiz_question__session__profil=profil,
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
             answered_at__lte=fin_dt,
         )
         .select_related("quiz_question__competence_item__theme", "quiz_question__competence_item__subject")

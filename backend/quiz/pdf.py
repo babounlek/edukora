@@ -102,20 +102,22 @@ def _bloc_question(quiz_question, *, avec_corrige, titre_corrige="Corrigé"):
     queue_quiz_fiche_pdf_generation, appelée depuis quiz.views.quiz_fiche_pdf), un
     import top-level symétrique ici créerait un cycle.
     """
-    from .views import _clean_quiz_markdown, _competence_item_corrige
+    from . import instantane
+    from .views import _clean_quiz_markdown, _corrige_de_la_question
 
-    contenu = quiz_question.contenu
-    if quiz_question.competence_item_id:
-        enonce = contenu.enonce_markdown.strip()
+    # L'instantané, pas le contenu vivant : le PDF reprend ce que l'élève a réellement vu.
+    donnees = instantane.donnees(quiz_question)
+    if donnees["source"] == "competence_item":
+        enonce = donnees["enonce_markdown"].strip()
     else:
-        enonce = _clean_quiz_markdown(contenu.enonce_markdown).strip()
+        enonce = _clean_quiz_markdown(donnees["enonce_markdown"]).strip()
 
     blocs = [f"## Question {quiz_question.ordre}", enonce]
     if avec_corrige:
-        if quiz_question.competence_item_id:
-            corrige = _competence_item_corrige(contenu, [quiz_question.session.cursus_id]).strip()
+        if donnees["source"] == "competence_item":
+            corrige = _corrige_de_la_question(quiz_question, donnees).strip()
         else:
-            corrige = contenu.corrige_markdown.strip()
+            corrige = donnees["corrige_markdown"].strip()
         # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
         # titres ("### Rappel de méthode", puis "### Corrigé") ; les plus anciens (et
         # l'historique catalog.Question) n'en ont aucun - sans ce repli, l'énoncé et sa

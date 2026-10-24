@@ -26,7 +26,6 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { libellePoints } from "@/lib/notation"
-import { memoriserQuizEnCours, oublierQuizEnCours, useCleQuizEnCours } from "@/lib/quizEnCours"
 import { nomAccessibleDuChoix } from "@/lib/markdown"
 import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
 import { capitaliserTheme, cn } from "@/lib/utils"
@@ -81,7 +80,6 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { country } = useCountry()
-  const cleReprise = useCleQuizEnCours()
 
   const [session, setSession] = useState<QuizSession | null>(null)
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
@@ -145,14 +143,6 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         setError(err instanceof ApiError ? err.message : t("qs.charger_erreur"))
       })
   }, [id, navigate, essai])
-
-  // Retenu pour « Reprendre mon quiz » (accueil et page Quiz) tant qu'il n'est pas terminé. Séparé
-  // du chargement : la clé n'existe qu'une fois le compte connu, souvent après la séance.
-  const sessionId = session?.id
-  const sessionTerminee = Boolean(session?.completed_at)
-  useEffect(() => {
-    if (cleReprise && !essai && sessionId !== undefined && !sessionTerminee) memoriserQuizEnCours(cleReprise, sessionId)
-  }, [cleReprise, essai, sessionId, sessionTerminee])
 
   if (error) {
     return (
@@ -269,7 +259,6 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     setSubmitting(true)
     try {
       await completeQuizSession(session!.id)
-      if (cleReprise) oublierQuizEnCours(cleReprise, session!.id)
       trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode })
       navigate(`/quiz/session/${session!.id}/resultat`)
     } catch {

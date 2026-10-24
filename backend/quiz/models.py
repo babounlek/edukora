@@ -2,6 +2,7 @@ from django.db import models
 
 from catalog.models import Difficulte, StatutContenu, TypeReponse
 
+from . import instantane
 from .storage import protected_storage
 
 
@@ -193,6 +194,14 @@ class QuizSession(models.Model):
     mode = models.CharField(max_length=10, choices=ModeQuiz.choices)
     started_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
+    rejeu_de = models.ForeignKey(
+        "self", null=True, blank=True, on_delete=models.SET_NULL, related_name="rejeux",
+        help_text=(
+            "Renseigné pour un rejeu complet : la session d'ORIGINE de la chaîne (jamais un rejeu "
+            "intermédiaire). Un rejeu est neutre pour la progression (XP, révision, maîtrise) : "
+            "voir quiz.historique. Vide pour toute autre session, « Refaire les ratées » comprise."
+        ),
+    )
 
     fiche_pdf_statut = models.CharField(
         max_length=10, choices=StatutFichePdf.choices, blank=True,
@@ -213,9 +222,35 @@ class QuizSession(models.Model):
 
     class Meta:
         ordering = ["-started_at"]
+        indexes = [
+            # Liste d'historique : sessions terminées d'un profil, la plus récente d'abord.
+            models.Index(fields=["profil", "-completed_at"], name="quizsession_profil_fin"),
+        ]
 
     def __str__(self):
         return f"{self.get_mode_display()} - {self.profil} ({self.cursus})"
+
+
+def figer_puis_detacher(collector, field, sub_objs, using):
+    """
+    on_delete des FK de contenu de QuizQuestion : SET_NULL, mais l'instantané est d'abord
+    rempli pour toute ligne qui n'en a pas encore (session antérieure à quiz.instantane, ligne
+    créée hors des services). Sans cela, supprimer du contenu (purge admin, suppression d'un
+    item) violerait la contrainte quizquestion_source_ou_snapshot tant que la commande
+    remplir_instantanes_quiz n'a pas tourné - ou effacerait l'historique. Le contenu existe
+    encore à ce stade : la collecte précède la suppression.
+    """
+    # Relu par clé : le queryset du collecteur est différé (.only), incompatible avec select_related.
+    a_figer = sub_objs.model.objects.filter(
+        pk__in=sub_objs.filter(snapshot__isnull=True).values("pk"),
+    ).select_related("competence_item__theme", "competence_item__subject", "question__exercise__lesson__subject")
+    for quiz_question in a_figer:
+        figee = instantane.figer(quiz_question)
+        if figee is not None:
+            quiz_question.snapshot = figee
+            quiz_question.snapshot_retroactif = True
+            quiz_question.save(update_fields=["snapshot", "snapshot_retroactif"])
+    models.SET_NULL(collector, field, sub_objs, using)
 
 
 class QuizQuestion(models.Model):
@@ -233,34 +268,54 @@ class QuizQuestion(models.Model):
     (`+`) des deux côtés : le lien utile se lit depuis QuizQuestion, pas l'inverse (un
     même item peut apparaître dans de nombreuses sessions).
 
-    CASCADE plutôt que PROTECT sur les deux FK : la purge admin (voir
-    catalog.admin.LessonAdmin.purge_view) supprime tout le contenu pédagogique en bloc
-    (Exercise -> Question en cascade) et doit pouvoir aboutir même si des Question ont
-    déjà été piochées dans des quiz - un historique de quiz sur du contenu supprimé n'a
-    plus de sens à conserver, PROTECT bloquerait la purge entière pour cette seule raison.
+    figer_puis_detacher (SET_NULL après instantané, et non CASCADE) sur les deux FK : l'historique d'un élève survit à la
+    suppression du contenu, l'`snapshot` ci-dessous étant alors la seule source de
+    l'énoncé, des choix, de la clé et du corrigé de cette question. La purge admin (voir
+    catalog.admin.LessonAdmin.purge_view) aboutit toujours : SET_NULL ne bloque pas, elle
+    laisse simplement les sessions et leurs instantanés en place. Ce choix remplace
+    l'ancien CASCADE, qui effaçait les sessions avec le contenu.
+
+    `snapshot` : copie figée, écrite à la création de la session et jamais modifiée (voir
+    quiz.instantane) - une correction de l'item après coup ne change ni ce que l'élève a
+    vu, ni la clé sur laquelle sa réponse est jugée. Nul pour une ligne créée hors des
+    services (tests, anciens appels) : on retombe alors sur le contenu vivant.
     """
 
     session = models.ForeignKey(QuizSession, on_delete=models.CASCADE, related_name="quiz_questions")
     question = models.ForeignKey(
-        "catalog.Question", null=True, blank=True, on_delete=models.CASCADE, related_name="+",
+        "catalog.Question", null=True, blank=True, on_delete=figer_puis_detacher, related_name="+",
         help_text="Historique pré-bascule uniquement - generer_session ne peuple plus jamais ce champ.",
     )
     competence_item = models.ForeignKey(
-        CompetenceItem, null=True, blank=True, on_delete=models.CASCADE, related_name="+",
+        CompetenceItem, null=True, blank=True, on_delete=figer_puis_detacher, related_name="+",
         help_text="Seule source peuplée par generer_session depuis la bascule vers CompetenceItem.",
     )
     ordre = models.PositiveSmallIntegerField()
+    snapshot = models.JSONField(
+        null=True, blank=True,
+        help_text="Contenu pédagogique tel qu'il existait à la création de la session - voir quiz.instantane.",
+    )
+    snapshot_retroactif = models.BooleanField(
+        default=False,
+        help_text=(
+            "Vrai si l'instantané a été rempli APRÈS coup depuis le contenu du moment (commande "
+            "remplir_instantanes_quiz) : il peut alors différer de ce que l'élève a réellement vu."
+        ),
+    )
 
     class Meta:
         ordering = ["session", "ordre"]
         constraints = [
             models.UniqueConstraint(fields=["session", "ordre"], name="unique_ordre_par_session"),
+            # Exactement une source vivante - ou aucune quand l'instantané la remplace (contenu
+            # supprimé depuis, voir SET_NULL ci-dessus).
             models.CheckConstraint(
                 condition=(
                     models.Q(question__isnull=False, competence_item__isnull=True)
                     | models.Q(question__isnull=True, competence_item__isnull=False)
+                    | models.Q(question__isnull=True, competence_item__isnull=True, snapshot__isnull=False)
                 ),
-                name="quizquestion_exactly_one_source",
+                name="quizquestion_source_ou_snapshot",
             ),
         ]
 
@@ -269,7 +324,8 @@ class QuizQuestion(models.Model):
 
     @property
     def contenu(self):
-        """Item réel, quelle que soit la source (voir la contrainte exactly_one_source)."""
+        """Item vivant, quelle que soit la source - None si le contenu a été supprimé
+        depuis (l'instantané reste alors la seule source, voir quiz.instantane.donnees)."""
         return self.competence_item or self.question
 
 
@@ -299,13 +355,13 @@ class QuizAnswer(models.Model):
         QCM : comparaison objective à reponse_correcte (vérité terrain connue).
         Question ouverte : pas de vérité terrain automatisable (dissertation, calcul à
         développement libre) - on fait confiance à l'auto-déclaration de l'élève, faite
-        après qu'il a vu le corrigé complet. `contenu` : voir QuizQuestion.contenu, valable
+        après qu'il a vu le corrigé complet. Lu via quiz.instantane (clé figée à la création de la session), valable
         aussi bien pour l'historique pré-bascule (catalog.Question) que pour un
         CompetenceItem.
         """
-        contenu = self.quiz_question.contenu
-        if contenu.type_reponse == TypeReponse.QCM:
-            return bool(self.reponse_choisie) and self.reponse_choisie == contenu.reponse_correcte
+        type_reponse, cle = instantane.type_et_cle(self.quiz_question)
+        if type_reponse == TypeReponse.QCM:
+            return bool(self.reponse_choisie) and self.reponse_choisie == cle
         return self.resultat_declare == ResultatDeclare.REUSSI
 
 

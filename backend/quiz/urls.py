@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import essai, views
+from . import essai, historique, views
 
 app_name = "quiz"
 
@@ -13,6 +13,10 @@ urlpatterns = [
     ),
     path("sessions/<int:session_id>/questions/<int:quiz_question_id>/answer/", views.answer_question, name="answer-question"),
     path("sessions/<int:session_id>/refaire-ratees/", views.refaire_ratees_view, name="refaire-ratees"),
+    path("en-cours/", historique.en_cours, name="en-cours"),
+    path("historique/", historique.historique, name="historique"),
+    path("historique/<int:session_id>/", historique.historique_detail, name="historique-detail"),
+    path("historique/<int:session_id>/rejouer/", historique.rejouer, name="historique-rejouer"),
     path("sessions/<int:session_id>/completer/", views.complete_session, name="complete-session"),
     path("sessions/<int:session_id>/fiche-pdf/", views.quiz_fiche_pdf, name="quiz-fiche-pdf"),
     path("sessions/<int:session_id>/sujet.pdf", views.download_quiz_sujet_pdf, name="download-quiz-sujet-pdf"),

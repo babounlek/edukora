@@ -56,6 +56,7 @@ const AboutPage = lazy(() => import("@/pages/AboutPage").then((m) => ({ default:
 const QuizStartPage = lazy(() => import("@/pages/QuizStartPage").then((m) => ({ default: m.QuizStartPage })))
 const QuizSessionPage = lazy(() => import("@/pages/QuizSessionPage").then((m) => ({ default: m.QuizSessionPage })))
 const QuizResultPage = lazy(() => import("@/pages/QuizResultPage").then((m) => ({ default: m.QuizResultPage })))
+const QuizHistoriquePage = lazy(() => import("@/pages/QuizHistoriquePage").then((m) => ({ default: m.QuizHistoriquePage })))
 const QuizEssaiLancementPage = lazy(() => import("@/pages/QuizEssaiLancementPage").then((m) => ({ default: m.QuizEssaiLancementPage })))
 const QuizEssaiResultPage = lazy(() => import("@/pages/QuizEssaiResultPage").then((m) => ({ default: m.QuizEssaiResultPage })))
 const ParcoursPage = lazy(() => import("@/pages/ParcoursPage").then((m) => ({ default: m.ParcoursPage })))
@@ -188,6 +189,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/quiz/essai/:cursus/:subject/:theme" element={<QuizEssaiLancementPage />} />
                       <Route path="/quiz/session/:id" element={<QuizSessionPage />} />
                       <Route path="/quiz/session/:id/resultat" element={<QuizResultPage />} />
+                      <Route path="/historique/quiz/:id" element={<QuizHistoriquePage />} />
                       {/* /parcours a absorbé "à réviser" (badge par savoir) - une ancienne
                           entrée (favori, lien externe) doit continuer à mener quelque
                           part de cohérent plutôt qu'un 404. */}
@@ -221,9 +223,9 @@ function App({ basename = "" }: { basename?: string }) {
             </div>
             {!enExamen && <BottomTabBar />}
             <OnboardingModal />
+            <GuideHost />
             <PinDialogs />
             <VerrouInactivite />
-            <GuideHost />
           </CountryProvider>
         </RouteurDeLangue>
       </AuthProvider>

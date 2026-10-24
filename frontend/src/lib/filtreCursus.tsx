@@ -76,7 +76,7 @@ export function useFiltreCursusParDefaut() {
   useEffect(() => {
     if (!cursusPrepare || cursusDansUrl || voirTout) return
     // Un examen déclaré dans l'autre langue ne pré-filtre pas : l'élève qui lit l'interface en anglais verrait
-    // d'office une liste française. Il reste proposé parmi les pastilles (voir lib/cursusLangue).
+    // d'office une liste française. Il n'est pas non plus proposé parmi les pastilles (voir lib/cursusLangue).
     if (!estDeLangue(cursusPrepare, langueCourante())) return
     const suivant = new URLSearchParams(searchParams)
     suivant.set("cursus", String(cursusPrepare.id))

@@ -73,7 +73,10 @@ def _ids_revenus_apres(cohorte, jours):
     activites = (
         SeanceJournaliere.objects.filter(profil__compte_id__in=inscription, statut=StatutSeance.TERMINEE)
         .values_list("profil__compte_id", "termine_at"),
-        QuizSession.objects.filter(profil__compte_id__in=inscription).values_list("profil__compte_id", "started_at"),
+        # Une session sans réponse (ouverte puis quittée, rejeu non joué) n'est pas un retour : seul un quiz réellement
+        # entamé compte, comme une séance terminée.
+        QuizSession.objects.filter(profil__compte_id__in=inscription, quiz_questions__answer__isnull=False)
+        .distinct().values_list("profil__compte_id", "started_at"),
         TentativeInedite.objects.filter(profil__compte_id__in=inscription).values_list("profil__compte_id", "started_at"),
     )
     for lot in activites:

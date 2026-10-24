@@ -23,8 +23,8 @@ import logging
 from django.db import IntegrityError, transaction
 from django.utils import timezone
 
-from catalog.models import TypeReponse
 
+from . import instantane
 from .models import GainXP, JourXP, ResultatDeclare, RevisionSchedule, SourceXP
 
 logger = logging.getLogger(__name__)
@@ -41,7 +41,7 @@ XP_SEANCE = 10
 def points_de_base(answer):
     """Points d'une réponse avant bonus : QCM juste -> XP_QCM_JUSTE ; question ouverte
     selon ce que l'élève a déclaré ; 0 pour tout le reste."""
-    if answer.quiz_question.contenu.type_reponse == TypeReponse.QCM:
+    if instantane.est_qcm(answer.quiz_question):
         return XP_QCM_JUSTE if answer.est_correcte else 0
     return XP_OUVERTE.get(answer.resultat_declare, 0)
 

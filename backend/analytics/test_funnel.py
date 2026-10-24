@@ -152,3 +152,43 @@ class EntonnoirApiTests(TestCase):
         self.client.force_authenticate(user=equipe)
         self.assertEqual(self.client.get("/analytics/entonnoir/?jours=abc").status_code, 400)
         self.assertEqual(self.client.get("/analytics/entonnoir/?jours=0").status_code, 400)
+
+
+class RetourParQuizTests(TestCase):
+    """Seul un quiz réellement entamé est un retour : une session ouverte sans réponse n'en est pas un."""
+
+    def setUp(self):
+        self.cursus = Cursus.objects.first()
+        self.maintenant = timezone.now()
+
+    def eleve(self, telephone, *, jours=20):
+        user = User.objects.create_user(phone_number=telephone, password="x")
+        User.objects.filter(pk=user.pk).update(date_joined=self.maintenant - timedelta(days=jours))
+        user.refresh_from_db()
+        return user
+
+    def quiz(self, user, *, repondu, jours_apres_inscription):
+        from catalog.models import Subject
+        from quiz.models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession
+        from quiz.tests import _make_competence_item
+
+        profil = user.profils.first()
+        session = QuizSession.objects.create(profil=profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        QuizSession.objects.filter(pk=session.pk).update(
+            started_at=user.date_joined + timedelta(days=jours_apres_inscription),
+        )
+        item = _make_competence_item(Subject.objects.get(country__code="CM", code="MATHS"), self.cursus, numero=f"f{user.pk}")
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        if repondu:
+            QuizAnswer.objects.create(quiz_question=quiz_question)
+
+    def test_une_session_ouverte_sans_reponse_n_est_pas_un_retour(self):
+        revenu = self.eleve("677100020", jours=20)
+        self.quiz(revenu, repondu=True, jours_apres_inscription=10)
+        curieux = self.eleve("677100021", jours=20)
+        self.quiz(curieux, repondu=False, jours_apres_inscription=10)
+
+        retour = entonnoir(30, maintenant=self.maintenant)["retour_j7"]
+
+        self.assertEqual(retour["eleves_assez_anciens"], 2)
+        self.assertEqual(retour["revenus_apres_7_jours"], 1)

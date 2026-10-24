@@ -1,16 +1,13 @@
+import { useQuery } from "@tanstack/react-query"
+
+import { listQuizEnCours } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 
-// Le quiz en cours, retenu sur CET appareil : l'API ne liste pas les séances commencées, et un
-// quiz abandonné (onglet fermé, appel reçu, batterie vide) n'était retrouvable depuis nulle part.
-// Ce n'est qu'un pointeur : la progression elle-même est enregistrée côté serveur à chaque réponse.
-const PREFIXE = "edukora:quiz-en-cours:"
-// Au-delà, on suppose la séance abandonnée pour de bon : la proposer encore serait du bruit.
-const VALIDITE_MS = 3 * 24 * 60 * 60 * 1000
-
-interface Memo {
-  id: number
-  date: number
-}
+// Les quiz commencés et pas terminés viennent du SERVEUR (voir quiz.historique.en_cours côté backend) :
+// la progression y est enregistrée à chaque réponse, donc la reprise marche depuis n'importe quel
+// appareil et ne dépend plus d'un pointeur gardé dans le navigateur. Ce module ne retient sur CET
+// appareil qu'une chose : les quiz que l'élève a demandé à ne plus se voir proposer.
+const PREFIXE = "edukora:quiz-ignores:"
 
 /** Clé propre à l'élève actif : un appareil partagé entre frères et sœurs ne doit pas mélanger. */
 export function useCleQuizEnCours(): string | null {
@@ -19,35 +16,33 @@ export function useCleQuizEnCours(): string | null {
   return `${PREFIXE}${user.id}:${user.profil_actif?.id ?? 0}`
 }
 
-export function memoriserQuizEnCours(cle: string, id: number) {
+/** Les tentatives interrompues du profil actif, la dernière réponse en tête. */
+export function useQuizEnCours() {
+  const { user } = useAuth()
+  return useQuery({
+    queryKey: ["quiz-en-cours", user?.profil_actif?.id ?? null],
+    queryFn: ({ signal }) => listQuizEnCours(signal),
+    enabled: Boolean(user),
+    // Une séance finie dans un autre onglet ne doit plus être proposée.
+    staleTime: 0,
+    retry: false,
+  })
+}
+
+export function lireQuizIgnores(cle: string): number[] {
   try {
-    localStorage.setItem(cle, JSON.stringify({ id, date: Date.now() } satisfies Memo))
+    const brut = JSON.parse(localStorage.getItem(cle) ?? "[]")
+    return Array.isArray(brut) ? brut.filter((id): id is number => typeof id === "number") : []
   } catch {
-    // Stockage indisponible (navigation privée...) : le quiz marche, seule la reprise manque.
+    return []
   }
 }
 
-export function lireQuizEnCours(cle: string): number | null {
+export function ignorerQuiz(cle: string, id: number) {
   try {
-    const brut = localStorage.getItem(cle)
-    if (!brut) return null
-    const memo = JSON.parse(brut) as Partial<Memo>
-    if (typeof memo.id !== "number" || typeof memo.date !== "number" || Date.now() - memo.date > VALIDITE_MS) {
-      localStorage.removeItem(cle)
-      return null
-    }
-    return memo.id
+    // Les 50 derniers suffisent : une séance plus ancienne n'est de toute façon plus proposée.
+    localStorage.setItem(cle, JSON.stringify([...lireQuizIgnores(cle).filter((i) => i !== id), id].slice(-50)))
   } catch {
-    return null
-  }
-}
-
-/** Sans `id`, oublie quoi qu'il y ait ; avec, seulement si c'est cette séance (un autre onglet a pu en commencer une plus récente). */
-export function oublierQuizEnCours(cle: string, id?: number) {
-  try {
-    if (id !== undefined && lireQuizEnCours(cle) !== id) return
-    localStorage.removeItem(cle)
-  } catch {
-    // rien à faire
+    // Stockage indisponible (navigation privée...) : le quiz sera reproposé, rien de grave.
   }
 }

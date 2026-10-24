@@ -101,12 +101,17 @@ def _frequence(par_profil, aujourdhui, fenetre=28):
 def _quiz(maintenant, jours):
     debut = maintenant - timedelta(days=jours)
     sessions = QuizSession.objects.filter(started_at__gte=debut)
-    commencees = sessions.count()
-    terminees = sessions.filter(completed_at__isnull=False).count()
+    # Une session ouverte sans aucune réponse n'est pas une tentative commencée : l'élève a seulement vu la première
+    # question (ou lancé un rejeu sans le jouer). La compter faisait passer ces ouvertures pour des abandons et
+    # faisait chuter la part terminée.
+    repondues = sessions.filter(quiz_questions__answer__isnull=False).distinct()
+    commencees = repondues.count()
+    terminees = repondues.filter(completed_at__isnull=False).count()
     return {
         "commences": commencees,
         "termines": terminees,
         "part_terminee": _pourcentage(terminees, commencees),
+        "ouverts_sans_reponse": sessions.count() - commencees,
         # Les abandons déclarés (clic sur « Quitter ») ne sont tracés que depuis l'ajout de
         # l'évènement : avant, seule la différence commencés/terminés existe.
         "abandons_declares": AnalyticsEvent.objects.filter(
@@ -138,6 +143,6 @@ def rendre_texte(rapport):
         f"  séances terminées par semaine et par profil : {_lisible(f['seances_terminees_par_semaine_et_par_profil'])}",
         "",
         f"Quiz : {q['termines']} terminés sur {q['commences']} commencés ({_lisible(q['part_terminee'])} %), "
-        f"{q['abandons_declares']} abandon(s) déclaré(s)",
+        f"{q['abandons_declares']} abandon(s) déclaré(s), {q['ouverts_sans_reponse']} ouvert(s) sans réponse (non comptés)",
     ]
     return "\n".join(lignes)

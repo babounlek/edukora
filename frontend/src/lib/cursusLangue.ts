@@ -12,10 +12,11 @@ import { langueCourante, type Langue } from "@/lib/i18n"
  * le GCE seul, en français BEPC, Probatoire et BAC. Sans cela, un élève en anglais cliquait « BAC » et tombait sur une
  * liste entièrement française (un examen choisi prime sur la langue des listes).
  *
- * Trois exceptions, pour ne jamais retirer à l'élève l'examen qu'il a choisi :
+ * Deux exceptions, pour ne jamais retirer à l'élève l'examen qu'il a choisi :
  *  - l'examen déjà sélectionné (lien partagé `?cursus=12`, pastille cliquée) reste proposé ;
- *  - l'examen déclaré sur le compte reste proposé ;
  *  - « Toutes les langues » (`langue` indéfinie) lève le filtre.
+ * L'examen déclaré sur le compte, lui, ne reste pas proposé hors de sa langue : il polluait les pastilles de l'autre
+ * langue (un « Probatoire C » parmi celles du GCE). Il ne pré-filtre pas non plus (voir useFiltreCursusParDefaut).
  * Les pages de paiement et de compte ne passent pas par ici : un élève francophone doit pouvoir s'abonner au BAC
  * quelle que soit la langue de son interface.
  */
