@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, ChevronDown, Crown, FileDown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, ChevronDown, Crown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -25,6 +25,7 @@ import { EnTeteSection } from "@/components/EnTeteSection"
 import { ReglesChoix } from "@/components/inedit/ReglesChoix"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
 import { SITE_NAME } from "@/lib/site"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { BackToTopBar } from "@/components/BackToTopBar"
@@ -270,14 +271,7 @@ export function EpreuveDetailPage() {
           {epreuve.has_access && isAuthenticated && epreuve.lesson_type === "CORR" && (
             <BoutonSimulation epreuveId={epreuve.id} />
           )}
-          {epreuve.sujet_pdf_url && (
-            <Button asChild variant="outline" size="lg" className="h-12 rounded-full">
-              <a href={epreuve.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
-                <FileDown />
-                {t("ed.telecharger")}
-              </a>
-            </Button>
-          )}
+          {epreuve.sujet_pdf_url && <BoutonSujetPdf epreuveId={epreuve.id} url={epreuve.sujet_pdf_url} grand />}
           {/* Le sujet est public : n'importe quel élève peut l'envoyer à un camarade. */}
           <BoutonPartager
             chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}

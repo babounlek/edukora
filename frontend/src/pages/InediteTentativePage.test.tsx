@@ -10,6 +10,7 @@ const api = vi.hoisted(() => ({
   answerTentativeQuestion: vi.fn(),
   completeTentative: vi.fn(),
   downloadSujetPdf: vi.fn(),
+  ouvrirSujetClassique: vi.fn(),
   getTentativeInedite: vi.fn(),
   noterTentativeQuestion: vi.fn(),
   startExamMode: vi.fn(),
@@ -630,7 +631,7 @@ describe("InediteTentativePage", () => {
   describe("annale officielle (simulation, un exercice = un bloc)", () => {
     const annale = (extra: Partial<TentativeInedite> = {}) =>
       tentative({
-        source: "officielle", granularite: "exercice", epreuve_titre: "Maths BAC C 2019", sujet_pdf_url: "/media/x.pdf", sujet_pdf_disponible: true,
+        source: "officielle", granularite: "exercice", epreuve_titre: "Maths BAC C 2019", sujet_pdf_url: "/access/lessons/7/sujet.pdf", sujet_pdf_disponible: true,
         exercices: [
           {
             id: 10, numero_exercice: "1", points: "6", groupes: [], enonce_intro_markdown: "",
@@ -702,14 +703,16 @@ describe("InediteTentativePage", () => {
       expect(screen.getAllByRole("button", { name: "Exercices, exercice 1, pas encore traité" }).length).toBeGreaterThan(0)
     })
 
-    it("ouvre le sujet PDF dans un nouvel onglet", async () => {
+    it("ouvre le sujet PDF par la route de l'API (comptée dans le quota), jamais par l'adresse du fichier", async () => {
       api.getSimulation.mockResolvedValue(annale())
+      api.ouvrirSujetClassique.mockResolvedValue(undefined)
       const ouvrir = vi.spyOn(window, "open").mockReturnValue(null)
       afficher("officielle")
 
       await userEvent.click(await screen.findByRole("button", { name: "Ouvrir l'épreuve en PDF" }))
 
-      expect(ouvrir).toHaveBeenCalledWith("/media/x.pdf", "_blank", "noopener,noreferrer")
+      expect(api.ouvrirSujetClassique).toHaveBeenCalledWith("/access/lessons/7/sujet.pdf")
+      expect(ouvrir).not.toHaveBeenCalled()
       ouvrir.mockRestore()
     })
 

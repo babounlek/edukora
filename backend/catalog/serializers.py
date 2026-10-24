@@ -302,8 +302,10 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
         # action admin ne l'a pas encore produit, jamais généré à la demande ici.
         if not obj.sujet_pdf:
             return None
-        request = self.context.get("request")
-        return request.build_absolute_uri(obj.sujet_pdf.url) if request else obj.sujet_pdf.url
+        # Jamais l'adresse du fichier : la route d'accès compte le téléchargement dans le quota (access.quota).
+        from access.sujets_publics import url_sujet
+
+        return url_sujet(self.context.get("request"), obj)
 
     def get_related_cours(self, obj):
         # bulk_related_cours_map pré-calculé par LessonListView.list pour toute la

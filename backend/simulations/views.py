@@ -14,6 +14,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from access.services import has_access
+from access.sujets_publics import url_sujet
 from catalog.libelles import libelle_cursus
 from catalog.models import EXAMENS_GCE, Lesson, LessonType, Question, TypeReponse
 from inedit import notation, rapport
@@ -246,7 +247,8 @@ def _payload(simulation):
         # (matière, examen, série, nature d'épreuve) - voir cadre.duree_minutes_pour_lesson.
         "duree_estimee": duree_estimee,
         "sujet_pdf_disponible": bool(lesson.sujet_pdf),
-        "sujet_pdf_url": lesson.sujet_pdf.url if lesson.sujet_pdf else None,
+        # Route de téléchargement (comptée dans le quota de PDF), jamais l'adresse du fichier.
+        "sujet_pdf_url": url_sujet(None, lesson),
         "started_at": simulation.started_at,
         "exam_mode_started_at": simulation.exam_mode_started_at,
         "mode_papier": simulation.mode_papier,

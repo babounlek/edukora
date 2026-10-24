@@ -5,6 +5,7 @@ import { downloadQuizCorrigePdf, downloadQuizSujetPdf, getQuizFichePdfStatus, re
 import { ApiError } from "@/api/client"
 import type { QuizFichePdfStatus } from "@/api/types"
 import { Button } from "@/components/ui/button"
+import { QuotaPdfInfo } from "@/components/QuotaPdfInfo"
 import { t, useI18n } from "@/lib/i18n"
 
 // Même intervalle que FichesPage.tsx (POLL_INTERVAL_MS), même raison : la génération
@@ -113,6 +114,7 @@ export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
           )}
         </Button>
       )}
+      {statut === "PRETE" && <QuotaPdfInfo className="text-xs" />}
       {statut === "ECHEC" && <p className="text-sm text-destructive">{t("gl.qpdf_echec")}</p>}
       {error && <p className="text-sm text-destructive">{error}</p>}
     </div>

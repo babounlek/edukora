@@ -109,6 +109,26 @@
     }
 
 
+    # Robots d'aspiration pour l'IA : jamais de PDF. C'est un filtre de courtoisie (le User-Agent se falsifie) : la vraie
+    # protection est le quota quotidien côté Django (backend/access/quota.py), qui s'applique à tout client. Les robots
+    # d'aperçu de lien (WhatsApp, Facebook...) ne sont pas dans cette liste.
+    @robots_ia_pdf {
+        header_regexp User-Agent (?i)(gptbot|chatgpt-user|oai-searchbot|claudebot|claude-web|anthropic-ai|ccbot|bytespider|perplexitybot|google-extended|amazonbot|applebot-extended|meta-externalagent|cohere-ai|diffbot)
+        path_regexp ^/(access/cours/pdf/|access/lessons/|inedit/epreuves/[0-9]+/sujet\.pdf|fiches/[0-9]+/(sujet|corrige)\.pdf|quiz/sessions/[0-9]+/(sujet|corrige)\.pdf)
+    }
+    handle @robots_ia_pdf {
+        respond "Forbidden" 403
+    }
+
+    # PDF « sujet » des épreuves (Lesson.sujet_pdf) : plus servis en direct. Ils passent par
+    # /access/lessons/<id>/sujet.pdf (Django), qui compte le téléchargement dans le quota quotidien
+    # (backend/access/quota.py) - sans ce blocage, une adresse /media/sujets_pdf/... contournerait le quota.
+    # Le dossier *_avant_filigrane est une sauvegarde interne, jamais à servir.
+    @pdf_sujets_prives path /media/sujets_pdf/* /media/sujets_pdf_avant_filigrane/*
+    handle @pdf_sujets_prives {
+        respond "Not found" 404
+    }
+
     handle_path /media/* {
         root * /srv/media
         file_server

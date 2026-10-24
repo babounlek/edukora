@@ -6,12 +6,12 @@ téléchargement) ne re-vérifient que l'ownership, même compromis que
 inedit.views.tentative_detail (voir sa docstring de module).
 """
 
-from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 
+from access import quota
 from access.services import has_access_fiches
 from users.parent import portee_famille
 from users.profils import profil_actif
@@ -147,22 +147,24 @@ def fiche_detail(request, fiche_id):
 
 
 @api_view(["GET"])
+@throttle_classes([quota.QuotaThrottle])
 def download_sujet_pdf(request, fiche_id):
     fiche = get_object_or_404(FicheGeneree, pk=fiche_id, owner=request.user)
     if not fiche.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
-    return FileResponse(
-        fiche.sujet_pdf.open("rb"), as_attachment=False,
-        filename=f"{slugify(fiche.titre)}-sujet.pdf", content_type="application/pdf",
+    return quota.livrer_pdf(
+        request, f"fiche:{fiche.pk}:sujet", lambda: fiche.sujet_pdf.open("rb"),
+        as_attachment=False, filename=f"{slugify(fiche.titre)}-sujet.pdf",
     )
 
 
 @api_view(["GET"])
+@throttle_classes([quota.QuotaThrottle])
 def download_corrige_pdf(request, fiche_id):
     fiche = get_object_or_404(FicheGeneree, pk=fiche_id, owner=request.user)
     if not fiche.corrige_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
-    return FileResponse(
-        fiche.corrige_pdf.open("rb"), as_attachment=False,
-        filename=f"{slugify(fiche.titre)}-corrige.pdf", content_type="application/pdf",
+    return quota.livrer_pdf(
+        request, f"fiche:{fiche.pk}:corrige", lambda: fiche.corrige_pdf.open("rb"),
+        as_attachment=False, filename=f"{slugify(fiche.titre)}-corrige.pdf",
     )

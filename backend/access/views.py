@@ -1,9 +1,8 @@
 from django.db import models
-from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from rest_framework import serializers
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -12,9 +11,11 @@ from catalog.models import Cours, Exercise, Lesson
 
 from users.profils import profil_actif
 
+from . import quota
 from .etude import MarqueInvalide, enregistrer_marque, marques_du_document
-from .models import ExerciceFait, LectureProgress, MarqueEtude
+from .models import ExerciceFait, LectureProgress, MarqueEtude, TelechargementPdf
 from .services import a_acces_exercices_cours, has_access
+from .sujets_publics import ouvrir_sujet, url_sujet
 
 
 class _LessonProgressionSerializer(serializers.ModelSerializer):
@@ -47,6 +48,7 @@ class _CoursProgressionSerializer(serializers.ModelSerializer):
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
+@throttle_classes([quota.LectureThrottle])
 def read_lesson(request, lesson_slug):
     """
     Contenu pour lecture en ligne (Markdown) - réservé aux abonnés, sauf une Lesson
@@ -94,7 +96,7 @@ def read_lesson(request, lesson_slug):
         "exercises": exercices,
         "header": lesson.header_info(),
         "lesson_type": lesson.lesson_type,
-        "sujet_pdf_url": request.build_absolute_uri(lesson.sujet_pdf.url) if lesson.sujet_pdf else None,
+        "sujet_pdf_url": url_sujet(request, lesson),
     })
 
 
@@ -124,6 +126,7 @@ def preview_lesson(request, lesson_slug):
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
+@throttle_classes([quota.LectureThrottle])
 def read_cours(request, cours_id):
     """
     Contenu pour lecture en ligne (Markdown) - libre pour tout le monde, visiteur anonyme compris (décision du
@@ -171,16 +174,21 @@ def preview_cours(request, cours_id):
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
+@throttle_classes([quota.QuotaThrottle])
 def download_cours_pdf(request, cours_id):
     """
-    PDF du cours, pour tout le monde (visiteur compris). La VERSION est décidée ici, jamais par le client : avec
-    l'abonnement qui donne les exercices d'application (a_acces_exercices_cours) c'est le cours complet, sinon le
-    cours libre, sans eux - la même frontière que read_cours (voir catalog.cours_pdf).
+    PDF du cours, pour tout le monde (visiteur compris), dans la limite du quota quotidien de PDF (access.quota). La
+    VERSION est décidée ici, jamais par le client : avec l'abonnement qui donne les exercices d'application
+    (a_acces_exercices_cours) c'est le cours complet, sinon le cours libre, sans eux - la même frontière que read_cours
+    (voir catalog.cours_pdf).
 
     Le PDF est généré à la première demande, hors du thread de la requête : tant qu'il n'existe pas, la réponse est
     202 {"statut": "en_preparation"} et le client réessaie. Quand il existe, il est lu côté serveur et renvoyé
-    (jamais l'URL du stockage).
+    (jamais l'URL du stockage). Seule la LIVRAISON consomme un crédit : les 202 n'en consomment pas, mais une
+    génération n'est lancée que si le demandeur a encore de quoi télécharger (sinon 429 tout de suite).
     """
+    if request.method == "HEAD":
+        return Response(status=405, headers={"Allow": "GET"})
     qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
     cours = get_object_or_404(qs)
 
@@ -188,23 +196,71 @@ def download_cours_pdf(request, cours_id):
     variante = cours_pdf.variante_pour(a_acces_exercices_cours(request.user, cours, profil))
     nom = cours_pdf.nom_fichier(cours, variante)
     stockage = cours_pdf.stockage()
+    document = f"cours:{cours.pk}"
 
     if stockage.exists(nom):
-        reponse = FileResponse(
-            stockage.open(nom, "rb"), as_attachment=True, filename=f"{slugify(cours.titre) or 'cours'}.pdf",
-            content_type="application/pdf",
+        # Une même adresse sert deux versions selon l'abonnement : jamais mise en cache partagée (livrer_pdf).
+        return quota.livrer_pdf(
+            request, document, lambda: stockage.open(nom, "rb"),
+            as_attachment=True, filename=f"{slugify(cours.titre) or 'cours'}.pdf",
         )
-        # Une même adresse sert deux versions selon l'abonnement : jamais mise en cache partagée.
-        reponse["Cache-Control"] = "private, no-store"
-        return reponse
 
     if not cours_pdf.markdown_du_cours(cours, variante).strip():
         return Response({"error": "Ce cours n'a pas de contenu à imprimer."}, status=404)
 
+    refus = quota.verifier_credit(request, document)
+    if refus is not None:
+        return refus
     statut = cours_pdf.mettre_en_file(cours, variante)
     if statut == cours_pdf.ECHEC:
-        return Response({"error": "Le PDF n'a pas pu être préparé. Réessaie dans quelques minutes."}, status=503)
-    return Response({"statut": statut}, status=202, headers={"Retry-After": "3", "Cache-Control": "no-store"})
+        return quota.poser_cookie(request, Response(
+            {"error": "Le PDF n'a pas pu être préparé. Réessaie dans quelques minutes."}, status=503,
+        ))
+    return quota.poser_cookie(request, Response(
+        {"statut": statut}, status=202, headers={"Retry-After": "3", "Cache-Control": "no-store"},
+    ))
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+@throttle_classes([quota.QuotaThrottle])
+def download_lesson_sujet_pdf(request, lesson_id):
+    """
+    PDF du sujet d'une épreuve (jamais le corrigé, voir catalog.sujet_pdf) : public, comme avant, mais servi ICI et
+    compté dans le quota quotidien. Le fichier n'est plus joignable par une adresse directe (voir le Caddyfile).
+    """
+    lesson = get_object_or_404(Lesson.objects.visibles(), pk=lesson_id)
+    if not lesson.sujet_pdf:
+        return Response({"error": "PDF pas encore généré."}, status=404)
+    return quota.livrer_pdf(
+        request, f"lesson:{lesson.pk}", lambda: ouvrir_sujet(lesson),
+        as_attachment=False, filename=f"{slugify(lesson.title) or 'sujet'}-sujet.pdf",
+    )
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+@throttle_classes([quota.QuotaThrottle])
+def quota_telechargements(request):
+    """
+    Où en est le demandeur : limite, déjà téléchargés, restants, heure de remise à zéro. Sans effet de bord (ne
+    consomme rien) ; pose seulement le cookie du visiteur. ?doc=<type>:<réf> (répétable, 20 au plus) dit en plus quels
+    documents sont déjà téléchargés aujourd'hui, donc gratuits à nouveau : cours:<slug|id>, lesson:<id>, inedit:<id>,
+    quiz:<id>:sujet|corrige, fiche:<id>:sujet|corrige.
+    """
+    ctx = quota.contexte(request)
+    cles = {}
+    for brut in request.query_params.getlist("doc")[:20]:
+        type_document, _, reference = brut.partition(":")
+        cle = quota.cle_document(type_document, reference)
+        if cle:
+            cles[brut] = cle
+    deja = set(
+        TelechargementPdf.objects.filter(jour=ctx.jour, demandeur=ctx.demandeur, document__in=cles.values())
+        .values_list("document", flat=True),
+    ) if cles else set()
+    reponse = Response(quota.etat_json(ctx, gratuits=[brut for brut, cle in cles.items() if cle in deja]))
+    return quota.en_tetes(request, reponse)
 
 
 @api_view(["GET"])

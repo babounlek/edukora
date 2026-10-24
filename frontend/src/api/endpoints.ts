@@ -1,5 +1,8 @@
+import { toast } from "sonner"
+
 import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
 import { t } from "@/lib/i18n"
+import { messageLimiteAtteinte, signalerChangementQuota } from "@/lib/quotaPdf"
 import type {
   Accueil,
   CompletionRecherche,
@@ -27,6 +30,7 @@ import type {
   PaymentConfig,
   ModeQuiz,
   Paginated,
+  QuotaPdf,
   ParcoursModule,
   PaymentInitiateResponse,
   PaymentStatusResponse,
@@ -394,8 +398,21 @@ export async function getCoursTitres(slugs: string[], signal?: AbortSignal) {
  * serveur le prépare - il faut alors redemander. Ouvert à tous, visiteur compris : la version rendue (avec ou sans
  * les exercices d'application) est décidée par le serveur d'après l'abonnement, jamais par ce client.
  */
-export function demanderCoursPdf(slug: string) {
-  return apiRequest<Blob | { statut: string }>(`/access/cours/pdf/${slug}/`, { auth: "optional", blob: true })
+export async function demanderCoursPdf(slug: string) {
+  const reponse = await apiRequest<Blob | { statut: string }>(`/access/cours/pdf/${slug}/`, { auth: "optional", blob: true })
+  // Le PDF est livré : un crédit a pu être consommé, le compteur affiché doit suivre.
+  if (reponse instanceof Blob) signalerChangementQuota()
+  return reponse
+}
+
+/**
+ * Combien de téléchargements PDF il reste aujourd'hui (voir access.views.quota_telechargements). Sans effet de bord
+ * côté serveur. `docs` : des documents au format `cours:<slug>`, `lesson:<id>`, `inedit:<id>`, `quiz:<id>:sujet`,
+ * `fiche:<id>:corrige`... dont on veut savoir s'ils sont déjà téléchargés aujourd'hui.
+ */
+export function getQuotaPdf(docs: string[] = [], signal?: AbortSignal) {
+  const query = docs.map((d) => `doc=${encodeURIComponent(d)}`).join("&")
+  return apiRequest<QuotaPdf>(`/access/telechargements/quota/${query ? `?${query}` : ""}`, { auth: "optional", signal })
 }
 
 export function readCours(slug: string) {
@@ -866,9 +883,20 @@ async function openPdfInNewTab(url: string, errorMessage: string) {
   })
   if (!response.ok) {
     newTab?.close()
+    // Quota quotidien de PDF atteint (429 du serveur) : un message clair, pas « impossible d'ouvrir ».
+    if (response.status === 429) {
+      const corps = await response.json().catch(() => null)
+      if (corps && typeof corps === "object" && "restant" in corps) {
+        toast.error(messageLimiteAtteinte(corps as QuotaPdf))
+        signalerChangementQuota()
+        return
+      }
+    }
     throw new Error(errorMessage)
   }
   const blob = await response.blob()
+  // Le serveur a compté ce téléchargement : le compteur affiché doit suivre.
+  signalerChangementQuota()
   const blobUrl = URL.createObjectURL(blob)
   if (newTab) {
     newTab.location.href = blobUrl
@@ -879,6 +907,16 @@ async function openPdfInNewTab(url: string, errorMessage: string) {
   // Révocation différée plutôt qu'immédiate : le nouvel onglet doit avoir le temps de
   // charger la ressource avant qu'elle ne devienne invalide.
   window.setTimeout(() => URL.revokeObjectURL(blobUrl), 60_000)
+}
+
+/**
+ * Ouvre le PDF « sujet » d'une épreuve classique à l'adresse donnée par l'API (`sujet_pdf_url`, voir
+ * access.views.download_lesson_sujet_pdf). Une adresse relative est complétée avec celle de l'API. Passe par le même
+ * chemin que les autres PDF protégés : jeton et cookie du visiteur joints, quota affiché.
+ */
+export function ouvrirSujetClassique(url: string) {
+  const complete = url.startsWith("/") ? `${API_BASE_URL}${url}` : url
+  return openPdfInNewTab(complete, t("gl.pdf_sujet"))
 }
 
 export function downloadSujetPdf(epreuveId: number) {

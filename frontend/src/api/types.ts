@@ -1032,6 +1032,23 @@ export interface QuizResult {
   classement?: { disponible: boolean; bande: "quart" | "moitie" | null }
 }
 
+/** Où en est le demandeur de PDF aujourd'hui (voir access.quota.etat_json) - aussi le corps d'un 429. */
+export interface QuotaPdf {
+  /** false : quotas suspendus par l'administration, rien à afficher. */
+  actif: boolean
+  profil: "visiteur" | "connecte" | "abonne"
+  limite: number
+  utilise: number
+  restant: number
+  /** Pourquoi il n'en reste plus ; vide tant qu'il en reste. */
+  motif: "" | "quota_depasse" | "plafond_reseau" | "budget_global"
+  /** ISO 8601, calculé par le serveur. */
+  reinitialisation: string
+  fuseau: string
+  /** Parmi les documents demandés, ceux déjà téléchargés aujourd'hui (donc gratuits à nouveau). */
+  gratuits: string[]
+}
+
 export interface QuizFichePdfStatus {
   statut: "" | "EN_COURS" | "PRETE" | "ECHEC"
   sujet_pdf_disponible: boolean

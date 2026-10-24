@@ -7,7 +7,7 @@ import rehypeRaw from "rehype-raw"
 import { toast } from "sonner"
 import { ArrowLeft, Check, CloudOff, Eye, EyeOff, FileDown, FileText, Flag, Info, Timer, X } from "lucide-react"
 
-import { downloadSujetPdf } from "@/api/endpoints"
+import { downloadSujetPdf, ouvrirSujetClassique } from "@/api/endpoints"
 import type { NoterTentativeQuestionParams } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { NotationResume, TentativeInedite, TentativeInediteQuestion } from "@/api/types"
@@ -600,8 +600,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
     if (!tentative || downloadingSujet) return
     setDownloadingSujet(true)
     try {
-      if (source === "officielle") window.open(tentative.sujet_pdf_url ?? "", "_blank", "noopener,noreferrer")
-      else await downloadSujetPdf(tentative.epreuve)
+      if (source === "officielle") {
+        if (tentative.sujet_pdf_url) await ouvrirSujetClassique(tentative.sujet_pdf_url)
+      } else await downloadSujetPdf(tentative.epreuve)
     } catch {
       toast.error(t("ct.erreur_ouvrir"))
     } finally {

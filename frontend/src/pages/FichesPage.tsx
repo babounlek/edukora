@@ -44,6 +44,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { QuotaPdfInfo } from "@/components/QuotaPdfInfo"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
@@ -568,6 +569,7 @@ export function FichesPage() {
                           {t("fi.corrige_toi")}
                         </Button>
                       </div>
+                      <QuotaPdfInfo className="text-xs" />
                       <p className="text-xs text-muted-foreground">
                         {t("fi.note_corrige")}
                       </p>
@@ -1102,6 +1104,7 @@ export function FichesPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-2">
+                  <QuotaPdfInfo className="text-xs" />
                   {fichesAffichees.map((item) => (
                     <div
                       key={item.id}

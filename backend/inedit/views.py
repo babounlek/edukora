@@ -11,14 +11,14 @@ que quiz, voir quiz.views - accepté une fois, pas la peine de le retrancher ici
 from decimal import Decimal, InvalidOperation
 
 from django.db.models import Max
-from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.text import slugify
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from access import quota
 from access.services import has_access_inedite
 from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
 from catalog.libelles import libelle_cursus
@@ -833,6 +833,7 @@ def complete_tentative(request, tentative_id):
 
 
 @api_view(["GET"])
+@throttle_classes([quota.QuotaThrottle])
 def download_sujet_pdf(request, epreuve_id):
     """
     Seul point de sortie du PDF sujet (voir EpreuveInedite.sujet_pdf, stocké sur un
@@ -849,9 +850,7 @@ def download_sujet_pdf(request, epreuve_id):
     if not epreuve.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
 
-    return FileResponse(
-        epreuve.sujet_pdf.open("rb"),
-        as_attachment=False,
-        filename=f"{slugify(epreuve.titre)}-sujet.pdf",
-        content_type="application/pdf",
+    return quota.livrer_pdf(
+        request, f"inedit:{epreuve.pk}", lambda: epreuve.sujet_pdf.open("rb"),
+        as_attachment=False, filename=f"{slugify(epreuve.titre)}-sujet.pdf",
     )

@@ -148,6 +148,11 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 24,
 }
 
+# Garde-fous de débit des routes de PDF et de lecture (voir access.quota.QuotaThrottle) : compteur en mémoire de chaque
+# processus gunicorn, donc approximatif ; le vrai plafond est le quota quotidien en base. Coupés pendant `manage.py test`
+# (le cache en mémoire survit d'un test à l'autre) ; les tests qui les vérifient les réactivent.
+THROTTLE_PDF_ACTIF = config("THROTTLE_PDF_ACTIF", default="test" not in sys.argv, cast=bool)
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30),

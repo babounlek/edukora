@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { ArrowLeft, Check, CheckCheck, FileDown, NotebookPen, Sparkles } from "lucide-react"
+import { ArrowLeft, Check, CheckCheck, NotebookPen, Sparkles } from "lucide-react"
 
 import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -17,6 +17,7 @@ import { BarreExercices } from "@/components/BarreExercices"
 import { BarreLecture } from "@/components/BarreLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
 import { SITE_NAME } from "@/lib/site"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { EnonceToggle } from "@/components/EnonceToggle"
@@ -322,14 +323,7 @@ export function EpreuveReaderPage() {
                 </>
               }
             >
-              {content.sujet_pdf_url && (
-                <Button asChild variant="outline" size="sm" className="rounded-full">
-                  <a href={content.sujet_pdf_url} target="_blank" rel="noopener noreferrer">
-                    <FileDown />
-                    {t("ed.telecharger")}
-                  </a>
-                </Button>
-              )}
+              {content.sujet_pdf_url && <BoutonSujetPdf epreuveId={content.id} url={content.sujet_pdf_url} />}
             </EnTeteEpreuve>
           )}
           {content?.introduction_markdown && (

@@ -3,12 +3,12 @@ import unicodedata
 
 from django.db import transaction
 from django.db.models import Count, Q
-from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.response import Response
 
+from access import quota
 from analytics.models import AnalyticsEvent, EventName
 from catalog.models import (
     Cours, Cursus, ExamSession, Lesson, Origine, StatutContenu, Subject, Tag, TypeReponse,
@@ -671,28 +671,30 @@ def quiz_fiche_pdf(request, session_id):
 
 
 @api_view(["GET"])
+@throttle_classes([quota.QuotaThrottle])
 def download_quiz_sujet_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
-    return FileResponse(
-        session.sujet_pdf.open("rb"), as_attachment=False,
-        filename=f"quiz-{session.pk}-fiche.pdf", content_type="application/pdf",
+    return quota.livrer_pdf(
+        request, f"quiz:{session.pk}:sujet", lambda: session.sujet_pdf.open("rb"),
+        as_attachment=False, filename=f"quiz-{session.pk}-fiche.pdf",
     )
 
 
 @api_view(["GET"])
+@throttle_classes([quota.QuotaThrottle])
 def download_quiz_corrige_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
         return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     if not session.corrige_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
-    return FileResponse(
-        session.corrige_pdf.open("rb"), as_attachment=False,
-        filename=f"quiz-{session.pk}-correction.pdf", content_type="application/pdf",
+    return quota.livrer_pdf(
+        request, f"quiz:{session.pk}:corrige", lambda: session.corrige_pdf.open("rb"),
+        as_attachment=False, filename=f"quiz-{session.pk}-correction.pdf",
     )
 
 
