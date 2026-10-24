@@ -49,7 +49,8 @@ export default defineConfig(() => {
                 // corrigé (KaTeX, latin). Pas les ~270 drapeaux ni les sous-ensembles de
                 // langues étrangères des polices : ils se chargent (et se mettent en cache)
                 // à l'usage.
-                globPatterns: ['assets/*.{js,css}', 'assets/KaTeX_*.woff2', 'assets/*-latin-*.woff2'],
+                // + le logo de l'en-tête et du pied de page (clair et sombre) : sans eux la barre serait vide hors connexion.
+                globPatterns: ['assets/*.{js,css}', 'assets/KaTeX_*.woff2', 'assets/*-latin-*.woff2', 'brand/logo-horizontal-minimal{,-dark}.svg'],
                 // JAMAIS de navigateFallback : il servirait un index.html précaché, donc
                 // potentiellement périmé, à un visiteur en ligne. Les navigations passent par
                 // le réseau d'abord (règle ci-dessous), le cache ne sert qu'hors connexion.

@@ -12,6 +12,7 @@ import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
+import { Logo } from "@/components/Logo"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
@@ -228,8 +229,8 @@ export function Footer() {
       {/* Bande 2 : la marque et la navigation. */}
       <div className="mx-auto grid max-w-5xl gap-x-6 px-4 py-10 sm:grid-cols-3 sm:gap-y-10 sm:px-6 sm:py-12 lg:grid-cols-[1.3fr_1fr_1.2fr_1fr]">
         <div className="mb-6 sm:col-span-3 sm:mb-0 lg:col-span-1">
-          <Link to={catalogueHomePath(country)} className="flex items-baseline gap-2">
-            <span className="font-display text-xl font-semibold tracking-tight text-primary">{SITE_NAME}</span>
+          <Link to={catalogueHomePath(country)} className="flex items-center gap-2.5">
+            <Logo variante="minimal" className="h-9" />
             <span className="font-display text-xs italic text-muted-foreground">{t("ft.slogan")}</span>
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
