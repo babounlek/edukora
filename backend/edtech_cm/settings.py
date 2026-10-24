@@ -231,6 +231,10 @@ EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+# Sans délai, le backend SMTP de Django attend indéfiniment un serveur qui ne répond pas : l'élève restait ~25 s sur
+# « Envoi… » avant un échec (test élève 2026-10-24). Dix secondes suffisent à un envoi sain ; au-delà, mieux vaut
+# échouer vite (503 avec `retry_after`, voir users.erreurs_envoi) que de bloquer un worker.
+EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=10, cast=int)
 # L'adresse d'expédition doit appartenir à un domaine dont les enregistrements SPF/DKIM
 # autorisent le routeur configuré ci-dessus. Sans quoi les messages partent bien, mais
 # atterrissent en indésirables chez Gmail - c'est-à-dire un utilisateur bloqué qui n'a

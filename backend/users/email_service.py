@@ -7,6 +7,7 @@ frontend doit pouvoir distinguer sans ambiguïté d'où vient chaque erreur.
 """
 
 import logging
+import math
 import random
 from datetime import timedelta
 
@@ -15,6 +16,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils import timezone
 
+from .erreurs_envoi import (
+    CODE_ENVOI_INDISPONIBLE, CODE_RENVOI_TROP_TOT, CODE_TROP_DE_DEMANDES, ErreurEnvoiCode,
+)
 from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
 
 logger = logging.getLogger("users.email")
@@ -30,11 +34,11 @@ EMAIL_CODE_IP_WINDOW = timedelta(hours=1)
 EMAIL_CODE_GLOBAL_WINDOW = timedelta(hours=24)
 
 
-class EmailThrottled(Exception):
+class EmailThrottled(ErreurEnvoiCode):
     pass
 
 
-class EmailCapReached(Exception):
+class EmailCapReached(ErreurEnvoiCode):
     """Plafond global d'envois atteint - voir OTPCapReached, même rôle côté e-mail."""
 
 
@@ -42,7 +46,7 @@ class EmailInvalid(Exception):
     pass
 
 
-class EmailSendFailed(Exception):
+class EmailSendFailed(ErreurEnvoiCode):
     """
     Échec de la remise (SMTP en panne, domaine expéditeur mal configuré...) - jamais
     laissé remonter tel quel : ni l'appelant HTTP ni le frontend ne savent quoi faire
@@ -76,19 +80,28 @@ def request_email_code(email, ip_address=None):
         .order_by("-created_at").first()
     )
     if recent and (now - recent.created_at).total_seconds() < EMAIL_CODE_MIN_INTERVAL_SECONDS:
-        raise EmailThrottled("Merci de patienter avant de redemander un code.")
+        raise EmailThrottled(
+            "Merci de patienter avant de redemander un code.",
+            code=CODE_RENVOI_TROP_TOT,
+            retry_after=math.ceil(EMAIL_CODE_MIN_INTERVAL_SECONDS - (now - recent.created_at).total_seconds()),
+        )
 
     if ip_address:
-        sent_from_ip = OTPCode.objects.filter(
+        envois_ip = OTPCode.objects.filter(
             canal=CodeCanal.EMAIL, ip_address=ip_address, created_at__gt=now - EMAIL_CODE_IP_WINDOW,
-        ).count()
+        )
+        sent_from_ip = envois_ip.count()
         if sent_from_ip >= settings.EMAIL_CODE_MAX_PER_IP_PER_HOUR:
             logger.warning(
                 "Plafond e-mail par IP atteint (%s envois sur la dernière heure) pour %s.",
                 sent_from_ip, ip_address,
             )
+            # Redevient possible quand assez d'envois sont sortis de la fenêtre glissante.
+            liberateur = envois_ip.order_by("created_at")[sent_from_ip - settings.EMAIL_CODE_MAX_PER_IP_PER_HOUR]
             raise EmailThrottled(
                 "Trop de demandes de code depuis cette connexion. Merci de réessayer dans une heure.",
+                code=CODE_TROP_DE_DEMANDES,
+                retry_after=max(1, math.ceil((liberateur.created_at + EMAIL_CODE_IP_WINDOW - now).total_seconds())),
             )
 
     sent_globally = OTPCode.objects.filter(
@@ -148,8 +161,10 @@ def request_email_code(email, ip_address=None):
         message.send()
     except Exception as exc:
         logger.exception("Envoi du code e-mail échoué pour %s", email)
+        # La ligne OTPCode créée plus haut fait courir le délai anti-renvoi : réessayer avant sa fin serait refusé.
         raise EmailSendFailed(
             "Envoi du code impossible pour le moment. Merci de réessayer plus tard.",
+            code=CODE_ENVOI_INDISPONIBLE, retry_after=EMAIL_CODE_MIN_INTERVAL_SECONDS,
         ) from exc
 
 

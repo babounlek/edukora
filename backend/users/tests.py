@@ -239,6 +239,9 @@ class OTPFlowAPITests(TestCase):
         self.client.post("/auth/otp/request/", {"phone_number": "677200021"})
         response = self.client.post("/auth/otp/request/", {"phone_number": "677200021"})
         self.assertEqual(response.status_code, 429)
+        # Même contrat que l'e-mail : un code machine et les secondes à attendre.
+        self.assertEqual(response.data["code"], "code_renvoi_trop_tot")
+        self.assertTrue(55 <= response.data["retry_after"] <= 60)
 
     def test_verify_rejects_wrong_code(self):
         OTPCode.objects.create(
@@ -1472,6 +1475,46 @@ class EmailAuthAPITests(TestCase):
         with patch("users.email_service.EmailMultiAlternatives.send", side_effect=OSError("smtp down")):
             reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
         self.assertEqual(reponse.status_code, 503)
+
+    def test_panne_smtp_dit_quand_reessayer(self):
+        """Le frontend écrit la phrase dans la langue de la page : il lui faut un code et une durée (test élève 2026-10-24)."""
+        with patch("users.email_service.EmailMultiAlternatives.send", side_effect=OSError("smtp down")):
+            reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 503)
+        self.assertEqual(reponse.data["code"], "envoi_indisponible")
+        self.assertEqual(reponse.data["retry_after"], 60)
+        self.assertEqual(reponse["Retry-After"], "60")
+
+    def test_renvoi_trop_tot_donne_les_secondes_restantes(self):
+        self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 429)
+        self.assertEqual(reponse.data["code"], "code_renvoi_trop_tot")
+        self.assertTrue(55 <= reponse.data["retry_after"] <= 60)
+        self.assertEqual(reponse["Retry-After"], str(reponse.data["retry_after"]))
+
+    def test_apres_un_echec_d_envoi_le_renvoi_immediat_est_refuse_avec_sa_duree(self):
+        """Le scénario du testeur : renvoi en 503, puis un second clic aussitôt refusé en 429 - qui doit dire combien attendre."""
+        with patch("users.email_service.EmailMultiAlternatives.send", side_effect=OSError("smtp down")):
+            self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.status_code, 429)
+        self.assertEqual(reponse.data["code"], "code_renvoi_trop_tot")
+        self.assertGreater(reponse.data["retry_after"], 0)
+
+    @override_settings(EMAIL_CODE_MAX_PER_IP_PER_HOUR=1)
+    def test_plafond_par_ip_donne_la_duree_avant_liberation(self):
+        self.client.post("/auth/email/request/", {"email": "a@example.com"}, REMOTE_ADDR="41.202.9.9")
+        reponse = self.client.post("/auth/email/request/", {"email": "b@example.com"}, REMOTE_ADDR="41.202.9.9")
+        self.assertEqual(reponse.status_code, 429)
+        self.assertEqual(reponse.data["code"], "code_trop_de_demandes")
+        self.assertTrue(3500 <= reponse.data["retry_after"] <= 3600)
+
+    @override_settings(EMAIL_CODE_DAILY_GLOBAL_CAP=0)
+    def test_plafond_global_est_signale_sans_duree_inventee(self):
+        reponse = self.client.post("/auth/email/request/", {"email": "eleve@example.com"})
+        self.assertEqual(reponse.data["code"], "envoi_indisponible")
+        self.assertNotIn("retry_after", reponse.data)
 
 
 @override_settings(EMAIL_BACKEND=LOCMEM)

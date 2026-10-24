@@ -160,12 +160,12 @@ def otp_request_view(request):
     try:
         request_otp(serializer.validated_data["phone_number"], ip_address=_client_ip(request))
     except OTPThrottled as exc:
-        return Response({"error": str(exc)}, status=429)
+        return _erreur_envoi(exc, 429)
     except (OTPCapReached, OTPSendFailed) as exc:
         # 503 et pas 429 : le demandeur n'a rien à corriger ni à ralentir, c'est le
         # service qui est indisponible - un 429 inviterait le frontend à afficher
         # "vous allez trop vite" à quelqu'un qui n'a fait qu'une seule tentative.
-        return Response({"error": str(exc)}, status=503)
+        return _erreur_envoi(exc, 503)
 
     return Response({"message": "Code envoyé par SMS."})
 
@@ -265,6 +265,25 @@ def google_link_view(request):
     return Response(UserSerializer(request.user, context={"request": request}).data)
 
 
+def _erreur_envoi(exc, statut):
+    """
+    Réponse d'une erreur d'envoi de code (SMS ou e-mail, voir users.erreurs_envoi) : le message français reste
+    dans `error` pour les anciens clients, mais le frontend écrit lui-même la phrase dans la langue de la page à
+    partir de `code` et de `retry_after` (secondes) - le serveur ne connaît pas la langue de l'écran.
+    """
+    corps = {"error": str(exc)}
+    code = getattr(exc, "code", None)
+    if code:
+        corps["code"] = code
+    attente = getattr(exc, "retry_after", None)
+    if attente:
+        corps["retry_after"] = int(attente)
+    reponse = Response(corps, status=statut)
+    if attente:
+        reponse["Retry-After"] = str(int(attente))
+    return reponse
+
+
 def _reponse_envoi_email(exc):
     """
     Traduction commune des trois pannes d'envoi, partagée par la connexion et le
@@ -272,10 +291,10 @@ def _reponse_envoi_email(exc):
     de quoi le frontend afficherait deux messages différents pour une seule cause.
     """
     if isinstance(exc, EmailThrottled):
-        return Response({"error": str(exc)}, status=429)
+        return _erreur_envoi(exc, 429)
     # 503 pour les deux autres : notre plafond volontaire comme la panne SMTP subie sont
     # des indisponibilités de service, rien que le demandeur puisse corriger.
-    return Response({"error": str(exc)}, status=503)
+    return _erreur_envoi(exc, 503)
 
 
 @api_view(["POST"])
@@ -386,9 +405,9 @@ def phone_change_request_view(request):
     except (PhoneAlreadyTaken, PhoneUnchanged) as exc:
         return Response({"error": str(exc)}, status=409)
     except OTPThrottled as exc:
-        return Response({"error": str(exc)}, status=429)
+        return _erreur_envoi(exc, 429)
     except (OTPCapReached, OTPSendFailed) as exc:
-        return Response({"error": str(exc)}, status=503)
+        return _erreur_envoi(exc, 503)
 
     return Response({"message": "Code envoyé au nouveau numéro."})
 
@@ -745,9 +764,9 @@ def parent_reinitialiser_demander_view(request):
         else:
             return Response({"error": "Aucun moyen de te joindre n'est enregistré sur ce compte."}, status=400)
     except (OTPThrottled, EmailThrottled) as exc:
-        return Response({"error": str(exc)}, status=429)
+        return _erreur_envoi(exc, 429)
     except (OTPCapReached, OTPSendFailed, EmailCapReached, EmailSendFailed) as exc:
-        return Response({"error": str(exc)}, status=503)
+        return _erreur_envoi(exc, 503)
     return Response({"message": "Code envoyé.", "canal": canal, "destination": _masquer_contact(destination, canal)})
 
 
@@ -828,9 +847,9 @@ def profil_connexion_demander_view(request, profil_id):
     try:
         request_otp(numero, ip_address=_client_ip(request))
     except OTPThrottled as exc:
-        return Response({"error": str(exc)}, status=429)
+        return _erreur_envoi(exc, 429)
     except (OTPCapReached, OTPSendFailed) as exc:
-        return Response({"error": str(exc)}, status=503)
+        return _erreur_envoi(exc, 503)
     return Response({"message": "Code envoyé au numéro de l'enfant."})
 
 

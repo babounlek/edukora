@@ -1,10 +1,14 @@
 import logging
+import math
 import random
 from datetime import timedelta
 
 from django.conf import settings
 from django.utils import timezone
 
+from .erreurs_envoi import (
+    CODE_ENVOI_INDISPONIBLE, CODE_RENVOI_TROP_TOT, CODE_TROP_DE_DEMANDES, ErreurEnvoiCode,
+)
 from .models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
 from .phone import to_e164
 from .sms_backends import get_sms_backend
@@ -23,11 +27,11 @@ OTP_IP_WINDOW = timedelta(hours=1)
 OTP_GLOBAL_WINDOW = timedelta(hours=24)
 
 
-class OTPThrottled(Exception):
+class OTPThrottled(ErreurEnvoiCode):
     pass
 
 
-class OTPCapReached(Exception):
+class OTPCapReached(ErreurEnvoiCode):
     """
     Plafond global d'envois atteint : distinct de OTPThrottled, qui sanctionne UN
     demandeur trop pressé. Ici le demandeur n'a rien fait de mal, c'est le service qui
@@ -41,7 +45,7 @@ class OTPInvalid(Exception):
     pass
 
 
-class OTPSendFailed(Exception):
+class OTPSendFailed(ErreurEnvoiCode):
     """
     Échec de la remise par le fournisseur SMS (LMT injoignable, identifiants
     invalides...) - jamais laissé remonter tel quel : ni l'appelant HTTP ni le
@@ -83,22 +87,31 @@ def request_otp(phone_number, ip_address=None):
         .order_by("-created_at").first()
     )
     if recent and (now - recent.created_at).total_seconds() < OTP_MIN_INTERVAL_SECONDS:
-        raise OTPThrottled("Merci de patienter avant de redemander un code.")
+        raise OTPThrottled(
+            "Merci de patienter avant de redemander un code.",
+            code=CODE_RENVOI_TROP_TOT,
+            retry_after=math.ceil(OTP_MIN_INTERVAL_SECONDS - (now - recent.created_at).total_seconds()),
+        )
 
     if ip_address:
         # canal=SMS partout dans ce fichier : voir l'invariant documenté sur le
         # modèle OTPCode. Sans ce filtre, les codes e-mail - gratuits - feraient
         # atteindre un plafond qui n'existe que pour borner la facture SMS.
-        sent_from_ip = OTPCode.objects.filter(
+        envois_ip = OTPCode.objects.filter(
             canal=CodeCanal.SMS, ip_address=ip_address, created_at__gt=now - OTP_IP_WINDOW,
-        ).count()
+        )
+        sent_from_ip = envois_ip.count()
         if sent_from_ip >= settings.OTP_MAX_PER_IP_PER_HOUR:
             logger.warning(
                 "Plafond OTP par IP atteint (%s envois sur la dernière heure) pour %s.",
                 sent_from_ip, ip_address,
             )
+            # Redevient possible quand assez d'envois sont sortis de la fenêtre glissante.
+            liberateur = envois_ip.order_by("created_at")[sent_from_ip - settings.OTP_MAX_PER_IP_PER_HOUR]
             raise OTPThrottled(
                 "Trop de demandes de code depuis cette connexion. Merci de réessayer dans une heure.",
+                code=CODE_TROP_DE_DEMANDES,
+                retry_after=max(1, math.ceil((liberateur.created_at + OTP_IP_WINDOW - now).total_seconds())),
             )
 
     sent_globally = OTPCode.objects.filter(
@@ -131,8 +144,10 @@ def request_otp(phone_number, ip_address=None):
         )
     except Exception as exc:
         logger.exception("Envoi du code SMS échoué pour %s", phone_number)
+        # La ligne OTPCode créée plus haut fait courir le délai anti-renvoi : réessayer avant sa fin serait refusé.
         raise OTPSendFailed(
             "Envoi du code impossible pour le moment. Merci de réessayer plus tard.",
+            code=CODE_ENVOI_INDISPONIBLE, retry_after=OTP_MIN_INTERVAL_SECONDS,
         ) from exc
 
 

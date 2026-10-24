@@ -1,6 +1,7 @@
 import { enregistrerDateServeur } from "@/lib/horlogeServeur"
 import { effacerMarqueAnonyme } from "@/lib/sessionAnonyme"
 import { t } from "@/lib/i18n"
+import { messageEnvoiCode } from "@/lib/messagesEnvoiCode"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001"
 
@@ -99,9 +100,18 @@ class ApiError extends Error {
   body: unknown
   /** Code machine optionnel renvoyé par l'API (ex. `pin_requis`, `parent_requis`). */
   code: string | null
+  /** Secondes à attendre avant de réessayer, quand le serveur les donne (envoi de code, voir messagesEnvoiCode). */
+  retryAfter: number | null
 
   constructor(status: number, body: unknown) {
-    let message = extraireMessage(body) ?? t("gl.erreur_api", { status })
+    const code =
+      typeof body === "object" && body !== null && typeof (body as { code?: unknown }).code === "string"
+        ? (body as { code: string }).code
+        : null
+    const brut = typeof body === "object" && body !== null ? (body as { retry_after?: unknown }).retry_after : null
+    const retryAfter = typeof brut === "number" && Number.isFinite(brut) && brut > 0 ? brut : null
+    // Un échec d'envoi de code se dit dans la langue de la page, avec la durée d'attente : le message du serveur est en français.
+    let message = messageEnvoiCode(code, retryAfter) ?? extraireMessage(body) ?? t("gl.erreur_api", { status })
     // Le message de limitation de débit de DRF est en anglais ("Request was throttled...").
     if (status === 429 && /throttled/i.test(message)) {
       message = t("gl.throttle")
@@ -109,10 +119,8 @@ class ApiError extends Error {
     super(message)
     this.status = status
     this.body = body
-    this.code =
-      typeof body === "object" && body !== null && typeof (body as { code?: unknown }).code === "string"
-        ? (body as { code: string }).code
-        : null
+    this.code = code
+    this.retryAfter = retryAfter
   }
 }
 

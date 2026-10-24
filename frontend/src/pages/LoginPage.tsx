@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 
 import { googleSignIn, listProfils, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
+import { dureeAttente } from "@/lib/messagesEnvoiCode"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { GoogleSignInButton } from "@/components/GoogleSignInButton"
@@ -218,10 +219,21 @@ export function LoginPage() {
       setCodeDejaRecu(false)
       setStep("code")
     } catch (err) {
+      armerAttenteApresEchec(err)
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  /**
+   * Après un échec d'envoi (429 trop tôt, 503 service en panne) : le bouton « Renvoyer » reste grisé avec un
+   * décompte, pour la durée que donne le serveur. Un renvoi tenté aussitôt serait refusé (test élève 2026-10-24 :
+   * le bouton se réactivait dès l'échec, le clic suivant donnait un 429).
+   */
+  function armerAttenteApresEchec(err: unknown) {
+    if (!(err instanceof ApiError) || (err.status !== 429 && err.status !== 503)) return
+    setResendCooldownEndsAt(Date.now() + (err.retryAfter ?? OTP_RESEND_COOLDOWN_SECONDS) * 1000)
   }
 
   async function handleResendCode() {
@@ -230,9 +242,7 @@ export function LoginPage() {
     try {
       await envoyerCode()
     } catch (err) {
-      // Le 429 du cooldown serveur (voir OTP_RESEND_COOLDOWN_SECONDS) ne devrait
-      // normalement jamais arriver ici tant que le bouton reste grisé pendant le
-      // décompte - gardé quand même en filet pour une horloge client désynchronisée.
+      armerAttenteApresEchec(err)
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
       setIsResending(false)
@@ -387,7 +397,7 @@ export function LoginPage() {
                   {selectedCountry ? t("login.pays_bientot", { pays: libellePays(selectedCountry.code, selectedCountry.label) }) : ""}
                 </p>
               ) : (
-                error && <p className="text-sm text-destructive">{error}</p>
+                error && <p role="alert" className="text-sm text-destructive">{error}</p>
               )}
               <Button
                 type="submit"
@@ -472,7 +482,7 @@ export function LoginPage() {
                   {t("login.code_expire")}
                 </p>
               )}
-              {error && <p className="text-sm text-destructive">{error}</p>}
+              {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
               {/* Désactivé tant que le code est incomplet : un envoi à 3 chiffres ne pouvait
                   que revenir en erreur (le code fait toujours 6 chiffres). */}
               <Button type="submit" disabled={isSubmitting || code.length < 6} className="w-full" size="lg">
@@ -484,7 +494,9 @@ export function LoginPage() {
                 disabled={resendSecondsLeft > 0 || isResending}
                 onClick={handleResendCode}
               >
-                {resendSecondsLeft > 0
+                {resendSecondsLeft >= 120
+                  ? t("login.renvoyer_dans", { duree: dureeAttente(resendSecondsLeft) })
+                  : resendSecondsLeft > 0
                   ? t("login.renvoyer_attente", { s: resendSecondsLeft })
                   : isResending
                     ? t("login.envoi")
