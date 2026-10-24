@@ -2418,7 +2418,7 @@ export const fr = {
   "guide.progression.texte": "L'anneau montre la part des thèmes de ton examen que tu maîtrises déjà. Ouvre une matière pour voir quels thèmes revoir en priorité.",
   "guide.paiement.titre": "Comment payer avec Mobile Money ?",
   "guide.paiement.description": "Les étapes du paiement et que faire si la confirmation tarde.",
-  "guide.paiement.texte": "Choisis ton moyen de paiement et entre ton numéro Mobile Money : une demande arrive sur ton téléphone, confirme-la. Cette page se met à jour toute seule et ton accès s'active dès que l'opérateur confirme. Si ça tarde, tu peux payer manuellement via Orange Money ou MTN MoMo.",
+  "guide.paiement.texte": "Choisis ton moyen de paiement et entre ton numéro Mobile Money : une demande arrive sur ton téléphone, confirme-la. Cette page se met à jour toute seule et ton accès s'active dès que l'opérateur confirme, même si cela prend un peu de temps. Si le paiement automatique ne fonctionne pas, tu peux payer manuellement via Orange Money ou MTN MoMo.",
   "guide.suivant": "Suivant",
   "guide.precedent": "Précédent",
   "guide.passer": "Passer",

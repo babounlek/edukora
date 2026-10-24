@@ -2406,7 +2406,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "guide.progression.texte": "The ring shows the share of your exam's topics that you already master. Open a subject to see which topics to review first.",
   "guide.paiement.titre": "How to pay with Mobile Money",
   "guide.paiement.description": "The payment steps and what to do if confirmation is slow.",
-  "guide.paiement.texte": "Choose your payment method and enter your Mobile Money number: a request arrives on your phone, confirm it. This page updates by itself and your access is activated as soon as the operator confirms. If it takes a while, you can pay manually with Orange Money or MTN MoMo.",
+  "guide.paiement.texte": "Choose your payment method and enter your Mobile Money number: a request arrives on your phone, confirm it. This page updates by itself and your access is activated as soon as the operator confirms, even if it takes a little while. If automatic payment does not work for you, you can pay manually with Orange Money or MTN MoMo.",
   "guide.suivant": "Next",
   "guide.precedent": "Back",
   "guide.passer": "Skip",
