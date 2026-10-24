@@ -1,15 +1,18 @@
 import os
+from datetime import timedelta
 from io import StringIO
 from unittest import mock
 
 from django.core.management import call_command
 from django.core.management.base import CommandError
 from django.test import TestCase, override_settings
+from django.utils import timezone
 
 from catalog.models import Cursus, Examen
 from payments.models import ManualPayment, ManualPaymentStatus
 from subscriptions.models import DureeMode, InscriptionInedite, Plan, ProductType, Subscription
-from users.models import User
+from users.email_service import verify_email_code
+from users.models import AuthIdentity, AuthProvider, CodeCanal, OTPCode, User
 
 BASE = "moi@gmail.com"
 
@@ -47,6 +50,21 @@ class SeedDonneesTestTests(TestCase):
             self.assertTrue(u.full_name.startswith("[TEST] "))
             self.assertTrue(u.email.startswith("moi+edukora-test-"))
             self.assertFalse(u.has_usable_password())
+
+    def test_chaque_compte_peut_se_connecter_par_code_email(self):
+        """Sans identité `email`, verify_email_code répondait 409 « adresse déjà utilisée » (test élève 2026-10-24)."""
+        lancer("--email-base", BASE)
+        lancer("--email-base", BASE)  # idempotent : pas de doublon d'identité
+        for u in self._comptes():
+            self.assertEqual(AuthIdentity.objects.filter(user=u, provider=AuthProvider.EMAIL).count(), 1)
+        compte = self._comptes().first()
+        OTPCode.objects.create(
+            canal=CodeCanal.EMAIL, destination=compte.email, code="123456",
+            expires_at=timezone.now() + timedelta(minutes=5),
+        )
+        user, cree = verify_email_code(compte.email, "123456")
+        self.assertEqual(user.pk, compte.pk)
+        self.assertFalse(cree)
 
     def test_etats_attendus(self):
         lancer("--email-base", BASE)

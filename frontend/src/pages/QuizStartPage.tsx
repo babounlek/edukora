@@ -446,7 +446,9 @@ export function QuizStartPage() {
     } catch (err) {
       setError(
         err instanceof ApiError
-          ? err.message
+          // Un thème sans question : le message du serveur (« ces critères ») laissait croire que « Lancer mon quiz »
+          // ciblerait encore ce thème, alors qu'il lance la matière entière (test élève 2026-10-24, thème Pythagore).
+          ? theme && err.status === 404 ? t("qd.theme_sans_quiz") : err.message
           : t("qd.demarrage_erreur"),
       )
       setStarting(false)

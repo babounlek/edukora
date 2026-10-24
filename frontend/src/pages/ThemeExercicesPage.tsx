@@ -1,14 +1,14 @@
 import { useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, ArrowRight, Check, Crown, FileText, Lock, TrendingUp } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpen, Check, Crown, FileText, Lock, TrendingUp } from "lucide-react"
 
 import { getThemeExercices, getThemesFrequents } from "@/api/endpoints"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import type { Cursus, ThemeExercice } from "@/api/types"
 import { useSeo } from "@/lib/seo"
-import { themeExerciceLecturePath, themesFrequentsPath } from "@/lib/countryPath"
+import { coursReaderPath, themeExerciceLecturePath, themesFrequentsPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
@@ -196,6 +196,32 @@ export function ThemeExercicesPage() {
           )}
         </div>
       </div>
+
+      {/* Le cours du thème : la page ne menait qu'à des exercices, sans la règle à relire avant (test élève 2026-10-24). */}
+      {data && (data.cours?.length ?? 0) > 0 && (
+        <section aria-label={t("te.relire_cours")} className="mb-6 rounded-2xl border border-primary/30 bg-primary/5 p-4 sm:p-5">
+          <p className="flex items-center gap-2 font-display text-base font-semibold">
+            <BookOpen className="size-4 text-primary" aria-hidden="true" />
+            {t("te.relire_cours")}
+          </p>
+          <ul className="mt-2 flex flex-col gap-1">
+            {data.cours.map((cours) => (
+              <li key={cours.slug}>
+                <Link
+                  to={coursReaderPath(cours.slug)}
+                  className="group flex min-h-11 items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  <span className="min-w-0 flex-1">{cours.titre}</span>
+                  {cours.duree_estimee_min && (
+                    <span className="shrink-0 text-xs font-normal text-muted-foreground">{cours.duree_estimee_min} min</span>
+                  )}
+                  <ArrowRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {/* Sélection : mêmes pastilles que /epreuves et /themes-frequents, limitées aux
           examens et matières où ce thème est réellement traité. */}

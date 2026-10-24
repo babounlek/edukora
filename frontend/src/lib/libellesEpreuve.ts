@@ -69,8 +69,9 @@ const NIVEAUX_EXERCICE: Record<string, CleI18n> = {
 /** « approfondissement » → « Challenge » en anglais ; en français, la valeur saisie telle quelle (le badge la met en
  * capitale). Une valeur inconnue s'affiche brute plutôt que de disparaître. */
 export function libelleNiveauExercice(niveau: string): string {
-  if (langueCourante() === "fr") return niveau
   const code = niveau.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim()
+  // Les données portent « Elevee » (sans accents) : en français on le corrige à l'affichage, le reste est gardé tel quel.
+  if (langueCourante() === "fr") return code === "elevee" || code === "eleve" ? "Élevée" : niveau
   return NIVEAUX_EXERCICE[code] ? t(NIVEAUX_EXERCICE[code]) : niveau
 }
 

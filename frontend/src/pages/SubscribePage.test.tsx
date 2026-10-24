@@ -5,10 +5,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMyInscriptionsInedites = vi.hoisted(() => vi.fn())
 const getPaymentConfig = vi.hoisted(() => vi.fn())
+const listProfils = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
   isLoading: false,
-  user: { phone_number: "677000000" },
+  user: { phone_number: "677000000" } as { phone_number: string; profil_actif?: { id: number; prenom: string } },
 }))
 
 vi.mock("@/api/endpoints", () => ({
@@ -16,7 +17,7 @@ vi.mock("@/api/endpoints", () => ({
   initiatePayment: vi.fn(),
   listCursus: vi.fn(() => Promise.resolve([])),
   listPlans: vi.fn(() => Promise.resolve([])),
-  listProfils: vi.fn(() => Promise.resolve([])),
+  listProfils,
   listMyInscriptionsInedites,
   getPaymentConfig,
 }))
@@ -54,8 +55,31 @@ beforeEach(() => {
   listMyInscriptionsInedites.mockReset()
   getPaymentConfig.mockReset()
   getPaymentConfig.mockResolvedValue({ campay_active: true })
+  listProfils.mockReset()
+  listProfils.mockResolvedValue([])
   auth.isAuthenticated = true
   auth.isLoading = false
+  auth.user = { phone_number: "677000000" }
+})
+
+describe("SubscribePage : pour quel enfant le parent paie", () => {
+  it("nomme l'enfant ACTIF quand le lien ne porte pas de profil et que le compte en a plusieurs", async () => {
+    auth.user = { phone_number: "677000000", profil_actif: { id: 2, prenom: "Junior" } }
+    listProfils.mockResolvedValue([{ id: 1, prenom: "Awa" }, { id: 2, prenom: "Junior" }])
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    expect(await screen.findByText(/Abonnement pour Junior/)).toBeInTheDocument()
+  })
+
+  it("ne nomme personne sur un compte à un seul profil", async () => {
+    auth.user = { phone_number: "677000000", profil_actif: { id: 1, prenom: "Awa" } }
+    listProfils.mockResolvedValue([{ id: 1, prenom: "Awa" }])
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    await waitFor(() => expect(listProfils).toHaveBeenCalled())
+    await screen.findByText(/Paiement sécurisé/)
+    expect(screen.queryByText(/Abonnement pour/)).not.toBeInTheDocument()
+  })
 })
 
 describe("SubscribePage : retour vers l'épreuve qui a motivé l'achat", () => {

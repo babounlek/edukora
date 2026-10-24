@@ -8,6 +8,7 @@ from rest_framework.generics import get_object_or_404
 
 from subscriptions.models import Plan, solde_credit_parrainage
 from users.parent import exiger_mode_parent
+from users.profils import profil_actif
 
 from .providers import PaiementFournisseurError
 from .models import ManualPayment, MobileMoneyAccount, StatutTransaction, Transaction
@@ -18,17 +19,18 @@ def _resoudre_profil(request):
     """
     Le profil (l'enfant) pour qui cet achat est fait - `profil_id` optionnel dans le
     corps de la requête (voir "Ajouter un enfant", AccesPage.tsx), jamais accepté sans
-    vérifier qu'il appartient bien au compte connecté. Retombe sur
-    `request.user.profils.first()` par défaut : le comportement inchangé pour
-    l'immense majorité des achats (compte à un seul profil, ou renouvellement d'un
-    abonnement déjà existant sans ce paramètre).
+    vérifier qu'il appartient bien au compte connecté. Retombe sur le profil ACTIF
+    de la requête par défaut (voir users.profils.profil_actif : sans profil choisi,
+    c'est le premier du compte, donc inchangé pour l'immense majorité des achats -
+    compte à un seul profil). Avant, le repli était toujours `profils.first()` : un
+    parent connecté sur le profil du cadet payait pour l'aîné (test élève 2026-10-24).
 
     Retourne (profil, erreur) - `erreur` est une Response 400 prête à renvoyer si
     `profil_id` est fourni mais n'appartient pas au compte, None sinon.
     """
     profil_id = request.data.get("profil_id")
     if not profil_id:
-        return request.user.profils.first(), None
+        return profil_actif(request), None
     profil = request.user.profils.filter(pk=profil_id).first()
     if profil is None:
         return None, Response({"error": "Profil introuvable."}, status=400)
@@ -164,6 +166,6 @@ def declare_manual_payment(request):
 @api_view(["GET"])
 def list_my_manual_payments(request):
     payments = ManualPayment.objects.filter(user=request.user).select_related(
-        "plan", "plan__cursus", "plan__cursus__country", "plan__cursus__series",
+        "plan", "plan__cursus", "plan__cursus__country", "plan__cursus__series", "profil",
     )
     return Response(ManualPaymentSerializer(payments, many=True).data)

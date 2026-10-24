@@ -111,6 +111,10 @@ export function AccueilEleve({ country }: { country: string }) {
   return (
     <div className="pb-4">
       <TeteAccueil accueil={data} country={country} />
+      {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
+          trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
+      {enCours && <LigneReprise tentative={enCours} />}
+      <ReprendreQuiz enveloppe />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
@@ -119,8 +123,6 @@ export function AccueilEleve({ country }: { country: string }) {
       {!data.premiers_pas && <InviteRappels />}
       <DepuisLaDerniereFois depuis={data.depuis} revisions={data.revisions} lecture={data.lecture} />
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
-      {enCours && <LigneReprise tentative={enCours} />}
-      <ReprendreQuiz enveloppe />
       <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
   )

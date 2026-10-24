@@ -6,7 +6,7 @@ testée, laissée intacte). Réutilisé tel quel par inedit.views.epreuve_inedit
 même mapping de champs pour la fiche détail que pour la liste, jamais dupliqué.
 """
 
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.utils import timezone
 
 from access.services import has_access_inedite
@@ -14,6 +14,7 @@ from users.profils import profil_actif
 from inedit.models import EpreuveInedite, ExerciceInedite, RappelDeMethodeInedite
 
 from .models import Cours, Langue, StatutContenu, SUBJECT_FAMILIES
+from .recherche_titre import motif_sans_accent
 from .serializers import CoursSummarySerializer, CursusSerializer, SubjectSerializer, TagSerializer
 
 
@@ -55,7 +56,7 @@ def build_inedit_queryset(params, *, min_popular_readers):
     if country := params.get("country"):
         qs = qs.filter(cursus__country__code__iexact=country)
     if search := params.get("search"):
-        qs = qs.filter(titre__icontains=search)
+        qs = qs.filter(Q(titre__icontains=search) | Q(titre__iregex=motif_sans_accent(search)))
     # exclude_read : no-op volontaire - EpreuveInedite ne suit aucune "lecture" (voir
     # TentativeInedite, qui suit une tentative, pas une lecture au sens LectureProgress).
 

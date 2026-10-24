@@ -15,6 +15,7 @@ from django.db import transaction as db_transaction
 from django.test import TestCase, TransactionTestCase, override_settings
 from django.utils import timezone
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import AccessToken
 
 from catalog.models import Cursus, Examen, ExamSession
 from subscriptions.models import (
@@ -685,6 +686,54 @@ class ManualPaymentDeclareAPITests(TestCase):
         }
         payload.update(overrides)
         return payload
+
+    def _client_sur_le_profil(self, profil):
+        """Un client dont le jeton porte le profil actif, comme après POST /auth/profils/<id>/activer/."""
+        token = AccessToken()
+        token["profil_id"] = profil.id
+        client = APIClient()
+        client.force_authenticate(user=self.user, token=token)
+        return client
+
+    def test_sans_profil_explicite_la_declaration_vise_l_enfant_actif(self):
+        """Test élève 2026-10-24 : sans profil_id, le paiement allait au PREMIER profil du compte."""
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+
+        response = self._client_sur_le_profil(cadet).post("/payments/manual/declare/", self._payload())
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(ManualPayment.objects.get(pk=response.data["id"]).profil_id, cadet.id)
+        self.assertEqual(response.data["profil"], {"id": cadet.id, "prenom": "Junior"})
+
+    def test_un_profil_explicite_l_emporte_sur_l_enfant_actif(self):
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+        aine = self.user.profils.exclude(pk=cadet.pk).first()
+
+        response = self._client_sur_le_profil(cadet).post(
+            "/payments/manual/declare/", self._payload(profil_id=aine.id),
+        )
+
+        self.assertEqual(ManualPayment.objects.get(pk=response.data["id"]).profil_id, aine.id)
+
+    @override_settings(CAMPAY_ACTIVE=True)
+    @patch("payments.campay_client.init_collect")
+    def test_le_paiement_automatique_vise_aussi_l_enfant_actif(self, mock_init):
+        mock_init.return_value = {"reference": "campay-actif", "status": "PENDING"}
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+
+        response = self._client_sur_le_profil(cadet).post(
+            "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.user.phone_number},
+        )
+
+        self.assertEqual(Transaction.objects.get(pk=response.data["transaction_id"]).profil_id, cadet.id)
+
+    def test_la_liste_des_paiements_dit_pour_quel_enfant(self):
+        cadet = Profil.objects.create(compte=self.user, prenom="Junior")
+        self._client_sur_le_profil(cadet).post("/payments/manual/declare/", self._payload())
+
+        lignes = self.client.get("/payments/manual/mine/").json()
+
+        self.assertEqual([ligne["profil"]["prenom"] for ligne in lignes], ["Junior"])
 
     def test_declare_creates_pending_manual_payment(self):
         response = self.client.post("/payments/manual/declare/", self._payload())

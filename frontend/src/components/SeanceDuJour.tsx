@@ -8,7 +8,7 @@ import {
 } from "lucide-react"
 
 import {
-  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour,
+  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour, listMySubscriptions,
   proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour,
 } from "@/api/endpoints"
 import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
@@ -21,9 +21,38 @@ import { trackEvent } from "@/lib/analytics"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
-import { langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
+import { langueCourante, localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { Ecrin } from "@/components/Progression"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
+
+/**
+ * Séance verrouillée parce que l'abonnement est échu (et non parce qu'on n'a jamais acheté) : on le dit en
+ * clair, avec la date, et le bouton mène droit au réabonnement du bon profil. Sans cela, l'ancien abonné voyait
+ * « Débloquer ma séance » comme un nouvel arrivant et ne savait pas que son accès avait pris fin.
+ */
+function BandeauAccesTermine() {
+  const { data: abonnements } = useQuery({ queryKey: ["mes-abonnements"], queryFn: listMySubscriptions })
+  if (!abonnements || abonnements.some((a) => a.is_active)) return null
+  const echu = [...abonnements].sort((a, b) => b.expires_at.localeCompare(a.expires_at))[0]
+  if (!echu) return null
+  const date = new Date(echu.expires_at).toLocaleDateString(localeCourante(), {
+    day: "numeric", month: "long", year: "numeric",
+  })
+  return (
+    <div role="status" className="mt-5 flex flex-col gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3.5 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-sm font-medium">{t("seance.acces_termine", { date })}</p>
+      <Button asChild size="sm" variant="outline" className="h-11 shrink-0 rounded-full sm:h-9">
+        <Link
+          to={`/abonnement?cursus=${echu.cursus.id}&profil=${echu.profil.id}`}
+          onClick={() => trackEvent("plan_verrouille_clic")}
+        >
+          {t("ac.reabonner")}
+          <ArrowRight className="size-3.5" />
+        </Link>
+      </Button>
+    </div>
+  )
+}
 
 /**
  * "Aujourd'hui : Limites de fonctions - 25 min" : une seule chose à faire, et un seul
@@ -367,6 +396,8 @@ function SeanceAFaire({
             qui justifie l'action précède l'action, dans l'ordre où on convaincrait
             quelqu'un à voix haute. */}
         <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />
+
+        {seance.verrouillee && <BandeauAccesTermine />}
 
         {seance.verrouillee ? (
           <div className="mt-6 flex flex-wrap items-center gap-3">

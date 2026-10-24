@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
-import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, XCircle, Zap } from "lucide-react"
+import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, User, XCircle, Zap } from "lucide-react"
 
 import {
   checkPaymentStatus, initiatePayment, listCursus, listMyInscriptionsInedites, listPlans, listProfils,
@@ -126,9 +126,11 @@ export function SubscribePage() {
   // absent pour l'immense majorité des achats (compte à un seul profil), relayé tel
   // quel à initiatePayment/declareManualPayment (voir payments.views._resoudre_profil).
   const profilParam = searchParams.get("profil")
-  const profilId = profilParam ? Number(profilParam) : undefined
   const navigate = useNavigate()
   const { isAuthenticated, isLoading, user } = useAuth()
+  // Sans `profil=`, le serveur retombe sur le PREMIER profil du compte : un parent qui paie depuis le profil du
+  // cadet abonnait l'aîné. Le profil actif est donc relayé par défaut (test élève 10-24, parent à deux enfants).
+  const profilId = profilParam ? Number(profilParam) : (user?.profil_actif?.id ?? undefined)
   const { country } = useCountry()
 
   const [cursus, setCursus] = useState<Cursus | null>(null)
@@ -272,12 +274,14 @@ export function SubscribePage() {
     if (!profilId) return
     listProfils()
       .then((profils) => {
-        setProfilPrenom(profils.find((p) => p.id === profilId)?.prenom ?? null)
+        // Compte à un seul profil : pas de « pour <prénom> », l'achat ne peut viser personne d'autre.
+        const nomme = profilParam || profils.length > 1
+        setProfilPrenom(nomme ? (profils.find((p) => p.id === profilId)?.prenom ?? null) : null)
       })
       .catch(() => {
         // Simple confirmation visuelle (« pour Awa ») : l'achat reste possible sans elle.
       })
-  }, [profilId])
+  }, [profilId, profilParam])
 
   useEffect(() => {
     return () => {
@@ -553,6 +557,14 @@ export function SubscribePage() {
         <CardContent className="p-6 sm:p-7">
           {phase === "form" && (
             <div className="flex flex-col gap-6">
+              {/* Pour qui l'argent part : rappelé AU-DESSUS du formulaire de paiement, là où l'on décide de payer, et pas
+                  seulement dans l'en-tête de la page (test élève 2026-10-24, parent de deux enfants). */}
+              {profilPrenom && (
+                <p className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3.5 py-2.5 text-sm font-medium">
+                  <User className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                  {t("sb.paiement_pour", { prenom: profilPrenom })}
+                </p>
+              )}
               {campayActif && creditDisponible > 0 && (
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">
                   <Gift className="size-4 shrink-0 text-gold-text" />
@@ -712,6 +724,7 @@ export function SubscribePage() {
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <CheckCircle2 className="size-10 text-success" />
               <p className="font-display font-medium">{t("sb.declaration_titre")}</p>
+              {profilPrenom && <p className="text-sm font-medium">{t("sb.paiement_pour", { prenom: profilPrenom })}</p>}
               <p className="text-sm text-muted-foreground">
                 {t("sb.declaration_texte", { delai: delaiVerificationPaiementAffiche(), id: declaredPayment.id })}
               </p>
@@ -730,6 +743,7 @@ export function SubscribePage() {
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <Loader2 className="size-8 animate-spin text-primary" />
               <p className="font-display font-medium">{t("sb.confirme")}</p>
+              {profilPrenom && <p className="text-sm font-medium">{t("sb.paiement_pour", { prenom: profilPrenom })}</p>}
               <p className="text-sm text-muted-foreground">
                 {t("sb.confirme_texte", { phone: phoneNumber })}
               </p>

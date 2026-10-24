@@ -4550,6 +4550,17 @@ class DisciplineAndNatureFilterApiTests(TestCase):
         titles = [item["title"] for item in response.json()["results"]]
         self.assertEqual(titles, ["Français - Étude de texte"])
 
+    def test_recherche_titre_sans_accents(self):
+        """Test élève 2026-10-24 : « mathematique » ne trouvait pas « Mathématiques BEPC 2026 »."""
+        maths = Subject.objects.get(country__code="CM", code="MATHS")
+        Lesson.objects.create(
+            title="Mathématiques BEPC 2026", subject=maths, lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+        )
+        for terme in ("mathematique", "mathematiques", "mathématiques", "MATHEMATIQUES"):
+            response = self.client.get(reverse("catalog:lesson-list"), {"search": terme})
+            titles = [item["title"] for item in response.json()["results"]]
+            self.assertIn("Mathématiques BEPC 2026", titles, terme)
+
 
 class EstVitrineFilterApiTests(TestCase):
     """`?est_vitrine=true` sur /catalog/lessons/ - alimente le CTA "Essayer un
@@ -5085,6 +5096,31 @@ class ThemeExercicesApiTests(TestCase):
     def test_unknown_cursus_is_a_404(self):
         response = self.client.get(self._url(cursus_id=999999), {"subject": self.subject.code})
         self.assertEqual(response.status_code, 404)
+
+    def test_expose_les_cours_du_theme_celui_qui_le_nomme_d_abord(self):
+        """La page d'un thème doit mener au cours (test élève 2026-10-24) ; le titre qui nomme le thème passe avant."""
+        autre = Cours.objects.create(
+            external_id="autre-cours", titre="Un autre sujet", subject=self.subject, statut=StatutContenu.VALIDE,
+        )
+        juste = Cours.objects.create(
+            external_id="cours-juste", titre="Lire un tableau de variation", subject=self.subject,
+            statut=StatutContenu.VALIDE,
+        )
+        brouillon = Cours.objects.create(
+            external_id="cours-brouillon", titre="Tableau de variation (brouillon)", subject=self.subject,
+            statut=StatutContenu.BROUILLON,
+        )
+        for cours in (autre, juste, brouillon):
+            cours.cursus.add(self.cursus)
+            cours.tags.add(self.tag)
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+
+        self.assertEqual([c["slug"] for c in data["cours"]], [juste.slug, autre.slug])
+
+    def test_theme_sans_cours_renvoie_une_liste_vide(self):
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        self.assertEqual(data["cours"], [])
 
     def test_lists_exercise_tagged_with_theme(self):
         lesson = self._make_lesson("Maths BAC C 2022")

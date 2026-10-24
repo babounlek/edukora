@@ -218,7 +218,7 @@ export function EpreuveReaderPage() {
                   </div>
                 )}
                 <EnonceToggle>
-                  <EpreuveMarkdown markdown={exercise.enonce_markdown} />
+                  <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_markdown)} />
                 </EnonceToggle>
                 {/* Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
                     correction doit se reconnaître d'un coup d'œil. */}

@@ -13,6 +13,11 @@ describe("niveau d'un exercice d'application", () => {
     expect(libelleNiveauExercice("approfondissement")).toBe("approfondissement")
   })
 
+  it("en français, rétablit l'accent de « Elevee » que portent les données", () => {
+    expect(libelleNiveauExercice("Elevee")).toBe("Élevée")
+    expect(libelleNiveauExercice("élevé")).toBe("Élevée")
+  })
+
   it("en anglais, traduit les trois niveaux du skill", async () => {
     await definirLangue("en", { persister: false })
     expect(libelleNiveauExercice("facile")).toBe("Easy")

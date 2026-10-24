@@ -820,6 +820,27 @@ class GenererSessionTests(TestCase):
             {qq.competence_item_id for qq in session.quiz_questions.all()}, {item_a.id, item_b.id},
         )
 
+    def test_theme_sans_item_sous_son_tag_retombe_sur_son_savoir(self):
+        """Le classement des thèmes annonce `quiz_disponible` via le savoir officiel : le lancement doit suivre
+        (test élève 2026-10-24, « théorème de Pythagore » annoncé disponible, « Aucune question » au lancement)."""
+        module = Module.objects.create(subject=self.subject, classe="3e", serie_label="", numero="1", titre="M")
+        savoir = Savoir.objects.create(module=module, numero="I", intitule="Pythagore")
+        theme_demande = Tag.objects.create(name="théorème de Pythagore", savoir_officiel=savoir)
+        theme_frere = Tag.objects.create(name="triangle rectangle", savoir_officiel=savoir)
+        item = _make_competence_item(self.subject, self.cursus, theme=theme_frere, numero="1")
+        _make_competence_item(self.subject, self.cursus, numero="2")  # autre savoir : jamais tiré
+
+        session = generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, theme=theme_demande, n=10)
+
+        self.assertEqual({qq.competence_item_id for qq in session.quiz_questions.all()}, {item.id})
+
+    def test_theme_sans_savoir_ni_item_reste_sans_question(self):
+        theme = Tag.objects.create(name="sans savoir")
+        _make_competence_item(self.subject, self.cursus, numero="1")
+
+        with self.assertRaises(ValueError):
+            generer_session(self.profil, self.cursus, ModeQuiz.PRATIQUE, theme=theme, n=10)
+
     def test_brouillon_items_are_not_eligible(self):
         # Le verrou de qualité est désormais explicite (statut=VALIDE), pas une
         # heuristique de texte appliquée après coup - voir CompetenceItem.statut.

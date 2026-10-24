@@ -285,7 +285,15 @@ def _items_eligibles(cursus, subject=None, theme=None, savoir=None):
         qs = qs.filter(theme=theme)
     if savoir:
         qs = qs.filter(theme__savoir_officiel=savoir)
-    return list(qs)
+    items = list(qs)
+    # Un thème sans compétence sous SON tag peut en avoir sous un autre tag du même savoir officiel : le classement des
+    # thèmes (catalog.views.ThemesFrequentsView, `quiz_disponible`) l'annonce déjà disponible dans ce cas. Sans ce repli,
+    # le bouton « Quiz » répondait « Aucune question disponible » pour un quiz affiché comme disponible (test élève
+    # 2026-10-24, thème « théorème de Pythagore »).
+    savoir_du_theme = getattr(theme, "savoir_officiel_id", None) if theme and not savoir else None
+    if not items and savoir_du_theme:
+        return _items_eligibles(cursus, subject=subject, savoir=savoir_du_theme)
+    return items
 
 
 def perimetre_est_vitrine(cursus, subject=None, theme=None, savoir=None):

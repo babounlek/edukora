@@ -24,6 +24,7 @@ import { PublierContexte } from "@/components/guides/PublierContexte"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
+import { SuiteDuCours } from "@/components/SuiteDuCours"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { useEtude } from "@/lib/useEtude"
@@ -189,7 +190,7 @@ export function CoursReaderPage() {
           </Link>
         )}
         {slug && (
-          <span className="flex items-center gap-2 sm:ml-auto">
+          <span className="flex flex-wrap items-center gap-2 sm:ml-auto">
             <BoutonPartager
               chemin={coursDetailPath(slug)}
               texte={t("co.partage", { titre: content?.title ?? t("co.partage_defaut"), site: SITE_NAME })}
@@ -277,6 +278,7 @@ export function CoursReaderPage() {
       )}
 
       <EtapeSuivante />
+      {cours && <SuiteDuCours cours={cours} />}
 
       {cours && (
         <RelatedCours

@@ -46,6 +46,7 @@ from .models import (
     langue_examen,
     q_cours_du_cursus,
 )
+from .recherche_titre import motif_sans_accent
 from .rendering import exercise_questions_breakdown
 from .serializers import (
     bulk_cours_est_vitrine,
@@ -242,9 +243,17 @@ class LessonListView(generics.ListAPIView):
             texte_match = Lesson.objects.filter(
                 Q(title__icontains=search) | Q(content_markdown__icontains=search),
             ).values("pk")
+            # Titre sans accents (« mathematique » trouve « Mathématiques »), évalué À PART (4 ms, une liste d'ids) :
+            # une expression régulière dans le même OR que l'icontains, même en sous-requête, dégrade le plan
+            # (recherche « pythagore » mesurée à 0,88 s au lieu de 0,05 s).
+            titre_sans_accent = list(
+                Lesson.objects.filter(title__iregex=motif_sans_accent(search)).values_list("pk", flat=True)[:2000],
+            )
             theme_match = Lesson.objects.filter(themes__name__icontains=search).values("pk")
             keyword_match = Lesson.objects.filter(mots_cles_recherche__name__icontains=search).values("pk")
-            qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=theme_match) | Q(pk__in=keyword_match))
+            qs = qs.filter(
+                Q(pk__in=texte_match) | Q(pk__in=titre_sans_accent) | Q(pk__in=theme_match) | Q(pk__in=keyword_match),
+            )
         if theme := params.get("theme"):
             # Lien "s'entraîner sur ce thème" depuis le classement des thèmes fréquents
             # (voir ThemesFrequentsView) - correspondance exacte sur Question.themes
@@ -1215,8 +1224,24 @@ class ThemeExercicesView(APIView):
             .order_by("-nb")
         )
 
+        # Le(s) cours qui expliquent ce thème, pour relire la règle avant de s'entraîner (test élève 2026-10-24 :
+        # la page d'un thème ne menait à aucun cours). Même lignée que la liste des cours (q_cours_du_cursus) ; à
+        # défaut d'un cours portant le thème lui-même, ceux du même savoir officiel.
+        cours_publies = Cours.objects.visibles().filter(subject=subject).filter(q_cours_du_cursus([cursus.pk]))
+        candidats = list(cours_publies.filter(tags=tag).distinct().order_by("id")[:40])
+        if not candidats and tag.savoir_officiel_id:
+            candidats = list(
+                cours_publies.filter(tags__savoir_officiel_id=tag.savoir_officiel_id).distinct().order_by("id")[:40],
+            )
+        # Un thème large (« Pythagore ») étiquette des cours très divers : ceux dont le titre le nomme passent d'abord.
+        nom_theme = tag.name.split("(")[0].strip().lower()
+        cours_du_theme = sorted(candidats, key=lambda c: (nom_theme not in c.titre.lower(), c.pk))[:3]
+
         return Response({
             "tag": tag.name,
+            "cours": [
+                {"slug": c.slug, "titre": c.titre, "duree_estimee_min": c.duree_estimee_min} for c in cours_du_theme
+            ],
             "exercices": exercices,
             "total": len(exercices),
             "faits": sum(1 for e in exercices if e["fait"]),

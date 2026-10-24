@@ -42,7 +42,7 @@ from payments.models import (
     _activer_acces,
 )
 from subscriptions.models import DureeMode, Plan, ProductType, Subscription
-from users.models import Profil, User
+from users.models import AuthIdentity, AuthProvider, Profil, User
 
 MARQUE_EMAIL = "+edukora-test-"
 MARQUE_NOM = "[TEST] "
@@ -124,13 +124,20 @@ class Command(BaseCommand):
     def _utilisateur(self, email_base, role, nom):
         email = self._alias(email_base, role)
         user = User.objects.filter(email=email).first()
-        if user is not None:
-            return user, False
-        user = User.objects.create_user(
-            phone_number=None, email=email, full_name=f"{MARQUE_NOM}{nom}",
-            is_active=True, rappels_actifs=False, email_verified=False,
+        cree = user is None
+        if cree:
+            user = User.objects.create_user(
+                phone_number=None, email=email, full_name=f"{MARQUE_NOM}{nom}",
+                is_active=True, rappels_actifs=False, email_verified=False,
+            )
+        # create_user ne pose pas l'identité `email` : sans elle, la connexion par code e-mail
+        # (users.email_service.verify_email_code) répond « adresse déjà utilisée » (409) et le
+        # compte de test est inutilisable. email_verified reste False : les relances l'ignorent.
+        AuthIdentity.objects.get_or_create(
+            user=user, provider=AuthProvider.EMAIL,
+            defaults={"provider_uid": email, "email": email},
         )
-        return user, True
+        return user, cree
 
     @staticmethod
     def _activer_si_absent(plan, user, profil):

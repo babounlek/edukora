@@ -28,6 +28,9 @@ export function BarreLecture({
   useI18n()
   const [progression, setProgression] = useState(0)
   const [mots, setMots] = useState(0)
+  // Sur téléphone la pastille n'est visible que pendant le défilement : posée sur le texte, elle masquait des
+  // cellules de tableau et le bas d'une figure à l'arrêt (test élève 2026-10-24). Sur grand écran elle reste.
+  const [enDefilement, setEnDefilement] = useState(false)
 
   // Le contenu arrive en asynchrone : on compte les mots une fois rendu, jamais au montage.
   useEffect(() => {
@@ -37,6 +40,20 @@ export function BarreLecture({
     }, 400)
     return () => clearTimeout(t)
   }, [cibleRef, contenuKey])
+
+  useEffect(() => {
+    let repos = 0
+    function defiler() {
+      setEnDefilement(true)
+      window.clearTimeout(repos)
+      repos = window.setTimeout(() => setEnDefilement(false), 2000)
+    }
+    window.addEventListener("scroll", defiler, { passive: true })
+    return () => {
+      window.removeEventListener("scroll", defiler)
+      window.clearTimeout(repos)
+    }
+  }, [])
 
   useEffect(() => {
     let image = 0
@@ -85,7 +102,7 @@ export function BarreLecture({
       {afficherTemps && (
         <p
           aria-hidden="true"
-          className="pointer-events-none fixed bottom-28 right-4 z-40 rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium tabular-nums text-muted-foreground shadow-md backdrop-blur-sm lg:bottom-6"
+          className={`pointer-events-none fixed bottom-28 right-4 z-40 rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium tabular-nums text-muted-foreground shadow-md backdrop-blur-sm transition-opacity duration-300 motion-reduce:transition-none lg:bottom-6 lg:opacity-100 ${enDefilement ? "opacity-100" : "opacity-0"}`}
         >
           {tn("ed.restantes", minutes, { p: pourcent })}
         </p>

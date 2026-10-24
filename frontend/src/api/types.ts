@@ -831,8 +831,16 @@ export interface ExerciceLecture {
   corrige_markdown: string | null
 }
 
+/** Un cours qui explique un thème (voir ThemeExercicesView) : de quoi relire la règle avant de s'entraîner. */
+export interface ThemeCours {
+  slug: string
+  titre: string
+  duree_estimee_min: number | null
+}
+
 export interface ThemeExercicesResponse {
   tag: string
+  cours: ThemeCours[]
   exercices: ThemeExercice[]
   total: number
   faits: number
@@ -892,6 +900,8 @@ export interface ManualPayment {
   rejection_reason_display: string
   created_at: string
   reviewed_at: string | null
+  /** L'enfant pour qui le paiement a été fait (null pour d'anciennes lignes sans profil). */
+  profil: { id: number; prenom: string } | null
 }
 
 export type ModeQuiz = "PRATIQUE" | "DIAGNOSTIC"

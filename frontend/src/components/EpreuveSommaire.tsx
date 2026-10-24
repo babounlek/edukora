@@ -123,6 +123,30 @@ function enTexteBrut(texte: string) {
   return texte.replace(/[*_`#>$]/g, "").replace(/\s+/g, " ").trim()
 }
 
+const ENTETE_EXERCICE_BRUT_RE = /^Exercice\s+\S+(?:\s*\(\d+(?:[.,]\d+)?\s*points?\))?$/i
+
+const SYMBOLES_LATEX: Record<string, string> = {
+  div: "÷", times: "×", cdot: "·", pm: "±", le: "≤", leq: "≤", ge: "≥", geq: "≥", ne: "≠", to: "→", mapsto: "↦",
+  circ: "°", pi: "π", theta: "θ", alpha: "α", beta: "β", infty: "∞", in: "∈", cup: "∪", cap: "∩",
+}
+
+/**
+ * Lit une formule LaTeX comme du texte, pour une ligne d'aperçu qui n'est PAS rendue par KaTeX : sans cela
+ * « \div », « \times » ou une matrice s'affichaient tels quels (« Evaluate 15 - 12 \div 4 \times 16 »).
+ * Volontairement approximatif - c'est un indice pour choisir un exercice, pas l'énoncé.
+ */
+function latexEnTexte(texte: string) {
+  return texte
+    .replace(/\\begin\{[a-z]*matrix\}[\s\S]*?\\end\{[a-z]*matrix\}/g, "[matrice]")
+    .replace(/\\d?frac\{([^{}]*)\}\{([^{}]*)\}/g, "($1/$2)")
+    .replace(/\\sqrt\{([^{}]*)\}/g, "√($1)")
+    .replace(/\\(?:mathbb|mathrm|text|mathbf)\{([^{}]*)\}/g, (_m, interieur: string) => (interieur === "R" ? "ℝ" : interieur))
+    .replace(/\\(left|right)\b/g, "")
+    .replace(/\\([a-zA-Z]+)/g, (_m, nom: string) => SYMBOLES_LATEX[nom] ?? nom)
+    .replace(/\\[,;: !]/g, " ")
+    .replace(/[{}]/g, "")
+}
+
 /** Retire la première ligne d'un énoncé quand c'est le `titre` (en-tête de section collé devant chaque question). */
 export function sansEnteteDeSection(markdown: string, titre: string) {
   const attendu = enTexteBrut(titre).toLowerCase()
@@ -140,11 +164,13 @@ const APERCU_LONGUEUR_MAX = 90
  * section), le balisage Markdown et les consignes de points.
  */
 export function apercuQuestion(enonceMarkdown: string, titre = "", longueurMax = APERCU_LONGUEUR_MAX) {
-  const entete = enTexteBrut(titre).toLowerCase()
+  const brut = (texte: string) => enTexteBrut(latexEnTexte(texte))
+  const entete = brut(titre).toLowerCase()
   const lignes = enonceMarkdown
     .split(/\n+/)
-    .map(enTexteBrut)
-    .filter((ligne) => ligne && ligne.toLowerCase() !== entete && !/^\(\d+\s*marks?\)$/i.test(ligne))
+    .map(brut)
+    // L'en-tête « Exercice 3 (7 points) » que la transcription met devant chaque exercice n'apprend rien ici.
+    .filter((ligne) => ligne && ligne.toLowerCase() !== entete && !/^\(\d+\s*marks?\)$/i.test(ligne) && !ENTETE_EXERCICE_BRUT_RE.test(ligne))
   const debut = lignes[0] ?? ""
   return debut.length <= longueurMax ? debut : `${debut.slice(0, longueurMax - 1).trimEnd()}…`
 }

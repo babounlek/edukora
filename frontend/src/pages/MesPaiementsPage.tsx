@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { ArrowRight, Check, CheckCircle2, Clock, Copy, RefreshCw, XCircle, type LucideIcon } from "lucide-react"
 
-import { listMyManualPayments } from "@/api/endpoints"
+import { listMyManualPayments, listProfils } from "@/api/endpoints"
 import type { ManualPayment, ManualPaymentStatus, MobileMoneyOperator } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -59,11 +59,17 @@ export function MesPaiementsPage() {
   const navigate = useNavigate()
   const [payments, setPayments] = useState<ManualPayment[] | null>(null)
   const [erreur, setErreur] = useState(false)
+  // Plusieurs enfants sur le compte : chaque ligne dit pour lequel elle est. Un compte à un seul profil n'a pas à lire
+  // son propre prénom sur chaque paiement.
+  const [plusieursProfils, setPlusieursProfils] = useState(false)
 
   const charger = useCallback(() => {
     setErreur(false)
     setPayments(null)
     listMyManualPayments().then(setPayments).catch(() => setErreur(true))
+    listProfils().then((profils) => setPlusieursProfils(profils.length > 1)).catch(() => {
+      // Simple confort d'affichage : sans lui, le prénom ne s'affiche que si les paiements en nomment plusieurs.
+    })
   }, [])
 
   useEffect(() => {
@@ -129,6 +135,7 @@ export function MesPaiementsPage() {
             <CartePaiement
               key={payment.id}
               payment={payment}
+              montrerEnfant={plusieursProfils || new Set(payments.map((p) => p.profil?.id)).size > 1}
               accueil={catalogueHomePath(country)}
               style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
             />
@@ -144,8 +151,8 @@ export function MesPaiementsPage() {
 }
 
 function CartePaiement({
-  payment, accueil, style,
-}: { payment: ManualPayment; accueil: string; style: React.CSSProperties }) {
+  payment, accueil, style, montrerEnfant,
+}: { payment: ManualPayment; accueil: string; style: React.CSSProperties; montrerEnfant: boolean }) {
   const statut = STATUTS[payment.status]
   const operateur = OPERATEURS[payment.operator]
   const cursus = payment.plan.cursus
@@ -168,6 +175,9 @@ function CartePaiement({
             {cursus.examen_display}
             {cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}
           </p>
+          {montrerEnfant && payment.profil?.prenom && (
+            <p className="mt-0.5 text-sm font-medium">{t("pm.pour_enfant", { prenom: payment.profil.prenom })}</p>
+          )}
           <p className="mt-0.5 text-sm text-muted-foreground">
             {payment.operator_display} · {dateFr(payment.created_at)}
           </p>
@@ -199,7 +209,8 @@ function CartePaiement({
             {payment.rejection_reason_display ? t("pm.refuse_motif", { motif: payment.rejection_reason_display.toLowerCase() }) : "."}
           </p>
           <Button asChild size="sm" variant="outline" className="rounded-full">
-            <Link to={`/abonnement?cursus=${cursus.id}`}>
+            {/* Pour le même enfant : sans `profil=`, on retombait sur l'enfant actif, pas forcément celui du paiement refusé. */}
+            <Link to={`/abonnement?cursus=${cursus.id}${payment.profil ? `&profil=${payment.profil.id}` : ""}`}>
               {t("pm.refaire")}
               <ArrowRight className="size-3.5" />
             </Link>

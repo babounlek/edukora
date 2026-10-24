@@ -6,6 +6,7 @@ from subscriptions.models import Plan
 from subscriptions.serializers import PlanSerializer
 from users.models import phone_validator
 from users.phone import to_e164, to_local
+from users.profils import profil_actif
 
 from .models import ManualPayment, MobileMoneyAccount, MobileMoneyOperator
 
@@ -49,13 +50,20 @@ class ManualPaymentSerializer(serializers.ModelSerializer):
     operator_display = serializers.CharField(source="get_operator_display", read_only=True)
     status_display = serializers.CharField(source="get_status_display", read_only=True)
     rejection_reason_display = serializers.CharField(source="get_rejection_reason_display", read_only=True)
+    profil = serializers.SerializerMethodField()
+
+    def get_profil(self, obj):
+        """L'enfant pour qui ce paiement a été fait : un parent avec deux enfants doit pouvoir distinguer ses lignes."""
+        if obj.profil_id is None:
+            return None
+        return {"id": obj.profil_id, "prenom": obj.profil.prenom}
 
     class Meta:
         model = ManualPayment
         fields = [
             "id", "plan", "operator", "operator_display", "amount_expected", "amount_declared",
             "payer_phone_number", "transaction_reference", "paid_at", "status", "status_display",
-            "rejection_reason", "rejection_reason_display", "created_at", "reviewed_at",
+            "rejection_reason", "rejection_reason_display", "created_at", "reviewed_at", "profil",
         ]
 
 
@@ -97,6 +105,9 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
             if profil is None:
                 raise serializers.ValidationError({"profil_id": "Profil introuvable."})
             attrs["profil"] = profil
+        else:
+            # Sans profil explicite : l'enfant actif, pas le premier du compte (voir payments.views._resoudre_profil).
+            attrs["profil"] = profil_actif(request)
         prix_attendu = plan.effective_price(user=request.user, profil=attrs.get("profil"))
         attrs.setdefault("amount_declared", prix_attendu)
         if attrs["amount_declared"] < prix_attendu:

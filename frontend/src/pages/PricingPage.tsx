@@ -18,6 +18,7 @@ import type { Cursus, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
 import { codeSerieAffiche } from "@/lib/cursus"
+import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { usePaymentConfig } from "@/lib/paymentConfig"
@@ -237,6 +238,7 @@ export function PricingPage() {
   const { country } = useCountry()
   // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
   const { campayActif } = usePaymentConfig()
+  const { isAuthenticated } = useAuth()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   // Présent quand on arrive ici pour acheter l'abonnement d'un enfant qu'on vient de
   // créer ("Ajouter un enfant", AccesPage.tsx) - relayé tel quel vers /abonnement,
@@ -544,6 +546,10 @@ export function PricingPage() {
                           <Button onClick={choisirFormule} size="lg" className="w-full">
                             {t("prix.sabonner")}
                           </Button>
+                          {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
+                          {!isAuthenticated && (
+                            <p className="-mt-2 text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                          )}
                         </>
                       ) : (
                         // "Choisir ton cursus", pas "S'abonner" : dans cet état,
