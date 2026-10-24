@@ -13,6 +13,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BoutonPdfCours } from "@/components/BoutonPdfCours"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { SITE_NAME } from "@/lib/site"
 import { COURS_SECTION_LABELS, CoursSection } from "@/components/CoursSection"
@@ -195,6 +196,7 @@ export function CoursReaderPage() {
               type="cours"
               variant="ghost"
             />
+            <BoutonPdfCours slug={slug} />
             <BoutonHorsLigne type="cours" slug={slug} />
           </span>
         )}

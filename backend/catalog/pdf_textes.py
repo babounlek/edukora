@@ -65,6 +65,20 @@ TEXTES = {
         "inedite_cta_titre": "Prêt(e) à passer l'épreuve ?",
         "inedite_cta_corps": "Lance ta tentative chronométrée et accède à la correction directement sur {site}.",
         "inedite_qr_alt": "QR code vers l'épreuve",
+        # Cours (version « libre » : sans les exercices d'application, payants ; version « complète » : abonné)
+        "cours_brand": "Cours",
+        "cours_libre_cta_titre": "Les exercices d'application t'attendent",
+        "cours_libre_cta_corps": (
+            "Ce PDF contient le cours. Les exercices d'application, avec leurs solutions détaillées pas à pas, "
+            "sont réservés aux abonnés de {site}."
+        ),
+        "cours_libre_cta_lien": "Voir les exercices",
+        "cours_libre_note_pied": "Cours en libre accès, à partager. Les exercices d'application sont réservés aux abonnés.",
+        "cours_complet_cta_titre": "Retrouve ce cours en ligne",
+        "cours_complet_cta_corps": "Lis la version en ligne, marque ce que tu as compris et entraîne-toi avec le quiz sur {site}.",
+        "cours_complet_cta_lien": "Ouvrir le cours",
+        "cours_complet_note_pied": "Les exercices d'application sont réservés aux abonnés : merci de ne pas diffuser ce document.",
+        "cours_qr_alt": "QR code vers le cours",
     },
     "en": {
         "scan_me": "Scan me",
@@ -114,6 +128,19 @@ TEXTES = {
         "inedite_cta_titre": "Ready to sit the paper?",
         "inedite_cta_corps": "Start your timed attempt and access the correction directly on {site}.",
         "inedite_qr_alt": "QR code to the paper",
+        "cours_brand": "Lesson",
+        "cours_libre_cta_titre": "The practice exercises are waiting for you",
+        "cours_libre_cta_corps": (
+            "This PDF contains the lesson. The practice exercises, with their step-by-step solutions, "
+            "are for {site} subscribers."
+        ),
+        "cours_libre_cta_lien": "See the exercises",
+        "cours_libre_note_pied": "Free-access lesson, feel free to share. The practice exercises are for subscribers only.",
+        "cours_complet_cta_titre": "Find this lesson online",
+        "cours_complet_cta_corps": "Read the online version, mark what you have understood and practise with the quiz on {site}.",
+        "cours_complet_cta_lien": "Open the lesson",
+        "cours_complet_note_pied": "The practice exercises are for subscribers only: please do not share this document.",
+        "cours_qr_alt": "QR code to the lesson",
     },
 }
 

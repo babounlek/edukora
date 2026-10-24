@@ -389,6 +389,15 @@ export async function getCoursTitres(slugs: string[], signal?: AbortSignal) {
   return titres
 }
 
+/**
+ * Le PDF d'un cours (voir access.views.download_cours_pdf) : le PDF lui-même (Blob), ou `{statut}` tant que le
+ * serveur le prépare - il faut alors redemander. Ouvert à tous, visiteur compris : la version rendue (avec ou sans
+ * les exercices d'application) est décidée par le serveur d'après l'abonnement, jamais par ce client.
+ */
+export function demanderCoursPdf(slug: string) {
+  return apiRequest<Blob | { statut: string }>(`/access/cours/pdf/${slug}/`, { auth: "optional", blob: true })
+}
+
 export function readCours(slug: string) {
   // "optional" (pas le défaut strict) : un Cours vitrine (voir Cours.est_vitrine,
   // dérivé de sa/ses épreuve(s) source(s)) se lit sans connexion - un visiteur anonyme

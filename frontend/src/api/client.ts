@@ -235,6 +235,11 @@ interface RequestOptions {
    * d'une vraie erreur - rien à gérer de spécial ici.
    */
   signal?: AbortSignal
+  /**
+   * true : une réponse PDF est rendue telle quelle, en Blob (un téléchargement). Toute réponse JSON reste lue
+   * comme d'habitude : l'appelant reçoit donc `Blob | <le JSON>` et regarde lequel.
+   */
+  blob?: boolean
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
@@ -307,6 +312,9 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   const contentType = response.headers.get("content-type") ?? ""
+  if (options.blob && response.ok && contentType.includes("application/pdf")) {
+    return (await response.blob()) as T
+  }
   const data = contentType.includes("application/json") ? await response.json() : null
 
   if (!response.ok) {

@@ -1,10 +1,13 @@
 from django.db import models
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
+from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from catalog import cours_pdf
 from catalog.models import Cours, Exercise, Lesson
 
 from users.profils import profil_actif
@@ -164,6 +167,44 @@ def preview_cours(request, cours_id):
         "sections": cours.sections_breakdown(verrouiller_payantes=True),
         "header": cours.header_info(),
     })
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def download_cours_pdf(request, cours_id):
+    """
+    PDF du cours, pour tout le monde (visiteur compris). La VERSION est décidée ici, jamais par le client : avec
+    l'abonnement qui donne les exercices d'application (a_acces_exercices_cours) c'est le cours complet, sinon le
+    cours libre, sans eux - la même frontière que read_cours (voir catalog.cours_pdf).
+
+    Le PDF est généré à la première demande, hors du thread de la requête : tant qu'il n'existe pas, la réponse est
+    202 {"statut": "en_preparation"} et le client réessaie. Quand il existe, il est lu côté serveur et renvoyé
+    (jamais l'URL du stockage).
+    """
+    qs = Cours.objects.visibles().select_related("subject__country").par_slug_ou_id(cours_id)
+    cours = get_object_or_404(qs)
+
+    profil = profil_actif(request) if request.user.is_authenticated else None
+    variante = cours_pdf.variante_pour(a_acces_exercices_cours(request.user, cours, profil))
+    nom = cours_pdf.nom_fichier(cours, variante)
+    stockage = cours_pdf.stockage()
+
+    if stockage.exists(nom):
+        reponse = FileResponse(
+            stockage.open(nom, "rb"), as_attachment=True, filename=f"{slugify(cours.titre) or 'cours'}.pdf",
+            content_type="application/pdf",
+        )
+        # Une même adresse sert deux versions selon l'abonnement : jamais mise en cache partagée.
+        reponse["Cache-Control"] = "private, no-store"
+        return reponse
+
+    if not cours_pdf.markdown_du_cours(cours, variante).strip():
+        return Response({"error": "Ce cours n'a pas de contenu à imprimer."}, status=404)
+
+    statut = cours_pdf.mettre_en_file(cours, variante)
+    if statut == cours_pdf.ECHEC:
+        return Response({"error": "Le PDF n'a pas pu être préparé. Réessaie dans quelques minutes."}, status=503)
+    return Response({"statut": statut}, status=202, headers={"Retry-After": "3", "Cache-Control": "no-store"})
 
 
 @api_view(["GET"])

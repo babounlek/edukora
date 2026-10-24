@@ -413,6 +413,13 @@ if SPACES_BUCKET:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {"default_acl": "private", "querystring_auth": True},
         },
+        # PDF d'un cours (voir catalog/cours_pdf.py) : un cache, régénérable à tout moment. Privé parce que la
+        # version complète contient les exercices d'application (payants) ; seul point de sortie :
+        # access.views.download_cours_pdf, qui choisit la version selon l'abonnement.
+        "cours_protected": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {"default_acl": "private", "querystring_auth": True},
+        },
     }
 else:
     STORAGES = {
@@ -431,6 +438,10 @@ else:
         "quiz_protected": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "quiz")},
+        },
+        "cours_protected": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "cours")},
         },
     }
 

@@ -211,8 +211,13 @@ def _render_html(lesson):
 
 def generate_sujet_pdf(lesson):
     """Retourne les octets du PDF du sujet. Bas niveau : voir save_sujet_pdf pour l'usage normal."""
-    html = _render_html(lesson)
+    return html_vers_pdf(_render_html(lesson))
 
+
+def html_vers_pdf(html):
+    """Les octets du PDF (A4, pied de page numéroté) d'une page HTML complète qui rend ses formules avec KaTeX et
+    pose `window.__katexDone` une fois fini. Partagé avec catalog.cours_pdf. Même contrainte que le reste du module :
+    jamais appelé depuis le thread d'une requête HTTP."""
     # page.set_content() donne à la page une origine "about:blank" : Chromium bloque
     # alors le chargement des ressources file:// (nos fichiers KaTeX locaux) depuis
     # cette origine, ce qui fait silencieusement échouer katex.min.js/auto-render.min.js

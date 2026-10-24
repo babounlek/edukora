@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="{{ tx.langue }}">
+<head>
+<meta charset="UTF-8">
+<title>{{ cours.titre }}</title>
+<link rel="stylesheet" href="{{ katex_css_url }}">
+<script src="{{ katex_js_url }}"></script>
+<script src="{{ katex_auto_render_url }}"></script>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        font-family: "Georgia", "Times New Roman", serif;
+        color: #1a1a1a;
+        margin: 0;
+        padding: 0 40px 40px 40px;
+        line-height: 1.55;
+        font-size: 14px;
+        text-align: justify;
+    }
+    .brand-header {
+        background: #0a6e4e;
+        color: #ffffff;
+        margin: 0 -40px 28px -40px;
+        padding: 22px 40px 18px 40px;
+    }
+    .brand-header .brand-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 10px 0;
+    }
+    .brand-header .brand {
+        font-size: 13px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.85;
+        margin: 0;
+    }
+    .brand-header .pays-line {
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        opacity: 0.95;
+    }
+    .brand-header .pays-line .flag-icon {
+        width: 16px;
+        height: 12px;
+        margin-right: 6px;
+        border-radius: 2px;
+        box-shadow: 0 0 0 1px rgba(255,255,255,0.35);
+    }
+    .brand-header h1 {
+        font-size: 22px;
+        margin: 0 0 10px 0;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 12px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .meta-row span {
+        background: rgba(255,255,255,0.15);
+        border-radius: 3px;
+        padding: 3px 10px;
+    }
+    h2 {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #0a6e4e;
+        border-bottom: 1px solid #d8d8d8;
+        padding-bottom: 6px;
+        margin-top: 32px;
+        font-size: 17px;
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+    h3 {
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: #333;
+        margin: 20px 0 6px 0;
+        font-size: 14px;
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+    img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 14px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 14px 0;
+        font-size: 13px;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: center;
+    }
+    hr {
+        border: none;
+        border-top: 1px dashed #bbb;
+        margin: 28px 0;
+    }
+    /* Le bloc d'appel et sa ligne de pied restent ensemble : sans cela la ligne se retrouvait seule sur une dernière page. */
+    .fin {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .cta {
+        margin-top: 40px;
+        padding: 22px 26px;
+        background: #e8f5ef;
+        border: 1px solid #0a6e4e;
+        border-radius: 6px;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .cta-copy { flex: 1; }
+    .cta p.title {
+        font-weight: bold;
+        font-size: 15px;
+        color: #0a6e4e;
+        margin: 0 0 6px 0;
+    }
+    .cta p.body {
+        font-size: 12.5px;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
+    .cta .link {
+        display: inline-block;
+        background: #0a6e4e;
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 4px;
+        font-size: 13px;
+        text-decoration: none;
+    }
+    .cta-qr {
+        flex-shrink: 0;
+        text-align: center;
+    }
+    .cta-qr .qr-image {
+        width: 84px;
+        height: 84px;
+        margin: 0;
+    }
+    .cta-qr .qr-caption {
+        margin: 6px 0 0 0;
+        font-size: 9px;
+        font-weight: 600;
+        color: #0a6e4e;
+    }
+    .footer-note {
+        margin-top: 14px;
+        font-size: 10.5px;
+        color: #999;
+        text-align: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .footer-note a {
+        color: inherit;
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+    <div class="brand-header">
+        <div class="brand-row">
+            <p class="brand">{{ site_name }} - {{ tx.cours_brand }}</p>
+            <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays.label }}</span>
+        </div>
+        <h1>{{ cours.titre }}</h1>
+        {% if meta %}
+        <div class="meta-row">
+            {% for item in meta %}<span>{{ item }}</span>{% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    {{ content_html|safe }}
+
+    <div class="fin">
+    <div class="cta">
+        <div class="cta-copy">
+            <p class="title">{{ cta_titre }}</p>
+            <p class="body">{{ cta_corps }}</p>
+            <a href="{{ cours_url }}" class="link">{{ cta_lien }}</a>
+        </div>
+        {% if qr_code_data_uri %}
+        <div class="cta-qr">
+            <img src="{{ qr_code_data_uri }}" alt="{{ tx.cours_qr_alt }}" class="qr-image">
+            <p class="qr-caption">{{ tx.scan_me }}</p>
+        </div>
+        {% endif %}
+    </div>
+    <p class="footer-note"><a href="{{ cours_url }}">{{ site_url_display }}</a> - {{ note_pied }}</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Même garde-fou que le gabarit du sujet : un rendu KaTeX raté ne doit jamais empêcher le PDF.
+            try {
+                if (typeof renderMathInElement === "function") {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false}
+                        ],
+                        throwOnError: false
+                    });
+                }
+            } catch (e) {
+                // rendu KaTeX best-effort
+            }
+            window.__katexDone = true;
+        });
+    </script>
+</body>
+</html>
