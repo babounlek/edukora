@@ -2482,6 +2482,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "guide.decouverte.contenu.dyn": "{parcours}: this is what a subscription opens for you every day.",
   "guide.cours.dyn": "This lesson contains: {sections}.",
   "guide.cours.dyn_suivi": "Mark each part as understood to see your progress.",
+  "guide.cours.pdf": "The “Download as PDF” button gives you this lesson to keep on your phone or to print.",
   "guide.exercice.dyn_tout": "All solutions are displayed: try each question first, then compare. \"Try first\" mode folds them.",
   "guide.exercice.dyn_verrouille": "Read the statement and try each question: the detailed solutions open with a subscription.",
   "guide.suivant": "Next",

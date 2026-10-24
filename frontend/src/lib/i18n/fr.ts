@@ -2494,6 +2494,7 @@ export const fr = {
   "guide.decouverte.contenu.dyn": "{parcours} : voilà ce que l'abonnement t'ouvre chaque jour.",
   "guide.cours.dyn": "Ce cours contient : {sections}.",
   "guide.cours.dyn_suivi": "Marque chaque partie comme comprise pour voir ta progression.",
+  "guide.cours.pdf": "Le bouton « Télécharger en PDF » te donne ce cours à garder sur ton téléphone ou à imprimer.",
   "guide.exercice.dyn_tout": "Tous les corrigés sont affichés : cherche d'abord chaque question, puis compare. Le mode « Essaie d'abord » les replie.",
   "guide.exercice.dyn_verrouille": "Lis l'énoncé et cherche chaque question : les corrigés détaillés s'ouvrent avec l'abonnement.",
   "guide.suivant": "Suivant",

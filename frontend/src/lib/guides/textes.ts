@@ -79,9 +79,10 @@ export function texteDecouverteContenu(page: ContextePage | undefined): string {
 
 export function texteAideCours(page: ContextePage | undefined): string {
   const p = (page ?? {}) as PageCours
-  if (!p.sections?.length) return t("guide.cours.texte")
+  // Le bouton PDF est sur toute page de cours (tout le monde, abonné ou non) : la phrase est toujours vraie.
+  if (!p.sections?.length) return `${t("guide.cours.texte")} ${t("guide.cours.pdf")}`
   const base = t("guide.cours.dyn", { sections: p.sections.join(", ") })
-  return p.suivi ? `${base} ${t("guide.cours.dyn_suivi")}` : base
+  return `${p.suivi ? `${base} ${t("guide.cours.dyn_suivi")}` : base} ${t("guide.cours.pdf")}`
 }
 
 export function texteAideExercice(page: ContextePage | undefined): string {

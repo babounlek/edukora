@@ -50,6 +50,11 @@ describe("textes dynamiques : ce que la page montre", () => {
     expect(texteAideCours({ sections: ["La règle"], suivi: false })).not.toContain("Marque chaque partie")
   })
 
+  it("cours : le bouton PDF est mentionné, avec ou sans contexte de page", () => {
+    expect(texteAideCours(undefined)).toContain("Télécharger en PDF")
+    expect(texteAideCours({ sections: ["La règle"], suivi: false })).toContain("Télécharger en PDF")
+  })
+
   it("exercice : trois cas, selon l'accès et le mode de lecture", () => {
     expect(texteAideExercice({ acces: true, essai: true })).toContain("replié")
     expect(texteAideExercice({ acces: true, essai: false })).toContain("Tous les corrigés sont affichés")
