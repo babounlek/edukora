@@ -65,6 +65,11 @@ class EventName(models.TextChoices):
     OBJECTIF_XP_ATTEINT = "objectif_xp_atteint", "Objectif quotidien atteint"
     # Partage d'un cours / d'une épreuve : la page partagée et le canal, jamais le destinataire.
     CONTENU_PARTAGE = "contenu_partage", "Contenu partagé (épreuve, cours, épreuve inédite)"
+    # Guides d'aide (frontend lib/guides) : affiché, terminé jusqu'au bout, écarté. Seuls l'identifiant du guide et sa
+    # version vont dans `properties` - jamais de texte saisi ni de trace d'un parcours individuel.
+    GUIDE_AFFICHE = "guide_affiche", "Guide d'aide affiché"
+    GUIDE_TERMINE = "guide_termine", "Guide d'aide terminé"
+    GUIDE_IGNORE = "guide_ignore", "Guide d'aide écarté"
 
 
 class AnalyticsEvent(models.Model):

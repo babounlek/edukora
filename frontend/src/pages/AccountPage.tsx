@@ -1,5 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { toast } from "sonner"
 import {
   BookOpen, Check, Copy, Crown, GraduationCap,
@@ -125,6 +126,10 @@ export function AccountPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:py-10 sm:px-6">
+      <div className="mb-4">
+        <BoutonAide guide="compte" className="-ml-2.5" />
+        <AideContextuelle guide="compte" className="mt-1" />
+      </div>
       {/* Le profil en tête : qui je suis, ce que je prépare - identité et modification restent
           atteignables en un coup d'œil, sans hero pleine largeur ni tableau de chiffres. */}
       {isEditingProfile ? (

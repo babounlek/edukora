@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { Link, useLocation, useParams, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Clock, Loader2, Search, SearchX, X } from "lucide-react"
 
@@ -268,6 +269,10 @@ export function RecherchePage() {
       {/* La recherche appartient à « Réviser » : mêmes onglets que les autres surfaces de révision
           (voir ReviserTabs), aucun d'eux n'est actif - la recherche les traverse tous. */}
       <ReviserTabs />
+      <div className="mb-4">
+        <BoutonAide guide="recherche" className="-ml-2.5" />
+        <AideContextuelle guide="recherche" className="mt-1" />
+      </div>
       {/* Même hero que /epreuves, /cours et /themes-frequents : filigrane, pastille d'intitulé en italique,
           titre en Fraunces avec la fin en couleur, puis la carte de recherche surélevée qui porte les filtres. */}
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">

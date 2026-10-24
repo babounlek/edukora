@@ -38,6 +38,9 @@ export type AnalyticsEventName =
   | "simulation_demarree"
   // Habitudes de retour. "app_ouverte" et "objectif_xp_atteint" sont enregistrés côté
   // serveur (voir quiz.views) : ni l'un ni l'autre ne passe par un clic observable ici.
+  | "guide_affiche"
+  | "guide_termine"
+  | "guide_ignore"
   | "quiz_abandonne"
   | "objectif_xp_choisi"
 

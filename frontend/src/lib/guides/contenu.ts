@@ -39,6 +39,9 @@ const INEDITE = /^\/[a-z]{2}\/epreuves-inedites\/[^/]+\/?$/i
 const PROGRESSION = /^\/parcours\/?$/
 const COURS_LISTE = /^\/[a-z]{2}\/cours\/?$/i
 const THEMES_LISTE = /^\/[a-z]{2}\/themes-frequents\/?$/i
+const PAIEMENTS = /^\/mes-paiements\/?$/
+const COMPTE = /^\/compte\/?$/
+const RECHERCHE = /^\/[a-z]{2}\/recherche\/?$/i
 const ABONNEMENT = /^\/abonnement\/?$/
 
 export const GUIDES: readonly DefinitionGuide[] = [
@@ -68,6 +71,37 @@ export const GUIDES: readonly DefinitionGuide[] = [
         id: "etapes",
         titre: "guide.bienvenue.etapes.titre",
         texte: "guide.bienvenue.etapes.texte",
+        cible: "seance-parcours",
+        cibleObligatoire: true,
+      },
+    ],
+  },
+  {
+    // Un élève connecté SANS abonnement : sa séance est verrouillée, il n'y a pas de bouton « Commencer »
+    // mais un bouton qui explique comment l'ouvrir. Même rôle que la bienvenue, texte adapté.
+    id: "bienvenue-decouverte",
+    version: 1,
+    type: "parcours",
+    titre: "guide.decouverte.titre",
+    description: "guide.decouverte.description",
+    declencheur: "premiere-visite",
+    public: "eleve",
+    cheminRelance: "accueil",
+    route: estAccueilCatalogue,
+    condition: (contexte) => contexte.ciblePresente("seance-debloquer"),
+    etapes: [
+      ETAPE_INTERET,
+      {
+        id: "verrouillee",
+        titre: "guide.decouverte.seance.titre",
+        texte: "guide.decouverte.seance.texte",
+        cible: "seance-debloquer",
+        cibleObligatoire: true,
+      },
+      {
+        id: "contenu",
+        titre: "guide.decouverte.contenu.titre",
+        texte: "guide.decouverte.contenu.texte",
         cible: "seance-parcours",
         cibleObligatoire: true,
       },
@@ -121,7 +155,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     titre: "guide.cours.titre",
     description: "guide.cours.description",
     declencheur: "premiere-fonctionnalite",
-    public: "eleve",
+    public: "tous",
     route: (pathname) => COURS_LECTURE.test(pathname),
     etapes: [{ id: "lecture", titre: "guide.cours.titre", texte: "guide.cours.texte" }],
   },
@@ -132,7 +166,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     titre: "guide.exercice.titre",
     description: "guide.exercice.description",
     declencheur: "premiere-fonctionnalite",
-    public: "eleve",
+    public: "tous",
     route: (pathname) => EXERCICE_THEME.test(pathname),
     etapes: [{ id: "travail", titre: "guide.exercice.titre", texte: "guide.exercice.texte" }],
   },
@@ -169,7 +203,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     titre: "guide.annales.titre",
     description: "guide.annales.description",
     declencheur: "premiere-fonctionnalite",
-    public: "eleve",
+    public: "tous",
     route: (pathname) => ANNALES.test(pathname),
     etapes: [{ id: "trouver", titre: "guide.annales.titre", texte: "guide.annales.texte" }],
   },
@@ -204,7 +238,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     titre: "guide.cours_liste.titre",
     description: "guide.cours_liste.description",
     declencheur: "premiere-fonctionnalite",
-    public: "eleve",
+    public: "tous",
     route: (pathname) => COURS_LISTE.test(pathname),
     etapes: [{ id: "trouver", titre: "guide.cours_liste.titre", texte: "guide.cours_liste.texte" }],
   },
@@ -215,9 +249,46 @@ export const GUIDES: readonly DefinitionGuide[] = [
     titre: "guide.themes.titre",
     description: "guide.themes.description",
     declencheur: "premiere-fonctionnalite",
-    public: "eleve",
+    public: "tous",
     route: (pathname) => THEMES_LISTE.test(pathname),
     etapes: [{ id: "priorites", titre: "guide.themes.titre", texte: "guide.themes.texte" }],
+  },
+  {
+    id: "compte",
+    version: 1,
+    type: "aide",
+    titre: "guide.compte.titre",
+    description: "guide.compte.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    cheminRelance: "/compte",
+    route: (pathname) => COMPTE.test(pathname),
+    etapes: [{ id: "compte", titre: "guide.compte.titre", texte: "guide.compte.texte" }],
+  },
+  {
+    id: "recherche",
+    version: 1,
+    type: "aide",
+    titre: "guide.recherche.titre",
+    description: "guide.recherche.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "tous",
+    route: (pathname) => RECHERCHE.test(pathname),
+    etapes: [{ id: "chercher", titre: "guide.recherche.titre", texte: "guide.recherche.texte" }],
+  },
+  {
+    // MANUEL, comme le paiement : la liste des paiements est un écran où l'on vérifie son argent, on n'y
+    // pose aucune carte de soi-même (et /mes-paiements est interdit aux aides automatiques, voir moteur.ts).
+    id: "mes-paiements",
+    version: 1,
+    type: "aide",
+    titre: "guide.mes_paiements.titre",
+    description: "guide.mes_paiements.description",
+    declencheur: "manuel",
+    public: "eleve",
+    cheminRelance: "/mes-paiements",
+    route: (pathname) => PAIEMENTS.test(pathname),
+    etapes: [{ id: "suivre", titre: "guide.mes_paiements.titre", texte: "guide.mes_paiements.texte" }],
   },
   {
     // MANUEL, jamais seul : c'est le tunnel de paiement. Aucune carte ne s'y impose ; l'élève ouvre

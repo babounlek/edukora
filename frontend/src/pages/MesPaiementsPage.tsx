@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { ArrowRight, Check, CheckCircle2, Clock, Copy, RefreshCw, XCircle, type LucideIcon } from "lucide-react"
 
 import { listMyManualPayments } from "@/api/endpoints"
@@ -78,6 +79,10 @@ export function MesPaiementsPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      <div className="mb-4">
+        <BoutonAide guide="mes-paiements" className="-ml-2.5" />
+        <AideContextuelle guide="mes-paiements" className="mt-1" />
+      </div>
       <header className="mb-8">
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("compte.paiements")}</h1>
         <p className="mt-2 max-w-xl text-muted-foreground">

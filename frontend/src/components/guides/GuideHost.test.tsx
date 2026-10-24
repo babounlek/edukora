@@ -13,6 +13,8 @@ const { auth } = vi.hoisted(() => ({
     },
   },
 }))
+const { trackEvent } = vi.hoisted(() => ({ trackEvent: vi.fn() }))
+vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth.current }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 
@@ -77,6 +79,7 @@ beforeEach(async () => {
   localStorage.clear()
   reinitialiserStockage()
   reinitialiserEtat()
+  trackEvent.mockClear()
   oublierCursusPrepareEnAttente()
   definirModeExamen(false)
   await definirLangue("fr", { persister: false })
@@ -420,9 +423,9 @@ describe("relance manuelle et centre d'aide", () => {
     expect(panneau).toHaveTextContent("Comment lire ce cours ?")
     expect(panneau).toHaveTextContent("Comment travailler cet exercice ?")
     expect(panneau).toHaveTextContent("Comment lancer un quiz ?")
-    // Cours, exercice, annales, inédites, paiement : un message ; les autres : un bouton chacun.
-    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(7)
-    expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(5)
+    // Cours, exercice, annales, inédites, paiement, listes, recherche : un message ; les autres : un bouton chacun.
+    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(8)
+    expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(7)
   })
 
   it("désactiver les conseils automatiques est mémorisé, localement", async () => {
@@ -445,6 +448,9 @@ describe("relance manuelle et centre d'aide", () => {
     const panneau = await screen.findByRole("dialog", { name: /Aide/ })
     expect(panneau).toHaveTextContent("Découvrir EduKora")
     expect(panneau).not.toHaveTextContent("Comment marche ta séance ?")
+    // ...mais il retrouve les aides de lecture, ouvertes à tous.
+    expect(panneau).toHaveTextContent("Comment trouver un cours ?")
+    expect(panneau).not.toHaveTextContent("Suivre tes paiements")
   })
 
   it("parle anglais quand l'interface est en anglais", async () => {
@@ -497,5 +503,99 @@ describe("aide contextuelle de la séance", () => {
     monter()
     await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
     expect(screen.queryByRole("heading", { name: "Comment marche ta séance ?" })).toBeNull()
+  })
+})
+
+describe("centre d'aide : questions et contact", () => {
+  it("répond aux deux questions pratiques et mène à WhatsApp", async () => {
+    monter()
+    await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
+    act(() => ouvrirCentre())
+    const panneau = await screen.findByRole("dialog", { name: /Aide/ })
+    expect(panneau).toHaveTextContent("Mon paiement n'a pas fonctionné, que faire ?")
+    expect(panneau).toHaveTextContent("courriers indésirables")
+    expect(screen.getByRole("link", { name: "Écris-nous sur WhatsApp" })).toHaveAttribute("href", expect.stringContaining("wa.me"))
+  })
+})
+
+describe("mesure d'usage", () => {
+  it("note l'affichage, puis l'écart : identifiant et version seulement", async () => {
+    monter()
+    await screen.findByText("Bienvenue sur EduKora")
+    expect(trackEvent).toHaveBeenCalledWith("guide_affiche", { guide: "bienvenue", version: 1, explicite: false })
+    fireEvent.click(screen.getByRole("button", { name: "Passer" }))
+    expect(trackEvent).toHaveBeenCalledWith("guide_ignore", { guide: "bienvenue", version: 1 })
+  })
+
+  it("note la fin du parcours", async () => {
+    monter()
+    await screen.findByText("Bienvenue sur EduKora")
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    fireEvent.click(screen.getByRole("button", { name: "Terminer" }))
+    expect(trackEvent).toHaveBeenCalledWith("guide_termine", { guide: "bienvenue", version: 1 })
+  })
+
+  it("ne note que l'affichage pour un guide relu à la main puis fermé sans conséquence", async () => {
+    memoriser("7:3", "bienvenue", 1, "termine")
+    monter()
+    await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
+    trackEvent.mockClear()
+    act(() => ouvrirGuide("bienvenue", { explicite: true }))
+    await screen.findByRole("dialog", { name: "Bienvenue sur EduKora" })
+    fireEvent.keyDown(document, { key: "Escape" })
+    expect(trackEvent.mock.calls.map((appel) => appel[0])).toEqual(["guide_affiche"])
+  })
+})
+
+describe("élève non abonné : séance verrouillée", () => {
+  function PageVerrouillee() {
+    return (
+      <main>
+        <a href="#debloquer" data-guide="seance-debloquer">Débloquer la séance</a>
+        <div data-guide="seance-parcours">Ton parcours</div>
+      </main>
+    )
+  }
+
+  it("reçoit la bienvenue de découverte, pas celle qui parle du bouton « Commencer »", async () => {
+    render(
+      <MemoryRouter initialEntries={["/cm"]}>
+        <PageVerrouillee />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+    expect(await screen.findByText("Bienvenue sur EduKora")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    expect(screen.getByText("Ta séance du jour t'attend")).toBeInTheDocument()
+    expect(document.querySelector('[data-guide="seance-debloquer"]')).toHaveAttribute("data-guide-actif", "true")
+  })
+})
+
+describe("aides de lecture pour un visiteur qui a déclaré son examen", () => {
+  function PageLecture() {
+    return (
+      <main>
+        <BoutonAide guide="cours-liste" />
+        <AideContextuelle guide="cours-liste" />
+        <BoutonAide guide="compte" />
+        <AideContextuelle guide="compte" />
+      </main>
+    )
+  }
+
+  it("la liste des cours s'explique d'elle-même, après la bienvenue du visiteur", async () => {
+    auth.current = { isAuthenticated: false, isLoading: false, user: null }
+    memoriserCursusPrepareEnAttente(4)
+    memoriser("anonyme", "bienvenue-visiteur", 1, "ignore")
+    render(
+      <MemoryRouter initialEntries={["/cm/cours"]}>
+        <PageLecture />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+    expect(await screen.findByRole("heading", { name: "Comment trouver un cours ?" })).toBeInTheDocument()
+    // Une aide réservée aux élèves connectés ne se montre pas à un visiteur.
+    expect(screen.queryByRole("heading", { name: "Ton compte" })).toBeNull()
   })
 })

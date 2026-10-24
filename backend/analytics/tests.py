@@ -25,6 +25,14 @@ class TrackEventApiTests(TestCase):
         self.assertIsNone(event.user)
         self.assertEqual(event.properties, {})
 
+    def test_records_the_help_guide_events(self):
+        for name in (EventName.GUIDE_AFFICHE, EventName.GUIDE_TERMINE, EventName.GUIDE_IGNORE):
+            response = self.client.post(
+                "/analytics/events/", {"name": name, "properties": {"guide": "cours", "version": 1}}, format="json"
+            )
+            self.assertEqual(response.status_code, 201)
+        self.assertEqual(AnalyticsEvent.objects.count(), 3)
+
     def test_records_properties(self):
         response = self.client.post(
             "/analytics/events/",

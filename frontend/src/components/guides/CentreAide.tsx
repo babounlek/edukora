@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { Check } from "lucide-react"
+import { Check, MessageCircle } from "lucide-react"
 
 import { LivreOuvert } from "@/components/guides/LivreOuvert"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,7 @@ import {
 import { estAJour } from "@/lib/guides/store"
 import type { DefinitionGuide } from "@/lib/guides/types"
 import { catalogueHomePath } from "@/lib/countryPath"
+import { CONTACT_WHATSAPP_URL } from "@/lib/site"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
@@ -38,7 +39,7 @@ export function CentreAide() {
   // existent pour un élève (un visiteur n'a pas de séance du jour à qui expliquer quoi que ce soit).
   const guides: DefinitionGuide[] = [
     guideDeBienvenue(isAuthenticated),
-    ...GUIDES.filter((guide) => guide.type === "aide" && (isAuthenticated || guide.public === "visiteur")),
+    ...GUIDES.filter((guide) => guide.type === "aide" && (isAuthenticated || guide.public !== "eleve")),
   ]
 
   function relancer(guide: DefinitionGuide) {
@@ -97,6 +98,28 @@ export function CentreAide() {
             </li>
           ))}
         </ul>
+
+        <section aria-labelledby="centre-questions" className="mt-6 border-t border-border pt-4">
+          <h3 id="centre-questions" className="font-display text-base font-semibold">
+            {t("guide.centre.questions")}
+          </h3>
+          <dl className="mt-2 space-y-3 text-sm">
+            <div>
+              <dt className="font-medium">{t("guide.centre.faq_paiement_q")}</dt>
+              <dd className="mt-0.5 text-muted-foreground">{t("guide.centre.faq_paiement_r")}</dd>
+            </div>
+            <div>
+              <dt className="font-medium">{t("guide.centre.faq_code_q")}</dt>
+              <dd className="mt-0.5 text-muted-foreground">{t("guide.centre.faq_code_r")}</dd>
+            </div>
+          </dl>
+          <Button asChild variant="outline" className="mt-3 min-h-11 w-full">
+            <a href={CONTACT_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+              <MessageCircle className="size-4" aria-hidden="true" />
+              {t("guide.centre.contact")}
+            </a>
+          </Button>
+        </section>
 
         <div className="mt-6 space-y-3 border-t border-border pt-4">
           <label className="flex min-h-11 items-start gap-3 text-sm">

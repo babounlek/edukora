@@ -189,6 +189,10 @@ describe("aides de page (cours, exercice, quiz)", () => {
     ["cours-liste", "/cours/x/lire", false],
     ["themes", "/cm/themes-frequents", true],
     ["themes", "/cm/themes-frequents/3/exercices", false],
+    ["compte", "/compte", true],
+    ["compte", "/mes-acces", false],
+    ["recherche", "/cm/recherche", true],
+    ["mes-paiements", "/mes-paiements", true],
   ])("%s sur %s : route reconnue = %s", (id, chemin, attendu) => {
     expect(trouverGuide(id)!.route(chemin)).toBe(attendu)
   })
@@ -204,6 +208,8 @@ describe("aides de page (cours, exercice, quiz)", () => {
       progression: "/parcours",
       "cours-liste": "/cm/cours",
       themes: "/cm/themes-frequents",
+      compte: "/compte",
+      recherche: "/cm/recherche",
     }
     for (const [id, pathname] of Object.entries(pages)) {
       expect(peutDeclencherAuto(trouverGuide(id)!, contexteEleve({ pathname }), situation({ memoire: bienvenueVue }))).toBe(true)
@@ -242,6 +248,7 @@ describe("guideAutomatique", () => {
 
 describe("guide du paiement : jamais automatique", () => {
   const paiement = trouverGuide("paiement")!
+  const mesPaiements = trouverGuide("mes-paiements")!
 
   it("ne se lance seul nulle part, même sur sa page, même tout neuf", () => {
     for (const chemin of ["/cm", "/quiz", "/mes-paiements", "/abonnement"]) {
@@ -249,7 +256,48 @@ describe("guide du paiement : jamais automatique", () => {
     }
   })
 
+  it("la liste des paiements est elle aussi à la demande seulement", () => {
+    expect(peutDeclencherAuto(mesPaiements, contexteEleve({ pathname: "/mes-paiements" }), situation())).toBe(false)
+  })
+
   it("n'est jamais choisi par le tutoriel automatique", () => {
     expect(guideAutomatique(contexteEleve({ pathname: "/abonnement" }), situation())).toBeNull()
+  })
+})
+
+describe("visiteurs, élèves non abonnés", () => {
+  const visiteur = (pathname: string) => contexteEleve({ public: "visiteur", pathname })
+  const bienvenueVisiteurVue = (() => {
+    const memoire = memoireVide()
+    memoire.guides["bienvenue-visiteur"] = { version: 1, statut: "ignore", date: 1 }
+    return memoire
+  })()
+
+  it("les aides de lecture s'adressent aussi à un visiteur, une fois sa bienvenue vue", () => {
+    for (const [id, pathname] of [
+      ["cours", "/cours/x/lire"],
+      ["cours-liste", "/cm/cours"],
+      ["themes", "/cm/themes-frequents"],
+      ["annales", "/cm/epreuves"],
+      ["recherche", "/cm/recherche"],
+    ]) {
+      expect(peutDeclencherAuto(trouverGuide(id)!, visiteur(pathname), situation({ memoire: bienvenueVisiteurVue }))).toBe(true)
+    }
+  })
+
+  it("celles qui supposent un compte restent réservées aux élèves", () => {
+    for (const [id, pathname] of [["compte", "/compte"], ["progression", "/parcours"], ["examen-matieres", "/mes-acces"]]) {
+      expect(peutDeclencherAuto(trouverGuide(id)!, visiteur(pathname), situation({ memoire: bienvenueVisiteurVue }))).toBe(false)
+    }
+  })
+
+  it("la bienvenue de découverte remplace celle de la séance quand le bouton est verrouillé", () => {
+    const verrouille = contexteEleve({ ciblePresente: (cible) => cible !== "seance-commencer" })
+    expect(guideAutomatique(verrouille, situation())?.id).toBe("bienvenue-decouverte")
+    expect(guideAutomatique(contexteEleve(), situation())?.id).toBe("bienvenue")
+  })
+
+  it("sans aucun des deux boutons de séance, aucune bienvenue d'élève", () => {
+    expect(guideAutomatique(contexteEleve({ ciblePresente: () => false }), situation())).toBeNull()
   })
 })

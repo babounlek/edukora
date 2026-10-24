@@ -54,13 +54,27 @@ export function etapesEffectives(
   return guide.etapes.filter((etape) => !(etape.cible && etape.cibleObligatoire && !ciblePresente(etape.cible)))
 }
 
+/**
+ * Un guide de première visite est « déjà vu » dès que l'élève a vu N'IMPORTE LEQUEL des tutoriels de
+ * bienvenue de son public : la bienvenue de la séance et celle des non-abonnés disent la même chose
+ * d'une autre façon, on ne lui montre pas la seconde parce qu'il vient de changer d'abonnement.
+ */
+function dejaVu(guide: DefinitionGuide, memoire: DonneesGuides): boolean {
+  if (guide.declencheur !== "premiere-visite") return estAJour(memoire, guide.id, guide.version)
+  return GUIDES.some(
+    (autre) => autre.declencheur === "premiere-visite" && autre.public === guide.public
+      && estAJour(memoire, autre.id, autre.version),
+  )
+}
+
 function peutSeMontrer(guide: DefinitionGuide, contexte: ContexteGuide, situation: SituationAuto): boolean {
   if (guide.declencheur === "manuel") return false
-  if (contexte.public === null || contexte.public !== guide.public) return false
+  if (contexte.public === null) return false
+  if (guide.public !== "tous" && contexte.public !== guide.public) return false
   if (!guide.route(contexte.pathname) || !routeAutoPermise(contexte.pathname)) return false
   if (contexte.onboardingOuvert || contexte.enExamen || contexte.dialogueOuvert) return false
   if (!situation.memoire.prefs.aidesAuto) return false
-  if (estAJour(situation.memoire, guide.id, guide.version)) return false
+  if (dejaVu(guide, situation.memoire)) return false
   if (guide.condition && !guide.condition(contexte)) return false
   return etapesEffectives(guide, contexte.ciblePresente).length > 0
 }

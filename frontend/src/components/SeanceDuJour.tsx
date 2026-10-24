@@ -363,7 +363,7 @@ function SeanceAFaire({
               size="lg"
               className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
             >
-              <Link to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
+              <Link data-guide="seance-debloquer" to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
                 <Lock className="size-4" />
                 {t("seance.debloquer")}
               </Link>

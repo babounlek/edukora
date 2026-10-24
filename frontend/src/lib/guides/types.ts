@@ -57,7 +57,7 @@ export interface DefinitionGuide {
   titre: CleI18n
   description: CleI18n
   declencheur: DeclencheurGuide
-  public: PublicGuide
+  public: PublicGuide | "tous"
   /** Pages (chemins internes du routeur) où le guide a un sens. */
   route: (pathname: string) => boolean
   /**

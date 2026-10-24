@@ -5,6 +5,7 @@ import {
 } from "./store"
 import type { DonneesGuides, StatutGuide } from "./types"
 import { trouverGuide } from "./contenu"
+import { trackEvent } from "@/lib/analytics"
 
 /**
  * L'état partagé des guides : quel guide est ouvert, à quelle étape, si le centre d'aide
@@ -99,6 +100,8 @@ export function signalerOnboarding(ouvert: boolean) {
 export function ouvrirGuide(id: string, options: { explicite: boolean; etape?: number }) {
   if (!trouverGuide(id)) return
   if (!options.explicite && etat.ouvert) return
+  const guide = trouverGuide(id)!
+  trackEvent("guide_affiche", { guide: id, version: guide.version, explicite: options.explicite })
   changer({
     ouvert: { id, etape: options.etape ?? 0, explicite: options.explicite },
     autoDejaMontre: etat.autoDejaMontre || !options.explicite,
@@ -121,6 +124,9 @@ export function fermerGuide(statut?: StatutGuide) {
   if (!ouvert) return
   const guide = trouverGuide(ouvert.id)
   if (guide && statut && etat.identite) memoriser(etat.identite, guide.id, guide.version, statut)
+  if (guide && statut) {
+    trackEvent(statut === "termine" ? "guide_termine" : "guide_ignore", { guide: guide.id, version: guide.version })
+  }
   changer({ ouvert: null, revision: etat.revision + 1 })
 }
 
