@@ -11,6 +11,8 @@ import { GUIDES, guideDeBienvenue } from "@/lib/guides/contenu"
 import {
   fermerCentre, ouvrirGuide, reglerAidesAuto, toutRevoir, useGuides,
 } from "@/lib/guides/etat"
+import { useContextePage } from "@/lib/guides/contextePage"
+import { resoudreTexte } from "@/lib/guides/resoudre"
 import { estAJour } from "@/lib/guides/store"
 import type { DefinitionGuide } from "@/lib/guides/types"
 import { catalogueHomePath } from "@/lib/countryPath"
@@ -34,6 +36,11 @@ export function CentreAide() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [revoir, setRevoir] = useState(false)
+  // Ce que la page ouverte derrière le panneau affiche : les textes dynamiques s'en servent aussi ici.
+  const pageSeance = useContextePage("seance")
+  const pageCours = useContextePage("cours")
+  const pageExercice = useContextePage("exercice")
+  const pagesParCle: Record<string, ReturnType<typeof useContextePage>> = { seance: pageSeance, cours: pageCours, exercice: pageExercice }
 
   // Ce que ce lecteur peut relancer : la bienvenue qui lui correspond, et les aides de page qui
   // existent pour un élève (un visiteur n'a pas de séance du jour à qui expliquer quoi que ce soit).
@@ -83,8 +90,8 @@ export function CentreAide() {
               <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed">
                 {guide.etapes.map((etape) => (
                   <li key={etape.id}>
-                    <span className="font-medium">{t(etape.titre)}</span>
-                    <span className="block text-muted-foreground">{t(etape.texte)}</span>
+                    <span className="font-medium">{resoudreTexte(etape.titre, guide.contextePage ? pagesParCle[guide.contextePage] : undefined)}</span>
+                    <span className="block text-muted-foreground">{resoudreTexte(etape.texte, guide.contextePage ? pagesParCle[guide.contextePage] : undefined)}</span>
                   </li>
                 ))}
               </ol>

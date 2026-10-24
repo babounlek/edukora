@@ -5,7 +5,9 @@ import { LivreOuvert } from "@/components/guides/LivreOuvert"
 import { Button } from "@/components/ui/button"
 import { ciblePresente, dialogueOuvert, mettreEnEvidence } from "@/lib/guides/cibles"
 import { allerALEtape, fermerGuide, type GuideOuvert } from "@/lib/guides/etat"
+import { useContextePage } from "@/lib/guides/contextePage"
 import { etapesEffectives } from "@/lib/guides/moteur"
+import { resoudreTexte } from "@/lib/guides/resoudre"
 import type { DefinitionGuide } from "@/lib/guides/types"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -24,6 +26,7 @@ export function GuideRunner({ guide, ouvert }: { guide: DefinitionGuide; ouvert:
   const titreId = useId()
   const texteId = useId()
   const carteRef = useRef<HTMLElement>(null)
+  const page = useContextePage(guide.contextePage)
 
   // Les étapes dont la cible obligatoire manque sont sautées (voir etapesEffectives). Relu à
   // chaque rendu : la page peut avoir changé depuis l'ouverture (données arrivées, bloc replié).
@@ -95,10 +98,10 @@ export function GuideRunner({ guide, ouvert }: { guide: DefinitionGuide; ouvert:
         {/* Annoncé à chaque changement d'étape par les lecteurs d'écran. */}
         <div aria-live="polite" aria-atomic="true">
           <h2 id={titreId} className="mt-3 font-display text-lg font-semibold leading-snug">
-            {t(etape.titre)}
+            {resoudreTexte(etape.titre, page)}
           </h2>
           <p id={texteId} className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-            {t(etape.texte)}
+            {resoudreTexte(etape.texte, page)}
           </p>
         </div>
         {etape.action && (

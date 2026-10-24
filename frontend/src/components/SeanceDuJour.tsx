@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
+import { usePublierContextePage } from "@/lib/guides/contextePage"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight, BookOpen, Check, ChevronDown, Clock, Lock, PenLine, RotateCcw,
@@ -276,6 +277,21 @@ function SeanceAFaire({
   // le bouton principal mène ailleurs (cours, exercice), on le propose en direct.
   const etapeQuiz = etapes.find((e) => e.type === "quiz")
   const quizExpress = etapeQuiz && !etapeQuiz.ouverte && prochaine && prochaine.type !== "quiz" ? etapeQuiz : null
+
+  // Ce que cette séance montre vraiment, publié pour les guides (bienvenue, aide de la séance) : le libellé
+  // du bouton, les étapes dans leur ordre, le quiz express. Une aide qui décrit une séance à trois étapes
+  // devant une séance à deux ne correspond à rien de visible.
+  usePublierContextePage("seance", {
+    bouton: seance.verrouillee
+      ? t("seance.debloquer")
+      : prochaine
+        ? t("seance.bouton_etape", { verbe: dejaCommencee ? t("seance.reprendre") : t("seance.commencer"), action: actionDeLEtape(prochaine) })
+        : undefined,
+    phases: PHASES.filter((phase) => seance.etapes.some((e) => e.type === phase.cle)).map((phase) => t(phase.titre)),
+    quiz: avecQuiz,
+    quizExpress: Boolean(quizExpress),
+    verrouillee: seance.verrouillee,
+  })
 
   const frequence = seance.frequence
   const aDesAnnees = (frequence?.annees.length ?? 0) > 0

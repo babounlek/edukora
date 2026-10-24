@@ -38,6 +38,7 @@ import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreu
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
+import { PublierContexte } from "@/components/guides/PublierContexte"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
@@ -333,6 +334,7 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
         </div>
       </div>
 
+      <PublierContexte cle="exercice" contexte={{ acces: Boolean(acces), essai }} />
       <div className="mb-4">
         <BoutonAide guide="exercice" className="-ml-2.5" />
         <AideContextuelle guide="exercice" className="mt-1" />

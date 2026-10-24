@@ -1,3 +1,7 @@
+import {
+  texteAideCours, texteAideExercice, texteAideSeance, texteBienvenueEtapes, texteBienvenueSeance,
+  texteDecouverteContenu, titreBienvenueEtapes,
+} from "./textes"
 import type { DefinitionGuide, EtapeGuide } from "./types"
 
 /**
@@ -54,6 +58,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     declencheur: "premiere-visite",
     public: "eleve",
     cheminRelance: "accueil",
+    contextePage: "seance",
     route: estAccueilCatalogue,
     // Le tutoriel parle de la séance du jour : sans le bouton de séance à l'écran (élève sans
     // abonnement, séance du jour absente), il décrirait quelque chose qu'on ne voit pas.
@@ -63,14 +68,14 @@ export const GUIDES: readonly DefinitionGuide[] = [
       {
         id: "seance",
         titre: "guide.bienvenue.seance.titre",
-        texte: "guide.bienvenue.seance.texte",
+        texte: texteBienvenueSeance,
         cible: "seance-commencer",
         cibleObligatoire: true,
       },
       {
         id: "etapes",
-        titre: "guide.bienvenue.etapes.titre",
-        texte: "guide.bienvenue.etapes.texte",
+        titre: titreBienvenueEtapes,
+        texte: texteBienvenueEtapes,
         cible: "seance-parcours",
         cibleObligatoire: true,
       },
@@ -87,6 +92,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
     declencheur: "premiere-visite",
     public: "eleve",
     cheminRelance: "accueil",
+    contextePage: "seance",
     route: estAccueilCatalogue,
     condition: (contexte) => contexte.ciblePresente("seance-debloquer"),
     etapes: [
@@ -101,7 +107,7 @@ export const GUIDES: readonly DefinitionGuide[] = [
       {
         id: "contenu",
         titre: "guide.decouverte.contenu.titre",
-        texte: "guide.decouverte.contenu.texte",
+        texte: texteDecouverteContenu,
         cible: "seance-parcours",
         cibleObligatoire: true,
       },
@@ -138,12 +144,13 @@ export const GUIDES: readonly DefinitionGuide[] = [
     declencheur: "premiere-fonctionnalite",
     public: "eleve",
     cheminRelance: "accueil",
+    contextePage: "seance",
     route: estAccueilCatalogue,
     etapes: [
       {
         id: "fonctionnement",
         titre: "guide.seance.titre",
-        texte: "guide.seance.texte",
+        texte: texteAideSeance,
         cible: "seance-commencer",
       },
     ],
@@ -156,8 +163,9 @@ export const GUIDES: readonly DefinitionGuide[] = [
     description: "guide.cours.description",
     declencheur: "premiere-fonctionnalite",
     public: "tous",
+    contextePage: "cours",
     route: (pathname) => COURS_LECTURE.test(pathname),
-    etapes: [{ id: "lecture", titre: "guide.cours.titre", texte: "guide.cours.texte" }],
+    etapes: [{ id: "lecture", titre: "guide.cours.titre", texte: texteAideCours }],
   },
   {
     id: "exercice",
@@ -167,8 +175,9 @@ export const GUIDES: readonly DefinitionGuide[] = [
     description: "guide.exercice.description",
     declencheur: "premiere-fonctionnalite",
     public: "tous",
+    contextePage: "exercice",
     route: (pathname) => EXERCICE_THEME.test(pathname),
-    etapes: [{ id: "travail", titre: "guide.exercice.titre", texte: "guide.exercice.texte" }],
+    etapes: [{ id: "travail", titre: "guide.exercice.titre", texte: texteAideExercice }],
   },
   {
     id: "quiz-depart",

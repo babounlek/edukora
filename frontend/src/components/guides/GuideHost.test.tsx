@@ -27,13 +27,23 @@ import {
 import { cleDeLIdentite, lireDonnees, memoriser, reinitialiserStockage } from "@/lib/guides/store"
 import { AideContextuelle, BoutonAide } from "./AideContextuelle"
 import { GuideHost } from "./GuideHost"
+import { PublierContexte } from "./PublierContexte"
 
 const ELEVE = { id: 7, cursus_prepare: { id: 1 }, profil_actif: { id: 3 } }
 
 /** Une page minimale qui porte les mêmes cibles que l'accueil réel (SeanceDuJour). */
-function PageAccueil({ avecSeance = true }: { avecSeance?: boolean }) {
+const TROIS_PHASES = ["Comprendre", "S'entraîner", "Vérifier"]
+
+function PageAccueil({ avecSeance = true, phases = TROIS_PHASES, bouton = "Commencer : relire la méthode" }: {
+  avecSeance?: boolean
+  phases?: string[]
+  bouton?: string
+}) {
   return (
     <main>
+      {avecSeance && (
+        <PublierContexte cle="seance" contexte={{ bouton, phases, quiz: phases.includes("Vérifier"), quizExpress: true, verrouillee: false }} />
+      )}
       <h1>Accueil</h1>
       {avecSeance && (
         <>
@@ -387,7 +397,7 @@ describe("relance manuelle et centre d'aide", () => {
     expect(panneau).toHaveTextContent("Comment marche ta séance ?")
     expect(panneau).toHaveTextContent("Déjà vu")
     // Les explications se lisent sans rien relancer.
-    expect(panneau).toHaveTextContent("Comprendre le cours, t'entraîner sur un exercice")
+    expect(panneau).toHaveTextContent("Dans l'ordre : Comprendre → S'entraîner → Vérifier")
 
     const relancer = screen.getAllByRole("button", { name: "Relancer le guide" })[0]
     fireEvent.click(relancer)
@@ -597,5 +607,77 @@ describe("aides de lecture pour un visiteur qui a déclaré son examen", () => {
     expect(await screen.findByRole("heading", { name: "Comment trouver un cours ?" })).toBeInTheDocument()
     // Une aide réservée aux élèves connectés ne se montre pas à un visiteur.
     expect(screen.queryByRole("heading", { name: "Ton compte" })).toBeNull()
+  })
+})
+
+describe("textes qui suivent ce que la page affiche", () => {
+  function monterAvec(props: { phases?: string[]; bouton?: string }) {
+    return render(
+      <MemoryRouter initialEntries={["/cm"]}>
+        <PageAccueil {...props} />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+  }
+
+  it("la bienvenue annonce les étapes réellement proposées, pas trois étapes par principe", async () => {
+    monterAvec({ phases: ["S'entraîner", "Vérifier"] })
+    await screen.findByText("Bienvenue sur EduKora")
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    // Le bouton est cité tel qu'il est écrit à l'écran.
+    expect(screen.getByText(/Appuie sur « Commencer : relire la méthode »/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    expect(screen.getByText("Deux étapes, dans l'ordre")).toBeInTheDocument()
+    expect(screen.getByText(/Dans l'ordre : S'entraîner → Vérifier\. C'est le quiz qui valide ta séance\./)).toBeInTheDocument()
+    expect(screen.queryByText(/Comprendre/)).toBeNull()
+  })
+
+  it("une séance sans quiz ne dit pas que le quiz la valide", async () => {
+    monterAvec({ phases: ["Comprendre", "S'entraîner"] })
+    await screen.findByText("Bienvenue sur EduKora")
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    expect(screen.getByText(/Dans l'ordre : Comprendre → S'entraîner\./)).toBeInTheDocument()
+    expect(screen.queryByText(/valide ta séance/)).toBeNull()
+  })
+
+  it("l'aide de la séance cite le bouton, les étapes et le quiz express réellement présents", async () => {
+    memoriser("7:3", "bienvenue", 1, "termine")
+    monterAvec({ phases: ["S'entraîner", "Vérifier"], bouton: "Reprendre : faire un exercice" })
+    const aide = await screen.findByRole("heading", { name: "Comment marche ta séance ?" })
+    const texte = aide.closest("section")!.textContent!
+    expect(texte).toContain("Appuie sur « Reprendre : faire un exercice »")
+    expect(texte).toContain("S'entraîner → Vérifier")
+    expect(texte).toContain("Quiz express")
+    expect(texte).not.toContain("Comprendre")
+  })
+
+  it("le texte suit la page quand elle change", async () => {
+    memoriser("7:3", "bienvenue", 1, "termine")
+    const { rerender } = monterAvec({ bouton: "Commencer : faire un exercice" })
+    const aide = await screen.findByRole("heading", { name: "Comment marche ta séance ?" })
+    expect(aide.closest("section")!.textContent).toContain("Commencer : faire un exercice")
+    rerender(
+      <MemoryRouter initialEntries={["/cm"]}>
+        <PageAccueil bouton="Reprendre : le quiz" />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+    await waitFor(() => expect(aide.closest("section")!.textContent).toContain("Reprendre : le quiz"))
+  })
+
+  it("l'aide du cours liste les parties de CE cours, et celle de l'exercice suit le mode actif", async () => {
+    memoriser("7:3", "bienvenue", 1, "termine")
+    render(
+      <MemoryRouter initialEntries={["/cours/limites/lire"]}>
+        <PublierContexte cle="cours" contexte={{ sections: ["La règle", "Erreurs à éviter"], suivi: false }} />
+        <AideContextuelle guide="cours" />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+    const aide = await screen.findByRole("heading", { name: "Comment lire ce cours ?" })
+    const texte = aide.closest("section")!.textContent!
+    expect(texte).toContain("Ce cours contient : La règle, Erreurs à éviter.")
+    expect(texte).not.toContain("Marque chaque partie")
   })
 })

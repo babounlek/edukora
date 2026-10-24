@@ -15,10 +15,11 @@ import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { SITE_NAME } from "@/lib/site"
-import { CoursSection } from "@/components/CoursSection"
+import { COURS_SECTION_LABELS, CoursSection } from "@/components/CoursSection"
 import { MarquesSection } from "@/components/MarquesSection"
 import { CoursSommaire } from "@/components/CoursSommaire"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
+import { PublierContexte } from "@/components/guides/PublierContexte"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
@@ -211,6 +212,17 @@ export function CoursReaderPage() {
         </div>
       )}
 
+      {/* Les parties réellement présentes dans CE cours, pour que l'aide ne décrive que ce qui est lisible. */}
+      <PublierContexte
+        cle="cours"
+        contexte={{
+          sections: (content?.sections ?? [])
+            .filter((section) => section.type !== "accroche" && !estVerrouillee(section))
+            .map((section) => COURS_SECTION_LABELS[section.type]?.short)
+            .filter(Boolean),
+          suivi: etude.disponible && sectionsAComprendre.length > 0,
+        }}
+      />
       <div className="mb-4">
         <BoutonAide guide="cours" className="-ml-2.5" />
         <AideContextuelle guide="cours" className="mt-1" />

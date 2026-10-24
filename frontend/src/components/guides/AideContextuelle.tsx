@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button"
 import { mettreEnEvidence } from "@/lib/guides/cibles"
 import { trouverGuide } from "@/lib/guides/contenu"
 import { fermerGuide, lireEtat, memoireActuelle, ouvrirGuide, useEtatGuides } from "@/lib/guides/etat"
+import { useContextePage } from "@/lib/guides/contextePage"
 import { peutDeclencherAuto } from "@/lib/guides/moteur"
+import { resoudreTexte } from "@/lib/guides/resoudre"
 import { useContexteGuide } from "@/lib/guides/useContexte"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
@@ -29,6 +31,7 @@ export function AideContextuelle({ guide: id, className }: { guide: string; clas
   const etat = useEtatGuides()
   const contexte = useContexteGuide()
   const titreId = useId()
+  const page = useContextePage(guide?.contextePage)
   const ouvertIci = etat.ouvert?.id === id
 
   // Première apparition automatique. Se relance quand la situation change (identité lue, écran
@@ -62,7 +65,7 @@ export function AideContextuelle({ guide: id, className }: { guide: string; clas
           </h3>
           <ul className="mt-1.5 space-y-1.5 text-sm leading-relaxed text-muted-foreground">
             {guide.etapes.map((etape) => (
-              <li key={etape.id}>{t(etape.texte)}</li>
+              <li key={etape.id}>{resoudreTexte(etape.texte, page)}</li>
             ))}
           </ul>
         </div>

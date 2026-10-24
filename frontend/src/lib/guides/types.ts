@@ -1,4 +1,5 @@
 import type { CleI18n } from "@/lib/i18n"
+import type { ContextePage } from "./contextePage"
 
 /**
  * Un guide, tel que l'écrit lib/guides/contenu.ts : de la donnée, jamais de la logique.
@@ -28,10 +29,16 @@ export interface ActionGuide {
   to: string
 }
 
+/**
+ * Un texte qui dépend de ce que la page affiche (voir textes.ts et contextePage.ts). Reçoit ce que la
+ * page a publié, ou undefined quand elle n'est pas à l'écran.
+ */
+export type TexteDynamique = (page: ContextePage | undefined) => string
+
 export interface EtapeGuide {
   id: string
-  titre: CleI18n
-  texte: CleI18n
+  titre: CleI18n | TexteDynamique
+  texte: CleI18n | TexteDynamique
   /**
    * Valeur de l'attribut `data-guide` de l'élément mis en évidence. Jamais une classe
    * CSS : celles-ci sont décoratives et changent sans prévenir.
@@ -58,6 +65,11 @@ export interface DefinitionGuide {
   description: CleI18n
   declencheur: DeclencheurGuide
   public: PublicGuide | "tous"
+  /**
+   * Clé sous laquelle la page de ce guide publie ce qu'elle affiche (voir contextePage.ts), pour les
+   * textes dynamiques de ses étapes.
+   */
+  contextePage?: string
   /** Pages (chemins internes du routeur) où le guide a un sens. */
   route: (pathname: string) => boolean
   /**
