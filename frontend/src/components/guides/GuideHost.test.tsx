@@ -421,7 +421,7 @@ describe("relance manuelle et centre d'aide", () => {
     expect(panneau).toHaveTextContent("Comment travailler cet exercice ?")
     expect(panneau).toHaveTextContent("Comment lancer un quiz ?")
     // Cours, exercice, annales, inédites, paiement : un message ; les autres : un bouton chacun.
-    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(5)
+    expect(screen.getAllByText(/Ce guide s'ouvre depuis la page concernée/)).toHaveLength(7)
     expect(screen.getAllByRole("button", { name: "Relancer le guide" })).toHaveLength(5)
   })
 

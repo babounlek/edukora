@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight,
@@ -477,6 +478,10 @@ export function ThemesFrequentsPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
+      <div className="mb-4">
+        <BoutonAide guide="themes" className="-ml-2.5" />
+        <AideContextuelle guide="themes" className="mt-1" />
+      </div>
 
       {/* Hero : même gabarit que /epreuves et /cours (arrondi, dégradé vert-or, filigrane),
           avec le mini-classement en accessoire, adossé aux vraies données dès qu'il y en a. */}

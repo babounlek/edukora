@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
@@ -420,6 +421,10 @@ export function CoursListPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauVue />
+      <div className="mb-4">
+        <BoutonAide guide="cours-liste" className="-ml-2.5" />
+        <AideContextuelle guide="cours-liste" className="mt-1" />
+      </div>
       {/* Même hero compact que /epreuves : les résultats doivent apparaître sans défiler, et le
           volume du catalogue est la preuve qu'il y a de quoi chercher. */}
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">

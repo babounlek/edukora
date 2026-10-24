@@ -37,6 +37,8 @@ const ACCES = /^\/mes-acces\/?$/
 const ANNALES = /^\/[a-z]{2}\/epreuves\/?$/i
 const INEDITE = /^\/[a-z]{2}\/epreuves-inedites\/[^/]+\/?$/i
 const PROGRESSION = /^\/parcours\/?$/
+const COURS_LISTE = /^\/[a-z]{2}\/cours\/?$/i
+const THEMES_LISTE = /^\/[a-z]{2}\/themes-frequents\/?$/i
 const ABONNEMENT = /^\/abonnement\/?$/
 
 export const GUIDES: readonly DefinitionGuide[] = [
@@ -194,6 +196,28 @@ export const GUIDES: readonly DefinitionGuide[] = [
     cheminRelance: "/parcours",
     route: (pathname) => PROGRESSION.test(pathname),
     etapes: [{ id: "lire", titre: "guide.progression.titre", texte: "guide.progression.texte" }],
+  },
+  {
+    id: "cours-liste",
+    version: 1,
+    type: "aide",
+    titre: "guide.cours_liste.titre",
+    description: "guide.cours_liste.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    route: (pathname) => COURS_LISTE.test(pathname),
+    etapes: [{ id: "trouver", titre: "guide.cours_liste.titre", texte: "guide.cours_liste.texte" }],
+  },
+  {
+    id: "themes",
+    version: 1,
+    type: "aide",
+    titre: "guide.themes.titre",
+    description: "guide.themes.description",
+    declencheur: "premiere-fonctionnalite",
+    public: "eleve",
+    route: (pathname) => THEMES_LISTE.test(pathname),
+    etapes: [{ id: "priorites", titre: "guide.themes.titre", texte: "guide.themes.texte" }],
   },
   {
     // MANUEL, jamais seul : c'est le tunnel de paiement. Aucune carte ne s'y impose ; l'élève ouvre
