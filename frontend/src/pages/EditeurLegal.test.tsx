@@ -23,8 +23,8 @@ afterEach(async () => {
 describe("l'éditeur : Kora SARL", () => {
   it("les constantes", () => {
     expect(EDITEUR_NOM).toBe("Kora SARL")
-    expect(CONTACT_TELEPHONE_AFFICHAGE).toBe("+237 698 19 29 91")
-    expect(CONTACT_TELEPHONE_URL).toBe("tel:+237698192991")
+    expect(CONTACT_TELEPHONE_AFFICHAGE).toBe("+237 689 49 26 25")
+    expect(CONTACT_TELEPHONE_URL).toBe("tel:+237689492625")
   })
 
   for (const page of ["cgu", "confidentialite"] as const) {
@@ -35,11 +35,11 @@ describe("l'éditeur : Kora SARL", () => {
       expect(container.textContent).not.toMatch(/BABOUNLEK|Serge|Guyguy|BSG/)
       const tel = container.querySelector(`a[href="${CONTACT_TELEPHONE_URL}"]`)
       expect(tel).not.toBeNull()
-      expect(tel?.textContent).toContain("+237 698 19 29 91")
-      // Le WhatsApp reste un contact distinct, avec son propre numéro.
+      expect(tel?.textContent).toContain("+237 689 49 26 25")
+      // Le WhatsApp est un contact à part (même numéro aujourd'hui, constante distincte).
       const whatsapp = container.querySelector('a[href^="https://wa.me/"]')
       expect(whatsapp?.textContent).toMatch(/WhatsApp/)
-      expect(whatsapp?.getAttribute("href")).not.toContain("698192991")
+      expect(whatsapp?.getAttribute("href")).toBe("https://wa.me/237689492625")
     })
   }
 
@@ -48,7 +48,7 @@ describe("l'éditeur : Kora SARL", () => {
     const section = screen.getAllByText(/est édité par Kora SARL/)[0]
 
     expect(section.textContent).toContain("société à responsabilité limitée établie à Yaoundé (Cameroun)")
-    expect(section.textContent).toContain("+237 698 19 29 91")
+    expect(section.textContent).toContain("+237 689 49 26 25")
     expect(section.textContent).toContain("conclues avec Kora SARL")
   })
 
@@ -56,7 +56,7 @@ describe("l'éditeur : Kora SARL", () => {
     afficher("confidentialite")
     const section = screen.getByText(/Le responsable du traitement de tes données est Kora SARL/)
 
-    expect(section.textContent).toContain("+237 698 19 29 91")
+    expect(section.textContent).toContain("+237 689 49 26 25")
   })
 
   it("en anglais : les mêmes mentions, traduites", async () => {
@@ -66,7 +66,7 @@ describe("l'éditeur : Kora SARL", () => {
     expect(screen.getByText(/is published by Kora SARL, a limited liability company based in Yaoundé \(Cameroon\)/)).toBeInTheDocument()
     expect(container.textContent).toContain("Publisher of the platform - Yaoundé, Cameroon")
     expect(container.textContent).not.toMatch(/Éditeur de la plateforme/)
-    within(container).getByText("+237 698 19 29 91", { selector: "a" })
+    within(container).getByText("+237 689 49 26 25", { selector: "a" })
   })
 
   it("la date de mise à jour est celle de cette révision", () => {
