@@ -141,3 +141,42 @@ class ApercuPartageAnglaisTests(TestCase):
         from django.conf import settings
 
         return settings.FRONTEND_URL
+
+
+class CarteMarqueTests(TestCase):
+    """La carte porte le logo ; sans ses fichiers de marque elle se dessine quand même (jamais de 500 sur un lien partagé)."""
+
+    def _taille(self, png):
+        from io import BytesIO
+
+        from PIL import Image
+
+        return Image.open(BytesIO(png)).size
+
+    def test_les_fichiers_de_marque_sont_la(self):
+        from .apercu_partage import MARQUE
+
+        for nom in ("logo-minimal.png", "logo-fr.png", "logo-en.png", "fraunces-latin-700-normal.woff",
+                    "work-sans-latin-500-normal.woff", "work-sans-latin-600-normal.woff"):
+            self.assertTrue((MARQUE / nom).exists(), nom)
+
+    def test_sans_logo_ni_polices_de_marque_la_carte_se_dessine(self):
+        from pathlib import Path
+        from unittest import mock
+
+        from . import apercu_partage as m
+
+        m._logo.cache_clear()
+        m._police.cache_clear()
+        try:
+            with mock.patch.object(m, "MARQUE", Path("/n/existe/pas")):
+                for generique in (False, True):
+                    self.assertEqual(self._taille(m.dessiner_carte("Titre", "Étiquette", "Public", "fr", generique)), (LARGEUR, HAUTEUR))
+        finally:
+            m._logo.cache_clear()
+            m._police.cache_clear()
+
+    def test_un_titre_hors_du_latin_se_dessine(self):
+        from .apercu_partage import dessiner_carte
+
+        self.assertEqual(self._taille(dessiner_carte("Équation δ = b² − 4ac", "Maths", "", "en")), (LARGEUR, HAUTEUR))

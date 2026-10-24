@@ -4,7 +4,21 @@ import { carteEnImage, partagerScore, textePartage, type DonneesPartage } from "
 
 const donnees: DonneesPartage = { score: 7, total: 8, xp: 60, serie: 12, nomSite: "EduKora", lien: "https://edukora.africa/?ref=ABC123" }
 
+/** jsdom ne charge jamais d'image : on simule le chargement (ou l'échec) du logo. */
+function simulerLogo(charge: boolean) {
+  vi.stubGlobal("Image", class {
+    onload: (() => void) | null = null
+    onerror: (() => void) | null = null
+    naturalWidth = 1600
+    naturalHeight = 368
+    set src(_: string) {
+      queueMicrotask(() => (charge ? this.onload?.() : this.onerror?.()))
+    }
+  })
+}
+
 afterEach(() => {
+  vi.unstubAllGlobals()
   vi.restoreAllMocks()
   Reflect.deleteProperty(navigator, "share")
   Reflect.deleteProperty(navigator, "canShare")
@@ -24,6 +38,31 @@ describe("textePartage", () => {
 })
 
 describe("carteEnImage", () => {
+  const contexte = () => ({
+    fillRect: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), fillText: vi.fn(), drawImage: vi.fn(),
+  })
+
+  it("dessine le logo (nom et slogan compris) à la place du texte du bas", async () => {
+    simulerLogo(true)
+    const ctx = contexte()
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(ctx as unknown as CanvasRenderingContext2D)
+    vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation((cb) => cb(new Blob(["x"])))
+    await carteEnImage(donnees)
+    expect(ctx.drawImage).toHaveBeenCalledOnce()
+    const textes = ctx.fillText.mock.calls.map((c) => c[0])
+    expect(textes).not.toContain("EduKora")
+  })
+
+  it("retombe sur le nom en texte quand le logo ne charge pas", async () => {
+    simulerLogo(false)
+    const ctx = contexte()
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(ctx as unknown as CanvasRenderingContext2D)
+    vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation((cb) => cb(new Blob(["x"])))
+    await carteEnImage(donnees)
+    expect(ctx.drawImage).not.toHaveBeenCalled()
+    expect(ctx.fillText.mock.calls.map((c) => c[0])).toContain("EduKora")
+  })
+
   it("renvoie null quand le navigateur ne sait pas dessiner", async () => {
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null)
     expect(await carteEnImage(donnees)).toBeNull()
@@ -32,11 +71,12 @@ describe("carteEnImage", () => {
 
 describe("partagerScore", () => {
   it("passe par le partage du téléphone avec la carte quand il sait partager un fichier", async () => {
+    simulerLogo(true)
     const share = vi.fn(() => Promise.resolve())
     Object.defineProperty(navigator, "share", { value: share, configurable: true })
     Object.defineProperty(navigator, "canShare", { value: () => true, configurable: true })
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
-      fillRect: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), fillText: vi.fn(),
+      fillRect: vi.fn(), beginPath: vi.fn(), arc: vi.fn(), fill: vi.fn(), fillText: vi.fn(), drawImage: vi.fn(),
     } as unknown as CanvasRenderingContext2D)
     vi.spyOn(HTMLCanvasElement.prototype, "toBlob").mockImplementation((cb) => cb(new Blob(["x"], { type: "image/png" })))
 

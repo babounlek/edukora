@@ -3,7 +3,7 @@
 // ces élèves : sur un téléphone qui sait partager un fichier (Web Share), la carte part avec le
 // message ; sinon un lien wa.me avec le texte seul - toujours un chemin qui marche.
 
-import { t } from "@/lib/i18n"
+import { langueCourante, t } from "@/lib/i18n"
 
 export interface DonneesPartage {
   score: number
@@ -21,6 +21,28 @@ export function textePartage({ score, total, xp, serie, nomSite, lien }: Donnees
 
 const TAILLE = 1080
 
+// Les couleurs des aperçus de lien du serveur (backend/catalog/apercu_partage.py) : une carte partagée et un lien
+// partagé se reconnaissent comme venant de la même marque.
+const FOND = "#064a2b"
+const HALO = "#006837"
+
+/** Le logo (horizontal, version fond sombre, avec son slogan dans la langue de l'interface) ; null s'il ne charge pas. */
+function chargerLogo(delaiMs = 3000): Promise<HTMLImageElement | null> {
+  return new Promise((resolve) => {
+    const image = new Image()
+    const abandon = setTimeout(() => resolve(null), delaiMs)
+    image.onload = () => {
+      clearTimeout(abandon)
+      resolve(image)
+    }
+    image.onerror = () => {
+      clearTimeout(abandon)
+      resolve(null)
+    }
+    image.src = `/brand/png/logo-horizontal-${langueCourante()}-dark.png`
+  })
+}
+
 /** La carte en PNG, ou null quand le navigateur ne sait pas dessiner (jsdom, navigateur ancien). */
 export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null> {
   const canvas = document.createElement("canvas")
@@ -29,13 +51,17 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
   const ctx = canvas.getContext("2d")
   if (!ctx) return null
 
+  const logo = await chargerLogo()
+
   // Aplat de la couleur de marque : sobre, lisible même une fois recompressé par une messagerie.
-  ctx.fillStyle = "#0a6e4e"
+  ctx.fillStyle = FOND
   ctx.fillRect(0, 0, TAILLE, TAILLE)
-  ctx.fillStyle = "rgba(255,255,255,0.08)"
+  ctx.fillStyle = HALO
+  ctx.globalAlpha = 0.6
   ctx.beginPath()
   ctx.arc(TAILLE - 120, 140, 360, 0, Math.PI * 2)
   ctx.fill()
+  ctx.globalAlpha = 1
 
   ctx.textAlign = "center"
   ctx.fillStyle = "#ffffff"
@@ -52,12 +78,18 @@ export async function carteEnImage(donnees: DonneesPartage): Promise<Blob | null
   const lignes = [donnees.xp > 0 ? t("gl.partage_points", { n: donnees.xp }) : "", donnees.serie >= 2 ? t("gl.sem_serie", { n: donnees.serie }) : ""].filter(Boolean)
   lignes.forEach((ligne, i) => ctx.fillText(ligne, TAILLE / 2, 745 + i * 78))
 
-  ctx.fillStyle = "#ffffff"
-  ctx.font = "700 72px Georgia, serif"
-  ctx.fillText(donnees.nomSite, TAILLE / 2, 960)
-  ctx.font = "400 40px system-ui, sans-serif"
-  ctx.fillStyle = "rgba(255,255,255,0.8)"
-  ctx.fillText(t("gl.partage_tagline"), TAILLE / 2, 1020)
+  if (logo) {
+    // Le logo complet porte déjà le nom et le slogan : il remplace le texte du bas.
+    const largeur = 760
+    ctx.drawImage(logo, (TAILLE - largeur) / 2, 870, largeur, (largeur * logo.naturalHeight) / logo.naturalWidth)
+  } else {
+    ctx.fillStyle = "#ffffff"
+    ctx.font = "700 72px Georgia, serif"
+    ctx.fillText(donnees.nomSite, TAILLE / 2, 960)
+    ctx.font = "400 40px system-ui, sans-serif"
+    ctx.fillStyle = "rgba(255,255,255,0.8)"
+    ctx.fillText(t("gl.partage_tagline"), TAILLE / 2, 1020)
+  }
 
   return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), "image/png"))
 }

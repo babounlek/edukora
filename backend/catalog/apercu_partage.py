@@ -17,6 +17,7 @@ canonical est la forme anglaise.
 import re
 from functools import lru_cache
 from io import BytesIO
+from pathlib import Path
 
 from django.conf import settings
 from django.http import Http404, HttpResponse
@@ -189,6 +190,7 @@ def apercu_partage(request, chemin=""):
         f'<meta property="og:description" content="{d}">'
         f'<meta property="og:image" content="{i}">'
         f'<meta property="og:image:width" content="{LARGEUR}"><meta property="og:image:height" content="{HAUTEUR}">'
+        f'<meta property="og:image:alt" content="{t}">'
         '<meta name="twitter:card" content="summary_large_image">'
         f'<meta name="twitter:title" content="{t}">'
         f'<meta name="twitter:description" content="{d}">'
@@ -201,6 +203,16 @@ def apercu_partage(request, chemin=""):
 
 
 # --- Image -------------------------------------------------------------------------------------
+# Identité visuelle : logos PNG et polices (Fraunces, Work Sans) fournis par frontend/scripts/brand/build-brand.mjs
+# dans static/catalog/marque/. À défaut (fichier absent, police illisible), la carte se dessine avec les polices
+# du système et le nom du site en texte : un aperçu dégradé vaut mieux qu'une erreur 500 sur un lien partagé.
+
+MARQUE = Path(__file__).resolve().parent / "static" / "catalog" / "marque"
+FOND = "#064a2b"  # vert profond : le vert clair #39B54A du logo y reste net (contraste ~3,9:1)
+HALO = "#006837"  # vert institutionnel
+GOLD = "#f5c84b"
+CLAIR = "#d6efe6"
+SLOGANS = {"fr": "RÉUSSIS TON EXAMEN", "en": "PASS YOUR EXAM"}
 
 _POLICES_GRAS = [
     "/usr/share/fonts/truetype/liberation/LiberationSerif-Bold.ttf",
@@ -212,18 +224,61 @@ _POLICES_NORMALES = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
     "C:/Windows/Fonts/arial.ttf",
 ]
+# Ce que couvre le sous-ensemble latin des polices de la marque ; un titre qui en sort (lettres grecques d'un
+# énoncé de maths, par exemple) se dessine avec la police du système, qui a plus de glyphes.
+_COUVERT_PAR_MARQUE = re.compile("^[\u0000-\u00ff\u0131\u0152\u0153\u2000-\u206f\u20ac\u2122\u2212]*$")
 
 
 @lru_cache(maxsize=32)
-def _police(gras, taille):
+def _police(gras, taille, marque=None):
+    """`marque` : nom d'un fichier de static/catalog/marque/ à préférer aux polices du système."""
     from PIL import ImageFont
 
-    for chemin in _POLICES_GRAS if gras else _POLICES_NORMALES:
+    candidats = ([str(MARQUE / marque)] if marque else []) + (_POLICES_GRAS if gras else _POLICES_NORMALES)
+    for chemin in candidats:
         try:
             return ImageFont.truetype(chemin, taille)
         except OSError:
             continue
     return ImageFont.load_default(size=taille)
+
+
+@lru_cache(maxsize=8)
+def _logo(nom):
+    """Le PNG de logo (RGBA), ou None s'il manque."""
+    from PIL import Image
+
+    try:
+        return Image.open(MARQUE / nom).convert("RGBA")
+    except OSError:
+        return None
+
+
+def _poser_logo(image, nom, largeur=None, hauteur=None, x=0, y=0):
+    """Colle le logo `nom` à (x, y), à la largeur ou à la hauteur donnée. Retourne (largeur, hauteur), ou None sans logo."""
+    from PIL import Image
+
+    logo = _logo(nom)
+    if logo is None:
+        return None
+    if largeur:
+        taille = (largeur, round(logo.height * largeur / logo.width))
+    else:
+        taille = (round(logo.width * hauteur / logo.height), hauteur)
+    reduit = logo.resize(taille, Image.LANCZOS)
+    image.paste(reduit, (x, y), reduit)
+    return taille
+
+
+def _texte_espace(draw, xy, texte, police, fill, interlettre, droite=False):
+    """Texte en capitales espacées, à gauche de `xy` ou, avec `droite`, calé à droite."""
+    x, y = xy
+    largeur = sum(draw.textlength(c, font=police) + interlettre for c in texte) - interlettre
+    if droite:
+        x -= largeur
+    for c in texte:
+        draw.text((x, y), c, font=police, fill=fill)
+        x += draw.textlength(c, font=police) + interlettre
 
 
 def _lignes(draw, texte, police, largeur_max, max_lignes):
@@ -249,33 +304,58 @@ def _lignes(draw, texte, police, largeur_max, max_lignes):
     return lignes[:max_lignes]
 
 
-def dessiner_carte(titre, etiquette="", public=""):
+def _rgb(couleur):
+    return tuple(int(couleur[i:i + 2], 16) for i in (1, 3, 5))
+
+
+def dessiner_carte(titre, etiquette="", public="", langue="fr", generique=False):
+    """La carte 1200x630 d'un lien partagé. `generique` : la carte du site entier (le logo complet, avec son slogan,
+    occupe le haut) plutôt que celle d'une page (logo compact en haut à gauche, slogan en bas à droite)."""
     from PIL import Image, ImageDraw
 
-    image = Image.new("RGB", (LARGEUR, HAUTEUR), "#0a6e4e")
+    image = Image.new("RGB", (LARGEUR, HAUTEUR), FOND)
     calque = Image.new("RGBA", (LARGEUR, HAUTEUR), (0, 0, 0, 0))
-    ImageDraw.Draw(calque).ellipse((LARGEUR - 420, -260, LARGEUR + 180, 340), fill=(255, 255, 255, 22))
+    ImageDraw.Draw(calque).ellipse((LARGEUR - 460, -300, LARGEUR + 200, 360), fill=(*_rgb(HALO), 150))
     image.paste(calque, (0, 0), calque)
     draw = ImageDraw.Draw(image)
 
     marge = 80
-    draw.text((marge, 70), settings.SITE_NAME, font=_police(True, 48), fill="#ffffff")
-    if etiquette:
-        draw.text((marge, 150), etiquette, font=_police(False, 34), fill="#f5c84b")
+    police_titre = _police(True, 64, "fraunces-latin-700-normal.woff") if _COUVERT_PAR_MARQUE.match(titre) else _police(True, 64)
+    police_texte = _police(False, 34, "work-sans-latin-500-normal.woff")
 
-    police_titre = _police(True, 68)
-    lignes = _lignes(draw, titre, police_titre, LARGEUR - 2 * marge, 4)
-    y = 230
-    for ligne in lignes:
-        draw.text((marge, y), ligne, font=police_titre, fill="#ffffff")
-        y += 86
+    if generique:
+        logo = _poser_logo(image, f"logo-{langue}.png", largeur=780, x=marge, y=64)
+        y = 64 + (logo[1] if logo else 0) + 44
+        if not logo:
+            draw.text((marge, 64), settings.SITE_NAME, font=_police(True, 96), fill="#ffffff")
+            y = 64 + 96 + 44
+        for ligne in _lignes(draw, titre, police_titre, LARGEUR - 2 * marge, 2):
+            draw.text((marge, y), ligne, font=police_titre, fill="#ffffff")
+            y += 78
+        if etiquette:
+            draw.text((marge, y + 14), etiquette, font=police_texte, fill=GOLD)
+    else:
+        logo = _poser_logo(image, "logo-minimal.png", hauteur=76, x=marge, y=56)
+        if not logo:
+            draw.text((marge, 70), settings.SITE_NAME, font=_police(True, 48), fill="#ffffff")
+        if etiquette:
+            draw.text((marge, 160), etiquette, font=police_texte, fill=GOLD)
+        y = 225
+        for ligne in _lignes(draw, titre, police_titre, LARGEUR - 2 * marge, 3):
+            draw.text((marge, y), ligne, font=police_titre, fill="#ffffff")
+            y += 78
+        if public:
+            draw.text((marge, HAUTEUR - 142), public, font=police_texte, fill="#ffffff")
 
-    if public:
-        draw.text((marge, HAUTEUR - 130), public, font=_police(False, 34), fill=(255, 255, 255, 230))
-    draw.text(
-        (marge, HAUTEUR - 80), settings.FRONTEND_URL.replace("https://", "").replace("http://", ""),
-        font=_police(False, 30), fill="#d6efe6",
-    )
+    # Pied : l'adresse du site ; le slogan, à droite, sur les cartes de page
+    # (la carte générique l'a déjà dans son logo).
+    url = settings.FRONTEND_URL.replace("https://", "").replace("http://", "")
+    draw.text((marge, HAUTEUR - 80), url, font=_police(False, 30, "work-sans-latin-500-normal.woff"), fill=CLAIR)
+    if not generique:
+        _texte_espace(
+            draw, (LARGEUR - marge, HAUTEUR - 76), SLOGANS[langue], _police(False, 26, "work-sans-latin-600-normal.woff"),
+            "#bfe5c6", 5, droite=True,
+        )
     tampon = BytesIO()
     image.save(tampon, "PNG", optimize=True)
     return tampon.getvalue()
@@ -291,7 +371,7 @@ def image_partage(request, genre, ident):
         infos = resolveur(ident, langue) if resolveur else None
     if not infos:
         raise Http404("Aperçu introuvable.")
-    png = dessiner_carte(infos["titre"], infos["etiquette"], infos["public"])
+    png = dessiner_carte(infos["titre"], infos["etiquette"], infos["public"], langue, generique=genre == "defaut")
     response = HttpResponse(png, content_type="image/png")
     response["Cache-Control"] = "public, max-age=86400"
     return response

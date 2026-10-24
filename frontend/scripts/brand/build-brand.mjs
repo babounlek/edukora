@@ -366,6 +366,21 @@ for (const p of produits) {
 await png(produits.find((p) => p.fichier === "icon").svg, 512, path.join(BRAND, "png", "icon.png"))
 await png(produits.find((p) => p.fichier === "icon-dark").svg, 512, path.join(BRAND, "png", "icon-dark.png"))
 
+// Cartes d'aperçu de lien (Pillow, backend/catalog/apercu_partage.py) : logos sur fond sombre et polices de la marque.
+// Pillow ne sait pas lire le SVG : on lui fournit des PNG transparents.
+const MARQUE_BACKEND = path.resolve(racine, "..", "backend", "catalog", "static", "catalog", "marque")
+await png(produits.find((p) => p.fichier === "logo-horizontal-minimal-dark").svg, 1000, path.join(MARQUE_BACKEND, "logo-minimal.png"))
+for (const langue of ["fr", "en"]) {
+  await png(produits.find((p) => p.fichier === `logo-horizontal-${langue}-dark`).svg, 1400, path.join(MARQUE_BACKEND, `logo-${langue}.png`))
+}
+for (const [paquet, fichier] of [
+  ["fraunces", "fraunces-latin-700-normal.woff"],
+  ["work-sans", "work-sans-latin-500-normal.woff"],
+  ["work-sans", "work-sans-latin-600-normal.woff"],
+]) {
+  fs.copyFileSync(path.join(racine, "node_modules", "@fontsource", paquet, "files", fichier), path.join(MARQUE_BACKEND, fichier))
+}
+
 // Favicons et icônes d'application
 const p16 = await png(faviconSvg, 16, path.join(PUBLIC, "favicon-16x16.png"))
 const p32 = await png(faviconSvg, 32, path.join(PUBLIC, "favicon-32x32.png"))
