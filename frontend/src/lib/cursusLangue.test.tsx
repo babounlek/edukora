@@ -9,7 +9,7 @@ import type { Cursus } from "@/api/types"
 const { listCursus } = vi.hoisted(() => ({ listCursus: vi.fn() }))
 vi.mock("@/api/endpoints", () => ({ listCursus }))
 
-import { cursusDeLangue, estDeLangue, useAbandonCursusHorsLangue } from "./cursusLangue"
+import { cursusDeLangue, estDeLangue, langueDuChoix, useAbandonCursusHorsLangue } from "./cursusLangue"
 import { definirLangue, useI18n } from "./i18n"
 
 const pays = { id: 1, code: "CM", label: "Cameroun" } as Cursus["country"]
@@ -46,6 +46,23 @@ describe("cursusDeLangue", () => {
     expect(cursusDeLangue([ancien], "en")).toHaveLength(1)
     expect(estDeLangue(ancien, "en")).toBe(true)
     expect(estDeLangue(null, "en")).toBe(true)
+  })
+})
+
+describe("langueDuChoix", () => {
+  it("sans examen choisi : la langue demandée", () => {
+    expect(langueDuChoix(LISTE, "en")).toBe("en")
+    expect(langueDuChoix(LISTE, "en", ["", null])).toBe("en")
+  })
+
+  it("un examen choisi dans l'autre langue fixe la langue des pastilles : jamais BEPC et GCE ensemble", () => {
+    const langue = langueDuChoix(LISTE, "en", ["1"])
+    expect(langue).toBe("fr")
+    expect(cursusDeLangue(LISTE, langue, ["1"]).map((c) => c.examen)).toEqual(["BEPC", "PROBATOIRE", "BAC"])
+  })
+
+  it("« toutes les langues » reste ouvert, même avec un examen choisi", () => {
+    expect(langueDuChoix(LISTE, undefined, [1])).toBeUndefined()
   })
 })
 

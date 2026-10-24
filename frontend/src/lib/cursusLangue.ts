@@ -13,7 +13,8 @@ import { langueCourante, type Langue } from "@/lib/i18n"
  * liste entièrement française (un examen choisi prime sur la langue des listes).
  *
  * Deux exceptions, pour ne jamais retirer à l'élève l'examen qu'il a choisi :
- *  - l'examen déjà sélectionné (lien partagé `?cursus=12`, pastille cliquée) reste proposé ;
+ *  - l'examen déjà sélectionné (lien partagé `?cursus=12`, pastille cliquée) reste proposé, et les pastilles prennent
+ *    alors SA langue (jamais BEPC et GCE ensemble : voir langueDuChoix) ;
  *  - « Toutes les langues » (`langue` indéfinie) lève le filtre.
  * L'examen déclaré sur le compte, lui, ne reste pas proposé hors de sa langue : il polluait les pastilles de l'autre
  * langue (un « Probatoire C » parmi celles du GCE). Il ne pré-filtre pas non plus (voir useFiltreCursusParDefaut).
@@ -50,7 +51,20 @@ export function useCursusListe(
     enabled: Boolean(country) && (options.enabled ?? true),
   })
   const tous = requete.data ?? []
-  return { ...requete, data: cursusDeLangue(tous, options.langue, options.garder), tous }
+  return { ...requete, data: cursusDeLangue(tous, langueDuChoix(tous, options.langue, options.garder), options.garder), tous }
+}
+
+/**
+ * La langue des pastilles d'examen. Un examen choisi dans l'autre langue que l'interface fixe la langue de la liste
+ * (comme il fixe celle des matières et des épreuves) : sans cela, « BEPC » restait proposé au milieu des « GCE » et
+ * l'élève voyait les deux univers mélangés. Pour changer d'univers, « Tous » retire le choix et ramène la langue de
+ * l'interface.
+ */
+export function langueDuChoix(liste: Cursus[], langue: Langue | undefined, choisis: IdCursus[] = []): Langue | undefined {
+  if (!langue) return undefined
+  const ids = new Set(choisis.filter((id) => id != null && id !== "").map(String))
+  const choisi = liste.find((c) => ids.has(String(c.id)) && c.langue)
+  return (choisi?.langue as Langue | undefined) ?? langue
 }
 
 /**
