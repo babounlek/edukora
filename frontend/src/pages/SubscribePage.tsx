@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, XCircle, Zap } from "lucide-react"
 
 import {
@@ -490,6 +491,12 @@ export function SubscribePage() {
               : t("sb.sous_titre")}
           </p>
         </div>
+      </div>
+
+      {/* Aide à la demande seulement (guide « paiement » : jamais automatique dans un tunnel de paiement). */}
+      <div className="mb-4">
+        <BoutonAide guide="paiement" className="-ml-2.5" />
+        <AideContextuelle guide="paiement" className="mt-1" />
       </div>
 
       {/* Renouvellement : ce que l'abonnement a déjà apporté, juste avant de repayer. Silencieux

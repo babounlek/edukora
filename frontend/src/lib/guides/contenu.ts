@@ -37,6 +37,7 @@ const ACCES = /^\/mes-acces\/?$/
 const ANNALES = /^\/[a-z]{2}\/epreuves\/?$/i
 const INEDITE = /^\/[a-z]{2}\/epreuves-inedites\/[^/]+\/?$/i
 const PROGRESSION = /^\/parcours\/?$/
+const ABONNEMENT = /^\/abonnement\/?$/
 
 export const GUIDES: readonly DefinitionGuide[] = [
   {
@@ -193,6 +194,20 @@ export const GUIDES: readonly DefinitionGuide[] = [
     cheminRelance: "/parcours",
     route: (pathname) => PROGRESSION.test(pathname),
     etapes: [{ id: "lire", titre: "guide.progression.titre", texte: "guide.progression.texte" }],
+  },
+  {
+    // MANUEL, jamais seul : c'est le tunnel de paiement. Aucune carte ne s'y impose ; l'élève ouvre
+    // l'aide par son « ? » s'il hésite (voir aussi moteur.ts, où /abonnement est interdit aux aides
+    // automatiques). Liée à la page d'un achat précis : elle se relit depuis cette page.
+    id: "paiement",
+    version: 1,
+    type: "aide",
+    titre: "guide.paiement.titre",
+    description: "guide.paiement.description",
+    declencheur: "manuel",
+    public: "eleve",
+    route: (pathname) => ABONNEMENT.test(pathname),
+    etapes: [{ id: "payer", titre: "guide.paiement.titre", texte: "guide.paiement.texte" }],
   },
 ]
 

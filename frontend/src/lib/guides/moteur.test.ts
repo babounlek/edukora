@@ -184,6 +184,7 @@ describe("aides de page (cours, exercice, quiz)", () => {
     ["inedites", "/cm/epreuves-inedites", false],
     ["progression", "/parcours", true],
     ["progression", "/parcours/4", false],
+    ["paiement", "/abonnement", true],
   ])("%s sur %s : route reconnue = %s", (id, chemin, attendu) => {
     expect(trouverGuide(id)!.route(chemin)).toBe(attendu)
   })
@@ -230,5 +231,19 @@ describe("guideAutomatique", () => {
 
   it("aucun quand rien n'est permis", () => {
     expect(guideAutomatique(contexteEleve({ pathname: "/quiz/session/1" }), situation())).toBeNull()
+  })
+})
+
+describe("guide du paiement : jamais automatique", () => {
+  const paiement = trouverGuide("paiement")!
+
+  it("ne se lance seul nulle part, même sur sa page, même tout neuf", () => {
+    for (const chemin of ["/cm", "/quiz", "/mes-paiements", "/abonnement"]) {
+      expect(peutDeclencherAuto(paiement, contexteEleve({ pathname: chemin }), situation())).toBe(false)
+    }
+  })
+
+  it("n'est jamais choisi par le tutoriel automatique", () => {
+    expect(guideAutomatique(contexteEleve({ pathname: "/abonnement" }), situation())).toBeNull()
   })
 })
