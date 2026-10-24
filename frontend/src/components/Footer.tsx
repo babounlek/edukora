@@ -230,8 +230,7 @@ export function Footer() {
       <div className="mx-auto grid max-w-5xl gap-x-6 px-4 py-10 sm:grid-cols-3 sm:gap-y-10 sm:px-6 sm:py-12 lg:grid-cols-[1.3fr_1fr_1.2fr_1fr]">
         <div className="mb-6 sm:col-span-3 sm:mb-0 lg:col-span-1">
           <Link to={catalogueHomePath(country)} className="flex items-center gap-2.5">
-            <Logo variante="minimal" className="h-9" />
-            <span className="font-display text-xs italic text-muted-foreground">{t("ft.slogan")}</span>
+            <Logo variante="horizontal" className="h-14" />
           </Link>
           <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
             {t("ft.accroche")}

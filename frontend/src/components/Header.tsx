@@ -383,25 +383,25 @@ export function Header() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
         <div className="flex min-w-0 items-center gap-2">
           <Link to={catalogueHomePath(country)} className="group flex min-w-0 items-center gap-2">
-            {/* Le logo sans slogan : à cette hauteur le slogan serait illisible, et la baseline ci-dessous (traduite) le porte.
-                Le symbole seul (même fichier, rogné par object-cover + object-left plutôt qu'une seconde image ; le nom reste
-                dans l'alt) quand la barre manque de place : sous 400 px, et pour un élève qui suit un plan - la pastille de
-                compte à rebours prend alors la place de la baseline, et nom + pastille + liens + compte dépassent 1024 px. */}
-            <Logo
-              variante="minimal"
-              className={cn(
-                "h-8 w-[34px] object-cover object-left",
-                !aUnCompteARebours && "min-[400px]:h-7 min-[400px]:w-auto min-[400px]:object-contain",
-              )}
-            />
-            {/* La baseline cède la place au compte à rebours dès qu'il y en a un :
-                pour un élève qui a déclaré son cursus, "BAC D · J-244" dit la même
-                chose que "réussis ton examen", mais avec sa date à lui. Deux textes
-                gris côte à côte ne feraient que se diluer. */}
-            {!aUnCompteARebours && (
-              <span className="hidden min-w-0 truncate font-display text-xs italic text-muted-foreground sm:inline">
-                {t("site.baseline")}
-              </span>
+            {/* Le logo avec son slogan (il remplace l'ancienne baseline en texte). Le symbole seul quand la barre manque de
+                place : sous 400 px, et pour un élève qui suit un plan - la pastille de compte à rebours dit alors ce que le
+                slogan disait, et logo + pastille + liens + compte dépasseraient 1024 px. Le symbole seul est le même fichier
+                rogné (object-cover + object-left), pas une seconde image ; le nom et le slogan restent dans l'alt.
+                Entre 400 et 640 px : icône + nom sans slogan (illisible à cette taille). */}
+            {aUnCompteARebours ? (
+              <Logo variante="horizontal" className="h-8 w-[34px] object-cover object-left" />
+            ) : (
+              <>
+                <span className="sm:hidden">
+                  <Logo
+                    variante="minimal"
+                    className="h-8 w-[34px] object-cover object-left min-[400px]:h-7 min-[400px]:w-auto min-[400px]:object-contain"
+                  />
+                </span>
+                <span className="hidden sm:block">
+                  <Logo variante="horizontal" className="h-9 md:h-11" />
+                </span>
+              </>
             )}
           </Link>
           <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap sm:inline" />

@@ -22,7 +22,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "theme.changer": "Change theme",
   "pays.changer": "Change country",
 
-  "site.baseline": "pass your exam",
 
   "nav.aujourdhui": "Today",
   "nav.reviser": "Revise",
@@ -1722,7 +1721,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ft.seance_prete_suite": "your daily session is ready.",
   "ft.faire_seance": "Start my session",
   "ft.aria_nav": "Footer: {titre}",
-  "ft.slogan": "pass your exam",
   "ft.accroche": "Every day, what to revise for your exam - and we remember what you miss.",
   "ft.stat_epreuves": "past papers with solutions",
   "ft.stat_cours": "lessons and study sheets",

@@ -164,7 +164,7 @@ function ligneSlogan(langue, taille) {
 
 /** Slogan centré entre deux filets, sur une largeur donnée. Retourne le SVG partiel et la hauteur. */
 function sloganFiletes(p, langue, xGauche, yHaut, largeur) {
-  const taille = 17
+  const taille = 20
   const s = ligneSlogan(langue, taille)
   const hS = s.y2 - s.y1
   const ecart = 12

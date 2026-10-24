@@ -22,6 +22,7 @@ const FICHIER: Record<VarianteLogo, string> = {
   icon: "icon",
 }
 const AVEC_SLOGAN: VarianteLogo[] = ["horizontal", "vertical", "compact"]
+const SLOGAN = { fr: "RÉUSSIS TON EXAMEN", en: "PASS YOUR EXAM" }
 
 interface LogoProps {
   variante?: VarianteLogo
@@ -35,7 +36,8 @@ interface LogoProps {
 export function Logo({ variante = "minimal", ton = "auto", className, decoratif = false }: LogoProps) {
   // Se réabonne au changement de langue : le slogan du logo suit la langue de l'interface.
   useI18n()
-  const langue = AVEC_SLOGAN.includes(variante) ? `-${langueCourante()}` : ""
+  const avecSlogan = AVEC_SLOGAN.includes(variante)
+  const langue = avecSlogan ? `-${langueCourante()}` : ""
 
   function image(sombre: boolean, classes?: string) {
     const nom = `${FICHIER[variante]}${langue}${sombre ? "-dark" : ""}`
@@ -46,7 +48,7 @@ export function Logo({ variante = "minimal", ton = "auto", className, decoratif 
         // Les dimensions du fichier : le navigateur réserve la place avant le chargement (pas de décalage).
         width={largeur}
         height={hauteur}
-        alt={decoratif ? "" : SITE_NAME}
+        alt={decoratif ? "" : avecSlogan ? `${SITE_NAME} — ${SLOGAN[langueCourante()]}` : SITE_NAME}
         draggable={false}
         className={cn("w-auto max-w-none shrink-0 select-none", className, classes)}
       />

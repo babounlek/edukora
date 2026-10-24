@@ -27,7 +27,6 @@ export const fr = {
   "theme.changer": "Changer de thème",
   "pays.changer": "Changer de pays",
 
-  "site.baseline": "réussis ton examen",
 
   "nav.aujourdhui": "Aujourd'hui",
   "nav.reviser": "Réviser",
@@ -1732,7 +1731,6 @@ export const fr = {
   "ft.seance_prete_suite": "ta séance du jour est prête.",
   "ft.faire_seance": "Faire ma séance",
   "ft.aria_nav": "Pied de page : {titre}",
-  "ft.slogan": "réussis ton examen",
   "ft.accroche": "Chaque jour, ce qu'il faut réviser pour ton examen - et on retient ce que tu rates.",
   "ft.stat_epreuves": "épreuves corrigées",
   "ft.stat_cours": "cours et fiches",
