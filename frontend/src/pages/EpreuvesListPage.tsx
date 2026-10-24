@@ -25,6 +25,7 @@ import { examLevelsFor } from "@/lib/cursus"
 import { nomPays } from "@/lib/pays"
 import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
+import { FILTERS_SESSION_KEY } from "@/lib/filtresListe"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
 import { cursusDesTotaux, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { useSeo } from "@/lib/seo"
@@ -65,8 +66,7 @@ const VIEW_MODE_STORAGE_KEY = "edukamer_epreuves_catalogue_view"
 // (nav, logo, retour) doit rouvrir là où l'utilisateur en était, pas repartir d'une
 // liste vierge à chaque clic. Session, pas localStorage : une recherche n'a pas
 // vocation à survivre à la fermeture de l'onglet, contrairement à une préférence
-// d'affichage.
-const FILTERS_SESSION_KEY = "edukamer_epreuves_derniers_filtres"
+// d'affichage. La clé est dans lib/filtresListe : un changement de langue l'oublie.
 
 // "tout" inclus : le choix d'élargir au-delà de son cursus (voir filtreCursus) doit
 // se restaurer comme les autres filtres, sinon le pré-filtrage revient à la

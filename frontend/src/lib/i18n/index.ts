@@ -22,6 +22,7 @@
  */
 import { useSyncExternalStore } from "react"
 
+import { oublierFiltresMemorises, requeteSansFiltresDeLangue } from "../filtresListe"
 import { fr, type CleAvecPluriel, type CleI18n } from "./fr"
 import { basenameDeLangue, cheminDansLangue, cheminInterneDepuisUrl, langueDuChemin } from "./prefixe"
 
@@ -106,7 +107,10 @@ export function urlDansLangue(
 
 /** Recharge la page courante dans l'autre langue : le préfixe est la base du routeur, fixée au chargement. */
 export function ouvrirDansLangue(cible: Langue): void {
-  window.location.assign(urlDansLangue(cible))
+  // L'examen et la matière d'un filtre sont ceux de l'ancienne langue : on les laisse derrière, URL et session.
+  oublierFiltresMemorises()
+  const { pathname, hash, search } = window.location
+  window.location.assign(urlDansLangue(cible, { pathname, hash, search: requeteSansFiltresDeLangue(search) }))
 }
 
 /**
