@@ -28,7 +28,10 @@ fi
 
 echo
 echo "=== Porte rendu (vrai moteur remark/rehype-katex) ==="
-(cd "$ROOT/frontend" && AUDIT_RENDU_DUMP="$DUMP_HOST" npx vitest run src/lib/audit-rendu.test.ts)
+# Node (Windows) ne comprend pas /d/... : avec MSYS_NO_PATHCONV=1 (posé par edukora.ps1) Git Bash ne convertit plus
+# la valeur de la variable, donc on fournit explicitement un chemin natif quand cygpath existe.
+DUMP_NODE="$(cygpath -m "$DUMP_HOST" 2>/dev/null || echo "$DUMP_HOST")"
+(cd "$ROOT/frontend" && AUDIT_RENDU_DUMP="$DUMP_NODE" npx vitest run src/lib/audit-rendu.test.ts)
 RENDER_STATUS=$?
 
 echo
