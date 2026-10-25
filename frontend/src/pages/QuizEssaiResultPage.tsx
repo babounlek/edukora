@@ -1,18 +1,19 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, FileText, Lock, RotateCcw, Sparkles, Trophy, Zap } from "lucide-react"
+import { ArrowRight, FileText, Lock, RotateCcw, Sparkles, Swords, Trophy, Zap } from "lucide-react"
 
 import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
+import { comparerDefi, lireDefiMemorise, memoriserDefi, parametresDefi } from "@/lib/defiEssai"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
 import {
   bat, cheminEssai, lireEssai, lireRecord, memoriserEssai, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
-  texteDePartageEssai,
+  texteDeDefiEssai,
 } from "@/lib/quizEssai"
 import { trackEvent } from "@/lib/analytics"
 import { jouerRetour } from "@/lib/retours"
@@ -49,6 +50,7 @@ export function QuizEssaiResultPage() {
   const aRepondu = Boolean(score && score.repondues > 0)
   // Le record d'AVANT cet essai : lu une fois au montage, la mémorisation plus bas ne le change pas sous nos yeux.
   const [recordAvant] = useState(() => (session ? lireRecord(session) : null))
+  const [defi] = useState(lireDefiMemorise)
   const points = useMemo(() => (session ? pointsEssai(session) : 0), [session])
   const pointsAffiches = useCompteur(points)
 
@@ -64,6 +66,7 @@ export function QuizEssaiResultPage() {
 
   if (!session || !score || !aRepondu) return null
 
+  const issueDefi = defi ? comparerDefi(defi, score.reussies, score.total) : null
   const recordBattu = bat(recordAvant, score.reussies, score.total)
   const pourcentage = Math.round((100 * score.reussies) / score.total)
   const { titre, texte } = message(pourcentage)
@@ -129,6 +132,19 @@ export function QuizEssaiResultPage() {
         )}
       </section>
 
+      {defi && issueDefi && (
+        <p
+          role="status"
+          className={cn(
+            "mt-4 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium",
+            issueDefi === "gagne" ? "bg-success/15" : "bg-muted/60",
+          )}
+        >
+          <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+          {t(`defi.${issueDefi}`, { a: score.reussies, b: score.total, c: defi.reussies, d: defi.total })}
+        </p>
+      )}
+
       {score.parTheme.length > 0 && (
         <ul className="mt-4 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
           {score.parTheme.map((t) => {
@@ -161,7 +177,8 @@ export function QuizEssaiResultPage() {
         </Button>
         {cheminEssai(session) && (
           <BoutonPartager
-            chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz"
+            chemin={cheminEssai(session)!} texte={texteDeDefiEssai(session, score.reussies, score.total)} type="quiz"
+            parametres={parametresDefi(score.reussies, score.total)}
             libelle={t("essai.defier")} size="default" className="rounded-full"
           />
         )}
@@ -213,7 +230,10 @@ export function QuizEssaiResultPage() {
       <div className="mt-6">
         <Link
           to="/quiz"
-          onClick={oublierEssai}
+          onClick={() => {
+            oublierEssai()
+            memoriserDefi(null)
+          }}
           className="text-sm font-medium text-primary underline-offset-4 hover:underline"
         >
           {t("essai.autre_theme")}

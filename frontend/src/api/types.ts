@@ -154,11 +154,21 @@ export interface JourDeSemaine {
 }
 
 /** Voir quiz.xp : où en est le profil aujourd'hui. L'XP récompense la maîtrise, pas le volume. */
+/** Le niveau d'un profil d'après son XP cumulée (voir quiz.xp.niveau_du_profil) : le rang seulement, les noms sont côté interface. */
+export interface NiveauXp {
+  rang: number
+  xp_total: number
+  seuil: number
+  /** null au sommet. */
+  seuil_suivant: number | null
+}
+
 export interface EtatXp {
   xp: number
   objectif: number
   atteint: boolean
   objectifs_possibles: number[]
+  niveau?: NiveauXp
 }
 
 /** Voir relances.views.paiement_a_reprendre_view. */
@@ -1576,6 +1586,12 @@ export interface MarqueEtude {
   signet: boolean
   note: string
   updated_at: string | null
+}
+
+/** Ce que renvoie l'enregistrement d'une marque : de plus, les points gagnés (section de cours comprise pour la première fois). */
+export interface MarqueEtudeEnregistree extends MarqueEtude {
+  xp_gagne?: number
+  xp_jour?: EtatXp
 }
 
 /** Une entrée du carnet : une marque + de quoi rouvrir la section exacte. */

@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from catalog import cours_pdf
 from catalog.models import Cours, Exercise, Lesson
 
+from quiz import xp
+from quiz.models import SourceXP
 from users.profils import profil_actif
 
 from . import quota
@@ -322,11 +324,19 @@ def marquer_exercice_fait(request, exercise_id):
 
     profil = profil_actif(request)
     fait = request.data.get("fait", True)
+    gain = None
     if fait:
-        ExerciceFait.objects.get_or_create(profil=profil, exercise=exercise)
+        _, cree = ExerciceFait.objects.get_or_create(profil=profil, exercise=exercise)
+        # Les points de cet exercice, une seule fois pour toutes (voir quiz.xp.crediter_activite) : le décocher puis le
+        # recocher ne rapporte rien de plus.
+        if cree:
+            gain = xp.crediter_activite(profil, SourceXP.EXERCICE, f"exercice:{exercise.pk}", xp.XP_EXERCICE)
     else:
         ExerciceFait.objects.filter(profil=profil, exercise=exercise).delete()
-    return Response({"exercise_id": exercise.pk, "fait": bool(fait)})
+    return Response({
+        "exercise_id": exercise.pk, "fait": bool(fait),
+        "xp_gagne": gain.points if gain else 0, "xp_jour": xp.etat_du_jour(profil),
+    })
 
 
 def _marque_payload(marque):
@@ -378,7 +388,15 @@ def etude_marques(request):
         return Response({"error": str(exc)}, status=400)
     if marque is None:
         return Response({"cle": request.data.get("cle"), "compris": False, "signet": False, "note": "", "updated_at": None})
-    return Response(_marque_payload(marque))
+    payload = _marque_payload(marque)
+    # Une section de COURS déclarée comprise rapporte un peu, une fois pour toutes ; les sections d'épreuve n'en rapportent
+    # pas (leurs exercices ont leur propre déclaration, voir marquer_exercice_fait).
+    if marque.compris and request.data.get("compris") and isinstance(cible, Cours):
+        gain = xp.crediter_activite(profil, SourceXP.COURS, f"cours:{cible.pk}:{marque.cle}", xp.XP_COURS_SECTION)
+        if gain:
+            payload["xp_gagne"] = gain.points
+            payload["xp_jour"] = xp.etat_du_jour(profil)
+    return Response(payload)
 
 
 @api_view(["GET"])

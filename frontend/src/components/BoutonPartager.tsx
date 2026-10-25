@@ -21,16 +21,18 @@ interface BoutonPartagerProps {
   variant?: "outline" | "ghost" | "secondary" | "default"
   size?: "sm" | "default" | "lg"
   libelle?: string
+  /** Paramètres ajoutés au lien (voir lib/partage). */
+  parametres?: Record<string, string>
 }
 
 /**
  * Sur un téléphone, un clic ouvre le partage natif (WhatsApp, Telegram, SMS...) ; ailleurs un petit
  * menu propose WhatsApp et la copie du lien. Le lien porte le code de parrainage de l'élève connecté.
  */
-export function BoutonPartager({ chemin, texte, type, className, variant = "outline", size = "sm", libelle }: BoutonPartagerProps) {
+export function BoutonPartager({ chemin, texte, type, className, variant = "outline", size = "sm", libelle, parametres }: BoutonPartagerProps) {
   useI18n()
   const { user } = useAuth()
-  const donnees = { chemin, texte, codeParrainage: user?.referral_code || undefined }
+  const donnees = { chemin, texte, codeParrainage: user?.referral_code || undefined, parametres }
 
   function tracer(canal: CanalPartage) {
     trackEvent("contenu_partage", { type, canal })

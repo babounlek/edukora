@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
 import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { Skeleton } from "@/components/ui/skeleton"
+import { lireDefiDepuis, memoriserDefi } from "@/lib/defiEssai"
 import { memoriserEssai } from "@/lib/quizEssai"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
@@ -19,6 +20,8 @@ export function QuizEssaiLancementPage() {
   useSeo({ title: t("essai.seo_lancement") })
   const { cursus, subject, theme } = useParams<{ cursus: string; subject: string; theme: string }>()
   const navigate = useNavigate()
+  const [recherche] = useSearchParams()
+  const defi = lireDefiDepuis(recherche.toString())
   const [erreur, setErreur] = useState("")
 
   useEffect(() => {
@@ -28,6 +31,8 @@ export function QuizEssaiLancementPage() {
       return
     }
     let annule = false
+    // Le lien d'un défi (« ?defi=4-5 ») : le score à battre suit le visiteur jusqu'à son résultat ; un lien sans défi efface un défi d'avant.
+    memoriserDefi(defi)
     startQuizEssai({ cursus: ids[0], subject: ids[1], theme: ids[2], n: 10 })
       .then((session) => {
         if (annule) return
@@ -46,7 +51,7 @@ export function QuizEssaiLancementPage() {
     return () => {
       annule = true
     }
-  }, [cursus, subject, theme, navigate])
+  }, [cursus, subject, theme, navigate, defi?.reussies, defi?.total])
 
   if (erreur) {
     return (

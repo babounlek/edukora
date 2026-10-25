@@ -3,12 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Trophy, Zap } from "lucide-react"
 
-import { completeQuizSession, refaireLesRatees, startQuizSession } from "@/api/endpoints"
+import { completeQuizSession, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
+import { NiveauXp } from "@/components/NiveauXp"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
@@ -20,6 +21,7 @@ import { useCountry } from "@/context/CountryContext"
 import { useAuth } from "@/context/AuthContext"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
+import { aChangeDeNiveau, nomNiveau } from "@/lib/niveau"
 import { libelleRythme } from "@/lib/rythme"
 import { SITE_NAME } from "@/lib/site"
 import { useCompteur } from "@/lib/useCompteur"
@@ -48,9 +50,11 @@ function BilanXp({
   const [jour, setJour] = useState(xp.jour)
   const { user } = useAuth()
   const [partage, setPartage] = useState(false)
+  // Le gain de CE quiz a-t-il fait franchir un palier ? Fêté avant tout le reste de la page.
+  const niveauMonte = jour.niveau ? aChangeDeNiveau(jour.niveau, xp.session.total) : false
   useEffect(() => {
-    jouerRetour("fin")
-  }, [])
+    jouerRetour(niveauMonte ? "objectif" : "fin")
+  }, [niveauMonte])
 
   async function partager() {
     if (!user || partage) return
@@ -91,6 +95,18 @@ function BilanXp({
         </RythmeRapide>
       </div>
       {serie && <SemaineDeSerie serie={serie} />}
+      {jour.niveau && (
+        <div className="sm:col-span-3">
+          {/* Fêté quand CE quiz a fait franchir un palier : c'est le moment où un niveau a du sens. */}
+          {niveauMonte && (
+            <p className="animate-quiz-bravo mb-3 flex items-center gap-2 rounded-xl bg-gold/15 px-3 py-2 text-sm font-semibold text-gold-text">
+              <Trophy className="size-4 shrink-0" aria-hidden="true" />
+              {t("niveau.nouveau", { nom: nomNiveau(jour.niveau.rang) })}
+            </p>
+          )}
+          <NiveauXp niveau={jour.niveau} />
+        </div>
+      )}
       {/* Une phrase seulement quand la cohorte est assez grande ET que l'élève est dans la moitié
           haute (voir quiz.classement) : un effort comparé à celui des autres, jamais un niveau, et
           jamais un mot pour qui est en dessous. */}
@@ -231,6 +247,26 @@ export function QuizResultPage() {
   const [erreurRefaire, setErreurRefaire] = useState("")
   const [themeEnLancement, setThemeEnLancement] = useState<number | null>(null)
   const [erreurQuizCible, setErreurQuizCible] = useState("")
+  const [encoreEnCours, setEncoreEnCours] = useState<"encore" | "score" | null>(null)
+  const [erreurEncore, setErreurEncore] = useState("")
+
+  // Rebondir tout de suite : « encore 5 questions » sur le thème le plus fragile, ou le même quiz pour battre son score
+  // (le rejeu ne rapporte pas de points, voir quiz.historique). Aucune page de choix entre deux : l'envie ne dure pas.
+  async function rebondir(mode: "encore" | "score", themeId?: number) {
+    if (!result || encoreEnCours) return
+    setEncoreEnCours(mode)
+    setErreurEncore("")
+    try {
+      const session =
+        mode === "score"
+          ? await rejouerQuiz(Number(id))
+          : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5 })
+      navigate(`/quiz/session/${session.id}`)
+    } catch (err) {
+      setErreurEncore(err instanceof ApiError ? err.message : t("qr.err_lancer"))
+      setEncoreEnCours(null)
+    }
+  }
 
   async function quizCible(themeId: number) {
     if (!result || themeEnLancement !== null) return
@@ -312,6 +348,8 @@ export function QuizResultPage() {
     .filter((theme) => theme.cours && 100 * theme.reussies / theme.total < 70)
     .sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
   const message = messageDeFin(pourcentage, diagnostic)
+  // Le thème où l'élève a le plus à gagner : c'est sur lui que repart « encore 5 questions ».
+  const pireTheme = [...result.par_theme].sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
@@ -366,6 +404,35 @@ export function QuizResultPage() {
         />
       )}
       {result.xp && <InvitePush className="mb-6" />}
+
+      {/* Le geste le plus court pour continuer, avant tout menu : un quiz de plus, ou le même pour faire mieux. */}
+      {!diagnostic && result.par_theme.length > 0 && (
+        <section aria-label={t("qr.encore_aria")} className="mb-6">
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Button
+              size="lg"
+              className="rounded-full"
+              disabled={encoreEnCours !== null}
+              onClick={() => rebondir("encore", pireTheme?.theme_id)}
+            >
+              <Zap />
+              {encoreEnCours === "encore" ? t("quiz.preparation") : t("qr.encore_cinq")}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-full"
+              disabled={encoreEnCours !== null}
+              onClick={() => rebondir("score")}
+            >
+              <RotateCcw />
+              {encoreEnCours === "score" ? t("quiz.preparation") : t("qr.bats_score", { score: result.score, total: result.questions_repondues })}
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">{t("qr.bats_score_note")}</p>
+          {erreurEncore && <p role="alert" className="mt-2 text-sm text-destructive">{erreurEncore}</p>}
+        </section>
+      )}
 
       {/* Le diagnostic ouvre sur ses priorités : c'est ce que l'élève venait chercher. */}
       {diagnostic && <PrioritesExamen cursusId={result.cursus} className="mb-6" />}

@@ -20,6 +20,7 @@ import {
 import { toast } from "sonner"
 
 import { getExerciceLecture, getThemeExercices, marquerExerciceFait } from "@/api/endpoints"
+import { annoncerGain } from "@/lib/gainXp"
 import { ApiError } from "@/api/client"
 import type { ExerciceLecture, QuestionLecture, ThemeExercice } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -570,7 +571,8 @@ function FinExercice({
     setFait(cible)
     setEnCours(true)
     try {
-      await marquerExerciceFait(exerciseId, cible)
+      const reponse = await marquerExerciceFait(exerciseId, cible)
+      annoncerGain(queryClient, reponse.xp_gagne, reponse.xp_jour)
       // La liste et sa barre d'avancement doivent refléter la validation au retour. Le parcours
       // et le reste de l'app lisent la même progression (["progression"]), et la lecture
       // elle-même garde `fait` en cache : sans l'invalider, rouvrir l'exercice rendait l'ancien état.

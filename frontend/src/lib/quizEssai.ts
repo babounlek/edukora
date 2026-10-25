@@ -138,3 +138,10 @@ export function texteDePartageEssai(session: QuizSession): string {
   const theme = q?.theme ? t("essai.partage_theme", { theme: q.theme }) : ""
   return t("essai.partage", { theme, matiere: q?.subject_label ?? t("essai.partage_quiz"), cursus: session.cursus_display })
 }
+
+/** L'accroche d'un DÉFI : le score qu'on vient de faire et de quoi donner envie de faire mieux, sans le lien. */
+export function texteDeDefiEssai(session: QuizSession, reussies: number, total: number): string {
+  const q = session.questions[0]
+  const theme = q?.theme ? t("essai.partage_theme", { theme: q.theme }) : ""
+  return t("essai.partage_defi", { a: reussies, b: total, theme, matiere: q?.subject_label ?? t("essai.partage_quiz"), cursus: session.cursus_display })
+}

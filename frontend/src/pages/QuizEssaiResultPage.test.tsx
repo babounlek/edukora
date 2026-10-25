@@ -13,6 +13,7 @@ vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 // Le compteur qui monte est de l'animation : le test lit la valeur finale.
 vi.mock("@/lib/useCompteur", () => ({ useCompteur: (cible: number) => cible }))
 
+import { memoriserDefi } from "@/lib/defiEssai"
 import { memoriserEssai, memoriserRecord } from "@/lib/quizEssai"
 import { QuizEssaiResultPage } from "./QuizEssaiResultPage"
 
@@ -89,5 +90,29 @@ describe("QuizEssaiResultPage : le gain du visiteur", () => {
     afficher()
 
     expect(await screen.findByText("Ton record sur ce thème : 4 / 5. Refais l'essai pour le battre.")).toBeInTheDocument()
+  })
+
+  it("compare le résultat au défi d'un camarade", async () => {
+    memoriserDefi({ reussies: 2, total: 5 })
+    memoriserEssai(essai([true, true, true, false, false]))
+    afficher()
+
+    expect(await screen.findByText("Défi relevé : tu fais mieux que ton camarade (3/5 contre 2/5) !")).toBeInTheDocument()
+  })
+
+  it("dit quand le camarade a fait mieux", async () => {
+    memoriserDefi({ reussies: 5, total: 5 })
+    memoriserEssai(essai([true, false, false, false, false]))
+    afficher()
+
+    expect(await screen.findByText("Ton camarade a fait mieux (5/5 contre 1/5). Refais l'essai pour le battre !")).toBeInTheDocument()
+  })
+
+  it("ne parle d'aucun défi quand on n'en a pas reçu", async () => {
+    memoriserEssai(essai([true, false, false, false, false]))
+    afficher()
+
+    await screen.findByText("Ce quiz t'aurait rapporté")
+    expect(screen.queryByRole("status")).not.toBeInTheDocument()
   })
 })

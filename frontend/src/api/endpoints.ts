@@ -13,6 +13,7 @@ import type {
   CarnetEntree,
   CibleEtude,
   MarqueEtude,
+  MarqueEtudeEnregistree,
   Country,
   Cursus,
   EtatXp,
@@ -1066,7 +1067,7 @@ export function marquerEtapeOuverte(cle: string) {
  * page : un suivi deviné serait pire que pas de suivi.
  */
 export function marquerExerciceFait(exerciseId: number, fait: boolean) {
-  return apiRequest<{ exercise_id: number; fait: boolean }>(
+  return apiRequest<{ exercise_id: number; fait: boolean; xp_gagne?: number; xp_jour?: EtatXp }>(
     `/access/exercices/${exerciseId}/fait/`,
     { method: "POST", body: { fait } },
   )
@@ -1093,7 +1094,7 @@ export function saveMarqueEtude(
   cle: string,
   patch: Partial<Pick<MarqueEtude, "compris" | "signet" | "note">>,
 ) {
-  return apiRequest<MarqueEtude>("/access/etude/", {
+  return apiRequest<MarqueEtudeEnregistree>("/access/etude/", {
     method: "PUT",
     body: { [cible.type]: cible.slug, cle, ...patch },
   })

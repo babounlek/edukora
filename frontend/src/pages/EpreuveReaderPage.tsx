@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import { ArrowLeft, Check, CheckCheck, NotebookPen, Sparkles } from "lucide-react"
 
 import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
+import { annoncerGain } from "@/lib/gainXp"
 import { ApiError } from "@/api/client"
 import type { Epreuve, EpreuveContent, EpreuveExercise } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -395,7 +396,8 @@ function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
     setFait(cible)
     setEnCours(true)
     try {
-      await marquerExerciceFait(exercise.id as number, cible)
+      const reponse = await marquerExerciceFait(exercise.id as number, cible)
+      annoncerGain(queryClient, reponse.xp_gagne, reponse.xp_jour)
       // Sans cela, la liste d'un thème (cache de 60 s) et le suivi affichaient encore « pas
       // traité » au retour du lecteur. Mêmes clés que la validation de ThemeExerciceLecturePage.
       queryClient.invalidateQueries({ queryKey: ["theme-exercices"] })

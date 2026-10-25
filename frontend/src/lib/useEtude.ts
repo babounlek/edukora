@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 import { getMarquesEtude, saveMarqueEtude } from "@/api/endpoints"
 import type { CibleEtude, MarqueEtude } from "@/api/types"
+import { annoncerGain } from "@/lib/gainXp"
 
 type Patch = Partial<Pick<MarqueEtude, "compris" | "signet" | "note">>
 
@@ -43,6 +44,7 @@ export function useEtude(cible: CibleEtude | null, actif: boolean) {
       )
       return { avant }
     },
+    onSuccess: (reponse) => annoncerGain(queryClient, reponse.xp_gagne, reponse.xp_jour),
     onError: (_erreur, _variables, contexte) => {
       if (contexte) queryClient.setQueryData(cle, contexte.avant)
     },

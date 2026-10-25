@@ -607,6 +607,8 @@ class VisiteAccueil(models.Model):
 class SourceXP(models.TextChoices):
     REPONSE = "REPONSE", "Réponse à une question"
     SEANCE = "SEANCE", "Séance du jour terminée"
+    COURS = "COURS", "Section de cours comprise"
+    EXERCICE = "EXERCICE", "Exercice déclaré fait"
 
 
 class GainXP(models.Model):
@@ -636,6 +638,10 @@ class GainXP(models.Model):
     )
     seance = models.OneToOneField(
         "quiz.SeanceJournaliere", null=True, blank=True, on_delete=models.SET_NULL, related_name="gain_xp",
+    )
+    reference = models.CharField(
+        max_length=120, blank=True, default="",
+        help_text="Ce qui a rapporté le gain hors quiz (« cours:12:regle », « exercice:340 ») : un même objet ne rapporte qu'une fois, jamais deux, même s'il est décoché puis recoché.",
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

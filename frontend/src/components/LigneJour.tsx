@@ -1,6 +1,7 @@
 import { Check, ChevronDown, Flame, Zap } from "lucide-react"
 
 import type { EtatXp, SerieDeJours } from "@/api/types"
+import { NiveauXp } from "@/components/NiveauXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
@@ -49,16 +50,19 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
-        {/* La série ne s'affiche qu'à partir de deux jours (un seul n'est pas encore une
-            habitude) et ne culpabilise jamais ; un repos pardonné reste signalé en infobulle. */}
-        {serie.jours >= 2 && (
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+        {/* Le niveau, sur la ligne que l'élève voit à chaque visite : de quoi se situer et viser le suivant. */}
+        {etat.niveau && <NiveauXp niveau={etat.niveau} compact />}
+        {/* La série se voit dès le premier jour (« Jour 1 : bien parti ! ») : attendre le deuxième la cachait à qui venait de
+            commencer, alors que c'est le premier jour qu'elle donne envie de revenir (test élève Guyguy). Elle ne culpabilise
+            jamais ; un repos pardonné reste signalé en infobulle. */}
+        {serie.jours >= 1 && (
           <span
             className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold"
             title={serie.repos_pris ? t("ligne.repos_pardonne") : undefined}
           >
             <Flame className="size-4 text-warning" aria-hidden="true" />
-            {t("serie.jours_de_suite", { n: serie.jours })}
+            {serie.jours === 1 ? t("serie.premier_jour") : t("serie.jours_de_suite", { n: serie.jours })}
           </span>
         )}
         {semaine && semaine.length === 7 && (

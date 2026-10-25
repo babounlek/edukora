@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Target, X, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Swords, Target, X, Zap } from "lucide-react"
 
 import {
   answerQuizEssai, answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige, revealQuizEssaiCorrige,
@@ -14,6 +14,7 @@ import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSon } from "@/components/BoutonSon"
+import { lireDefiMemorise } from "@/lib/defiEssai"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
@@ -83,6 +84,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const { country } = useCountry()
 
   const [session, setSession] = useState<QuizSession | null>(null)
+  // Le score à battre d'un défi reçu par lien (essai gratuit seulement, voir lib/defiEssai).
+  const [defi] = useState(() => (essai ? lireDefiMemorise() : null))
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
   // (réponse, correction, fin du quiz) ne doit jamais effacer un quiz en cours - l'élève
   // garde ses réponses sous les yeux et peut simplement réessayer.
@@ -336,6 +339,13 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           )}
         </div>
       </div>
+
+      {defi && (
+        <p className="mb-4 flex items-center gap-2 rounded-xl bg-gold/15 px-3 py-2 text-sm font-medium">
+          <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+          {t("defi.en_cours", { a: defi.reussies, b: defi.total })}
+        </p>
+      )}
 
       {/* Progression : un segment par question, coloré selon le résultat - on voit d'un
           coup d'œil où l'on en est et comment ça se passe. Un segment déjà répondu se

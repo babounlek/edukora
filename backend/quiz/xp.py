@@ -21,6 +21,7 @@ un élève très actif en quiz libre ne perd pas sa série parce qu'il n'a pas s
 import logging
 
 from django.db import IntegrityError, transaction
+from django.db.models import Sum
 from django.utils import timezone
 
 
@@ -36,6 +37,17 @@ XP_QCM_JUSTE = 10
 XP_OUVERTE = {ResultatDeclare.REUSSI: 5, ResultatDeclare.PARTIEL: 2}
 BONUS_REVISION = 5
 XP_SEANCE = 10
+
+# Hors quiz : lire et faire comptent aussi, un peu - une section de cours déclarée comprise, un exercice déclaré fait.
+# Ces deux gains sont AUTO-DÉCLARÉS (comme une question ouverte) : ils restent petits, ne rapportent qu'une fois par objet
+# pour toujours (décocher puis recocher ne rapporte rien) et sont plafonnés par jour - le plafond empêche de gonfler
+# un compteur en cochant tout un cours d'un coup.
+XP_COURS_SECTION = 2
+XP_EXERCICE = 5
+PLAFOND_ACTIVITE_JOUR = 15
+
+# Seuils d'XP cumulée des niveaux (rang 1 à 5). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.
+NIVEAUX = (0, 60, 200, 500, 1000)
 
 
 def points_de_base(answer):
@@ -121,8 +133,42 @@ def crediter_seance(seance):
     return _crediter(profil, jour, SourceXP.SEANCE, XP_SEANCE, seance=seance)
 
 
+def crediter_activite(profil, source, reference, points):
+    """
+    Crédite une activité hors quiz (SourceXP.COURS ou EXERCICE) : None si cet objet a déjà rapporté, si le plafond du jour
+    est atteint ou si une contrainte d'unicité dit que le gain existe. Le plafond ne rogne qu'à son bord : à 3 points de
+    marge, un gain de 5 rapporte 3.
+    """
+    if not reference or GainXP.objects.filter(profil=profil, source=source, reference=reference).exists():
+        return None
+    jour = timezone.localdate()
+    deja = (
+        GainXP.objects.filter(profil=profil, jour=jour, source__in=(SourceXP.COURS, SourceXP.EXERCICE))
+        .aggregate(total=Sum("points"))["total"] or 0
+    )
+    points = min(points, PLAFOND_ACTIVITE_JOUR - deja)
+    if points <= 0:
+        return None
+    return _crediter(profil, jour, source, points, reference=reference)
+
+
+def niveau_du_profil(profil):
+    """
+    Le niveau atteint : rang (1 à len(NIVEAUX)), XP cumulée depuis le début, seuil du rang et du suivant (None au sommet).
+    L'XP cumulée est la somme du registre des gains (GainXP) : aucune ligne n'est jamais retirée, donc un niveau ne se perd pas.
+    """
+    total = GainXP.objects.filter(profil=profil).aggregate(total=Sum("points"))["total"] or 0
+    rang = max(i for i, seuil in enumerate(NIVEAUX, start=1) if total >= seuil)
+    return {
+        "rang": rang,
+        "xp_total": total,
+        "seuil": NIVEAUX[rang - 1],
+        "seuil_suivant": NIVEAUX[rang] if rang < len(NIVEAUX) else None,
+    }
+
+
 def etat_du_jour(profil, jour=None):
-    """Où en est le profil aujourd'hui : XP gagnée, objectif en vigueur, atteint ou non."""
+    """Où en est le profil aujourd'hui : XP gagnée, objectif en vigueur, atteint ou non, et son niveau."""
     jour = jour or timezone.localdate()
     ligne = JourXP.objects.filter(profil=profil, jour=jour).first()
     return {
@@ -130,6 +176,7 @@ def etat_du_jour(profil, jour=None):
         "objectif": ligne.objectif if ligne else profil.objectif_xp_quotidien,
         "atteint": bool(ligne and ligne.atteint),
         "objectifs_possibles": list(OBJECTIFS_POSSIBLES),
+        "niveau": niveau_du_profil(profil),
     }
 
 

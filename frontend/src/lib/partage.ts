@@ -11,16 +11,19 @@ export interface DonneesPartageLien {
   chemin: string
   /** Code de parrainage de l'élève connecté : ajouté au lien pour que l'ami lui soit rattaché. */
   codeParrainage?: string
+  /** Paramètres ajoutés au lien (le score à battre d'un défi, par exemple). */
+  parametres?: Record<string, string>
 }
 
 export type ResultatPartageLien = "partage" | "annule" | "indisponible"
 export type CanalPartage = "natif" | "whatsapp" | "copie"
 
 /** Lien absolu de la page, avec le code de parrainage quand l'élève en a un. */
-export function lienDePartage({ chemin, codeParrainage }: Pick<DonneesPartageLien, "chemin" | "codeParrainage">): string {
+export function lienDePartage({ chemin, codeParrainage, parametres }: Pick<DonneesPartageLien, "chemin" | "codeParrainage" | "parametres">): string {
   // Dans la langue de l'interface : le lien d'une page anglaise s'ouvre en anglais chez l'ami
   // (préfixe /en, voir lib/i18n/prefixe.ts).
   const url = new URL(cheminDansLangue(chemin, langueCourante()), window.location.origin)
+  for (const [cle, valeur] of Object.entries(parametres ?? {})) url.searchParams.set(cle, valeur)
   if (codeParrainage) url.searchParams.set("ref", codeParrainage)
   return url.toString()
 }
