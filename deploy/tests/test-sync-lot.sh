@@ -115,11 +115,17 @@ lancer "$SL" sauvegarde "$BATCH"
 verifier "sauvegarde vérifiée créée en 600" '[ $CODE = 0 ] && [[ "$OUT" == *\"hors_site\":true* ]] && [ "$(stat -c %a "$T/lots/sauvegardes/avant-$BATCH.dump")" = 600 ]'
 lancer "$SL" sauvegarde "$BATCH" --max-age-h 24
 verifier "sauvegarde récente réutilisée pour un lot de créations" '[ $CODE = 0 ] && [[ "$OUT" == *\"reutilisee\":true* ]]'
-rm -f "$T/lots/sauvegardes/"*.dump
+rm -f "$T/lots/sauvegardes/"*
 FAKE_DUMP_OCTETS=10 lancer "$SL" sauvegarde "$BATCH"
 verifier "dump trop petit refusé, aucun fichier laissé" '[ $CODE = 1 ] && [ -z "$(ls "$T/lots/sauvegardes")" ]'
 FAKE_BACKUP_KO=1 lancer "$SL" sauvegarde "20261025-101501-abcd1234"
 verifier "échec de la copie hors site : l opération échoue (1)" '[ $CODE = 1 ] && [[ "$OUT" == *hors* ]]'
+verifier "un dump dont la copie hors site a échoué n a PAS de marqueur" '[ -f "$T/lots/sauvegardes/avant-20261025-101501-abcd1234.dump" ] && [ ! -f "$T/lots/sauvegardes/avant-20261025-101501-abcd1234.dump.hors-site" ]'
+lancer "$SL" sauvegarde "20261025-101502-abcd1234" --max-age-h 24
+verifier "ce dump sans copie hors site n est JAMAIS réutilisé : une sauvegarde complète est refaite" '[ $CODE = 0 ] && [[ "$OUT" == *\"reutilisee\":false* ]] && [ -f "$T/lots/sauvegardes/avant-20261025-101502-abcd1234.dump.hors-site" ]'
+lancer "$SL" sauvegarde "20261025-101503-abcd1234" --max-age-h 24
+verifier "avec marqueur : la sauvegarde recente est reutilisee" '[ $CODE = 0 ] && [[ "$OUT" == *\"reutilisee\":true* ]] && [[ "$OUT" == *avant-20261025-101502-abcd1234.dump* ]]'
+rm -f "$T/lots/sauvegardes/"*
 
 echo "== application détachée et verrou =="
 export FAKE_SECONDES=3

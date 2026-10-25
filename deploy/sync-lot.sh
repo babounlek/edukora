@@ -163,10 +163,12 @@ case "$SOUS" in
     done
     mkdir -p "$LOTS/sauvegardes"
     # Un lot qui ne fait que créer peut se contenter d'une sauvegarde récente (< N heures).
+    # Seule une sauvegarde dont la COPIE HORS SITE a réussi (marqueur .hors-site) est réutilisable : un dump resté
+    # sur le disque après un échec de backup.sh ne protège pas d'une perte du disque.
     if [ "$age_max" -gt 0 ]; then
-      recent="$(find "$LOTS/sauvegardes" -maxdepth 1 -name '*.dump' -mmin "-$((age_max * 60))" 2>/dev/null | sort | tail -n 1)"
+      recent="$(find "$LOTS/sauvegardes" -maxdepth 1 -name '*.dump' -mmin "-$((age_max * 60))" 2>/dev/null | sort | while read -r f; do [ -f "$f.hors-site" ] && echo "$f"; done | tail -n 1)"
       if [ -n "$recent" ] && "${COMPOSE[@]}" exec -T db sh -c 'pg_restore --list > /dev/null' < "$recent" 2>/dev/null; then
-        printf '{"statut":"ok","reutilisee":true,"dump":"%s","octets":%s}\n' "$(basename "$recent")" "$(stat -c %s "$recent")"
+        printf '{"statut":"ok","reutilisee":true,"dump":"%s","octets":%s,"hors_site":true}\n' "$(basename "$recent")" "$(stat -c %s "$recent")"
         exit 0
       fi
     fi
@@ -187,8 +189,9 @@ case "$SOUS" in
     chmod 600 "$chemin"
     # 3. copie hors site par la sauvegarde existante (Spaces) : son échec annule aussi l'opération.
     "${COMPOSE[@]}" exec -T backup ./backup.sh >/dev/null 2>&1 || echec 1 "copie hors site (backup.sh) en échec"
-    # Rotation : on garde les 8 dernières sauvegardes de lot.
-    ls -1t "$LOTS"/sauvegardes/avant-*.dump 2>/dev/null | tail -n +9 | while read -r vieux; do rm -f "$vieux"; done
+    : > "$chemin.hors-site"   # marqueur : cette sauvegarde est aussi copiée hors site
+    # Rotation : on garde les 8 dernières sauvegardes de lot (et leur marqueur).
+    ls -1t "$LOTS"/sauvegardes/avant-*.dump 2>/dev/null | tail -n +9 | while read -r vieux; do rm -f "$vieux" "$vieux.hors-site"; done
     printf '{"statut":"ok","reutilisee":false,"dump":"%s","octets":%s,"hors_site":true}\n' "$dump" "$taille"
     ;;
 
