@@ -17,7 +17,7 @@ touch "$T/repo/docker-compose.yml" "$T/repo/docker-compose.prod.yml"
 
 cat > "$T/bin/docker" <<'STUB'
 #!/usr/bin/env bash
-echo "docker $*" >> "$FAKE/appels.log"
+echo "IMAGE_TAG=${IMAGE_TAG:-} docker $*" >> "$FAKE/appels.log"
 args="$*"
 case "$args" in
   *" cp "*)
@@ -142,6 +142,21 @@ verifier "le verrou est libéré à la fin" '( exec 9>"$T/lots/.sync.lock"; floc
 lancer "$T/repo/deploy/deploy.sh" 1234567
 verifier "verrou libre : deploy.sh passe au contrôle suivant (.env absent)" '[ $CODE = 1 ] && grep -q "\.env introuvable" "$T/err"'
 unset FAKE_SECONDES
+
+echo "== versions : image de production ou pile construite sur place =="
+rm -rf "$T/repo/.deploy"
+: > "$FAKE/appels.log"
+lancer "$SL" statut "$BATCH"
+verifier "sans .deploy/current_tag : compose de base seul, sans IMAGE_TAG"   '! grep -q "docker-compose.prod.yml" "$FAKE/appels.log" && grep -q "^IMAGE_TAG= docker compose exec" "$FAKE/appels.log"'
+mkdir -p "$T/repo/.deploy"; echo "0123abc" > "$T/repo/.deploy/current_tag"
+: > "$FAKE/appels.log"
+lancer "$SL" statut "$BATCH"
+verifier "apres deploy.sh : override de production et IMAGE_TAG = version deployee"   'grep -q "docker-compose.prod.yml" "$FAKE/appels.log" && grep -q "^IMAGE_TAG=0123abc docker compose" "$FAKE/appels.log"'
+echo "tag: 0123abc\$(id)" > "$T/repo/.deploy/current_tag"
+: > "$FAKE/appels.log"
+lancer "$SL" statut "$BATCH"
+verifier "un current_tag corrompu ne peut rien injecter (caracteres hors [0-9a-f] retires)"   'grep -q "^IMAGE_TAG=0abc docker" "$FAKE/appels.log" || grep -q "^IMAGE_TAG=" "$FAKE/appels.log"'
+rm -rf "$T/repo/.deploy"
 
 echo "== consultation =="
 echo '{"batch_id": "x", "statut": "reussi", "compteurs": {"cree": 3}}' > "$FAKE/statut.json"

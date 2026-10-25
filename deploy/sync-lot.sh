@@ -30,7 +30,16 @@ cd "$(dirname "$0")/.."
 ROOT="$PWD"
 LOTS="${EDUKORA_LOTS_DIR:-/srv/edukora-lots}"
 VERROU="$LOTS/.sync.lock"
-COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
+# Serveur déployé par deploy.sh : l'override de production exige IMAGE_TAG (la version déployée) pour CHAQUE
+# commande compose, même un simple `exec`. Serveur pas encore passé par deploy.sh : pile construite sur place,
+# fichier compose de base seul.
+if [ -f .deploy/current_tag ]; then
+  IMAGE_TAG="$(tr -dc '0-9a-f' < .deploy/current_tag)"
+  export IMAGE_TAG
+  COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
+else
+  COMPOSE=(docker compose)
+fi
 EN_CONTENEUR="/tmp/lots-recus"
 
 json() { printf '%s\n' "$*"; }

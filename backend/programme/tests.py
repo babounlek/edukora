@@ -584,7 +584,9 @@ class AuditCouvertureProgrammeCommandTests(TestCase):
                 "cours_id": "cours-audit-broken",
                 "meta": {"titre": "Cours cassé (audit)", "matiere": "Mathématiques"},
                 "source": {"rappel_id": "rappel-inexistant-audit"},
-                "sections": [],
+                # Au moins une section : un cours sans section est refusé AVANT la recherche du rappel
+                # (règle du 2026-10-01), ce qui masquerait le cas testé ici - un rappel source introuvable.
+                "sections": [{"type": "accroche", "contenu_markdown": "Texte."}],
             }
             (ingest_dir / "cours.json").write_text(json.dumps(broken_cours), encoding="utf-8")
 

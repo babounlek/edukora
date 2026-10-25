@@ -382,7 +382,10 @@ class ReglesInscriptionTests(TestCase):
     def test_matieres_officielles_selon_le_niveau(self):
         ol = {m.code for m in matieres_officielles(self.ol)}
         al = {m.code for m in matieres_officielles(self.al)}
-        self.assertEqual((len(ol), len(al)), (21, 20))
+        # A Level : 21 depuis l'ajout de Cinematic Art (0736), matière du seul niveau avancé.
+        self.assertEqual((len(ol), len(al)), (21, 21))
+        self.assertIn("GCE_CINEMATIC_ART", al)
+        self.assertNotIn("GCE_CINEMATIC_ART", ol)
         self.assertIn("GCE_MATHS", ol)
         self.assertNotIn("GCE_PM_MECHANICS", ol)
         self.assertIn("GCE_PM_MECHANICS", al)

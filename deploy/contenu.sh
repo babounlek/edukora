@@ -58,7 +58,14 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
+# L'override de production exige IMAGE_TAG pour chaque commande compose, même `exec` : la version déployée.
+if [ -f "$ETAT/current_tag" ]; then
+  IMAGE_TAG="$(tr -dc '0-9a-f' < "$ETAT/current_tag")"
+  export IMAGE_TAG
+  COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
+else
+  COMPOSE=(docker compose)
+fi
 log() { echo "[$(date -u +%H:%M:%SZ)] $*"; }
 
 # --- Version cible et point de départ -----------------------------------------------------
