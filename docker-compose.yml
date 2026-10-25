@@ -86,6 +86,10 @@ services:
       RCLONE_CONFIG_SPACES_SECRET_ACCESS_KEY: ${SPACES_SECRET_ACCESS_KEY}
       RCLONE_CONFIG_SPACES_ENDPOINT: ${SPACES_ENDPOINT}
       RCLONE_CONFIG_SPACES_REGION: ${SPACES_REGION}
+      # La clé Spaces est à accès limité (elle ne peut ni lister ni créer de bucket) : sans ceci, rclone
+      # contrôle l'existence du bucket, reçoit un 403 et tente un CreateBucket refusé, alors que l'envoi
+      # lui-même est autorisé. Le bucket (SPACES_BACKUP_BUCKET) doit donc exister avant la première sauvegarde.
+      RCLONE_CONFIG_SPACES_NO_CHECK_BUCKET: "true"
 
     depends_on:
       - db
