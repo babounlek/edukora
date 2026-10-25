@@ -818,14 +818,24 @@ def post_traiter(lot):
             except Exception as exc:
                 avertissements.append(f"PDF de sujet de la leçon {lesson.pk} : {type(exc).__name__}: {exc}")
         fait |= a_traiter - set(Lesson.objects.filter(pk__in=a_traiter, statut=StatutContenu.VALIDE).values_list("pk", flat=True))
+
+    # Index de recherche et fréquences : dès qu'une opération a été appliquée, y compris un lot de cours ou de
+    # quiz seuls (aucune leçon touchée). Le sitemap n'a rien à rafraîchir : il est reconstruit à chaque requête.
+    # `index_fait` n'est posé qu'en cas de succès : un échec se rejoue, comme celui des PDF.
+    index_fait = bool(rapport.get("post_traitement", {}).get("index_fait", False))
+    if not index_fait and lot.operations.filter(resultat__in=APPLIQUES).exists():
+        from io import StringIO
+
+        index_fait = True
         for nom in ("indexer_recherche", "calculer_frequences_cours"):
             try:
                 call_command(nom, stdout=StringIO(), stderr=StringIO())
             except Exception as exc:
+                index_fait = False
                 avertissements.append(f"{nom} : {type(exc).__name__}: {exc}")
     rapport["a_supprimer"] = a_supprimer
     rapport["post_traitement"] = {
-        "fait": True, "avertissements": avertissements, "lessons_faites": sorted(fait),
+        "fait": True, "avertissements": avertissements, "lessons_faites": sorted(fait), "index_fait": index_fait,
         "le": timezone.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
     }
     lot.rapport = rapport

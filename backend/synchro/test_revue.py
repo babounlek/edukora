@@ -205,6 +205,38 @@ class PostTraitementTests(Banc):
 
 # ============================================================================ M5 courses
 
+class IndexRechercheTests(Banc):
+    """Le sitemap est reconstruit à chaque requête ; seul l'index de recherche est à rafraîchir après un lot."""
+
+    def noms(self, commandes):
+        return [c.args[0] for c in commandes.call_args_list]
+
+    def test_un_lot_sans_lecon_touchee_reindexe_quand_meme(self):
+        lot = self.lot()
+        self.appliquer(lot)
+        lot.operations.update(detail={"lessons": []})  # comme un lot de cours ou de quiz seuls
+        with mock.patch("synchro.moteur.generate_sujet_pdf", return_value=b"%PDF"), \
+                mock.patch("synchro.moteur.call_command") as commandes:
+            res = moteur.post_traiter(lot)
+        self.assertEqual(res["statut"], StatutLot.REUSSI)
+        self.assertEqual(set(self.noms(commandes)), {"indexer_recherche", "calculer_frequences_cours"})
+
+    def test_un_echec_d_indexation_se_rejoue_puis_ne_se_repete_plus(self):
+        lot = self.lot()
+        self.appliquer(lot)
+        with mock.patch("synchro.moteur.generate_sujet_pdf", return_value=b"%PDF"), \
+                mock.patch("synchro.moteur.call_command", side_effect=RuntimeError("base occupée")):
+            res = moteur.post_traiter(lot)
+        self.assertEqual(res["statut"], StatutLot.REUSSI_AVEC_AVERTISSEMENTS)
+        with mock.patch("synchro.moteur.generate_sujet_pdf", return_value=b"%PDF"), \
+                mock.patch("synchro.moteur.call_command") as commandes:
+            res = moteur.post_traiter(lot)
+            self.assertEqual(res["statut"], StatutLot.REUSSI)
+            self.assertEqual(len(commandes.call_args_list), 2)
+            moteur.post_traiter(lot)  # déjà fait : aucune nouvelle indexation
+            self.assertEqual(len(commandes.call_args_list), 2)
+
+
 class CourseTests(Banc):
     def test_m5_une_modification_d_admin_pendant_le_traitement_n_est_pas_ecrasee(self):
         self.appliquer_initial()
