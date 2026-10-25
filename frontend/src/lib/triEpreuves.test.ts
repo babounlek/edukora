@@ -1,32 +1,42 @@
 import { describe, expect, it } from "vitest"
 
-import { TRI_PAR_DEFAUT, triDepuisUrl, triPourApi, valeurUrlDuTri } from "./triEpreuves"
+import { TRI_PAR_DEFAUT, nouveauGermeAleatoire, triDepuisUrl, triPourApi, valeurUrlDuTri } from "./triEpreuves"
 
 describe("tri de la liste des épreuves", () => {
-  it("« Ajoutées récemment » est le tri par défaut", () => {
-    expect(TRI_PAR_DEFAUT).toBe("recent")
-    expect(triDepuisUrl(null)).toBe("recent")
-    expect(triDepuisUrl("")).toBe("recent")
+  it("« Aléatoire » est le tri par défaut", () => {
+    expect(TRI_PAR_DEFAUT).toBe("aleatoire")
+    expect(triDepuisUrl(null)).toBe("aleatoire")
+    expect(triDepuisUrl("")).toBe("aleatoire")
   })
 
-  it("le tri par année se choisit explicitement", () => {
+  it("« Ajoutées récemment » et le tri par année se choisissent explicitement", () => {
+    expect(triDepuisUrl("recent")).toBe("recent")
     expect(triDepuisUrl("annee")).toBe("annee")
   })
 
   it("les anciens liens retombent sur le défaut, sans erreur", () => {
-    expect(triDepuisUrl("recent")).toBe("recent")
-    expect(triDepuisUrl("year")).toBe("recent")
-    expect(triDepuisUrl("popular")).toBe("recent")
-    expect(triDepuisUrl("n-importe-quoi")).toBe("recent")
+    expect(triDepuisUrl("aleatoire")).toBe("aleatoire")
+    expect(triDepuisUrl("year")).toBe("aleatoire")
+    expect(triDepuisUrl("popular")).toBe("aleatoire")
+    expect(triDepuisUrl("n-importe-quoi")).toBe("aleatoire")
   })
 
-  it("le défaut n'a pas de valeur dans l'URL, l'année en a une", () => {
-    expect(valeurUrlDuTri("recent")).toBe("")
+  it("le défaut n'a pas de valeur dans l'URL, les autres tris en ont une", () => {
+    expect(valeurUrlDuTri("aleatoire")).toBe("")
+    expect(valeurUrlDuTri("recent")).toBe("recent")
     expect(valeurUrlDuTri("annee")).toBe("annee")
   })
 
-  it("l'API reçoit `recent` par défaut, et aucun tri pour l'année (tri par défaut du backend)", () => {
+  it("l'API reçoit `random` par défaut, `recent` pour les ajouts, et aucun tri pour l'année", () => {
+    expect(triPourApi("aleatoire")).toBe("random")
     expect(triPourApi("recent")).toBe("recent")
     expect(triPourApi("annee")).toBeUndefined()
+  })
+
+  it("le germe aléatoire est un entier positif que le backend sait relire", () => {
+    const germe = nouveauGermeAleatoire()
+    expect(Number.isInteger(germe)).toBe(true)
+    expect(germe).toBeGreaterThanOrEqual(0)
+    expect(germe).toBeLessThan(2 ** 31)
   })
 })

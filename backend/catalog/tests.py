@@ -642,6 +642,37 @@ class OrderingFilterApiTests(TestCase):
         titles = [item["title"] for item in response.json()["results"]]
         self.assertLess(titles.index("Ancien"), titles.index("Recent"))
 
+    def _titres(self, **params):
+        response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "ordering": "random", **params})
+        self.assertEqual(response.status_code, 200)
+        return [item["title"] for item in response.json()["results"]]
+
+    def test_ordering_random_same_seed_gives_same_order_and_keeps_every_item(self):
+        # Le défilement infini redemande la liste page par page : un même germe doit redonner le même ordre.
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        for i in range(12):
+            Lesson.objects.create(
+                title=f"Sujet {i}", subject=subject, lesson_type=LessonType.CORR,
+                statut=StatutContenu.VALIDE, year=2000 + i,
+            )
+        premier = self._titres(seed=7)
+        self.assertEqual(premier, self._titres(seed=7))
+        self.assertCountEqual(premier, self._titres(ordering="year"))
+
+    def test_ordering_random_changes_with_the_seed(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        for i in range(12):
+            Lesson.objects.create(
+                title=f"Sujet {i}", subject=subject, lesson_type=LessonType.CORR,
+                statut=StatutContenu.VALIDE, year=2000 + i,
+            )
+        ordres = {tuple(self._titres(seed=graine)) for graine in range(1, 6)}
+        self.assertGreater(len(ordres), 1)
+
+    def test_ordering_random_without_a_valid_seed_still_answers(self):
+        self.assertCountEqual(self._titres(seed="abc"), ["Ancien", "Recent"])
+        self.assertCountEqual(self._titres(), ["Ancien", "Recent"])
+
 
 class DefaultOrderingGroupsByExamenLevelApiTests(TestCase):
     """Tri par défaut de /catalog/lessons/ (sans ?ordering) - décision utilisateur du

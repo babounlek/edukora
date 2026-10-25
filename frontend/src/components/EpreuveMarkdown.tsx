@@ -19,16 +19,18 @@ import rehypeRaw from "rehype-raw"
 import remarkGfm from "remark-gfm"
 import remarkBreaks from "remark-breaks"
 
-import { t } from "@/lib/i18n"
+import { t, useI18n } from "@/lib/i18n"
 
 import { Callout } from "@/components/Callout"
 import { LienCours } from "@/components/LienCours"
+import { ReponseBox } from "@/components/ReponseBox"
 import { SolutionToggle, SolutionsOuvertesContext } from "@/components/SolutionToggle"
-import { agrandirFractionsEnLigne, extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
+import { agrandirFractionsEnLigne, extractAnswerHighlights, extractCallouts, extractSolutionToggles, flattenReactText, groupBareCoursLinks, italicizeQuotes, normalizeMathBlocks, type CalloutVariant } from "@/lib/markdown"
 import { API_BASE_URL } from "@/api/client"
 
 const CALLOUT_SENTINEL = /^\[CALLOUT:(piege|conseil|rappel)\]$/
 const SOLUTION_TOGGLE_SENTINEL = /^\[SOLUTION_TOGGLE\]$/
+const ANSWER_SENTINEL = /^\[ANSWER\]$/
 // Le marqueur porte le slug du Cours depuis son introduction ; un id numérique reste
 // possible sur du contenu compilé avant cette bascule (voir VisibleQuerySet.par_slug_ou_id
 // côté backend, qui accepte encore les deux en lecture).
@@ -95,6 +97,10 @@ function MarkdownBlockquote({ children }: { children?: ReactNode }) {
         {rest}
       </Callout>
     )
+  }
+
+  if (ANSWER_SENTINEL.test(firstText)) {
+    return <ReponseBox>{items.slice(1)}</ReponseBox>
   }
 
   if (SOLUTION_TOGGLE_SENTINEL.test(firstText)) {
@@ -275,12 +281,19 @@ const REHYPE_PLUGINS = [rehypeRaw, rehypeKatex]
 /** Rendu Markdown partagé entre la lecture en ligne complète et l'aperçu public d'une épreuve. */
 function EpreuveMarkdownBase({ markdown, directCoursLinks = false, solutionsOuvertes = false }: EpreuveMarkdownProps) {
   // Le prétraitement est coûteux sur un long corrigé : refait seulement si le texte change.
+  const { langue } = useI18n()
   const source = useMemo(
     () =>
       italicizeQuotes(
-        agrandirFractionsEnLigne(normalizeMathBlocks(extractSolutionToggles(groupBareCoursLinks(extractCallouts(markdown))))),
+        agrandirFractionsEnLigne(
+          normalizeMathBlocks(
+            extractSolutionToggles(
+              extractAnswerHighlights(groupBareCoursLinks(extractCallouts(markdown)), { conclusionsChiffrees: langue === "en" }),
+            ),
+          ),
+        ),
       ),
-    [markdown],
+    [markdown, langue],
   )
 
   return (

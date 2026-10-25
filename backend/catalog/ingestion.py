@@ -257,6 +257,7 @@ MATIERE_MAP.update({
     "religious studies": "GCE_RELIGION", "citizenship education": "GCE_CITIZENSHIP",
     "food and nutrition": "GCE_FOOD_NUTRITION", "food science and nutrition": "GCE_FOOD_NUTRITION", "accounting": "GCE_ACCOUNTING",
     "commerce": "GCE_COMMERCE", "technical drawing": "GCE_TECH_DRAWING",
+    "cinematic art": "GCE_CINEMATIC_ART", "cinematic arts": "GCE_CINEMATIC_ART",
 })
 
 # Tolère l'ancienne nomenclature (A/C/D/F, "F" pour "TI") ET la nomenclature actuelle.

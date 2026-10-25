@@ -299,7 +299,9 @@ export interface EpreuveFilters {
   search?: string
   page?: number
   exclude_read?: boolean
-  ordering?: "year" | "recent" | "popular"
+  ordering?: "year" | "recent" | "popular" | "random"
+  // Germe du tri aléatoire : le même germe redonne le même ordre, donc des pages suivantes cohérentes.
+  seed?: number
   est_vitrine?: boolean
   // Lien "s'entraîner sur ce thème" depuis ThemesFrequents - correspondance exacte sur
   // un nom de Tag déjà connu (voir catalog.views.LessonListView), pas une saisie libre.

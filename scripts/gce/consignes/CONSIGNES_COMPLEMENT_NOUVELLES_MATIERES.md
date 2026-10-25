@@ -42,3 +42,9 @@ Les papers portent sur des œuvres au programme camerounais (pièces, romans, re
 ## Ce que tu rends
 
 Dossier, nombre de fichiers et de questions, sortie du validateur, `incertitudes`, QCM convertis en ouvertes, thèmes créés (et lesquels sont réutilisés), figures produites, seconde passe oui/non.
+
+## A Level Literature in English (0735) : thèmes fermés et ingestion du 2026-10-24
+
+Aucun dossier modèle A/L n'existe encore (23 papers 2019-2026 traités en parallèle). Identité : `examen` `gce_al`, `matiere` `Literature in English`, `code_matiere` `0735`, `serie` null, `pays` `cm`, `origine` `officiel`. Pour la structure des fichiers (clés JSON, `regles_choix`, `groupes`), prends comme modèle un dossier `gce-ol-literature-2023-p2-officiel-cameroun` (rédigé) ou `gce-ol-literature-2024-p1-officiel-cameroun` (QCM) dans `D:\edukora\backend\ingest\cm\`, et adapte à la page de garde A Level.
+
+**Liste FERMÉE de thèmes** (tous préfixés `A Level Literature - `, n'en crée AUCUN autre, plusieurs agents travaillent en parallèle) : `poetry analysis`, `drama`, `prose fiction`, `unseen passage`, `essay writing on set books`, `literary devices`, `themes and characterisation`, `Shakespeare`, `African literature`, `literary context and background`. Écris-les exactement ainsi (ex. `A Level Literature - poetry analysis`).

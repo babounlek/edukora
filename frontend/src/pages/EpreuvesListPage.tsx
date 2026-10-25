@@ -29,7 +29,7 @@ import { FILTERS_SESSION_KEY } from "@/lib/filtresListe"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
 import { cursusDesTotaux, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { useSeo } from "@/lib/seo"
-import { triDepuisUrl, triPourApi, valeurUrlDuTri } from "@/lib/triEpreuves"
+import { nouveauGermeAleatoire, triDepuisUrl, triPourApi, valeurUrlDuTri } from "@/lib/triEpreuves"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -86,9 +86,10 @@ const NATURE_LABELS: Record<NatureEpreuve, CleI18n> = {
   PRATIQUE: "ep.nature_PRATIQUE",
 }
 
-// Deux tris : « Ajoutées récemment » (le défaut, une liste qui s'ouvre sur les dernières épreuves corrigées
-// donne une raison de revenir) puis « Plus récentes (année) ». Les règles sont dans lib/triEpreuves.ts.
+// Trois tris : « Aléatoire » (le défaut : chaque visite montre d'autres épreuves), « Ajoutées récemment » puis
+// « Plus récentes (année) ». Les règles sont dans lib/triEpreuves.ts.
 const ORDERING_LABELS = {
+  aleatoire: "ep.tri_aleatoire",
   recent: "ep.tri_recent",
   annee: "ep.tri_annee",
 } as const satisfies Record<string, CleI18n>
@@ -190,6 +191,9 @@ export function EpreuvesListPage() {
   const gratuitFilter = searchParams.get("gratuit") === "true"
   const search = searchParams.get("search") ?? ""
   const ordering = triDepuisUrl(searchParams.get("ordering"))
+  // Germe du tri aléatoire : fixé pour la visite (le défilement infini redemande la liste page par page, il
+  // lui faut le même ordre), renouvelé quand on re-choisit « Aléatoire » pour une autre sélection.
+  const [germeAleatoire, setGermeAleatoire] = useState(nouveauGermeAleatoire)
 
   // Arrivé par « Inédites » (menu, accueil, fiche) : la page parle d'inédites, pas d'annales. Le
   // titre « Toutes les annales corrigées » au-dessus d'une liste d'épreuves jamais tirées des
@@ -292,6 +296,7 @@ export function EpreuvesListPage() {
       gratuitFilter,
       debouncedSearch,
       ordering,
+      ordering === "aleatoire" ? germeAleatoire : null,
     ],
     queryFn: ({ pageParam, signal }) =>
       listEpreuves(
@@ -307,6 +312,7 @@ export function EpreuvesListPage() {
           est_vitrine: gratuitFilter || undefined,
           search: debouncedSearch || undefined,
           ordering: triPourApi(ordering),
+          seed: ordering === "aleatoire" ? germeAleatoire : undefined,
           page: pageParam,
         },
         signal,
@@ -781,9 +787,15 @@ export function EpreuvesListPage() {
               <span className="font-medium tabular-nums text-foreground">{formatAmount(count)}</span> {tn("ep.trouvees", count)}
             </p>
             <div className="flex shrink-0 items-center gap-2">
-            <Select value={ordering} onValueChange={(v) => updateFilter("ordering", valeurUrlDuTri(v))}>
+            <Select
+              value={ordering}
+              onValueChange={(v) => {
+                if (v === "aleatoire") setGermeAleatoire(nouveauGermeAleatoire())
+                updateFilter("ordering", valeurUrlDuTri(v))
+              }}
+            >
               <SelectTrigger className="h-8 w-40 text-xs sm:w-48 sm:text-sm" aria-label={t("ep.trier")}>
-                <SelectValue placeholder={t("ep.tri_recent")} />
+                <SelectValue placeholder={t("ep.tri_aleatoire")} />
               </SelectTrigger>
               <SelectContent>
                 {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (

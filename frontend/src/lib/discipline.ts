@@ -16,7 +16,7 @@ export const EQUIVALENTS_GCE: Record<string, string> = {
   GCE_ENGLISH: "ANGLAIS", GCE_FRENCH: "FRANCAIS", GCE_SBE_FRENCH: "FRANCAIS",
   GCE_COMPUTER_SCI: "INFORMATIQUE", GCE_ICT: "INFORMATIQUE",
   GCE_CITIZENSHIP: "EDUCATION_CIVIQUE", GCE_ACCOUNTING: "ECONOMIE", GCE_COMMERCE: "ECONOMIE",
-  GCE_TECH_DRAWING: "DESSIN",
+  GCE_TECH_DRAWING: "DESSIN", GCE_CINEMATIC_ART: "DESSIN",
 }
 
 /** Code à utiliser pour retrouver icône et couleur : celui de la jumelle francophone s'il y en a une, sinon le code lui-même. */

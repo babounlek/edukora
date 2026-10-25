@@ -1,3 +1,5 @@
+import random
+
 from django.db.models import Case, Count, Exists, IntegerField, Min, OuterRef, Q, Subquery, When
 from django.db.models.functions import Coalesce
 from django.shortcuts import get_object_or_404
@@ -336,7 +338,20 @@ class LessonListView(generics.ListAPIView):
                 k["examen_rang"] = EXAMEN_RANG_INCONNU
 
         merged_keys = lesson_keys + inedit_keys
-        merged_keys.sort(key=_merge_sort_key(ordering))
+        if ordering == "random":
+            # Mélange reproductible : la pagination (défilement infini) redemande la liste page par page,
+            # donc le même `seed` doit redonner le même ordre, sans quoi des épreuves se répéteraient ou
+            # manqueraient d'une page à l'autre. L'ordre de départ est fixé d'abord (les querysets n'en
+            # garantissent aucun), puis mélangé par le germe que le client choisit - une valeur absente ou
+            # illisible tire un germe neuf, au prix de la stabilité entre deux pages.
+            try:
+                seed = int(request.query_params.get("seed"))
+            except (TypeError, ValueError):
+                seed = random.SystemRandom().randrange(2**31)
+            merged_keys.sort(key=lambda k: (k["kind"], k["id"]))
+            random.Random(seed).shuffle(merged_keys)
+        else:
+            merged_keys.sort(key=_merge_sort_key(ordering))
 
         page_keys = self.paginate_queryset(merged_keys)
         keys_to_serialize = page_keys if page_keys is not None else merged_keys

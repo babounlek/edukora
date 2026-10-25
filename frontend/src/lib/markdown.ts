@@ -209,6 +209,52 @@ export function extractCallouts(markdown: string): string {
   return markdown
 }
 
+// Réponse finale annoncée en gras : « **Answer: B.** », « **Intended answer: D ($4$).** », « **Answer.** texte »,
+// « **Réponse : b) en solution neutre.** ». Le gras s'arrête au PREMIER « ** » suivant.
+const REPONSE_GRAS_RE = /\*\*(?:Intended answer|Final answer|Correct answer|Answer|Réponse(?: finale)?)\b[^\n]*?\*\*/
+// Une ligne ENTIÈREMENT en gras qui porte une formule (« **The tension in the string is $8$ N.** ») est la
+// conclusion chiffrée d'un calcul ; les intitulés (« **Exercice 2 (6 points)** », « **(ii)** ») n'en sont pas.
+const LIGNE_GRAS_COMPLETE_RE = /^\*\*([^*\n]{3,300})\*\*[.:]?\s*$/
+const INTITULE_RE = /^(?:\(|\d+[.)]|[ivx]+[.)]|Exercice|Exercise|SECTION|Section|Part|Partie|Question|Plan|Document|Étape|Item)/i
+const FIN_DE_PHRASE_RE = /[.!?:;)$\]"'»”]$/
+
+/**
+ * La réponse d'un corrigé doit se voir d'un coup d'œil : « **Answer: B.** » se perdait au bout d'un paragraphe
+ * d'explication, et la conclusion d'un calcul n'avait que le gras pour la distinguer du reste de la résolution.
+ * Chaque réponse finale reconnue est isolée dans son propre bloc, converti en citation `[ANSWER]` (même principe
+ * que les callouts) que <ReponseBox> met en valeur. Le texte qui PRÉCÈDE la réponse sur la même ligne (le plus
+ * souvent l'explication d'un QCM) reste un paragraphe normal ; celui qui la SUIT est gardé dans l'encadré.
+ *
+ * Les lignes déjà dans une citation, les tableaux, les listes et le code ne sont pas touchés.
+ *
+ * `conclusionsChiffrees` (la ligne en gras qui porte une formule) n'est fiable que sur les corrigés anglophones
+ * (GCE) : en français, les sous-étapes d'un calcul (« **Limite en $-\infty$.** ») sont écrites de la même façon.
+ */
+export function extractAnswerHighlights(markdown: string, { conclusionsChiffrees = true } = {}): string {
+  let dansBloc = false // bloc de code ou formule display multi-lignes : jamais touché
+  return markdown
+    .split("\n")
+    .map((line) => {
+      const bascule = /^\s*(?:```|~~~)/.test(line) || (line.match(/\$\$/g) ?? []).length % 2 === 1
+      if (bascule) dansBloc = !dansBloc
+      if (dansBloc || bascule || line.includes("`")) return line
+      if (!line.trim() || /^\s*(?:>|\||[-*+]\s|\d+[.)]\s)/.test(line)) return line
+
+      const reponse = REPONSE_GRAS_RE.exec(line)
+      if (reponse) {
+        const avant = line.slice(0, reponse.index).trimEnd()
+        if (avant && !FIN_DE_PHRASE_RE.test(avant)) return line
+        return `${avant ? `${avant}\n` : ""}\n> [ANSWER]\n>\n> ${line.slice(reponse.index)}\n`
+      }
+      const entiere = LIGNE_GRAS_COMPLETE_RE.exec(line.trim())
+      if (conclusionsChiffrees && entiere && entiere[1].includes("$") && !INTITULE_RE.test(entiere[1]) && !entiere[1].trimEnd().endsWith(":")) {
+        return `\n> [ANSWER]\n>\n> ${line.trim()}\n`
+      }
+      return line
+    })
+    .join("\n")
+}
+
 const BARE_COURS_LINK_LINE_RE = /^\[COURS_LINK:([a-zA-Z0-9_-]+)\]$/gm
 
 /**

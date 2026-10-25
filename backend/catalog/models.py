@@ -79,13 +79,13 @@ EQUIVALENTS_GCE = {
     "GCE_ENGLISH": "ANGLAIS", "GCE_FRENCH": "FRANCAIS", "GCE_SBE_FRENCH": "FRANCAIS",
     "GCE_COMPUTER_SCI": "INFORMATIQUE", "GCE_ICT": "INFORMATIQUE",
     "GCE_CITIZENSHIP": "EDUCATION_CIVIQUE", "GCE_ACCOUNTING": "ECONOMIE", "GCE_COMMERCE": "ECONOMIE",
-    "GCE_TECH_DRAWING": "DESSIN",
+    "GCE_TECH_DRAWING": "DESSIN", "GCE_CINEMATIC_ART": "DESSIN",
 }
 
 # Codes de matière du GCE Board par niveau (pages « GCE Ordinary Level » et « GCE Advanced Level » de camgceb.org,
 # relevées le 2026-10-15). Subject.codes_officiels les recopie. Une matière absente d'un niveau n'y est pas offerte :
 # Mathematics, Additional Mathematics, Logic, Commerce, Citizenship Education et Human Biology n'existent qu'au
-# O Level ; Pure Mathematics (Mechanics / Statistics), Further Mathematics, Philosophy et ICT qu'à l'A Level.
+# O Level ; Pure Mathematics (Mechanics / Statistics), Further Mathematics, Philosophy, ICT et Cinematic Art qu'à l'A Level.
 # GCE_TECH_DRAWING n'est dans aucune des deux listes : la branche technique relève du TVE (autre examen du Board).
 CODES_OFFICIELS_GCE = {
     "GCE_ACCOUNTING": {"GCE_OL": "0505", "GCE_AL": "0705"},
@@ -95,6 +95,7 @@ CODES_OFFICIELS_GCE = {
     "GCE_ECONOMICS": {"GCE_OL": "0525", "GCE_AL": "0725"},
     "GCE_ENGLISH": {"GCE_OL": "0530", "GCE_AL": "0730"},
     "GCE_LITERATURE": {"GCE_OL": "0535", "GCE_AL": "0735"},
+    "GCE_CINEMATIC_ART": {"GCE_AL": "0736"},
     "GCE_FOOD_NUTRITION": {"GCE_OL": "0540", "GCE_AL": "0740"},
     "GCE_FRENCH": {"GCE_OL": "0545", "GCE_AL": "0745"},
     "GCE_SBE_FRENCH": {"GCE_OL": "0546", "GCE_AL": "0746"},
