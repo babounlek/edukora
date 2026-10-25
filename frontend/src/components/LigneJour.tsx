@@ -1,6 +1,7 @@
-import { Check, Flame, Zap } from "lucide-react"
+import { Check, ChevronDown, Flame, Zap } from "lucide-react"
 
 import type { EtatXp, SerieDeJours } from "@/api/types"
+import { RythmeRapide } from "@/components/RythmeRapide"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -26,9 +27,13 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
         ) : (
           <Zap className="size-4 text-gold-text" aria-hidden="true" />
         )}
-        <span className={cn("font-semibold", etat.atteint && "text-success")}>
-          {etat.atteint ? t("ligne.objectif_atteint") : t("ligne.points", { xp: etat.xp, objectif: etat.objectif })}
-        </span>
+        {/* Le texte de l'objectif ouvre le choix du rythme : il n'était réglable que dans « Mon compte ». */}
+        <RythmeRapide etat={etat} className="-my-1.5 flex min-h-9 items-center gap-1 py-1.5">
+          <span className={cn("font-semibold", etat.atteint && "text-success")}>
+            {etat.atteint ? t("ligne.objectif_atteint") : t("ligne.points", { xp: etat.xp, objectif: etat.objectif })}
+          </span>
+          <ChevronDown className="size-3.5 text-muted-foreground" aria-hidden="true" />
+        </RythmeRapide>
         <div
           className="h-1.5 w-16 overflow-hidden rounded-full bg-secondary sm:w-24"
           role="progressbar"

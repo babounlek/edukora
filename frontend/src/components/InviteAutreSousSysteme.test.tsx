@@ -76,3 +76,31 @@ describe("InviteAutreSousSysteme", () => {
     expect(majUtilisateur).toHaveBeenCalled()
   })
 })
+
+describe("InviteAutreSousSysteme, variante compacte", () => {
+  it("tient en une phrase courte et un lien, dans la langue de l'examen visé", () => {
+    render(<InviteAutreSousSysteme disponible variante="compacte" />)
+    expect(screen.getByText("Preparing the GCE?")).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Switch to English" })).toBeTruthy()
+    // La ligne française qui doublait la phrase anglaise (3 lignes sur 375 px, test élève Guyguy) n'y est plus.
+    expect(screen.queryByText(/sous-système anglophone/)).toBeNull()
+  })
+
+  it("le clic recharge la page en anglais, comme la version complète", async () => {
+    render(<InviteAutreSousSysteme disponible variante="compacte" />)
+    fireEvent.click(screen.getByRole("button", { name: "Switch to English" }))
+    await waitFor(() => expect(ouvrir).toHaveBeenCalledWith("en"))
+  })
+
+  it("version anglaise : invite vers le BEPC, le Probatoire et le BAC en une ligne", async () => {
+    await definirLangue("en", { persister: false })
+    render(<InviteAutreSousSysteme disponible variante="compacte" />)
+    expect(screen.getByText("Preparing for the BEPC, Probatoire or BAC?")).toBeTruthy()
+    expect(screen.getByRole("button", { name: "Passer en français" })).toBeTruthy()
+  })
+
+  it("rien quand le pays n'a pas d'examen dans l'autre langue", () => {
+    const { container } = render(<InviteAutreSousSysteme disponible={false} variante="compacte" />)
+    expect(container.innerHTML).toBe("")
+  })
+})

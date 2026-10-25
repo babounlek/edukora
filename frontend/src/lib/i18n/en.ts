@@ -13,6 +13,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "bandeau_langue.bouton": "View in French",
   "invite_ss.vers_gce": "Preparing for the GCE (anglophone system)?",
   "invite_ss.vers_gce_action": "Switch to English",
+  "invite_ss.vers_gce_court": "Preparing the GCE?",
+  "invite_ss.vers_francophone_court": "Preparing for the BEPC, Probatoire or BAC?",
   "invite_ss.vers_francophone": "Preparing for the BEPC, Probatoire or BAC (francophone system)?",
   "invite_ss.vers_francophone_action": "Passer en français",
   "langue.toutes": "All languages",
@@ -1141,6 +1143,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "pin.reinitialiser": "Reset the parent code",
   "pin.verification_erreur": "Could not verify.",
 
+  "cs.accroche_suite": "Read more",
+  "cs.accroche_reduire": "Show less",
   "cs.prerequis": "Prerequisites",
   "cs.regle": "The rule",
   "cs.exemple_resolu": "Worked example",
@@ -1649,6 +1653,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "login.changer_adresse": "Change address",
   "login.ou": "or",
   "bandeau.titre": "Choose your exam to get your daily session",
+  "bandeau.titre_court": "Choose your exam",
   "bandeau.aria": "Choose your exam",
   "bandeau.note": "Noted: {cursus}",
   "bandeau.connecte_toi": "Log in to get your daily session.",
@@ -1713,6 +1718,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "rythme.detail_30": "30 points: about 3 correct answers",
   "rythme.points": "{n} points",
   "rythme.erreur": "Could not save your pace. Try again.",
+  "rythme.changer_aria": "Change my daily pace (currently: {rythme})",
+  "rythme.changer": "Change my pace",
   "rythme.titre": "Your daily pace",
   "rythme.texte":
     "Reaching your points goal counts towards your streak, even without the daily session. Points are earned on correct answers, especially on topics to revisit.",
@@ -1729,6 +1736,8 @@ export const en: Partial<Record<CleI18n, string>> = {
     "One notification a day, only if your session isn't done yet. You can stop it at any time.",
   "push.activer": "Turn on",
   "retours.titre": "Sounds and vibrations",
+  "retours.couper": "Turn sound off",
+  "retours.activer": "Turn sound on",
   "retours.texte": "A small sound and a vibration on every answer. This setting only applies to this device.",
 
   "secu.titre": "Login and security",

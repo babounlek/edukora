@@ -8,7 +8,9 @@ import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
+import { Confettis } from "@/components/Confettis"
 import { ObjectifXp } from "@/components/ObjectifXp"
+import { RythmeRapide } from "@/components/RythmeRapide"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
 import { InvitePush } from "@/components/ReglagesSeance"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
@@ -18,36 +20,13 @@ import { useCountry } from "@/context/CountryContext"
 import { useAuth } from "@/context/AuthContext"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
+import { libelleRythme } from "@/lib/rythme"
 import { SITE_NAME } from "@/lib/site"
 import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { lienDeParrainage } from "@/lib/referral"
-
-const CONFETTI_COULEURS = ["bg-gold", "bg-primary", "bg-success", "bg-info", "bg-warning"]
-
-/** Pluie de confettis pour un beau score - décorative, coupée si mouvement réduit (voir index.css). */
-function Confettis() {
-  return (
-    <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-0 overflow-visible">
-      {Array.from({ length: 28 }).map((_, i) => (
-        <span
-          key={i}
-          className={"quiz-confetti-piece " + CONFETTI_COULEURS[i % CONFETTI_COULEURS.length]}
-          style={
-            {
-              left: (i * 37) % 100 + "%",
-              animationDelay: (i % 7) * 0.12 + "s",
-              "--dx": ((i % 5) - 2) * 26 + "px",
-              "--rot": 360 + (i % 4) * 180 + "deg",
-            } as React.CSSProperties
-          }
-        />
-      ))}
-    </div>
-  )
-}
 
 /**
  * Ce que le quiz a rapporté et où en est la journée : l'XP qui monte, la barre d'objectif, la
@@ -65,6 +44,8 @@ function BilanXp({
 }) {
   useI18n()
   const gagne = useCompteur(xp.session.total)
+  // L'état du jour peut changer ici même (l'élève change de rythme) : une copie locale, repartie de ce que le serveur a dit.
+  const [jour, setJour] = useState(xp.jour)
   const { user } = useAuth()
   const [partage, setPartage] = useState(false)
   useEffect(() => {
@@ -102,7 +83,13 @@ function BilanXp({
           <p className="text-xs text-muted-foreground">{t("qr.points_bonnes")}</p>
         )}
       </div>
-      <ObjectifXp etat={xp.jour} />
+      <div>
+        <ObjectifXp etat={jour} />
+        {/* Le rythme se règle ici, là où l'élève vient de voir ce que son quiz a rapporté. */}
+        <RythmeRapide etat={jour} onChange={setJour} className="mt-1.5 text-xs font-medium text-primary underline-offset-2 hover:underline">
+          {t("rythme.changer")} · {libelleRythme(jour.objectif)}
+        </RythmeRapide>
+      </div>
       {serie && <SemaineDeSerie serie={serie} />}
       {/* Une phrase seulement quand la cohorte est assez grande ET que l'élève est dans la moitié
           haute (voir quiz.classement) : un effort comparé à celui des autres, jamais un niveau, et

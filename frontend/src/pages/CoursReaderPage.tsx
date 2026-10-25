@@ -172,25 +172,42 @@ export function CoursReaderPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <BarreLecture cibleRef={articleRef} contenuKey={content?.id} />
-      <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-        <Link
-          to={coursListPath(displayCountry)}
-          className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
-        >
-          <ArrowLeft className="size-4" />
-          {t("co.retour")}
-        </Link>
-        {etude.disponible && (
+      {/* Sur téléphone : retour, puis le titre, puis les boutons (partager, PDF, hors ligne). Cinq boutons AVANT le titre
+          repoussaient le cours sous le pli (test élève Guyguy) ; dès `sm` ils retrouvent leur place à droite du retour. */}
+      <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:gap-x-4">
+        <div className="mb-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm sm:col-start-1 sm:row-start-1">
           <Link
-            to="/carnet"
+            to={coursListPath(displayCountry)}
             className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
           >
-            <NotebookPen className="size-4" />
-            {t("cpt.carnet")}
+            <ArrowLeft className="size-4" />
+            {t("co.retour")}
           </Link>
+          {etude.disponible && (
+            <Link
+              to="/carnet"
+              className="inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-primary"
+            >
+              <NotebookPen className="size-4" />
+              {t("cpt.carnet")}
+            </Link>
+          )}
+        </div>
+
+        <h1 className="font-display text-2xl font-semibold leading-tight sm:col-span-2 sm:row-start-2 sm:text-3xl">{content?.title}</h1>
+        {content?.header && (
+          <div className="mb-4 mt-3 flex flex-wrap gap-1.5 sm:col-span-2 sm:row-start-3 sm:mb-6">
+            <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
+            {cours?.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
+            <Badge variant="secondary">{content.header.matiere}</Badge>
+            {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
+            {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
+            {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
+          </div>
         )}
         {slug && (
-          <span className="flex flex-wrap items-center gap-2 sm:ml-auto">
+          // Une seule rangée qui défile sur téléphone : empilés, les trois boutons prenaient 150 px avant la première ligne du cours.
+          <span className="no-scrollbar -mx-4 mb-4 flex items-center gap-2 overflow-x-auto px-4 sm:col-start-2 sm:row-start-1 sm:mx-0 sm:mb-6 sm:flex-wrap sm:justify-end sm:overflow-visible sm:px-0 [&>*]:shrink-0">
             <BoutonPartager
               chemin={coursDetailPath(slug)}
               texte={t("co.partage", { titre: content?.title ?? t("co.partage_defaut"), site: SITE_NAME })}
@@ -202,18 +219,6 @@ export function CoursReaderPage() {
           </span>
         )}
       </div>
-
-      <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{content?.title}</h1>
-      {content?.header && (
-        <div className="mb-6 mt-3 flex flex-wrap gap-1.5">
-          <CountryBadge code={content.header.pays.code} label={content.header.pays.label} />
-          {cours?.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
-          <Badge variant="secondary">{content.header.matiere}</Badge>
-          {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
-          {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
-          {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
-        </div>
-      )}
 
       {/* Les parties réellement présentes dans CE cours, pour que l'aide ne décrive que ce qui est lisible. */}
       <PublierContexte

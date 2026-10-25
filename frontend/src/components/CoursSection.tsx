@@ -1,4 +1,4 @@
-import type { ReactNode } from "react"
+import { useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { Lock } from "lucide-react"
 
@@ -10,6 +10,7 @@ import { CoursExempleResoluSteps } from "@/components/CoursExempleResoluSteps"
 import { CoursErreurCard } from "@/components/CoursErreurCard"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 import { t, tn } from "@/lib/i18n"
 import { libelleNiveauExercice } from "@/lib/libellesEpreuve"
 
@@ -22,6 +23,42 @@ export const COURS_SECTION_LABELS: Partial<Record<CoursSectionData["type"], { sh
   erreurs_classiques: { get short() { return t("cs.erreurs_classiques") }, get full() { return t("cs.erreurs_classiques") } },
   exercices_application: { get short() { return t("cs.exercices_court") }, get full() { return t("cs.exercices_long") } },
   synthese: { get short() { return t("cs.synthese_court") }, get full() { return t("cs.synthese_long") } },
+}
+
+// Au-delà, l'accroche est repliée : onze lignes d'italique avant la règle du cours faisaient fuir un élève qui vient pour la
+// méthode (test élève Guyguy). Une longueur en caractères, faute de pouvoir mesurer les lignes avant le rendu.
+const ACCROCHE_LONGUE = 280
+
+function Accroche({ markdown }: { markdown: string }) {
+  const [ouverte, setOuverte] = useState(false)
+  const longue = markdown.length > ACCROCHE_LONGUE
+  return (
+    <div>
+      <div className="relative">
+        <div
+          className={cn(
+            "font-display text-lg italic leading-relaxed text-justify text-foreground sm:text-xl",
+            longue && !ouverte && "max-h-32 overflow-hidden",
+          )}
+        >
+          <EpreuveMarkdown markdown={markdown} />
+        </div>
+        {longue && !ouverte && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background to-transparent" />
+        )}
+      </div>
+      {longue && (
+        <button
+          type="button"
+          aria-expanded={ouverte}
+          onClick={() => setOuverte(!ouverte)}
+          className="mt-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
+        >
+          {ouverte ? t("cs.accroche_reduire") : t("cs.accroche_suite")}
+        </button>
+      )}
+    </div>
+  )
 }
 
 /**
@@ -84,11 +121,7 @@ function CoursExerciceApplicationItem({ item, index }: { item: CoursSectionExerc
  */
 export function CoursSection({ section, pied, lienAbonnement = "/tarifs" }: { section: CoursSectionData; pied?: ReactNode; lienAbonnement?: string }) {
   if (section.type === "accroche") {
-    return (
-      <div className="font-display text-xl italic leading-relaxed text-justify text-foreground">
-        <EpreuveMarkdown markdown={section.body_markdown} />
-      </div>
-    )
+    return <Accroche markdown={section.body_markdown} />
   }
 
   const label = COURS_SECTION_LABELS[section.type]

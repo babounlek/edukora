@@ -32,8 +32,9 @@ export function InviteAutreSousSysteme({
 }: {
   /** Le pays a-t-il des examens dans l'autre langue ? */
   disponible: boolean
-  /** « ligne » : phrase et lien discrets ; « bloc » : encadré avec bouton, pour une fenêtre. */
-  variante?: "ligne" | "bloc"
+  /** « ligne » : phrase et lien discrets ; « bloc » : encadré avec bouton, pour une fenêtre ;
+   * « compacte » : une ligne courte, pour un bandeau d'en-tête qui ne doit pas manger l'écran d'un téléphone. */
+  variante?: "ligne" | "bloc" | "compacte"
   className?: string
 }) {
   const { t, langue } = useI18n()
@@ -71,6 +72,24 @@ export function InviteAutreSousSysteme({
           {action}
         </button>
       </div>
+    )
+  }
+
+  if (variante === "compacte") {
+    // Une seule phrase, dans la langue de l'examen visé : un élève du GCE reconnaît « Preparing the GCE? » sans
+    // avoir à lire la ligne française qui la doublait (3 lignes sur 375 px, test élève Guyguy 2026-10-25).
+    return (
+      <p className={cn("text-sm text-muted-foreground", className)}>
+        <span lang={cible === "en" ? "en" : langue}>{t(cible === "en" ? "invite_ss.vers_gce_court" : "invite_ss.vers_francophone_court")}</span>{" "}
+        <button
+          type="button"
+          lang={cible}
+          onClick={() => void changerLangue(cible)}
+          className="font-medium text-primary underline-offset-4 hover:underline"
+        >
+          {action}
+        </button>
+      </p>
     )
   }
 

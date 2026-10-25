@@ -18,6 +18,8 @@ export const fr = {
   "bandeau_langue.bouton": "Voir en français",
   "invite_ss.vers_gce": "Tu prépares le GCE (sous-système anglophone) ?",
   "invite_ss.vers_gce_action": "Switch to English",
+  "invite_ss.vers_gce_court": "Preparing the GCE?",
+  "invite_ss.vers_francophone_court": "Tu prépares le BEPC, le Probatoire ou le BAC ?",
   "invite_ss.vers_francophone": "Tu prépares le BEPC, le Probatoire ou le BAC (sous-système francophone) ?",
   "invite_ss.vers_francophone_action": "Passer en français",
   "langue.toutes": "Toutes les langues",
@@ -1148,6 +1150,8 @@ export const fr = {
   "pin.reinitialiser": "Réinitialiser le code parent",
   "pin.verification_erreur": "Vérification impossible.",
 
+  "cs.accroche_suite": "Lire la suite",
+  "cs.accroche_reduire": "Réduire",
   "cs.prerequis": "Prérequis",
   "cs.regle": "La règle",
   "cs.exemple_resolu": "Exemple résolu",
@@ -1658,6 +1662,7 @@ export const fr = {
   "login.changer_adresse": "Changer d'adresse",
   "login.ou": "ou",
   "bandeau.titre": "Choisis ton examen pour recevoir ta séance du jour",
+  "bandeau.titre_court": "Choisis ton examen",
   "bandeau.aria": "Choisir ton examen",
   "bandeau.note": "Noté : {cursus}",
   "bandeau.connecte_toi": "Connecte-toi pour recevoir ta séance du jour.",
@@ -1722,6 +1727,8 @@ export const fr = {
   "rythme.detail_30": "30 points : environ 3 bonnes réponses",
   "rythme.points": "{n} points",
   "rythme.erreur": "Impossible d'enregistrer ton rythme. Réessaie.",
+  "rythme.changer_aria": "Changer mon rythme du jour (actuellement : {rythme})",
+  "rythme.changer": "Changer mon rythme",
   "rythme.titre": "Ton rythme de chaque jour",
   "rythme.texte":
     "Atteindre ton objectif de points compte pour ta série, même sans séance du jour. Les points se gagnent sur les bonnes réponses, surtout sur les thèmes à revoir.",
@@ -1739,6 +1746,8 @@ export const fr = {
     "Une notification par jour, seulement si ta séance n'est pas encore faite. Tu peux l'arrêter à tout moment.",
   "push.activer": "Activer",
   "retours.titre": "Sons et vibrations",
+  "retours.couper": "Couper le son",
+  "retours.activer": "Activer le son",
   "retours.texte": "Un petit son et une vibration à chaque réponse. Ce réglage ne vaut que pour cet appareil.",
 
   "secu.titre": "Connexion et sécurité",

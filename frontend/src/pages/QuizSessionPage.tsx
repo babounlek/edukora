@@ -13,6 +13,7 @@ import { ApiError } from "@/api/client"
 import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { BoutonPartager } from "@/components/BoutonPartager"
+import { BoutonSon } from "@/components/BoutonSon"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
@@ -323,14 +324,17 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           <ArrowLeft className="size-4" />
           {t("qs.quitter")}
         </Link>
-        {essai ? (
-          // Le quiz gratuit se partage : le lien relance CE quiz chez l'ami, sans compte ni liste à parcourir.
-          cheminEssai(session) && (
-            <BoutonPartager chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz" libelle={t("qs.partager")} />
-          )
-        ) : (
-          <QuizFichePdfButtons sessionId={session.id} />
-        )}
+        <div className="flex items-center gap-2">
+          <BoutonSon />
+          {essai ? (
+            // Le quiz gratuit se partage : le lien relance CE quiz chez l'ami, sans compte ni liste à parcourir.
+            cheminEssai(session) && (
+              <BoutonPartager chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz" libelle={t("qs.partager")} />
+            )
+          ) : (
+            <QuizFichePdfButtons sessionId={session.id} />
+          )}
+        </div>
       </div>
 
       {/* Progression : un segment par question, coloré selon le résultat - on voit d'un
@@ -519,17 +523,18 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           <div
             ref={amenerLeRetour}
             className={cn(
-              "animate-fade-up mt-5 flex scroll-mb-28 items-start gap-3 rounded-xl border px-4 py-3",
-              correct ? "border-success/40 bg-success/10" : "border-border bg-muted/50",
+              "mt-5 flex scroll-mb-28 items-start gap-3 rounded-xl border px-4 py-3",
+              // Une bonne réponse se FÊTE (rebond du bandeau, message en grand) : « le Bravo, c'est tout petit » (test élève Guyguy).
+              correct ? "animate-quiz-bravo border-success/40 bg-success/10" : "animate-fade-up border-border bg-muted/50",
             )}
           >
             {correct ? (
-              <Sparkles className="mt-0.5 size-5 shrink-0 text-success" />
+              <Sparkles className="mt-0.5 size-6 shrink-0 text-success" />
             ) : (
               <BookOpenText className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
             )}
             <div className="text-sm">
-              <p className="font-display font-semibold">
+              <p className={cn("font-display font-semibold", correct && "text-lg")}>
                 {correct
                   ? pick(MESSAGES_BONNE, question.id)
                   : question.reponse?.resultat_declare === "PARTIEL"

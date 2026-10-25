@@ -6,6 +6,7 @@ import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
+import { Confettis } from "@/components/Confettis"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
@@ -88,6 +89,7 @@ export function QuizEssaiResultPage() {
 
   return (
     <div className="mx-auto max-w-3xl animate-fade-up px-4 pb-12 pt-6 sm:px-6 sm:pt-10">
+      {pourcentage >= 70 && <Confettis />}
       <p className="mb-2 font-display text-sm italic text-primary">{t("essai.surtitre", { cursus: traduireLibelleSerie(session.cursus_display) })}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{titre}</h1>
       <p className="mt-2 text-muted-foreground">{texte}</p>

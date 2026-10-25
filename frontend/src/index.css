@@ -296,7 +296,15 @@
   100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
+/* Le bandeau d'une bonne réponse : il apparaît en rebondissant, plus franchement qu'un simple fondu. */
+@keyframes quiz-bravo {
+  0% { transform: translateY(8px) scale(0.94); opacity: 0; }
+  55% { transform: translateY(-2px) scale(1.04); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
 .animate-xp-pop { animation: xp-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.animate-quiz-bravo { animation: quiz-bravo 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-quiz-pop { animation: quiz-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 .animate-quiz-shake { animation: quiz-shake 0.35s ease-in-out both; }
 .animate-quiz-flame { animation: quiz-flame 1s ease-in-out infinite; }
@@ -313,6 +321,7 @@
   .animate-quiz-pop,
   .animate-quiz-shake,
   .animate-xp-pop,
+  .animate-quiz-bravo,
   .animate-quiz-flame { animation: none; }
   .quiz-confetti-piece { display: none; }
 }

@@ -90,7 +90,11 @@ export function BandeauCursus() {
     <div role="region" aria-label={t("bandeau.aria")} className="border-b border-primary/20 bg-primary/5">
       <div className="mx-auto flex max-w-5xl items-start gap-3 px-4 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
-          <p className="text-sm font-medium">{t("bandeau.titre")}</p>
+          {/* Sur un téléphone le titre complet tenait sur deux lignes : le bandeau seul prenait 171 px sur 812. */}
+          <p className="text-sm font-medium">
+            <span className="sm:hidden">{t("bandeau.titre_court")}</span>
+            <span className="hidden sm:inline">{t("bandeau.titre")}</span>
+          </p>
           <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
             {trierCursus(cursusList).map((cursus) => (
               <Button
@@ -110,7 +114,8 @@ export function BandeauCursus() {
               sur le même écran serait du bruit. */}
           <InviteAutreSousSysteme
             disponible={!ACCUEIL_PAYS_RE.test(pathname) && tousLesCursus.some((c) => c.langue && c.langue !== langueDeListe("", false))}
-            className="mt-1.5"
+            variante="compacte"
+            className="mt-1"
           />
         </div>
         <button
