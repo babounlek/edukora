@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, FileText, Lock, RotateCcw, Sparkles } from "lucide-react"
+import { ArrowRight, FileText, Lock, RotateCcw, Sparkles, Trophy, Zap } from "lucide-react"
 
 import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -9,8 +9,13 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
-import { cheminEssai, lireEssai, memoriserEssai, oublierEssai, scoreEssai, texteDePartageEssai } from "@/lib/quizEssai"
+import {
+  bat, cheminEssai, lireEssai, lireRecord, memoriserEssai, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
+  texteDePartageEssai,
+} from "@/lib/quizEssai"
 import { trackEvent } from "@/lib/analytics"
+import { jouerRetour } from "@/lib/retours"
+import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
@@ -41,13 +46,24 @@ export function QuizEssaiResultPage() {
 
   const score = useMemo(() => (session ? scoreEssai(session) : null), [session])
   const aRepondu = Boolean(score && score.repondues > 0)
+  // Le record d'AVANT cet essai : lu une fois au montage, la mémorisation plus bas ne le change pas sous nos yeux.
+  const [recordAvant] = useState(() => (session ? lireRecord(session) : null))
+  const points = useMemo(() => (session ? pointsEssai(session) : 0), [session])
+  const pointsAffiches = useCompteur(points)
 
   useEffect(() => {
     if (!aRepondu) navigate("/quiz", { replace: true })
   }, [aRepondu, navigate])
 
+  useEffect(() => {
+    if (!aRepondu || !session || !score) return
+    jouerRetour("fin")
+    memoriserRecord(session, score.reussies, score.total)
+  }, [aRepondu, session, score])
+
   if (!session || !score || !aRepondu) return null
 
+  const recordBattu = bat(recordAvant, score.reussies, score.total)
   const pourcentage = Math.round((100 * score.reussies) / score.total)
   const { titre, texte } = message(pourcentage)
   const premiere = session.questions[0]
@@ -86,6 +102,30 @@ export function QuizEssaiResultPage() {
           {score.repondues < score.total && tn("essai.sur_repondues", score.repondues)}
         </p>
       </div>
+
+      {/* Le gain, avant le reste : l'élève connecté voit ses points défiler à cet endroit, le visiteur n'avait
+          qu'un « 3/5 » sec. Ce n'est PAS crédité - la phrase dessous le dit, au lieu de laisser croire le contraire. */}
+      <section aria-label={t("essai.points_titre")} className="mt-4 rounded-2xl border border-gold/40 bg-gold/10 p-5">
+        <p className="text-sm text-muted-foreground">{t("essai.points_titre")}</p>
+        <p className="flex items-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text">
+          <Zap className="size-7" aria-hidden="true" />
+          {t("gl.partage_points", { n: pointsAffiches })}
+        </p>
+        {points === 0 ? (
+          <p className="mt-1 text-xs text-muted-foreground">{t("qr.points_bonnes")}</p>
+        ) : (
+          !isAuthenticated && <p className="mt-1 text-xs text-muted-foreground">{t("essai.points_compte")}</p>
+        )}
+        {recordBattu && recordAvant && (
+          <p className="mt-3 flex items-center gap-2 rounded-xl bg-success/15 px-3 py-2 text-sm font-medium">
+            <Trophy className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+            {t("essai.record_battu", { a: recordAvant.reussies, b: recordAvant.total })}
+          </p>
+        )}
+        {!recordBattu && recordAvant && (
+          <p className="mt-3 text-sm font-medium">{t("essai.record", { a: recordAvant.reussies, b: recordAvant.total })}</p>
+        )}
+      </section>
 
       {score.parTheme.length > 0 && (
         <ul className="mt-4 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">

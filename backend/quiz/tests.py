@@ -4106,11 +4106,15 @@ class PrioriteFrequenceTests(TestCase):
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
 
-    def _matiere(self, code, coefficient, nb_epreuves, nb_avec_le_theme, avec_quiz=True, annee_depart=2010):
+    def _matiere(
+        self, code, coefficient, nb_epreuves, nb_avec_le_theme, avec_quiz=True, annee_depart=2010, nb_items=12,
+    ):
         """
         Une matière du référentiel semé, avec assez d'épreuves officielles pour que le
         classement par fréquence s'active (voir SEUIL_MINIMUM_THEMES_PARCOURS) et un
-        thème présent sur `nb_avec_le_theme` d'entre elles.
+        thème présent sur `nb_avec_le_theme` d'entre elles. `nb_items` compétences de quiz
+        (12 par défaut, au-delà du plafond de 10 questions d'une séance : la séance ne
+        promet jamais plus de questions que le thème n'a d'items).
         """
         subject = Subject.objects.get(code=code, country=self.cursus.country)
         theme = Tag.objects.create(name=f"thème {code}")
@@ -4136,11 +4140,12 @@ class PrioriteFrequenceTests(TestCase):
                     competence=f"thème {code}", contenu_markdown="Méthode.", cours=cours,
                 )
         if avec_quiz:
-            item = CompetenceItem.objects.create(
-                external_id=f"freq-{code}", theme=theme, subject=subject,
-                enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
-            )
-            item.cursus.add(self.cursus)
+            for rang in range(nb_items):
+                item = CompetenceItem.objects.create(
+                    external_id=f"freq-{code}" if rang == 0 else f"freq-{code}-{rang}", theme=theme, subject=subject,
+                    enonce_markdown="Énoncé", corrige_markdown="Corrigé", statut=StatutContenu.VALIDE,
+                )
+                item.cursus.add(self.cursus)
         return subject, theme
 
     def _repondre_sur_le_theme(self, subject, theme, nb_reponses, nb_reussies):
@@ -4264,6 +4269,21 @@ class PrioriteFrequenceTests(TestCase):
         types = [e["type"] for e in seance.etapes]
         self.assertEqual(types.count("exercice"), 2)
         self.assertEqual(seance.etapes[-1]["n"], 10)
+
+    def test_la_seance_ne_promet_pas_plus_de_questions_que_le_theme_n_en_a(self):
+        # Test élève Guyguy (2026-10-25) : « Quiz express, 10 questions, jusqu'à 100 points » annoncé, puis
+        # « Question 1 sur 6 » - le thème n'avait que 6 compétences. La promesse suit le nombre d'items réels.
+        self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8, nb_items=6)
+        self._historique(Subject.objects.get(code="MATHS", country=self.cursus.country))
+        plan_du_jour(self.profil, self.cursus)
+
+        seance = ajuster_duree_seance(self.profil, self.cursus, 45)
+
+        quiz = seance.etapes[-1]
+        self.assertEqual(quiz["type"], "quiz")
+        self.assertEqual(quiz["n"], 6)
+        self.assertEqual(quiz["libelle"], "6 questions")
+        self.assertEqual(quiz["duree_min"], 6)
 
     def test_le_defaut_a_25_minutes_est_inchange(self):
         self._matiere("MATHS", coefficient="4", nb_epreuves=8, nb_avec_le_theme=8)

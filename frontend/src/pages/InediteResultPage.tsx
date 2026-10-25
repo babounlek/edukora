@@ -130,10 +130,21 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
   const themesSeRecoupent =
     result.bareme !== null && themes.reduce((somme, theme) => somme + (theme.points_possibles ?? 0), 0) > result.bareme
 
+  // Tant qu'il reste des questions traitées à noter avec le corrigé, tout chiffre de points est un plancher, pas un
+  // résultat : « 0,5 / 20 » sous un trophée, « Tu as perdu 19,5 points » (test élève Guyguy, creux de la session)
+  // punissaient un élève qui n'avait simplement pas fini de se noter. On montre où il en est de sa notation ;
+  // la note, la répartition des pertes et les barres de points arrivent quand elle est terminée.
+  const notationEnCours = result.questions_a_noter > 0
+  const dejaNotees = Math.max(0, result.questions_repondues - result.questions_a_noter)
+
   return (
     <div className="mx-auto max-w-xl animate-fade-up px-4 py-10">
       <div className="mb-8 text-center">
-        <Trophy className="mx-auto mb-3 size-8 text-gold-text" />
+        {notationEnCours ? (
+          <ClipboardCheck className="mx-auto mb-3 size-8 text-primary" />
+        ) : (
+          <Trophy className="mx-auto mb-3 size-8 text-gold-text" />
+        )}
         <h1 className="font-display text-3xl font-semibold">{t("rp.titre")}</h1>
         <p className="mt-1 text-sm text-muted-foreground">{result.epreuve_titre}</p>
         {/* Comment l'épreuve a été passée : une note d'entraînement ne se lit pas comme une note
@@ -142,7 +153,29 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
           {t(CLE_MODE[result.mode])}
         </Badge>
 
-        {result.note !== null && result.bareme !== null && (
+        {notationEnCours && (
+          <div className="mt-5">
+            <p className="font-display text-2xl font-semibold">{t("rp.note_a_venir")}</p>
+            <div
+              role="progressbar"
+              aria-label={tnu("rp.notees", unite, dejaNotees, { total: result.questions_repondues })}
+              aria-valuemin={0}
+              aria-valuemax={result.questions_repondues}
+              aria-valuenow={dejaNotees}
+              className="mx-auto mt-3 h-2.5 max-w-xs overflow-hidden rounded-full bg-secondary"
+            >
+              <div
+                className="h-full rounded-full bg-primary transition-all"
+                style={{ width: `${result.questions_repondues > 0 ? Math.round((dejaNotees / result.questions_repondues) * 100) : 0}%` }}
+              />
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {tnu("rp.notees", unite, dejaNotees, { total: result.questions_repondues })}
+            </p>
+          </div>
+        )}
+
+        {!notationEnCours && result.note !== null && result.bareme !== null && (
           <>
             <p className="mt-5 font-display text-6xl font-semibold tabular-nums" aria-label={t("rp.note_aria", { a: formatPoints(result.note), b: formatPoints(result.bareme) })}>
               {formatPoints(result.note)}
@@ -189,13 +222,13 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         </p>
       )}
 
-      <CartePertes pertes={result.pertes} unite={unite} />
+      {!notationEnCours && <CartePertes pertes={result.pertes} unite={unite} />}
       {result.temps_par_exercice && (
         <CarteTemps temps={result.temps_par_exercice} chronophage={result.exercice_chronophage} />
       )}
-      {result.comparaison && <CartePosition comparaison={result.comparaison} />}
+      {!notationEnCours && result.comparaison && <CartePosition comparaison={result.comparaison} />}
 
-      {result.par_exercice.length > 1 && (
+      {!notationEnCours && result.par_exercice.length > 1 && (
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="font-display text-lg">{t("rp.par_exercice")}</CardTitle>
@@ -227,7 +260,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         </Card>
       )}
 
-      {themes.length > 0 && (
+      {!notationEnCours && themes.length > 0 && (
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="font-display text-lg">{t("rp.par_competence")}</CardTitle>

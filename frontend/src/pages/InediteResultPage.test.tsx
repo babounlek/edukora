@@ -160,10 +160,41 @@ describe("InediteResultPage", () => {
     completeTentative.mockResolvedValue(resultat({ definitive: false, questions_a_noter: 2 }))
     afficher()
 
-    expect(await screen.findByText("Note provisoire")).toBeInTheDocument()
+    expect(await screen.findByText("Ta note n'est pas encore calculée.")).toBeInTheDocument()
     expect(screen.getByRole("link", { name: "Terminer ma notation" })).toHaveAttribute(
       "href", "/inedit/tentative/7?noter=1",
     )
+  })
+
+  it("ne montre ni note ni points perdus tant qu'il reste des questions à noter", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        definitive: false, questions_a_noter: 3, questions_repondues: 7, note: 0.5, note_sur_20: 0.5,
+        pertes: { total_perdu: 19.5, causes: [{ cause: "NON_PRECISEE", libelle: "Cause non précisée", points: 19.5, part: 100 }] },
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText("Ta note arrive dès que tu as tout noté")).toBeInTheDocument()
+    expect(screen.getByText("4 questions notées sur 7")).toBeInTheDocument()
+    expect(screen.getByRole("progressbar", { name: "4 questions notées sur 7" })).toHaveAttribute("aria-valuenow", "4")
+    expect(screen.queryByText(/0,5/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Tu as perdu/)).not.toBeInTheDocument()
+    expect(screen.queryByText("Où sont passés tes points")).not.toBeInTheDocument()
+    expect(screen.queryByText("Note provisoire")).not.toBeInTheDocument()
+  })
+
+  it("montre la note et les pertes une fois la notation terminée", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        questions_a_noter: 0, note: 12.5,
+        pertes: { total_perdu: 7.5, causes: [{ cause: "CALCUL", libelle: "Erreur de calcul", points: 7.5, part: 100 }] },
+      }),
+    )
+    afficher()
+
+    expect(await screen.findByText(/Tu as perdu 7,5 points/)).toBeInTheDocument()
+    expect(screen.queryByText("Ta note arrive dès que tu as tout noté")).not.toBeInTheDocument()
   })
 
   it("dit quels thèmes reviennent dans la séance du jour, et quand", async () => {

@@ -62,6 +62,69 @@ export function scoreEssai(session: QuizSession) {
   return { total: session.questions.length, repondues: repondues.length, reussies, parTheme: [...parTheme.values()] }
 }
 
+// Les mêmes barèmes que quiz.xp côté serveur (XP_QCM_JUSTE, XP_OUVERTE) : le visiteur voit ce que le même quiz
+// lui aurait rapporté avec un compte. Un montant AFFICHÉ, jamais crédité - l'essai n'écrit rien côté serveur.
+const POINTS_QCM_JUSTE = 10
+const POINTS_OUVERTE: Record<string, number> = { REUSSI: 5, PARTIEL: 2 }
+
+/** Points que cet essai aurait rapportés à un élève connecté. */
+export function pointsEssai(session: QuizSession): number {
+  return session.questions.reduce((somme, q) => {
+    if (!q.reponse) return somme
+    if (q.type_reponse === "QCM") return somme + (q.reponse.est_correcte ? POINTS_QCM_JUSTE : 0)
+    return somme + (POINTS_OUVERTE[q.reponse.resultat_declare] ?? 0)
+  }, 0)
+}
+
+// Le record, lui, reste sur l'appareil (localStorage) : le détail de l'essai disparaît à la fermeture de
+// l'onglet, mais « bats ton record » est ce qui donne envie de refaire un quiz tout de suite. Une entrée par
+// thème de quiz ; une seule par thème et on ne garde que le meilleur taux de réussite.
+const CLE_RECORDS = "edukora:records-essai"
+
+export interface RecordEssai {
+  reussies: number
+  total: number
+}
+
+function lireRecords(): Record<string, RecordEssai> {
+  try {
+    const brut = localStorage.getItem(CLE_RECORDS)
+    const records = brut ? JSON.parse(brut) : null
+    return records && typeof records === "object" ? records : {}
+  } catch {
+    return {}
+  }
+}
+
+function cleRecord(session: QuizSession): string | null {
+  const theme = session.questions[0]?.theme_id
+  return theme == null ? null : `${session.cursus}:${theme}`
+}
+
+/** Le meilleur essai déjà fait sur ce thème, ou null. */
+export function lireRecord(session: QuizSession): RecordEssai | null {
+  const cle = cleRecord(session)
+  const record = cle ? lireRecords()[cle] : null
+  return record && record.total > 0 ? record : null
+}
+
+/** Vrai quand `reussies / total` dépasse strictement le record : un premier essai (pas de record) n'est pas un exploit. */
+export function bat(record: RecordEssai | null, reussies: number, total: number): boolean {
+  return record !== null && total > 0 && reussies * record.total > record.reussies * total
+}
+
+/** Garde ce résultat s'il est le premier du thème ou s'il bat le record. Idempotent : l'appeler deux fois ne change rien. */
+export function memoriserRecord(session: QuizSession, reussies: number, total: number) {
+  const cle = cleRecord(session)
+  const precedent = lireRecord(session)
+  if (!cle || total <= 0 || (precedent !== null && !bat(precedent, reussies, total))) return
+  try {
+    localStorage.setItem(CLE_RECORDS, JSON.stringify({ ...lireRecords(), [cle]: { reussies, total } }))
+  } catch {
+    // Stockage indisponible : l'essai marche, seul le record n'est pas gardé.
+  }
+}
+
 /** Page qui relance cet essai précis : le lien qu'on partage (voir QuizEssaiLancementPage). */
 export function cheminEssai(session: QuizSession): string | null {
   const theme = session.questions[0]?.theme_id

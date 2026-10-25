@@ -1708,7 +1708,10 @@ def _construire_etapes(
     banque de quiz pas encore générée) est simplement omise : une séance plus courte
     reste une séance, une séance qui renvoie vers du vide n'en est pas une.
     """
-    a_du_quiz = bool(_items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir))
+    # Le nombre d'items disponibles borne ce que la séance PROMET : un thème qui n'a que 6 compétences ne peut pas
+    # annoncer « 10 questions · jusqu'à 100 points » puis en servir 6 (test élève Guyguy, 2026-10-25).
+    nb_items = len(_items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir))
+    a_du_quiz = nb_items > 0
     # Réservation : sans elle, le quiz passerait après le cours et l'exercice et
     # sauterait sur les petits budgets.
     reserve = DUREE_ETAPE_MINUTES["quiz"] if a_du_quiz else 0
@@ -1747,7 +1750,7 @@ def _construire_etapes(
     if a_du_quiz:
         # Une question par minute (voir DUREE_ETAPE_MINUTES) : le quiz reprend sa
         # réserve plus tout ce que le cours et les exercices n'ont pas consommé.
-        questions = min(QUIZ_QUESTIONS_MAX, max(QUIZ_FIN_DE_SEANCE_N, reserve + restant))
+        questions = min(QUIZ_QUESTIONS_MAX, max(QUIZ_FIN_DE_SEANCE_N, reserve + restant), nb_items)
         etapes.append({
             "type": "quiz",
             "libelle": str(questions) + " questions",
