@@ -91,7 +91,7 @@ export function QuizEssaiResultPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 pb-12 pt-6 sm:px-6 sm:pt-10">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-12 pt-6 sm:px-6 sm:pt-10">
       {pourcentage >= 70 && <Confettis />}
       <p className="mb-2 font-display text-sm italic text-primary">{t("essai.surtitre", { cursus: traduireLibelleSerie(session.cursus_display) })}</p>
       <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{titre}</h1>
