@@ -154,6 +154,9 @@ function Invoke-Native {
     $psi.RedirectStandardError = $true
     $psi.RedirectStandardInput = ($PSBoundParameters.ContainsKey('Entree'))
     $psi.CreateNoWindow = $true
+    # Le repertoire courant d'un processus .NET n'est PAS celui de PowerShell (Set-Location ne le change pas) :
+    # sans cette ligne, un chemin relatif tape par l'utilisateur serait resolu ailleurs que sous ses yeux.
+    if ((Get-Location).Provider.Name -eq 'FileSystem') { $psi.WorkingDirectory = (Get-Location).ProviderPath }
     $psi.StandardOutputEncoding = [System.Text.Encoding]::UTF8
     $psi.StandardErrorEncoding = [System.Text.Encoding]::UTF8
     $psi.EnvironmentVariables['PYTHONUTF8'] = '1'
@@ -487,6 +490,9 @@ function Invoke-Prepare {
     $liste = Join-Path $etat.Rapports ('unites-{0:yyyyMMdd-HHmmss}.txt' -f (Get-Date))
     New-Item -ItemType Directory -Force -Path $etat.Rapports | Out-Null
     [System.IO.File]::WriteAllLines($liste, $Unites, (New-Object System.Text.UTF8Encoding($false)))
+
+    if ($Reference) { $Reference = (Resolve-Path -LiteralPath $Reference -ErrorAction Stop).ProviderPath }
+    if ($Retraits) { $Retraits = (Resolve-Path -LiteralPath $Retraits -ErrorAction Stop).ProviderPath }
 
     $argv = @('preparer', '--ingest', $Cfg.IngestDir, '--lots', $lots, '--validations', $etat.Validations, '--liste', $liste, '--machine', $env:COMPUTERNAME)
     if ($Nom) { $argv += @('--nom', $Nom) }

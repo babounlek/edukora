@@ -146,6 +146,24 @@ Describe 'validate / prepare / status (outil Python reel, dossiers temporaires)'
         Invoke-Prepare -Cfg $script:banc.Cfg -Unites @('cm/dos') -Approuver | Should Be 1
         Invoke-Prepare -Cfg $script:banc.Cfg -Unites @('cm/dos') -Approuver -AccepterSansTunnel | Should Be 0
     }
+    It 'prepare accepte un chemin RELATIF meme quand le repertoire courant du processus differe de celui de PowerShell' {
+        Write-Utf8 (Join-Path $script:banc.Racine 'ingest\cm\dos\dos_exercice_1.json') (New-ExerciceJson)
+        Save-Validation $script:banc.Cfg 'cm/dos' 'ok' 'valide' 'test'
+        Write-Utf8 (Join-Path $script:banc.Racine 'ref.json') '{"contenus": {}}'
+        $avant = [Environment]::CurrentDirectory
+        Push-Location $script:banc.Racine
+        try {
+            [Environment]::CurrentDirectory = [System.IO.Path]::GetTempPath().TrimEnd('')
+            Invoke-Prepare -Cfg $script:banc.Cfg -Unites @('cm/dos') -Reference 'ref.json' -Approuver | Should Be 0
+        }
+        finally { [Environment]::CurrentDirectory = $avant; Pop-Location }
+        @(Get-LotsLocaux $script:banc.Cfg).Count | Should Be 1
+    }
+    It 'prepare signale une reference introuvable au lieu d une trace Python' {
+        Write-Utf8 (Join-Path $script:banc.Racine 'ingest\cm\dos\dos_exercice_1.json') (New-ExerciceJson)
+        Save-Validation $script:banc.Cfg 'cm/dos' 'ok' 'valide' 'test'
+        { Invoke-Prepare -Cfg $script:banc.Cfg -Unites @('cm/dos') -Reference 'inexistant.json' -Approuver } | Should Throw
+    }
     It 'status sans lot ne plante pas' {
         Invoke-Status -Cfg $script:banc.Cfg | Should Be 0
     }

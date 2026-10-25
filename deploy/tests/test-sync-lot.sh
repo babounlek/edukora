@@ -76,6 +76,8 @@ lancer "$SL" test-restauration "../../etc/passwd"
 verifier "nom de sauvegarde invalide refusé" '[ $CODE = 2 ]'
 
 echo "== dossiers =="
+EDUKORA_LOTS_DIR=/etc/hostname/lots lancer "$SL" preparer-dossiers
+verifier "dossier racine impossible a creer : echec explicite (1), pas de faux ok" '[ $CODE = 1 ] && [[ "$OUT" == *refuse* ]] && [[ "$OUT" == *"sudo install"* ]]'
 rm -rf "$T/lots"
 lancer "$SL" preparer-dossiers
 verifier "dossiers créés en 700" '[ "$(stat -c %a "$T/lots")" = 700 ] && [ "$(stat -c %a "$T/lots/incoming")" = 700 ]'

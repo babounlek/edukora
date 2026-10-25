@@ -110,8 +110,11 @@ case "$SOUS" in
     ;;
 
   preparer-dossiers)
-    mkdir -p "$LOTS/incoming" "$LOTS/sauvegardes" "$LOTS/journaux" "$LOTS/archives"
-    chmod 700 "$LOTS" "$LOTS/incoming" "$LOTS/sauvegardes" "$LOTS/journaux" "$LOTS/archives"
+    # /srv appartient d'ordinaire à root : le dossier racine se crée UNE fois avec sudo (voir le message).
+    if ! mkdir -p "$LOTS/incoming" "$LOTS/sauvegardes" "$LOTS/journaux" "$LOTS/archives" 2>/dev/null \
+       || ! chmod 700 "$LOTS" "$LOTS/incoming" "$LOTS/sauvegardes" "$LOTS/journaux" "$LOTS/archives" 2>/dev/null; then
+      echec 1 "impossible de creer $LOTS avec les droits de $(id -un) : sudo install -d -m 700 -o $(id -un) -g $(id -un) $LOTS puis relancer"
+    fi
     printf '{"statut":"ok","dossier":"%s"}\n' "$LOTS"
     ;;
 
