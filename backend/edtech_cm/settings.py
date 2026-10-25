@@ -97,6 +97,7 @@ INSTALLED_APPS = [
     "relances",
     "simulations",
     "recherche",
+    "synchro",  # journal et moteur de la chaîne de synchronisation des contenus (deploy/SPEC-SYNC-CONTENU.md)
 ]
 
 AUTH_USER_MODEL = "users.User"

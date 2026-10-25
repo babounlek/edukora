@@ -7,9 +7,13 @@ déclencheur, ses garde-fous et son retour arrière.
 | Canal | Quoi | Déclencheur | Script serveur |
 |---|---|---|---|
 | Application | backend, frontend, sauvegarde | Actions > **Deploy** | `deploy/deploy.sh` |
-| Contenu | cours, épreuves, inédites, quiz, programme | Actions > **Contenu** | `deploy/contenu.sh` |
+| Contenu | cours, épreuves, inédites, quiz, programme (créations, depuis git) | Actions > **Contenu** | `deploy/contenu.sh` |
+| **Contenu par lots** | exercices, cours, quiz : créations **et corrections** sans rebuild | `scripts/edukora.ps1 publish` (poste Windows) | `deploy/sync-lot.sh` + `manage.py sync_contenu` |
 | Données de test | comptes fictifs de recette | SSH, une commande | `manage.py seed_donnees_test` |
 | Retour arrière | images précédentes | SSH (ou **Deploy** avec un ancien SHA) | `deploy/rollback.sh` |
+
+Le canal **Contenu par lots** (corrections de contenu, retraits, sauvegarde vérifiée, reprise après coupure) est décrit dans
+[README-SYNC-CONTENU.md](README-SYNC-CONTENU.md). Il partage le verrou `/srv/edukora-lots/.sync.lock` avec `deploy.sh` et `contenu.sh`.
 
 Le build des images est automatique à chaque push sur `main` (**Release**, tests inclus) ; aucun
 déploiement ne part tout seul (CamPay fait transiter de vrais paiements).

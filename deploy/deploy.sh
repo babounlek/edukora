@@ -40,6 +40,18 @@ fi
 
 ETAT="$ROOT/.deploy"
 mkdir -p "$ETAT"
+
+# Verrou partagé avec deploy/sync-lot.sh : un déploiement ne démarre pas pendant l'application d'un lot de
+# contenu (et inversement). Le descripteur 9 reste ouvert jusqu'à la fin du script. Sans dossier des lots
+# (chaîne de synchronisation pas encore installée), aucun verrou.
+LOTS_DIR="${EDUKORA_LOTS_DIR:-/srv/edukora-lots}"
+if [ -d "$LOTS_DIR" ]; then
+  exec 9>"$LOTS_DIR/.sync.lock"
+  if ! flock -n 9; then
+    echo "Un lot de contenu est en cours d'application (verrou $LOTS_DIR/.sync.lock) : réessayez à sa fin." >&2
+    exit 1
+  fi
+fi
 COMPOSE=(docker compose -f docker-compose.yml -f docker-compose.prod.yml)
 SERVICES=(db backend relances caddy backup)
 

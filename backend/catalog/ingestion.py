@@ -30,6 +30,7 @@ matches_country s'en sert uniquement comme signal de contrôle redondant (erreur
 incohérent), jamais comme source de vérité.
 """
 
+import hashlib
 import json
 import os
 import re
@@ -1348,7 +1349,74 @@ def _compress_figure_image(raw_bytes, filename):
     return buffer.getvalue(), f"{Path(filename).stem}.webp"
 
 
-def _attach_figures(exercise, figures_data, source_dir):
+class ContexteSync:
+    """
+    Contexte transmis par la chaîne de synchronisation (app `synchro`, voir
+    deploy/SPEC-SYNC-CONTENU.md) aux fonctions d'ingestion. `None` partout ailleurs : le
+    comportement historique de l'ingestion est alors strictement inchangé.
+
+    - `simulation` : aucun fichier n'est écrit dans le stockage (le plan d'un lot s'exécute dans
+      une transaction annulée, mais un fichier écrit ne s'annule pas) ;
+    - `mise_a_jour` : l'objet existant est mis à jour SUR PLACE, jamais supprimé puis recréé
+      (la suppression emporterait ExerciceFait et SimulationReponse en cascade) ;
+    - `fichiers` / `anciens_fichiers` : ce que l'ingestion a écrit, et les fichiers remplacés
+      (supprimés plus tard et seulement si plus rien ne les référence, jamais ici).
+    """
+
+    def __init__(self, simulation=False, mise_a_jour=False):
+        self.simulation = simulation
+        self.mise_a_jour = mise_a_jour
+        self.fichiers = {}
+        self.anciens_fichiers = []
+        self.nouveaux_fichiers = []  # écrits par CET appel : orphelins si la transaction est annulée
+
+
+def _nom_fichier_adresse(stored_filename, octets):
+    """`<stem>-<sha8>.<ext>` : adressé par le contenu, donc sans collision ni écrasement silencieux (Spaces)."""
+    chemin = Path(stored_filename)
+    return f"{chemin.stem}-{hashlib.sha256(octets).hexdigest()[:8]}{chemin.suffix}"
+
+
+def _affecter_image(figure, octets, nom, sync):
+    """
+    Affecte le contenu `octets` au champ image de `figure` (pas encore enregistrée). En simulation :
+    un simple nom, rien n'est écrit. Si le fichier visé existe déjà avec exactement ce contenu
+    (reprise après interruption), il est référencé tel quel au lieu d'être réécrit sous un nom
+    suffixé. Retourne True si un fichier devra être écrit à l'enregistrement.
+    """
+    if sync.simulation:
+        figure.image = f"simulation/{nom}"
+        return False
+    chemin = figure.image.field.generate_filename(figure, nom)
+    stockage = figure.image.storage
+    if stockage.exists(chemin):
+        with stockage.open(chemin, "rb") as f:
+            if f.read() == octets:
+                figure.image = chemin
+                return False
+    figure.image = ContentFile(octets, name=nom)
+    return True
+
+
+def _verifier_ecriture(figure, octets, sync):
+    """Relit le fichier stocké et le compare : une écriture tronquée ne doit jamais être référencée."""
+    if sync.simulation:
+        return
+    with figure.image.storage.open(figure.image.name, "rb") as f:
+        if hashlib.sha256(f.read()).digest() != hashlib.sha256(octets).digest():
+            raise IngestionError(f"Écriture non conforme du fichier {figure.image.name}")
+
+
+def _contenu_identique(figure, octets):
+    """Vrai si le fichier stocké pour `figure` existe et est identique à `octets` (lecture seule)."""
+    nom = figure.image.name
+    if not nom or not figure.image.storage.exists(nom):
+        return False
+    with figure.image.storage.open(nom, "rb") as f:
+        return hashlib.sha256(f.read()).digest() == hashlib.sha256(octets).digest()
+
+
+def _attach_figures(exercise, figures_data, source_dir, sync=None):
     """
     Crée un Figure par entrée de `figures_data`, en lisant le PNG depuis `source_dir`
     (le dossier du fichier JSON source - voir SKILL.md "Traitement des figures et
@@ -1427,10 +1495,7 @@ def _attach_figures(exercise, figures_data, source_dir):
 
         compressed_bytes, stored_filename = _compress_figure_image(image_path.read_bytes(), filename)
 
-        figure = Figure.objects.create(
-            exercise=exercise,
-            external_id=fig_id,
-            image=ContentFile(compressed_bytes, name=stored_filename),
+        champs_figure = dict(
             page_source=page_source,
             type_figure=_strip_em_dash(str(fig_data.get("type") or "")),
             legende=_strip_em_dash(str(fig_data.get("legende") or "")),
@@ -1438,6 +1503,34 @@ def _attach_figures(exercise, figures_data, source_dir):
             lisibilite=lisibilite,
             origine=origine,
         )
+        if sync is None:
+            figure = Figure.objects.create(
+                exercise=exercise,
+                external_id=fig_id,
+                image=ContentFile(compressed_bytes, name=stored_filename),
+                **champs_figure,
+            )
+        else:
+            # Chaîne de synchronisation : fichiers adressés par leur contenu, figure existante
+            # conservée telle quelle quand le fichier stocké est déjà identique.
+            nom_adresse = _nom_fichier_adresse(stored_filename, compressed_bytes)
+            figure = exercise.figures.filter(external_id=fig_id).first() if sync.mise_a_jour else None
+            if figure is None:
+                figure = Figure(exercise=exercise, external_id=fig_id, **champs_figure)
+                ecrit = _affecter_image(figure, compressed_bytes, nom_adresse, sync)
+            else:
+                ecrit = False
+                if not _contenu_identique(figure, compressed_bytes):
+                    if figure.image.name:
+                        sync.anciens_fichiers.append(figure.image.name)
+                    ecrit = _affecter_image(figure, compressed_bytes, nom_adresse, sync)
+                for cle, valeur in champs_figure.items():
+                    setattr(figure, cle, valeur)
+            figure.save()
+            if ecrit:
+                sync.nouveaux_fichiers.append(figure.image.name)
+            _verifier_ecriture(figure, compressed_bytes, sync)
+            sync.fichiers[fig_id] = {"chemin": figure.image.name, "sha256": hashlib.sha256(compressed_bytes).hexdigest()}
 
         # Le placeholder `![fig-N](nom_original.png)` livré par correction-experte
         # porte l'id de la figure en texte alternatif, jamais une description utile à
@@ -1481,8 +1574,15 @@ def _attach_figures(exercise, figures_data, source_dir):
             exercise.save(update_fields=["incertitudes"])
 
 
-def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exiger_groupes=False):
+def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exiger_groupes=False, sync=None):
     """
+    `sync` (ContexteSync, réservé à l'app `synchro`) : avec `sync.mise_a_jour`, un Exercise
+    existant est mis à jour SUR PLACE (questions appariées par `numero`, figures par
+    `external_id`, rappels par `external_id`) au lieu d'être ignoré ou supprimé/recréé ; sans
+    `mise_a_jour`, comportement de création habituel mais avec des fichiers adressés par leur
+    contenu. `sync.simulation` : aucun fichier écrit. Aucune question, figure ou rappel
+    absent du JSON n'est supprimé (l'appelant détecte ce cas avant et refuse).
+
     `exiger_themes=True` (run_ingestion, réingestion admin) rejette l'exercice entier si
     une question n'a aucun thème ; désactivé par défaut pour les appels directs (tests,
     backfills).
@@ -1618,7 +1718,8 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
     # jamais depuis run_ingestion) court-circuite volontairement ce raccourci et
     # repasse par le chemin complet ci-dessous, seul à savoir supprimer puis recréer
     # l'Exercise existant.
-    if not force:
+    mettre_a_jour = bool(sync is not None and sync.mise_a_jour)
+    if not force and not mettre_a_jour:
         existing = Exercise.objects.filter(
             variante_sujet_match_prefixed,
             numero_exercice=numero_exercice,
@@ -1774,6 +1875,16 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
         cours_par_external_id = {}
         competence_item_ids = []
         themes_precedents = {}
+        exercice_maj = None
+        if existing and mettre_a_jour:
+            # Mise à jour sur place (chaîne de synchronisation) : jamais de suppression, donc
+            # ExerciceFait, SimulationReponse et les liens externes de l'exercice survivent.
+            # Une question dont le JSON ne porte pas de thème garde ceux qu'elle a déjà.
+            exercice_maj = existing
+            themes_precedents = {
+                q.numero: list(q.themes.values_list("name", flat=True)) for q in existing.questions.all()
+            }
+            existing = None
         if existing:
             if not force:
                 return existing, False
@@ -1821,16 +1932,23 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
             )
         groupes = [str(g).strip() for g in data.get("groupes") or [] if str(g).strip()]
 
-        exercise = Exercise.objects.create(
-            lesson=lesson,
-            numero_exercice=numero_exercice,
+        champs_exercice = dict(
             points=points,
             groupes=groupes,
             groupes_verifies="groupes" in data,
             enonce_intro_markdown=_strip_em_dash(str(data.get("enonce_intro_markdown") or "")),
             incertitudes=_drop_processing_notes(data.get("incertitudes") or []),
-            statut=StatutContenu.VALIDE,
         )
+        if exercice_maj is None:
+            exercise = Exercise.objects.create(
+                lesson=lesson, numero_exercice=numero_exercice, statut=StatutContenu.VALIDE, **champs_exercice,
+            )
+        else:
+            # `statut` n'est jamais touché : il appartient à l'admin une fois l'exercice publié.
+            exercise = exercice_maj
+            for cle, valeur in champs_exercice.items():
+                setattr(exercise, cle, valeur)
+            exercise.save(update_fields=[*champs_exercice, "updated_at"])
 
         exercise.mots_cles_recherche.set(_get_or_create_tags(data.get("mots_cles_recherche")))
 
@@ -1851,9 +1969,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
 
             enonce = _dedupe_question_enonce(_strip_em_dash(q_data["enonce_markdown"]), exercise.enonce_intro_markdown)
             savoir_officiel = _resolve_savoir_officiel(q_data.get("savoir_officiel"), subject)
-            question = Question.objects.create(
-                exercise=exercise,
-                numero=str(q_data.get("numero") or ordre),
+            champs_question = dict(
                 ordre=ordre,
                 enonce_markdown=enonce,
                 corrige_markdown=_strip_em_dash(q_data["corrige_markdown"]),
@@ -1866,6 +1982,14 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
                 # précision par sous-question (voir Question.savoir_officiel).
                 savoir_officiel=savoir_officiel,
             )
+            numero_question = str(q_data.get("numero") or ordre)
+            question = exercise.questions.filter(numero=numero_question).first() if exercice_maj is not None else None
+            if question is None:
+                question = Question.objects.create(exercise=exercise, numero=numero_question, **champs_question)
+            else:
+                for cle, valeur in champs_question.items():
+                    setattr(question, cle, valeur)
+                question.save()
             themes = _get_or_create_tags(q_data.get("themes") or themes_precedents.get(question.numero))
             if exiger_themes and not themes:
                 # D'abord une proposition automatique (journalisée "À REVOIR", réécrite dans le
@@ -1907,7 +2031,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
                         f"rappels_de_methode : entrée sans 'id' pour la question {q_data.get('numero')!r} "
                         "('cours_id' absent ou non résoluble depuis un fichier cours sibling).",
                     )
-                RappelDeMethode.objects.get_or_create(
+                rappel, rappel_cree = RappelDeMethode.objects.get_or_create(
                     external_id=rappel_id,
                     defaults={
                         "exercise": exercise,
@@ -1935,8 +2059,16 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
                         ),
                     },
                 )
+                if not rappel_cree and exercice_maj is not None and rappel.exercise_id == exercise.id:
+                    # Mise à jour sur place : un rappel déjà rattaché à CET exercice reçoit le
+                    # texte corrigé (le lien vers son cours, lui, est conservé).
+                    rappel.competence = _strip_em_dash(rappel_data.get("competence") or "")
+                    rappel.contenu_markdown = _strip_em_dash(
+                        rappel_data.get("contenu_markdown") or rappel_data.get("texte") or "",
+                    )
+                    rappel.save(update_fields=["competence", "contenu_markdown"])
 
-        _attach_figures(exercise, data.get("figures") or [], source_dir)
+        _attach_figures(exercise, data.get("figures") or [], source_dir, sync=sync)
         # Les réparations automatiques ci-dessus (was_repaired, had_*) ne laissent aucune
         # trace dans `incertitudes` : ce champ est réservé aux doutes réels sur le
         # contenu de l'épreuve, pas au journal de traitement.
@@ -1949,7 +2081,30 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
 
         lesson.compile_from_exercises()
 
-    return exercise, True
+    return exercise, exercice_maj is None
+
+
+def chercher_exercice_existant(data, source_dir):
+    """
+    Retrouve, sans rien écrire, l'Exercise que `ingest_exercise` désignerait pour ce JSON :
+    même clé que son raccourci « déjà existant » (épreuve source, matière - famille comprise,
+    année, pays, variante, paper, numéro). Sert à la chaîne de synchronisation pour décider
+    création / mise à jour. `None` si l'exercice n'existe pas encore.
+    """
+    country = _resolve_country(_country_code_from_path(source_dir))
+    subject = _resolve_subject(data["matiere"], country)
+    variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
+    numero_paper = _resolve_numero_paper(data.get("numero_paper"))
+    year = int(data["annee"]) if data.get("annee") else None
+    filtre_variante = Q(lesson__variante_sujet__in=[variante_sujet, ""]) if variante_sujet else Q()
+    return Exercise.objects.filter(
+        filtre_variante,
+        numero_exercice=str(data["numero_exercice"]),
+        lesson__epreuve_source=data["epreuve_source"],
+        lesson__subject__code__in=_subject_family_codes(subject.code), lesson__subject__country=country,
+        lesson__year=year, lesson__lesson_type=LessonType.CORR, lesson__cursus__country=country,
+        **({"lesson__numero_paper": numero_paper} if numero_paper else {}),
+    ).distinct().first()
 
 
 def _link_rappels_lies(cours, source):
@@ -2146,6 +2301,41 @@ def ingest_cours(data, source_dir=None):
         _link_rappels_lies(cours, source)
 
     return cours, True
+
+
+def mettre_a_jour_cours(existing, data):
+    """
+    Met à jour SUR PLACE un Cours déjà ingéré (chaîne de synchronisation) : titre, sous-thème,
+    durée, sections (donc `content_markdown`, recompilé) et tags. Ne touche jamais `statut`,
+    `slug`, `subject`, ni les cursus / rappels déjà rattachés. Mêmes réparations de texte et
+    même normalisation que `ingest_cours`. Retourne le Cours.
+    """
+    data, _ = _repair_double_json_escaping(data)
+    data, _ = _repair_control_chars_in_math(data)
+    data, _ = _repair_missing_matrix_row_separators(data)
+    data, _ = _repair_dict_shaped_cours_sections(data)
+    data, _ = _repair_accented_cours_section_types(data)
+    data, _ = _repair_literal_dollars(data, f"cours {data.get('cours_id', '?')}")
+
+    meta = data.get("meta") or {}
+    if not meta.get("titre"):
+        raise IngestionError("Champs obligatoires manquants : meta.titre")
+    if not data.get("sections"):
+        raise IngestionError(f"Cours {data.get('cours_id')} sans aucune section : mise à jour refusée.")
+
+    with transaction.atomic():
+        existing.titre = _strip_em_dash(meta["titre"])
+        existing.sous_theme = _strip_em_dash(meta.get("sous_theme") or "")
+        existing.duree_estimee_min = meta.get("duree_estimee_min") or None
+        existing.sections_raw = _strip_em_dash(data.get("sections") or [])
+        existing.save(update_fields=["titre", "sous_theme", "duree_estimee_min", "sections_raw", "updated_at"])
+        tags = _get_or_create_tags(meta.get("tags"))
+        existing.tags.set(tags)
+        _link_tags_to_savoir(
+            tags, _resolve_savoir_officiel(meta.get("savoir_officiel"), existing.subject), exclude_cours=existing,
+        )
+        existing.compile_from_sections()
+    return existing
 
 
 def run_ingestion(path):

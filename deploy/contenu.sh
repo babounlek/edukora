@@ -30,6 +30,16 @@ ROOT="$PWD"
 ETAT="$ROOT/.deploy"
 mkdir -p "$ETAT"
 
+# Verrou partagé avec deploy.sh et sync-lot.sh : jamais deux écritures de contenu ou de version en même temps.
+LOTS_DIR="${EDUKORA_LOTS_DIR:-/srv/edukora-lots}"
+if [ -d "$LOTS_DIR" ]; then
+  exec 9>"$LOTS_DIR/.sync.lock"
+  if ! flock -n 9; then
+    echo "Un lot ou un déploiement est en cours (verrou $LOTS_DIR/.sync.lock) : réessayez à sa fin." >&2
+    exit 1
+  fi
+fi
+
 [ "${1:-}" = "auto" ] || { sed -n '2,25p' "$0"; exit 2; }
 shift
 

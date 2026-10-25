@@ -18,6 +18,7 @@ pays de correction-experte ; catalog.ingestion.run_ingestion l'ignore explicitem
 (voir son garde-fou dédié) pour ne jamais tenter d'y lire un exercice ou un cours.
 """
 
+import hashlib
 import json
 import re
 from pathlib import Path
@@ -30,7 +31,11 @@ from catalog.ingestion import (
     DIFFICULTE_MAP,
     IngestionError,
     _compress_figure_image,
+    _affecter_image,
+    _contenu_identique,
     _est_tag_structurel,
+    _nom_fichier_adresse,
+    _verifier_ecriture,
     _link_tags_to_savoir,
     _normalize,
     _normalize_qcm_choix,
@@ -425,8 +430,12 @@ def select_quiz_batch(
     return requests
 
 
-def _attach_figures(item, figures_data, source_dir):
+def _attach_figures(item, figures_data, source_dir, sync=None):
     """
+    `sync` (catalog.ingestion.ContexteSync, chaîne de synchronisation) : fichiers adressés par
+    leur contenu, figure existante conservée si son fichier est identique, rien d'écrit en
+    simulation. `None` : comportement historique.
+
     Crée une CompetenceItemFigure par entrée de `figures_data` (courbes, constructions,
     schémas PRODUITS par le skill concepteur-quiz-competence - jamais extraits d'une
     épreuve), en lisant le PNG depuis `source_dir` (livré à côté du JSON, jamais encodé
@@ -464,14 +473,37 @@ def _attach_figures(item, figures_data, source_dir):
             raise IngestionError(f"Figure {fig_id} ({filename}) jamais référencée par un placeholder ![{fig_id}]({filename}).")
 
         compressed_bytes, stored_filename = _compress_figure_image(image_path.read_bytes(), filename)
-        figure = CompetenceItemFigure.objects.create(
-            item=item,
-            external_id=fig_id,
-            image=ContentFile(compressed_bytes, name=stored_filename),
+        champs_figure = dict(
             type_figure=_strip_em_dash(str(fig_data.get("type") or ""))[:30],
             legende=_strip_em_dash(str(fig_data.get("legende") or "")),
             origine="ENONCE" if _normalize(fig_data.get("origine_figure")) == "enonce" else "CORRIGE",
         )
+        if sync is None:
+            figure = CompetenceItemFigure.objects.create(
+                item=item, external_id=fig_id, image=ContentFile(compressed_bytes, name=stored_filename),
+                **champs_figure,
+            )
+        else:
+            nom_adresse = _nom_fichier_adresse(stored_filename, compressed_bytes)
+            figure = item.figures.filter(external_id=fig_id).first() if sync.mise_a_jour else None
+            if figure is None:
+                figure = CompetenceItemFigure(item=item, external_id=fig_id, **champs_figure)
+                ecrit = _affecter_image(figure, compressed_bytes, nom_adresse, sync)
+            else:
+                ecrit = False
+                if not _contenu_identique(figure, compressed_bytes):
+                    if figure.image.name:
+                        sync.anciens_fichiers.append(figure.image.name)
+                    ecrit = _affecter_image(figure, compressed_bytes, nom_adresse, sync)
+                for cle, valeur in champs_figure.items():
+                    setattr(figure, cle, valeur)
+            figure.save()
+            if ecrit:
+                sync.nouveaux_fichiers.append(figure.image.name)
+            _verifier_ecriture(figure, compressed_bytes, sync)
+            sync.fichiers[fig_id] = {
+                "chemin": figure.image.name, "sha256": hashlib.sha256(compressed_bytes).hexdigest(),
+            }
         alt_text = figure.legende or figure.type_figure or "Figure du corrigé"
         replacement = f"![{alt_text}]({figure.image.url})"
         enonce = placeholder_re.sub(replacement, enonce)
@@ -486,7 +518,51 @@ def _attach_figures(item, figures_data, source_dir):
             raise IngestionError(f"{champ} contient un placeholder ![fig-N](...) sans entrée correspondante dans figures.")
 
 
-def ingest_competence_item(data, country, source_dir=None):
+def mettre_a_jour_item(existing, data, country, source_dir=None, sync=None):
+    """
+    Met à jour SUR PLACE un CompetenceItem déjà ingéré (chaîne de synchronisation) : thème,
+    énoncé, corrigé, difficulté, type de réponse, choix, cursus, sources et figures. Ne touche
+    jamais `statut` ni `est_vitrine` (propriétés de l'admin). Mêmes normalisations que
+    `ingest_competence_item`. Les QuizQuestion déjà jouées portent un instantané : l'historique
+    des élèves n'est pas affecté. Retourne l'item.
+    """
+    missing = [key for key in REQUIRED_KEYS if not data.get(key)]
+    if missing:
+        raise IngestionError(f"Champs obligatoires manquants : {missing}")
+
+    subject = _resolve_subject(data["matiere"], country)
+    savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
+    theme = _resolve_theme(data["theme"], allow_create=bool(savoir))
+    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    _link_tags_to_savoir([theme], savoir)
+
+    type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
+    if type_reponse == TypeReponse.QCM:
+        choix, reponse_correcte = _normalize_qcm_choix(data.get("choix"), data.get("reponse_correcte"))
+    else:
+        choix, reponse_correcte = [], ""
+
+    with transaction.atomic():
+        existing.theme = theme
+        existing.subject = subject
+        existing.enonce_markdown = _strip_em_dash(data["enonce_markdown"])
+        existing.corrige_markdown = _strip_em_dash(data["corrige_markdown"])
+        existing.difficulte_estimee = DIFFICULTE_MAP.get(_normalize(data.get("difficulte_estimee")), "")
+        existing.type_reponse = type_reponse
+        existing.choix = choix
+        existing.reponse_correcte = reponse_correcte
+        existing.save(update_fields=[
+            "theme", "subject", "enonce_markdown", "corrige_markdown", "difficulte_estimee",
+            "type_reponse", "choix", "reponse_correcte", "updated_at",
+        ])
+        existing.cursus.set(cursus_list)
+        _attach_figures(existing, data.get("figures") or [], source_dir, sync=sync)
+        # `source_exercises` (ids de la base LOCALE) n'est volontairement pas appliqué : ces ids
+        # ne désignent pas les mêmes exercices en production. Pure traçabilité d'audit.
+    return existing
+
+
+def ingest_competence_item(data, country, source_dir=None, sync=None):
     """
     Ingère un objet JSON (un CompetenceItem). Retourne (item, created).
 
@@ -547,7 +623,7 @@ def ingest_competence_item(data, country, source_dir=None):
         item.cursus.set(cursus_list)
         # Dans la transaction : un PNG introuvable annule l'item entier plutôt que de le
         # publier avec un placeholder mort dans son corrigé.
-        _attach_figures(item, data.get("figures") or [], source_dir)
+        _attach_figures(item, data.get("figures") or [], source_dir, sync=sync)
 
         # Best-effort, jamais bloquant : source_exercises n'est que de la traçabilité
         # d'audit (voir CompetenceItem.source_exercises), un id qui ne résout plus rien
