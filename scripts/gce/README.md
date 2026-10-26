@@ -49,7 +49,8 @@ référence unique ; les skills `correction-experte`, `concepteur-quiz-competenc
 - **Exercice** : `consignes/CONSIGNES.md`. Paper 1 = UN fichier `numero_exercice "1"` de 50 questions QCM (lettres minuscules
   a-d) ; Paper 2 = UN fichier par question du sujet (`"1".."15"` pour la Section A, `"B1"...` pour la B), sous-questions
   `a, b, c` = `questions`.
-- **Quiz** (`CompetenceItem`) : 6 items par compétence (2 faible / 3 moyenne / 1 élevée), au moins la moitié en QCM,
+- **Quiz** (`CompetenceItem`) : 6 items par compétence (2 faible / 3 moyenne / 1 élevée), QCM selon la matière (5/6 en sciences,
+  maths, langues et informatique ; 3/6 en histoire, géographie, économie, commerce ; 2/6 en philosophie, religion, littérature),
   `matiere` et `cursus` recopiés de la requête (`[{"examen":"gce_ol","serie":""}]`), `theme` = nom exact du Tag,
   `external_id` = `cqc-<slug>-<difficulte>-<index>`.
 - **Cours** : 7 sections dans l'ordre (accroche, prerequis, regle, exemple_resolu, erreurs_classiques,

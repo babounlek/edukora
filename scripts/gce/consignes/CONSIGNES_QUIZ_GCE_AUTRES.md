@@ -44,7 +44,7 @@ Tout fait doit être **exact, vérifiable et au programme du Cameroon GCE Board*
 ## 3. Ce qui reste valable partout
 
 - **Aucune figure** (zéro `figures`, zéro `![fig-`), sauf besoin absolu ; privilégie tableau Markdown ou description.
-- **QCM** au moins la moitié, lettres `a` à `d`, bonne lettre variée, chaque distracteur = erreur plausible. **Une seule** bonne option : si deux options
+- **QCM** : plancher de la matière (voir `CONSIGNES_QUIZ_GCE.md` point 7 : 5 sur 6 en sciences, maths, langues et informatique ; 3 sur 6 en histoire, géographie, économie, commerce, citoyenneté ; 2 sur 6 en philosophie, religion, littérature), lettres `a` à `d`, bonne lettre variée, chaque distracteur = erreur plausible. **Une seule** bonne option : si deux options
   peuvent se défendre, reformule.
 - **Énoncé autonome**, jamais « the passage above », « the figure ». Un texte à lire est dans l'énoncé.
 - **`source_exercises`** : les `exercise_id` du matériel de référence qui t'ont inspiré (jamais cités). Ne copie JAMAIS le matériel de référence (9 mots

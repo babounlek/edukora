@@ -5,9 +5,10 @@ d'ingestion (correction-experte, concepteur-quiz-competence, concepteur-epreuve-
     python manage.py valider_ingestion --since 2h
     python manage.py valider_ingestion --since 2026-09-18T10:00 --strict
 
-Enchaîne trois portes sur le contenu créé/modifié depuis --since : structure (Question
+Enchaîne quatre portes sur le contenu créé/modifié depuis --since : structure (Question
 sans thème, QCM incohérent), vocabulaire de thèmes (quasi-doublons de Tag, thèmes
-partagés entre matières) et delta de couverture (quiz/cours manquants). Écrit aussi le
+partagés entre matières), part de QCM des items de quiz (plancher par famille de matières,
+minimum par thème) et delta de couverture (quiz/cours manquants). Écrit aussi le
 dump de rendu restreint à ce périmètre (--dump) pour la 4e porte, le vrai moteur KaTeX,
 qui tourne côté frontend : utiliser scripts/tunnel_validation.sh qui enchaîne les deux.
 

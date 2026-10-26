@@ -22,7 +22,7 @@ charge-le avec l'outil Skill (`anthropic-skills:concepteur-quiz-competence`) et 
    `D:\edukora\venv\Scripts\python.exe`, valeurs recalculées, axes gradués et légendés, fond blanc, ~1000 px de large, PNG nommé
    `<external_id>_fig_<n>.png` dans le dossier du lot, placeholder `![fig-1](<fichier>)` + entrée `figures` (`id`, `fichier`, `type`,
    `legende`, `origine_figure`). Une figure d'énoncé ET une figure de corrigé = deux PNG distincts.
-7. **QCM** : au moins la MOITIÉ des items d'un fichier. 4 options minimum, lettres `a` à `d`, `reponse_correcte` = la lettre. Chaque
+7. **QCM** : plancher selon la matière, sur les 6 items d'un fichier : **au moins 5 QCM** pour Mathematics, Additional/Further Mathematics, Pure Mathematics with Mechanics/Statistics, Physics, Chemistry, Biology, Human Biology, Geology, Computer Science, ICT, Food and Nutrition, English Language, French, Special Bilingual Education French, Accounting, Logic ; **au moins 3** pour History, Geography, Economics, Commerce, Citizenship Education ; **au moins 2** pour Philosophy, Religious Studies, Literature in English. Et **toujours au moins 2 QCM** dans le fichier (1 pour les matières à 2/6). Le validateur refuse un fichier sous ce plancher. 4 options minimum, lettres `a` à `d`, `reponse_correcte` = la lettre. Chaque
    mauvaise option est une erreur réellement plausible pour cette compétence (oubli d'unité, confusion de formule, erreur de signe...),
    jamais une valeur absurde. Mets les options en ordre naturel (croissant pour des nombres). La bonne lettre doit varier d'un item à l'autre.
 8. **`source_exercises`** : les `exercise_id` du matériel de référence qui t'ont réellement inspiré (au moins un, jamais cité dans le texte).

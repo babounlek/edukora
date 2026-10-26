@@ -7,7 +7,7 @@ Usage :
 `<fichier_batch.json>` = la tranche de requêtes de sélection (competence, cible, materiel_reference) confiée à l'agent ;
 `<dossier_du_lot>` = où il a écrit `<competence_slug>.json` (un tableau d'items par compétence) et les PNG éventuels.
 Code de sortie 0 = aucun défaut bloquant (« warn » = à relire). Reprend les exigences de quiz.ingestion
-et du skill concepteur-quiz-competence : forme des items, QCM cohérents, répartition de difficulté, moitié de QCM,
+et du skill concepteur-quiz-competence : forme des items, QCM cohérents, répartition de difficulté, plancher de QCM par famille de matières,
 autonomie, non-copie du matériel de référence, figures, LaTeX.
 """
 import json
@@ -18,6 +18,24 @@ from collections import Counter
 from pathlib import Path
 
 DIFFS = ("FAIBLE", "MOYENNE", "ELEVEE")
+
+# Part minimale de QCM (%) par famille de matières : même grille que backend/catalog/tunnel.py
+# (FAMILLE_QCM / PLANCHER_QCM) et que le skill concepteur-quiz-competence. Ici la clé est le libellé
+# anglais de `matiere`, pas le code Subject ; une matière absente retombe sur MIXTE (50 %).
+PLANCHER_QCM = {"OBJECTIVE": 70, "MIXTE": 50, "REDIGE": 30}
+MIN_QCM_PAR_COMPETENCE = {"OBJECTIVE": 2, "MIXTE": 2, "REDIGE": 1}
+FAMILLE_PAR_MATIERE = {
+    **dict.fromkeys((
+        "Mathematics", "Additional Mathematics", "Further Mathematics", "Pure Mathematics with Mechanics",
+        "Pure Mathematics with Statistics", "Physics", "Chemistry", "Biology", "Human Biology", "Geology",
+        "Computer Science", "ICT", "Food and Nutrition", "English Language", "French",
+        "Special Bilingual Education French", "Accounting", "Logic",
+    ), "OBJECTIVE"),
+    **dict.fromkeys((
+        "History", "Geography", "Economics", "Commerce", "Citizenship Education",
+    ), "MIXTE"),
+    **dict.fromkeys(("Philosophy", "Religious Studies", "Literature in English"), "REDIGE"),
+}
 PLACEHOLDER = re.compile(r"!\[[^\]]*\]\(([^)\s]+)\)")
 RENVOIS = re.compile(
     r"\b(previous question|question above|part [A-Z]\b|figure above|diagram above|as above|"
@@ -145,8 +163,14 @@ def valider_fichier(demande, chemin, dossier):
         else:
             erreurs.append(f"{e}: type_reponse doit valoir QCM ou OUVERTE")
 
-    if nb_qcm * 2 < len(items):
-        erreurs.append(f"{nom}: {nb_qcm}/{len(items)} QCM, au moins la moitié exigée (sinon justifier dans le rapport)")
+    famille = FAMILLE_PAR_MATIERE.get(demande["matiere"], "MIXTE")
+    plancher = PLANCHER_QCM[famille]
+    if nb_qcm * 100 < plancher * len(items):
+        erreurs.append(
+            f"{nom}: {nb_qcm}/{len(items)} QCM, plancher {plancher} % exigé pour {demande['matiere']} "
+            f"(famille {famille}) - sinon justifier dans le rapport")
+    if len(items) >= 3 and nb_qcm < MIN_QCM_PAR_COMPETENCE[famille]:
+        erreurs.append(f"{nom}: {nb_qcm} QCM, au moins {MIN_QCM_PAR_COMPETENCE[famille]} exigé(s) par compétence")
     for ref in references - fichiers_figures:
         erreurs.append(f"{nom}: placeholder {ref} sans entrée dans figures")
     for f in fichiers_figures - references - {None}:

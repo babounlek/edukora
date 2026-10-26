@@ -11,7 +11,7 @@ from django.utils import timezone
 from .ingestion import ingest_exercise
 from .models import RappelDeMethode, Tag
 from .tunnel import (
-    ALERTE, BLOQUANT, _VARIANT_INDEX, blocked_lessons, find_tag_variant, gate_structure, gate_tags, parse_since,
+    ALERTE, BLOQUANT, _VARIANT_INDEX, blocked_lessons, find_tag_variant, gate_qcm, gate_structure, gate_tags, parse_since,
     rappel_est_reponse_deguisee, register_tag, tag_key,
 )
 
@@ -113,6 +113,56 @@ class TunnelGatesTests(TestCase):
         question.themes.add(Tag.objects.create(name="heritage"))
         findings = gate_tags(timezone.now() - timezone.timedelta(hours=1))
         self.assertTrue(any(f.severity == ALERTE and "quasi-doublon" in f.message for f in findings))
+
+
+class GateQcmTests(TestCase):
+    """Plancher de QCM par famille de matières + minimum de QCM par thème (ALERTE, jamais BLOQUANT)."""
+
+    def _items(self, code, theme, nb_qcm, nb_ouvertes):
+        from quiz.models import CompetenceItem
+        from .models import Subject
+        subject = Subject.objects.get(country__code="CM", code=code)
+        tag = Tag.objects.get_or_create(name=theme)[0]
+        for i in range(nb_qcm + nb_ouvertes):
+            qcm = i < nb_qcm
+            CompetenceItem.objects.create(
+                external_id=f"cqc-{theme}-{code}-{i}", theme=tag, subject=subject, enonce_markdown="E", corrige_markdown="C",
+                type_reponse="QCM" if qcm else "OUVERTE",
+                choix=[{"lettre": "a", "texte": "1"}, {"lettre": "b", "texte": "2"}] if qcm else [],
+                reponse_correcte="a" if qcm else "",
+            )
+
+    def _findings(self):
+        return gate_qcm(timezone.now() - timezone.timedelta(hours=1))
+
+    def test_objective_subject_below_seventy_percent_is_flagged(self):
+        self._items("MATHS", "Dérivation", nb_qcm=3, nb_ouvertes=3)
+        findings = self._findings()
+        self.assertTrue(any(f.severity == ALERTE and "MATHS : 3/6" in f.message and "plancher 70" in f.message for f in findings))
+
+    def test_objective_subject_at_threshold_passes_subject_check(self):
+        self._items("MATHS", "Dérivation", nb_qcm=5, nb_ouvertes=1)
+        self.assertFalse([f for f in self._findings() if "MATHS :" in f.message])
+
+    def test_written_subject_only_needs_thirty_percent(self):
+        self._items("PHILOSOPHIE", "Dissertation", nb_qcm=2, nb_ouvertes=4)
+        self.assertEqual(self._findings(), [])
+
+    def test_theme_without_enough_qcm_is_flagged_even_when_the_subject_is_fine(self):
+        self._items("MATHS", "Limites", nb_qcm=1, nb_ouvertes=2)
+        self._items("MATHS", "Suites", nb_qcm=20, nb_ouvertes=0)
+        alertes = [f for f in self._findings() if "trop peu de QCM" in f.message]
+        self.assertEqual(len(alertes), 1)
+        self.assertIn("'Limites'", alertes[0].message)
+        self.assertNotIn("'Suites'", alertes[0].message)
+
+    def test_unknown_subject_falls_back_on_half(self):
+        from .tunnel import PLANCHER_QCM, _famille_qcm
+        self.assertEqual(PLANCHER_QCM[_famille_qcm("MATIERE_INCONNUE")], 50)
+
+    def test_every_alert_is_non_blocking(self):
+        self._items("MATHS", "Dérivation", nb_qcm=0, nb_ouvertes=6)
+        self.assertFalse([f for f in self._findings() if f.severity == BLOQUANT])
 
 
 class BlockedLessonsTests(TestCase):

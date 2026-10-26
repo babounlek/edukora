@@ -352,6 +352,87 @@ def gate_tags(since):
     return findings
 
 
+# Part minimale de QCM (en %) par famille de matières, pour les CompetenceItem d'un round. Une réponse
+# auto-notée (question ouverte) mesure l'honnêteté de l'élève, pas son niveau, alors que ce taux pilote la
+# révision espacée et le choix « réexpliquer la méthode / passer à la pratique » : le plancher est donc plus
+# haut là où la réponse est objective (résultat, formule, grammaire) et plus bas là où elle exige de
+# rédiger (dissertation, commentaire). Même grille que le skill concepteur-quiz-competence.
+PLANCHER_QCM = {"OBJECTIVE": 70, "MIXTE": 50, "REDIGE": 30}
+FAMILLE_QCM_DEFAUT = "MIXTE"
+FAMILLE_QCM = {
+    **dict.fromkeys((
+        "MATHS", "PHYSIQUE", "CHIMIE", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH", "SVT", "INFORMATIQUE",
+        "PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE", "ANGLAIS", "ALLEMAND", "ESPAGNOL",
+        "GCE_MATHS", "GCE_ADD_MATHS", "GCE_FURTHER_MATHS", "GCE_PM_MECHANICS", "GCE_PM_STATISTICS",
+        "GCE_PHYSICS", "GCE_CHEMISTRY", "GCE_BIOLOGY", "GCE_HUMAN_BIOLOGY", "GCE_GEOLOGY",
+        "GCE_COMPUTER_SCI", "GCE_ICT", "GCE_FOOD_NUTRITION", "GCE_ENGLISH", "GCE_FRENCH", "GCE_SBE_FRENCH",
+        "GCE_ACCOUNTING", "GCE_LOGIC",
+    ), "OBJECTIVE"),
+    **dict.fromkeys((
+        "FRANCAIS", "HISTOIRE", "GEOGRAPHIE", "EDUCATION_CIVIQUE", "EPS", "ECONOMIE",
+        "GCE_HISTORY", "GCE_GEOGRAPHY", "GCE_ECONOMICS", "GCE_COMMERCE", "GCE_CITIZENSHIP",
+    ), "MIXTE"),
+    **dict.fromkeys(("PHILOSOPHIE", "LITTERATURE", "GCE_PHILOSOPHY", "GCE_RELIGION", "GCE_LITERATURE"), "REDIGE"),
+}
+# Sous ce nombre d'items, le taux de réussite d'un thème repose sur trop peu de réponses objectives.
+MIN_QCM_PAR_THEME = {"OBJECTIVE": 2, "MIXTE": 2, "REDIGE": 1}
+MIN_ITEMS_POUR_CONTROLE_THEME = 3
+
+
+def _famille_qcm(code_matiere):
+    return FAMILLE_QCM.get(code_matiere, FAMILLE_QCM_DEFAUT)
+
+
+def gate_qcm(since):
+    """
+    Part de QCM des CompetenceItem du round, par matière (plancher selon la famille) puis par thème
+    (nombre minimal de QCM). ALERTE, jamais bloquant : une compétence qui ne se prête pas au QCM est
+    légitime si le compte rendu de lot le justifie.
+    """
+    findings = []
+    items = _scoped(CompetenceItem.objects.all(), since)
+
+    par_matiere = defaultdict(lambda: [0, 0])
+    for code, type_reponse in items.values_list("subject__code", "type_reponse"):
+        par_matiere[code][0] += 1
+        par_matiere[code][1] += type_reponse == TypeReponse.QCM
+    for code, (total, qcm) in sorted(par_matiere.items()):
+        famille = _famille_qcm(code)
+        plancher = PLANCHER_QCM[famille]
+        if qcm * 100 < plancher * total:
+            findings.append(Finding(
+                "qcm", ALERTE,
+                f"{code} : {qcm}/{total} item(s) en QCM ({round(100 * qcm / total)} %), plancher {plancher} % "
+                f"(famille {famille}) - convertir des items objectifs en QCM, ou justifier dans le compte rendu de lot",
+            ))
+
+    theme_ids = set(items.values_list("theme_id", flat=True))
+    par_theme = defaultdict(lambda: [0, 0])
+    for theme_id, code, type_reponse in CompetenceItem.objects.filter(theme_id__in=theme_ids).values_list(
+        "theme_id", "subject__code", "type_reponse",
+    ):
+        par_theme[(theme_id, code)][0] += 1
+        par_theme[(theme_id, code)][1] += type_reponse == TypeReponse.QCM
+    insuffisants = [
+        (theme_id, code, total, qcm)
+        for (theme_id, code), (total, qcm) in par_theme.items()
+        if total >= MIN_ITEMS_POUR_CONTROLE_THEME and qcm < MIN_QCM_PAR_THEME[_famille_qcm(code)]
+    ]
+    if insuffisants:
+        noms = dict(Tag.objects.filter(id__in={i[0] for i in insuffisants}).values_list("id", "name"))
+        exemples = ", ".join(
+            f"{noms[theme_id]!r} ({code} : {qcm} QCM / {total})"
+            for theme_id, code, total, qcm in sorted(insuffisants, key=lambda i: noms[i[0]])[:10]
+        )
+        findings.append(Finding(
+            "qcm", ALERTE,
+            f"{len(insuffisants)} thème(s) avec trop peu de QCM pour que leur taux de réussite soit fiable "
+            f"(minimum {MIN_QCM_PAR_THEME['OBJECTIVE']} QCM, {MIN_QCM_PAR_THEME['REDIGE']} pour les matières rédigées, "
+            f"dès {MIN_ITEMS_POUR_CONTROLE_THEME} items) - ex. {exemples}",
+        ))
+    return findings
+
+
 def gate_couverture(since):
     """Delta de couverture des thèmes touchés : quiz VALIDE et cours disponibles (rapport, jamais bloquant)."""
     ids = _scope_tag_ids(since)
@@ -373,7 +454,7 @@ def gate_couverture(since):
 
 
 def run_db_gates(since):
-    return [*gate_structure(since), *gate_tags(since), *gate_couverture(since)], _scope_counts(since)
+    return [*gate_structure(since), *gate_tags(since), *gate_qcm(since), *gate_couverture(since)], _scope_counts(since)
 
 
 def blocked_lessons(lesson_ids):
