@@ -345,6 +345,65 @@ def _sommes_et_archive(racine_lot, archive):
     return sha_archive
 
 
+def _charger_campagne(chemin):
+    """
+    Manifeste de campagne (`campagnes/<nom>.json`) et verdicts de relecture qu'il désigne.
+    Retourne (campagne, verdicts, erreurs) ; `verdicts` : {(type, id_stable, empreinte_source): verdict}.
+    """
+    erreurs = []
+    try:
+        with open(chemin, encoding="utf-8-sig") as f:
+            campagne = json.load(f)
+    except (OSError, ValueError) as exc:
+        return None, {}, [f"campagne illisible ({chemin}) : {exc}"]
+    if not isinstance(campagne, dict) or not str(campagne.get("nom") or "").strip():
+        return None, {}, [f"campagne invalide ({chemin}) : nom obligatoire"]
+    relecture = campagne.get("relecture") or {}
+    try:
+        taux = float(relecture.get("taux", 1.0))
+    except (TypeError, ValueError):
+        taux = -1.0
+    if not 0 < taux <= 1:
+        erreurs.append("campagne : relecture.taux doit être dans ]0, 1]")
+    if not relecture.get("rapport"):
+        erreurs.append("campagne : relecture.rapport obligatoire")
+    campagne["_taux"] = taux
+    verdicts = {}
+    if not erreurs:
+        rapport = os.path.join(os.path.dirname(os.path.abspath(chemin)), relecture["rapport"])
+        try:
+            with open(rapport, encoding="utf-8-sig") as f:
+                lignes = json.load(f).get("verdicts", [])
+        except (OSError, ValueError, AttributeError):
+            lignes = []  # rapport absent : tout reste « a_faire », le refus explique lequel
+        for v in lignes:
+            if isinstance(v, dict) and v.get("verdict") in ("accord", "desaccord"):
+                verdicts[(v.get("type"), v.get("id_stable"), v.get("empreinte_source"))] = v["verdict"]
+    return campagne, verdicts, erreurs
+
+
+def _appliquer_relecture(contenus, campagne, verdicts):
+    """
+    Pose `validation.relecture_humaine` ("faite" | "a_faire" | "desaccord") sur les créations et mises à jour,
+    liée à l'empreinte exacte relue : un contenu modifié après sa relecture repasse en « a_faire ».
+    Retourne les erreurs de refus (désaccords, relecture insuffisante pour le taux demandé).
+    """
+    concernes = [c for c in contenus if c["operation"] in ("create", "update")]
+    for c in concernes:
+        v = verdicts.get((c["type"], c["id_stable"], c["version_proposee"]))
+        c["validation"]["relecture_humaine"] = {"accord": "faite", "desaccord": "desaccord"}.get(v, "a_faire")
+    erreurs = [f"relecture en désaccord : {c['id_stable']}" for c in concernes
+               if c["validation"]["relecture_humaine"] == "desaccord"]
+    faites = sum(1 for c in concernes if c["validation"]["relecture_humaine"] == "faite")
+    requis = -(-int(round(campagne["_taux"] * len(concernes) * 1000)) // 1000) if concernes else 0
+    if faites < requis:
+        manquants = [c["id_stable"] for c in concernes if c["validation"]["relecture_humaine"] == "a_faire"]
+        erreurs.append(f"relecture insuffisante : {faites}/{len(concernes)} relus, {requis} requis "
+                       f"(taux {campagne['_taux']:g}) ; à relire : {', '.join(manquants[:10])}"
+                       + (" …" if len(manquants) > 10 else ""))
+    return erreurs
+
+
 def cmd_preparer(args):
     ingest = os.path.abspath(args.ingest)
     unites = list(args.unites)
@@ -425,6 +484,15 @@ def cmd_preparer(args):
                          "validation": {"locale": "ok", "tunnel": "non_applicable", "relecture_humaine": "non_requise"}})
     contenus.sort(key=lambda c: (c["type"], c["id_stable"]))
 
+    campagne = None
+    if args.campagne:
+        campagne, verdicts, erreurs = _charger_campagne(args.campagne)
+        if not erreurs:
+            erreurs = _appliquer_relecture(contenus, campagne, verdicts)
+        if erreurs:
+            print(json.dumps({"statut": "relecture_requise", "erreurs": erreurs}, ensure_ascii=False))
+            return 1
+
     compteurs = {}
     for c in contenus:
         compteurs[c["operation"]] = compteurs.get(c["operation"], 0) + 1
@@ -476,6 +544,7 @@ def cmd_preparer(args):
         "options": {"tout_ou_rien": bool(args.tout_ou_rien), "adopter": bool(args.adopter),
                     "retraits_confirmes": False, "reference_absente": reference is None},
         "approbation": {"par": args.approuve_par, "le": maintenant.strftime("%Y-%m-%dT%H:%M:%SZ")},
+        "campagne": ({k: v for k, v in campagne.items() if not k.startswith("_")} if campagne else None),
         "contenus": contenus,
     }
     _json_ecrire(os.path.join(racine_lot, "manifest.json"), manifeste)
@@ -615,6 +684,7 @@ def construire_parseur():
     r.add_argument("--accepter-sans-tunnel", action="store_true")
     r.add_argument("--tout-ou-rien", action="store_true")
     r.add_argument("--adopter", action="store_true")
+    r.add_argument("--campagne", help="campagnes/<nom>.json : impose la relecture indépendante des contenus publiés")
     r.set_defaults(fn=cmd_preparer)
 
     t = sp.add_parser("retraits")

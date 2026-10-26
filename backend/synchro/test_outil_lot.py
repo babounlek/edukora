@@ -306,6 +306,76 @@ class PreparationTests(Banc):
         self.assertNotEqual(r1["batch_id"].split("-")[-1], r2["batch_id"].split("-")[-1])
 
 
+class CampagneTests(Banc):
+    """C1 : la relecture indépendante est une condition de `prepare` pour une campagne."""
+
+    def monter(self):
+        self.ecrire("cm/dos/dos_exercice_1.json", exercice())
+        self.ecrire("cm/dos/dos_cours_a.json", cours())
+        self.valider("cm/dos")
+        a = outil.analyser_unite(self.ingest, "cm/dos")
+        return {(e["type"], e["id_stable"]): e["empreinte_source"] for e in a["elements"]}
+
+    def campagne(self, verdicts, taux=1.0):
+        dossier = os.path.join(self.tmp, "campagnes")
+        os.makedirs(dossier, exist_ok=True)
+        sauver({"verdicts": [{"type": t, "id_stable": i, "empreinte_source": e, "verdict": v, "relecteur": "x"}
+                             for (t, i, e, v) in verdicts]}, os.path.join(dossier, "relecture.json"))
+        chemin = os.path.join(dossier, "essai.json")
+        sauver({"nom": "essai", "relecture": {"taux": taux, "rapport": "relecture.json"}}, chemin)
+        return chemin
+
+    def test_sans_rapport_le_lot_est_refuse(self):
+        self.monter()
+        code, res = self.preparer("cm/dos", campagne=self.campagne([]))
+        self.assertEqual(code, 1)
+        self.assertEqual(res["statut"], "relecture_requise")
+        self.assertEqual(os.listdir(self.lots), [])
+
+    def test_relecture_complete_accepte_et_marque_faite(self):
+        empreintes = self.monter()
+        verdicts = [(t, i, e, "accord") for (t, i), e in empreintes.items()]
+        code, res = self.preparer("cm/dos", campagne=self.campagne(verdicts))
+        self.assertEqual(code, 0, res)
+        manifeste = charger(os.path.join(res["dossier"], "manifest.json"))
+        self.assertEqual(manifeste["campagne"]["nom"], "essai")
+        self.assertEqual({c["validation"]["relecture_humaine"] for c in manifeste["contenus"]}, {"faite"})
+
+    def test_relecture_perimee_apres_modification(self):
+        empreintes = self.monter()
+        verdicts = [(t, i, e, "accord") for (t, i), e in empreintes.items()]
+        chemin = self.campagne(verdicts)
+        self.ecrire("cm/dos/dos_exercice_1.json", exercice(enonce_intro_markdown="modifie apres relecture"))
+        self.valider("cm/dos")
+        code, res = self.preparer("cm/dos", campagne=chemin)
+        self.assertEqual(code, 1)
+        self.assertIn("exercice_1", " ".join(res["erreurs"]))
+
+    def test_un_desaccord_bloque_meme_a_taux_reduit(self):
+        empreintes = self.monter()
+        cles = sorted(empreintes)
+        verdicts = [(cles[0][0], cles[0][1], empreintes[cles[0]], "desaccord"),
+                    (cles[1][0], cles[1][1], empreintes[cles[1]], "accord")]
+        code, res = self.preparer("cm/dos", campagne=self.campagne(verdicts, taux=0.5))
+        self.assertEqual(code, 1)
+        self.assertIn("désaccord", " ".join(res["erreurs"]))
+
+    def test_taux_reduit_accepte_un_echantillon(self):
+        empreintes = self.monter()
+        cle = sorted(empreintes)[0]
+        verdicts = [(cle[0], cle[1], empreintes[cle], "accord")]
+        code, res = self.preparer("cm/dos", campagne=self.campagne(verdicts, taux=0.5))
+        self.assertEqual(code, 0, res)
+
+    def test_sans_campagne_rien_ne_change(self):
+        self.monter()
+        code, res = self.preparer("cm/dos")
+        self.assertEqual(code, 0, res)
+        manifeste = charger(os.path.join(res["dossier"], "manifest.json"))
+        self.assertIsNone(manifeste["campagne"])
+        self.assertEqual({c["validation"]["relecture_humaine"] for c in manifeste["contenus"]}, {"non_requise"})
+
+
 class InventaireTests(Banc):
     def test_inventaire_distingue_suivis_non_suivis_et_base(self):
         repo = os.path.join(self.tmp, "repo")

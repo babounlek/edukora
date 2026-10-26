@@ -44,6 +44,7 @@ param(
     [string]$Nom,
     [string]$Reference,
     [string]$Retraits,
+    [string]$Campagne,
     [string]$BatchId,
     [string]$Config,
     [switch]$Approuver,
@@ -481,7 +482,7 @@ function Invoke-Inventaire {
 # --------------------------------------------------------------------------- prepare
 
 function Invoke-Prepare {
-    param($Cfg, [string[]]$Unites, [string]$Nom, [string]$Reference, [string]$Retraits, [switch]$Approuver,
+    param($Cfg, [string[]]$Unites, [string]$Nom, [string]$Reference, [string]$Retraits, [string]$Campagne, [switch]$Approuver,
         [switch]$AccepterSansTunnel, [switch]$ToutOuRien, [switch]$Adopter)
     if ($Unites.Count -eq 0) { Write-Host 'prepare : indiquer -Unite ou -Liste.'; return $script:EXIT_USAGE }
     $etat = Get-DossiersEtat $Cfg
@@ -493,6 +494,7 @@ function Invoke-Prepare {
 
     if ($Reference) { $Reference = (Resolve-Path -LiteralPath $Reference -ErrorAction Stop).ProviderPath }
     if ($Retraits) { $Retraits = (Resolve-Path -LiteralPath $Retraits -ErrorAction Stop).ProviderPath }
+    if ($Campagne) { $Campagne = (Resolve-Path -LiteralPath $Campagne -ErrorAction Stop).ProviderPath }
 
     $argv = @('preparer', '--ingest', $Cfg.IngestDir, '--lots', $lots, '--validations', $etat.Validations, '--liste', $liste, '--machine', $env:COMPUTERNAME)
     if ($Nom) { $argv += @('--nom', $Nom) }
@@ -501,6 +503,7 @@ function Invoke-Prepare {
     if ($AccepterSansTunnel) { $argv += '--accepter-sans-tunnel' }
     if ($ToutOuRien) { $argv += '--tout-ou-rien' }
     if ($Adopter) { $argv += '--adopter' }
+    if ($Campagne) { $argv += @('--campagne', $Campagne) }
 
     $essai = Invoke-Outil $Cfg $argv
     if ($essai.Code -eq 1) {
@@ -1039,7 +1042,7 @@ function Invoke-Main {
         'validate' { return (Invoke-Validate -Cfg $cfg -Unites $unites) }
         'ingest-local' { return (Invoke-IngestLocal -Cfg $cfg -Unites $unites -Strict:$Strict) }
         'inventaire' { return (Invoke-Inventaire -Cfg $cfg -SansBase:$SansBase) }
-        'prepare' { return (Invoke-Prepare -Cfg $cfg -Unites $unites -Nom $Nom -Reference $Reference -Retraits $Retraits -Approuver:$Approuver -AccepterSansTunnel:$AccepterSansTunnel -ToutOuRien:$ToutOuRien -Adopter:$Adopter) }
+        'prepare' { return (Invoke-Prepare -Cfg $cfg -Unites $unites -Nom $Nom -Reference $Reference -Retraits $Retraits -Campagne $Campagne -Approuver:$Approuver -AccepterSansTunnel:$AccepterSansTunnel -ToutOuRien:$ToutOuRien -Adopter:$Adopter) }
         'status' { return (Invoke-Status -Cfg $cfg -BatchId $BatchId) }
         'publish' { return (Invoke-Publish -Cfg $cfg -BatchId $BatchId -Appliquer:$Appliquer -Reprendre:$Reprendre -SansPostTraitement:$SansPostTraitement -ConfirmerRetraits:$ConfirmerRetraits) }
         'resume' { return (Invoke-Resume -Cfg $cfg -BatchId $BatchId -Reprendre:$Reprendre) }
