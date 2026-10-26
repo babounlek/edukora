@@ -28,7 +28,9 @@ TYPE_COURS = "cours"
 TYPE_QUIZ = "quiz"
 TYPE_INEDITE = "inedite"
 TYPE_INCONNU = "inconnu"
+TYPE_LECON = "lecon"  # épreuve entière : ne se publie jamais par lot, seulement retrait/réintégration
 TYPES_V1 = (TYPE_EXERCICE, TYPE_COURS, TYPE_QUIZ)
+TYPES_RETRAIT = TYPES_V1 + (TYPE_LECON,)
 
 CHUNK = 1024 * 1024
 

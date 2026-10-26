@@ -131,6 +131,14 @@ Un retrait passe le contenu en `REJETE` (visible nulle part, rien n'est supprim�
 `retraits.json` (`[{"type":"exercice","id_stable":"...","motif":"..."}]`) passé à `prepare -Retraits`, et exige
 `publish -Appliquer -ConfirmerRetraits`. Un retrait et une publication du même contenu dans le même lot sont refusés.
 
+**Remplacer une épreuve** (ex. une épreuve à deux sujets ingérée en un seul bloc) : créer les nouvelles épreuves, puis retirer
+l'ancienne. Types de retrait : `exercice`, `cours`, `quiz` et `lecon` (une épreuve entière, jamais publiée par lot). Un contenu
+ingéré avant la chaîne n'a pas de journal : le retrait porte alors sa `cle_naturelle`, et lui seul le désigne (absent ou ambigu =
+erreur, jamais un choix au hasard). `outil_lot.py retraits <ingest> <unité> --motif "..." --sortie retraits.json` produit les
+retraits des exercices d'une unité et de leur leçon. Les cours ne sont jamais retirés par cette commande : ils se rattachent par
+compétence et servent à d'autres épreuves ; un nouveau cours de même titre est dédoublonné vers l'existant. Les retraits passent
+toujours après les créations du lot.
+
 ## Coupure, panne, reprise
 
 | Situation | Ce qui se passe | Que faire |

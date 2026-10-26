@@ -18,7 +18,7 @@ from catalog.ingestion import (
     ingest_exercise,
     mettre_a_jour_cours,
 )
-from catalog.models import Cours, Exercise, StatutContenu
+from catalog.models import Cours, Exercise, Lesson, StatutContenu
 from catalog.tunnel import _TITRE_RAPPEL
 from quiz.ingestion import (
     _country_code_from_quiz_ingest_path,
@@ -83,6 +83,10 @@ class _Base:
     def lessons_touchees(self, obj):
         return set()
 
+    def retrouver_par_cle(self, cle):
+        """L'objet désigné par sa clé naturelle seule (retrait d'un contenu jamais journalisé), ou None."""
+        return None
+
     def _statut(self, obj, statut):
         obj.statut = statut
         obj.save(update_fields=["statut", "updated_at"])
@@ -97,6 +101,12 @@ class _Base:
 class ExerciceAdaptateur(_Base):
     type = emp.TYPE_EXERCICE
     modele = Exercise
+
+    def retrouver_par_cle(self, cle):
+        try:
+            return chercher_exercice_existant(cle, None, pays=cle.get("pays") or None)
+        except (IngestionError, KeyError, ValueError):
+            return None
 
     def retrouver(self, ctx):
         try:
@@ -172,6 +182,10 @@ class CoursAdaptateur(_Base):
     type = emp.TYPE_COURS
     modele = Cours
 
+    def retrouver_par_cle(self, cle):
+        cours_id = str(cle.get("cours_id") or "").strip()
+        return Cours.objects.filter(external_id=cours_id).first() if cours_id else None
+
     def retrouver(self, ctx):
         cours_id = str(ctx.data.get("cours_id") or "").strip()
         return Cours.objects.filter(external_id=cours_id).first() if cours_id else None
@@ -201,6 +215,10 @@ class CoursAdaptateur(_Base):
 class QuizAdaptateur(_Base):
     type = emp.TYPE_QUIZ
     modele = CompetenceItem
+
+    def retrouver_par_cle(self, cle):
+        external_id = str(cle.get("external_id") or "").strip()
+        return CompetenceItem.objects.filter(external_id=external_id).first() if external_id else None
 
     def charger(self, entry, racine_lot):
         data, chemin = _charger_fichier(entry, racine_lot)
@@ -244,6 +262,24 @@ class QuizAdaptateur(_Base):
         return raisons
 
 
+class LeconAdaptateur(_Base):
+    """Une épreuve entière (Lesson). Jamais créée ni modifiée par un lot : seulement retirée (REJETE) ou réintégrée,
+    par sa clé naturelle `epreuve_source` (+ `annee` si l'épreuve source est ambiguë)."""
+
+    type = emp.TYPE_LECON
+    modele = Lesson
+
+    def retrouver_par_cle(self, cle):
+        source = str(cle.get("epreuve_source") or "").strip()
+        if not source:
+            return None
+        qs = Lesson.objects.filter(epreuve_source=source)
+        if cle.get("annee"):
+            qs = qs.filter(year=int(cle["annee"]))
+        trouvees = list(qs[:2])
+        return trouvees[0] if len(trouvees) == 1 else None  # ambiguë ou absente : jamais de choix au hasard
+
+
 class _Doublon(Exception):
     def __init__(self, existant):
         super().__init__("doublon")
@@ -254,6 +290,7 @@ ADAPTATEURS = {
     emp.TYPE_EXERCICE: ExerciceAdaptateur(),
     emp.TYPE_COURS: CoursAdaptateur(),
     emp.TYPE_QUIZ: QuizAdaptateur(),
+    emp.TYPE_LECON: LeconAdaptateur(),
 }
 
 DoublonCours = _Doublon

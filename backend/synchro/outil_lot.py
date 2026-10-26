@@ -386,7 +386,7 @@ def cmd_preparer(args):
         return 1
     retraits = _charger_json_optionnel(args.retraits) or []
     for r in retraits:
-        if r.get("type") not in emp.TYPES_V1 or not r.get("id_stable") or not str(r.get("motif") or "").strip():
+        if r.get("type") not in emp.TYPES_RETRAIT or not r.get("id_stable") or not str(r.get("motif") or "").strip():
             erreurs.append(f"retrait invalide (type, id_stable et motif obligatoires) : {r}")
     if erreurs:
         print(json.dumps({"statut": "refuse", "erreurs": erreurs}, ensure_ascii=False))
@@ -421,7 +421,7 @@ def cmd_preparer(args):
         contenus = [c for c in contenus if c not in meme]
         contenus.append({"type": r["type"], "id_stable": r["id_stable"], "operation": "retirer",
                          "motif": r["motif"], "version_reference": None, "version_proposee": None,
-                         "fichier": None, "index": 0, "fichiers": [], "cle_naturelle": {},
+                         "fichier": None, "index": 0, "fichiers": [], "cle_naturelle": r.get("cle_naturelle") or {},
                          "validation": {"locale": "ok", "tunnel": "non_applicable", "relecture_humaine": "non_requise"}})
     contenus.sort(key=lambda c: (c["type"], c["id_stable"]))
 
@@ -552,6 +552,33 @@ def cmd_resoudre(args):
     return 0 if posees or not ignorees else 1
 
 
+def cmd_retraits(args):
+    """
+    Écrit le `retraits.json` qui retire une épreuve remplacée : un retrait par exercice des unités données (clé naturelle
+    calculée par le même code que la préparation) et un retrait de leçon par `epreuve_source`. Les cours ne sont jamais
+    retirés ici : ils se rattachent par compétence et peuvent servir à d'autres épreuves.
+    """
+    retraits, lecons, erreurs = [], {}, []
+    for unite in args.unites:
+        a = analyser_unite(args.ingest, unite, calculer_shas=False)
+        erreurs += a["erreurs"]
+        for e in a["elements"]:
+            if e["type"] != emp.TYPE_EXERCICE:
+                continue
+            retraits.append({"type": emp.TYPE_EXERCICE, "id_stable": e["id_stable"], "cle_naturelle": e["cle_naturelle"],
+                             "motif": args.motif})
+            cle = e["cle_naturelle"]
+            lecons[cle["epreuve_source"]] = {"pays": cle["pays"], "epreuve_source": cle["epreuve_source"], "annee": cle["annee"]}
+    for source, cle in sorted(lecons.items()):
+        retraits.append({"type": emp.TYPE_LECON, "id_stable": f"{cle['pays']}/{source}", "cle_naturelle": cle, "motif": args.motif})
+    if erreurs or not retraits:
+        print(json.dumps({"statut": "refuse", "erreurs": erreurs or ["aucun exercice dans les unités données"]}, ensure_ascii=False))
+        return 1
+    _json_ecrire(args.sortie, retraits)
+    print(json.dumps({"statut": "ok", "retraits": len(retraits), "lecons": len(lecons), "sortie": args.sortie}, ensure_ascii=False))
+    return 0
+
+
 def construire_parseur():
     p = argparse.ArgumentParser(prog="outil_lot")
     sp = p.add_subparsers(dest="cmd", required=True)
@@ -589,6 +616,13 @@ def construire_parseur():
     r.add_argument("--tout-ou-rien", action="store_true")
     r.add_argument("--adopter", action="store_true")
     r.set_defaults(fn=cmd_preparer)
+
+    t = sp.add_parser("retraits")
+    t.add_argument("ingest")
+    t.add_argument("unites", nargs="+")
+    t.add_argument("--motif", required=True)
+    t.add_argument("--sortie", required=True)
+    t.set_defaults(fn=cmd_retraits)
 
     d = sp.add_parser("resoudre")
     d.add_argument("--lot", required=True, help="dossier du lot (batches/<batch_id>)")

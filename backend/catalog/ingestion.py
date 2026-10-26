@@ -2085,14 +2085,15 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
     return exercise, exercice_maj is None
 
 
-def chercher_exercice_existant(data, source_dir):
+def chercher_exercice_existant(data, source_dir, pays=None):
     """
     Retrouve, sans rien écrire, l'Exercise que `ingest_exercise` désignerait pour ce JSON :
     même clé que son raccourci « déjà existant » (épreuve source, matière - famille comprise,
     année, pays, variante, paper, numéro). Sert à la chaîne de synchronisation pour décider
     création / mise à jour. `None` si l'exercice n'existe pas encore.
+    `pays` (code) remplace le pays déduit du dossier : retrait d'un contenu connu par sa seule clé naturelle.
     """
-    country = _resolve_country(_country_code_from_path(source_dir))
+    country = _resolve_country(pays or _country_code_from_path(source_dir))
     subject = _resolve_subject(data["matiere"], country)
     variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
     numero_paper = _resolve_numero_paper(data.get("numero_paper"))

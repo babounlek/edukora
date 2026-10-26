@@ -55,7 +55,7 @@ SCHEMA_SYNC_SUPPORTE = 1
 VERROU_ID = 727368  # pg_advisory_lock : un seul lot appliqué à la fois
 SEUIL_BATTEMENT = timedelta(seconds=90)
 RE_BATCH_ID = re.compile(r"^\d{8}-\d{6}-[0-9a-f]{8}$")
-ORDRE_TYPES = {emp.TYPE_EXERCICE: 0, emp.TYPE_COURS: 1, emp.TYPE_QUIZ: 2}
+ORDRE_TYPES = {emp.TYPE_EXERCICE: 0, emp.TYPE_COURS: 1, emp.TYPE_QUIZ: 2, emp.TYPE_LECON: 3}
 
 LABELS_ECRITURE_AUTORISES = frozenset({
     "catalog.Exercise", "catalog.Question", "catalog.Figure", "catalog.RappelDeMethode", "catalog.Cours",
@@ -222,6 +222,8 @@ def _verifier_entrees(manifeste, dossier):
         vus.add(cle)
         if entry["type"] not in ADAPTATEURS:
             raise ErreurLot(f"type de contenu inconnu : {entry['type']}")
+        if entry["type"] == emp.TYPE_LECON and entry["operation"] not in ("retirer", "reintegrer"):
+            raise ErreurLot(f"{entry['id_stable']} : une épreuve entière ne se publie pas par lot (retrait ou réintégration seulement)")
         if entry["operation"] in ("create", "update"):
             if not entry.get("fichier"):
                 raise ErreurLot(f"{entry['id_stable']} : opération {entry['operation']} sans fichier")
@@ -609,10 +611,15 @@ def _orphelins(exc):
 def _traiter_statut(adapt, entry, lot, options, simulation):
     journal = ContenuSynchro.objects.filter(type=entry["type"], id_stable=entry["id_stable"]).first()
     if journal is None:
-        return R.ERREUR, {"erreur": "contenu non journalisé : retrait/réintégration impossible"}, set()
-    obj = adapt.modele.objects.filter(pk=journal.objet_pk).first()
-    if obj is None:
-        return R.CONFLIT_IDENTITE, {"classe": "objet_disparu"}, set()
+        # Contenu jamais passé par la chaîne (ingéré à l'ancienne) : le retrait le désigne par sa clé naturelle, et
+        # seulement par elle - un objet absent ou ambigu est une erreur, jamais un choix au hasard.
+        obj = adapt.retrouver_par_cle(entry.get("cle_naturelle") or {}) if entry.get("cle_naturelle") else None
+        if obj is None:
+            return R.ERREUR, {"erreur": "contenu non journalisé et introuvable par sa clé naturelle : retrait/réintégration impossible"}, set()
+    else:
+        obj = adapt.modele.objects.filter(pk=journal.objet_pk).first()
+        if obj is None:
+            return R.CONFLIT_IDENTITE, {"classe": "objet_disparu"}, set()
     cible = StatutContenu.REJETE if entry["operation"] == "retirer" else StatutContenu.VALIDE
     reussi = R.RETIRE if cible == StatutContenu.REJETE else R.REINTEGRE
     if obj.statut == cible:
