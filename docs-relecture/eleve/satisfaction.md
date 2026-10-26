@@ -20,6 +20,7 @@ Les sessions du 2026-10-19 au 2026-10-24 ont été jouées **avant** l'ajout de 
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | 2026-10-24 | Gogo (calibrage) | connexion e-mail familial, code non reçu | local | f245a953 | 2 | 4 | 1 | peut-être | 3 | sans objet | étapes 3-4 (+1) | étapes 8-9 (-2) | 2026-10-24-calibrage-satisfaction-gogo-connexion-local.md |
 | 2026-10-25 | Guyguy (3e, orienté fun) | M1+M2+M3 visiteur | local | 8be75ff7 | 3 | 2 | 3 | peut-être | 5 | peut-être (parents) | Q4 QCM « Bravo ! » et corrigé 2026 libre (+1) | arrivée en anglais, mur de texte Q1 (-1) | 2026-10-25-guyguy-visiteur-M1-M2-M3-local.md |
+| 2026-10-26 | Guyguy (3e, orienté fun) | M2 visiteur, Identité remarquable (après B1 pilote + A1-A7 + lot B) | local | e377a4a6 + B1 non commité | 4 | 2 | 3 | cette semaine | 6 | peut-être (parents) | série « tu es en feu », 5/5 avec confettis et record (+2) | fenêtres avant la 1re question, correction trop longue après une erreur (-1) | 2026-10-26-guyguy-visiteur-M2-identite-remarquable-local.md |
 | 2026-10-25 | Guyguy (3e, orienté fun) | M8+M4+M5 abonné | local | 8be75ff7 | 3 | 3 | 3 | cette semaine | 5 | sans objet | résultat du quiz, +37 points (+2) | résultat inédite « 0,5 / 20 » (-2) | 2026-10-25-guyguy-abonne-M8-M4-M5-local.md |
 
 ## Calibrage de la satisfaction (2026-10-24)
