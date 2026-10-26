@@ -1,0 +1,133 @@
+{
+  "cours_id": "cours-calculer-frequences-alleliques-tle-d-2019-bac2019-s1",
+  "meta": {
+    "titre": "Calculer les fréquences alléliques à partir des effectifs génotypiques",
+    "matiere": "SVT",
+    "pays": "cm",
+    "serie": "D",
+    "sous_theme": "Génétique des populations",
+    "duree_estimee_min": 25,
+    "tags": [
+      "fréquence allélique",
+      "allèle",
+      "comptage des allèles",
+      "génétique des populations"
+    ],
+    "savoir_officiel": null,
+    "statut": "brouillon"
+  },
+  "source": {
+    "epreuve_id": "bac-d-svt-2019-officiel-cameroun-sujet1",
+    "epreuve_titre": "Baccalauréat Série D - SVTEEHB (Sciences de la Vie et de la Terre, Éducation à l'Environnement, Hygiène et Biotechnologie) - Session 2019 - Cameroun",
+    "exercice_numero": "4",
+    "rappel_id": "rdm-bac-d-svt-2019-officiel-cameroun-sujet1-ex4-q2-1",
+    "rappels_lies": [],
+    "correction_id": null
+  },
+  "sections": [
+    {
+      "type": "accroche",
+      "contenu_markdown": "Pour savoir si un allèle est rare ou répandu dans une population, on ne compte pas les individus mais les copies du gène qu'ils portent. Un individu hétérozygote en porte une de chaque sorte, un homozygote deux de la même. Compter correctement ces copies donne la fréquence allélique, base de toute étude de l'évolution d'une population."
+    },
+    {
+      "type": "prerequis",
+      "items": [
+        "Les génotypes homozygote et hétérozygote",
+        "Le calcul des fréquences génotypiques (effectif divisé par l'effectif total)"
+      ]
+    },
+    {
+      "type": "regle",
+      "titre": "La fréquence d'un allèle",
+      "contenu_markdown": "La **fréquence d'un allèle** est le rapport entre le nombre de copies de cet allèle et le nombre total d'allèles du gène dans la population, soit $2N$ pour $N$ individus.\n\nChaque homozygote porte deux copies de son allèle, chaque hétérozygote en porte une seule : pour deux allèles $A$ et $a$,\n\n$$f(A) = \\frac{2 \\times \\text{eff}(A//A) + \\text{eff}(A//a)}{2N} = f(A//A) + \\frac{f(A//a)}{2}$$\n\net $f(A) + f(a) = 1$.",
+      "formule_principale": null,
+      "variantes": []
+    },
+    {
+      "type": "exemple_resolu",
+      "enonce_markdown": "Dans une population de 650 individus, 350 sont $D//D$, 200 sont $D//d$ et 100 sont $d//d$. Calculer la fréquence de chaque allèle.",
+      "epreuve_source": true,
+      "etapes": [
+        {
+          "numero": 1,
+          "action": "Calculer le nombre total d'allèles",
+          "justification": "Chaque individu porte deux copies du gène.",
+          "resultat_markdown": "$2N = 2 \\times 650 = 1\\,300$"
+        },
+        {
+          "numero": 2,
+          "action": "Compter les copies de $D$",
+          "justification": "Chaque $D//D$ en porte 2 et chaque $D//d$ en porte 1.",
+          "resultat_markdown": "$2 \\times 350 + 200 = 900$"
+        },
+        {
+          "numero": 3,
+          "action": "Calculer $f(D)$",
+          "justification": "On divise le nombre de copies par le nombre total d'allèles.",
+          "resultat_markdown": "$f(D) = \\dfrac{900}{1\\,300} = \\dfrac{9}{13} \\approx 0{,}692$"
+        },
+        {
+          "numero": 4,
+          "action": "Compter les copies de $d$",
+          "justification": "Chaque $d//d$ en porte 2 et chaque $D//d$ en porte 1.",
+          "resultat_markdown": "$2 \\times 100 + 200 = 400$, donc $f(d) = \\dfrac{400}{1\\,300} = \\dfrac{4}{13} \\approx 0{,}308$"
+        },
+        {
+          "numero": 5,
+          "action": "Contrôler",
+          "justification": "La somme doit valoir 1 ; on peut aussi retrouver $f(D)$ par $f(D//D) + f(D//d)/2$.",
+          "resultat_markdown": "$\\dfrac{9}{13} + \\dfrac{4}{13} = 1$ et $\\dfrac{7}{13} + \\dfrac{2}{13} = \\dfrac{9}{13}$"
+        }
+      ],
+      "conclusion_markdown": "L'allèle $D$ a une fréquence d'environ 0,69 et l'allèle $d$ d'environ 0,31."
+    },
+    {
+      "type": "erreurs_classiques",
+      "items": [
+        {
+          "erreur_markdown": "Compter 200 copies de $D$ pour les hétérozygotes et 350 pour les homozygotes (sans doubler).",
+          "pourquoi_faux": "Un homozygote porte deux copies de son allèle : $D//D$ apporte 2 copies de $D$, pas une.",
+          "correction_markdown": "Écrire $2 \\times$ effectif des homozygotes + effectif des hétérozygotes."
+        },
+        {
+          "erreur_markdown": "Diviser par $N$ au lieu de $2N$.",
+          "pourquoi_faux": "Le dénominateur est le nombre total d'allèles du gène ($2N$), car chaque individu en porte deux.",
+          "correction_markdown": "Écrire d'abord $2N$, puis diviser."
+        }
+      ]
+    },
+    {
+      "type": "exercices_application",
+      "items": [
+        {
+          "numero": 1,
+          "difficulte": "facile",
+          "enonce_markdown": "Dans une population de 100 individus, 36 sont $A//A$, 48 sont $A//a$ et 16 sont $a//a$. Calculer $f(A)$ et $f(a)$.",
+          "solution_markdown": "$2N = 200$. Copies de $A$ : $2 \\times 36 + 48 = 120$, donc $f(A) = \\dfrac{120}{200} = 0{,}60$. Copies de $a$ : $2 \\times 16 + 48 = 80$, donc $f(a) = \\dfrac{80}{200} = 0{,}40$. Contrôle : $0{,}60 + 0{,}40 = 1$."
+        },
+        {
+          "numero": 2,
+          "difficulte": "moyen",
+          "enonce_markdown": "Dans une population, $f(A//A) = 0{,}49$, $f(A//a) = 0{,}42$ et $f(a//a) = 0{,}09$. Calculer $f(A)$ et $f(a)$ avec la formule du cours.",
+          "solution_markdown": "$f(A) = f(A//A) + \\dfrac{f(A//a)}{2} = 0{,}49 + 0{,}21 = 0{,}70$. $f(a) = f(a//a) + \\dfrac{f(A//a)}{2} = 0{,}09 + 0{,}21 = 0{,}30$. Contrôle : $0{,}70 + 0{,}30 = 1$."
+        },
+        {
+          "numero": 3,
+          "difficulte": "approfondissement",
+          "enonce_markdown": "Sur 500 personnes, l'allèle responsable d'une maladie récessive $m$ a une fréquence de 0,1. Combien de personnes ont au moins une copie de $m$ si les génotypes sont dans les proportions de Hardy-Weinberg ?",
+          "solution_markdown": "$f(m) = q = 0{,}1$ et $f(M) = p = 0{,}9$. Fréquence des $M//M$ : $p^2 = 0{,}81$. Les personnes qui portent au moins une copie de $m$ sont les $M//m$ et les $m//m$ : $1 - 0{,}81 = 0{,}19$, soit $0{,}19 \\times 500 = 95$ personnes. (Détail : $M//m$ : $2pq = 0{,}18$, soit 90 personnes ; $m//m$ : $q^2 = 0{,}01$, soit 5 personnes ; $90 + 5 = 95$.)"
+        }
+      ]
+    },
+    {
+      "type": "synthese",
+      "items_markdown": [
+        "Une fréquence allélique est un nombre de copies divisé par le nombre total d'allèles, $2N$.",
+        "L'homozygote apporte deux copies de son allèle, l'hétérozygote une seule de chacun.",
+        "Deux voies pour le même résultat : le comptage des copies et la formule $f(A) = f(A//A) + f(A//a)/2$.",
+        "La somme des fréquences des allèles d'un gène vaut 1.",
+        "Au BAC, la question est presque toujours précédée du calcul des fréquences génotypiques : prépare les deux calculs ensemble."
+      ]
+    }
+  ]
+}
