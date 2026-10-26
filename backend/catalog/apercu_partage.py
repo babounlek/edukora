@@ -26,7 +26,7 @@ from django.utils.html import escape
 from inedit.models import EpreuveInedite
 
 from .libelles import libelle_cursus
-from .models import Cours, Lesson, StatutContenu
+from .models import Cours, Cursus, Lesson, StatutContenu, Subject, Tag
 from .segments_url import chemin_anglais, chemin_interne
 
 LARGEUR, HAUTEUR = 1200, 630
@@ -52,6 +52,9 @@ TEXTES = {
         "inedite_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
         "cours_etiquette": "Cours · {matiere}",
         "inedite_etiquette": "Épreuve inédite · {matiere}",
+        "quiz_titre": "Quiz gratuit : {theme}",
+        "quiz_description": "{n} questions de {matiere} ({public}) : un quiz gratuit, sans compte, avec le corrigé de chaque question.",
+        "quiz_etiquette": "Quiz gratuit · {matiere}",
         "types": {},
     },
     "en": {
@@ -67,6 +70,9 @@ TEXTES = {
         "inedite_description": "{matiere} - original practice paper written by {site}, never taken from past papers.",
         "cours_etiquette": "Lesson · {matiere}",
         "inedite_etiquette": "Original paper · {matiere}",
+        "quiz_titre": "Free quiz: {theme}",
+        "quiz_description": "{n} questions on {matiere} ({public}): a free quiz, no account needed, with the correction of every question.",
+        "quiz_etiquette": "Free quiz · {matiere}",
         "types": {"FICHE": "Revision sheet", "CORR": "Past paper with correction", "SUJET": "Original paper"},
     },
 }
@@ -134,7 +140,34 @@ def _infos_inedite(ident, langue="fr"):
     }
 
 
+def _infos_quiz_essai(cursus_id, subject_id, theme_id, langue="fr"):
+    """Le quiz gratuit partagé (/quiz/essai/<cursus>/<matière>/<thème>) : le nom du thème, la matière et le public
+    visé. Même garde que le lancement de l'essai : un périmètre qui n'est pas entièrement gratuit n'a pas d'aperçu
+    propre (lien périmé ou identifiants inventés : carte générique)."""
+    from quiz.services import perimetre_est_vitrine, _items_eligibles
+
+    cursus = Cursus.objects.filter(pk=cursus_id, country__actif=True).select_related("country", "series").first()
+    subject = Subject.objects.filter(pk=subject_id).first()
+    theme = Tag.objects.filter(pk=theme_id).first()
+    if not (cursus and subject and theme) or not perimetre_est_vitrine(cursus, subject=subject, theme=theme):
+        return None
+    textes = TEXTES[langue]
+    n = len(_items_eligibles(cursus, subject=subject, theme=theme))
+    public = libelle_cursus([cursus])
+    return {
+        "titre": textes["quiz_titre"].format(theme=theme.name),
+        "titre_carte": theme.name,  # l'étiquette de la carte dit déjà « Quiz gratuit »
+        "description": textes["quiz_description"].format(n=n, matiere=subject.label, public=public),
+        "etiquette": textes["quiz_etiquette"].format(matiere=subject.label),
+        "public": public,
+        "chemin": f"quiz/essai/{cursus.id}/{subject.id}/{theme.id}",
+        "image": _image_url("quiz", f"{cursus.id}-{subject.id}-{theme.id}", langue),
+    }
+
+
 _RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite}
+# Le quiz gratuit n'a ni pays ni slug dans son adresse : trois identifiants numériques.
+_QUIZ_ESSAI_RE = re.compile(r"^quiz/essai/(\d+)/(\d+)/(\d+)$")
 
 
 def langue_du_chemin(chemin):
@@ -150,6 +183,12 @@ def infos_page(chemin):
     langue = langue_du_chemin(chemin)
     brut = chemin.strip("/")
     interne = chemin_interne("/" + re.sub(r"^en(/|$)", "", brut)).strip("/") if langue == "en" else brut
+    quiz = _QUIZ_ESSAI_RE.match(interne)
+    if quiz:
+        infos = _infos_quiz_essai(*map(int, quiz.groups()), langue)
+        if infos and langue == "en":
+            infos["chemin"] = "en" + chemin_anglais("/" + infos["chemin"])
+        return infos
     m = _CHEMIN_RE.match(interne)
     if not m:
         return None
@@ -366,12 +405,15 @@ def image_partage(request, genre, ident):
     if genre == "defaut":
         textes = TEXTES[langue]
         infos = {"titre": textes["defaut_titre_image"], "etiquette": textes["defaut_etiquette"], "public": ""}
+    elif genre == "quiz":
+        ids = re.fullmatch(r"(\d+)-(\d+)-(\d+)", ident)
+        infos = _infos_quiz_essai(*map(int, ids.groups()), langue) if ids else None
     else:
         resolveur = {"epreuves": _infos_epreuve, "cours": _infos_cours, "inedites": _infos_inedite}.get(genre)
         infos = resolveur(ident, langue) if resolveur else None
     if not infos:
         raise Http404("Aperçu introuvable.")
-    png = dessiner_carte(infos["titre"], infos["etiquette"], infos["public"], langue, generique=genre == "defaut")
+    png = dessiner_carte(infos.get("titre_carte", infos["titre"]), infos["etiquette"], infos["public"], langue, generique=genre == "defaut")
     response = HttpResponse(png, content_type="image/png")
     response["Cache-Control"] = "public, max-age=86400"
     return response

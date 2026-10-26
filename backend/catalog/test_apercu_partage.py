@@ -180,3 +180,62 @@ class CarteMarqueTests(TestCase):
         from .apercu_partage import dessiner_carte
 
         self.assertEqual(self._taille(dessiner_carte("Équation δ = b² − 4ac", "Maths", "", "en")), (LARGEUR, HAUTEUR))
+
+
+class ApercuQuizEssaiTests(TestCase):
+    """Le lien d'un quiz gratuit partagé (/quiz/essai/<cursus>/<matière>/<thème>)."""
+
+    def setUp(self):
+        from quiz.tests import _make_competence_item
+
+        from .models import Cursus, Examen, Tag
+
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="conversion d'unités")
+        for i in range(3):
+            _make_competence_item(self.subject, self.cursus, theme=self.theme, numero=f"q{i}", est_vitrine=True)
+        self.ids = f"{self.cursus.id}/{self.subject.id}/{self.theme.id}"
+
+    def test_l_apercu_porte_le_theme_et_une_image_dediee(self):
+        html = self.client.get(f"/partage-apercu/quiz/essai/{self.ids}").content.decode()
+        self.assertIn("Quiz gratuit : conversion d&#x27;unités", html)
+        self.assertIn("3 questions de Mathématiques", html)
+        self.assertIn(f"/partage-image/quiz/{self.ids.replace('/', '-')}.png", html)
+        self.assertIn(f'og:url" content="http', html)
+        self.assertIn(f"/quiz/essai/{self.ids}", html)
+
+    def test_l_apercu_anglais_suit_le_prefixe_et_traduit_le_canonique(self):
+        html = self.client.get(f"/partage-apercu/en/quiz/trial/{self.ids}").content.decode()
+        self.assertIn("Free quiz:", html)
+        self.assertIn('og:locale" content="en_GB"', html)
+        self.assertIn(f"/en/quiz/trial/{self.ids}", html)
+        self.assertIn(".png?lang=en", html)
+
+    def test_un_theme_payant_ou_invente_retombe_sur_la_carte_generique(self):
+        from quiz.tests import _make_competence_item
+
+        from .models import Tag
+
+        payant = Tag.objects.create(name="theme secret payant")
+        _make_competence_item(self.subject, self.cursus, theme=payant, numero="p1")
+        for ids in (f"{self.cursus.id}/{self.subject.id}/{payant.id}", f"{self.cursus.id}/{self.subject.id}/999999", "0/0/0"):
+            html = self.client.get(f"/partage-apercu/quiz/essai/{ids}").content.decode()
+            self.assertNotIn("theme secret payant", html, ids)
+            self.assertIn("/partage-image/defaut.png", html, ids)
+
+    def test_les_pages_du_quiz_sans_identifiants_gardent_la_carte_generique(self):
+        for chemin in ("quiz/essai", "quiz/essai/resultat"):
+            html = self.client.get(f"/partage-apercu/{chemin}").content.decode()
+            self.assertIn("/partage-image/defaut.png", html, chemin)
+
+    def test_image_png_du_quiz(self):
+        from io import BytesIO
+
+        from PIL import Image
+
+        reponse = self.client.get(f"/partage-image/quiz/{self.ids.replace('/', '-')}.png")
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(Image.open(BytesIO(reponse.content)).size, (LARGEUR, HAUTEUR))
+        self.assertEqual(self.client.get("/partage-image/quiz/abc.png").status_code, 404)
+        self.assertEqual(self.client.get("/partage-image/quiz/0-0-0.png").status_code, 404)
