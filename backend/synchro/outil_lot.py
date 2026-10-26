@@ -382,6 +382,16 @@ def _charger_campagne(chemin):
     return campagne, verdicts, erreurs
 
 
+def _ids_de_campagne(chemin_campagne, campagne):
+    """Identifiants (external_id) du périmètre d'une campagne de conversion, ou None si elle n'en déclare pas."""
+    propositions = (campagne.get("conversion") or {}).get("propositions")
+    if not propositions:
+        return None
+    chemin = os.path.join(os.path.dirname(os.path.abspath(chemin_campagne)), propositions)
+    with open(chemin, encoding="utf-8-sig") as f:
+        return {str(p.get("external_id")) for p in json.load(f) if p.get("external_id")}
+
+
 def _appliquer_relecture(contenus, campagne, verdicts):
     """
     Pose `validation.relecture_humaine` ("faite" | "a_faire" | "desaccord") sur les créations et mises à jour,
@@ -487,6 +497,17 @@ def cmd_preparer(args):
     campagne = None
     if args.campagne:
         campagne, verdicts, erreurs = _charger_campagne(args.campagne)
+        if not erreurs:
+            # Une campagne de conversion ne livre QUE les contenus qu'elle convertit : les autres items des mêmes
+            # fichiers (non relus, non concernés) restent hors du lot.
+            ids = _ids_de_campagne(args.campagne, campagne)
+            if ids is not None:
+                hors = [c for c in contenus if c["type"] == emp.TYPE_QUIZ and c["id_stable"] not in ids]
+                contenus = [c for c in contenus if c not in hors]
+                avertissements.append(f"{len(hors)} item(s) des mêmes fichiers hors du périmètre de la campagne, non livrés")
+                absents = sorted(ids - {c["id_stable"] for c in contenus})
+                if absents:
+                    erreurs.append(f"campagne : {len(absents)} item(s) du périmètre absents des unités : {', '.join(absents[:10])}")
         if not erreurs:
             erreurs = _appliquer_relecture(contenus, campagne, verdicts)
         if erreurs:

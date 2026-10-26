@@ -403,7 +403,14 @@ function Invoke-IngestLocal {
         }
         $r = Invoke-GitBash -Cfg $Cfg -Commande $cmd -Env $env_
         $t = $r.Texte
-        if ($r.Code -ne 0 -or $t -match 'TUNNEL NON VALID' -or $t -match 'INGESTION EN ERREUR') {
+        # Quiz DEJA en base (cas d'une correction ecrite dans les JSON) : 0 creation, donc perimetre du tunnel vide.
+        # Ce n'est pas un echec, mais le tunnel n'a rien valide : statut non_rejoue (prepare exigera -AccepterSansTunnel).
+        $quizDejaEnBase = $u.StartsWith('_quiz/') -and $t -match '(?m)^0 item\(s\) cr' -and $t -match 'P.{1,3}rim.{1,3}tre vide' -and $t -notmatch 'Traceback' -and $t -notmatch 'erreur\(s\) :'
+        if ($quizDejaEnBase) {
+            Save-Validation $Cfg $u 'ok' 'non_rejoue' 'quiz deja en base locale : aucune creation, tunnel non rejoue'
+            Write-Host "ingest-local : $u etait deja en base ; tunnel non rejoue (statut non_rejoue)." -ForegroundColor Yellow
+        }
+        elseif ($r.Code -ne 0 -or $t -match 'TUNNEL NON VALID' -or $t -match 'INGESTION EN ERREUR') {
             Save-Validation $Cfg $u 'echec' 'echec' "code $($r.Code)"
             Write-Host "ingest-local : ECHEC sur $u (code $($r.Code))." -ForegroundColor Red
             $echecs++
