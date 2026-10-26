@@ -24,6 +24,8 @@ import { t, tn, useI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
 
 function message(pourcentage: number) {
+  // Un 5/5 est « sans faute » tout court : « ou presque » se dit à qui a une erreur.
+  if (pourcentage >= 100) return { titre: t("essai.msg0_titre"), texte: t("essai.msg0_texte") }
   if (pourcentage >= 90) return { titre: t("essai.msg1_titre"), texte: t("essai.msg1_texte") }
   if (pourcentage >= 70) return { titre: t("essai.msg2_titre"), texte: t("essai.msg2_texte") }
   if (pourcentage >= 40) return { titre: t("essai.msg3_titre"), texte: t("essai.msg3_texte") }

@@ -115,4 +115,19 @@ describe("QuizEssaiResultPage : le gain du visiteur", () => {
     await screen.findByText("Ce quiz t'aurait rapporté")
     expect(screen.queryByRole("status")).not.toBeInTheDocument()
   })
+
+  it("dit « Sans faute ! » pour un 5/5", async () => {
+    memoriserEssai(essai([true, true, true, true, true]))
+    afficher()
+
+    expect(await screen.findByRole("heading", { name: "Sans faute !" })).toBeInTheDocument()
+  })
+
+  it("ne dit pas « Sans faute » pour un 4/5", async () => {
+    memoriserEssai(essai([true, true, true, true, false]))
+    afficher()
+
+    await screen.findByText("Ce quiz t'aurait rapporté")
+    expect(screen.queryByRole("heading", { name: /Sans faute/ })).not.toBeInTheDocument()
+  })
 })

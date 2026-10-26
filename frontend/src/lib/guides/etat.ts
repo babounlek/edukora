@@ -87,7 +87,10 @@ export function definirIdentite(identite: string | null) {
 
 export function signalerOnboarding(ouvert: boolean) {
   if (ouvert === etat.onboardingOuvert) return
-  changer({ onboardingOuvert: ouvert })
+  // La question « quel examen ? » EST la première aide de la visite : une fois fermée, le tutoriel de bienvenue ne se lance
+  // pas dans la foulée (trois fenêtres de suite avant la première question d'un visiteur, test élève Guyguy). Il viendra à
+  // la visite suivante, comme toute aide automatique : jamais deux dans la même visite.
+  changer(ouvert ? { onboardingOuvert: true } : { onboardingOuvert: false, autoDejaMontre: true })
 }
 
 /**

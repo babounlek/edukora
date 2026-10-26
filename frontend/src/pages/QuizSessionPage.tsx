@@ -577,8 +577,13 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         </div>
 
         {isQcm && answered && question.corrige_markdown && (
-          <details className="mt-4 rounded-xl border bg-muted/30 px-4 py-3" open={!correct}>
-            <summary className="cursor-pointer text-sm font-medium">{t("qs.comprendre")}</summary>
+          // Repliée dans tous les cas : ouverte d'office après une erreur, la correction faisait trois écrans de méthode, de calcul
+          // et d'explications avant la question suivante (« c'est un cours entier, je lis pas », test élève Guyguy). Après une erreur,
+          // le bouton est mis en avant : on l'ouvre quand on veut comprendre, la bonne réponse est déjà montrée en vert.
+          <details className="mt-4 rounded-xl border bg-muted/30 px-4 py-3">
+            <summary className={cn("cursor-pointer text-sm", correct ? "font-medium" : "font-semibold text-primary")}>
+              {correct ? t("qs.comprendre") : t("qs.comprendre_erreur")}
+            </summary>
             <article className="prose prose-neutral mt-3 max-w-none dark:prose-invert">
               <EpreuveMarkdown markdown={question.corrige_markdown} solutionsOuvertes />
             </article>

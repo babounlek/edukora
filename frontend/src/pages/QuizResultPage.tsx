@@ -227,6 +227,7 @@ function messageDeFin(pourcentage: number, diagnostic: boolean) {
   // Un diagnostic n'est pas une note : un 30 % n'y est pas un échec, c'est un point
   // de départ. Le message ne doit ni féliciter ni consoler.
   if (diagnostic) return { titre: t("qr.diag_titre"), texte: t("qr.diag_texte") }
+  if (pourcentage >= 100) return { titre: t("qr.fin100_titre"), texte: t("qr.fin100_texte") }
   if (pourcentage >= 90) return { titre: t("qr.fin90_titre"), texte: t("qr.fin90_texte") }
   if (pourcentage >= 70) return { titre: t("qr.fin70_titre"), texte: t("qr.fin70_texte") }
   if (pourcentage >= 40) return { titre: t("qr.fin40_titre"), texte: t("qr.fin40_texte") }

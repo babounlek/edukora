@@ -125,3 +125,37 @@ describe("QuizSessionPage : le pont vers les exercices du thème", () => {
     expect(lien).not.toHaveAttribute("target")
   })
 })
+
+describe("QuizSessionPage : la correction d'un QCM", () => {
+  beforeEach(() => {
+    sessionStorage.clear()
+    Element.prototype.scrollIntoView = vi.fn()
+  })
+  afterEach(() => sessionStorage.clear())
+
+  const qcm = (est_correcte: boolean) =>
+    question(1, {
+      type_reponse: "QCM",
+      choix: [{ lettre: "a", texte: "$1$" }, { lettre: "b", texte: "$2$" }],
+      reponse_correcte: "b",
+      corrige_markdown: "Le corrigé",
+      reponse: { reponse_choisie: est_correcte ? "b" : "a", resultat_declare: "", est_correcte, xp_gagne: 0 },
+    })
+
+  it("reste repliée après une erreur, avec un bouton qui dit à quoi il sert", async () => {
+    // Ouverte d'office, elle faisait trois écrans avant la question suivante (test élève Guyguy).
+    poserEssai([qcm(false)])
+    afficher()
+
+    const resume = await screen.findByText("Comprendre mon erreur")
+    expect(resume.closest("details")).not.toHaveAttribute("open")
+  })
+
+  it("reste repliée après une bonne réponse, avec son libellé habituel", async () => {
+    poserEssai([qcm(true)])
+    afficher()
+
+    const resume = await screen.findByText("Comprendre la correction")
+    expect(resume.closest("details")).not.toHaveAttribute("open")
+  })
+})

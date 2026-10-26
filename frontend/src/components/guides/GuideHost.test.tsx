@@ -306,13 +306,16 @@ describe("non-interférence", () => {
     expect(lireEtat().ouvert).toBeNull()
   })
 
-  it("rien par-dessus l'écran de choix de l'examen, puis le tutoriel arrive quand il se ferme", async () => {
+  it("rien par-dessus l'écran de choix de l'examen, et pas de tutoriel dans la foulée : il attend la visite suivante", async () => {
     act(() => signalerOnboarding(true))
     monter()
     await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
     expect(screen.queryByText("Bienvenue sur EduKora")).toBeNull()
     act(() => signalerOnboarding(false))
-    expect(await screen.findByText("Bienvenue sur EduKora")).toBeInTheDocument()
+    // La question « quel examen ? » est la première aide de la visite : jamais deux aides automatiques de suite (test élève Guyguy).
+    await act(async () => {})
+    expect(screen.queryByText("Bienvenue sur EduKora")).toBeNull()
+    expect(lireEtat().autoDejaMontre).toBe(true)
   })
 
   it("rien en salle d'examen", async () => {
