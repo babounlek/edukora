@@ -37,7 +37,7 @@ from .serie import serie_de_jours
 from . import textes
 from .services import libelle_etape
 from .services import (
-    SEUIL_MAITRISE, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
+    SEUIL_MAITRISE, AucuneQuestionPlusDure, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     perimetre_est_vitrine,
@@ -501,7 +501,11 @@ def start_session(request):
 
     profil = profil_actif(request)
     try:
-        session = generer_session(profil, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n)
+        session = generer_session(
+            profil, cursus, mode, subject=subject, theme=theme, savoir=savoir, n=n, plus_dur=bool(request.data.get("plus_dur")),
+        )
+    except AucuneQuestionPlusDure:
+        return Response({"error": textes.texte("quiz.aucune_plus_dure", textes.langue_de(cursus))}, status=404)
     except ValueError:
         # Le service lève sa phrase en français ; l'élève la lit dans la langue de son examen (voir quiz.textes).
         return Response({"error": textes.texte("quiz.aucune_question", textes.langue_de(cursus))}, status=404)

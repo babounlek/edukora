@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Trophy, Zap } from "lucide-react"
 
-import { completeQuizSession, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
+import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { themeExercicesPath } from "@/lib/countryPath"
+import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
 import { NiveauXp } from "@/components/NiveauXp"
@@ -22,6 +23,7 @@ import { useAuth } from "@/context/AuthContext"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
 import { aChangeDeNiveau, nomNiveau } from "@/lib/niveau"
+import { parametresDefi } from "@/lib/defiEssai"
 import { libelleRythme } from "@/lib/rythme"
 import { SITE_NAME } from "@/lib/site"
 import { useCompteur } from "@/lib/useCompteur"
@@ -248,12 +250,15 @@ export function QuizResultPage() {
   const [erreurRefaire, setErreurRefaire] = useState("")
   const [themeEnLancement, setThemeEnLancement] = useState<number | null>(null)
   const [erreurQuizCible, setErreurQuizCible] = useState("")
-  const [encoreEnCours, setEncoreEnCours] = useState<"encore" | "score" | null>(null)
+  // Le quiz GRATUIT de la même matière : un défi se lance par un lien qui marche sans compte (le quiz de l'élève, lui, est
+  // peut-être payant). Les scores se comparent en proportion, donc deux quiz différents restent comparables.
+  const { data: essais } = useQuery({ queryKey: ["quiz", "essais"], queryFn: ({ signal }) => listQuizEssais(signal), staleTime: 5 * 60_000 })
+  const [encoreEnCours, setEncoreEnCours] = useState<"encore" | "score" | "dur" | null>(null)
   const [erreurEncore, setErreurEncore] = useState("")
 
   // Rebondir tout de suite : « encore 5 questions » sur le thème le plus fragile, ou le même quiz pour battre son score
   // (le rejeu ne rapporte pas de points, voir quiz.historique). Aucune page de choix entre deux : l'envie ne dure pas.
-  async function rebondir(mode: "encore" | "score", themeId?: number) {
+  async function rebondir(mode: "encore" | "score" | "dur", themeId?: number) {
     if (!result || encoreEnCours) return
     setEncoreEnCours(mode)
     setErreurEncore("")
@@ -261,7 +266,7 @@ export function QuizResultPage() {
       const session =
         mode === "score"
           ? await rejouerQuiz(Number(id))
-          : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5 })
+          : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5, plus_dur: mode === "dur" })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
       setErreurEncore(err instanceof ApiError ? err.message : t("qr.err_lancer"))
@@ -349,8 +354,13 @@ export function QuizResultPage() {
     .filter((theme) => theme.cours && 100 * theme.reussies / theme.total < 70)
     .sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
   const message = messageDeFin(pourcentage, diagnostic)
+  // Par le code de la matière du premier thème : `result.subject` est vide quand le quiz a été lancé par thème (« encore 5 questions »).
+  const codeMatiere = result.par_theme[0]?.subject_code
+  const essaiDuDefi = codeMatiere ? (essais ?? []).find((e) => e.cursus === result.cursus && e.subject_code === codeMatiere) : undefined
   // Le thème où l'élève a le plus à gagner : c'est sur lui que repart « encore 5 questions ».
   const pireTheme = [...result.par_theme].sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
+  // « Plus dur » : sur le thème où l'élève a le mieux réussi, celui où il est prêt à monter d'un cran.
+  const meilleurTheme = [...result.par_theme].sort((a, b) => b.reussies / b.total - a.reussies / a.total)[0]
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
@@ -430,6 +440,29 @@ export function QuizResultPage() {
               {encoreEnCours === "score" ? t("quiz.preparation") : t("qr.bats_score", { score: result.score, total: result.questions_repondues })}
             </Button>
           </div>
+          {meilleurTheme && pourcentage >= 70 && (
+            <Button
+              size="lg"
+              variant="outline"
+              className="mt-2 rounded-full"
+              disabled={encoreEnCours !== null}
+              onClick={() => rebondir("dur", meilleurTheme.theme_id)}
+            >
+              <Flame />
+              {encoreEnCours === "dur" ? t("quiz.preparation") : t("qr.plus_dur")}
+            </Button>
+          )}
+          {essaiDuDefi && result.questions_repondues >= 3 && (
+            <BoutonPartager
+              chemin={`/quiz/essai/${essaiDuDefi.cursus}/${essaiDuDefi.subject}/${essaiDuDefi.theme}`}
+              texte={t("essai.partage_defi", { a: result.score, b: result.questions_repondues, theme: "", matiere: essaiDuDefi.subject_label, cursus: essaiDuDefi.cursus_display })}
+              type="quiz"
+              parametres={parametresDefi(result.score, result.questions_repondues)}
+              libelle={t("essai.defier")}
+              size="lg"
+              className="mt-2 rounded-full"
+            />
+          )}
           <p className="mt-2 text-xs text-muted-foreground">{t("qr.bats_score_note")}</p>
           {erreurEncore && <p role="alert" className="mt-2 text-sm text-destructive">{erreurEncore}</p>}
         </section>

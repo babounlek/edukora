@@ -242,6 +242,7 @@ export function ParcoursPage() {
   const totalMaitrises = matieres?.reduce((somme, m) => somme + m.maitrises, 0) ?? 0
   const totalARevoir = matieres?.reduce((somme, m) => somme + m.en_revision, 0) ?? 0
   const totalEnCours = matieres?.reduce((somme, m) => somme + m.en_cours, 0) ?? 0
+  const totalTravailles = totalMaitrises + totalARevoir + totalEnCours
   const totalADecouvrir = Math.max(0, totalExploitables - totalMaitrises - totalARevoir - totalEnCours)
 
   return (
@@ -268,6 +269,7 @@ export function ParcoursPage() {
           {totalExploitables > 0 && (
             <AnneauProgression
               part={totalMaitrises / totalExploitables}
+              partTravaillee={totalTravailles / totalExploitables}
               className="hidden sm:block sm:size-32 [&>span]:text-3xl"
             />
           )}
@@ -320,13 +322,18 @@ export function ParcoursPage() {
         {matieres && totalExploitables > 0 && (
           <>
             <div className="mt-6 flex items-center gap-4 sm:hidden">
-              <AnneauProgression part={totalMaitrises / totalExploitables} />
+              <AnneauProgression part={totalMaitrises / totalExploitables} partTravaillee={totalTravailles / totalExploitables} />
               <p className="text-sm text-muted-foreground">
                 <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span>
                 {tn("pc.maitrises_mobile", totalMaitrises)}
                 <span className="tabular-nums">{totalExploitables}</span>
               </p>
             </div>
+            {totalTravailles > 0 && (
+              <p className="mt-4 text-sm font-medium text-primary">
+                {tn("pc.abordes", totalTravailles, { total: totalExploitables })}
+              </p>
+            )}
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
               <CompteurStatut statut="maitrise" valeur={totalMaitrises} libelle={t("pc.maitrises")} />
               <CompteurStatut statut="en_revision" valeur={totalARevoir} />

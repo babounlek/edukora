@@ -399,6 +399,22 @@ def etude_marques(request):
     return Response(payload)
 
 
+@api_view(["POST"])
+def cours_lu(request, slug):
+    """
+    L'élève est arrivé au bout d'un cours (le lecteur le détecte : fin de l'article atteinte après un temps de lecture
+    minimal). Rapporte XP_COURS_LU, une fois par cours pour toujours, dans le plafond d'activité du jour (voir
+    quiz.xp.crediter_activite). Le serveur ne peut pas vérifier la lecture : c'est un geste déclaré, donc petit et plafonné.
+    Réservé à qui a accès au cours, comme les marques d'étude.
+    """
+    cours = get_object_or_404(Cours.objects.visibles().par_slug_ou_id(slug))
+    profil = profil_actif(request)
+    if not has_access(request.user, cours, profil):
+        return Response({"error": "Abonnement requis pour ce contenu."}, status=403)
+    gain = xp.crediter_activite(profil, SourceXP.COURS, f"cours-lu:{cours.pk}", xp.XP_COURS_LU)
+    return Response({"xp_gagne": gain.points if gain else 0, "xp_jour": xp.etat_du_jour(profil)})
+
+
 @api_view(["GET"])
 def etude_carnet(request):
     """

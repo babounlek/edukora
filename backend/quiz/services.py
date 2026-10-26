@@ -455,7 +455,11 @@ def _selection_ponderee_par_theme(items, poids_par_theme, n):
     return [item for _, item in cles[:n]]
 
 
-def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10):
+class AucuneQuestionPlusDure(ValueError):
+    """Le périmètre existe mais n'a aucune question de difficulté moyenne ou élevée (voir `plus_dur`)."""
+
+
+def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10, plus_dur=False):
     """
     Sélectionne jusqu'à n CompetenceItem et crée une QuizSession. Lève ValueError si
     aucun item n'est éligible pour ces critères (pas encore de banque générée pour
@@ -475,6 +479,14 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
     items = _items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir)
     if not items:
         raise ValueError("Aucune question disponible pour ces critères.")
+    if plus_dur:
+        # « Même thème, en plus dur » : les questions élevées d'abord, complétées par les moyennes seulement s'il n'y en a
+        # pas assez ; jamais une faible - sinon le bouton promettrait du plus dur et servirait du plus facile.
+        elevees = [i for i in items if i.difficulte_estimee == Difficulte.ELEVEE]
+        moyennes = [i for i in items if i.difficulte_estimee == Difficulte.MOYENNE]
+        items = elevees if len(elevees) >= n else elevees + moyennes
+        if not items:
+            raise AucuneQuestionPlusDure("Aucune question plus difficile pour ces critères.")
 
     if mode == ModeQuiz.DIAGNOSTIC:
         # Sans matière, thème ni savoir imposé : le diagnostic d'accueil, équilibré par

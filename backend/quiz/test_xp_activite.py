@@ -116,6 +116,33 @@ class CoursTests(ActiviteFixture):
         self.assertFalse(GainXP.objects.exists())
 
 
+class CoursLuTests(ActiviteFixture):
+    def lire(self, cours=None):
+        return self.client.post(f"/access/cours/{(cours or self.cours).slug}/lu/")
+
+    def test_un_cours_lu_rapporte_une_fois(self):
+        premiere = self.lire().json()
+        seconde = self.lire().json()
+
+        self.assertEqual(premiere["xp_gagne"], xp.XP_COURS_LU)
+        self.assertEqual(seconde["xp_gagne"], 0)
+        self.assertEqual(GainXP.objects.filter(reference=f"cours-lu:{self.cours.pk}").count(), 1)
+
+    def test_le_plafond_du_jour_s_applique_aussi_a_la_lecture(self):
+        for n in range(3):
+            self.faire(self.exercice(str(n)))  # 15 points : le plafond
+
+        self.assertEqual(self.lire().json()["xp_gagne"], 0)
+
+    def test_un_cours_est_libre_en_lecture_donc_il_rapporte_aussi_sans_abonnement(self):
+        Subscription.objects.all().delete()
+
+        self.assertEqual(self.lire().json()["xp_gagne"], xp.XP_COURS_LU)
+
+    def test_un_visiteur_ne_peut_pas_declarer_une_lecture(self):
+        self.assertIn(APIClient().post(f"/access/cours/{self.cours.slug}/lu/").status_code, (401, 403))
+
+
 class NiveauTests(ActiviteFixture):
     def test_un_profil_neuf_est_au_niveau_un(self):
         niveau = xp.niveau_du_profil(self.profil)

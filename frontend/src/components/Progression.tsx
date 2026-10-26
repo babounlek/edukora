@@ -45,7 +45,12 @@ export function Ecrin({
 
 /** Anneau SVG plutôt qu'une bibliothèque de graphiques : un seul arc, et il doit
  * suivre les couleurs du thème clair/sombre via les tokens. */
-export function AnneauProgression({ part, className }: { part: number; className?: string }) {
+/**
+ * `partTravaillee` : la part des thèmes déjà abordés (maîtrisés, en révision ou en cours), tracée en clair DERRIÈRE l'arc des
+ * maîtrisés. Un anneau à 0 % pour qui a déjà travaillé dix thèmes disait « tu n'as rien fait » (test élève Guyguy : « 0 %,
+ * 1 savoir sur 1101 ») ; le chiffre au centre reste celui des thèmes maîtrisés.
+ */
+export function AnneauProgression({ part, partTravaillee = 0, className }: { part: number; partTravaillee?: number; className?: string }) {
   const rayon = 30
   const circonference = 2 * Math.PI * rayon
   return (
@@ -56,6 +61,14 @@ export function AnneauProgression({ part, className }: { part: number; className
     >
       <svg viewBox="0 0 72 72" className="size-full -rotate-90">
         <circle cx="36" cy="36" r={rayon} fill="none" strokeWidth="7" className="stroke-muted" />
+        {partTravaillee > part && (
+          <circle
+            cx="36" cy="36" r={rayon} fill="none" strokeWidth="7" strokeLinecap="round"
+            className="stroke-primary/25"
+            strokeDasharray={circonference}
+            strokeDashoffset={circonference * (1 - Math.min(1, partTravaillee))}
+          />
+        )}
         <circle
           cx="36" cy="36" r={rayon} fill="none" strokeWidth="7" strokeLinecap="round"
           className="stroke-primary transition-[stroke-dashoffset] duration-700"

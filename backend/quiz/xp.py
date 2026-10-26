@@ -44,6 +44,7 @@ XP_SEANCE = 10
 # un compteur en cochant tout un cours d'un coup.
 XP_COURS_SECTION = 2
 XP_EXERCICE = 5
+XP_COURS_LU = 3  # un cours lu jusqu'au bout (voir access.views.cours_lu) : le geste de lire, un peu moins que celui de comprendre
 PLAFOND_ACTIVITE_JOUR = 15
 
 # Seuils d'XP cumulée des niveaux (rang 1 à 5). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.

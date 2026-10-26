@@ -602,6 +602,8 @@ export interface StartQuizSessionParams {
   // ParcoursPage, qui lance toujours par savoir, jamais par theme.
   savoir?: number
   n?: number
+  // « Même thème, plus dur » : seulement des questions élevées, complétées par des moyennes (voir quiz.services.generer_session).
+  plus_dur?: boolean
   // Drapeau "ce quiz est l'étape finale de ma séance du jour" - le serveur ne lui
   // fait pas confiance pour DÉSIGNER une séance, il ne rattache que la séance du jour
   // de l'utilisateur (voir quiz.services.rattacher_quiz_a_la_seance). Sert à clore la
@@ -1071,6 +1073,11 @@ export function marquerExerciceFait(exerciseId: number, fait: boolean) {
     `/access/exercices/${exerciseId}/fait/`,
     { method: "POST", body: { fait } },
   )
+}
+
+/** L'élève est arrivé au bout d'un cours : rapporte un peu d'XP, une fois par cours (voir access.views.cours_lu). */
+export function marquerCoursLu(slug: string) {
+  return apiRequest<{ xp_gagne: number; xp_jour: EtatXp }>(`/access/cours/${slug}/lu/`, { method: "POST" })
 }
 
 /** Bilan des 30 derniers jours de l'abonnement à ce cursus (404 si jamais abonné). */

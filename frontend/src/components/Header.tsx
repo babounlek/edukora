@@ -22,6 +22,7 @@ import { SITE_NAME } from "@/lib/site"
 import { ouvrirCentre } from "@/lib/guides/etat"
 import { langueCourante, localeCourante, useI18n } from "@/lib/i18n"
 import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
+import { FlammeSerie } from "@/components/FlammeSerie"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import {
   Select,
@@ -510,7 +511,10 @@ export function Header() {
             // déconnecté.
             <Skeleton className="h-8 w-20 rounded-md" />
           ) : isAuthenticated ? (
-            <AccountMenu />
+            <>
+              <FlammeSerie />
+              <AccountMenu />
+            </>
           ) : (
             <Button asChild size="sm">
               <Link to="/connexion">{t("nav.connexion")}</Link>

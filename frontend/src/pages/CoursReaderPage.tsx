@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Check, NotebookPen } from "lucide-react"
 
-import { getCours, readCours } from "@/api/endpoints"
+import { getCours, marquerCoursLu, readCours } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cours, CoursContent, CoursSectionData } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -28,6 +28,9 @@ import { SuiteDuCours } from "@/components/SuiteDuCours"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { useEtude } from "@/lib/useEtude"
+import { annoncerGain } from "@/lib/gainXp"
+import { useFinDeLecture } from "@/lib/useFinDeLecture"
+import { useQueryClient } from "@tanstack/react-query"
 import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
@@ -55,9 +58,21 @@ export function CoursReaderPage() {
   useSeo({ title: content?.title ?? t("co.seo_cours") })
 
   const articleRef = useRef<HTMLElement>(null)
+  const queryClient = useQueryClient()
   // Outils d'étude : réservés à un élève connecté (un visiteur sur un cours vitrine n'a nulle
   // part où ranger une note). Voir MarquesSection.
   const etude = useEtude(slug ? { type: "cours", slug } : null, isAuthenticated && Boolean(content))
+
+  // Arrivé au bout du cours après un vrai temps de lecture : un peu d'XP, une fois par cours. Réservé à un élève connecté.
+  useFinDeLecture(articleRef, {
+    actif: isAuthenticated && Boolean(content) && Boolean(slug),
+    surFin: () => {
+      if (!slug) return
+      marquerCoursLu(slug)
+        .then((r) => annoncerGain(queryClient, r.xp_gagne, r.xp_jour))
+        .catch(() => {})
+    },
+  })
 
   useEffect(() => {
     if (!slug) return

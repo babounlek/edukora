@@ -13,6 +13,7 @@ urlpatterns = [
     path("lessons/<int:lesson_id>/sujet.pdf", views.download_lesson_sujet_pdf, name="lesson-sujet-pdf"),
     path("telechargements/quota/", views.quota_telechargements, name="quota-telechargements"),
     path("progression/", views.my_progression, name="progression"),
+    path("cours/<slug:slug>/lu/", views.cours_lu, name="cours-lu"),
     path("etude/", views.etude_marques, name="etude-marques"),
     path("etude/carnet/", views.etude_carnet, name="etude-carnet"),
     path("exercices/<int:exercise_id>/fait/", views.marquer_exercice_fait, name="exercice-fait"),
