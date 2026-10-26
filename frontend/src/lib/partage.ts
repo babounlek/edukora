@@ -62,11 +62,33 @@ export function ouvrirWhatsApp(donnees: DonneesPartageLien) {
   window.open(`https://wa.me/?text=${encodeURIComponent(messageDePartage(donnees))}`, "_blank", "noopener,noreferrer")
 }
 
-/** Copie le lien seul (pas le texte) ; false quand le navigateur refuse l'accès au presse-papiers. */
+/**
+ * Copie le lien seul (pas le texte) ; false quand ni le presse-papiers moderne ni la copie historique ne marchent.
+ * Le repli existe pour les navigateurs de téléphone anciens ou sans permission (WebView, page non sécurisée), où
+ * l'API moderne échoue : l'élève voyait « Impossible de copier le lien » pour un geste qui marche autrement.
+ */
 export async function copierLienDePartage(donnees: DonneesPartageLien): Promise<boolean> {
+  const lien = lienDePartage(donnees)
   try {
-    await navigator.clipboard.writeText(lienDePartage(donnees))
+    await navigator.clipboard.writeText(lien)
     return true
+  } catch {
+    return copierParSelection(lien)
+  }
+}
+
+function copierParSelection(texte: string): boolean {
+  try {
+    const zone = document.createElement("textarea")
+    zone.value = texte
+    zone.setAttribute("readonly", "")
+    zone.style.position = "fixed"
+    zone.style.opacity = "0"
+    document.body.appendChild(zone)
+    zone.select()
+    const ok = document.execCommand("copy")
+    document.body.removeChild(zone)
+    return ok
   } catch {
     return false
   }

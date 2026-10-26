@@ -67,9 +67,19 @@ describe("copierLienDePartage", () => {
     expect(writeText).toHaveBeenCalledWith(`${window.location.origin}/cm/epreuves/maths-bac-c-2023?ref=ABC123`)
   })
 
-  it("renvoie false quand le presse-papiers est refusé", async () => {
+  it("renvoie false quand le presse-papiers est refusé et que la copie historique échoue aussi", async () => {
     Object.defineProperty(navigator, "clipboard", { value: { writeText: () => Promise.reject(new Error("refusé")) }, configurable: true })
+    Object.defineProperty(document, "execCommand", { value: vi.fn(() => false), configurable: true })
     expect(await copierLienDePartage(donnees)).toBe(false)
+  })
+
+  it("se rabat sur la copie historique quand le presse-papiers moderne est refusé", async () => {
+    Object.defineProperty(navigator, "clipboard", { value: { writeText: () => Promise.reject(new Error("refusé")) }, configurable: true })
+    const execCommand = vi.fn(() => true)
+    Object.defineProperty(document, "execCommand", { value: execCommand, configurable: true })
+    expect(await copierLienDePartage(donnees)).toBe(true)
+    expect(execCommand).toHaveBeenCalledWith("copy")
+    expect(document.querySelector("textarea")).toBeNull()
   })
 })
 
