@@ -211,6 +211,9 @@ def _appliquer_parrainage(user, referral_code):
     """Même règle que verify_otp : uniquement à la création, jamais rétroactivement."""
     if not referral_code:
         return
+    from revendeurs.services import attribuer_a_l_inscription
+
+    attribuer_a_l_inscription(user, referral_code)
     parrain = (
         User.objects.filter(referral_code=referral_code.strip().upper())
         .exclude(pk=user.pk).first()

@@ -212,6 +212,11 @@ def verify_otp(phone_number, code, referral_code=""):
         user = User.objects.create_user(phone_number=phone_number)
         identity = user.identities.get(provider=AuthProvider.PHONE)
         if referral_code:
+            # Un code revendeur est résolu avant un code de parrainage (même champ de
+            # formulaire, espaces de noms disjoints - voir revendeurs.models.Revendeur).
+            from revendeurs.services import attribuer_a_l_inscription
+
+            attribuer_a_l_inscription(user, referral_code)
             # Un code inconnu ou correspondant à soi-même (cas normalement impossible
             # ici puisque le compte vient d'être créé, mais gardé par prudence) est
             # ignoré silencieusement plutôt que de faire échouer l'inscription.

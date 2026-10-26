@@ -246,6 +246,9 @@ def verify_email_code(email, code, referral_code=""):
             # numéro - c'est USERNAME_FIELD, l'e-mail ne l'est pas).
             AuthIdentity.objects.create(user=user, provider=AuthProvider.EMAIL, provider_uid=email, email=email)
             if referral_code:
+                from revendeurs.services import attribuer_a_l_inscription
+
+                attribuer_a_l_inscription(user, referral_code)
                 parrain = User.objects.filter(referral_code=referral_code.strip().upper()).exclude(pk=user.pk).first()
                 if parrain is not None:
                     user.referred_by = parrain

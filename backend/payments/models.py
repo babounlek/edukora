@@ -219,6 +219,12 @@ class Transaction(models.Model):
             # Décision du 2026-09-28 : le parrainage est un simple partage de lien, sans
             # récompense d'aucun côté (recompenser_parrainage gelée, voir
             # subscriptions.models) - rien à brancher ici.
+            # Commission du revendeur éventuel du client : dans la même transaction que
+            # l'activation (donc jamais une commission sans accès, ni l'inverse), mais
+            # sans jamais la faire échouer - voir enregistrer_commission_securise.
+            from revendeurs.services import enregistrer_commission_securise
+
+            enregistrer_commission_securise(self)
 
         return self
 
@@ -440,6 +446,11 @@ class ManualPayment(models.Model):
             # gelée, voir subscriptions.models) - le paiement manuel n'applique de toute façon
             # jamais la remise filleul (voir payments.views.initiate_payment), donc rien à
             # brancher ici.
+            # Commission du revendeur éventuel du client, même contrat que dans
+            # Transaction._confirmer_succes : même transaction que l'activation, jamais bloquante.
+            from revendeurs.services import enregistrer_commission_securise
+
+            enregistrer_commission_securise(locked)
 
         _notifier_utilisateur(
             locked.user.phone_number,

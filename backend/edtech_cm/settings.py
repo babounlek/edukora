@@ -88,6 +88,7 @@ INSTALLED_APPS = [
     "programme",
     "subscriptions",
     "payments",
+    "revendeurs",
     "access",
     "quiz",
     "analytics",

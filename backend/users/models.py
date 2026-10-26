@@ -252,7 +252,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def _generate_unique_referral_code(self):
         for _ in range(10):
             code = _generate_referral_code()
-            if not User.objects.filter(referral_code=code).exists():
+            # Les codes revendeur partagent le champ d'inscription : un code de parrainage
+            # ne doit jamais en égaler un (voir revendeurs.models.Revendeur).
+            from revendeurs.models import Revendeur
+
+            if not User.objects.filter(referral_code=code).exists() and not Revendeur.objects.filter(code=code).exists():
                 return code
         # Probabilité astronomiquement faible avec 36^6 combinaisons - filet de
         # sécurité seulement, jamais censé se produire en pratique.
