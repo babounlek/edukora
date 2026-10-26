@@ -102,6 +102,9 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
   )
 }
 
+// Combien de cours une liste thématique met en avant avant de replier les autres.
+const COURS_MIS_EN_AVANT = 3
+
 export function CoursListPage() {
   const abonne = useAbonneActif()
   const cursusAbonne = useCursusAbonne()
@@ -218,6 +221,8 @@ export function CoursListPage() {
   // fetch), donc plus besoin du setTimeout/clearTimeout manuel d'avant pour éviter
   // qu'une réponse tardive et périmée n'écrase un résultat plus récent.
   const debouncedSearch = useDebouncedValue(search, 300)
+  // Liste d'un thème ou d'une recherche : des cours proches par dizaines, classés par fréquence à l'examen puis groupés.
+  const thematique = Boolean(themeFilter || savoirFilter || debouncedSearch)
 
   const coursQuery = useInfiniteQuery({
     queryKey: ["cours", country, subjectFilter, cursusFilter, langueFiltre, nonLusFilter, frequentFilter, debouncedSearch, savoirFilter, themeFilter],
@@ -234,7 +239,7 @@ export function CoursListPage() {
           exclude_read: nonLusFilter || undefined,
           // Les plus fréquents d'abord : filtrer sur « tombe souvent » sans les classer ne servirait à rien.
           tombe_souvent: frequentFilter || undefined,
-          ordering: frequentFilter ? "frequent" : undefined,
+          ordering: frequentFilter || thematique ? "frequent" : undefined,
           savoir: savoirFilter ? Number(savoirFilter) : undefined,
           theme: themeFilter ? Number(themeFilter) : undefined,
           page: pageParam,
@@ -248,6 +253,35 @@ export function CoursListPage() {
   const coursList = coursQuery.data?.pages.flatMap((p) => p.results) ?? []
   const count = coursQuery.data?.pages[0]?.count ?? 0
   const hasMore = coursQuery.hasNextPage ?? false
+  const grouper = thematique && !frequentFilter && coursList.length > COURS_MIS_EN_AVANT + 2
+
+  // Cartes ou lignes selon le mode d'affichage ; `decalage` garde l'animation d'apparition continue d'un groupe à l'autre.
+  function afficherCours(liste: typeof coursList, decalage: number) {
+    return viewMode === "cards" ? (
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {liste.map((cours, index) => (
+          <CoursCard
+            key={cours.id}
+            niveauTitre={2}
+            cours={cours}
+            className="animate-fade-up"
+            style={{ animationDelay: `${Math.min(index + decalage, 8) * 60}ms` }}
+          />
+        ))}
+      </div>
+    ) : (
+      <div className="flex flex-col gap-2">
+        {liste.map((cours, index) => (
+          <CoursListRow
+            key={cours.id}
+            cours={cours}
+            className="animate-fade-up"
+            style={{ animationDelay: `${Math.min(index + decalage, 8) * 60}ms` }}
+          />
+        ))}
+      </div>
+    )
+  }
   const isLoading = coursQuery.isLoading
   const isLoadingMore = coursQuery.isFetchingNextPage
   // Page suivante en échec : voir l'observateur ci-dessous, qui sinon la relançait en boucle.
@@ -697,29 +731,27 @@ export function CoursListPage() {
             </div>
           </div>
 
-          {viewMode === "cards" ? (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {coursList.map((cours, index) => (
-                <CoursCard
-                  key={cours.id}
-                  niveauTitre={2}
-                  cours={cours}
-                  className="animate-fade-up"
-                  style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
-                />
-              ))}
-            </div>
+          {grouper ? (
+            <>
+              {/* Une liste thématique de dix-sept cours aux titres presque identiques ne dit pas par où commencer (test élève
+                  Guyguy : « 17 cours pareils, lequel je prends ? »). Les premiers, classés par fréquence à l'examen, sont
+                  mis en avant ; les autres restent un clic plus loin, jamais retirés. */}
+              <section aria-labelledby="cours-commencer" className="mb-6 rounded-2xl border border-primary/25 bg-primary/[0.04] p-4 sm:p-5">
+                <h2 id="cours-commencer" className="font-display text-lg font-semibold">{t("co.commencer_titre")}</h2>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  {coursList[0]?.tombe_souvent ? t("co.commencer_texte_frequent") : t("co.commencer_texte")}
+                </p>
+                {afficherCours(coursList.slice(0, COURS_MIS_EN_AVANT), 0)}
+              </section>
+              <details className="rounded-2xl border border-border bg-card px-4 py-3">
+                <summary className="cursor-pointer text-sm font-medium">
+                  {tn("co.autres_proches", Math.max(0, count - COURS_MIS_EN_AVANT))}
+                </summary>
+                <div className="mt-4">{afficherCours(coursList.slice(COURS_MIS_EN_AVANT), COURS_MIS_EN_AVANT)}</div>
+              </details>
+            </>
           ) : (
-            <div className="flex flex-col gap-2">
-              {coursList.map((cours, index) => (
-                <CoursListRow
-                  key={cours.id}
-                  cours={cours}
-                  className="animate-fade-up"
-                  style={{ animationDelay: `${Math.min(index, 8) * 60}ms` }}
-                />
-              ))}
-            </div>
+            afficherCours(coursList, 0)
           )}
 
           {hasMore && (
