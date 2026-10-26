@@ -1813,12 +1813,12 @@ export interface EspaceRevendeur {
   ventes_du_mois: number
   nb_clients: number
   montants: { en_attente: number; acquise: number; retenue: number; payee: number }
-}
-
   /** Montant minimum d'un versement : en dessous, le solde est reporté au mois suivant. */
   seuil_versement: number
   /** Commissions déjà payées puis annulées pour fraude : déduites du prochain versement. */
   reprises_en_cours: number
+}
+
 export interface VenteRevendeur {
   id: number
   created_at: string
@@ -1831,8 +1831,6 @@ export interface VenteRevendeur {
   etat: EtatCommission
 }
 
-export interface RattachementRevendeur {
-  peut_saisir_code: boolean
 export type StatutVersement = "PREPARE" | "PAYE"
 
 export interface VersementRevendeur {
@@ -1849,5 +1847,7 @@ export interface VersementRevendeur {
   paye_le: string | null
 }
 
+export interface RattachementRevendeur {
+  peut_saisir_code: boolean
   revendeur: { nom_affiche: string } | null
 }
