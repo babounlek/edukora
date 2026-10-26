@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from "react"
 import { toast } from "sonner"
 import { AlertTriangle, Check, Copy, Loader2, ShieldAlert } from "lucide-react"
 
-import { declareManualPayment, listManualPaymentMethods } from "@/api/endpoints"
+import { declareManualPayment, getRattachementRevendeur, listManualPaymentMethods } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { ManualPayment, MobileMoneyAccount, MobileMoneyOperator, Plan } from "@/api/types"
 import { cn, formatAmount } from "@/lib/utils"
@@ -66,6 +66,17 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
   const [transactionReference, setTransactionReference] = useState("")
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Revendeur rattaché au compte : il peut avoir avancé la somme depuis son numéro (accompagnement).
+  const [revendeurNom, setRevendeurNom] = useState<string | null>(null)
+  const [payeParRevendeur, setPayeParRevendeur] = useState(false)
+
+  useEffect(() => {
+    getRattachementRevendeur()
+      .then((r) => setRevendeurNom(r.revendeur?.nom_affiche ?? null))
+      .catch(() => {
+        // Simple confort : sans lui, la case n'apparaît pas et le paiement se déclare comme d'habitude.
+      })
+  }, [])
 
   useEffect(() => {
     listManualPaymentMethods().then(setAccounts).catch(() => setAccounts([]))
@@ -124,6 +135,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
         payerPhoneNumber,
         transactionReference,
         profilId,
+        payeParRevendeur: revendeurNom !== null && payeParRevendeur,
       })
       onDeclared(payment)
     } catch (err) {
@@ -228,6 +240,21 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
               </p>
             </div>
           </div>
+
+          {revendeurNom && (
+            <label className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-border bg-muted/30 px-3.5 py-3 text-sm">
+              <input
+                type="checkbox"
+                checked={payeParRevendeur}
+                onChange={(e) => setPayeParRevendeur(e.target.checked)}
+                className="mt-0.5 size-4 shrink-0 accent-primary"
+              />
+              <span>
+                <span className="font-medium">{t("rev.avance_case", { nom: revendeurNom })}</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">{t("rev.avance_aide")}</span>
+              </span>
+            </label>
+          )}
 
           {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
 

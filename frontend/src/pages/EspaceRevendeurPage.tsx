@@ -115,6 +115,8 @@ function Tableau({ espace }: { espace: EspaceRevendeur }) {
 
       <Partage code={espace.code} />
 
+      <GuideParent />
+
       <section aria-labelledby="rev-commissions">
         <h2 id="rev-commissions" className="mb-3 font-display text-xl font-semibold">{t("rev.commissions_titre")}</h2>
         <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -141,6 +143,24 @@ function Tableau({ espace }: { espace: EspaceRevendeur }) {
 
       <Ventes />
     </div>
+  )
+}
+
+function GuideParent() {
+  const etapes = ["rev.guide_1", "rev.guide_2", "rev.guide_3", "rev.guide_4", "rev.guide_5", "rev.guide_6"] as const
+  return (
+    <details className="group rounded-2xl border border-border bg-card p-5">
+      <summary className="cursor-pointer list-none font-display text-lg font-semibold marker:hidden">
+        {t("rev.guide_titre")}
+      </summary>
+      <p className="mt-3 text-sm text-muted-foreground">{t("rev.guide_intro")}</p>
+      <ol className="mt-3 flex list-decimal flex-col gap-2 pl-5 text-sm">
+        {etapes.map((cle) => (
+          <li key={cle}>{t(cle)}</li>
+        ))}
+      </ol>
+      <p className="mt-4 rounded-lg bg-muted px-3 py-2 text-xs text-muted-foreground">{t("rev.guide_rappel")}</p>
+    </details>
   )
 }
 

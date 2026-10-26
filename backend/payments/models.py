@@ -297,7 +297,8 @@ def _notifier_utilisateur(phone_number, message):
 
 class ManualPaymentManager(models.Manager):
     def declare(self, *, user, plan, operator, amount_declared, payer_phone_number,
-                transaction_reference, paid_at=None, proof=None, ip=None, profil=None):
+                transaction_reference, paid_at=None, proof=None, ip=None, profil=None,
+                paye_par_revendeur=False):
         """
         Point d'entrée unique de la déclaration utilisateur. `amount_expected` est
         TOUJOURS recalculé depuis `plan.effective_price()` ici - jamais accepté depuis
@@ -314,7 +315,7 @@ class ManualPaymentManager(models.Manager):
             user=user, plan=plan, operator=operator, profil=profil or user.profils.first(),
             amount_expected=plan.effective_price(user=user, profil=profil or user.profils.first()), amount_declared=amount_declared,
             payer_phone_number=payer_phone_number, transaction_reference=reference,
-            paid_at=paid_at, proof=proof, declared_ip=ip,
+            paid_at=paid_at, proof=proof, declared_ip=ip, paye_par_revendeur=paye_par_revendeur,
         )
         _notifier_utilisateur(
             user.phone_number,
@@ -361,6 +362,13 @@ class ManualPayment(models.Model):
     )
     transaction_reference = models.CharField(max_length=100, help_text="Référence/numéro de transaction Mobile Money, normalisée (majuscules, sans espaces).")
     paid_at = models.DateTimeField(null=True, blank=True, help_text="Date/heure du paiement déclarée par l'utilisateur.")
+    paye_par_revendeur = models.BooleanField(
+        default=False,
+        help_text=(
+            "Le client déclare que son revendeur a avancé la somme depuis son propre numéro (accompagnement). "
+            "Jamais une preuve : voir revendeurs.services.enregistrer_commission, qui vérifie le numéro payeur."
+        ),
+    )
     proof = models.FileField(
         upload_to=_manual_payment_proof_path, null=True, blank=True,
         help_text="Capture d'écran optionnelle du SMS de confirmation - jamais une preuve fiable à elle seule, la validation reste administrative.",

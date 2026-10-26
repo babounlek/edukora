@@ -560,6 +560,8 @@ export interface DeclareManualPaymentParams {
   proof?: File
   // Même rôle que InitiatePaymentParams.profilId - voir sa note.
   profilId?: number
+  /** Le revendeur du client a avancé la somme depuis son propre numéro (accompagnement). */
+  payeParRevendeur?: boolean
 }
 
 export function declareManualPayment(params: DeclareManualPaymentParams) {
@@ -572,6 +574,7 @@ export function declareManualPayment(params: DeclareManualPaymentParams) {
   if (params.paidAt) formData.append("paid_at", params.paidAt)
   if (params.proof) formData.append("proof", params.proof)
   if (params.profilId) formData.append("profil_id", String(params.profilId))
+  if (params.payeParRevendeur) formData.append("paye_par_revendeur", "true")
   return apiRequest<ManualPayment>("/payments/manual/declare/", { method: "POST", body: formData })
 }
 

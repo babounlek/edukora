@@ -201,7 +201,11 @@ def enregistrer_commission(paiement, *, maintenant=None):
 
         if revendeur.statut not in (StatutRevendeur.ACTIF, StatutRevendeur.SUSPENDU):
             return None
-        if _est_le_revendeur_lui_meme(revendeur, client, numero_payeur):
+        # Accompagnement déclaré : le revendeur a avancé la somme depuis son numéro. Ce numéro payeur n'est alors
+        # pas un auto-achat ; mais il doit bien être le sien, sinon la déclaration est douteuse (voir plus bas).
+        avance_par_revendeur = bool(getattr(paiement, "paye_par_revendeur", False))
+        numero_a_tester = "" if avance_par_revendeur else numero_payeur
+        if _est_le_revendeur_lui_meme(revendeur, client, numero_a_tester):
             logger.warning("Auto-achat ignoré : paiement %s %s du revendeur %s.", source, paiement.pk, revendeur.pk)
             return None
 
@@ -210,7 +214,14 @@ def enregistrer_commission(paiement, *, maintenant=None):
             motifs.append("revendeur suspendu")
         if montant_different:
             motifs.append("montant déclaré différent du montant attendu")
-        motifs.extend(detecter_signaux(revendeur, client, attribution, paiement, numero_payeur, maintenant))
+        payeur_pour_signaux = numero_payeur
+        if avance_par_revendeur:
+            if _chiffres_locaux(numero_payeur) in _numeros_du_revendeur(revendeur):
+                # Un revendeur qui avance pour plusieurs parents paie toujours du même numéro : normal.
+                payeur_pour_signaux = ""
+            else:
+                motifs.append("payé par le revendeur selon le client, mais depuis un autre numéro que le sien")
+        motifs.extend(detecter_signaux(revendeur, client, attribution, paiement, payeur_pour_signaux, maintenant))
 
         taux = _taux_applicable(revendeur, maintenant)
         return Commission.objects.create(

@@ -896,6 +896,8 @@ export type ManualPaymentStatus = "PENDING" | "APPROVED" | "REJECTED"
 
 export interface ManualPayment {
   id: number
+  /** Déclaré par le client : son revendeur a avancé la somme. */
+  paye_par_revendeur?: boolean
   plan: Plan
   operator: MobileMoneyOperator
   operator_display: string

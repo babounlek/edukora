@@ -183,4 +183,15 @@ describe("EspaceRevendeurPage", () => {
 
     expect(await screen.findByText(/2 100 FCFA seront déduits/)).toBeInTheDocument()
   })
+
+  it("propose le guide pour accompagner un parent, avec le rappel sur ses données", async () => {
+    getEspaceRevendeur.mockResolvedValue(espace())
+    listVentesRevendeur.mockResolvedValue({ count: 0, next: null, previous: null, results: [] })
+
+    rendre()
+
+    expect(await screen.findByText("Guider un parent, pas à pas")).toBeInTheDocument()
+    expect(screen.getByText(/vous l'avancez à vos risques|vous l'avancez à vos risques/i)).toBeInTheDocument()
+    expect(screen.getByText(/ne conservez aucun de ses numéros/)).toBeInTheDocument()
+  })
 })

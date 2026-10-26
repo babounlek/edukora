@@ -64,6 +64,7 @@ class ManualPaymentSerializer(serializers.ModelSerializer):
             "id", "plan", "operator", "operator_display", "amount_expected", "amount_declared",
             "payer_phone_number", "transaction_reference", "paid_at", "status", "status_display",
             "rejection_reason", "rejection_reason_display", "created_at", "reviewed_at", "profil",
+            "paye_par_revendeur",
         ]
 
 
@@ -91,6 +92,8 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
     # la restriction "appartient au compte connecté" se vérifie contre request.user,
     # indisponible au moment où DRF construirait le queryset du champ.
     profil_id = serializers.IntegerField(required=False, allow_null=True)
+    # Accompagnement : le revendeur du client a envoyé la somme depuis son numéro (voir revendeurs.services).
+    paye_par_revendeur = serializers.BooleanField(required=False, default=False)
 
     def validate(self, attrs):
         if not MobileMoneyAccount.objects.filter(operator=attrs["operator"], active=True).exists():
@@ -99,6 +102,11 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
             })
         plan = attrs["plan"]
         request = self.context["request"]
+        if attrs.get("paye_par_revendeur"):
+            # Sans revendeur rattaché, la case n'a pas de sens : ignorée plutôt que refusée.
+            from revendeurs.models import AttributionRevendeur
+
+            attrs["paye_par_revendeur"] = AttributionRevendeur.objects.filter(client=request.user).exists()
         profil_id = attrs.pop("profil_id", None)
         if profil_id:
             profil = request.user.profils.filter(pk=profil_id).first()

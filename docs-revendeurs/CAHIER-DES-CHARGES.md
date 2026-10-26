@@ -168,3 +168,11 @@ Pilote : 5 à 10 revendeurs pendant 6 à 8 semaines à partir de la phase 1. Les
 **Signaux de fraude** (une commission qui en déclenche un est retenue, jamais refusée ; seuils dans `models.py`) : 3 clients du même revendeur payant depuis la même IP en 24 h ; 3 comptes clients réglés depuis le même numéro ; 2 numéros voisins (écart de 2) parmi ses clients ; 3 paiements manuels refusés parmi ses clients en 30 jours ; 50 clients rattachés le même jour. Écarts avec le § 6 : le « taux d'abandon anormal » est remplacé par les paiements refusés en série (le signal réellement mesurable), et la « limite d'attributions par jour » est un signal de rétention plutôt qu'un blocage, pour ne pas refuser une école qui inscrit une classe entière.
 
 **Reste à faire.** Les seuils de fraude sont des estimations à ajuster avec le pilote ; aucun envoi automatique de l'argent (le paiement reste manuel) ; les frais de retrait réels sont à mesurer.
+
+## 14. Accompagnement : le revendeur guide le parent (2026-10-26)
+
+Décisions : le revendeur **guide** le parent sur le téléphone du parent (le compte, le code SMS et le mot de passe restent au parent) ; il peut **avancer la somme** depuis son propre numéro Mobile Money (option A : la commission est versée en fin de mois comme les autres) ; ouvert à tous les revendeurs.
+
+**Réalisé.** Le formulaire de paiement manuel affiche, pour un compte rattaché à un revendeur, la case « mon revendeur a envoyé cet argent pour moi » (`ManualPayment.paye_par_revendeur`, migration `payments/0012`). Dans `enregistrer_commission` : le numéro payeur n'est alors plus un auto-achat ; si le numéro payeur n'est pas celui du revendeur, la commission est retenue (« autre numéro que le sien ») ; l'alerte « même numéro pour trois comptes » est levée pour ce numéro-là. L'exclusion du revendeur comme client de lui-même reste en vigueur. L'espace revendeur contient un guide en six étapes avec le rappel sur les données du parent.
+
+**À écrire dans la charte (phase 4).** Le revendeur avance la somme à ses risques et se fait remettre l'argent avant de payer ; Edukora ne rembourse rien avant validation du paiement ; aucune copie des coordonnées du parent pour le démarcher ensuite.
