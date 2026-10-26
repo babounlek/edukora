@@ -15,6 +15,15 @@ PALIER_SEUIL_COMMERCIAL = 30
 PALIER_TAUX_COMMERCIAL_PCT = 17
 FENETRE_COMMISSION_JOURS = 365
 DELAI_ACQUISITION_JOURS = 14
+SEUIL_VERSEMENT_FCFA = 5000
+
+# Signaux de fraude (voir revendeurs.fraude) : une commission qui en déclenche un est RETENUE, jamais refusée -
+# une école qui inscrit une classe entière le même jour est légitime, un administrateur tranche.
+FRAUDE_MEME_IP_SEUIL = 3  # paiements manuels d'une même adresse IP, en 24 h, parmi les clients d'un revendeur
+FRAUDE_MEME_PAYEUR_SEUIL = 3  # comptes clients différents réglés depuis un même numéro
+FRAUDE_NUMEROS_VOISINS_ECART = 2  # numéros qui se suivent : écart maximal entre deux clients du même revendeur
+FRAUDE_REFUSES_SEUIL = 3  # paiements manuels refusés parmi les clients d'un revendeur, en 30 jours
+FRAUDE_PIC_INSCRIPTIONS_SEUIL = 50  # clients rattachés à un même revendeur le même jour
 
 CODE_REGEX = re.compile(r"^[A-Z0-9]{4,10}$")
 
@@ -184,6 +193,14 @@ class Commission(models.Model):
     motif_a_verifier = models.CharField(max_length=200, blank=True)
     motif_annulation = models.CharField(max_length=200, blank=True)
     annulee_le = models.DateTimeField(null=True, blank=True)
+    versement = models.ForeignKey(
+        "Versement", null=True, blank=True, on_delete=models.PROTECT, related_name="commissions",
+        help_text="Versement qui règle cette commission (préparé, puis payé).",
+    )
+    reprise_dans = models.ForeignKey(
+        "Versement", null=True, blank=True, on_delete=models.PROTECT, related_name="reprises",
+        help_text="Versement sur lequel le montant d'une commission déjà payée puis annulée pour fraude a été déduit.",
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -210,16 +227,72 @@ class Commission(models.Model):
             return self.statut
         return "ACQUISE" if timezone.now() >= self.acquise_le else "EN_ATTENTE"
 
+    @property
+    def a_reprendre(self):
+        """Commission déjà payée puis annulée pour fraude, dont le montant reste à déduire d'un versement."""
+        return self.statut == StatutCommission.ANNULEE and self.versement_id is not None and self.reprise_dans_id is None
+
     def annuler(self, motif, *, fraude=False):
         """
-        Annule une commission ACTIVE. Après acquisition, seule une fraude avérée le permet
-        (`fraude=True`) : le montant sera alors déduit du prochain versement (phase 3).
+        Annule une commission ACTIVE ou déjà PAYEE. Après acquisition, seule une fraude avérée le permet
+        (`fraude=True`). Une commission déjà payée annulée devient une reprise : son montant est déduit du
+        prochain versement du revendeur (voir services.preparer_versement).
         """
-        if self.statut != StatutCommission.ACTIVE:
+        if self.statut not in (StatutCommission.ACTIVE, StatutCommission.PAYEE):
             raise ValueError(f"Commission #{self.pk} déjà {self.get_statut_display().lower()}.")
+        if self.statut == StatutCommission.PAYEE and not fraude:
+            raise CommissionDejaAcquise(f"Commission #{self.pk} déjà payée : seule une fraude permet de l'annuler.")
         if self.etat == "ACQUISE" and not fraude:
             raise CommissionDejaAcquise(f"Commission #{self.pk} déjà acquise : seule une fraude permet de l'annuler.")
+        if self.versement_id and self.versement.statut == StatutVersement.PREPARE:
+            raise ValueError(f"Commission #{self.pk} dans le versement préparé #{self.versement_id} : annule d'abord ce versement.")
         self.statut = StatutCommission.ANNULEE
         self.motif_annulation = (motif or "")[:200]
         self.annulee_le = timezone.now()
         self.save(update_fields=["statut", "motif_annulation", "annulee_le"])
+
+
+class StatutVersement(models.TextChoices):
+    PREPARE = "PREPARE", "Préparé"
+    PAYE = "PAYE", "Payé"
+    ANNULE = "ANNULE", "Annulé"
+
+
+class Versement(models.Model):
+    """
+    Un paiement mensuel groupé à un revendeur : ses commissions acquises, moins les reprises dues. Préparé par
+    un administrateur (les commissions sont alors réservées), payé à la main en Mobile Money, puis marqué PAYE avec
+    la référence de la transaction. Les frais de retrait sont à la charge d'Edukora (`frais_retrait`, à titre
+    d'information) : le revendeur reçoit `montant_net` entier.
+    """
+
+    revendeur = models.ForeignKey(Revendeur, on_delete=models.PROTECT, related_name="versements")
+    periode = models.CharField(max_length=7, help_text="Mois de préparation, AAAA-MM.")
+    montant_brut = models.PositiveIntegerField(help_text="Somme des commissions réglées.")
+    montant_reprises = models.PositiveIntegerField(default=0, help_text="Commissions déjà payées puis annulées pour fraude, déduites ici.")
+    montant_net = models.PositiveIntegerField(help_text="Ce que reçoit le revendeur : brut moins reprises.")
+    frais_retrait = models.PositiveIntegerField(default=0, help_text="Frais Mobile Money supportés par Edukora (information).")
+
+    operateur = models.CharField(max_length=10, blank=True)
+    numero = models.CharField(max_length=9, help_text="Numéro de versement du revendeur au moment de la préparation.")
+    statut = models.CharField(max_length=8, choices=StatutVersement.choices, default=StatutVersement.PREPARE)
+    reference_mobile_money = models.CharField(max_length=100, blank=True)
+
+    prepare_le = models.DateTimeField(default=timezone.now)
+    paye_le = models.DateTimeField(null=True, blank=True)
+    paye_par = models.ForeignKey(
+        "users.User", null=True, blank=True, on_delete=models.SET_NULL, related_name="versements_revendeurs_payes",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-prepare_le"]
+        constraints = [
+            # Un seul versement en cours par revendeur : on paie celui-ci avant d'en préparer un autre.
+            models.UniqueConstraint(
+                fields=["revendeur"], condition=models.Q(statut="PREPARE"), name="un_versement_prepare_par_revendeur",
+            ),
+        ]
+
+    def __str__(self):
+        return f"Versement #{self.pk} {self.revendeur} {self.montant_net} FCFA ({self.get_statut_display()})"

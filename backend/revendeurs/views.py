@@ -7,8 +7,16 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
-from .models import AttributionRevendeur, Commission, StatutCommission, TypeRevendeur
-from .services import a_deja_paye, masquer_client, rattacher_tardivement, ventes_du_mois
+from .models import (
+    SEUIL_VERSEMENT_FCFA,
+    AttributionRevendeur,
+    Commission,
+    StatutCommission,
+    StatutVersement,
+    TypeRevendeur,
+    Versement,
+)
+from .services import a_deja_paye, masquer_client, rattacher_tardivement, reprises_dues, ventes_du_mois
 
 
 class RattachementThrottle(SimpleRateThrottle):
@@ -73,6 +81,9 @@ def mon_espace(request):
             "retenue": totaux["retenue"] or 0,
             "payee": payee or 0,
         },
+        # Commissions déjà payées puis annulées pour fraude : déduites de son prochain versement.
+        "seuil_versement": SEUIL_VERSEMENT_FCFA,
+        "reprises_en_cours": reprises_dues(revendeur).aggregate(t=Sum("montant_fcfa"))["t"] or 0,
     })
 
 
@@ -132,3 +143,30 @@ def rattachement(request):
     return Response(
         {"revendeur": {"nom_affiche": attribution.revendeur.nom_affiche}}, status=status.HTTP_201_CREATED,
     )
+
+
+class VersementSerializer(serializers.ModelSerializer):
+    reference = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Versement
+        fields = ["id", "periode", "montant_brut", "montant_reprises", "montant_net", "statut", "operateur", "reference", "paye_le"]
+
+    def get_reference(self, obj):
+        # La référence n'existe qu'une fois l'argent envoyé.
+        return obj.reference_mobile_money if obj.statut == StatutVersement.PAYE else ""
+
+
+class MesVersementsView(ListAPIView):
+    serializer_class = VersementSerializer
+
+    def get_queryset(self):
+        revendeur = _revendeur_de(self.request.user)
+        if revendeur is None:
+            return Versement.objects.none()
+        return Versement.objects.filter(revendeur=revendeur).exclude(statut=StatutVersement.ANNULE).order_by("-prepare_le")
+
+    def list(self, request, *args, **kwargs):
+        if _revendeur_de(request.user) is None:
+            return _pas_revendeur()
+        return super().list(request, *args, **kwargs)

@@ -6,14 +6,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const getEspaceRevendeur = vi.hoisted(() => vi.fn())
 const listVentesRevendeur = vi.hoisted(() => vi.fn())
+const listVersementsRevendeur = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({ isAuthenticated: true, isLoading: false, user: { id: 1 } }))
 
-vi.mock("@/api/endpoints", () => ({ getEspaceRevendeur, listVentesRevendeur }))
+vi.mock("@/api/endpoints", () => ({ getEspaceRevendeur, listVentesRevendeur, listVersementsRevendeur }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 
 import { ApiError } from "@/api/client"
-import type { EspaceRevendeur, VenteRevendeur } from "@/api/types"
+import type { EspaceRevendeur, VenteRevendeur, VersementRevendeur } from "@/api/types"
 import { EspaceRevendeurPage } from "./EspaceRevendeurPage"
 
 const espace = (surcharges: Partial<EspaceRevendeur> = {}): EspaceRevendeur => ({
@@ -26,6 +27,8 @@ const espace = (surcharges: Partial<EspaceRevendeur> = {}): EspaceRevendeur => (
   ventes_du_mois: 3,
   nb_clients: 5,
   montants: { en_attente: 2100, acquise: 4200, retenue: 0, payee: 10500 },
+  seuil_versement: 5000,
+  reprises_en_cours: 0,
   ...surcharges,
 })
 
@@ -41,6 +44,21 @@ const vente = (id: number, surcharges: Partial<VenteRevendeur> = {}): VenteReven
   ...surcharges,
 })
 
+const versement = (id: number, surcharges: Partial<VersementRevendeur> = {}): VersementRevendeur => ({
+  id,
+  periode: "2026-09",
+  montant_brut: 6300,
+  montant_reprises: 0,
+  montant_net: 6300,
+  statut: "PAYE",
+  operateur: "ORANGE",
+  reference: "MP261026.A1",
+  paye_le: "2026-10-05T09:00:00Z",
+  ...surcharges,
+})
+
+const pasDeVersement = { count: 0, next: null, previous: null, results: [] }
+
 function rendre() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
@@ -55,6 +73,8 @@ function rendre() {
 beforeEach(() => {
   getEspaceRevendeur.mockReset()
   listVentesRevendeur.mockReset()
+  listVersementsRevendeur.mockReset()
+  listVersementsRevendeur.mockResolvedValue(pasDeVersement)
   auth.isAuthenticated = true
 })
 
@@ -124,5 +144,43 @@ describe("EspaceRevendeurPage", () => {
 
     expect(await screen.findByText("Cette page est réservée aux revendeurs Edukora.")).toBeInTheDocument()
     expect(listVentesRevendeur).not.toHaveBeenCalled()
+  })
+
+  it("montre les versements, la référence Mobile Money et le détail des reprises", async () => {
+    getEspaceRevendeur.mockResolvedValue(espace())
+    listVentesRevendeur.mockResolvedValue({ count: 0, next: null, previous: null, results: [] })
+    listVersementsRevendeur.mockResolvedValue({
+      count: 2, next: null, previous: null,
+      results: [
+        versement(2, { statut: "PREPARE", reference: "", paye_le: null, periode: "2026-10" }),
+        versement(1, { montant_brut: 6300, montant_reprises: 2100, montant_net: 4200 }),
+      ],
+    })
+
+    rendre()
+
+    expect(await screen.findByText(/MP261026.A1/)).toBeInTheDocument()
+    expect(screen.getByText("Versé")).toBeInTheDocument()
+    expect(screen.getByText("En préparation")).toBeInTheDocument()
+    expect(screen.getByText("6 300 FCFA de commissions − 2 100 FCFA de reprises")).toBeInTheDocument()
+  })
+
+  it("explique le versement mensuel et son seuil quand il n'y en a pas encore", async () => {
+    getEspaceRevendeur.mockResolvedValue(espace())
+    listVentesRevendeur.mockResolvedValue({ count: 0, next: null, previous: null, results: [] })
+
+    rendre()
+
+    expect(await screen.findByText("Aucun versement pour l'instant.")).toBeInTheDocument()
+    expect(screen.getByText(/dès 5 000 FCFA/)).toBeInTheDocument()
+  })
+
+  it("prévient qu'une reprise sera déduite du prochain versement", async () => {
+    getEspaceRevendeur.mockResolvedValue(espace({ reprises_en_cours: 2100 }))
+    listVentesRevendeur.mockResolvedValue({ count: 0, next: null, previous: null, results: [] })
+
+    rendre()
+
+    expect(await screen.findByText(/2 100 FCFA seront déduits/)).toBeInTheDocument()
   })
 })

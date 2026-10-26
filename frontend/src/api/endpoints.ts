@@ -41,6 +41,7 @@ import type {
   ReponseRecherche,
   TypeResultatRecherche,
   VenteRevendeur,
+  VersementRevendeur,
   MatieresChoix,
   PlanDuJour,
   Priorites,
@@ -1234,6 +1235,10 @@ export function getEspaceRevendeur(signal?: AbortSignal) {
 
 export function listVentesRevendeur(page = 1, signal?: AbortSignal) {
   return apiRequest<Paginated<VenteRevendeur>>(`/revendeurs/moi/ventes/?page=${page}`, { signal })
+}
+
+export function listVersementsRevendeur(signal?: AbortSignal) {
+  return apiRequest<Paginated<VersementRevendeur>>("/revendeurs/moi/versements/", { signal })
 }
 
 export function getRattachementRevendeur(signal?: AbortSignal) {

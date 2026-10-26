@@ -137,7 +137,7 @@ La commission n'est versée que sur un paiement réellement validé, et la valid
 |---|---|---|
 | 1 | Modèles, attribution à l'inscription, commission sur les deux chemins de paiement, admin, tests — **fait le 2026-10-26, non committé** | M |
 | 2 | Lien `?rev=`, champ au paiement, espace revendeur en lecture seule — **fait le 2026-10-26** (API `/revendeurs/moi/`, `/revendeurs/moi/ventes/`, `/revendeurs/rattachement/` ; page `/espace-revendeur`, EN `/en/reseller-area`). Sans la charte à accepter ni « Mes versements » : la charte attend sa rédaction (phase 4), les versements la phase 3. Le code mémorisé par un lien est oublié à la première connexion (appareil partagé) ; un compte existant qui se connecte après avoir cliqué le lien doit donc ressaisir son code au paiement | M |
-| 3 | Versements groupés, export CSV, drapeaux de fraude | S à M |
+| 3 | Versements groupés, export CSV, drapeaux de fraude — **fait le 2026-10-26** (modèle `Versement`, action « Préparer les versements », CSV, références saisies dans la liste, reprises, commande `preparer_versements`, module `fraude.py`, section « Vos versements » de l'espace) | S à M |
 | 4 (en parallèle, sans code) | Charte, contrat d'apport d'affaires, fiche d'accueil, support de vente | S |
 
 Pilote : 5 à 10 revendeurs pendant 6 à 8 semaines à partir de la phase 1. Les versements du pilote peuvent se faire à la main depuis l'admin.
@@ -156,3 +156,15 @@ Pilote : 5 à 10 revendeurs pendant 6 à 8 semaines à partir de la phase 1. Les
 4. **Politique de remboursement** : le délai de 14 jours suppose qu'on sache quand un remboursement est possible. À définir avec le support.
 5. **Écoles et centres** : même commission que les autres. Une offre groupée ou une remise pour leurs élèves serait une décision séparée, hors de ce module.
 6. **Frais de retrait** : absorbés pendant le pilote, à revoir ensuite.
+
+## 13. Réalisation de la phase 3 (2026-10-26)
+
+**Circuit mensuel.** Admin > Revendeurs > action « Préparer les versements » (ou `manage.py preparer_versements [--simuler] [--code X]`) → Admin > Versements > « Exporter en CSV » → envoi de l'argent en Mobile Money → saisie de la référence dans la liste → « Marquer comme payé » (la référence est obligatoire ; SMS au revendeur). « Annuler » libère les commissions réservées.
+
+**Règles.** Seules les commissions acquises, non retenues et pas encore réservées sont versées. Le seuil est de 5 000 F : en dessous, le solde est reporté. Un revendeur en attente, suspendu ou sans numéro de versement n'est pas payé. Un seul versement préparé à la fois par revendeur. Les frais de retrait sont à la charge d'Edukora (champ `frais_retrait`, à titre d'information).
+
+**Reprises.** Une commission déjà payée puis annulée pour fraude devient une reprise : son montant est déduit du prochain versement, et reporté tant que le net reste sous le seuil.
+
+**Signaux de fraude** (une commission qui en déclenche un est retenue, jamais refusée ; seuils dans `models.py`) : 3 clients du même revendeur payant depuis la même IP en 24 h ; 3 comptes clients réglés depuis le même numéro ; 2 numéros voisins (écart de 2) parmi ses clients ; 3 paiements manuels refusés parmi ses clients en 30 jours ; 50 clients rattachés le même jour. Écarts avec le § 6 : le « taux d'abandon anormal » est remplacé par les paiements refusés en série (le signal réellement mesurable), et la « limite d'attributions par jour » est un signal de rétention plutôt qu'un blocage, pour ne pas refuser une école qui inscrit une classe entière.
+
+**Reste à faire.** Les seuils de fraude sont des estimations à ajuster avec le pilote ; aucun envoi automatique de l'argent (le paiement reste manuel) ; les frais de retrait réels sont à mesurer.

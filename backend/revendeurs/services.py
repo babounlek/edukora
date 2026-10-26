@@ -16,8 +16,10 @@ from django.db import connection
 from django.db import transaction as db_transaction
 from django.utils import timezone
 
+from .fraude import detecter_signaux
 from .models import (
     DELAI_ACQUISITION_JOURS,
+    SEUIL_VERSEMENT_FCFA,
     FENETRE_COMMISSION_JOURS,
     AttributionRevendeur,
     Commission,
@@ -25,7 +27,9 @@ from .models import (
     SourceAttribution,
     StatutCommission,
     StatutRevendeur,
+    StatutVersement,
     TypeRevendeur,
+    Versement,
 )
 
 logger = logging.getLogger(__name__)
@@ -206,6 +210,7 @@ def enregistrer_commission(paiement, *, maintenant=None):
             motifs.append("revendeur suspendu")
         if montant_different:
             motifs.append("montant déclaré différent du montant attendu")
+        motifs.extend(detecter_signaux(revendeur, client, attribution, paiement, numero_payeur, maintenant))
 
         taux = _taux_applicable(revendeur, maintenant)
         return Commission.objects.create(
@@ -230,3 +235,158 @@ def enregistrer_commission_securise(paiement):
     except Exception:
         logger.exception("Calcul de commission revendeur en échec pour le paiement %s %s.", type(paiement).__name__, paiement.pk)
         return None
+
+
+# --- Versements ---------------------------------------------------------------------------------
+
+
+class VersementImpossible(Exception):
+    """Une opération de versement refusée, avec une raison lisible par l'administrateur."""
+
+
+def _periode(maintenant):
+    return maintenant.astimezone(DOUALA).strftime("%Y-%m")
+
+
+def commissions_a_verser(revendeur, maintenant=None):
+    """Acquises, libres de tout drapeau, et pas encore dans un versement."""
+    maintenant = maintenant or timezone.now()
+    return Commission.objects.filter(
+        revendeur=revendeur, statut=StatutCommission.ACTIVE, a_verifier=False,
+        acquise_le__lte=maintenant, versement__isnull=True,
+    )
+
+
+def reprises_dues(revendeur):
+    """Commissions déjà payées puis annulées pour fraude, pas encore déduites d'un versement."""
+    return Commission.objects.filter(
+        revendeur=revendeur, statut=StatutCommission.ANNULEE, versement__isnull=False, reprise_dans__isnull=True,
+    )
+
+
+def preparer_versement(revendeur, *, maintenant=None, seuil=SEUIL_VERSEMENT_FCFA):
+    """
+    Réserve les commissions acquises d'un revendeur dans un versement à payer. Retourne
+    `(versement, None)`, ou `(None, raison)` quand rien n'est à faire : en dessous du seuil le solde est reporté, un
+    revendeur suspendu ou sans numéro de versement n'est pas payé, un seul versement à la fois reste en cours.
+    Les reprises dues (fraude après paiement) sont déduites du montant.
+    """
+    maintenant = maintenant or timezone.now()
+    with db_transaction.atomic():
+        qs = Revendeur.objects.all()
+        if connection.features.has_select_for_update:
+            qs = qs.select_for_update()
+        revendeur = qs.get(pk=revendeur.pk)
+
+        if revendeur.statut == StatutRevendeur.EN_ATTENTE:
+            return None, "compte pas encore activé"
+        if revendeur.statut == StatutRevendeur.SUSPENDU:
+            return None, "revendeur suspendu"
+        if not revendeur.numero_versement:
+            return None, "numéro de versement manquant"
+        if Versement.objects.filter(revendeur=revendeur, statut=StatutVersement.PREPARE).exists():
+            return None, "un versement est déjà préparé"
+
+        commissions = list(commissions_a_verser(revendeur, maintenant).select_for_update())
+        brut = sum(c.montant_fcfa for c in commissions)
+        if brut == 0:
+            return None, "rien à verser"
+        reprises = list(reprises_dues(revendeur).select_for_update())
+        total_reprises = sum(c.montant_fcfa for c in reprises)
+        net = brut - total_reprises
+        if net < seuil:
+            return None, f"{max(net, 0)} FCFA à verser, sous le seuil de {seuil} FCFA (reporté)"
+
+        versement = Versement.objects.create(
+            revendeur=revendeur, periode=_periode(maintenant), montant_brut=brut, montant_reprises=total_reprises,
+            montant_net=net, operateur=revendeur.operateur_versement, numero=revendeur.numero_versement,
+            prepare_le=maintenant,
+        )
+        Commission.objects.filter(pk__in=[c.pk for c in commissions]).update(versement=versement)
+        Commission.objects.filter(pk__in=[c.pk for c in reprises]).update(reprise_dans=versement)
+        return versement, None
+
+
+def preparer_versements(revendeurs, *, maintenant=None, seuil=SEUIL_VERSEMENT_FCFA):
+    """Prépare le versement de chaque revendeur. Retourne `(versements, ignores)`, `ignores` = [(revendeur, raison)]."""
+    versements, ignores = [], []
+    for revendeur in revendeurs:
+        versement, raison = preparer_versement(revendeur, maintenant=maintenant, seuil=seuil)
+        if versement is not None:
+            versements.append(versement)
+        else:
+            ignores.append((revendeur, raison))
+    return versements, ignores
+
+
+def marquer_paye(versement, par, reference, *, frais_retrait=0, maintenant=None):
+    """
+    PREPARE -> PAYE, une fois le Mobile Money envoyé. La référence de la transaction est obligatoire : c'est la preuve
+    que le versement a eu lieu. Les commissions réglées passent à PAYEE.
+    """
+    reference = (reference or "").strip()
+    if not reference:
+        raise VersementImpossible("La référence de la transaction Mobile Money est obligatoire.")
+    maintenant = maintenant or timezone.now()
+    with db_transaction.atomic():
+        qs = Versement.objects.all()
+        if connection.features.has_select_for_update:
+            qs = qs.select_for_update()
+        verrouille = qs.get(pk=versement.pk)
+        if verrouille.statut != StatutVersement.PREPARE:
+            raise VersementImpossible(f"Versement #{verrouille.pk} déjà {verrouille.get_statut_display().lower()}.")
+        verrouille.statut = StatutVersement.PAYE
+        verrouille.reference_mobile_money = reference
+        verrouille.frais_retrait = frais_retrait
+        verrouille.paye_par = par
+        verrouille.paye_le = maintenant
+        verrouille.save(update_fields=["statut", "reference_mobile_money", "frais_retrait", "paye_par", "paye_le"])
+        verrouille.commissions.filter(statut=StatutCommission.ACTIVE).update(statut=StatutCommission.PAYEE)
+    _prevenir(verrouille)
+    return verrouille
+
+
+def annuler_versement(versement):
+    """PREPARE -> ANNULE : les commissions et les reprises réservées redeviennent disponibles."""
+    with db_transaction.atomic():
+        qs = Versement.objects.all()
+        if connection.features.has_select_for_update:
+            qs = qs.select_for_update()
+        verrouille = qs.get(pk=versement.pk)
+        if verrouille.statut != StatutVersement.PREPARE:
+            raise VersementImpossible(f"Versement #{verrouille.pk} déjà {verrouille.get_statut_display().lower()}.")
+        verrouille.commissions.update(versement=None)
+        verrouille.reprises.update(reprise_dans=None)
+        verrouille.statut = StatutVersement.ANNULE
+        verrouille.save(update_fields=["statut"])
+    return verrouille
+
+
+def exporter_csv(versements):
+    """Fichier à charger dans l'outil de paiement groupé Mobile Money : une ligne par versement préparé."""
+    import csv
+    import io
+
+    sortie = io.StringIO()
+    ecrivain = csv.writer(sortie)
+    ecrivain.writerow(["reference", "operateur", "numero", "montant_fcfa", "beneficiaire", "periode"])
+    for v in versements:
+        ecrivain.writerow([f"EDK-V{v.pk}", v.operateur, v.numero, v.montant_net, v.revendeur.nom_affiche, v.periode])
+    return sortie.getvalue()
+
+
+def _prevenir(versement):
+    """SMS au revendeur ; un échec d'envoi ne défait jamais un versement déjà payé."""
+    telephone = versement.revendeur.user.phone_number
+    if not telephone:
+        return
+    try:
+        from users.sms_backends import get_sms_backend
+
+        get_sms_backend().send(
+            telephone,
+            f"Edukora : ton versement de {versement.montant_net} FCFA ({versement.periode}) a été envoyé "
+            f"(réf. {versement.reference_mobile_money}).",
+        )
+    except Exception:
+        logger.exception("SMS de versement non envoyé pour le versement %s.", versement.pk)

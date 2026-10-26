@@ -5,8 +5,8 @@ import { Check, Copy, Loader2, MessageCircle, RefreshCw } from "lucide-react"
 import { toast } from "sonner"
 
 import { ApiError } from "@/api/client"
-import { getEspaceRevendeur, listVentesRevendeur } from "@/api/endpoints"
-import type { EspaceRevendeur, EtatCommission, StatutRevendeur, VenteRevendeur } from "@/api/types"
+import { getEspaceRevendeur, listVentesRevendeur, listVersementsRevendeur } from "@/api/endpoints"
+import type { EspaceRevendeur, EtatCommission, StatutRevendeur, VenteRevendeur, VersementRevendeur } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -31,6 +31,12 @@ function bandeauDe(statut: StatutRevendeur): string | null {
   if (statut === "SUSPENDU") return t("rev.statut_suspendu")
   if (statut === "RESILIE") return t("rev.statut_resilie")
   return null
+}
+
+/** « 2026-10 » -> « octobre 2026 », dans la langue de l'interface. */
+function moisLisible(periode: string): string {
+  const [annee, mois] = periode.split("-").map(Number)
+  return new Date(annee, mois - 1, 1).toLocaleDateString(localeCourante(), { month: "long", year: "numeric" })
 }
 
 function dateCourte(iso: string): string {
@@ -124,7 +130,14 @@ function Tableau({ espace }: { espace: EspaceRevendeur }) {
             {tn("rev.ventes_mois", espace.ventes_du_mois)} · {tn("rev.clients", espace.nb_clients)}
           </p>
         </div>
+        {espace.reprises_en_cours > 0 && (
+          <p role="status" className="mt-4 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
+            {t("rev.reprises", { montant: formatAmount(espace.reprises_en_cours) })}
+          </p>
+        )}
       </section>
+
+      <Versements seuil={espace.seuil_versement} />
 
       <Ventes />
     </div>
@@ -248,6 +261,68 @@ function Ventes() {
             </div>
           )}
         </>
+      )}
+    </section>
+  )
+}
+
+function Versements({ seuil }: { seuil: number }) {
+  const versements = useQuery({
+    queryKey: ["revendeur", "versements"],
+    queryFn: ({ signal }) => listVersementsRevendeur(signal),
+  })
+  const lignes: VersementRevendeur[] = versements.data?.results ?? []
+
+  return (
+    <section aria-labelledby="rev-versements">
+      <h2 id="rev-versements" className="mb-3 font-display text-xl font-semibold">{t("rev.versements_titre")}</h2>
+
+      {versements.isPending ? (
+        <Skeleton className="h-20 rounded-2xl" />
+      ) : versements.isError ? (
+        <div role="alert" className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4">
+          <p className="text-sm text-muted-foreground">{t("rev.erreur")}</p>
+          <Button onClick={() => void versements.refetch()} variant="outline" size="sm" className="shrink-0 rounded-full">
+            <RefreshCw className="size-3.5" />
+            {t("erreur.reessayer")}
+          </Button>
+        </div>
+      ) : lignes.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-border px-6 py-8 text-center">
+          <p className="font-display text-lg font-semibold">{t("rev.versements_vide")}</p>
+          <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">{t("rev.versements_vide_texte", { seuil: formatAmount(seuil) })}</p>
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {lignes.map((versement) => (
+            <li key={versement.id} className="flex items-start justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3">
+              <div className="min-w-0">
+                <p className="text-sm font-semibold capitalize">{moisLisible(versement.periode)}</p>
+                <p className="text-xs text-muted-foreground">
+                  {versement.operateur}
+                  {versement.paye_le ? ` · ${dateCourte(versement.paye_le)}` : ""}
+                  {versement.reference ? ` · ${t("rev.versement_ref", { ref: versement.reference })}` : ""}
+                </p>
+                {versement.montant_reprises > 0 && (
+                  <p className="text-xs text-muted-foreground">
+                    {t("rev.versement_detail", {
+                      brut: formatAmount(versement.montant_brut), reprises: formatAmount(versement.montant_reprises),
+                    })}
+                  </p>
+                )}
+              </div>
+              <div className="shrink-0 text-right">
+                <p className="font-display text-base font-semibold tabular-nums">
+                  {formatAmount(versement.montant_net)}
+                  <span className="ml-1 text-xs font-medium text-muted-foreground">FCFA</span>
+                </p>
+                <p className={cn("text-xs font-semibold", versement.statut === "PAYE" ? "text-success" : "text-warning-foreground dark:text-warning")}>
+                  {t(`rev.versement_statut_${versement.statut}`)}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   )

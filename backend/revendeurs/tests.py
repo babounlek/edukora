@@ -44,6 +44,11 @@ def _revendeur(tel="677900001", code="DEMO42", type=TypeRevendeur.REPETITEUR, st
 
 class _Base(TestCase):
     def setUp(self):
+        # Aucun SMS réel pendant les tests : valider ou refuser un paiement, ou payer un versement, en envoie un, et le
+        # fournisseur configuré dans .env fait un appel réseau (qui échoue hors connexion).
+        envoi_sms = patch("users.sms_backends.get_sms_backend")
+        envoi_sms.start()
+        self.addCleanup(envoi_sms.stop)
         self.cursus = _cursus()
         self.admin = User.objects.create_user(phone_number="677900099", password="x", is_staff=True)
         self.plan = Plan.objects.create(name="Jusqu'à l'examen", cursus=self.cursus, price=15000, duration_days=365)
@@ -61,7 +66,8 @@ class _Base(TestCase):
         return ManualPayment.objects.create(
             user=client, profil=client.profils.first(), plan=plan, operator=MobileMoneyOperator.ORANGE,
             amount_expected=plan.price, amount_declared=montant,
-            payer_phone_number=payeur or "699000111", transaction_reference=ref,
+            # Un payeur distinct par client par défaut : le même numéro pour tous déclencherait le signal de fraude.
+            payer_phone_number=payeur or f"6990{client.pk:05d}", transaction_reference=ref,
         )
 
     def _campay(self, client, montant=None, plan=None):
@@ -474,10 +480,10 @@ class EspaceRevendeurAPITests(_Base):
         self.assertEqual(self.api.get("/revendeurs/moi/ventes/").status_code, 404)
 
     def test_tableau_de_bord(self):
-        self._vente("677900071", "REF-D1")  # en attente
-        self._vente("677900072", "REF-D2", acquise_le=timezone.now() - timedelta(days=1))  # acquise
-        self._vente("677900073", "REF-D3", a_verifier=True)  # retenue
-        annulee = self._vente("677900074", "REF-D4")
+        self._vente("677900171", "REF-D1")  # en attente
+        self._vente("677900181", "REF-D2", acquise_le=timezone.now() - timedelta(days=1))  # acquise
+        self._vente("677900191", "REF-D3", a_verifier=True)  # retenue
+        annulee = self._vente("677900201", "REF-D4")
         annulee.annuler("test")
         self.api.force_authenticate(self.revendeur.user)
 

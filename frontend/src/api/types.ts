@@ -1815,6 +1815,10 @@ export interface EspaceRevendeur {
   montants: { en_attente: number; acquise: number; retenue: number; payee: number }
 }
 
+  /** Montant minimum d'un versement : en dessous, le solde est reporté au mois suivant. */
+  seuil_versement: number
+  /** Commissions déjà payées puis annulées pour fraude : déduites du prochain versement. */
+  reprises_en_cours: number
 export interface VenteRevendeur {
   id: number
   created_at: string
@@ -1829,5 +1833,21 @@ export interface VenteRevendeur {
 
 export interface RattachementRevendeur {
   peut_saisir_code: boolean
+export type StatutVersement = "PREPARE" | "PAYE"
+
+export interface VersementRevendeur {
+  id: number
+  /** Mois de préparation, AAAA-MM. */
+  periode: string
+  montant_brut: number
+  montant_reprises: number
+  montant_net: number
+  statut: StatutVersement
+  operateur: string
+  /** Référence de la transaction Mobile Money : vide tant que l'argent n'est pas parti. */
+  reference: string
+  paye_le: string | null
+}
+
   revendeur: { nom_affiche: string } | null
 }
