@@ -19,6 +19,7 @@ import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
 import { Button } from "@/components/ui/button"
+import { CodeRevendeur } from "@/components/CodeRevendeur"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -574,6 +575,8 @@ export function SubscribePage() {
                   </span>
                 </div>
               )}
+
+              <CodeRevendeur />
 
               {!configPrete ? (
                 <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label={t("sb.chargement_moyens")} />

@@ -4,6 +4,7 @@ from unittest.mock import patch
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
 from django.utils import timezone
+from rest_framework.test import APIClient
 
 from catalog.models import Cursus, Examen
 from payments.models import ManualPayment, MobileMoneyOperator, StatutTransaction, Transaction
@@ -27,6 +28,7 @@ from .models import (
 from .services import (
     enregistrer_commission,
     enregistrer_commission_securise,
+    masquer_client,
     rattacher_tardivement,
 )
 
@@ -434,3 +436,151 @@ class CommissionNeBloquePasLAccesTests(_Base):
         paiement.reject(self.admin, ManualPaymentRejectReason.PAIEMENT_NON_RECU)
 
         self.assertEqual(Commission.objects.count(), 0)
+
+
+class MasquerClientTests(TestCase):
+    def test_initiales_et_fin_du_numero(self):
+        user = User.objects.create_user(phone_number="677123456", password="x", full_name="Awa Nkoulou Bela")
+        self.assertEqual(masquer_client(user), "A. N. ••3456")
+
+    def test_compte_sans_nom_ni_telephone(self):
+        user = User.objects.create_user(phone_number=None, email="eleve@example.com", email_verified=True)
+        self.assertEqual(masquer_client(user), "e•••")
+
+    def test_ne_laisse_filtrer_ni_le_numero_complet_ni_l_adresse(self):
+        user = User.objects.create_user(phone_number="677123456", password="x", full_name="Awa N")
+        self.assertNotIn("677123456", masquer_client(user))
+        self.assertNotIn("123", masquer_client(user).replace("3456", ""))
+
+
+class EspaceRevendeurAPITests(_Base):
+    def setUp(self):
+        super().setUp()
+        self.api = APIClient()
+
+    def _vente(self, tel, ref, **commission_extra):
+        client = self._client(tel=tel)
+        commission = enregistrer_commission(self._manuel(client, ref))
+        if commission_extra:
+            Commission.objects.filter(pk=commission.pk).update(**commission_extra)
+        return commission
+
+    def test_refuse_sans_connexion(self):
+        self.assertEqual(self.api.get("/revendeurs/moi/").status_code, 401)
+
+    def test_un_compte_non_revendeur_recoit_404(self):
+        self.api.force_authenticate(self.admin)
+        self.assertEqual(self.api.get("/revendeurs/moi/").status_code, 404)
+        self.assertEqual(self.api.get("/revendeurs/moi/ventes/").status_code, 404)
+
+    def test_tableau_de_bord(self):
+        self._vente("677900071", "REF-D1")  # en attente
+        self._vente("677900072", "REF-D2", acquise_le=timezone.now() - timedelta(days=1))  # acquise
+        self._vente("677900073", "REF-D3", a_verifier=True)  # retenue
+        annulee = self._vente("677900074", "REF-D4")
+        annulee.annuler("test")
+        self.api.force_authenticate(self.revendeur.user)
+
+        data = self.api.get("/revendeurs/moi/").json()
+
+        self.assertEqual(data["code"], "DEMO42")
+        self.assertEqual(data["taux_base_pct"], 14)
+        self.assertEqual(data["nb_clients"], 4)
+        self.assertEqual(data["ventes_du_mois"], 3)
+        self.assertEqual(data["montants"], {"en_attente": 2100, "acquise": 2100, "retenue": 2100, "payee": 0})
+        self.assertIsNone(data["palier"])
+
+    def test_palier_expose_pour_un_commercial(self):
+        commercial = _revendeur(tel="677900080", code="COMM02", type=TypeRevendeur.COMMERCIAL)
+        self.api.force_authenticate(commercial.user)
+
+        self.assertEqual(self.api.get("/revendeurs/moi/").json()["palier"], {"seuil": 30, "taux_pct": 17})
+
+    def test_ventes_masquent_le_client_et_ne_montrent_que_les_siennes(self):
+        self._vente("677900075", "REF-V1")
+        autre = _revendeur(tel="677900081", code="AUTRE2")
+        etranger = User.objects.create_user(phone_number="677900082", password="x")
+        AttributionRevendeur.objects.create(client=etranger, revendeur=autre)
+        enregistrer_commission(self._manuel(etranger, "REF-V2"))
+        self.api.force_authenticate(self.revendeur.user)
+
+        data = self.api.get("/revendeurs/moi/ventes/").json()
+
+        self.assertEqual(data["count"], 1)
+        ligne = data["results"][0]
+        self.assertEqual(ligne["montant_fcfa"], 2100)
+        self.assertEqual(ligne["etat"], "EN_ATTENTE")
+        self.assertNotIn("677900075", str(ligne))
+        self.assertTrue(ligne["client"].endswith("0075"))
+
+    def test_une_vente_retenue_est_signalee_sans_dire_pourquoi(self):
+        self._vente("677900076", "REF-V3", a_verifier=True, motif_a_verifier="montant suspect")
+        self.api.force_authenticate(self.revendeur.user)
+
+        ligne = self.api.get("/revendeurs/moi/ventes/").json()["results"][0]
+
+        self.assertEqual(ligne["etat"], "RETENUE")
+        self.assertNotIn("suspect", str(ligne))
+
+
+class RattachementAPITests(_Base):
+    def setUp(self):
+        super().setUp()
+        self.api = APIClient()
+        self.eleve = User.objects.create_user(phone_number="677900090", password="x")
+        self.api.force_authenticate(self.eleve)
+
+    def test_get_propose_la_saisie_a_un_compte_neuf(self):
+        data = self.api.get("/revendeurs/rattachement/").json()
+        self.assertEqual(data, {"peut_saisir_code": True, "revendeur": None})
+
+    def test_post_rattache_et_ferme_la_saisie(self):
+        reponse = self.api.post("/revendeurs/rattachement/", {"code": "demo42"}, format="json")
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertEqual(reponse.json()["revendeur"]["nom_affiche"], self.revendeur.nom_affiche)
+        self.assertEqual(AttributionRevendeur.objects.get(client=self.eleve).source, SourceAttribution.PAIEMENT)
+        data = self.api.get("/revendeurs/rattachement/").json()
+        self.assertFalse(data["peut_saisir_code"])
+        self.assertEqual(data["revendeur"]["nom_affiche"], self.revendeur.nom_affiche)
+
+    def test_code_inconnu_et_code_inactif_donnent_la_meme_reponse(self):
+        Revendeur.objects.filter(pk=self.revendeur.pk).update(statut=StatutRevendeur.SUSPENDU)
+        inconnu = self.api.post("/revendeurs/rattachement/", {"code": "NOPE99"}, format="json")
+        inactif = self.api.post("/revendeurs/rattachement/", {"code": "DEMO42"}, format="json")
+
+        self.assertEqual((inconnu.status_code, inconnu.json()), (400, {"code": "code_invalide"}))
+        self.assertEqual((inactif.status_code, inactif.json()), (400, {"code": "code_invalide"}))
+
+    def test_apres_un_paiement_valide_la_saisie_est_fermee(self):
+        self._manuel(self.eleve, "REF-RATT").approve(self.admin)
+
+        self.assertFalse(self.api.get("/revendeurs/rattachement/").json()["peut_saisir_code"])
+        self.assertEqual(self.api.post("/revendeurs/rattachement/", {"code": "DEMO42"}, format="json").status_code, 400)
+
+    def test_une_fois_attribue_un_autre_code_est_refuse(self):
+        autre = _revendeur(tel="677900091", code="AUTRE3")
+        self.api.post("/revendeurs/rattachement/", {"code": "DEMO42"}, format="json")
+
+        self.assertEqual(self.api.post("/revendeurs/rattachement/", {"code": autre.code}, format="json").status_code, 400)
+        self.assertEqual(AttributionRevendeur.objects.get(client=self.eleve).revendeur, self.revendeur)
+
+    def test_commission_creee_au_paiement_suivant(self):
+        self.api.post("/revendeurs/rattachement/", {"code": "DEMO42"}, format="json")
+        self._manuel(self.eleve, "REF-APRES").approve(self.admin)
+
+        self.assertEqual(Commission.objects.get().montant_fcfa, 2100)
+
+    def test_plafond_de_saisies(self):
+        from django.core.cache import cache
+
+        from .views import RattachementThrottle
+
+        cache.clear()
+        with override_settings(THROTTLE_PDF_ACTIF=True), patch.object(RattachementThrottle, "rate", "2/hour"):
+            codes = [self.api.post("/revendeurs/rattachement/", {"code": "NOPE99"}, format="json").status_code for _ in range(3)]
+            lecture = self.api.get("/revendeurs/rattachement/").status_code
+        cache.clear()
+
+        self.assertEqual(codes, [400, 400, 429])
+        self.assertEqual(lecture, 200)

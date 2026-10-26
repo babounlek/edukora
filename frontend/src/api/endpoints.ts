@@ -21,6 +21,7 @@ import type {
   Epreuve,
   EpreuveContent,
   EpreuveInediteListItem,
+  EspaceRevendeur,
   EpreuvePreview,
   Fiche,
   FicheThemeEligible,
@@ -36,8 +37,10 @@ import type {
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
+  RattachementRevendeur,
   ReponseRecherche,
   TypeResultatRecherche,
+  VenteRevendeur,
   MatieresChoix,
   PlanDuJour,
   Priorites,
@@ -1222,4 +1225,24 @@ export async function listQuizEnCours(signal?: AbortSignal) {
   const donnees = await apiRequest<QuizEnCoursItem[]>("/quiz/en-cours/", { signal })
   if (!Array.isArray(donnees)) reponseInattendue()
   return donnees
+}
+
+// Revendeurs : espace du partenaire et saisie d'un code par un compte existant.
+export function getEspaceRevendeur(signal?: AbortSignal) {
+  return apiRequest<EspaceRevendeur>("/revendeurs/moi/", { signal })
+}
+
+export function listVentesRevendeur(page = 1, signal?: AbortSignal) {
+  return apiRequest<Paginated<VenteRevendeur>>(`/revendeurs/moi/ventes/?page=${page}`, { signal })
+}
+
+export function getRattachementRevendeur(signal?: AbortSignal) {
+  return apiRequest<RattachementRevendeur>("/revendeurs/rattachement/", { signal })
+}
+
+export function postRattachementRevendeur(code: string) {
+  return apiRequest<{ revendeur: { nom_affiche: string } }>("/revendeurs/rattachement/", {
+    method: "POST",
+    body: { code },
+  })
 }

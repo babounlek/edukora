@@ -19,6 +19,7 @@ import { ChoixRythme, InterrupteurPush, InterrupteurRetours } from "@/components
 import { Section } from "@/components/CompteSection"
 import { ChoixMatieres, useAfficherChoixMatieres } from "@/components/ChoixMatieres"
 import { langueCourante, useI18n } from "@/lib/i18n"
+import { LienEspaceRevendeur } from "@/components/LienEspaceRevendeur"
 import { lienDeParrainage } from "@/lib/referral"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -253,6 +254,8 @@ export function AccountPage() {
             </Button>
           </div>
         </section>
+
+        <LienEspaceRevendeur />
 
         {afficherMatieres && (
           <Section icone={BookOpen} titre={t("matieres.titre")}>

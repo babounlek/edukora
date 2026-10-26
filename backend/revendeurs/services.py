@@ -117,6 +117,32 @@ def _debut_du_mois(maintenant):
     return local.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 
 
+def ventes_du_mois(revendeur, maintenant=None):
+    """Nombre de ventes (commissions non annulées) du mois civil en cours, fuseau Africa/Douala."""
+    maintenant = maintenant or timezone.now()
+    return (
+        Commission.objects.filter(revendeur=revendeur, created_at__gte=_debut_du_mois(maintenant))
+        .exclude(statut=StatutCommission.ANNULEE).count()
+    )
+
+
+def masquer_client(user):
+    """
+    Libellé d'un client montré à son revendeur : initiales et fin du numéro, jamais de
+    coordonnées complètes (le revendeur voit qu'une vente a eu lieu, pas qui est l'élève).
+    """
+    parties = [p for p in (user.full_name or user.pseudo or "").split() if p]
+    initiales = " ".join(f"{p[0].upper()}." for p in parties[:2])
+    chiffres = "".join(c for c in (user.phone_number or "") if c.isdigit())
+    if chiffres:
+        suffixe = f"••{chiffres[-4:]}"
+    elif user.email:
+        suffixe = f"{user.email[0]}•••"
+    else:
+        suffixe = f"#{user.pk}"
+    return f"{initiales} {suffixe}".strip()
+
+
 def _taux_applicable(revendeur, maintenant):
     """Taux de base, ou taux de palier pour un commercial qui a déjà atteint son seuil ce mois-ci."""
     if (
@@ -124,11 +150,7 @@ def _taux_applicable(revendeur, maintenant):
         and revendeur.palier_seuil is not None
         and revendeur.palier_taux_pct is not None
     ):
-        ventes_du_mois = (
-            Commission.objects.filter(revendeur=revendeur, created_at__gte=_debut_du_mois(maintenant))
-            .exclude(statut=StatutCommission.ANNULEE).count()
-        )
-        if ventes_du_mois >= revendeur.palier_seuil:
+        if ventes_du_mois(revendeur, maintenant) >= revendeur.palier_seuil:
             return revendeur.palier_taux_pct
     return revendeur.taux_base_pct
 

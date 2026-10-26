@@ -136,7 +136,7 @@ La commission n'est versée que sur un paiement réellement validé, et la valid
 | Phase | Contenu | Taille |
 |---|---|---|
 | 1 | Modèles, attribution à l'inscription, commission sur les deux chemins de paiement, admin, tests — **fait le 2026-10-26, non committé** | M |
-| 2 | Lien `?rev=`, champ au paiement, espace revendeur en lecture seule | M |
+| 2 | Lien `?rev=`, champ au paiement, espace revendeur en lecture seule — **fait le 2026-10-26** (API `/revendeurs/moi/`, `/revendeurs/moi/ventes/`, `/revendeurs/rattachement/` ; page `/espace-revendeur`, EN `/en/reseller-area`). Sans la charte à accepter ni « Mes versements » : la charte attend sa rédaction (phase 4), les versements la phase 3. Le code mémorisé par un lien est oublié à la première connexion (appareil partagé) ; un compte existant qui se connecte après avoir cliqué le lien doit donc ressaisir son code au paiement | M |
 | 3 | Versements groupés, export CSV, drapeaux de fraude | S à M |
 | 4 (en parallèle, sans code) | Charte, contrat d'apport d'affaires, fiche d'accueil, support de vente | S |
 

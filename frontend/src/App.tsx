@@ -50,6 +50,7 @@ const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default:
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
+const EspaceRevendeurPage = lazy(() => import("@/pages/EspaceRevendeurPage").then((m) => ({ default: m.EspaceRevendeurPage })))
 const PrivacyPage = lazy(() => import("@/pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage })))
 const TermsPage = lazy(() => import("@/pages/TermsPage").then((m) => ({ default: m.TermsPage })))
 const AboutPage = lazy(() => import("@/pages/AboutPage").then((m) => ({ default: m.AboutPage })))
@@ -183,6 +184,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
+                      <Route path="/espace-revendeur" element={<EspaceRevendeurPage />} />
                       <Route path="/quiz" element={<QuizStartPage />} />
                       <Route path="/quiz/essai" element={<QuizSessionPage essai />} />
                       <Route path="/quiz/essai/resultat" element={<QuizEssaiResultPage />} />

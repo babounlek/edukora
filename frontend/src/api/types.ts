@@ -1796,3 +1796,38 @@ export interface QuizEnCoursItem {
   a_terminer: boolean
   rejeu_de: number | null
 }
+
+// Revendeurs - voir backend/revendeurs/views.py.
+export type TypeRevendeur = "COMMERCIAL" | "REPETITEUR" | "ECOLE_CENTRE"
+export type StatutRevendeur = "EN_ATTENTE" | "ACTIF" | "SUSPENDU" | "RESILIE"
+export type EtatCommission = "EN_ATTENTE" | "ACQUISE" | "RETENUE" | "PAYEE" | "ANNULEE"
+
+export interface EspaceRevendeur {
+  nom_affiche: string
+  type: TypeRevendeur
+  code: string
+  statut: StatutRevendeur
+  taux_base_pct: number
+  /** Commerciaux seulement : à partir de `seuil` ventes dans le mois, les suivantes sont à `taux_pct`. */
+  palier: { seuil: number; taux_pct: number } | null
+  ventes_du_mois: number
+  nb_clients: number
+  montants: { en_attente: number; acquise: number; retenue: number; payee: number }
+}
+
+export interface VenteRevendeur {
+  id: number
+  created_at: string
+  /** Initiales et fin du numéro : jamais de coordonnées complètes. */
+  client: string
+  plan: string
+  base_fcfa: number
+  taux_pct: number
+  montant_fcfa: number
+  etat: EtatCommission
+}
+
+export interface RattachementRevendeur {
+  peut_saisir_code: boolean
+  revendeur: { nom_affiche: string } | null
+}

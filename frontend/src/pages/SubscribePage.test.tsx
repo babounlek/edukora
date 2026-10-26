@@ -26,6 +26,7 @@ vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" 
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/sentry", () => ({ Sentry: { captureException: vi.fn() } }))
 vi.mock("@/components/BilanDePeriode", () => ({ BilanDePeriode: () => null }))
+vi.mock("@/components/CodeRevendeur", () => ({ CodeRevendeur: () => null }))
 vi.mock("@/components/ManualPaymentPanel", () => ({ ManualPaymentPanel: () => null }))
 
 import { SubscribePage } from "./SubscribePage"
