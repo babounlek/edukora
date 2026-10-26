@@ -532,7 +532,55 @@ def _journaliser_sans_ecriture(entry, obj, etat, lot):
         )
 
 
+def donnees_eleves(entry, adapt):
+    """
+    Données d'élèves rattachées au contenu visé (lecture seule) : à montrer AVANT d'approuver une mise à jour,
+    un retrait ou une réintégration. Information, jamais un blocage (voir `options.bloquer_si_eleves_en_cours`).
+    """
+    journal = ContenuSynchro.objects.filter(type=entry["type"], id_stable=entry["id_stable"]).first()
+    obj = adapt.modele.objects.filter(pk=journal.objet_pk).first() if journal is not None else None
+    if obj is None and entry.get("cle_naturelle"):
+        obj = adapt.retrouver_par_cle(entry["cle_naturelle"])
+    if obj is None:
+        return {}
+    if entry["type"] == emp.TYPE_COURS:
+        from access.models import LectureProgress
+
+        return {"lectures": LectureProgress.objects.filter(cours=obj).count()}
+    if entry["type"] == emp.TYPE_QUIZ:
+        from quiz.models import QuizQuestion
+
+        jouees = QuizQuestion.objects.filter(competence_item=obj)
+        return {"sessions_quiz": jouees.count(),
+                "sessions_quiz_non_terminees": jouees.filter(session__completed_at__isnull=True).count()}
+    return {}
+
+
 def _traiter(lot, entry, racine_lot, options, decisions, simulation, annuler=True):
+    """Traite un contenu et y joint les données d'élèves concernées. Retourne (resultat, detail, lessons)."""
+    modifie = entry["operation"] in ("update", "retirer", "reintegrer")
+
+    def lire():
+        try:
+            return donnees_eleves(entry, ADAPTATEURS[entry["type"]])
+        except Exception as exc:  # une information ne doit jamais faire échouer un contenu
+            return {"erreur": f"{type(exc).__name__}: {exc}"}
+
+    if modifie and options.get("bloquer_si_eleves_en_cours"):
+        # Décidé AVANT toute écriture : le contenu n'est pas touché.
+        eleves = lire()
+        if any(eleves.get(k) for k in ("lectures", "sessions_quiz_non_terminees")):
+            return R.ERREUR, {"erreur": "élèves en cours sur ce contenu (campagne : bloquer_si_eleves_en_cours)",
+                              "donnees_eleves": eleves}, set()
+    resultat, detail, lessons = _traiter_contenu(lot, entry, racine_lot, options, decisions, simulation, annuler)
+    if modifie and resultat in (R.MIS_A_JOUR, R.RETIRE, R.REINTEGRE):
+        eleves = lire()
+        if eleves:
+            detail = {**detail, "donnees_eleves": eleves}
+    return resultat, detail, lessons
+
+
+def _traiter_contenu(lot, entry, racine_lot, options, decisions, simulation, annuler=True):
     """Traite un contenu. Retourne (resultat, detail, lessons)."""
     adapt = ADAPTATEURS[entry["type"]]
     operation = entry["operation"]
@@ -764,6 +812,30 @@ def appliquer(lot, reprise=False, confirme_retraits=False, post_traitement=True)
         return res
 
 
+def _ecarts(lot):
+    return list(((lot.rapport or {}).get("attendus") or {}).get("ecarts", []))
+
+
+def _bilan_attendus(lot, compteurs):
+    """
+    Compare les compteurs réels aux `attendus` déclarés par la campagne (`{résultat: nombre}`, ex.
+    `{"mis_a_jour": 25, "retire": 6}`). Retourne None sans campagne ou sans attendus. Liste aussi les
+    contenus non appliqués avec leur raison : c'est ce qui rend lisible l'écart d'une production qui diverge.
+    """
+    attendus = ((_manifeste(lot).get("campagne") or {}).get("attendus"))
+    if not attendus:
+        return None
+    ecarts = [f"{cle} : {compteurs.get(cle, 0)} obtenus, {voulu} attendus"
+              for cle, voulu in sorted(attendus.items()) if compteurs.get(cle, 0) != voulu]
+    non_appliques = [
+        {"type": op.type, "id_stable": op.id_stable, "resultat": op.resultat,
+         "raison": (op.detail or {}).get("classe") or (op.detail or {}).get("erreur") or (op.detail or {}).get("raison")}
+        for op in lot.operations.exclude(resultat__in=APPLIQUES)
+        if op.resultat not in (R.INCHANGE.value,)
+    ]
+    return {"attendus": attendus, "obtenus": compteurs, "ecarts": ecarts, "non_appliques": non_appliques}
+
+
 def _cloturer(lot):
     compteurs = {}
     for op in lot.operations.all():
@@ -771,7 +843,12 @@ def _cloturer(lot):
     bloquants = sum(n for r, n in compteurs.items() if r in BLOQUANTS)
     attente = compteurs.get(R.EN_ATTENTE.value, 0)
     appliques = sum(n for r, n in compteurs.items() if r in APPLIQUES)
-    avertissements = (lot.rapport or {}).get("post_traitement", {}).get("avertissements", [])
+    bilan = _bilan_attendus(lot, compteurs)
+    if bilan is not None:
+        lot.rapport = {**(lot.rapport or {}), "attendus": bilan}
+        lot.save(update_fields=["rapport"])
+    avertissements = list(dict.fromkeys(
+        (lot.rapport or {}).get("post_traitement", {}).get("avertissements", []) + _ecarts(lot)))
     if bloquants or attente:
         lot.statut = StatutLot.PARTIEL if appliques else StatutLot.ECHOUE
     elif avertissements:
@@ -841,6 +918,7 @@ def post_traiter(lot):
                 index_fait = False
                 avertissements.append(f"{nom} : {type(exc).__name__}: {exc}")
     rapport["a_supprimer"] = a_supprimer
+    avertissements = list(dict.fromkeys(avertissements + list((rapport.get("attendus") or {}).get("ecarts", []))))
     rapport["post_traitement"] = {
         "fait": True, "avertissements": avertissements, "lessons_faites": sorted(fait), "index_fait": index_fait,
         "le": timezone.now().strftime("%Y-%m-%dT%H:%M:%SZ"),

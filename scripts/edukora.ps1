@@ -14,7 +14,8 @@
     ingest-local  ingere en local + tunnel de validation, puis enregistre la validation
     inventaire    liste les JSON ingerables non suivis par git (ignores) pour validation
     prepare       construit un lot (dossier + archive + SHA-256) apres controles
-    status        liste les lots locaux
+    campagne      ecrit les corrections d'une campagne dans les JSON d'ingestion (simulation, -Reecrire pour ecrire)
+    status       liste les lots locaux
     doctor -Distant   verifie le serveur (SSH, docker, flock, dossier des lots, commande sync_contenu)
     reference     recupere les empreintes appliquees en production (pour prepare -Reference)
     publish       envoie, verifie et SIMULE un lot sur le serveur ; avec -Appliquer, sauvegarde puis applique
@@ -36,7 +37,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('', 'help', 'doctor', 'generate', 'validate', 'ingest-local', 'inventaire', 'prepare', 'status', 'publish', 'resume', 'resoudre', 'reference', 'rollback-info')]
+    [ValidateSet('', 'help', 'doctor', 'generate', 'validate', 'ingest-local', 'inventaire', 'prepare', 'campagne', 'status', 'publish', 'resume', 'resoudre', 'reference', 'rollback-info')]
     [string]$Commande = '',
 
     [string[]]$Unite = @(),
@@ -56,6 +57,7 @@ param(
     [string[]]$Ids = @(),
     [string]$Motif,
     [switch]$Appliquer,
+    [switch]$Reecrire,
     [switch]$Reprendre,
     [switch]$SansPostTraitement,
     [switch]$ConfirmerRetraits,
@@ -596,6 +598,40 @@ par clic admin) ; rien n'est publie automatiquement.
     return $script:EXIT_OK
 }
 
+function Invoke-Campagne {
+    <# Applique une campagne aux JSON d'ingestion (jamais a la base) ; s'arrete avant toute preparation de lot. #>
+    param($Cfg, [string]$Campagne, [switch]$Reecrire)
+    if (-not $Campagne) { Write-Host 'campagne : indiquer -Campagne campagnes\<nom>.json.'; return $script:EXIT_USAGE }
+    $Campagne = (Resolve-Path -LiteralPath $Campagne -ErrorAction Stop).ProviderPath
+    $c = Read-JsonFile $Campagne
+    $dossier = Split-Path -Parent $Campagne
+    Write-Host ("campagne {0} ({1})" -f $c.nom, $c.type)
+    switch ($c.type) {
+        'conversion_qcm' {
+            if (-not $c.conversion -or -not $c.conversion.propositions) { Write-Host 'campagne : conversion.propositions obligatoire.' -ForegroundColor Red; return $script:EXIT_USAGE }
+            $etat = Get-DossiersEtat $Cfg
+            New-Item -ItemType Directory -Force -Path $etat.Rapports | Out-Null
+            $rapport = Join-Path $etat.Rapports ("campagne-{0}-{1:yyyyMMdd-HHmmss}.json" -f $c.nom, (Get-Date))
+            $argv = @('reecrire-quiz', $Cfg.IngestDir, '--propositions', (Join-Path $dossier $c.conversion.propositions), '--sortie', $rapport)
+            if ($c.conversion.originaux) { $argv += @('--originaux', (Join-Path $dossier $c.conversion.originaux)) }
+            if ($Reecrire) { $argv += '--appliquer' }
+            $r = Invoke-Outil $Cfg $argv
+            if ($null -eq $r.Json) { Write-Host "campagne : sortie inattendue de l'outil.`n$($r.Err)"; return $script:EXIT_ECHEC }
+            $mode = if ($Reecrire) { 'ECRIT' } else { 'SIMULATION (rien n''est ecrit)' }
+            Write-Host "campagne : $mode. Rapport : $rapport"
+            foreach ($p in $r.Json.compteurs.PSObject.Properties) { Write-Host ("  {0} : {1}" -f $p.Name, $p.Value) }
+            if ($r.Code -ne 0) { Write-Host 'campagne : propositions invalides ou items introuvables, voir le rapport.' -ForegroundColor Red; return $script:EXIT_ECHEC }
+        }
+        default { Write-Host "campagne : type '$($c.type)' pas encore pris en charge par cette commande (les lots de cours et de retraits passent par prepare -Retraits)." -ForegroundColor Yellow }
+    }
+    Write-Host 'Etapes suivantes (jamais enchainees automatiquement) :'
+    Write-Host '  1. ingest-local -Unite <fichiers modifies> : ingestion locale + tunnel de validation'
+    Write-Host "  2. relecture independante versee dans $($c.relecture.rapport)"
+    Write-Host "  3. prepare -Unite <fichiers> -Campagne $Campagne -Reference <ref> [-Approuver]"
+    Write-Host '  4. publish -BatchId <lot> (simulation), puis -Appliquer apres lecture du rapport'
+    return $script:EXIT_OK
+}
+
 function Show-Aide {
     Get-Help $PSCommandPath -Detailed | Out-String | Write-Host
     return $script:EXIT_OK
@@ -1043,6 +1079,7 @@ function Invoke-Main {
         'ingest-local' { return (Invoke-IngestLocal -Cfg $cfg -Unites $unites -Strict:$Strict) }
         'inventaire' { return (Invoke-Inventaire -Cfg $cfg -SansBase:$SansBase) }
         'prepare' { return (Invoke-Prepare -Cfg $cfg -Unites $unites -Nom $Nom -Reference $Reference -Retraits $Retraits -Campagne $Campagne -Approuver:$Approuver -AccepterSansTunnel:$AccepterSansTunnel -ToutOuRien:$ToutOuRien -Adopter:$Adopter) }
+        'campagne' { return (Invoke-Campagne -Cfg $cfg -Campagne $Campagne -Reecrire:$Reecrire) }
         'status' { return (Invoke-Status -Cfg $cfg -BatchId $BatchId) }
         'publish' { return (Invoke-Publish -Cfg $cfg -BatchId $BatchId -Appliquer:$Appliquer -Reprendre:$Reprendre -SansPostTraitement:$SansPostTraitement -ConfirmerRetraits:$ConfirmerRetraits) }
         'resume' { return (Invoke-Resume -Cfg $cfg -BatchId $BatchId -Reprendre:$Reprendre) }

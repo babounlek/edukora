@@ -133,3 +133,19 @@ Tests d'acceptation à ajouter (même style que SPEC §12) :
 2. Seuil de relecture : 100 % pour toute campagne neuve (recommandé).
 3. Les campagnes ont-elles le droit de **bloquer** sur élèves en cours, ou seulement avertir (recommandé : avertir).
 4. Quelle campagne sert de premier cas réel après les lots d'épreuve : extension B1 (maths BEPC) ou retrait des cours dupliqués (déjà prêt).
+
+## 7. Réalisé (2026-10-26)
+
+| Point | État | Où |
+|---|---|---|
+| E1 relecture obligatoire (`prepare -Campagne`) | fait, commité a2f6cb9c | `outil_lot.py`, `test_outil_lot.py` (CampagneTests) |
+| E3 données d'élèves dans la simulation (`donnees_eleves` : lectures d'un cours, sessions de quiz) ; blocage optionnel `bloquer_si_eleves_en_cours`, décidé **avant** toute écriture | fait | `moteur.py` (`donnees_eleves`, `_traiter`), `test_moteur.py` (CampagneMoteurTests) |
+| E4 attendus : `campagne.attendus` = `{résultat: nombre}` (ex. `{"mis_a_jour": 25}`), écarts ⇒ `reussi_avec_avertissements`, liste des contenus non appliqués avec raison dans `rapport.attendus` | fait | `moteur.py` (`_bilan_attendus`) |
+| E2 réécriture des JSON : `outil_lot.py reecrire-quiz` (simulation par défaut, `--appliquer`), garde par empreinte (énoncé + corrigé) des versions relues, idempotent | fait ; **essayé en simulation sur les 25 propositions B1 et les JSON réels : 25/25 correspondent** | `outil_lot.py` (`cmd_reecrire_quiz`), `test_outil_lot.py` (ReecritureQuizTests) |
+| E5 manifeste de campagne | champs lus : `nom`, `type`, `relecture{taux,rapport}`, `attendus`, `bloquer_si_eleves_en_cours`, `conversion{propositions,originaux}` | `campagnes/<nom>.json` (aucun fichier de campagne créé pour l'instant) |
+| E6 `edukora.ps1 campagne -Campagne … [-Reecrire]` | fait pour `conversion_qcm` ; **syntaxe vérifiée, non exécuté** (pas de Python sur le poste Windows) ; s'arrête avant toute préparation de lot | `scripts/edukora.ps1` |
+
+Limites connues :
+- `reecrire-quiz` réécrit tout le fichier JSON touché avec une indentation de 2 : le diff git contient des changements d'espaces (l'empreinte de la chaîne est canonique, donc sans effet sur le lot).
+- La commande `campagne` ne gère pas encore les types `creation_quiz`, `creation_cours`, `retrait_cours` (ces derniers passent par `prepare -Retraits`).
+- Les `LectureProgress` comptent les profils ayant **ouvert** un cours, pas des lectures « en cours » : le chiffre est un ordre de grandeur de l'impact, pas un blocage utile par défaut.

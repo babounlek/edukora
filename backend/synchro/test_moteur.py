@@ -135,6 +135,16 @@ class Banc(TestCase):
             argv.append("--tout-ou-rien")
         if options.get("adopter"):
             argv.append("--adopter")
+        if options.get("campagne") is not None:
+            # Campagne de test : relecture « accord » pour chaque contenu, liée à son empreinte.
+            verdicts = [{"type": e["type"], "id_stable": e["id_stable"], "empreinte_source": e["empreinte_source"],
+                         "verdict": "accord", "relecteur": "test"}
+                        for u in unites for e in outil_lot.analyser_unite(str(self.ingest), u)["elements"]]
+            (self.tmp / "relecture.json").write_text(json.dumps({"verdicts": verdicts}), encoding="utf-8")
+            chemin = self.tmp / "campagne.json"
+            chemin.write_text(json.dumps({"nom": "essai", "relecture": {"taux": 1.0, "rapport": "relecture.json"},
+                                          **options["campagne"]}), encoding="utf-8")
+            argv += ["--campagne", str(chemin)]
         sortie = io.StringIO()
         with contextlib.redirect_stdout(sortie):
             code = outil_lot.main(argv)
@@ -439,6 +449,55 @@ class RetraitsTests(Banc):
                        retraits=[{"type": "cours", "id_stable": "cours-test-notion", "motif": "erreur"}])
         self.appliquer(lot, confirme_retraits=True)
         self.assertEqual(Cours.objects.get(external_id="cours-test-notion").statut, StatutContenu.REJETE)
+
+
+# ============================================================================ campagnes (E3, E4)
+
+class CampagneMoteurTests(Banc):
+    def _retrait_cours(self, **campagne):
+        return self.lot(reference=moteur.exporter_reference(), unites=(DOSSIER,),
+                        retraits=[{"type": "cours", "id_stable": "cours-test-notion", "motif": "doublon"}],
+                        campagne=campagne)
+
+    def _lecture(self):
+        from access.models import LectureProgress
+
+        user = User.objects.create_user(phone_number="677300001", password="x")
+        LectureProgress.objects.create(profil=user.profils.first(), cours=Cours.objects.get(external_id="cours-test-notion"))
+
+    def test_la_simulation_montre_les_lectures_d_un_cours_a_retirer(self):
+        self.appliquer_initial()
+        self._lecture()
+        plan = moteur.planifier(self._retrait_cours())["plan"]
+        cours_op = next(p for p in plan if p["type"] == "cours")
+        self.assertEqual(cours_op["detail"]["donnees_eleves"], {"lectures": 1})
+        self.assertEqual(cours_op["resultat_prevu"], R.RETIRE)  # information, pas un blocage
+        self.assertEqual(Cours.objects.get(external_id="cours-test-notion").statut, StatutContenu.VALIDE)
+
+    def test_blocage_optionnel_avant_toute_ecriture(self):
+        self.appliquer_initial()
+        self._lecture()
+        lot = self._retrait_cours(bloquer_si_eleves_en_cours=True)
+        self.appliquer(lot, confirme_retraits=True)
+        self.assertEqual(self.resultats(lot)[("cours", "cours-test-notion")], R.ERREUR)
+        self.assertEqual(Cours.objects.get(external_id="cours-test-notion").statut, StatutContenu.VALIDE)
+
+    def test_attendus_atteints_lot_reussi(self):
+        self.appliquer_initial()
+        lot = self._retrait_cours(attendus={"retire": 1})
+        res = self.appliquer(lot, confirme_retraits=True)
+        self.assertEqual(res["statut"], StatutLot.REUSSI, res)
+        lot.refresh_from_db()
+        self.assertEqual(lot.rapport["attendus"]["ecarts"], [])
+
+    def test_attendus_non_atteints_avertissement_et_liste_des_non_appliques(self):
+        self.appliquer_initial()
+        lot = self._retrait_cours(attendus={"retire": 3})
+        res = self.appliquer(lot, confirme_retraits=True)
+        self.assertEqual(res["statut"], StatutLot.REUSSI_AVEC_AVERTISSEMENTS, res)
+        lot.refresh_from_db()
+        self.assertIn("retire : 1 obtenus, 3 attendus", lot.rapport["attendus"]["ecarts"])
+        self.assertIsInstance(lot.rapport["attendus"]["non_appliques"], list)
 
 
 # ============================================================================ T7 interruptions

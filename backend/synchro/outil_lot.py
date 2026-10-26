@@ -542,7 +542,8 @@ def cmd_preparer(args):
         "reference_prod": (None if reference is None else
                            {"exportee_le": reference.get("genere_le"), "sha256": emp.sha256_fichier(args.reference)}),
         "options": {"tout_ou_rien": bool(args.tout_ou_rien), "adopter": bool(args.adopter),
-                    "retraits_confirmes": False, "reference_absente": reference is None},
+                    "retraits_confirmes": False, "reference_absente": reference is None,
+                    "bloquer_si_eleves_en_cours": bool((campagne or {}).get("bloquer_si_eleves_en_cours"))},
         "approbation": {"par": args.approuve_par, "le": maintenant.strftime("%Y-%m-%dT%H:%M:%SZ")},
         "campagne": ({k: v for k, v in campagne.items() if not k.startswith("_")} if campagne else None),
         "contenus": contenus,
@@ -621,6 +622,126 @@ def cmd_resoudre(args):
     return 0 if posees or not ignorees else 1
 
 
+def _empreinte_texte_item(enonce, corrige):
+    return emp.sha256_octets((enonce + "\x00" + corrige).encode("utf-8"))
+
+
+def _verifier_proposition_qcm(prop):
+    """Erreurs de FORME d'une proposition de QCM (le fond relève de la relecture indépendante)."""
+    erreurs = []
+    choix = prop.get("choix")
+    if not isinstance(choix, list) or len(choix) < 2:
+        return ["choix : au moins deux propositions"]
+    lettres = [str((c or {}).get("lettre", "")).strip().lower() for c in choix]
+    textes = [str((c or {}).get("texte", "")).strip() for c in choix]
+    if len(set(lettres)) != len(lettres) or "" in lettres:
+        erreurs.append("choix : lettres manquantes ou en double")
+    if len(set(textes)) != len(textes) or "" in textes:
+        erreurs.append("choix : textes vides ou en double")
+    if str(prop.get("reponse_correcte", "")).strip().lower() not in lettres:
+        erreurs.append("reponse_correcte absente des choix")
+    if not str(prop.get("corrige_markdown") or "").strip():
+        erreurs.append("corrige_markdown vide")
+    return erreurs
+
+
+def _json_ecrire_lisible(chemin, data):
+    """Écrit un JSON d'ingestion (indentation 2, ordre des clés conservé, UTF-8, fin de ligne `\\n`)."""
+    with open(chemin, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
+def cmd_reecrire_quiz(args):
+    """
+    Campagne de conversion en QCM : réécrit les items DANS LES JSON d'ingestion (`<ingest>/_quiz/**`), jamais la
+    base. Un item n'est modifié que s'il est trouvé exactement une fois, s'il n'est pas déjà un QCM et si
+    l'empreinte (énoncé + corrigé) de son contenu actuel est celle de la version relue (`--originaux`).
+    Simulation par défaut ; `--appliquer` écrit. Le rapport dit, item par item, ce qui a été fait ou ignoré et pourquoi.
+    Seuls `type_reponse`, `choix`, `reponse_correcte`, `corrige_markdown` (et `enonce_markdown` s'il est proposé)
+    changent ; thème, cursus, figures, savoir officiel et identifiants restent tels quels.
+    """
+    ingest = os.path.abspath(args.ingest)
+    with open(args.propositions, encoding="utf-8-sig") as f:
+        propositions = json.load(f)
+    originaux = {}
+    if args.originaux:
+        with open(args.originaux, encoding="utf-8-sig") as f:
+            for v in json.load(f).values():
+                originaux[v["external_id"]] = v["sha256"]
+
+    index = {}  # external_id -> [chemin, ...]
+    for dossier, _, noms in os.walk(os.path.join(ingest, "_quiz")):
+        for nom in noms:
+            if not nom.endswith(".json"):
+                continue
+            chemin = os.path.join(dossier, nom)
+            try:
+                with open(chemin, encoding="utf-8-sig") as f:
+                    data = json.load(f)
+            except (OSError, ValueError):
+                continue
+            for it in (data if isinstance(data, list) else [data]):
+                if isinstance(it, dict) and it.get("external_id"):
+                    index.setdefault(str(it["external_id"]), []).append(chemin)
+
+    rapport, a_ecrire = [], {}
+    for prop in propositions:
+        ext = str(prop.get("external_id") or "")
+        ligne = {"external_id": ext}
+        rapport.append(ligne)
+        erreurs = _verifier_proposition_qcm(prop)
+        if erreurs:
+            ligne.update(resultat="proposition_invalide", raison="; ".join(erreurs))
+            continue
+        chemins = index.get(ext, [])
+        if len(chemins) != 1:
+            ligne.update(resultat="introuvable" if not chemins else "ambigu", raison=f"{len(chemins)} fichier(s)")
+            continue
+        chemin = chemins[0]
+        if chemin not in a_ecrire:
+            with open(chemin, encoding="utf-8-sig") as f:
+                a_ecrire[chemin] = {"data": json.load(f), "modifie": False}
+        data = a_ecrire[chemin]["data"]
+        item = next(i for i in (data if isinstance(data, list) else [data]) if str(i.get("external_id")) == ext)
+        ligne["fichier"] = _rel(ingest, chemin)
+        if str(item.get("type_reponse") or "").lower() == "qcm":
+            ligne["resultat"] = "deja_qcm"
+            continue
+        actuel = _empreinte_texte_item(item.get("enonce_markdown", ""), item.get("corrige_markdown", ""))
+        if args.originaux and originaux.get(ext) != actuel:
+            ligne.update(resultat="empreinte_divergente",
+                         raison=("le contenu actuel n'est pas celui qui a été relu" if ext in originaux
+                                 else "absent de --originaux"))
+            continue
+        ligne["empreinte_avant"] = actuel
+        item["type_reponse"] = "qcm"
+        item["choix"] = [{"lettre": str(c["lettre"]).strip().lower(), "texte": str(c["texte"]).strip()} for c in prop["choix"]]
+        item["reponse_correcte"] = str(prop["reponse_correcte"]).strip().lower()
+        item["corrige_markdown"] = prop["corrige_markdown"]
+        if prop.get("enonce_markdown"):
+            item["enonce_markdown"] = prop["enonce_markdown"]
+        ligne.update(resultat="converti" if args.appliquer else "a_convertir",
+                     empreinte_apres=_empreinte_texte_item(item["enonce_markdown"], item["corrige_markdown"]))
+        a_ecrire[chemin]["modifie"] = True
+
+    ecrits = []
+    if args.appliquer:
+        for chemin, e in sorted(a_ecrire.items()):
+            if e["modifie"]:
+                _json_ecrire_lisible(chemin, e["data"])
+                ecrits.append(_rel(ingest, chemin))
+    compteurs = {}
+    for l in rapport:
+        compteurs[l["resultat"]] = compteurs.get(l["resultat"], 0) + 1
+    bilan = {"statut": "ok", "simulation": not args.appliquer, "compteurs": compteurs, "fichiers_ecrits": ecrits,
+             "items": rapport}
+    if args.sortie:
+        _json_ecrire(args.sortie, bilan)
+    print(json.dumps({k: v for k, v in bilan.items() if k != "items"}, ensure_ascii=False))
+    return 1 if any(l["resultat"] in ("proposition_invalide", "introuvable", "ambigu") for l in rapport) else 0
+
+
 def cmd_retraits(args):
     """
     Écrit le `retraits.json` qui retire une épreuve remplacée : un retrait par exercice des unités données (clé naturelle
@@ -686,6 +807,14 @@ def construire_parseur():
     r.add_argument("--adopter", action="store_true")
     r.add_argument("--campagne", help="campagnes/<nom>.json : impose la relecture indépendante des contenus publiés")
     r.set_defaults(fn=cmd_preparer)
+
+    q = sp.add_parser("reecrire-quiz")
+    q.add_argument("ingest")
+    q.add_argument("--propositions", required=True)
+    q.add_argument("--originaux", help="JSON {clé: {external_id, sha256}} : empreintes (énoncé + corrigé) des versions relues")
+    q.add_argument("--sortie")
+    q.add_argument("--appliquer", action="store_true")
+    q.set_defaults(fn=cmd_reecrire_quiz)
 
     t = sp.add_parser("retraits")
     t.add_argument("ingest")

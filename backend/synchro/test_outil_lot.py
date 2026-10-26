@@ -376,6 +376,81 @@ class CampagneTests(Banc):
         self.assertEqual({c["validation"]["relecture_humaine"] for c in manifeste["contenus"]}, {"non_requise"})
 
 
+class ReecritureQuizTests(Banc):
+    def quiz(self):
+        item = {"external_id": "cqc-t-faible-0", "theme": "t", "matiere": "Maths", "cursus": [{"examen": "bepc", "serie": ""}],
+                "enonce_markdown": "Combien font $2+2$ ?", "corrige_markdown": "Quatre.", "type_reponse": "ouverte"}
+        self.ecrire("_quiz/cm/t.json", [item])
+        return outil._empreinte_texte_item(item["enonce_markdown"], item["corrige_markdown"])
+
+    def proposition(self, **extra):
+        p = {"external_id": "cqc-t-faible-0", "corrige_markdown": "Quatre, car $2+2=4$.", "reponse_correcte": "b",
+             "choix": [{"lettre": "a", "texte": "3"}, {"lettre": "b", "texte": "4"}, {"lettre": "c", "texte": "5"}]}
+        p.update(extra)
+        chemin = os.path.join(self.tmp, "props.json")
+        sauver([p], chemin)
+        return chemin
+
+    def originaux(self, sha):
+        chemin = os.path.join(self.tmp, "orig.json")
+        sauver({"1": {"external_id": "cqc-t-faible-0", "sha256": sha}}, chemin)
+        return chemin
+
+    def chemin_item(self):
+        return os.path.join(self.ingest, "_quiz", "cm", "t.json")
+
+    def test_simulation_n_ecrit_rien(self):
+        sha = self.quiz()
+        avant = lire_octets(self.chemin_item())
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(),
+                                "--originaux", self.originaux(sha))
+        self.assertEqual(code, 0, res)
+        self.assertEqual(res["compteurs"], {"a_convertir": 1})
+        self.assertEqual(lire_octets(self.chemin_item()), avant)
+
+    def test_conversion_ecrit_les_champs_et_rien_d_autre(self):
+        sha = self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(),
+                                "--originaux", self.originaux(sha), "--appliquer")
+        self.assertEqual(code, 0, res)
+        item = charger(self.chemin_item())[0]
+        self.assertEqual((item["type_reponse"], item["reponse_correcte"]), ("qcm", "b"))
+        self.assertEqual(item["theme"], "t")
+        self.assertEqual(item["cursus"], [{"examen": "bepc", "serie": ""}])
+        self.assertEqual(item["enonce_markdown"], "Combien font $2+2$ ?")
+
+    def test_empreinte_divergente_est_ignoree(self):
+        self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(),
+                                "--originaux", self.originaux("0" * 64), "--appliquer")
+        self.assertEqual(res["compteurs"], {"empreinte_divergente": 1})
+        self.assertEqual(charger(self.chemin_item())[0]["type_reponse"], "ouverte")
+
+    def test_rejoue_est_idempotent(self):
+        sha = self.quiz()
+        argv = ["reecrire-quiz", self.ingest, "--propositions", self.proposition(),
+                "--originaux", self.originaux(sha), "--appliquer"]
+        self.lancer(*argv)
+        code, res = self.lancer(*argv)
+        self.assertEqual(res["compteurs"], {"deja_qcm": 1})
+        self.assertEqual(res["fichiers_ecrits"], [])
+
+    def test_proposition_invalide_refusee(self):
+        sha = self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(reponse_correcte="z"),
+                                "--originaux", self.originaux(sha), "--appliquer")
+        self.assertEqual(code, 1)
+        self.assertEqual(res["compteurs"], {"proposition_invalide": 1})
+        self.assertEqual(charger(self.chemin_item())[0]["type_reponse"], "ouverte")
+
+    def test_item_introuvable(self):
+        sha = self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest,
+                                "--propositions", self.proposition(external_id="cqc-autre-0"), "--originaux", self.originaux(sha))
+        self.assertEqual(code, 1)
+        self.assertEqual(res["compteurs"], {"introuvable": 1})
+
+
 class InventaireTests(Banc):
     def test_inventaire_distingue_suivis_non_suivis_et_base(self):
         repo = os.path.join(self.tmp, "repo")
