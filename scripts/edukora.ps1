@@ -934,7 +934,15 @@ function Invoke-Publish {
 
     # 4. Sauvegarde verifiee (une sauvegarde recente suffit pour un lot qui ne fait que creer).
     $argsSauvegarde = @($BatchId)
-    if ($lot.SeulementCreations) { $argsSauvegarde += @('--max-age-h', '24') }
+    # Le manifeste dit « create » pour un contenu que la production n'avait jamais journalise, meme s'il existe deja
+    # (le serveur le traite alors en mise a jour). Seul le plan du SERVEUR dit la verite : une sauvegarde recente n'est
+    # permise que s'il n'y a ni mise a jour, ni retrait, ni reintegration.
+    $modifieParLePlan = $false
+    foreach ($nom in @('mis_a_jour', 'retire', 'reintegre')) {
+        $c = $plan.Plan.compteurs
+        if ($null -ne $c -and $null -ne $c.PSObject.Properties[$nom] -and [int]$c.PSObject.Properties[$nom].Value -gt 0) { $modifieParLePlan = $true }
+    }
+    if ($lot.SeulementCreations -and -not $modifieParLePlan) { $argsSauvegarde += @('--max-age-h', '24') }
     $sv = Invoke-Distant $Cfg 'sauvegarde' $argsSauvegarde
     if ($sv.Reseau -or $sv.Code -ne 0 -or $null -eq $sv.Json -or $sv.Json.statut -ne 'ok') {
         $detail = if ($sv.Json -and $sv.Json.erreur) { $sv.Json.erreur } else { $sv.Err.Trim() }
