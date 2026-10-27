@@ -2654,6 +2654,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "rev.guide_rappel": "With the parent's agreement, don't keep any of their numbers or details to contact them later.",
   "cand.titre": "Become a reseller",
   "cand.sous_titre": "Introduce Edukora to people around you and earn a commission on each subscription. The team reviews every application before accepting it.",
+  "cand.se_connecter": "Sign in to apply",
+  "cand.se_connecter_aide": "Sign in or create your Edukora account, then you will come straight back to this page.",
   "cand.principe_titre": "How it works",
   "cand.principe_1": "You fill in this application (a few minutes) and verify your Mobile Money number by SMS.",
   "cand.principe_2": "The team reviews your application and replies by SMS. Until it accepts, you have no code and no link.",

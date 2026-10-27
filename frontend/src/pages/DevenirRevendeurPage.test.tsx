@@ -72,6 +72,16 @@ beforeEach(() => {
 })
 
 describe("DevenirRevendeurPage", () => {
+  it("explique le principe à un visiteur avant de lui demander de se connecter", async () => {
+    auth.isAuthenticated = false
+
+    rendre()
+
+    expect(await screen.findByText("Comment ça marche")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Se connecter pour candidater" })).toHaveAttribute("href", "/connexion")
+    expect(getCandidatureRevendeur).not.toHaveBeenCalled()
+  })
+
   it("propose le formulaire à un compte qui peut candidater", async () => {
     getCandidatureRevendeur.mockResolvedValue(etat())
 

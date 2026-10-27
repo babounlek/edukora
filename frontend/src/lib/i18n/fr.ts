@@ -2666,6 +2666,8 @@ export const fr = {
   "rev.guide_rappel": "Avec l'accord du parent, ne conservez aucun de ses numéros ou renseignements pour le démarcher ensuite.",
   "cand.titre": "Devenir revendeur",
   "cand.sous_titre": "Présentez Edukora autour de vous et touchez une commission sur chaque abonnement. L'équipe étudie chaque candidature avant de l'accepter.",
+  "cand.se_connecter": "Se connecter pour candidater",
+  "cand.se_connecter_aide": "Connectez-vous ou créez votre compte Edukora, puis vous reviendrez directement sur cette page.",
   "cand.principe_titre": "Comment ça marche",
   "cand.principe_1": "Vous remplissez cette candidature (quelques minutes) et vous vérifiez votre numéro Mobile Money par SMS.",
   "cand.principe_2": "L'équipe étudie votre dossier et vous répond par SMS. Tant qu'elle n'a pas accepté, vous n'avez ni code ni lien.",

@@ -1,5 +1,5 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { useState, type FormEvent, type ReactNode } from "react"
+import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Check, ChevronDown, Loader2, RefreshCw } from "lucide-react"
 
@@ -54,11 +54,6 @@ export function DevenirRevendeurPage() {
   useSeo({ title: t("cand.titre"), noindex: true })
 
   const { isAuthenticated, isLoading } = useAuth()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) navigate("/connexion", { state: { from: "/devenir-revendeur" } })
-  }, [isLoading, isAuthenticated, navigate])
 
   const etat = useQuery({
     queryKey: CLE,
@@ -66,7 +61,7 @@ export function DevenirRevendeurPage() {
     enabled: isAuthenticated,
   })
 
-  if (isLoading || !isAuthenticated) return null
+  if (isLoading) return null
 
   return (
     <div className="mx-auto max-w-2xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
@@ -75,7 +70,16 @@ export function DevenirRevendeurPage() {
         <p className="mt-2 text-muted-foreground">{t("cand.sous_titre")}</p>
       </header>
 
-      {etat.isPending ? (
+      {!isAuthenticated ? (
+        // Un visiteur lit d'abord le principe ; la connexion ne vient qu'au moment de candidater.
+        <div className="flex flex-col gap-4">
+          <Principe />
+          <Button asChild className="w-fit rounded-full">
+            <Link to="/connexion" state={{ from: "/devenir-revendeur" }}>{t("cand.se_connecter")}</Link>
+          </Button>
+          <p className="text-xs text-muted-foreground">{t("cand.se_connecter_aide")}</p>
+        </div>
+      ) : etat.isPending ? (
         <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("cand.chargement")}>
           <Skeleton className="h-32 rounded-2xl" />
           <Skeleton className="h-48 rounded-2xl" />
