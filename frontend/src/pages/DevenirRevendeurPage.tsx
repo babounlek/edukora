@@ -200,7 +200,7 @@ function Hero({ visiteur }: { visiteur: boolean }) {
         <dl className="mt-7 grid grid-cols-3 gap-3 sm:max-w-xl">
           {chiffres.map((n) => (
             <div key={n} className="rounded-2xl border border-border/70 bg-card/80 px-3 py-3 backdrop-blur-sm sm:px-4">
-              <dd className="whitespace-nowrap font-display text-xl font-semibold tabular-nums leading-none text-primary sm:text-3xl">{t(`cand.chiffre_${n}_v`)}</dd>
+              <dd className="font-display text-base font-semibold leading-none text-primary sm:text-2xl">{t(`cand.chiffre_${n}_v`)}</dd>
               <dt className="mt-1.5 text-xs leading-snug text-muted-foreground">{t(`cand.chiffre_${n}_l`)}</dt>
             </div>
           ))}
