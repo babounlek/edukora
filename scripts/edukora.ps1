@@ -614,13 +614,14 @@ function Invoke-Campagne {
     $dossier = Split-Path -Parent $Campagne
     Write-Host ("campagne {0} ({1})" -f $c.nom, $c.type)
     switch ($c.type) {
-        'conversion_qcm' {
+        { $_ -in 'conversion_qcm', 'correction_qcm' } {
             if (-not $c.conversion -or -not $c.conversion.propositions) { Write-Host 'campagne : conversion.propositions obligatoire.' -ForegroundColor Red; return $script:EXIT_USAGE }
             $etat = Get-DossiersEtat $Cfg
             New-Item -ItemType Directory -Force -Path $etat.Rapports | Out-Null
             $rapport = Join-Path $etat.Rapports ("campagne-{0}-{1:yyyyMMdd-HHmmss}.json" -f $c.nom, (Get-Date))
             $argv = @('reecrire-quiz', $Cfg.IngestDir, '--propositions', (Join-Path $dossier $c.conversion.propositions), '--sortie', $rapport)
             if ($c.conversion.originaux) { $argv += @('--originaux', (Join-Path $dossier $c.conversion.originaux)) }
+            if ($c.type -eq 'correction_qcm') { $argv += '--corriger' }
             if ($Reecrire) { $argv += '--appliquer' }
             $r = Invoke-Outil $Cfg $argv
             if ($null -eq $r.Json) { Write-Host "campagne : sortie inattendue de l'outil.`n$($r.Err)"; return $script:EXIT_ECHEC }

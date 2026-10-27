@@ -502,7 +502,7 @@ def cmd_preparer(args):
             # fichiers (non relus, non concernés) restent hors du lot.
             ids = _ids_de_campagne(args.campagne, campagne)
             if ids is not None:
-                hors = [c for c in contenus if c["type"] == emp.TYPE_QUIZ and c["id_stable"] not in ids]
+                hors = [c for c in contenus if c["type"] == emp.TYPE_QUIZ and c["operation"] != "retirer" and c["id_stable"] not in ids]
                 contenus = [c for c in contenus if c not in hors]
                 avertissements.append(f"{len(hors)} item(s) des mêmes fichiers hors du périmètre de la campagne, non livrés")
                 absents = sorted(ids - {c["id_stable"] for c in contenus})
@@ -676,13 +676,16 @@ def _json_ecrire_lisible(chemin, data):
 def cmd_reecrire_quiz(args):
     """
     Campagne de conversion en QCM : réécrit les items DANS LES JSON d'ingestion (`<ingest>/_quiz/**`), jamais la
-    base. Un item n'est modifié que s'il est trouvé exactement une fois, s'il n'est pas déjà un QCM et si
+    base. Un item n'est modifié que s'il est trouvé exactement une fois, s'il n'est pas déjà un QCM (ou, avec `--corriger`, s'il l'est déjà) et si
     l'empreinte (énoncé + corrigé) de son contenu actuel est celle de la version relue (`--originaux`).
     Simulation par défaut ; `--appliquer` écrit. Le rapport dit, item par item, ce qui a été fait ou ignoré et pourquoi.
     Seuls `type_reponse`, `choix`, `reponse_correcte`, `corrige_markdown` (et `enonce_markdown` s'il est proposé)
     changent ; thème, cursus, figures, savoir officiel et identifiants restent tels quels.
     """
     ingest = os.path.abspath(args.ingest)
+    if args.corriger and not args.originaux:
+        print(json.dumps({"statut": "usage", "erreur": "--corriger exige --originaux (empreintes des versions relues)"}, ensure_ascii=False))
+        return 2
     with open(args.propositions, encoding="utf-8-sig") as f:
         propositions = json.load(f)
     originaux = {}
@@ -726,8 +729,9 @@ def cmd_reecrire_quiz(args):
         data = a_ecrire[chemin]["data"]
         item = next(i for i in (data if isinstance(data, list) else [data]) if str(i.get("external_id")) == ext)
         ligne["fichier"] = _rel(ingest, chemin)
-        if str(item.get("type_reponse") or "").lower() == "qcm":
-            ligne["resultat"] = "deja_qcm"
+        deja_qcm = str(item.get("type_reponse") or "").lower() == "qcm"
+        if args.corriger != deja_qcm:
+            ligne["resultat"] = "pas_encore_qcm" if args.corriger else "deja_qcm"
             continue
         actuel = _empreinte_texte_item(item.get("enonce_markdown", ""), item.get("corrige_markdown", ""))
         if args.originaux and originaux.get(ext) != actuel:
@@ -742,7 +746,8 @@ def cmd_reecrire_quiz(args):
         item["corrige_markdown"] = prop["corrige_markdown"]
         if prop.get("enonce_markdown"):
             item["enonce_markdown"] = prop["enonce_markdown"]
-        ligne.update(resultat="converti" if args.appliquer else "a_convertir",
+        fait, a_faire = ("corrige", "a_corriger") if args.corriger else ("converti", "a_convertir")
+        ligne.update(resultat=fait if args.appliquer else a_faire,
                      empreinte_apres=_empreinte_texte_item(item["enonce_markdown"], item["corrige_markdown"]))
         a_ecrire[chemin]["modifie"] = True
 
@@ -835,6 +840,7 @@ def construire_parseur():
     q.add_argument("--originaux", help="JSON {clé: {external_id, sha256}} : empreintes (énoncé + corrigé) des versions relues")
     q.add_argument("--sortie")
     q.add_argument("--appliquer", action="store_true")
+    q.add_argument("--corriger", action="store_true", help="corrige des QCM DÉJÀ convertis (au lieu de convertir des questions ouvertes) ; exige --originaux")
     q.set_defaults(fn=cmd_reecrire_quiz)
 
     t = sp.add_parser("retraits")

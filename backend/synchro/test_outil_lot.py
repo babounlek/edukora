@@ -349,6 +349,32 @@ class CampagneTests(Banc):
         self.assertEqual([c["id_stable"] for c in manifeste["contenus"]], ["cqc-t-faible-0"])
         self.assertTrue(any("hors du périmètre" in a for a in res["avertissements"]))
 
+    def test_une_campagne_n_ecarte_pas_les_retraits_demandes(self):
+        item = lambda n: {"external_id": f"cqc-t-faible-{n}", "theme": "t", "matiere": "Maths",
+                          "cursus": [{"examen": "bepc", "serie": ""}], "enonce_markdown": f"q{n}",
+                          "corrige_markdown": "c", "type_reponse": "ouverte"}
+        self.ecrire("_quiz/cm/t.json", [item(0), item(1)])
+        self.valider("_quiz/cm/t.json")
+        empreintes = {e["id_stable"]: e["empreinte_source"]
+                      for e in outil.analyser_unite(self.ingest, "_quiz/cm/t.json")["elements"]}
+        dossier = os.path.join(self.tmp, "campagnes")
+        os.makedirs(dossier)
+        sauver([{"external_id": "cqc-t-faible-0"}], os.path.join(dossier, "props.json"))
+        sauver({"verdicts": [{"type": "quiz", "id_stable": "cqc-t-faible-0", "empreinte_source": empreintes["cqc-t-faible-0"],
+                              "verdict": "accord", "relecteur": "x"}]}, os.path.join(dossier, "relecture.json"))
+        chemin = os.path.join(dossier, "essai.json")
+        sauver({"nom": "essai", "relecture": {"taux": 1.0, "rapport": "relecture.json"},
+                "conversion": {"propositions": "props.json"}}, chemin)
+        chemin_ref = os.path.join(self.tmp, "ref.json")
+        sauver({"contenus": {"quiz|cqc-t-faible-1": {"empreinte_source": empreintes["cqc-t-faible-1"]}}}, chemin_ref)
+        retraits = os.path.join(self.tmp, "retraits.json")
+        sauver([{"type": "quiz", "id_stable": "cqc-t-faible-1", "motif": "avis enseignant"}], retraits)
+        code, res = self.preparer("_quiz/cm/t.json", campagne=chemin, retraits=retraits, reference=chemin_ref)
+        self.assertEqual(code, 0, res)
+        contenus = charger(os.path.join(res["dossier"], "manifest.json"))["contenus"]
+        self.assertEqual({c["id_stable"]: c["operation"] for c in contenus},
+                         {"cqc-t-faible-0": "create", "cqc-t-faible-1": "retirer"})
+
     def test_sans_rapport_le_lot_est_refuse(self):
         self.monter()
         code, res = self.preparer("cm/dos", campagne=self.campagne([]))
@@ -458,6 +484,35 @@ class ReecritureQuizTests(Banc):
         code, res = self.lancer(*argv)
         self.assertEqual(res["compteurs"], {"deja_qcm": 1})
         self.assertEqual(res["fichiers_ecrits"], [])
+
+    def test_corriger_un_qcm_deja_converti(self):
+        sha = self.quiz()
+        self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(), "--originaux", self.originaux(sha), "--appliquer")
+        converti = charger(self.chemin_item())[0]
+        sha2 = outil._empreinte_texte_item(converti["enonce_markdown"], converti["corrige_markdown"])
+        argv = ["reecrire-quiz", self.ingest, "--propositions", self.proposition(corrige_markdown="Quatre, sans notion hors programme."),
+                "--originaux", self.originaux(sha2), "--corriger"]
+        code, res = self.lancer(*argv)
+        self.assertEqual((code, res["compteurs"]), (0, {"a_corriger": 1}))
+        self.assertIn("car $2+2=4$", charger(self.chemin_item())[0]["corrige_markdown"])  # simulation : rien n'est ecrit
+        code, res = self.lancer(*argv, "--appliquer")
+        self.assertEqual(res["compteurs"], {"corrige": 1})
+        self.assertEqual(charger(self.chemin_item())[0]["corrige_markdown"], "Quatre, sans notion hors programme.")
+        code, res = self.lancer(*argv, "--appliquer")  # rejoue : le contenu n'est plus celui qui a ete relu
+        self.assertEqual(res["compteurs"], {"empreinte_divergente": 1})
+
+    def test_corriger_refuse_une_question_encore_ouverte(self):
+        sha = self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(),
+                                "--originaux", self.originaux(sha), "--corriger", "--appliquer")
+        self.assertEqual(res["compteurs"], {"pas_encore_qcm": 1})
+        self.assertEqual(charger(self.chemin_item())[0]["type_reponse"], "ouverte")
+
+    def test_corriger_exige_les_originaux(self):
+        self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(), "--corriger")
+        self.assertEqual(code, 2)
+        self.assertEqual(res["statut"], "usage")
 
     def test_proposition_invalide_refusee(self):
         sha = self.quiz()
