@@ -517,6 +517,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ep.charger_plus": "Load more",
   "ep.sur": "{a} of {b}",
   "ep.session": "Session {year}",
+  "ep.paper": "Paper {n}",
   "ep.exercices_one": "{n} exercise",
   "ep.exercices_other": "{n} exercises",
   "ep.coef": "Coef. {coef}",

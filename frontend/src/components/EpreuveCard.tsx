@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, CheckCircle2, Clock, Crown, Eye, FileText, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle2, Clock, Crown, Eye, FileText, Sparkles, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -75,6 +75,15 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   const faits: { icone: typeof Clock; texte: string }[] = []
   if (epreuve.year && (isTitleTruncated || !epreuve.title.includes(String(epreuve.year)))) {
     faits.push({ icone: Clock, texte: t("ep.session", { year: epreuve.year }) })
+  }
+  // Même règle pour le paper GCE : il termine le titre (« ... GCE A Level 2018 - Paper 1 »), donc
+  // c'est la première chose que le line-clamp coupe sur les matières à long intitulé. Sans lui,
+  // Paper 1 et Paper 2 d'une même session sont indiscernables dans la grille.
+  if (
+    epreuve.numero_paper &&
+    (isTitleTruncated || !new RegExp(`paper\\s*${epreuve.numero_paper}\\b`, "i").test(epreuve.title))
+  ) {
+    faits.push({ icone: BookOpen, texte: t("ep.paper", { n: epreuve.numero_paper }) })
   }
   if (epreuve.exercises_count > 0) {
     faits.push({

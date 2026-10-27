@@ -523,6 +523,7 @@ export const fr = {
   "ep.charger_plus": "Charger plus",
   "ep.sur": "{a} sur {b}",
   "ep.session": "Session {year}",
+  "ep.paper": "Paper {n}",
   "ep.exercices_one": "{n} exercice",
   "ep.exercices_other": "{n} exercices",
   "ep.coef": "Coef. {coef}",
