@@ -1,7 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { Check, ChevronDown, Loader2, RefreshCw } from "lucide-react"
+import { ArrowRight, Briefcase, Check, ChevronDown, GraduationCap, Handshake, Loader2, RefreshCw, School } from "lucide-react"
 
 import { ApiError } from "@/api/client"
 import {
@@ -64,20 +64,15 @@ export function DevenirRevendeurPage() {
   if (isLoading) return null
 
   return (
-    <div className="mx-auto max-w-2xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
-      <header className="mb-8">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("cand.titre")}</h1>
-        <p className="mt-2 text-muted-foreground">{t("cand.sous_titre")}</p>
-      </header>
+    // Même largeur que l'en-tête du site (max-w-5xl).
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      <Hero visiteur={!isAuthenticated} />
 
       {!isAuthenticated ? (
         // Un visiteur lit d'abord le principe ; la connexion ne vient qu'au moment de candidater.
-        <div className="flex flex-col gap-4">
-          <Principe />
-          <Button asChild className="w-fit rounded-full">
-            <Link to="/connexion" state={{ from: "/devenir-revendeur" }}>{t("cand.se_connecter")}</Link>
-          </Button>
-          <p className="text-xs text-muted-foreground">{t("cand.se_connecter_aide")}</p>
+        <div className="flex flex-col gap-6">
+          <Principe horizontal />
+          <Types />
         </div>
       ) : etat.isPending ? (
         <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("cand.chargement")}>
@@ -166,28 +161,111 @@ function Contenu({ etat }: { etat: EtatCandidature }) {
           <p>{t("cand.motif", { motif: candidature.motif })}</p>
         </Carte>
       )}
-      <Principe />
-      <Formulaire
-        // Une nouvelle candidature après un refus ou un retrait repart de zéro.
-        depart={candidature && (candidature.statut === "BROUILLON" || candidature.statut === "A_COMPLETER") ? candidature : null}
-        charteVersion={etat.charte_version}
-        onChange={() => void client.invalidateQueries({ queryKey: CLE })}
-      />
+      <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_21rem]">
+        <Formulaire
+          // Une nouvelle candidature après un refus ou un retrait repart de zéro.
+          depart={candidature && (candidature.statut === "BROUILLON" || candidature.statut === "A_COMPLETER") ? candidature : null}
+          charteVersion={etat.charte_version}
+          onChange={() => void client.invalidateQueries({ queryKey: CLE })}
+        />
+        <div className="order-first lg:sticky lg:top-24 lg:order-last">
+          <Principe />
+        </div>
+      </div>
     </div>
   )
 }
 
+/** L'en-tête de la page : promesse, trois chiffres, et la connexion pour un visiteur. */
+function Hero({ visiteur }: { visiteur: boolean }) {
+  const chiffres = ["1", "2", "3"] as const
+  return (
+    <header className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.12] via-primary/[0.04] to-gold/[0.12] p-6 sm:p-10">
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.05]"
+        style={{
+          backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+      <div className="relative">
+        <p className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+          <Handshake className="size-3.5" aria-hidden="true" />
+          {t("cand.eyebrow")}
+        </p>
+        <h1 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-balance sm:text-5xl">{t("cand.titre")}</h1>
+        <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">{t("cand.sous_titre")}</p>
+
+        <dl className="mt-7 grid grid-cols-3 gap-3 sm:max-w-xl">
+          {chiffres.map((n) => (
+            <div key={n} className="rounded-2xl border border-border/70 bg-card/80 px-3 py-3 backdrop-blur-sm sm:px-4">
+              <dd className="whitespace-nowrap font-display text-xl font-semibold tabular-nums leading-none text-primary sm:text-3xl">{t(`cand.chiffre_${n}_v`)}</dd>
+              <dt className="mt-1.5 text-xs leading-snug text-muted-foreground">{t(`cand.chiffre_${n}_l`)}</dt>
+            </div>
+          ))}
+        </dl>
+
+        {visiteur && (
+          <div className="mt-7 flex flex-col gap-2">
+            <Button asChild size="lg" className="w-fit rounded-full px-6">
+              <Link to="/connexion" state={{ from: "/devenir-revendeur" }}>
+                {t("cand.se_connecter")}
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Link>
+            </Button>
+            <p className="max-w-md text-xs text-muted-foreground">{t("cand.se_connecter_aide")}</p>
+          </div>
+        )}
+      </div>
+    </header>
+  )
+}
+
 /** Ce que le candidat doit savoir avant de remplir : le gain, le délai de réponse, et ce qui se passe ensuite. */
-function Principe() {
+function Principe({ horizontal = false }: { horizontal?: boolean }) {
   const etapes = ["cand.principe_1", "cand.principe_2", "cand.principe_3", "cand.principe_4"] as const
   return (
-    <section aria-labelledby="cand-principe" className="rounded-2xl border border-border bg-card p-5">
+    <section aria-labelledby="cand-principe" className="rounded-2xl border border-border bg-card p-5 sm:p-6">
       <h2 id="cand-principe" className="font-display text-xl font-semibold">{t("cand.principe_titre")}</h2>
-      <ol className="mt-3 flex list-decimal flex-col gap-2 pl-5 text-sm">
-        {etapes.map((cle) => (
-          <li key={cle}>{t(cle)}</li>
+      <ol className={cn("mt-4 grid gap-4", horizontal && "sm:grid-cols-2 lg:grid-cols-4")}>
+        {etapes.map((cle, i) => (
+          <li key={cle} className="flex items-start gap-3 text-sm">
+            <span
+              aria-hidden="true"
+              className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground"
+            >
+              {i + 1}
+            </span>
+            <span className="pt-0.5 leading-relaxed">{t(cle)}</span>
+          </li>
         ))}
       </ol>
+    </section>
+  )
+}
+
+/** À qui s'adresse le programme : les trois profils acceptés. */
+function Types() {
+  const profils = [
+    { cle: "commercial", icone: Briefcase },
+    { cle: "repetiteur", icone: GraduationCap },
+    { cle: "ecole", icone: School },
+  ] as const
+  return (
+    <section aria-labelledby="cand-types">
+      <h2 id="cand-types" className="mb-3 font-display text-xl font-semibold">{t("cand.types_titre")}</h2>
+      <ul className="grid gap-3 sm:grid-cols-3">
+        {profils.map(({ cle, icone: Icone }) => (
+          <li key={cle} className="rounded-2xl border border-border bg-card p-5">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Icone className="size-5" aria-hidden="true" />
+            </span>
+            <p className="mt-3 font-display text-lg font-semibold">{t(`cand.types_${cle}`)}</p>
+            <p className="mt-1 text-sm text-muted-foreground">{t(`cand.types_${cle}_texte`)}</p>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
