@@ -1833,6 +1833,43 @@ export interface VenteRevendeur {
   etat: EtatCommission
 }
 
+export type StatutCandidature = "BROUILLON" | "SOUMISE" | "A_COMPLETER" | "ACCEPTEE" | "REFUSEE" | "RETIREE"
+
+export interface CandidatureRevendeur {
+  id: number
+  statut: StatutCandidature
+  type: TypeRevendeur | ""
+  nom_affiche: string
+  ville: string
+  presentation: string
+  etablissement: string
+  fonction: string
+  operateur_versement: "ORANGE" | "MTN" | ""
+  /** Format local à 9 chiffres. */
+  numero_versement: string
+  /** Le candidat a prouvé la possession de ce numéro par code SMS. */
+  numero_verifie: boolean
+  /** Question de l'équipe (complément) ou raison du refus : vide dans les autres cas. */
+  motif: string
+  /** Code revendeur attribué, une fois la candidature acceptée. */
+  code: string
+  soumise_le: string | null
+  etudiee_le: string | null
+}
+
+export interface EtatCandidature {
+  candidature: CandidatureRevendeur | null
+  peut_candidater: boolean
+  /** deja_revendeur, candidature_ouverte ou refus_recent ; null quand on peut candidater. */
+  raison: "deja_revendeur" | "candidature_ouverte" | "refus_recent" | null
+  reouverture_le: string | null
+  charte_version: string
+}
+
+export type ChampsCandidature = Partial<
+  Pick<CandidatureRevendeur, "type" | "nom_affiche" | "ville" | "presentation" | "etablissement" | "fonction" | "operateur_versement" | "numero_versement">
+>
+
 export type StatutVersement = "PREPARE" | "PAYE"
 
 export interface VersementRevendeur {

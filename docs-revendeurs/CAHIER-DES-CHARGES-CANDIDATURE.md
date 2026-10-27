@@ -75,3 +75,11 @@ Points ouverts :
 2. **Pièces justificatives** (pièce d'identité, justificatif d'établissement pour une école) : à demander ou non, ce qui implique de stocker des documents personnels. Recommandation : ne rien stocker au début et vérifier par appel téléphonique.
 3. **Délai de réponse annoncé** au candidat.
 4. **Qui étudie** : une personne de l'équipe, avec quelles consignes de décision (grille de critères à écrire).
+
+## 9. Réalisation (2026-10-27)
+
+**Fait, non committé.** Modèle `CandidatureRevendeur` (migration `revendeurs/0003_candidatures`, plus `Revendeur.charte_version`), services dans `backend/revendeurs/candidatures.py`, API `/revendeurs/candidature/` (+ `envoyer-code/`, `verifier-numero/`, `soumettre/`, `retirer/`), admin « Candidatures de revendeur » (actions Accepter, Refuser, Demander un complément), page `/devenir-revendeur` (en anglais `/en/become-a-reseller`) avec le texte de la charte en FR/EN, carte « Devenir revendeur » dans « Mon compte » pour qui n'est pas revendeur.
+
+**Choix d'implémentation.** Le brouillon est enregistré côté serveur (statut BROUILLON) : la vérification du numéro et l'envoi portent sur ce qui est enregistré. Le code SMS réutilise le service de connexion (délai entre deux envois, plafond par IP, plafond global, 5 essais). Le code revendeur est proposé à l'envoi (lettres du nom + 2 chiffres) et modifiable par l'équipe avant l'acceptation. Refuser ou demander un complément : saisir le motif dans la fiche, enregistrer, puis lancer l'action depuis la liste. Un candidat refusé peut redéposer après 30 jours.
+
+**Écarts avec le § 4.** Pas de plafond de candidatures par jour : une seule candidature ouverte par compte et 30 jours après un refus suffisent, et l'envoi du code a déjà ses plafonds. La charte affichée est un résumé en dix rubriques (version 0.1) ; le contrat signé prévaut. **Quand `CHARTE_VERSION` change, le texte du front (`charte.*`) doit être relu.**

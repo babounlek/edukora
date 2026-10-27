@@ -21,7 +21,10 @@ import type {
   Epreuve,
   EpreuveContent,
   EpreuveInediteListItem,
+  CandidatureRevendeur,
+  ChampsCandidature,
   EspaceRevendeur,
+  EtatCandidature,
   EpreuvePreview,
   Fiche,
   FicheThemeEligible,
@@ -1242,6 +1245,34 @@ export function listVentesRevendeur(page = 1, signal?: AbortSignal) {
 
 export function listVersementsRevendeur(signal?: AbortSignal) {
   return apiRequest<Paginated<VersementRevendeur>>("/revendeurs/moi/versements/", { signal })
+}
+
+// Candidature de revendeur : brouillon, vérification du numéro de versement par SMS, envoi, retrait.
+export function getCandidatureRevendeur(signal?: AbortSignal) {
+  return apiRequest<EtatCandidature>("/revendeurs/candidature/", { signal })
+}
+
+export function putCandidatureRevendeur(champs: ChampsCandidature) {
+  return apiRequest<CandidatureRevendeur>("/revendeurs/candidature/", { method: "PUT", body: champs })
+}
+
+export function envoyerCodeCandidature() {
+  return apiRequest<{ message: string }>("/revendeurs/candidature/envoyer-code/", { method: "POST" })
+}
+
+export function verifierNumeroCandidature(code: string) {
+  return apiRequest<CandidatureRevendeur>("/revendeurs/candidature/verifier-numero/", { method: "POST", body: { code } })
+}
+
+export function soumettreCandidature(charteVersion: string, accepte: boolean) {
+  return apiRequest<CandidatureRevendeur>("/revendeurs/candidature/soumettre/", {
+    method: "POST",
+    body: { charte_version: charteVersion, accepte },
+  })
+}
+
+export function retirerCandidature() {
+  return apiRequest<CandidatureRevendeur>("/revendeurs/candidature/retirer/", { method: "POST" })
 }
 
 export function getRattachementRevendeur(signal?: AbortSignal) {

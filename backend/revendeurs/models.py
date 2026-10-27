@@ -13,6 +13,8 @@ from users.models import phone_validator
 TAUX_BASE_PCT = 14
 PALIER_SEUIL_COMMERCIAL = 30
 PALIER_TAUX_COMMERCIAL_PCT = 17
+CHARTE_VERSION = "0.1"  # voir docs-revendeurs/CHARTE-REVENDEUR.md ; à changer à chaque modification de la charte
+REOUVERTURE_CANDIDATURE_JOURS = 30  # délai avant de pouvoir candidater de nouveau après un refus
 FENETRE_COMMISSION_JOURS = 365
 DELAI_ACQUISITION_JOURS = 14
 SEUIL_VERSEMENT_FCFA = 5000
@@ -76,6 +78,7 @@ class Revendeur(models.Model):
     palier_taux_pct = models.PositiveSmallIntegerField(null=True, blank=True, validators=[MaxValueValidator(100)])
 
     contrat_accepte_le = models.DateTimeField(null=True, blank=True)
+    charte_version = models.CharField(max_length=10, blank=True, help_text="Version de la charte acceptée (voir la candidature).")
     operateur_versement = models.CharField(max_length=10, blank=True)
     numero_versement = models.CharField(
         max_length=9, blank=True, validators=[phone_validator],
@@ -296,3 +299,87 @@ class Versement(models.Model):
 
     def __str__(self):
         return f"Versement #{self.pk} {self.revendeur} {self.montant_net} FCFA ({self.get_statut_display()})"
+
+
+class StatutCandidature(models.TextChoices):
+    BROUILLON = "BROUILLON", "Brouillon"
+    SOUMISE = "SOUMISE", "À étudier"
+    A_COMPLETER = "A_COMPLETER", "Complément demandé"
+    ACCEPTEE = "ACCEPTEE", "Acceptée"
+    REFUSEE = "REFUSEE", "Refusée"
+    RETIREE = "RETIREE", "Retirée"
+
+
+STATUTS_CANDIDATURE_OUVERTS = (StatutCandidature.BROUILLON, StatutCandidature.SOUMISE, StatutCandidature.A_COMPLETER)
+
+
+class CandidatureRevendeur(models.Model):
+    """
+    Demande d'un compte pour devenir revendeur. Le candidat la remplit et prouve son numéro de versement par un code
+    SMS ; l'équipe l'étudie dans l'admin et, si elle l'accepte, la fiche `Revendeur` est créée (services.accepter_candidature).
+    Rien n'est attribué avant l'acceptation : ni code, ni lien, ni commission.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.PROTECT, related_name="candidatures_revendeur")
+    type = models.CharField(max_length=15, choices=TypeRevendeur.choices)
+    nom_affiche = models.CharField(max_length=150)
+    ville = models.CharField(max_length=100)
+    presentation = models.TextField(max_length=1000, help_text="Comment le candidat compte trouver des clients.")
+    etablissement = models.CharField(max_length=150, blank=True, help_text="École ou centre : nom de l'établissement.")
+    fonction = models.CharField(max_length=100, blank=True, help_text="École ou centre : fonction du candidat.")
+
+    operateur_versement = models.CharField(max_length=10, blank=True)
+    numero_versement = models.CharField(max_length=9, blank=True, validators=[phone_validator])
+    numero_verifie = models.CharField(
+        max_length=9, blank=True, help_text="Dernier numéro dont le candidat a prouvé la possession par code SMS.",
+    )
+    numero_verifie_le = models.DateTimeField(null=True, blank=True)
+
+    charte_version = models.CharField(max_length=10, blank=True)
+    charte_acceptee_le = models.DateTimeField(null=True, blank=True)
+
+    statut = models.CharField(max_length=12, choices=StatutCandidature.choices, default=StatutCandidature.BROUILLON)
+    motif = models.CharField(
+        max_length=300, blank=True, help_text="Refus ou complément demandé : montré au candidat. À saisir avant l'action.",
+    )
+    notes_internes = models.TextField(blank=True)
+    alertes = models.TextField(blank=True, help_text="Signaux relevés à l'envoi (numéro déjà connu…). Pour l'équipe seulement.")
+    code_attribue = models.CharField(
+        max_length=10, blank=True, help_text="Code revendeur qui sera donné à l'acceptation (proposé à l'envoi, modifiable).",
+    )
+
+    etudiee_par = models.ForeignKey(
+        "users.User", null=True, blank=True, on_delete=models.SET_NULL, related_name="candidatures_revendeur_etudiees",
+    )
+    etudiee_le = models.DateTimeField(null=True, blank=True)
+    revendeur = models.OneToOneField(
+        Revendeur, null=True, blank=True, on_delete=models.SET_NULL, related_name="candidature",
+    )
+    soumise_le = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "candidature de revendeur"
+        verbose_name_plural = "candidatures de revendeur"
+        constraints = [
+            # Une seule candidature ouverte par compte.
+            models.UniqueConstraint(
+                fields=["user"],
+                condition=models.Q(statut__in=["BROUILLON", "SOUMISE", "A_COMPLETER"]),
+                name="une_candidature_ouverte_par_compte",
+            ),
+        ]
+        indexes = [models.Index(fields=["statut", "soumise_le"])]
+
+    def __str__(self):
+        return f"{self.nom_affiche} ({self.get_statut_display()})"
+
+    @property
+    def modifiable(self):
+        return self.statut in (StatutCandidature.BROUILLON, StatutCandidature.A_COMPLETER)
+
+    @property
+    def numero_est_verifie(self):
+        return bool(self.numero_versement) and self.numero_versement == self.numero_verifie and self.numero_verifie_le is not None

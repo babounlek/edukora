@@ -3,11 +3,19 @@ from django.db.models import Count, Sum
 from django.http import HttpResponse
 from django.utils import timezone
 
+from .candidatures import (
+    CandidatureInvalide,
+    accepter_candidature,
+    demander_complement,
+    refuser_candidature,
+)
 from .models import (
     AttributionRevendeur,
+    CandidatureRevendeur,
     Commission,
     CommissionDejaAcquise,
     Revendeur,
+    StatutCandidature,
     StatutCommission,
     StatutVersement,
     Versement,
@@ -27,7 +35,7 @@ class RevendeurAdmin(admin.ModelAdmin):
         (None, {"fields": ["user", "nom_affiche", "type", "code", "statut"]}),
         ("Rémunération", {"fields": ["taux_base_pct", "palier_seuil", "palier_taux_pct"]}),
         ("Versements", {"fields": ["operateur_versement", "numero_versement"]}),
-        ("Suivi", {"fields": ["contrat_accepte_le", "notes", "created_at", "updated_at"]}),
+        ("Suivi", {"fields": ["contrat_accepte_le", "charte_version", "notes", "created_at", "updated_at"]}),
     ]
 
     def get_queryset(self, request):
@@ -195,3 +203,61 @@ class VersementAdmin(admin.ModelAdmin):
                 self.message_user(request, f"Versement #{versement.pk} : {exc}", messages.ERROR)
         if faits:
             self.message_user(request, f"{faits} versement(s) annulé(s).", messages.SUCCESS)
+
+
+@admin.register(CandidatureRevendeur)
+class CandidatureRevendeurAdmin(admin.ModelAdmin):
+    """
+    Étude des candidatures. Pour refuser ou demander un complément : saisir le motif dans la fiche (il est montré au
+    candidat), enregistrer, puis lancer l'action depuis la liste. Pour accepter : vérifier le code attribué (modifiable),
+    enregistrer, puis « Accepter » crée la fiche revendeur, active le compte et prévient le candidat par SMS.
+    """
+
+    list_display = [
+        "id", "nom_affiche", "type", "ville", "statut", "numero_versement", "numero_verifie_le", "alerte", "soumise_le",
+    ]
+    list_filter = ["statut", "type"]
+    search_fields = ["nom_affiche", "ville", "user__phone_number", "user__email", "numero_versement"]
+    date_hierarchy = "soumise_le"
+    actions = ["accepter", "refuser", "demander_un_complement"]
+    ordering = ["-soumise_le"]
+    autocomplete_fields = ["user"]
+    list_select_related = ["user"]
+
+    def get_readonly_fields(self, request, obj=None):
+        # Ce que le candidat a déclaré ne se retouche pas : seuls le code attribué, le motif et les notes se saisissent ici.
+        libres = {"motif", "notes_internes", "code_attribue"}
+        return [f.name for f in self.model._meta.fields if f.name not in libres]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    @admin.display(boolean=True, description="Alerte")
+    def alerte(self, obj):
+        return bool(obj.alertes)
+
+    def _appliquer(self, request, queryset, fonction, libelle):
+        faites = 0
+        for candidature in queryset:
+            try:
+                fonction(candidature, request.user)
+                faites += 1
+            except CandidatureInvalide as exc:
+                self.message_user(request, f"{candidature.nom_affiche} : {exc}", messages.ERROR)
+        if faites:
+            self.message_user(request, f"{faites} candidature(s) {libelle}.", messages.SUCCESS)
+
+    @admin.action(description="Accepter (crée la fiche revendeur et prévient le candidat)")
+    def accepter(self, request, queryset):
+        self._appliquer(request, queryset.filter(statut=StatutCandidature.SOUMISE), accepter_candidature, "acceptée(s)")
+
+    @admin.action(description="Refuser (le motif saisi est montré au candidat)")
+    def refuser(self, request, queryset):
+        self._appliquer(request, queryset.filter(statut=StatutCandidature.SOUMISE), refuser_candidature, "refusée(s)")
+
+    @admin.action(description="Demander un complément (la question saisie est montrée au candidat)")
+    def demander_un_complement(self, request, queryset):
+        self._appliquer(request, queryset.filter(statut=StatutCandidature.SOUMISE), demander_complement, "renvoyée(s) au candidat")
