@@ -375,6 +375,10 @@ export interface Epreuve {
   // GCE : « Paper 2 » et code de matière du jury (« 0570 ») - absents des épreuves francophones.
   numero_paper?: number | null
   code_matiere_officiel?: string
+  // « SUJET_1 » / « SUJET_2 » et son libellé (« Sujet 1 ») : versions alternatives d'un même examen officiel.
+  // Vides quand une seule version existe ; absents des inédites.
+  variante_sujet?: "SUJET_1" | "SUJET_2" | ""
+  variante_sujet_display?: string
   origine: Origine
   origine_display: string
   etablissement: string

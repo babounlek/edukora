@@ -251,6 +251,7 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
     origine_display = serializers.CharField(source="get_origine_display", read_only=True)
     nature_epreuve_display = serializers.CharField(source="get_nature_epreuve_display", read_only=True)
     partie_epreuve_francais_display = serializers.CharField(source="get_partie_epreuve_francais_display", read_only=True)
+    variante_sujet_display = serializers.CharField(source="get_variante_sujet_display", read_only=True)
     themes = TagSerializer(many=True, read_only=True)
     has_access = serializers.SerializerMethodField()
     is_read = serializers.SerializerMethodField()
@@ -268,7 +269,8 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
             "year", "duree_epreuve", "duree_minutes", "coefficient", "numero_paper", "code_matiere_officiel",
             "origine", "origine_display",
             "etablissement", "institution", "nature_epreuve", "nature_epreuve_display",
-            "partie_epreuve_francais", "partie_epreuve_francais_display", "themes",
+            "partie_epreuve_francais", "partie_epreuve_francais_display",
+            "variante_sujet", "variante_sujet_display", "themes",
             "has_access", "is_read", "est_vitrine", "created_at",
             "exercises_count", "related_cours", "sujet_pdf_url", "sujet_pdf_disponible",
         ]

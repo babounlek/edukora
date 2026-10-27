@@ -85,6 +85,11 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   ) {
     faits.push({ icone: BookOpen, texte: t("ep.paper", { n: epreuve.numero_paper }) })
   }
+  // Et pour « Sujet 1 / Sujet 2 » (SVT, versions alternatives d'un même examen) : même coupe, même remède.
+  const sujet = epreuve.variante_sujet_display
+  if (sujet && (isTitleTruncated || !epreuve.title.toLowerCase().includes(sujet.toLowerCase()))) {
+    faits.push({ icone: BookOpen, texte: sujet })
+  }
   if (epreuve.exercises_count > 0) {
     faits.push({
       icone: FileText,
