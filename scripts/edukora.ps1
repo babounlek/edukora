@@ -621,6 +621,7 @@ function Invoke-Campagne {
             $rapport = Join-Path $etat.Rapports ("campagne-{0}-{1:yyyyMMdd-HHmmss}.json" -f $c.nom, (Get-Date))
             $argv = @('reecrire-quiz', $Cfg.IngestDir, '--propositions', (Join-Path $dossier $c.conversion.propositions), '--sortie', $rapport)
             if ($c.conversion.originaux) { $argv += @('--originaux', (Join-Path $dossier $c.conversion.originaux)) }
+            if ($c.conversion.interdits) { $argv += @('--interdits', (Join-Path $dossier $c.conversion.interdits)) }
             if ($c.type -eq 'correction_qcm') { $argv += '--corriger' }
             if ($Reecrire) { $argv += '--appliquer' }
             $r = Invoke-Outil $Cfg $argv

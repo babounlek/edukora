@@ -19,6 +19,7 @@ import datetime
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -666,6 +667,27 @@ def _verifier_proposition_qcm(prop):
     return erreurs
 
 
+def _charger_notions_interdites(chemin):
+    """Charge la liste des notions hors programme d'un cursus : [{id, gravite ('bloquant'|'alerte'), motif, motifs: [regex]}]."""
+    with open(chemin, encoding="utf-8-sig") as f:
+        notions = json.load(f).get("notions") or []
+    for n in notions:
+        n["_re"] = [re.compile(m, re.IGNORECASE) for m in n.get("motifs") or []]
+    return notions
+
+
+def _notions_hors_programme(prop, notions):
+    """(bloquants, alertes) : notions de la liste présentes dans l'énoncé, les choix ou le corrigé d'une proposition."""
+    champs = [("enonce", prop.get("enonce_markdown") or ""), ("corrige", prop.get("corrige_markdown") or "")]
+    champs += [(f"choix {(c or {}).get('lettre', '?')}", str((c or {}).get("texte", ""))) for c in prop.get("choix") or []]
+    bloquants, alertes = [], []
+    for n in notions:
+        ou = [nom for nom, texte in champs if any(r.search(texte) for r in n["_re"])]
+        if ou:
+            (bloquants if n.get("gravite") == "bloquant" else alertes).append(f"{n['id']} ({', '.join(ou)})")
+    return bloquants, alertes
+
+
 def _json_ecrire_lisible(chemin, data):
     """Écrit un JSON d'ingestion (indentation 2, ordre des clés conservé, UTF-8, fin de ligne `\\n`)."""
     with open(chemin, "w", encoding="utf-8", newline="\n") as f:
@@ -709,12 +731,18 @@ def cmd_reecrire_quiz(args):
                 if isinstance(it, dict) and it.get("external_id"):
                     index.setdefault(str(it["external_id"]), []).append(chemin)
 
+    notions = _charger_notions_interdites(args.interdits) if args.interdits else []
     rapport, a_ecrire = [], {}
     for prop in propositions:
         ext = str(prop.get("external_id") or "")
         ligne = {"external_id": ext}
         rapport.append(ligne)
         erreurs = _verifier_proposition_qcm(prop)
+        if notions:
+            bloquants, alertes = _notions_hors_programme(prop, notions)
+            if alertes:
+                ligne["alertes"] = alertes
+            erreurs += [f"notion hors programme : {b}" for b in bloquants]
         if erreurs:
             ligne.update(resultat="proposition_invalide", raison="; ".join(erreurs))
             continue
@@ -839,6 +867,7 @@ def construire_parseur():
     q.add_argument("--propositions", required=True)
     q.add_argument("--originaux", help="JSON {clé: {external_id, sha256}} : empreintes (énoncé + corrigé) des versions relues")
     q.add_argument("--sortie")
+    q.add_argument("--interdits", help="JSON des notions hors programme du cursus : une proposition qui en contient une (gravité 'bloquant') est refusée, une 'alerte' est signalée dans le rapport")
     q.add_argument("--appliquer", action="store_true")
     q.add_argument("--corriger", action="store_true", help="corrige des QCM DÉJÀ convertis (au lieu de convertir des questions ouvertes) ; exige --originaux")
     q.set_defaults(fn=cmd_reecrire_quiz)

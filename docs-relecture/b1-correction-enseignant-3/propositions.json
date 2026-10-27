@@ -1,0 +1,114 @@
+[
+ {
+  "id": 1183,
+  "external_id": "cqc-pgcd-faible-1",
+  "theme": "PGCD",
+  "difficulte": "FAIBLE",
+  "type_reponse": "QCM",
+  "enonce_markdown": "Soit $p$ un entier relatif. On pose $a = 5p + 2$ et $b = 3p + 1$.\n\nQue vaut l'expression $3a - 5b$, quel que soit $p$ ?",
+  "corrige_markdown": "### Rappel de méthode\n\nSi une combinaison de $a$ et $b$ à coefficients entiers vaut $1$, alors tout diviseur commun de $a$ et $b$ divise $1$ : $a$ et $b$ sont premiers entre eux, leur seul diviseur commun positif est $1$. Il suffit donc d'exhiber une telle combinaison ; aucun recours à l'algorithme d'Euclide n'est nécessaire.\n\n### Corrigé\n\n$3a - 5b = 3(5p+2) - 5(3p+1) = 15p + 6 - 15p - 5 = 1$. L'égalité est vraie pour tout entier relatif $p$.\n\n*Conséquence :* soit $c$ un diviseur commun positif de $a$ et $b$. Alors $c$ divise $3a$ et $5b$, donc $c$ divise $3a - 5b = 1$, d'où $c = 1$. Les entiers $a = 5p+2$ et $b = 3p+1$ sont donc premiers entre eux quel que soit $p$.\n\nLa bonne réponse est **a)**.\n\n### Pourquoi les autres réponses sont fausses\n\n- **b)** $-1$ : erreur de signe, on a calculé $6 - 5$ à l'envers ($5 - 6$).\n- **c)** $11$ : le signe « $-$ » n'a pas été distribué sur le $+1$ : $-5(3p+1) = -15p - 5$ et non $-15p + 5$.\n- **d)** $30p + 1$ : erreur de signe sur les termes en $p$ : $15p - 15p = 0$, et non $15p + 15p$.",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$1$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$-1$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$11$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$30p + 1$"
+   }
+  ],
+  "reponse_correcte": "a"
+ },
+ {
+  "id": 1185,
+  "external_id": "cqc-pgcd-moyenne-1",
+  "theme": "PGCD",
+  "difficulte": "MOYENNE",
+  "type_reponse": "QCM",
+  "enonce_markdown": "Soit $p$ un entier relatif. On pose $a = 8p + 3$ et $b = 5p + 2$.\n\nPour éliminer $p$, on calcule $5a - 8b$. Quel résultat obtient-on, quel que soit $p$ ?",
+  "corrige_markdown": "### Rappel de méthode\n\nLorsque $a$ et $b$ sont deux expressions affines du même entier $p$, on peut souvent éliminer $p$ en combinant $a$ et $b$ avec des coefficients bien choisis : il suffit de multiplier chaque expression par le coefficient de $p$ dans l'autre, puis de soustraire, pour que les termes en $p$ s'annulent. Si le résultat obtenu vaut $1$ ou $-1$, tout diviseur commun de $a$ et $b$ divise $1$ : $a$ et $b$ sont alors premiers entre eux.\n\n### Corrigé\n\n$$5a - 8b = 5(8p+3) - 8(5p+2) = 40p + 15 - 40p - 16 = -1$$\n\nAutrement dit, $8b - 5a = 1$. Soit $c$ un diviseur commun positif de $a$ et $b$ : $c$ divise $8b$ et $5a$, donc $c$ divise $8b - 5a = 1$, d'où $c = 1$. Ainsi $\\mathrm{pgcd}(a,b) = 1$ : $a$ et $b$ sont premiers entre eux quel que soit $p$. Par exemple, pour $p = 2$ : $a = 19$, $b = 12$ et $\\mathrm{pgcd}(19,12) = 1$.\n\nLa bonne réponse est **b)**.\n\n### Pourquoi les autres réponses sont fausses\n\n- **a)** $1$ : c'est la valeur de $8b - 5a$, pas de $5a - 8b$ (erreur de signe).\n- **c)** $31$ : le signe « $-$ » n'a pas été distribué sur le $+2$ : $-8(5p+2) = -40p - 16$ et non $-40p + 16$.\n- **d)** $80p - 1$ : erreur de signe sur les termes en $p$ : $40p - 40p = 0$, et non $40p + 40p$.",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$1$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$-1$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$31$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$80p - 1$"
+   }
+  ],
+  "reponse_correcte": "b"
+ },
+ {
+  "id": 1184,
+  "external_id": "cqc-pgcd-moyenne-0",
+  "theme": "PGCD",
+  "difficulte": "MOYENNE",
+  "type_reponse": "QCM",
+  "enonce_markdown": "On considère les entiers naturels $a = 1073$ et $b = 754$.\n\nÀ l'aide de l'algorithme d'Euclide, déterminer $\\mathrm{pgcd}(a,b)$.",
+  "corrige_markdown": "### Rappel de méthode\n\nL'algorithme d'Euclide détermine le pgcd de deux entiers par divisions euclidiennes successives : on divise le plus grand par le plus petit, puis le diviseur par le reste, et ainsi de suite jusqu'à un reste nul ; le pgcd est le dernier reste non nul.\n\n### Corrigé\n\nDivisions successives :\n$$1073 = 1 \\times 754 + 319$$\n$$754 = 2 \\times 319 + 116$$\n$$319 = 2 \\times 116 + 87$$\n$$116 = 1 \\times 87 + 29$$\n$$87 = 3 \\times 29 + 0$$\n\nLe dernier reste non nul est $29$, donc $\\mathrm{pgcd}(1073, 754) = 29$. Vérification : $1073 = 29 \\times 37$ et $754 = 29 \\times 26$.\n\nLa bonne réponse est **d)**.\n\n### Pourquoi les autres réponses sont fausses\n\n- **a)** $87$ est l'avant-dernier reste non nul : on s'est arrêté une division trop tôt ($87$ ne divise pas $1073$).\n- **b)** $13$ divise $754 = 2 \\times 13 \\times 29$, mais pas $1073$ : ce n'est pas un diviseur commun.\n- **c)** $58 = 2 \\times 29$ divise $754$, mais pas $1073$, qui est impair.",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$87$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$13$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$58$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$29$"
+   }
+  ],
+  "reponse_correcte": "d"
+ },
+ {
+  "id": 2081,
+  "external_id": "cqc-simplification-moyenne-0",
+  "theme": "simplification",
+  "difficulte": "MOYENNE",
+  "type_reponse": "QCM",
+  "enonce_markdown": "On considère le produit\n$$P = \\dfrac13\\times\\dfrac24\\times\\dfrac35\\times\\dfrac46\\times\\dfrac57\\times\\dfrac68\\times\\dfrac79\\times\\dfrac{8}{10}$$\nQuelle est la valeur de $P$, sous forme de fraction irréductible ?",
+  "corrige_markdown": "### Rappel de méthode\n\nPour multiplier des fractions, on écrit une seule fraction : le produit des numérateurs au numérateur, le produit des dénominateurs au dénominateur. On simplifie ensuite les facteurs qui apparaissent des deux côtés : ici, la plupart des nombres se retrouvent au numérateur et au dénominateur, et il ne reste que quelques facteurs isolés au début et à la fin.\n\n### Corrigé\n\n$$P = \\dfrac{1\\times2\\times3\\times4\\times5\\times6\\times7\\times8}{3\\times4\\times5\\times6\\times7\\times8\\times9\\times10}$$\n\nLes facteurs $3,4,5,6,7,8$ apparaissent à la fois dans le produit des numérateurs (où ils forment la fin de la liste $1,2,3,\\ldots,8$) et dans celui des dénominateurs (où ils en forment le début, $3,4,\\ldots,8,9,10$) : ils se simplifient tous. Il ne reste au numérateur que les deux plus petits facteurs non compensés, $1$ et $2$, et au dénominateur les deux plus grands, $9$ et $10$ :\n$$P = \\dfrac{1\\times2}{9\\times10} = \\dfrac{2}{90} = \\dfrac{1}{45}$$\n\nVérification numérique : $0{,}333\\times0{,}5\\times0{,}6\\times0{,}667\\times0{,}714\\times0{,}75\\times0{,}778\\times0{,}8 \\approx 0{,}0222$, et $\\dfrac{1}{45}\\approx0{,}0222$ : les deux calculs coïncident.\n\n**$P = \\dfrac{1}{45}$.**\n\n### Pourquoi les autres réponses sont fausses\n\n- **b)** On n'a gardé que le premier numérateur et le dernier dénominateur, comme si chaque facteur simplifiait le suivant ; ici, les simplifications se font avec un décalage de deux, il reste donc $1 \\times 2$ et $9 \\times 10$.\n- **c)** Le numérateur $2$ a été oublié : il ne se simplifie pas, car aucun dénominateur ne vaut $2$.\n- **d)** On a gardé $1 \\times 2$ au numérateur mais oublié le dénominateur $9$, qui ne se simplifie pas non plus.",
+  "choix": [
+   {
+    "lettre": "a",
+    "texte": "$\\dfrac{1}{45}$"
+   },
+   {
+    "lettre": "b",
+    "texte": "$\\dfrac{1}{10}$"
+   },
+   {
+    "lettre": "c",
+    "texte": "$\\dfrac{1}{90}$"
+   },
+   {
+    "lettre": "d",
+    "texte": "$\\dfrac{1}{5}$"
+   }
+  ],
+  "reponse_correcte": "a"
+ }
+]

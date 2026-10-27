@@ -514,6 +514,31 @@ class ReecritureQuizTests(Banc):
         self.assertEqual(code, 2)
         self.assertEqual(res["statut"], "usage")
 
+    def interdits(self):
+        chemin = os.path.join(self.tmp, "interdits.json")
+        sauver({"notions": [
+            {"id": "equation-cartesienne", "gravite": "bloquant", "motif": "x", "motifs": ["cart[ée]sienne"]},
+            {"id": "niveau-cite", "gravite": "alerte", "motif": "x", "motifs": ["Seconde"]}]}, chemin)
+        return chemin
+
+    def test_notion_hors_programme_refusee(self):
+        sha = self.quiz()
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions",
+                                self.proposition(corrige_markdown="Une équation cartésienne de la droite."),
+                                "--originaux", self.originaux(sha), "--interdits", self.interdits(), "--appliquer")
+        self.assertEqual(code, 1)
+        self.assertEqual(res["compteurs"], {"proposition_invalide": 1})
+        self.assertEqual(charger(self.chemin_item())[0]["type_reponse"], "ouverte")
+
+    def test_alerte_signalee_sans_bloquer(self):
+        sha = self.quiz()
+        sortie = os.path.join(self.tmp, "rapport.json")
+        code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions",
+                                self.proposition(corrige_markdown="Notion de Seconde, donc $2+2=4$."),
+                                "--originaux", self.originaux(sha), "--interdits", self.interdits(), "--sortie", sortie)
+        self.assertEqual((code, res["compteurs"]), (0, {"a_convertir": 1}))
+        self.assertIn("niveau-cite", charger(sortie)["items"][0]["alertes"][0])
+
     def test_proposition_invalide_refusee(self):
         sha = self.quiz()
         code, res = self.lancer("reecrire-quiz", self.ingest, "--propositions", self.proposition(reponse_correcte="z"),
