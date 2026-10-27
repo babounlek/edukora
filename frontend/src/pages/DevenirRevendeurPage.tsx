@@ -162,6 +162,7 @@ function Contenu({ etat }: { etat: EtatCandidature }) {
           <p>{t("cand.motif", { motif: candidature.motif })}</p>
         </Carte>
       )}
+      <Principe />
       <Formulaire
         // Une nouvelle candidature après un refus ou un retrait repart de zéro.
         depart={candidature && (candidature.statut === "BROUILLON" || candidature.statut === "A_COMPLETER") ? candidature : null}
@@ -169,6 +170,21 @@ function Contenu({ etat }: { etat: EtatCandidature }) {
         onChange={() => void client.invalidateQueries({ queryKey: CLE })}
       />
     </div>
+  )
+}
+
+/** Ce que le candidat doit savoir avant de remplir : le gain, le délai de réponse, et ce qui se passe ensuite. */
+function Principe() {
+  const etapes = ["cand.principe_1", "cand.principe_2", "cand.principe_3", "cand.principe_4"] as const
+  return (
+    <section aria-labelledby="cand-principe" className="rounded-2xl border border-border bg-card p-5">
+      <h2 id="cand-principe" className="font-display text-xl font-semibold">{t("cand.principe_titre")}</h2>
+      <ol className="mt-3 flex list-decimal flex-col gap-2 pl-5 text-sm">
+        {etapes.map((cle) => (
+          <li key={cle}>{t(cle)}</li>
+        ))}
+      </ol>
+    </section>
   )
 }
 

@@ -304,6 +304,7 @@ export function Footer() {
           </button>
           <Lien to="/tarifs">{t("ft.prix")}</Lien>
           <Lien to="/a-propos">{t("ft.a_propos")}</Lien>
+          <Lien to="/devenir-revendeur">{t("cand.lien_compte")}</Lien>
           <a
             href={CONTACT_WHATSAPP_URL}
             target="_blank"

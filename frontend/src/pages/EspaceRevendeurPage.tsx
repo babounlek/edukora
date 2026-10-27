@@ -80,9 +80,14 @@ export function EspaceRevendeurPage() {
         <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
           <p className="font-display text-lg font-semibold">{t("rev.pas_revendeur")}</p>
           <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">{t("rev.pas_revendeur_texte")}</p>
-          <Button asChild variant="outline" className="mt-5 rounded-full">
-            <Link to="/compte">{t("compte.mon_compte")}</Link>
-          </Button>
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            <Button asChild className="rounded-full">
+              <Link to="/devenir-revendeur">{t("cand.lien_compte")}</Link>
+            </Button>
+            <Button asChild variant="outline" className="rounded-full">
+              <Link to="/compte">{t("compte.mon_compte")}</Link>
+            </Button>
+          </div>
         </div>
       ) : espace.isError ? (
         <div role="alert" className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-card px-5 py-4">
