@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, ChevronDown, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
+import { ArrowRight, ArrowUp, ChevronDown, Mail, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
 
 import { getPlatformStats } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
@@ -13,6 +13,7 @@ import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/l
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/Logo"
+import { SelecteurLangue } from "@/components/SelecteurLangue"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
@@ -132,6 +133,14 @@ function Lien({ to, children, vedette }: { to: string; children: ReactNode; vede
 }
 
 const PAGES_SANS_PIED = /^\/quiz\/(session|essai)/
+// Pages où le bandeau « crée ton compte / voir les prix » parlerait d'autre chose que de la page : la candidature et l'espace
+// des revendeurs ont leur propre appel à l'action (le chemin du routeur est toujours en français, même sous /en).
+const PAGES_SANS_INVITATION = /^\/(devenir-revendeur|espace-revendeur)/
+
+function remonter() {
+  const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+  window.scrollTo({ top: 0, behavior: reduit ? "auto" : "smooth" })
+}
 
 export function Footer() {
   useI18n()
@@ -165,7 +174,8 @@ export function Footer() {
   const cible = invitation.lien.split("?")[0]
   // /quiz porte déjà son propre appel principal pour qui n'a pas d'abonnement (voir QuizCompletVisiteur) :
   // le répéter dans le pied de page ferait deux boutons identiques à la suite.
-  const afficherInvitation = pathname !== cible && !(pathname === "/quiz" && !user?.a_un_abonnement_actif)
+  const afficherInvitation =
+    pathname !== cible && !(pathname === "/quiz" && !user?.a_un_abonnement_actif) && !PAGES_SANS_INVITATION.test(pathname)
 
   const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,
@@ -227,8 +237,8 @@ export function Footer() {
       )}
 
       {/* Bande 2 : la marque et la navigation. */}
-      <div className="mx-auto grid max-w-5xl gap-x-6 px-4 py-10 sm:grid-cols-3 sm:gap-y-10 sm:px-6 sm:py-12 lg:grid-cols-[1.3fr_1fr_1.2fr_1fr]">
-        <div className="mb-6 sm:col-span-3 sm:mb-0 lg:col-span-1">
+      <div className="mx-auto grid max-w-5xl gap-x-8 px-4 py-12 sm:grid-cols-4 sm:gap-y-10 sm:px-6 sm:py-14 lg:grid-cols-[1.5fr_1fr_1.2fr_1fr_1fr]">
+        <div className="mb-6 sm:col-span-4 sm:mb-0 lg:col-span-1">
           <Link to={catalogueHomePath(country)} className="flex items-center gap-2.5">
             <Logo variante="horizontal" className="h-14" />
           </Link>
@@ -294,6 +304,12 @@ export function Footer() {
           )}
         </Colonne>
 
+        <Colonne titre={t("ft.col_edukora")}>
+          <Lien to="/a-propos">{t("ft.a_propos")}</Lien>
+          <Lien to="/tarifs">{t("ft.prix")}</Lien>
+          <Lien to="/devenir-revendeur">{t("cand.lien_compte")}</Lien>
+        </Colonne>
+
         <Colonne titre={t("ft.col_aide")}>
           <button
             type="button"
@@ -302,9 +318,6 @@ export function Footer() {
           >
             {t("guide.aide.footer")}
           </button>
-          <Lien to="/tarifs">{t("ft.prix")}</Lien>
-          <Lien to="/a-propos">{t("ft.a_propos")}</Lien>
-          <Lien to="/devenir-revendeur">{t("cand.lien_compte")}</Lien>
           <a
             href={CONTACT_WHATSAPP_URL}
             target="_blank"
@@ -317,9 +330,11 @@ export function Footer() {
           </a>
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="w-fit text-sm text-muted-foreground transition-colors hover:text-primary"
+            title={CONTACT_EMAIL}
+            className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
           >
-            {CONTACT_EMAIL}
+            <Mail className="size-4 shrink-0" aria-hidden="true" />
+            {t("ft.email")}
           </a>
         </Colonne>
       </div>
@@ -327,21 +342,36 @@ export function Footer() {
       {/* Bande 3 : confiance et mentions. Pastilles en texte aux couleurs des opérateurs,
           pas leurs logos (droits d'usage non établis). */}
       <div className="border-t border-border/80">
-        <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-4 py-5 text-xs text-muted-foreground sm:flex-row sm:justify-between sm:px-6">
-          <div className="flex flex-wrap items-center justify-center gap-2">
-            <span className="flex items-center gap-1.5 font-medium text-foreground/70">
-              <ShieldCheck className="size-3.5 shrink-0 text-primary" />
-              {t("ft.paiement_securise")}
-            </span>
-            <span className="rounded-md bg-[#FF7900] px-2 py-0.5 text-[0.7rem] font-bold text-white">Orange Money</span>
-            <span className="rounded-md bg-[#FFCB05] px-2 py-0.5 text-[0.7rem] font-bold text-[#1a1a1a]">MTN MoMo</span>
+        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-5 text-xs text-muted-foreground sm:px-6">
+          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <span className="flex items-center gap-1.5 font-medium text-foreground/70">
+                <ShieldCheck className="size-3.5 shrink-0 text-primary" />
+                {t("ft.paiement_securise")}
+              </span>
+              <span className="rounded-md bg-[#FF7900] px-2 py-0.5 text-[0.7rem] font-bold text-white">Orange Money</span>
+              <span className="rounded-md bg-[#FFCB05] px-2 py-0.5 text-[0.7rem] font-bold text-[#1a1a1a]">MTN MoMo</span>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Le sélecteur s'efface de lui-même une fois le profil abonné (voir SelecteurLangue). */}
+              <SelecteurLangue />
+              <button
+                type="button"
+                onClick={remonter}
+                className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border px-3 font-medium text-foreground/80 transition-colors hover:border-primary/40 hover:text-primary"
+              >
+                <ArrowUp className="size-3.5" aria-hidden="true" />
+                {t("ft.haut")}
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+          <div className="flex flex-col items-center gap-2 border-t border-border/60 pt-4 sm:flex-row sm:justify-between">
             <span>© {year} {SITE_NAME} - {EDITEUR_NOM}</span>
-            <span aria-hidden>·</span>
-            <Link to="/cgu" className="hover:text-primary">{t("ft.cgu")}</Link>
-            <span aria-hidden>·</span>
-            <Link to="/confidentialite" className="hover:text-primary">{t("ft.confidentialite")}</Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+              <Link to="/cgu" className="hover:text-primary">{t("ft.cgu")}</Link>
+              <span aria-hidden>·</span>
+              <Link to="/confidentialite" className="hover:text-primary">{t("ft.confidentialite")}</Link>
+            </div>
           </div>
         </div>
       </div>
