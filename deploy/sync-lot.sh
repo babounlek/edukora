@@ -262,12 +262,22 @@ case "$SOUS" in
     "${COMPOSE[@]}" exec -T db sh -c "dropdb -U \"\$POSTGRES_USER\" --if-exists $base && createdb -U \"\$POSTGRES_USER\" $base" >/dev/null 2>&1 \
       || echec 1 "création de la base jetable impossible"
     "${COMPOSE[@]}" exec -T db sh -c "pg_restore -U \"\$POSTGRES_USER\" -d $base --no-owner --no-privileges" < "$dump" >/dev/null 2>&1
+    # Tables d'usage que la purge des données de test modifie (deploy/SPEC-PURGE-DONNEES-TEST.md) : users_user doit
+    # être non vide (il y a au moins un administrateur) ; les trois autres peuvent légitimement être vides, on exige
+    # seulement que la table existe dans la restauration et on en rapporte le compte.
+    tables_usage=(users_user users_profil payments_manualpayment subscriptions_subscription)
     sortie='{"statut":"ok","tables":{'; ok=true; sep=""
-    for t in "${tables[@]}"; do
+    for t in "${tables[@]}" "${tables_usage[@]}"; do
       orig="$("${COMPOSE[@]}" exec -T db sh -c "psql -U \"\$POSTGRES_USER\" -d \"\$POSTGRES_DB\" -tAc 'SELECT count(*) FROM $t'" 2>/dev/null | tr -dc '0-9')"
       rest="$(compter "$base" "$t")"
       # La production a pu bouger depuis la sauvegarde : on exige seulement que la restauration ne soit pas vide.
-      [ -n "$rest" ] && [ "$rest" -gt 0 ] || ok=false
+      case " ${tables_usage[*]} " in
+        *" $t "*) case "$t" in
+                    users_user) [ -n "$rest" ] && [ "$rest" -gt 0 ] || ok=false ;;
+                    *) [ -n "$rest" ] || ok=false ;;
+                  esac ;;
+        *) [ -n "$rest" ] && [ "$rest" -gt 0 ] || ok=false ;;
+      esac
       sortie+="$sep\"$t\":{\"production\":${orig:-0},\"restauree\":${rest:-0}}"; sep=","
     done
     "${COMPOSE[@]}" exec -T db sh -c "dropdb -U \"\$POSTGRES_USER\" --if-exists $base" >/dev/null 2>&1

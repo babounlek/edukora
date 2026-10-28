@@ -388,13 +388,15 @@ export interface Epreuve {
   institution: string
   nature_epreuve: NatureEpreuve | ""
   nature_epreuve_display: string
-  themes: Tag[]
+  // Absents des LISTES (catalogue, recherche, accueil : voir catalog.serializers.LessonListeSerializer), qui ne les
+  // affichent pas et qu'ils alourdissaient de plus de 70 % ; présents sur les fiches détail.
+  themes?: Tag[]
   has_access: boolean
   is_read: boolean
   est_vitrine: boolean
   created_at: string
   exercises_count: number
-  related_cours: EpreuveRelatedCours[]
+  related_cours?: EpreuveRelatedCours[]
   sujet_pdf_url: string | null
   // Toujours false côté classique (déjà couvert par sujet_pdf_url, public) - seule une
   // épreuve inédite expose un sujet PDF téléchargeable via un endpoint gated (voir

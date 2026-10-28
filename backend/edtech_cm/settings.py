@@ -256,6 +256,8 @@ EMAIL_CODE_DAILY_GLOBAL_CAP = config("EMAIL_CODE_DAILY_GLOBAL_CAP", default=5000
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",
+    # ETag + 304 sur les GET JSON (voir edtech_cm/etag.py) ; juste après CORS, pas plus loin.
+    "edtech_cm.etag.EtagJsonMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",

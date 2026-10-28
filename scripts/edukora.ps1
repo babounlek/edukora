@@ -37,7 +37,7 @@
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('', 'help', 'doctor', 'generate', 'validate', 'ingest-local', 'inventaire', 'prepare', 'campagne', 'status', 'publish', 'resume', 'resoudre', 'reference', 'rollback-info')]
+    [ValidateSet('', 'help', 'doctor', 'generate', 'validate', 'ingest-local', 'inventaire', 'prepare', 'campagne', 'status', 'publish', 'resume', 'resoudre', 'reference', 'rollback-info', 'purge-installer', 'purge-simuler', 'purge-sauvegarder', 'purge-executer', 'purge-verifier')]
     [string]$Commande = '',
 
     [string[]]$Unite = @(),
@@ -56,6 +56,9 @@ param(
     [string]$Decision,
     [string[]]$Ids = @(),
     [string]$Motif,
+    [string]$Perimetre,
+    [string]$Jeton,
+    [string]$Sauvegarde,
     [switch]$Appliquer,
     [switch]$Reecrire,
     [switch]$Reprendre,
@@ -1084,6 +1087,171 @@ function Invoke-DoctorDistant {
     return $script:EXIT_OK
 }
 
+# --------------------------------------------------------------------------- purge des comptes de test
+#
+# Voir deploy/README-PURGE-DONNEES-TEST.md. Rien n'est supprime ici sans que l'utilisateur tape la phrase exacte
+# de confirmation ; aucune option -Force ou -Oui n'existe. Les arguments distants sont limites a [A-Za-z0-9._-].
+
+function Invoke-DistantPurge {
+    param($Cfg, [string]$Sous, [string[]]$Arguments = @(), [string]$Entree)
+    if ($Sous -notmatch '^[a-z-]+$') { throw "Sous-commande de purge invalide : $Sous" }
+    foreach ($a in $Arguments) { if ($a -notmatch '^[A-Za-z0-9._-]+$') { throw "Argument distant refuse : $a" } }
+    foreach ($v in @($Cfg.CheminServeur, $Cfg.DossierLotsServeur)) { if ($v -notmatch '^[A-Za-z0-9._/-]+$') { throw "Chemin serveur refuse : $v" } }
+    $script = "$($Cfg.DossierLotsServeur)/purge/bin/purge-test.sh"
+    $commande = (@("EDUKORA_REPO=$($Cfg.CheminServeur)", "EDUKORA_LOTS_DIR=$($Cfg.DossierLotsServeur)", 'bash', $script, $Sous) + $Arguments) -join ' '
+    $args2 = (Get-OptionsSsh $Cfg) + @('-p', [string]$Cfg.Port, "$($Cfg.Utilisateur)@$($Cfg.Hote)", $commande)
+    $r = if ($PSBoundParameters.ContainsKey('Entree')) { Invoke-Native -Fichier $Cfg.SshExe -Arguments $args2 -Entree $Entree } else { Invoke-Native -Fichier $Cfg.SshExe -Arguments $args2 }
+    return [pscustomobject]@{ Code = $r.Code; Reseau = ($r.Code -eq 255); Json = (Get-JsonDerniereLigne $r.Out); Out = $r.Out; Err = $r.Err }
+}
+
+function Test-PrerequisPurge {
+    param($Cfg, [string]$Nom)
+    $manques = Test-ConfigDistante $Cfg
+    if ($manques.Count -gt 0) { Write-Host "$Nom : configuration incomplete : $($manques -join ', ')" -ForegroundColor Red; return $false }
+    return $true
+}
+
+function Get-PerimetreTexte {
+    param([string]$Chemin)
+    if (-not $Chemin -or -not (Test-Path -LiteralPath $Chemin)) { throw "Fichier de perimetre introuvable : -Perimetre '$Chemin'" }
+    $texte = ((Get-Content -LiteralPath $Chemin -Raw -Encoding UTF8) -replace "`r", '').TrimStart([char]0xFEFF)
+    try { $null = $texte | ConvertFrom-Json } catch { throw "Le perimetre n'est pas un JSON valide : $($_.Exception.Message)" }
+    return $texte
+}
+
+function Send-Perimetre {
+    param($Cfg, [string]$Chemin)
+    $texte = Get-PerimetreTexte $Chemin
+    $r = Invoke-DistantPurge $Cfg 'recevoir-perimetre' -Entree $texte
+    if ($r.Reseau -or $r.Code -ne 0) { Write-Host "Envoi du perimetre impossible ($($r.Code)) $($r.Err.Trim()) $($r.Out.Trim())" -ForegroundColor Red; return $false }
+    return $true
+}
+
+function Write-RapportPurge {
+    param($Rapport)
+    if ($null -eq $Rapport) { Write-Host 'Reponse inattendue du serveur (pas de rapport JSON).' -ForegroundColor Red; return }
+    if (-not $Rapport.PSObject.Properties['mode']) {
+        Write-Host ("statut {0} : {1}" -f $Rapport.statut, $(if ($Rapport.PSObject.Properties['erreur']) { $Rapport.erreur } else { '(sans detail)' })) -ForegroundColor Red
+        return
+    }
+    Write-Host ("Mode {0} - statut {1}" -f $Rapport.mode, $Rapport.statut)
+    if ($Rapport.PSObject.Properties['comptes']) {
+        $c = $Rapport.comptes
+        Write-Host ("Comptes : {0} cible(s), {1} present(s), {2} deja absent(s), {3} supprime(s)" -f $c.cibles, $c.presents, @($c.ignores_absents).Count, $c.supprimes)
+        foreach ($p in $Rapport.lignes_par_modele.PSObject.Properties) { Write-Host ("  {0,-40} {1}" -f $p.Name, $p.Value) }
+        foreach ($f in @($Rapport.fichiers_d_usage_listes_non_supprimes)) { Write-Host "  fichier d'usage (NON supprime) : $f" }
+        foreach ($a in @($Rapport.avertissements)) { Write-Host "  avertissement : $a" -ForegroundColor Yellow }
+        foreach ($x in @($Rapport.refus)) { Write-Host "  REFUS : $x" -ForegroundColor Red }
+        if ($Rapport.jeton) { Write-Host "Jeton : $($Rapport.jeton)" }
+    }
+    elseif ($Rapport.PSObject.Properties['erreur']) { Write-Host "Erreur : $($Rapport.erreur)" -ForegroundColor Red }
+}
+
+function Invoke-PurgeInstaller {
+    param($Cfg)
+    if (-not (Test-PrerequisPurge $Cfg 'purge-installer')) { return $script:EXIT_USAGE }
+    $lots = $Cfg.DossierLotsServeur
+    $cmd = "mkdir -p $lots/purge/bin $lots/purge/code && chmod 700 $lots/purge $lots/purge/bin $lots/purge/code"
+    $r = Invoke-Native -Fichier $Cfg.SshExe -Arguments ((Get-OptionsSsh $Cfg) + @('-p', [string]$Cfg.Port, "$($Cfg.Utilisateur)@$($Cfg.Hote)", $cmd))
+    if ($r.Code -ne 0) { Write-Host "Dossier de purge inutilisable sur le serveur ($($r.Code)) $($r.Err.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+    $fichiers = @(
+        @{ Local = (Join-Path $script:Racine 'deploy\purge-test.sh'); Distant = "$lots/purge/bin/purge-test.sh" },
+        @{ Local = (Join-Path $script:Racine 'backend\users\purge_test.py'); Distant = "$lots/purge/code/purge_test.py" },
+        @{ Local = (Join-Path $script:Racine 'backend\users\management\commands\purger_donnees_test.py'); Distant = "$lots/purge/code/purger_donnees_test.py" }
+    )
+    foreach ($f in $fichiers) {
+        if (-not (Test-Path -LiteralPath $f.Local)) { Write-Host "Fichier local introuvable : $($f.Local)" -ForegroundColor Red; return $script:EXIT_USAGE }
+        # Fins de ligne LF forcees (un .sh en CRLF ne s'execute pas) ; contenu transmis par l'entree standard de ssh.
+        $texte = ((Get-Content -LiteralPath $f.Local -Raw -Encoding UTF8) -replace "`r", '').TrimStart([char]0xFEFF)
+        $r = Invoke-Native -Fichier $Cfg.SshExe -Arguments ((Get-OptionsSsh $Cfg) + @('-p', [string]$Cfg.Port, "$($Cfg.Utilisateur)@$($Cfg.Hote)", "cat > $($f.Distant) && chmod 600 $($f.Distant)")) -Entree $texte
+        if ($r.Code -ne 0) { Write-Host "Envoi de $($f.Local) impossible ($($r.Code)) $($r.Err.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+        $sha = (Get-FileHash -LiteralPath $f.Local -Algorithm SHA256).Hash.ToLower()
+        Write-Host "envoye : $(Split-Path -Leaf $f.Local) (SHA-256 du fichier local, LF non normalise : $($sha.Substring(0, 12)))"
+    }
+    $r = Invoke-DistantPurge $Cfg 'installer-commande'
+    if ($r.Reseau -or $r.Code -ne 0 -or $null -eq $r.Json -or $r.Json.statut -ne 'ok') {
+        Write-Host "Installation de la commande dans le conteneur : echec ($($r.Code)) $($r.Out.Trim()) $($r.Err.Trim())" -ForegroundColor Red
+        return $script:EXIT_ECHEC
+    }
+    Write-Host 'Commande purger_donnees_test installee dans le conteneur (SHA-256 verifie apres copie). Aucune donnee touchee.'
+    return $script:EXIT_OK
+}
+
+function Invoke-PurgeSimuler {
+    param($Cfg, [string]$Perimetre)
+    if (-not (Test-PrerequisPurge $Cfg 'purge-simuler')) { return $script:EXIT_USAGE }
+    if (-not (Send-Perimetre $Cfg $Perimetre)) { return $script:EXIT_ECHEC }
+    $r = Invoke-DistantPurge $Cfg 'simuler'
+    if ($r.Reseau) { Write-Host "Connexion SSH impossible : $($r.Err.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+    Write-RapportPurge $r.Json
+    if ($r.Code -eq 2) { return $script:EXIT_USAGE }
+    if ($r.Code -ne 0) { Write-Host $r.Err.Trim() -ForegroundColor Red; return $script:EXIT_ECHEC }
+    Write-Host 'SIMULATION : rien n''a ete supprime (les suppressions sont annulees par le serveur).'
+    return $script:EXIT_OK
+}
+
+function Invoke-PurgeSauvegarder {
+    param($Cfg)
+    if (-not (Test-PrerequisPurge $Cfg 'purge-sauvegarder')) { return $script:EXIT_USAGE }
+    Write-Host 'Sauvegarde PostgreSQL + copie hors site + restauration de test (quelques minutes)...'
+    $r = Invoke-DistantPurge $Cfg 'sauvegarde'
+    if ($r.Reseau) { Write-Host "Connexion SSH coupee : le resultat est INDETERMINE. Relancer purge-sauvegarder (une sauvegarde de plus ne coute rien)." -ForegroundColor Yellow; return $script:EXIT_INDETERMINE }
+    if ($r.Code -ne 0 -or $null -eq $r.Json -or $r.Json.statut -ne 'ok') {
+        Write-Host "Sauvegarde ECHOUEE ($($r.Code)) : $($r.Out.Trim()) $($r.Err.Trim())" -ForegroundColor Red
+        return $script:EXIT_ECHEC
+    }
+    Write-Host "Sauvegarde verifiee : $($r.Json.dump)" -ForegroundColor Green
+    Write-Host 'Suite : .\scripts\edukora.ps1 purge-executer -Perimetre <fichier> -Jeton <jeton de la simulation> -Sauvegarde <ce nom>'
+    return $script:EXIT_OK
+}
+
+function Invoke-PurgeExecuter {
+    param($Cfg, [string]$Perimetre, [string]$Jeton, [string]$Sauvegarde)
+    if (-not (Test-PrerequisPurge $Cfg 'purge-executer')) { return $script:EXIT_USAGE }
+    if ($Jeton -notmatch '^[0-9a-f]{20}$') { Write-Host 'purge-executer : -Jeton (celui de la simulation) est obligatoire.' -ForegroundColor Red; return $script:EXIT_USAGE }
+    if ($Sauvegarde -notmatch '^avant-\d{8}-\d{6}-[0-9a-f]{8}\.dump$') { Write-Host 'purge-executer : -Sauvegarde (nom du dump verifie par purge-sauvegarder) est obligatoire.' -ForegroundColor Red; return $script:EXIT_USAGE }
+    if (-not (Send-Perimetre $Cfg $Perimetre)) { return $script:EXIT_ECHEC }
+    # 1. Resimulation : on montre ce qui PARTIRAIT MAINTENANT, et le jeton doit etre le meme que celui valide.
+    $sim = Invoke-DistantPurge $Cfg 'simuler'
+    if ($sim.Reseau -or $null -eq $sim.Json) { Write-Host "Simulation impossible : $($sim.Err.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+    Write-RapportPurge $sim.Json
+    if ($sim.Code -ne 0) { return $script:EXIT_USAGE }
+    if ($sim.Json.jeton -ne $Jeton) {
+        Write-Host "Le jeton a change depuis votre simulation ($($sim.Json.jeton) au lieu de $Jeton) : les donnees ont bouge. Relancez purge-simuler et relisez." -ForegroundColor Red
+        return $script:EXIT_USAGE
+    }
+    $n = [int]$sim.Json.comptes.presents
+    if ($n -eq 0) { Write-Host 'Aucun compte present dans le perimetre : rien a purger.'; return $script:EXIT_OK }
+    # 2. Confirmation humaine : phrase exacte, jamais d'option pour la sauter.
+    if (-not (Test-Interactif)) { Write-Host 'purge-executer exige une confirmation tapee au clavier (session non interactive).' -ForegroundColor Red; return $script:EXIT_APPROBATION }
+    $phrase = "PURGER $n COMPTES"
+    Write-Host ''
+    Write-Host "Sauvegarde utilisee : $Sauvegarde" -ForegroundColor Yellow
+    Write-Host "Suppression DEFINITIVE (sauf restauration de la sauvegarde). Pour confirmer, tapez exactement : $phrase" -ForegroundColor Yellow
+    $reponse = Read-Host 'Confirmation'
+    if ($reponse -cne $phrase) { Write-Host 'Confirmation differente : rien n''a ete fait.'; return $script:EXIT_APPROBATION }
+    # 3. Execution. Une coupure reseau apres ce point est INDETERMINE : verifier avec purge-verifier, jamais relancer a l'aveugle.
+    $r = Invoke-DistantPurge $Cfg 'executer' -Arguments @($Sauvegarde, $Jeton)
+    if ($r.Reseau) { Write-Host 'Connexion coupee pendant l''execution : resultat INDETERMINE. Lancez purge-verifier avant toute autre action.' -ForegroundColor Yellow; return $script:EXIT_INDETERMINE }
+    Write-RapportPurge $r.Json
+    if ($r.Code -eq 75) { Write-Host 'Un lot ou un deploiement tient le verrou : rien n''a ete fait.' -ForegroundColor Red; return $script:EXIT_ECHEC }
+    if ($r.Code -eq 2) { return $script:EXIT_USAGE }
+    if ($r.Code -ne 0) { Write-Host "Echec ($($r.Code)) : la transaction est annulee cote serveur. $($r.Err.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+    Write-Host 'Purge terminee. Verifier : .\scripts\edukora.ps1 purge-verifier -Perimetre <fichier>' -ForegroundColor Green
+    return $script:EXIT_OK
+}
+
+function Invoke-PurgeVerifier {
+    param($Cfg, [string]$Perimetre)
+    if (-not (Test-PrerequisPurge $Cfg 'purge-verifier')) { return $script:EXIT_USAGE }
+    if (-not (Send-Perimetre $Cfg $Perimetre)) { return $script:EXIT_ECHEC }
+    $r = Invoke-DistantPurge $Cfg 'verifier'
+    if ($r.Reseau -or $null -eq $r.Json) { Write-Host "Verification impossible : $($r.Err.Trim()) $($r.Out.Trim())" -ForegroundColor Red; return $script:EXIT_ECHEC }
+    if ($r.Json.statut -eq 'ok') { Write-Host 'Aucun compte du perimetre ne subsiste.' -ForegroundColor Green; return $script:EXIT_OK }
+    Write-Host "Comptes encore presents : $(@($r.Json.comptes_restants) -join ', ')" -ForegroundColor Red
+    return $script:EXIT_ECHEC
+}
+
 # --------------------------------------------------------------------------- point d'entree
 
 function Invoke-Main {
@@ -1103,6 +1271,11 @@ function Invoke-Main {
         'resoudre' { return (Invoke-Resoudre -Cfg $cfg -BatchId $BatchId -Decision $Decision -Ids $Ids -Motif $Motif) }
         'reference' { return (Invoke-Reference -Cfg $cfg) }
         'rollback-info' { return (Show-RollbackInfo -Cfg $cfg -BatchId $BatchId) }
+        'purge-installer' { return (Invoke-PurgeInstaller -Cfg $cfg) }
+        'purge-simuler' { return (Invoke-PurgeSimuler -Cfg $cfg -Perimetre $Perimetre) }
+        'purge-sauvegarder' { return (Invoke-PurgeSauvegarder -Cfg $cfg) }
+        'purge-executer' { return (Invoke-PurgeExecuter -Cfg $cfg -Perimetre $Perimetre -Jeton $Jeton -Sauvegarde $Sauvegarde) }
+        'purge-verifier' { return (Invoke-PurgeVerifier -Cfg $cfg -Perimetre $Perimetre) }
         default { return (Show-Aide) }
     }
 }

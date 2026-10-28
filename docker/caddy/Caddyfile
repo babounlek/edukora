@@ -9,13 +9,6 @@
         X-Robots-Tag "{$ROBOTS_TAG:index, follow}"
     }
 
-    # Fichiers de /assets : le nom contient le hash du contenu (Vite), un fichier ne change
-    # jamais sous un même nom - cache navigateur d'un an, aucune revalidation aux visites
-    # suivantes (sur une connexion mobile lente, c'est ce qui fait la différence entre
-    # « chargement instantané » et « tout re-télécharger »).
-    @assets_hashes path /assets/*
-    header @assets_hashes Cache-Control "public, max-age=31536000, immutable"
-
     # Point d'entrée de l'app et service worker : jamais servis depuis un cache sans
     # revalidation, sinon une nouvelle version ne parviendrait plus aux visiteurs qui ont
     # déjà l'ancienne (incident qui avait fait désactiver la PWA, voir frontend/src/main.tsx).
@@ -133,8 +126,11 @@
         respond "Not found" 404
     }
 
+    # Illustrations et figures des cours : une heure de cache navigateur, puis revalidation (ETag). Pas plus long :
+    # une figure corrigée garde son nom de fichier.
     handle_path /media/* {
         root * /srv/media
+        header Cache-Control "public, max-age=3600"
         file_server
     }
 
@@ -208,9 +204,45 @@
         reverse_proxy backend:8000
     }
 
+    # Fichiers de /assets : le nom contient le hash du contenu (Vite), un fichier ne change
+    # jamais sous un même nom - cache navigateur d'un an, aucune revalidation aux visites
+    # suivantes (sur une connexion mobile lente, c'est ce qui fait la différence entre
+    # « chargement instantané » et « tout re-télécharger »).
+    # SANS try_files : un fichier absent (ancienne version d'une page encore ouverte après un
+    # déploiement) doit répondre 404, jamais index.html. Avec le repli sur index.html, le navigateur
+    # (et le service worker, qui garde toute réponse 200 de /assets) conservait une PAGE HTML pendant
+    # un an sous le nom d'un script - l'application restait cassée jusqu'au vidage du cache.
+    handle /assets/* {
+        root * /srv/frontend
+        header Cache-Control "public, max-age=31536000, immutable"
+        file_server
+    }
+
+    # Fichiers statiques non versionnés de la racine (logos, icônes, manifeste d'images) : un jour de
+    # cache, sans quoi chaque page les revalide un par un (une requête de plus par logo, même en 304).
+    @statiques_racine path /brand/* /favicon.ico /favicon.svg /favicon-16x16.png /favicon-32x32.png /apple-touch-icon.png /pwa-192.png /pwa-512.png /pwa-maskable-512.png /icons.svg
+    handle @statiques_racine {
+        root * /srv/frontend
+        header Cache-Control "public, max-age=86400"
+        file_server
+    }
+
+    # Toute autre adresse = une page de l'application : index.html, à revalider à chaque visite (il
+    # référence les fichiers hashés de la version courante). Sans en-tête, le navigateur appliquait
+    # une fraîcheur « heuristique » à la page.
     handle {
         root * /srv/frontend
+        header Cache-Control "no-cache"
         try_files {path} /index.html
         file_server
+    }
+
+    # Une erreur sur /assets ou /media ne doit jamais hériter du cache d'un an posé plus haut.
+    handle_errors {
+        @erreur_fichier path /assets/* /media/*
+        handle @erreur_fichier {
+            header Cache-Control "no-store"
+            respond "Not found" {err.status_code}
+        }
     }
 }

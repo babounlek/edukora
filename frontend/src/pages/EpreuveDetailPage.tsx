@@ -455,13 +455,13 @@ export function EpreuveDetailPage() {
           </section>
         )}
 
-        {epreuve.related_cours.length > 0 && (
+        {(epreuve.related_cours?.length ?? 0) > 0 && (
           <section aria-labelledby="cours-associes">
             <h2 id="cours-associes" className="mb-3 font-display text-xl font-semibold">
               {t("ed.cours_associes")}
             </h2>
             <div className="grid gap-2.5 sm:grid-cols-2">
-              {epreuve.related_cours.map((cours) => {
+              {(epreuve.related_cours ?? []).map((cours) => {
                 const CoursIcone = subjectIcon(epreuve.subject.code)
                 return (
                   <Link

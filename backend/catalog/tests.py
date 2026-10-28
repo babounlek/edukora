@@ -867,9 +867,10 @@ class InediteCatalogueMergeApiTests(TestCase):
         page2 = self.client.get(payload["next"])
         self.assertEqual(len(page2.json()["results"]), 8)
 
-    def test_related_cours_surfaces_through_the_merged_list_too(self):
-        """Même fonction (catalog.inedit_bridge.epreuve_inedite_catalogue_payload) que
-        pour la fiche détail - second consommateur, même garantie."""
+    def test_la_liste_fusionnee_omet_themes_et_cours_associes_la_fiche_detail_les_garde(self):
+        """La liste (24 cartes par page) n'envoie ni `themes` ni `related_cours` : aucune carte ne les
+        affiche et ils faisaient plus de 70 % du JSON. La fiche détail, qui les affiche, les garde
+        (même fonction, catalog.inedit_bridge.epreuve_inedite_catalogue_payload)."""
         exercice = ExerciceInedite.objects.create(epreuve=self.epreuve, numero_exercice="1")
         rappel = RappelDeMethodeInedite.objects.create(
             exercice=exercice, external_id="rdi-merge-test", competence="C",
@@ -883,7 +884,11 @@ class InediteCatalogueMergeApiTests(TestCase):
         response = self.client.get(reverse("catalog:lesson-list"), {"subject": "MATHS", "origine": "INEDITE"})
 
         item = response.json()["results"][0]
-        self.assertEqual([c["titre"] for c in item["related_cours"]], ["Cours fusion"])
+        self.assertNotIn("related_cours", item)
+        self.assertNotIn("themes", item)
+
+        detail = self.client.get(reverse("inedit:epreuve-detail", kwargs={"id": item["id"]}))
+        self.assertEqual([c["titre"] for c in detail.json()["related_cours"]], ["Cours fusion"])
 
     def test_apercu_enonce_markdown_stays_none_in_the_merged_list(self):
         # include_apercu=False dans le catalogue fusionné (voir

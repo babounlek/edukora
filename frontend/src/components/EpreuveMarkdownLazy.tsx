@@ -1,6 +1,7 @@
 import { Suspense, lazy, useEffect, useRef, useState } from "react"
 
 import { Skeleton } from "@/components/ui/skeleton"
+import { connexionEconome } from "@/lib/connexion"
 
 // EpreuveMarkdown embarque react-markdown, le pipeline remark/rehype et KaTeX : environ 180 Ko
 // compressés, soit plus que tout le reste de l'accueil. Les extraits de la page d'accueil sont
@@ -40,7 +41,10 @@ export function EpreuveMarkdownLazy({ markdown, directCoursLinks }: EpreuveMarkd
     // Filet : certains navigateurs intégrés (WhatsApp, Facebook) ou onglets en arrière-plan ne
     // notifient jamais l'observateur ; l'extrait finit alors par s'afficher quand même, une fois
     // la page installée et le réseau libéré.
-    const filet = window.setTimeout(() => setProche(true), 8000)
+    // Pas sur une connexion lente ou en mode économie de données : le filet y ferait télécharger
+    // ~190 Ko (Markdown + KaTeX) à un visiteur qui n'a jamais fait défiler la page jusqu'à l'extrait.
+    // L'extrait s'y charge alors quand l'observateur le voit approcher.
+    const filet = connexionEconome() ? undefined : window.setTimeout(() => setProche(true), 8000)
     return () => {
       observer.disconnect()
       window.clearTimeout(filet)

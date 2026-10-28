@@ -51,6 +51,19 @@ export default defineConfig(() => {
                 // à l'usage.
                 // + le logo de l'en-tête et du pied de page (clair et sombre) : sans eux la barre serait vide hors connexion.
                 globPatterns: ['assets/*.{js,css}', 'assets/KaTeX_*.woff2', 'assets/*-latin-*.woff2', 'brand/logo-horizontal-minimal{,-dark}.svg'],
+                // Ce qu'un élève francophone n'utilisera sans doute jamais ne se télécharge pas « au cas où »
+                // (le précache part dès la fin du premier chargement, sur le forfait de l'élève) :
+                //  - le dictionnaire anglais (en-*.js, ~41 Ko compressés), chargé à la demande par
+                //    lib/i18n quand la langue anglaise est choisie ;
+                //  - les sous-ensembles « latin-ext » des polices (Vietnamien, Polonais... : jamais du français) ;
+                //  - les polices KaTeX des commandes rares (fraktur, script, machine à écrire, sans-serif,
+                //    grandes tailles 3-4) : le navigateur ne charge une police qu'au premier caractère qui l'utilise.
+                // Tout cela reste servi et mis en cache À L'USAGE par la règle « ressources-app » ci-dessous.
+                globIgnores: [
+                  'assets/en-*.js',
+                  'assets/*-latin-ext-*.woff2',
+                  'assets/KaTeX_{Fraktur,Script,Typewriter,SansSerif,Size3,Size4}-*.woff2',
+                ],
                 // JAMAIS de navigateFallback : il servirait un index.html précaché, donc
                 // potentiellement périmé, à un visiteur en ligne. Les navigations passent par
                 // le réseau d'abord (règle ci-dessous), le cache ne sert qu'hors connexion.

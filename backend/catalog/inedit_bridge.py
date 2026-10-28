@@ -182,7 +182,7 @@ def _apercu_enonce(epreuve):
 
 def epreuve_inedite_catalogue_payload(
     epreuve, request, *, exercises_count=None, include_apercu=False, related_cours=None, context=None,
-    active_inedite_cursus_ids=None, mes_tentatives=None,
+    active_inedite_cursus_ids=None, mes_tentatives=None, liste_allegee=False,
 ):
     """Sérialise une EpreuveInedite dans la même forme que LessonSerializer.Meta.fields.
     Réutilisé par le catalogue fusionné (liste) ET inedit.views.epreuve_inedite_detail
@@ -206,9 +206,13 @@ def epreuve_inedite_catalogue_payload(
 
     `mes_tentatives` : l'entrée de bulk_mes_tentatives pour CETTE épreuve (None = jamais
     ouverte, ou visiteur). Alimente aussi `is_read`, que les cartes montrent déjà comme une
-    coche : une épreuve rendue est une épreuve « faite »."""
+    coche : une épreuve rendue est une épreuve « faite ».
+
+    `liste_allegee` : omet `themes` et `related_cours` (voir LessonListeSerializer, même choix côté
+    classique) - aucune carte de liste ne les affiche, et ils pesaient plus de la moitié de la
+    réponse. Les deux clés restent présentes sur la fiche détail."""
     context = context if context is not None else {"request": request}
-    if related_cours is None:
+    if related_cours is None and not liste_allegee:
         related_cours = Cours.objects.filter(
             rappels_source_inedit__exercice__epreuve=epreuve, statut=StatutContenu.VALIDE,
         ).distinct()
@@ -237,7 +241,6 @@ def epreuve_inedite_catalogue_payload(
         "institution": "Edukora",
         "nature_epreuve": "",
         "nature_epreuve_display": "",
-        "themes": TagSerializer(epreuve.blueprint.competences.all(), many=True).data,
         "has_access": (
             # Épreuve offerte : tout compte connecté (voir access.has_access_inedite).
             bool(epreuve.est_gratuite and request.user.is_authenticated)
@@ -253,7 +256,6 @@ def epreuve_inedite_catalogue_payload(
         "est_vitrine": epreuve.est_gratuite,
         "created_at": epreuve.created_at,
         "exercises_count": epreuve.exercices.count() if exercises_count is None else exercises_count,
-        "related_cours": CoursSummarySerializer(related_cours, many=True, context=context).data,
         "sujet_pdf_url": None,
         "duree_minutes": epreuve.blueprint.duree_minutes,
         # Voir inedit.views.download_sujet_pdf, seul point de sortie du fichier (jamais
@@ -267,4 +269,7 @@ def epreuve_inedite_catalogue_payload(
         "apercu_enonce_markdown": apercu_markdown,
         "apercu_numero_exercice": apercu_numero_exercice,
     }
+    if not liste_allegee:
+        payload["themes"] = TagSerializer(epreuve.blueprint.competences.all(), many=True).data
+        payload["related_cours"] = CoursSummarySerializer(related_cours, many=True, context=context).data
     return payload

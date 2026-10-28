@@ -323,6 +323,16 @@ class LessonSerializer(_HasAccessMixin, serializers.ModelSerializer):
         return CoursSummarySerializer(cours_list, many=True, context=self.context).data
 
 
+class LessonListeSerializer(LessonSerializer):
+    """LessonSerializer pour les LISTES (catalogue, recherche, accueil) : sans `themes` ni
+    `related_cours`, qu'aucune carte n'affiche. Sur une page de 24 épreuves ils faisaient 53 %
+    (cours associés) et 21 % (thèmes) des 109 Ko de JSON, répétés à chaque ouverture de liste. La
+    fiche détail (LessonSerializer) les garde. Les champs hérités peuvent être omis de Meta.fields."""
+
+    class Meta(LessonSerializer.Meta):
+        fields = [nom for nom in LessonSerializer.Meta.fields if nom not in ("themes", "related_cours")]
+
+
 def bulk_lesson_exercises_counts(lesson_ids):
     """Une seule requête agrégée pour tout un lot, plutôt qu'un .exercises.count() par
     Lesson (voir LessonSerializer.get_exercises_count et LessonListView.list - même

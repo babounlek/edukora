@@ -3,7 +3,10 @@ import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, Target, TrendingUp } from "lucide-react"
 
-import heroStudent from "@/assets/hero-student.jpg"
+// WebP au lieu du JPEG d'origine (82 Ko -> 20 Ko, 9 Ko pour l'écran d'un téléphone en densité 1) : même rendu,
+// photo décorative. Tous les navigateurs pris en charge par l'app lisent le WebP.
+import heroStudent from "@/assets/hero-student.webp"
+import heroStudentPetit from "@/assets/hero-student-408.webp"
 import {
   getEpreuveInedite,
   getMyProgression,
@@ -330,6 +333,8 @@ function CatalogueVitrine() {
           </div>
           <img
             src={heroStudent}
+            srcSet={`${heroStudentPetit} 408w, ${heroStudent} 816w`}
+            sizes="(min-width: 768px) 435px, calc(100vw - 32px)"
             alt={t("accueil.hero_alt")}
             // Image du premier écran (probablement l'élément le plus grand = LCP) : priorité de
             // téléchargement, et dimensions réservées pour que le texte ne saute pas à son arrivée.

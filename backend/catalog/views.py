@@ -23,7 +23,6 @@ from users.profils import profil_actif
 from .inedit_bridge import (
     bulk_exercises_counts,
     bulk_mes_tentatives,
-    bulk_related_cours_map as bulk_related_cours_map_inedit,
     build_inedit_queryset,
     epreuve_inedite_catalogue_payload,
 )
@@ -53,10 +52,10 @@ from .rendering import exercise_questions_breakdown
 from .serializers import (
     bulk_cours_est_vitrine,
     bulk_lesson_exercises_counts,
-    bulk_related_cours_map,
     CoursSerializer,
     CountrySerializer,
     CursusSerializer,
+    LessonListeSerializer,
     LessonSerializer,
     SubjectListSerializer,
     TemoignageSerializer,
@@ -151,7 +150,7 @@ def _merge_sort_key(ordering):
 
 
 class LessonListView(generics.ListAPIView):
-    serializer_class = LessonSerializer
+    serializer_class = LessonListeSerializer
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
@@ -361,33 +360,28 @@ class LessonListView(generics.ListAPIView):
 
         lesson_payloads_by_id = {}
         if page_lesson_ids:
-            lesson_objs_by_id = {obj.id: obj for obj in lesson_qs.filter(id__in=page_lesson_ids)}
-            ordered_lesson_objs = [lesson_objs_by_id[i] for i in page_lesson_ids if i in lesson_objs_by_id]
-            related_cours_map = bulk_related_cours_map(page_lesson_ids)
-            related_cours_ids = {c.pk for cours_list in related_cours_map.values() for c in cours_list}
-            page_context = {
-                **context,
-                "exercises_count_map": bulk_lesson_exercises_counts(page_lesson_ids),
-                "related_cours_map": related_cours_map,
-                "est_vitrine_ids": bulk_cours_est_vitrine(related_cours_ids),
+            # Liste allégée (LessonListeSerializer) : ni thèmes ni cours associés, donc ni leur préchargement
+            # ni les requêtes groupées qui les alimentaient.
+            lesson_objs_by_id = {
+                obj.id: obj
+                for obj in lesson_qs.filter(id__in=page_lesson_ids)
+                .prefetch_related(None).prefetch_related("cursus__series", "cursus__country")
             }
-            payloads = LessonSerializer(ordered_lesson_objs, many=True, context=page_context).data
+            ordered_lesson_objs = [lesson_objs_by_id[i] for i in page_lesson_ids if i in lesson_objs_by_id]
+            page_context = {**context, "exercises_count_map": bulk_lesson_exercises_counts(page_lesson_ids)}
+            payloads = LessonListeSerializer(ordered_lesson_objs, many=True, context=page_context).data
             lesson_payloads_by_id = {obj.id: payload for obj, payload in zip(ordered_lesson_objs, payloads)}
 
         inedit_payloads_by_id = {}
         if page_inedit_ids:
             inedit_objs = list(inedit_qs.filter(id__in=page_inedit_ids))
             exercises_counts = bulk_exercises_counts(inedit_objs)
-            inedit_related_cours_map = bulk_related_cours_map_inedit(page_inedit_ids)
-            inedit_related_cours_ids = {c.pk for cours_list in inedit_related_cours_map.values() for c in cours_list}
-            inedit_context = {**context, "est_vitrine_ids": bulk_cours_est_vitrine(inedit_related_cours_ids)}
             active_inedite_cursus_ids = bulk_active_inedite_cursus_ids(request.user, profil_actif(request))
             mes_tentatives_map = bulk_mes_tentatives(profil_actif(request), inedit_objs)
             inedit_payloads_by_id = {
                 obj.id: epreuve_inedite_catalogue_payload(
                     obj, request, exercises_count=exercises_counts.get(obj.id, 0),
-                    related_cours=inedit_related_cours_map.get(obj.id, []),
-                    context=inedit_context,
+                    context=context, liste_allegee=True,
                     active_inedite_cursus_ids=active_inedite_cursus_ids,
                     mes_tentatives=mes_tentatives_map.get(obj.id),
                 )

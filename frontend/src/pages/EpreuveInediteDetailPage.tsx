@@ -504,11 +504,11 @@ export function EpreuveInediteDetailPage() {
           </div>
         )}
 
-        {epreuve.related_cours.length > 0 && (
+        {(epreuve.related_cours?.length ?? 0) > 0 && (
           <div className="mt-2 border-t border-border pt-5">
             <h2 className="mb-3 font-display text-sm font-semibold text-muted-foreground">{t("ed.cours_associes")}</h2>
             <div className="flex flex-col gap-2">
-              {epreuve.related_cours.map((cours) => (
+              {(epreuve.related_cours ?? []).map((cours) => (
                 <Link
                   key={cours.id}
                   to={cours.has_access ? coursReaderPath(cours.slug) : coursDetailPath(cours.slug)}
