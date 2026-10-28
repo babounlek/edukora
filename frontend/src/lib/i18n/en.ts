@@ -2375,6 +2375,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "gl.deconnecter": "Log out",
   "gl.sem_initiales": "M,T,W,T,F,S,S",
   "gl.filtrer_par": "Filter by {titre}",
+  "gl.tout_voir": "Show all",
+  "gl.reduire": "Show less",
   "gl.sem_noms": "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",
   "gl.sem_pardonne": "A rest day was forgiven this week",
   "gl.sem_serie": "{n}-day streak",

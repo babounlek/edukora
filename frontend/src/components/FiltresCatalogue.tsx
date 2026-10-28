@@ -1,4 +1,5 @@
-import { useEffect, useRef, type ReactNode } from "react"
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react"
+import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
@@ -9,34 +10,109 @@ import { t, useI18n } from "@/lib/i18n"
  */
 
 /**
+ * Une rangée de pastilles qui défile sur téléphone et passe à la ligne dès `sm`. Une rangée qui défile ne dit pas qu'elle
+ * défile : un enfant ne devinait pas qu'il y avait d'autres matières (ou d'autres examens) après la troisième pastille.
+ * Deux indices, sur téléphone seulement : un fondu à droite tant qu'il reste de la suite, et un bouton « Tout voir »
+ * (voir BoutonToutVoir) qui déplie la rangée sur plusieurs lignes, « Réduire » la remettant sur une seule.
+ *
+ * Utilisé par FiltreLigne (catalogues) et par le bandeau « Choisis ton examen » : même geste partout.
+ */
+export function useRangeeDefilante() {
+  const ref = useRef<HTMLDivElement>(null)
+  const id = useId()
+  const [deborde, setDeborde] = useState(false)
+  const [fin, setFin] = useState(true)
+  const [deplie, setDeplie] = useState(false)
+
+  const mesurer = useCallback(() => {
+    const rangee = ref.current
+    // Dépliée, la rangée passe à la ligne et ne déborde plus : on garde alors la dernière mesure pour que « Réduire » reste là.
+    if (!rangee || deplie) return
+    setDeborde(rangee.scrollWidth > rangee.clientWidth + 1)
+    setFin(rangee.scrollLeft + rangee.clientWidth >= rangee.scrollWidth - 2)
+  }, [deplie])
+
+  // Les pastilles arrivent après le chargement des données : on mesure à chaque rendu (un état identique ne refait pas de
+  // rendu), et quand la largeur change (rotation du téléphone).
+  useEffect(() => {
+    mesurer()
+    const rangee = ref.current
+    if (!rangee || typeof ResizeObserver === "undefined") return
+    const observateur = new ResizeObserver(mesurer)
+    observateur.observe(rangee)
+    return () => observateur.disconnect()
+  })
+
+  return {
+    ref,
+    id,
+    deborde,
+    deplie,
+    onScroll: mesurer,
+    basculer: () => setDeplie((d) => !d),
+    /** Les classes de la rangée : `base` porte la mise en page propre à l'appelant (marges, écarts). */
+    classe: (base: string) =>
+      cn(
+        base,
+        "sm:flex-wrap sm:overflow-visible sm:pb-0",
+        deplie ? "flex-wrap" : "overflow-x-auto pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        deborde && !fin && !deplie && "[mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)] sm:[mask-image:none]",
+      ),
+  }
+}
+
+/** « Tout voir » / « Réduire » : n'apparaît que sur téléphone, et seulement si la rangée déborde. */
+export function BoutonToutVoir({ rangee }: { rangee: ReturnType<typeof useRangeeDefilante> }) {
+  useI18n()
+  if (!rangee.deborde && !rangee.deplie) return null
+  return (
+    <button
+      type="button"
+      onClick={rangee.basculer}
+      aria-expanded={rangee.deplie}
+      aria-controls={rangee.id}
+      className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-primary sm:hidden"
+    >
+      {rangee.deplie ? t("gl.reduire") : t("gl.tout_voir")}
+      <ChevronDown className={cn("size-3.5 transition-transform", rangee.deplie && "rotate-180")} aria-hidden="true" />
+    </button>
+  )
+}
+
+/**
  * Une rangée de filtres avec son titre. Sur téléphone, une seule ligne qu'on fait glisser
- * (six lignes de pastilles à traverser repoussaient les résultats sous le pli) ; dès `sm`,
- * elle passe à la ligne et tout reste visible - jamais de carrousel à la souris, dont la
+ * (six lignes de pastilles à traverser repoussaient les résultats sous le pli), avec de quoi comprendre qu'elle
+ * glisse ; dès `sm`, elle passe à la ligne et tout reste visible - jamais de carrousel à la souris, dont la
  * molette ne défile pas horizontalement.
  */
 export function FiltreLigne({ titre, children }: { titre: string; children: ReactNode }) {
   useI18n()
-  const groupe = useRef<HTMLDivElement>(null)
+  const rangee = useRangeeDefilante()
   const dernierActif = useRef<Element | null>(null)
   // La pastille choisie était parfois hors de l'écran dans cette rangée qui défile (la matière « Mathematics » présélectionnée,
   // cachée à gauche : test élève Gogo). On la ramène au centre de la rangée UNE fois par choix, sans jamais toucher à la page ni
   // reprendre la main sur un élève qui fait glisser la rangée lui-même.
   useEffect(() => {
-    const rangee = groupe.current
-    const actif = rangee?.querySelector<HTMLElement>('[aria-pressed="true"]')
-    if (!rangee || !actif || actif === dernierActif.current) return
+    const element = rangee.ref.current
+    const actif = element?.querySelector<HTMLElement>('[aria-pressed="true"]')
+    if (!element || !actif || actif === dernierActif.current) return
     dernierActif.current = actif
-    if (rangee.scrollWidth <= rangee.clientWidth || typeof rangee.scrollTo !== "function") return
-    rangee.scrollTo({ left: Math.max(0, actif.offsetLeft - rangee.clientWidth / 2 + actif.clientWidth / 2) })
+    if (element.scrollWidth <= element.clientWidth || typeof element.scrollTo !== "function") return
+    element.scrollTo({ left: Math.max(0, actif.offsetLeft - element.clientWidth / 2 + actif.clientWidth / 2) })
   })
   return (
     <div className="mt-4">
-      <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{titre}</p>
+      <div className="mb-1.5 flex items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{titre}</p>
+        <BoutonToutVoir rangee={rangee} />
+      </div>
       <div
-        ref={groupe}
+        ref={rangee.ref}
+        id={rangee.id}
         role="group"
         aria-label={t("gl.filtrer_par", { titre: titre.toLowerCase() })}
-        className="-mx-1 flex gap-1.5 overflow-x-auto px-1 pb-1.5 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden"
+        onScroll={rangee.onScroll}
+        className={rangee.classe("-mx-1 flex gap-1.5 px-1")}
       >
         {children}
       </div>

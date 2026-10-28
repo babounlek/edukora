@@ -11,6 +11,7 @@ import { useCountry } from "@/context/CountryContext"
 import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
 import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
+import { BoutonToutVoir, useRangeeDefilante } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -59,6 +60,7 @@ export function BandeauCursus() {
   const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
 
   const declarer = useChangerCursusPrepare()
+  const rangee = useRangeeDefilante()
 
   function choisir(cursus: Cursus) {
     if (isAuthenticated) {
@@ -91,11 +93,14 @@ export function BandeauCursus() {
       <div className="mx-auto flex max-w-5xl items-start gap-3 px-4 py-2.5 sm:px-6">
         <div className="min-w-0 flex-1">
           {/* Sur un téléphone le titre complet tenait sur deux lignes : le bandeau seul prenait 171 px sur 812. */}
-          <p className="text-sm font-medium">
-            <span className="sm:hidden">{t("bandeau.titre_court")}</span>
-            <span className="hidden sm:inline">{t("bandeau.titre")}</span>
-          </p>
-          <div className="-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1 [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-sm font-medium">
+              <span className="sm:hidden">{t("bandeau.titre_court")}</span>
+              <span className="hidden sm:inline">{t("bandeau.titre")}</span>
+            </p>
+            <BoutonToutVoir rangee={rangee} />
+          </div>
+          <div ref={rangee.ref} id={rangee.id} onScroll={rangee.onScroll} className={rangee.classe("-mx-1 mt-2 flex gap-1.5 px-1")}>
             {trierCursus(cursusList).map((cursus) => (
               <Button
                 key={cursus.id}

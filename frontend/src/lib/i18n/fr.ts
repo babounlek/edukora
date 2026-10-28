@@ -2385,6 +2385,8 @@ export const fr = {
   "gl.deconnecter": "Se déconnecter",
   "gl.sem_initiales": "L,M,M,J,V,S,D",
   "gl.filtrer_par": "Filtrer par {titre}",
+  "gl.tout_voir": "Tout voir",
+  "gl.reduire": "Réduire",
   "gl.sem_noms": "Lundi,Mardi,Mercredi,Jeudi,Vendredi,Samedi,Dimanche",
   "gl.sem_pardonne": "Un jour de repos a été pardonné cette semaine",
   "gl.sem_serie": "Série de {n} jours",
