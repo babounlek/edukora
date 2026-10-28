@@ -229,7 +229,7 @@ def epreuve_inedite_catalogue_payload(
         "subject": SubjectSerializer(epreuve.subject, context=context).data,
         "cursus": CursusSerializer(epreuve.cursus.all(), many=True, context=context).data,
         "lesson_type": None,
-        "lesson_type_display": "Épreuve inédite",
+        "lesson_type_display": "Mini-inédite" if epreuve.est_mini else "Épreuve inédite",
         "year": None,
         "duree_epreuve": "",
         "coefficient": "",
@@ -242,12 +242,17 @@ def epreuve_inedite_catalogue_payload(
         "nature_epreuve": "",
         "nature_epreuve_display": "",
         "has_access": (
+            # Mini-inédite : ouverte à tout abonné du cursus, sans l'add-on (voir access.has_access_inedite) ;
+            # la liste ne précalcule que les cursus de l'add-on, d'où l'appel direct.
+            has_access_inedite(request.user, epreuve, profil_actif(request))
+            if epreuve.est_mini
             # Épreuve offerte : tout compte connecté (voir access.has_access_inedite).
-            bool(epreuve.est_gratuite and request.user.is_authenticated)
+            else bool(epreuve.est_gratuite and request.user.is_authenticated)
             or any(c.pk in active_inedite_cursus_ids for c in epreuve.cursus.all())
             if active_inedite_cursus_ids is not None
             else has_access_inedite(request.user, epreuve, profil_actif(request))
         ),
+        "est_mini": epreuve.est_mini,
         "is_read": bool(mes_tentatives and mes_tentatives["nb_terminees"]),
         "mes_tentatives": mes_tentatives,
         # Vitrine : l'épreuve est offerte à tout compte connecté, pas seulement aux abonnés. Un

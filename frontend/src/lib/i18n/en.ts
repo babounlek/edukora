@@ -663,6 +663,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ine.commencer": "Start this paper",
   "ine.comprise_acces": "This paper is included in your plan.",
   "ine.gratuite": "Free",
+  "ine.mini": "Mini unseen paper",
+  "ine.mini_aide": "Two exercises, a short timer, the same marking: for subscribers only.",
   "ine.duree_indicative": "Indicative duration: {n} min",
   "ine.partage": "Test yourself on \"{titre}\" on {site}:",
   "ine.intro":

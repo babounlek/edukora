@@ -75,6 +75,10 @@ def has_access_inedite(user, obj, profil=None):
     # connecté, abonné ou non. Le compte reste exigé - la copie est rattachée à un profil.
     if getattr(obj, "est_gratuite", False):
         return True
+    # Mini-inédite (EpreuveInedite.est_mini) : réservée aux ABONNÉS du cursus. Un abonnement actif suffit, l'add-on
+    # Épreuves Inédites n'est pas requis - c'est la porte d'entrée vers l'épreuve complète.
+    if getattr(obj, "est_mini", False):
+        return _abonnement_actif_pour(user, obj, profil)
     return InscriptionInedite.objects.filter(
         user=user, cursus__in=obj.cursus.all(), expires_at__gt=timezone.now(), **_du_profil(profil),
     ).exists()

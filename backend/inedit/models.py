@@ -202,6 +202,20 @@ class EpreuveInedite(models.Model):
     statut = models.CharField(max_length=10, choices=StatutContenu.choices, default=StatutContenu.BROUILLON)
     published_at = models.DateTimeField(null=True, blank=True)
 
+    est_mini = models.BooleanField(
+        default=False,
+        help_text=(
+            "Mini-inédite : 2 exercices tirés d'épreuves inédites existantes du même cursus (voir inedit.mini), "
+            "passée en 20 à 45 minutes avec le même chrono, la même notation et le même bilan par compétence. "
+            "Réservée aux ABONNÉS du cursus (access.has_access_inedite : un abonnement actif suffit, l'add-on "
+            "Épreuves Inédites n'est pas requis) - c'est la porte d'entrée vers l'épreuve complète."
+        ),
+    )
+    sources_mini = models.JSONField(
+        default=list, blank=True,
+        help_text="Mini-inédite seulement : [{\"epreuve\": id, \"exercice\": numero}] des exercices copiés, pour la traçabilité.",
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

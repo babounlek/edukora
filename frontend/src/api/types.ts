@@ -394,6 +394,8 @@ export interface Epreuve {
   has_access: boolean
   is_read: boolean
   est_vitrine: boolean
+  /** Mini-inédite : 2 exercices, chrono court, réservée aux abonnés du cursus (voir EpreuveInedite.est_mini). */
+  est_mini?: boolean
   created_at: string
   exercises_count: number
   related_cours?: EpreuveRelatedCours[]

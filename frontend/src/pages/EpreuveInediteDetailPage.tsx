@@ -327,6 +327,11 @@ export function EpreuveInediteDetailPage() {
                 {t("ine.gratuite")}
               </Badge>
             )}
+            {epreuve.est_mini && (
+              <Badge variant="success" title={t("ine.mini_aide")}>
+                {t("ine.mini")}
+              </Badge>
+            )}
             <Badge variant="secondary">{epreuve.subject.label}</Badge>
             {formatCursusGroups(epreuve.cursus).map((group) => (
               <Badge key={group.key} variant="outline">{group.label}</Badge>

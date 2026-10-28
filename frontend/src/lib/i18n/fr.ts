@@ -669,6 +669,8 @@ export const fr = {
   "ine.commencer": "Commencer cette épreuve",
   "ine.comprise_acces": "Cette épreuve est comprise dans ton accès.",
   "ine.gratuite": "Gratuite",
+  "ine.mini": "Mini-inédite",
+  "ine.mini_aide": "Deux exercices, un chrono court, la même notation : réservée aux abonnés.",
   "ine.duree_indicative": "Durée indicative : {n} min",
   "ine.partage": "Teste-toi sur « {titre} » sur {site} :",
   "ine.intro":
