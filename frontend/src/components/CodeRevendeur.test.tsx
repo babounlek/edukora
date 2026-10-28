@@ -18,14 +18,24 @@ beforeEach(() => {
 })
 
 describe("CodeRevendeur", () => {
-  it("n'affiche rien à quelqu'un qui a déjà un revendeur ou un paiement, et oublie le code mémorisé", async () => {
+  it("n'offre pas de champ à quelqu'un qui a déjà un revendeur, le lui dit, et oublie le code mémorisé", async () => {
     memoriserCodeRevendeur("DEMO42")
     getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: false, revendeur: { nom_affiche: "Marie" } })
 
-    const { container } = render(<CodeRevendeur />)
+    render(<CodeRevendeur />)
 
-    await waitFor(() => expect(codeRevendeurMemorise()).toBe(""))
-    expect(container).toBeEmptyDOMElement()
+    expect(await screen.findByText(/Marie/)).toBeInTheDocument()
+    expect(screen.queryByLabelText(/code revendeur/i)).not.toBeInTheDocument()
+    expect(codeRevendeurMemorise()).toBe("")
+  })
+
+  it("explique pourquoi il n'y a pas de champ quand le compte a déjà payé", async () => {
+    getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: false, revendeur: null })
+
+    render(<CodeRevendeur />)
+
+    expect(await screen.findByText(/ne peut plus être ajouté/)).toBeInTheDocument()
+    expect(screen.queryByLabelText(/code revendeur/i)).not.toBeInTheDocument()
   })
 
   it("ne gêne pas le paiement quand le serveur ne répond pas", async () => {
@@ -37,14 +47,13 @@ describe("CodeRevendeur", () => {
     expect(container).toBeEmptyDOMElement()
   })
 
-  it("propose un lien discret, puis la saisie, et valide le code", async () => {
+  it("propose directement la saisie, et valide le code", async () => {
     getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })
     postRattachementRevendeur.mockResolvedValue({ revendeur: { nom_affiche: "Marie Tutorat" } })
     const user = userEvent.setup()
 
     render(<CodeRevendeur />)
-    await user.click(await screen.findByRole("button", { name: /code revendeur/i }))
-    await user.type(screen.getByLabelText(/code revendeur/i), "demo42")
+    await user.type(await screen.findByLabelText(/code revendeur/i), "demo42")
     await user.click(screen.getByRole("button", { name: /valider/i }))
 
     expect(postRattachementRevendeur).toHaveBeenCalledWith("DEMO42")

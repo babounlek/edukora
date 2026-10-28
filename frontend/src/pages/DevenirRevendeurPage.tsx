@@ -1,7 +1,10 @@
 import { useState, type FormEvent, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Briefcase, Check, ChevronDown, GraduationCap, Handshake, Loader2, RefreshCw, School } from "lucide-react"
+import {
+  ArrowRight, BookOpen, Briefcase, Check, ChevronDown, GraduationCap, Handshake, Loader2, RefreshCw, School, ShieldCheck,
+  TrendingUp, Wallet,
+} from "lucide-react"
 
 import { ApiError } from "@/api/client"
 import {
@@ -70,9 +73,12 @@ export function DevenirRevendeurPage() {
 
       {!isAuthenticated ? (
         // Un visiteur lit d'abord le principe ; la connexion ne vient qu'au moment de candidater.
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-10">
+          <Avantages />
           <Principe horizontal />
           <Types />
+          <Faq />
+          <Appel />
         </div>
       ) : etat.isPending ? (
         <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("cand.chargement")}>
@@ -241,6 +247,75 @@ function Principe({ horizontal = false }: { horizontal?: boolean }) {
           </li>
         ))}
       </ol>
+    </section>
+  )
+}
+
+/** Ce que le programme apporte à un revendeur : quatre raisons, sans aucun chiffre de rémunération (voir la charte). */
+function Avantages() {
+  const avantages = [
+    { cle: "1", icone: Wallet },
+    { cle: "2", icone: BookOpen },
+    { cle: "3", icone: TrendingUp },
+    { cle: "4", icone: ShieldCheck },
+  ] as const
+  return (
+    <section aria-labelledby="cand-avantages">
+      <h2 id="cand-avantages" className="mb-1 font-display text-2xl font-semibold sm:text-3xl">{t("cand.avantages_titre")}</h2>
+      <p className="mb-5 max-w-2xl text-muted-foreground">{t("cand.avantages_intro")}</p>
+      <ul className="grid gap-4 sm:grid-cols-2">
+        {avantages.map(({ cle, icone: Icone }) => (
+          <li key={cle} className="flex gap-4 rounded-2xl border border-border bg-card p-5">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Icone className="size-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="font-display text-lg font-semibold leading-snug">{t(`cand.avantage_${cle}_t`)}</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t(`cand.avantage_${cle}_x`)}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+/** Les questions qu'un candidat se pose avant de se connecter. Aucun montant : ils sont dans la charte. */
+function Faq() {
+  const questions = ["1", "2", "3", "4", "5"] as const
+  return (
+    <section aria-labelledby="cand-faq">
+      <h2 id="cand-faq" className="mb-4 font-display text-2xl font-semibold sm:text-3xl">{t("cand.faq_titre")}</h2>
+      <div className="flex flex-col gap-2">
+        {questions.map((n) => (
+          <details key={n} className="group rounded-2xl border border-border bg-card px-5 py-4">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium marker:hidden">
+              {t(`cand.faq_${n}_q`)}
+              <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t(`cand.faq_${n}_r`)}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+/** L'appel final, en bas de page : le visiteur qui a tout lu n'a pas à remonter chercher le bouton. */
+function Appel() {
+  return (
+    <section
+      aria-labelledby="cand-appel"
+      className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/[0.12] via-primary/[0.04] to-gold/[0.12] p-6 text-center sm:p-10"
+    >
+      <h2 id="cand-appel" className="font-display text-2xl font-semibold text-balance sm:text-3xl">{t("cand.cta_titre")}</h2>
+      <p className="mx-auto mt-2 max-w-xl text-muted-foreground">{t("cand.cta_texte")}</p>
+      <Button asChild size="lg" className="mt-5 rounded-full px-6">
+        <Link to="/connexion" state={{ from: "/devenir-revendeur" }}>
+          {t("cand.se_connecter")}
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
+      </Button>
     </section>
   )
 }

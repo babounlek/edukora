@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { Check, Copy, Loader2, MessageCircle, RefreshCw } from "lucide-react"
+import { Check, Copy, Loader2, MessageCircle, RefreshCw, Store, TrendingUp, Users } from "lucide-react"
 import { toast } from "sonner"
 
 import { ApiError } from "@/api/client"
@@ -65,11 +65,15 @@ export function EspaceRevendeurPage() {
   if (isLoading || !isAuthenticated) return null
 
   return (
-    <div className="mx-auto max-w-4xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
-      <header className="mb-8">
-        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("rev.titre")}</h1>
-        <p className="mt-2 max-w-xl text-muted-foreground">{t("rev.sous_titre")}</p>
-      </header>
+    // Même largeur que l'en-tête du site (max-w-5xl).
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+      {/* Un revendeur reconnu a son propre en-tête (Tableau) ; les autres états gardent le titre simple. */}
+      {!espace.data && (
+        <header className="mb-8">
+          <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("rev.titre")}</h1>
+          <p className="mt-2 max-w-xl text-muted-foreground">{t("rev.sous_titre")}</p>
+        </header>
+      )}
 
       {espace.isPending ? (
         <div className="flex flex-col gap-3" aria-busy="true" aria-label={t("rev.chargement")}>
@@ -107,24 +111,51 @@ export function EspaceRevendeurPage() {
 function Tableau({ espace }: { espace: EspaceRevendeur }) {
   const bandeau = bandeauDe(espace.statut)
   return (
-    <div className="flex flex-col gap-6">
-      <p className="text-sm font-medium text-foreground/80">
-        {espace.nom_affiche} · {t(`rev.type_${espace.type}`)}
-      </p>
+    <div className="flex flex-col gap-8">
+      <header className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.12] via-primary/[0.04] to-gold/[0.12] p-6 sm:p-10">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.05]"
+          style={{
+            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="relative">
+          <p className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+            <Store className="size-3.5" aria-hidden="true" />
+            {t(`rev.type_${espace.type}`)}
+          </p>
+          <h1 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
+            {t("rev.bonjour", { nom: espace.nom_affiche })}
+          </h1>
+          <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">{t("rev.sous_titre")}</p>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card/80 px-3.5 py-1.5 text-sm font-medium backdrop-blur-sm">
+              <TrendingUp className="size-4 text-primary" aria-hidden="true" />
+              {tn("rev.ventes_mois", espace.ventes_du_mois)}
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card/80 px-3.5 py-1.5 text-sm font-medium backdrop-blur-sm">
+              <Users className="size-4 text-primary" aria-hidden="true" />
+              {tn("rev.clients", espace.nb_clients)}
+            </span>
+          </div>
+          {bandeau && (
+            <p role="status" className="mt-6 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
+              {bandeau}
+            </p>
+          )}
+        </div>
+      </header>
 
-      {bandeau && (
-        <p role="status" className="rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
-          {bandeau}
-        </p>
-      )}
-
-      <Partage code={espace.code} />
-
-      <GuideParent />
+      <div className="grid items-start gap-6 lg:grid-cols-2">
+        <Partage code={espace.code} />
+        <GuideParent />
+      </div>
 
       <section aria-labelledby="rev-commissions">
         <h2 id="rev-commissions" className="mb-3 font-display text-xl font-semibold">{t("rev.commissions_titre")}</h2>
-        <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <dl className="grid grid-cols-2 gap-3 lg:grid-cols-4">
           <Montant libelle={t("rev.m_en_attente")} aide={t("rev.m_en_attente_aide")} valeur={espace.montants.en_attente} />
           <Montant libelle={t("rev.m_acquise")} aide={t("rev.m_acquise_aide")} valeur={espace.montants.acquise} fort />
           <Montant libelle={t("rev.m_retenue")} aide={t("rev.m_retenue_aide")} valeur={espace.montants.retenue} />
@@ -133,9 +164,6 @@ function Tableau({ espace }: { espace: EspaceRevendeur }) {
         <div className="mt-4 space-y-1 text-sm text-muted-foreground">
           <p>{t("rev.taux", { taux: espace.taux_base_pct })}</p>
           {espace.palier && <p>{t("rev.palier", { seuil: espace.palier.seuil, taux: espace.palier.taux_pct })}</p>}
-          <p>
-            {tn("rev.ventes_mois", espace.ventes_du_mois)} · {tn("rev.clients", espace.nb_clients)}
-          </p>
         </div>
         {espace.reprises_en_cours > 0 && (
           <p role="status" className="mt-4 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm">
@@ -144,9 +172,12 @@ function Tableau({ espace }: { espace: EspaceRevendeur }) {
         )}
       </section>
 
-      <Versements seuil={espace.seuil_versement} />
-
-      <Ventes />
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+        <Ventes />
+        <div className="order-first lg:order-last">
+          <Versements seuil={espace.seuil_versement} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -171,7 +202,12 @@ function GuideParent() {
 
 function Montant({ libelle, aide, valeur, fort = false }: { libelle: string; aide: string; valeur: number; fort?: boolean }) {
   return (
-    <div className={cn("rounded-2xl border bg-card p-4", fort ? "border-primary/40 ring-1 ring-primary/20" : "border-border")}>
+    <div
+      className={cn(
+        "rounded-2xl border p-4",
+        fort ? "border-primary/40 bg-gradient-to-br from-primary/[0.08] to-card ring-1 ring-primary/20" : "border-border bg-card",
+      )}
+    >
       <dt className="text-xs font-medium text-muted-foreground">{libelle}</dt>
       <dd className="mt-1 font-display text-2xl font-semibold tabular-nums leading-tight">
         {formatAmount(valeur)}
@@ -199,7 +235,7 @@ function Partage({ code }: { code: string }) {
   }
 
   return (
-    <section aria-labelledby="rev-partage" className="rounded-2xl border border-border bg-card p-5">
+    <section aria-labelledby="rev-partage" className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.06] to-card p-5 sm:p-6">
       <h2 id="rev-partage" className="font-display text-lg font-semibold">{t("rev.partage_titre")}</h2>
       <p className="mt-3 w-fit rounded-lg bg-muted px-3 py-1.5 font-mono text-xl font-semibold tracking-widest">{code}</p>
       <p className="mt-3 break-all text-sm text-muted-foreground">{lien}</p>

@@ -78,7 +78,12 @@ describe("DevenirRevendeurPage", () => {
     rendre()
 
     expect(await screen.findByText("Comment ça marche")).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "Se connecter pour candidater" })).toHaveAttribute("href", "/connexion")
+    // Un bouton en haut de page et un en bas.
+    const liens = screen.getAllByRole("link", { name: "Se connecter pour candidater" })
+    expect(liens).toHaveLength(2)
+    liens.forEach((lien) => expect(lien).toHaveAttribute("href", "/connexion"))
+    expect(screen.getByText("Questions fréquentes")).toBeInTheDocument()
+    expect(document.body.textContent).not.toMatch(/\d\s?%|5\s?000/)
     expect(getCandidatureRevendeur).not.toHaveBeenCalled()
   })
 

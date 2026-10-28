@@ -9,15 +9,17 @@ import { t, useI18n } from "@/lib/i18n"
 import { codeRevendeurMemorise, oublierCodeRevendeur } from "@/lib/referral"
 
 type Etat =
-  | { phase: "chargement" | "masque" | "ferme" }
-  | { phase: "saisie"; code: string }
+  | { phase: "chargement" | "masque" }
+  | { phase: "saisie" }
   | { phase: "fait"; nom: string }
+  | { phase: "info"; texte: string }
 
 /**
  * Saisie d'un code revendeur avant le premier paiement, pour un compte déjà ouvert (celui qui s'inscrit avec
- * un lien `?rev=` n'a rien à saisir). Facultative et discrète : elle disparaît dès que le compte a un revendeur
- * ou un paiement validé, et ne gêne jamais le paiement si le serveur ne répond pas. Un code déjà mémorisé
- * par un lien est proposé, jamais envoyé sans que la personne valide.
+ * un lien `?rev=` n'a rien à saisir). Le champ est ouvert d'emblée (un lien replié passait inaperçu), facultatif,
+ * et ne gêne jamais le paiement si le serveur ne répond pas. Dès que le compte a un revendeur ou un paiement
+ * validé, il laisse place à une phrase qui dit pourquoi. Un code déjà mémorisé par un lien est proposé,
+ * jamais envoyé sans que la personne valide.
  */
 export function CodeRevendeur() {
   useI18n()
@@ -33,12 +35,12 @@ export function CodeRevendeur() {
         if (!reponse.peut_saisir_code) {
           // Déjà rattaché (ou déjà client) : le code mémorisé ne sert plus, et ne doit pas suivre la personne suivante.
           oublierCodeRevendeur()
-          setEtat({ phase: "masque" })
+          // Dire pourquoi il n'y a pas de champ, plutôt que de laisser croire qu'il manque.
+          setEtat({ phase: "info", texte: reponse.revendeur ? t("rev.code_ok", { nom: reponse.revendeur.nom_affiche }) : t("rev.code_trop_tard") })
           return
         }
-        const memorise = codeRevendeurMemorise()
-        setSaisie(memorise)
-        setEtat(memorise ? { phase: "saisie", code: memorise } : { phase: "ferme" })
+        setSaisie(codeRevendeurMemorise())
+        setEtat({ phase: "saisie" })
       })
       .catch(() => setEtat({ phase: "masque" }))
     return () => controle.abort()
@@ -71,16 +73,12 @@ export function CodeRevendeur() {
     )
   }
 
-  if (etat.phase === "ferme") {
+  if (etat.phase === "info") {
     return (
-      <button
-        type="button"
-        onClick={() => setEtat({ phase: "saisie", code: "" })}
-        className="flex items-center gap-2 self-start text-sm font-medium text-primary hover:underline"
-      >
-        <Store className="size-4" aria-hidden="true" />
-        {t("rev.code_ouvrir")}
-      </button>
+      <p className="flex items-center gap-2 text-sm text-muted-foreground">
+        <Store className="size-4 shrink-0" aria-hidden="true" />
+        {etat.texte}
+      </p>
     )
   }
 
