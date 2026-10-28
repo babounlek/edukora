@@ -246,6 +246,8 @@ export const fr = {
     "Tu sauras ce que tu dois réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.",
   "prix.titre_debut": "Un seul prix,",
   "prix.titre_accent": "jusqu'à ton examen",
+  "prix.pour_enfant": "Tu choisis l'abonnement de {prenom}.",
+  "prix.pour_enfant_autre": "Ce n'est pas le bon enfant ? Mes accès",
   "prix.sous_titre":
     "{prix} FCFA par enfant, puis {prix_sup} FCFA pour chaque enfant supplémentaire de la même famille.",
   "prix.puce_aucun_prelevement": "Aucun prélèvement automatique",

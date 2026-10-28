@@ -21,6 +21,7 @@ import { codeSerieAffiche } from "@/lib/cursus"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
+import { BandeauEnfantVise } from "@/components/BandeauEnfantVise"
 import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -337,6 +338,7 @@ export function PricingPage() {
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+      <BandeauEnfantVise profilId={profilParam} />
       {/* Même gabarit de hero que /quiz, /fiches et /cours. Un seul titre, là où la
           page en empilait deux ("Choisis ton profil." puis "Un seul prix...") avant
           d'avoir rien dit du prix ni de la façon de payer. Les trois puces répondent
