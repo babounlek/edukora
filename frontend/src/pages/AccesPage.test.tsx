@@ -144,3 +144,42 @@ describe("AccesPage - portée de la famille (code parent)", () => {
     expect(screen.queryByRole("button", { name: "Ouvrir l'espace parent" })).toBeNull()
   })
 })
+
+describe("AccesPage - un parent qui a ajouté ses enfants sans rien payer", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    modeParent.actif = false
+    auth.user = { id: 1, pin_parent_actif: false, session_restreinte: false, profil_actif: { id: 1, prenom: "Aînée" } }
+    api.listProfils.mockResolvedValue(PROFILS)
+    api.listMyInscriptionsInedites.mockResolvedValue([])
+    api.listMyInscriptionsRepetiteur.mockResolvedValue([])
+  })
+
+  it("voit chaque enfant avec son bouton de paiement, au lieu d'un message « aucun accès » générique", async () => {
+    api.listMySubscriptions.mockResolvedValue([])
+    afficher()
+
+    // Le prénom figure deux fois : dans le résumé (lien vers le bloc) et dans le bloc de l'enfant.
+    expect(await screen.findByText("0 sur 2 enfants ont un abonnement actif.")).toBeTruthy()
+    expect(screen.getAllByText("Aînée").length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText("Cadet").length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText("Pas encore abonné")).toHaveLength(2)
+    // Un bouton par enfant, qui porte son prénom et emmène vers SES formules.
+    expect(screen.getByRole("link", { name: /Payer pour Aînée/ }).getAttribute("href")).toBe("/tarifs?profil=1")
+    expect(screen.getByRole("link", { name: /Payer pour Cadet/ }).getAttribute("href")).toBe("/tarifs?profil=2")
+    expect(screen.getByText("0 sur 2 enfants ont un abonnement actif.")).toBeTruthy()
+  })
+
+  it("distingue l'enfant abonné de celui qui reste à abonner, et le résume", async () => {
+    api.listMySubscriptions.mockResolvedValue([abonnement(10, 1)])
+    afficher()
+
+    expect(await screen.findByText("1 sur 2 enfants ont un abonnement actif.")).toBeTruthy()
+    expect(screen.getByText("Abonné")).toBeTruthy()
+    expect(screen.getAllByText("Pas encore abonné")).toHaveLength(1)
+    // Seul l'enfant sans abonnement a un bouton de paiement ; le résumé le nomme et renvoie à son bloc.
+    expect(screen.queryByRole("link", { name: /Payer pour Aînée/ })).toBeNull()
+    expect(screen.getByRole("link", { name: /Payer pour Cadet/ })).toBeTruthy()
+    expect(screen.getByRole("link", { name: "Cadet" }).getAttribute("href")).toBe("#profil-2")
+  })
+})

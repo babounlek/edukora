@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, ChevronDown, CircleHelp, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
+import { Check, ChevronDown, CircleHelp, CreditCard, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
+import { modeParentActif } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
@@ -14,7 +15,7 @@ import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
 import { libellePays, nomPays } from "@/lib/pays"
 import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
-import { useCursusAbonnes } from "@/lib/changerCursusPrepare"
+import { useCursusAbonnesEtat } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
 import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
@@ -52,7 +53,7 @@ function AccountMenu() {
   const { user, logout } = useAuth()
   const { country } = useCountry()
   const navigate = useNavigate()
-  const cursusAbonnes = useCursusAbonnes()
+  const { actifs: cursusAbonnes, pret: abonnementsPrets } = useCursusAbonnesEtat()
   const profils = useProfils()
   const changerProfil = useChangerProfilActif()
   const { t } = useI18n()
@@ -62,6 +63,13 @@ function AccountMenu() {
   const abonnementActif = cursusAbonnes.find(
     (sub) => sub.profil.id === user?.profil_actif?.id && sub.cursus.id === user?.cursus_prepare?.id,
   )
+  // Qui a payé : les profils ayant un abonnement ACTIF. Fiable seulement si la liste est celle de toute la famille : avec un
+  // code parent et le mode parent fermé, le serveur ne rend que l'enfant actif, et ses frères paraîtraient à tort « à payer ».
+  const abonnesParProfil = new Set(cursusAbonnes.map((sub) => sub.profil.id))
+  const statutsConnus = abonnementsPrets && !user?.session_restreinte && (!user?.pin_parent_actif || modeParentActif())
+  // Dans une famille seulement : pour un compte à un seul profil, « Tarifs » suffit.
+  const profilActifAPayer =
+    famille && statutsConnus && user?.profil_actif && !abonnesParProfil.has(user.profil_actif.id) ? user.profil_actif : null
 
   function handleLogout() {
     logout()
@@ -109,6 +117,7 @@ function AccountMenu() {
             <DropdownMenuLabel>{t("compte.changer_enfant")}</DropdownMenuLabel>
             {profils.map((profil) => {
               const actif = profil.id === user?.profil_actif?.id
+              const paye = abonnesParProfil.has(profil.id)
               return (
                 <DropdownMenuItem
                   key={profil.id}
@@ -119,9 +128,33 @@ function AccountMenu() {
                 >
                   {actif ? <Check className="text-primary" /> : <User />}
                   {profil.prenom || t("compte.profil_sans_nom")}
+                  {/* Un mot ET une couleur : le parent voit d'un coup d'œil qui a payé et qui reste à abonner. */}
+                  {statutsConnus && (
+                    <span
+                      className={cn(
+                        "ml-auto inline-flex items-center gap-1 pl-3 text-xs font-medium",
+                        paye ? "text-success" : "text-warning-foreground dark:text-warning",
+                      )}
+                    >
+                      <span className={cn("size-1.5 rounded-full", paye ? "bg-success" : "bg-warning")} aria-hidden="true" />
+                      {paye ? t("compte.enfant_abonne") : t("compte.enfant_a_payer")}
+                    </span>
+                  )}
                 </DropdownMenuItem>
               )
             })}
+            <DropdownMenuSeparator />
+          </>
+        )}
+        {/* L'enfant actif n'a rien payé : le chemin vers SES formules est dans le menu, sans passer par Mes accès. */}
+        {profilActifAPayer && (
+          <>
+            <DropdownMenuItem asChild>
+              <Link to={`/tarifs?profil=${profilActifAPayer.id}`} className="font-medium">
+                <CreditCard />
+                {t("compte.payer_pour_enfant", { prenom: profilActifAPayer.prenom || t("compte.profil_sans_nom") })}
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
         )}

@@ -42,6 +42,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "nav.nouvelles_inedites": "new original papers",
 
   "compte.changer_enfant": "Switch child",
+  "compte.enfant_abonne": "Subscribed",
+  "compte.enfant_a_payer": "To pay",
+  "compte.payer_pour_enfant": "Pay for {prenom}'s subscription",
   "compte.examen_prepare": "Exam being prepared",
   "compte.profil_sans_nom": "Unnamed profile",
   "compte.mon_compte": "My account",
@@ -984,6 +987,13 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ac.aucun_acces":
     "No active access for now. Pick your exam to unlock the solutions, the lessons and your daily session.",
   "ac.choisir_abonnement": "Choose a subscription",
+  "ac.profil_abonne": "Subscribed",
+  "ac.profil_expire": "Subscription expired",
+  "ac.profil_non_abonne": "Not subscribed yet",
+  "ac.sans_abonnement_texte": "{prenom} has no subscription yet. Choose their plan to open their access.",
+  "ac.payer_pour": "Pay for {prenom}",
+  "ac.resume": "{n} of {total} children have an active subscription.",
+  "ac.resume_a_abonner": "To subscribe:",
   "ac.securite": "Profile security",
   "ac.portee_limitee": "You only see {prenom}'s access. The other children, profile security and adding a child are for the parent.",
   "ac.voir_famille": "Open the parent area",

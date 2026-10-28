@@ -47,6 +47,9 @@ export const fr = {
   "nav.nouvelles_inedites": "nouvelles épreuves inédites",
 
   "compte.changer_enfant": "Changer d'enfant",
+  "compte.enfant_abonne": "Abonné",
+  "compte.enfant_a_payer": "À payer",
+  "compte.payer_pour_enfant": "Payer l'abonnement de {prenom}",
   "compte.examen_prepare": "Examen préparé",
   "compte.profil_sans_nom": "Profil sans nom",
   "compte.mon_compte": "Mon compte",
@@ -990,6 +993,13 @@ export const fr = {
   "ac.aucun_acces":
     "Aucun accès actif pour le moment. Choisis ton examen pour débloquer les corrigés, les cours et ta séance du jour.",
   "ac.choisir_abonnement": "Choisir un abonnement",
+  "ac.profil_abonne": "Abonné",
+  "ac.profil_expire": "Abonnement expiré",
+  "ac.profil_non_abonne": "Pas encore abonné",
+  "ac.sans_abonnement_texte": "{prenom} n'a pas encore d'abonnement. Choisis sa formule pour ouvrir ses accès.",
+  "ac.payer_pour": "Payer pour {prenom}",
+  "ac.resume": "{n} sur {total} enfants ont un abonnement actif.",
+  "ac.resume_a_abonner": "À abonner :",
   "ac.securite": "Sécurité des profils",
   "ac.portee_limitee": "Tu vois seulement les accès de {prenom}. Les autres enfants, la sécurité des profils et l'ajout d'enfant sont réservés au parent.",
   "ac.voir_famille": "Ouvrir l'espace parent",

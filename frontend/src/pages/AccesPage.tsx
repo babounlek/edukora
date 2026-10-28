@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { toast } from "sonner"
-import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Loader2, Lock, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, CircleAlert, Loader2, Lock, Pencil, Plus, ShieldCheck, Sparkles, UserPlus } from "lucide-react"
 
 import {
   createProfil,
@@ -213,6 +213,72 @@ function NomProfilEditable({ profil, onRenamed }: { profil: Profil; onRenamed: (
   )
 }
 
+type StatutProfil = "actif" | "expire" | "aucun"
+
+/** L'état d'un enfant, en un mot et une couleur (jamais la couleur seule) : abonné, abonnement échu, ou pas encore payé. */
+function BadgeStatutProfil({ statut }: { statut: StatutProfil }) {
+  if (statut === "actif") {
+    return (
+      <Badge variant="success" className="gap-1">
+        <Check className="size-3" strokeWidth={3} />
+        {t("ac.profil_abonne")}
+      </Badge>
+    )
+  }
+  return (
+    <Badge variant="outline" className="gap-1 border-warning/50 text-warning-foreground dark:text-warning">
+      <CircleAlert className="size-3" aria-hidden="true" />
+      {statut === "expire" ? t("ac.profil_expire") : t("ac.profil_non_abonne")}
+    </Badge>
+  )
+}
+
+/**
+ * Le geste d'un enfant qui n'a encore rien payé : un bouton nommé, vers les formules de CET enfant (`profil=`), pour que le
+ * parent de plusieurs enfants paie pour chacun sans se tromper de nom.
+ */
+function PayerPourEnfant({ profil }: { profil: Profil }) {
+  const prenom = profil.prenom || t("ac.sans_nom_min")
+  return (
+    <div className="flex flex-col gap-3 rounded-xl border border-warning/40 bg-warning/10 p-3.5 sm:flex-row sm:items-center sm:justify-between">
+      <p className="text-sm">{t("ac.sans_abonnement_texte", { prenom })}</p>
+      <Button asChild size="sm" className="h-11 w-full shrink-0 rounded-full text-xs sm:h-9 sm:w-auto">
+        <Link to={`/tarifs?profil=${profil.id}`}>
+          {t("ac.payer_pour", { prenom })}
+          <ArrowRight className="size-3.5" />
+        </Link>
+      </Button>
+    </div>
+  )
+}
+
+/**
+ * En tête d'une famille de plusieurs enfants : combien sont abonnés, et lesquels restent à abonner, avec un lien vers leur bloc.
+ * Un parent qui revient ici après avoir ajouté trois enfants sait tout de suite où il en est.
+ */
+function ResumeFamille({ total, sansAbonnement }: { total: number; sansAbonnement: Profil[] }) {
+  const abonnes = total - sansAbonnement.length
+  return (
+    <div role="status" className="flex flex-col gap-2 rounded-xl border border-border bg-muted/30 p-3.5 text-sm">
+      <p className="font-medium">{t("ac.resume", { n: abonnes, total })}</p>
+      {sansAbonnement.length > 0 && (
+        <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-muted-foreground">
+          {t("ac.resume_a_abonner")}
+          {sansAbonnement.map((profil) => (
+            <a
+              key={profil.id}
+              href={`#profil-${profil.id}`}
+              className="rounded-full border border-warning/50 bg-warning/10 px-2.5 py-0.5 text-xs font-medium text-foreground hover:bg-warning/20"
+            >
+              {profil.prenom || t("ac.sans_nom")}
+            </a>
+          ))}
+        </p>
+      )}
+    </div>
+  )
+}
+
 /** "Ajouter un enfant" : crée le profil puis envoie choisir un cursus à lui payer. */
 function AjouterEnfant({ onCreated }: { onCreated: (profil: Profil) => void }) {
   const navigate = useNavigate()
@@ -412,10 +478,14 @@ export function AccesPage() {
   const verrouille = porteeLimitee && !user?.session_restreinte
   const groupes = (profils ?? [])
     .filter((profil) => !porteeLimitee || profil.id === user?.profil_actif?.id)
-    .map((profil) => ({
-      profil,
-      acces: acces.filter((a) => a.profilId === profil.id),
-    }))
+    .map((profil) => {
+      const accesDuProfil = acces.filter((a) => a.profilId === profil.id)
+      // Trois états lisibles d'un coup d'œil : abonné, abonnement échu, ou rien payé du tout (un parent qui vient d'ajouter
+      // ses enfants).
+      const statut: StatutProfil = accesDuProfil.some((a) => a.actif) ? "actif" : accesDuProfil.length > 0 ? "expire" : "aucun"
+      return { profil, acces: accesDuProfil, statut }
+    })
+  const sansAbonnement = groupes.filter((g) => g.statut !== "actif")
 
   function renommer(profilRenomme: Profil) {
     setProfils((prev) => (prev ?? []).map((p) => (p.id === profilRenomme.id ? profilRenomme : p)))
@@ -456,7 +526,9 @@ export function AccesPage() {
           <ErreurChargement compact objet={t("ac.objet")} onRetry={charger} />
         ) : !charge ? (
           <p className="text-sm text-muted-foreground">{t("matieres.chargement")}</p>
-        ) : acces.length === 0 ? (
+        ) : groupes.length === 0 ? (
+          // Sans aucun profil seulement : un parent qui a ajouté ses enfants sans rien payer doit les voir, un par un, avec leur
+          // bouton de paiement, et non ce message générique qui les masquait.
           <EtatVide
             texte={t("ac.aucun_acces")}
             lien="/tarifs"
@@ -464,21 +536,19 @@ export function AccesPage() {
           />
         ) : (
           <div className="flex flex-col gap-5">
-            {groupes.map(({ profil, acces: accesDuProfil }) => (
-              <div key={profil.id} className="flex flex-col gap-2.5">
-                <NomProfilEditable profil={profil} onRenamed={renommer} />
-                {accesDuProfil.length > 0 ? (
+            {groupes.length > 1 && <ResumeFamille total={groupes.length} sansAbonnement={sansAbonnement.map((g) => g.profil)} />}
+            {groupes.map(({ profil, acces: accesDuProfil, statut }) => (
+              <div key={profil.id} id={`profil-${profil.id}`} className="flex scroll-mt-24 flex-col gap-2.5">
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+                  <NomProfilEditable profil={profil} onRenamed={renommer} />
+                  <BadgeStatutProfil statut={statut} />
+                </div>
+                {accesDuProfil.length > 0 && (
                   <ul className="flex flex-col gap-2.5">
                     {accesDuProfil.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
                   </ul>
-                ) : (
-                  <Button asChild size="sm" variant="outline" className="h-11 w-fit rounded-full text-xs sm:h-8">
-                    <Link to={`/tarifs?profil=${profil.id}`}>
-                      {t("ac.choisir_abonnement")}
-                      <ArrowRight className="size-3.5" />
-                    </Link>
-                  </Button>
                 )}
+                {statut === "aucun" && <PayerPourEnfant profil={profil} />}
               </div>
             ))}
           </div>

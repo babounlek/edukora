@@ -17,13 +17,21 @@ import { useAuth } from "@/context/AuthContext"
  * distinguer ni les afficher sans ambiguïté (voir Header.tsx, "Examen préparé").
  */
 export function useCursusAbonnes(): Subscription[] {
+  return useCursusAbonnesEtat().actifs
+}
+
+/**
+ * Les mêmes abonnements actifs, avec `pret` : faux tant que la réponse n'est pas arrivée (ou a échoué). Sans lui, une liste
+ * vide se lisait « personne n'a payé » et le menu d'une famille affichait un instant « À payer » sur chaque enfant.
+ */
+export function useCursusAbonnesEtat(): { actifs: Subscription[]; pret: boolean } {
   const { isAuthenticated } = useAuth()
-  const { data } = useQuery({
+  const { data, isSuccess } = useQuery({
     queryKey: ["mes-abonnements"],
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
   })
-  return (data ?? []).filter((sub) => sub.is_active)
+  return { actifs: (data ?? []).filter((sub) => sub.is_active), pret: isSuccess }
 }
 
 /**
