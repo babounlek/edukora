@@ -2706,6 +2706,8 @@ export const fr = {
   "cand.faq_5_r": "Vous recevez un SMS avec le motif, et vous pourrez déposer une nouvelle candidature plus tard.",
   "cand.cta_titre": "Prêt à devenir revendeur Edukora ?",
   "cand.cta_texte": "La candidature prend quelques minutes. L'équipe vous répond par SMS.",
+  "cand.progression": "{n} sur 3 étapes complétées",
+  "cand.envoyer_aide": "Vous pourrez suivre l'état de votre candidature sur cette page, et l'équipe vous répondra par SMS.",
   "cand.principe_titre": "Comment ça marche",
   "cand.principe_1": "Vous remplissez cette candidature (quelques minutes) et vous vérifiez votre numéro Mobile Money par SMS.",
   "cand.principe_2": "L'équipe étudie votre dossier et vous répond par SMS. Tant qu'elle n'a pas accepté, vous n'avez ni code ni lien.",

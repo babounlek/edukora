@@ -2694,6 +2694,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cand.faq_5_r": "You receive an SMS with the reason, and you can submit a new application later.",
   "cand.cta_titre": "Ready to become an Edukora reseller?",
   "cand.cta_texte": "Applying takes a few minutes. The team replies by SMS.",
+  "cand.progression": "{n} of 3 steps completed",
+  "cand.envoyer_aide": "You can follow your application's status on this page, and the team will reply by SMS.",
   "cand.principe_titre": "How it works",
   "cand.principe_1": "You fill in this application (a few minutes) and verify your Mobile Money number by SMS.",
   "cand.principe_2": "The team reviews your application and replies by SMS. Until it accepts, you have no code and no link.",

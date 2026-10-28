@@ -29,6 +29,8 @@ const OPERATEURS = [
   { valeur: "MTN", libelle: "MTN Mobile Money" },
 ] as const
 
+const ICONES_TYPE = { COMMERCIAL: Briefcase, REPETITEUR: GraduationCap, ECOLE_CENTRE: School } as const
+
 const CLE = ["revendeur", "candidature"] as const
 
 /** Un code d'erreur du serveur devient une phrase dans la langue de la page ; sinon le message de l'API (délais d'envoi de code). */
@@ -100,18 +102,34 @@ export function DevenirRevendeurPage() {
   )
 }
 
-function Carte({ titre, children, ton = "neutre" }: { titre: string; children: ReactNode; ton?: "neutre" | "succes" | "attention" }) {
+/** Une carte de page ; `etape` en fait une étape numérotée du formulaire, cochée quand `fait`. */
+function Carte({
+  titre, children, ton = "neutre", etape, fait = false,
+}: { titre: string; children: ReactNode; ton?: "neutre" | "succes" | "attention"; etape?: number; fait?: boolean }) {
   return (
     <section
       className={cn(
-        "rounded-2xl border p-5",
+        "rounded-2xl border p-5 sm:p-6",
         ton === "succes" && "border-success/40 bg-success/[0.06]",
         ton === "attention" && "border-warning/40 bg-warning/10",
-        ton === "neutre" && "border-border bg-card",
+        ton === "neutre" && (fait ? "border-success/40 bg-card" : "border-border bg-card"),
       )}
     >
-      <h2 className="font-display text-xl font-semibold">{titre}</h2>
-      <div className="mt-3 flex flex-col gap-3 text-sm">{children}</div>
+      <div className="flex items-center gap-3">
+        {etape !== undefined && (
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold transition-colors",
+              fait ? "bg-success text-white" : "bg-primary text-primary-foreground",
+            )}
+          >
+            {fait ? <Check className="size-4" /> : etape}
+          </span>
+        )}
+        <h2 className="font-display text-xl font-semibold">{titre}</h2>
+      </div>
+      <div className="mt-4 flex flex-col gap-4 text-sm">{children}</div>
     </section>
   )
 }
@@ -174,7 +192,7 @@ function Contenu({ etat }: { etat: EtatCandidature }) {
           charteVersion={etat.charte_version}
           onChange={() => void client.invalidateQueries({ queryKey: CLE })}
         />
-        <div className="order-first lg:sticky lg:top-24 lg:order-last">
+        <div className="lg:sticky lg:top-24">
           <Principe />
         </div>
       </div>
@@ -186,7 +204,13 @@ function Contenu({ etat }: { etat: EtatCandidature }) {
 function Hero({ visiteur }: { visiteur: boolean }) {
   const chiffres = ["1", "2", "3"] as const
   return (
-    <header className="relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.12] via-primary/[0.04] to-gold/[0.12] p-6 sm:p-10">
+    <header
+      className={cn(
+        "relative mb-8 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.12] via-primary/[0.04] to-gold/[0.12]",
+        // Un compte connecté vient pour remplir : bandeau plus bas, le formulaire reste dans le premier écran.
+        visiteur ? "p-6 sm:p-10" : "p-5 sm:p-7",
+      )}
+    >
       <div
         aria-hidden
         className="absolute inset-0 opacity-[0.05]"
@@ -200,17 +224,26 @@ function Hero({ visiteur }: { visiteur: boolean }) {
           <Handshake className="size-3.5" aria-hidden="true" />
           {t("cand.eyebrow")}
         </p>
-        <h1 className="mt-4 max-w-2xl font-display text-3xl font-semibold tracking-tight text-balance sm:text-5xl">{t("cand.titre")}</h1>
+        <h1
+          className={cn(
+            "mt-4 max-w-2xl font-display font-semibold tracking-tight text-balance",
+            visiteur ? "text-3xl sm:text-5xl" : "text-3xl sm:text-4xl",
+          )}
+        >
+          {t("cand.titre")}
+        </h1>
         <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">{t("cand.sous_titre")}</p>
 
-        <dl className="mt-7 grid grid-cols-3 gap-3 sm:max-w-xl">
-          {chiffres.map((n) => (
-            <div key={n} className="rounded-2xl border border-border/70 bg-card/80 px-3 py-3 backdrop-blur-sm sm:px-4">
-              <dd className="font-display text-base font-semibold leading-none text-primary sm:text-2xl">{t(`cand.chiffre_${n}_v`)}</dd>
-              <dt className="mt-1.5 text-xs leading-snug text-muted-foreground">{t(`cand.chiffre_${n}_l`)}</dt>
-            </div>
-          ))}
-        </dl>
+        {visiteur && (
+          <dl className="mt-7 grid grid-cols-3 gap-3 sm:max-w-xl">
+            {chiffres.map((n) => (
+              <div key={n} className="rounded-2xl border border-border/70 bg-card/80 px-3 py-3 backdrop-blur-sm sm:px-4">
+                <dd className="font-display text-base font-semibold leading-none text-primary sm:text-2xl">{t(`cand.chiffre_${n}_v`)}</dd>
+                <dt className="mt-1.5 text-xs leading-snug text-muted-foreground">{t(`cand.chiffre_${n}_l`)}</dt>
+              </div>
+            ))}
+          </dl>
+        )}
 
         {visiteur && (
           <div className="mt-7 flex flex-col gap-2">
@@ -426,6 +459,14 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
   const ecole = champs.type === "ECOLE_CENTRE"
   const numeroValide = /^6\d{8}$/.test(champs.numero_versement)
 
+  // Avancement affiché en haut du formulaire : chaque étape se coche toute seule quand elle est complète.
+  const profilFait = Boolean(
+    champs.type && champs.nom_affiche.trim() && champs.ville.trim() && champs.presentation.trim()
+    && (!ecole || (champs.etablissement.trim() && champs.fonction.trim())),
+  )
+  const versementFait = verifie && Boolean(champs.operateur_versement)
+  const etapesFaites = [profilFait, versementFait, charteAcceptee].filter(Boolean).length
+
   /** Envoie le brouillon : le serveur garde ce qui est saisi, et c'est sur lui que portent la vérification et l'envoi. */
   async function enregistrer(): Promise<CandidatureRevendeur> {
     const corps: ChampsCandidature = {
@@ -480,28 +521,42 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
 
   return (
     <form onSubmit={envoyer} className="flex flex-col gap-6" noValidate>
-      <Carte titre={t("cand.etape_profil")}>
+      <div>
+        <div className="mb-2 flex items-center justify-between text-xs font-medium text-muted-foreground">
+          <span>{t("cand.progression", { n: etapesFaites })}</span>
+        </div>
+        <div className="h-1.5 overflow-hidden rounded-full bg-muted" role="presentation">
+          <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${(etapesFaites / 3) * 100}%` }} />
+        </div>
+      </div>
+
+      <Carte titre={t("cand.etape_profil")} etape={1} fait={profilFait}>
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1 text-sm font-medium">{t("cand.type_label")}</legend>
           <div className="grid gap-2 sm:grid-cols-3">
-            {TYPES.map((type) => (
-              <label
-                key={type}
-                className={cn(
-                  "flex cursor-pointer items-center gap-2 rounded-xl border-2 px-3 py-2.5 text-sm font-medium transition-colors",
-                  champs.type === type ? "border-primary bg-accent" : "border-input",
-                )}
-              >
-                <input
-                  type="radio"
-                  name="type-revendeur"
-                  className="sr-only"
-                  checked={champs.type === type}
-                  onChange={() => modifier("type", type)}
-                />
-                {t(`rev.type_${type}`)}
-              </label>
-            ))}
+            {TYPES.map((type) => {
+              const Icone = ICONES_TYPE[type]
+              const choisi = champs.type === type
+              return (
+                <label
+                  key={type}
+                  className={cn(
+                    "flex cursor-pointer items-center gap-2.5 rounded-xl border-2 px-3 py-3 text-sm font-medium transition-colors focus-within:ring-2 focus-within:ring-ring/50 hover:border-primary/50",
+                    choisi ? "border-primary bg-accent" : "border-input",
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="type-revendeur"
+                    className="sr-only"
+                    checked={choisi}
+                    onChange={() => modifier("type", type)}
+                  />
+                  <Icone className={cn("size-4 shrink-0", choisi ? "text-primary" : "text-muted-foreground")} aria-hidden="true" />
+                  {t(`rev.type_${type}`)}
+                </label>
+              )
+            })}
           </div>
         </fieldset>
 
@@ -533,7 +588,7 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
         </Champ>
       </Carte>
 
-      <Carte titre={t("cand.etape_versement")}>
+      <Carte titre={t("cand.etape_versement")} etape={2} fait={versementFait}>
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1 text-sm font-medium">{t("cand.operateur_label")}</legend>
           <div className="grid gap-2 sm:grid-cols-2">
@@ -571,7 +626,7 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
         </Champ>
 
         {verifie ? (
-          <p role="status" className="flex items-center gap-2 font-medium text-success">
+          <p role="status" className="flex w-fit items-center gap-2 rounded-lg border border-success/30 bg-success/[0.08] px-3 py-2 font-medium text-success">
             <Check className="size-4" aria-hidden="true" />
             {t("cand.numero_verifie")}
           </p>
@@ -616,7 +671,7 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
         )}
       </Carte>
 
-      <Carte titre={t("cand.etape_charte")}>
+      <Carte titre={t("cand.etape_charte")} etape={3} fait={charteAcceptee}>
         <button
           type="button"
           onClick={() => setCharteOuverte((o) => !o)}
@@ -627,7 +682,7 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
           {t("cand.charte_version", { version: charteVersion })}
         </button>
         {charteOuverte && <CharteRevendeur version={charteVersion} />}
-        <label className="flex cursor-pointer items-start gap-2.5">
+        <label className="flex cursor-pointer items-start gap-2.5 rounded-xl border border-border bg-muted/40 p-3.5">
           <input
             type="checkbox"
             checked={charteAcceptee}
@@ -651,6 +706,7 @@ function Formulaire({ depart, charteVersion, onChange }: { depart: CandidatureRe
           {t("cand.enregistrer")}
         </Button>
       </div>
+      <p className="text-xs text-muted-foreground">{t("cand.envoyer_aide")}</p>
     </form>
   )
 }
