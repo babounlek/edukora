@@ -388,24 +388,26 @@ export function Header() {
                 place : sous 400 px, et pour un élève qui suit un plan - la pastille de compte à rebours dit alors ce que le
                 slogan disait, et logo + pastille + liens + compte dépasseraient 1024 px. Le symbole seul est le même fichier
                 rogné (object-cover + object-left), pas une seconde image ; le nom et le slogan restent dans l'alt.
-                Entre 400 et 640 px : icône + nom sans slogan (illisible à cette taille). */}
+                Entre 400 et 768 px : icône + nom sans slogan (illisible à cette taille, et le logo complet recouvrait la loupe
+                entre 640 et 768 px, où les contrôles de droite - langue, pays, thème, compte - tiennent déjà toute la place). */}
             {aUnCompteARebours ? (
               <Logo variante="horizontal" className="h-8 w-[34px] object-cover object-left" />
             ) : (
               <>
-                <span className="sm:hidden">
+                <span className="md:hidden">
                   <Logo
                     variante="minimal"
                     className="h-8 w-[34px] object-cover object-left min-[400px]:h-7 min-[400px]:w-auto min-[400px]:object-contain"
                   />
                 </span>
-                <span className="hidden sm:block">
-                  <Logo variante="horizontal" className="h-9 md:h-11" />
+                {/* min-w-0 + max-w-full : si la place manque (compte connecté, nom long), le logo rétrécit au lieu de recouvrir la loupe. */}
+                <span className="hidden min-w-0 md:block">
+                  <Logo variante="horizontal" className="h-9 max-w-full object-contain object-left md:h-11" />
                 </span>
               </>
             )}
           </Link>
-          <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap sm:inline" />
+          <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap md:inline" />
         </div>
         <div className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
@@ -434,7 +436,7 @@ export function Header() {
               <SheetDescription>{t("nav.menu_description", { site: SITE_NAME })}</SheetDescription>
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
                   sous `sm` faute de place, jamais retiré du mobile. */}
-              <CompteAReboursBadge className="mt-3 block sm:hidden" />
+              <CompteAReboursBadge className="mt-3 block md:hidden" />
               <nav aria-label={t("nav.menu")} className="mt-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link
