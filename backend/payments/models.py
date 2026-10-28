@@ -5,6 +5,7 @@ from django.db import transaction as db_transaction
 from django.utils import timezone
 
 from subscriptions.models import (
+    Campagne,
     InscriptionInedite,
     InscriptionRepetiteur,
     Plan,
@@ -62,7 +63,7 @@ def _activer_acces(plan, user, profil=None):
 
 
 class TransactionManager(models.Manager):
-    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique, profil=None):
+    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique, profil=None, campagne=None):
         """
         Achat intégralement couvert par le crédit parrainage disponible de `user`
         (credit_applique == plan.effective_price()) - jamais envoyé à un agrégateur, activé
@@ -72,7 +73,7 @@ class TransactionManager(models.Manager):
         transaction = self.create(
             user=user, plan=plan, amount=0, phone_number=phone_number,
             credit_applique=credit_applique, status=StatutTransaction.SUCCESSFUL,
-            profil=profil or user.profils.first(),
+            profil=profil or user.profils.first(), campagne=campagne,
         )
         return transaction._confirmer_succes()
 
@@ -97,6 +98,11 @@ class Transaction(models.Model):
     inscription_repetiteur = models.ForeignKey(
         InscriptionRepetiteur, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions",
         help_text="Renseigné une fois le paiement d'un Plan ADDON_REPETITEUR confirmé - exclusif avec `subscription` (voir _activer_acces).",
+    )
+
+    campagne = models.ForeignKey(
+        Campagne, null=True, blank=True, on_delete=models.SET_NULL, related_name="transactions",
+        help_text="Campagne promotionnelle qui a fait baisser le prix de cet achat (voir Plan.tarif), figée à l'initiation. Sert à mesurer ce qu'elle a rapporté.",
     )
 
     amount = models.PositiveIntegerField(help_text="Montant en FCFA réellement envoyé à l'agrégateur (déjà net du crédit parrainage - voir credit_applique), capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
@@ -310,10 +316,14 @@ class ManualPaymentManager(models.Manager):
         (espace/casse) pour empêcher un contournement trivial de la contrainte d'unicité.
         """
         reference = (transaction_reference or "").strip().upper()
+        profil = profil or user.profils.first()
+        # Campagne de la déclaration : celle en cours, ou celle qui vient de finir si le parent a payé
+        # au prix affiché puis déclaré après la date limite (voir CampagneManager.pour_declaration).
+        tarif = plan.tarif(user=user, profil=profil, campagne=Campagne.objects.pour_declaration(paid_at=paid_at))
 
         payment = self.create(
-            user=user, plan=plan, operator=operator, profil=profil or user.profils.first(),
-            amount_expected=plan.effective_price(user=user, profil=profil or user.profils.first()), amount_declared=amount_declared,
+            user=user, plan=plan, operator=operator, profil=profil, campagne=tarif.campagne,
+            amount_expected=tarif.prix, amount_declared=amount_declared,
             payer_phone_number=payer_phone_number, transaction_reference=reference,
             paid_at=paid_at, proof=proof, declared_ip=ip, paye_par_revendeur=paye_par_revendeur,
         )
@@ -349,6 +359,11 @@ class ManualPayment(models.Model):
     inscription_repetiteur = models.ForeignKey(
         InscriptionRepetiteur, null=True, blank=True, on_delete=models.SET_NULL, related_name="manual_payments",
         help_text="Renseigné une fois un paiement de Plan ADDON_REPETITEUR approuvé - exclusif avec `subscription`.",
+    )
+
+    campagne = models.ForeignKey(
+        Campagne, null=True, blank=True, on_delete=models.SET_NULL, related_name="manual_payments",
+        help_text="Campagne promotionnelle dont le prix a été attendu pour cette déclaration (voir Campagne.objects.pour_declaration).",
     )
 
     operator = models.CharField(max_length=10, choices=MobileMoneyOperator.choices)

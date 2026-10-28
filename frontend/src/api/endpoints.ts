@@ -4,6 +4,7 @@ import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
 import { t } from "@/lib/i18n"
 import { messageLimiteAtteinte, signalerChangementQuota } from "@/lib/quotaPdf"
 import type {
+  CampagneEnCours,
   Accueil,
   CompletionRecherche,
   Cours,
@@ -524,6 +525,12 @@ export function listPlans(cursusId?: number, profilId?: number, authentifie = fa
   if (profilId) params.set("profil", String(profilId))
   const query = params.toString() ? `?${params.toString()}` : ""
   return apiRequest<Plan[]>(`/subscriptions/plans/${query}`, { auth: authentifie ? "optional" : false })
+}
+
+/** La campagne promotionnelle ouverte (ou null), pour les écrans qui affichent un prix sans avoir chargé de plan. */
+export async function getCampagneEnCours(): Promise<CampagneEnCours | null> {
+  const reponse = await apiRequest<{ campagne: CampagneEnCours | null }>("/subscriptions/campagne/", { auth: false })
+  return reponse.campagne
 }
 
 interface InitiatePaymentParams {

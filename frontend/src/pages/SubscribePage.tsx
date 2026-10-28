@@ -18,6 +18,7 @@ import { useSeo } from "@/lib/seo"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
+import { dateLimiteCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { CodeRevendeur } from "@/components/CodeRevendeur"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -411,13 +412,28 @@ export function SubscribePage() {
               {t("ac.inedites_incluses")}
             </span>
           )}
-          {plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
+          {plan.campagne ? (
             <span className="text-xs font-medium text-success">
-              {t("sb.prix_enfant", { a: formatAmount(plan.price), b: formatAmount(plan.effective_price) })}
+              {t("camp.prix_ligne", {
+                nom: plan.campagne.nom,
+                pct: plan.campagne.pourcentage,
+                a: formatAmount(plan.prix_reference),
+                b: formatAmount(plan.effective_price),
+                date: dateLimiteCampagne(plan.campagne.fin),
+              })}
             </span>
+          ) : (
+            plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
+              <span className="text-xs font-medium text-success">
+                {t("sb.prix_enfant", { a: formatAmount(plan.price), b: formatAmount(plan.effective_price) })}
+              </span>
+            )
           )}
         </span>
         <span className="shrink-0 font-display text-base font-semibold text-primary">
+          {plan.campagne && (
+            <s className="mr-1.5 text-sm font-normal text-muted-foreground">{formatAmount(plan.prix_reference)}</s>
+          )}
           {formatAmount(plan.effective_price)} FCFA
         </span>
       </div>
@@ -454,6 +470,9 @@ export function SubscribePage() {
           </span>
         </span>
         <span className="font-display text-base font-semibold text-primary">
+          {plan.campagne && (
+            <s className="mr-1.5 text-sm font-normal text-muted-foreground">{formatAmount(plan.prix_reference)}</s>
+          )}
           {formatAmount(plan.effective_price)} FCFA
         </span>
       </label>

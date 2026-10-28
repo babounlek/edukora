@@ -16,11 +16,12 @@ identifiant n'est conservé pour eux (voir AnalyticsEvent) ; seuls les évèneme
 from datetime import timedelta
 from statistics import median
 
-from django.db.models import Min
+from django.db.models import Min, Sum
 from django.utils import timezone
 
 from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
 from quiz.models import QuizSession, SeanceJournaliere, StatutSeance
+from subscriptions.models import Campagne
 from users.models import User
 
 from .models import AnalyticsEvent, EventName
@@ -140,6 +141,7 @@ def entonnoir(jours=30, *, maintenant=None):
         "delai_median_jusqu_au_paiement_jours": _delai_median_jusqu_au_paiement(inscrits),
         "paiements": etat_des_paiements(debut, maintenant),
         "frequentation": _frequentation(debut),
+        "campagnes": rapport_campagnes(maintenant),
     }
 
 
@@ -191,6 +193,64 @@ def _frequentation(debut):
     }
 
 
+def _mesure_fenetre(debut, fin):
+    """
+    Ce que vaut une période, sur les mêmes bases que l'entonnoir : comptes créés, ceux d'entre eux qui ont fini
+    par payer (à ce jour, pas seulement dans la période), et paiements validés dans la période avec leur
+    chiffre d'affaires. `taux_conversion` = comptes créés dans la période qui ont payé / comptes créés.
+    """
+    crees = set(
+        User.objects.filter(date_joined__gte=debut, date_joined__lt=fin, is_staff=False, is_superuser=False)
+        .values_list("id", flat=True),
+    )
+    payants = crees & _ids_avec_paiement_reussi()
+    transactions = Transaction.objects.filter(
+        status=StatutTransaction.SUCCESSFUL, created_at__gte=debut, created_at__lt=fin,
+    )
+    manuels = ManualPayment.objects.filter(
+        status=ManualPaymentStatus.APPROVED, created_at__gte=debut, created_at__lt=fin,
+    )
+    evenements = AnalyticsEvent.objects.filter(created_at__gte=debut, created_at__lt=fin)
+    return {
+        "comptes_crees": len(crees),
+        "comptes_devenus_payants": len(payants),
+        "taux_conversion": _pourcentage(len(payants), len(crees)),
+        "paiements_valides": transactions.count() + manuels.count(),
+        "paiements_au_prix_de_campagne": transactions.filter(campagne__isnull=False).count()
+        + manuels.filter(campagne__isnull=False).count(),
+        "chiffre_affaires": (transactions.aggregate(t=Sum("amount"))["t"] or 0)
+        + (manuels.aggregate(t=Sum("amount_declared"))["t"] or 0),
+        "tarifs_vus": evenements.filter(name=EventName.TARIFS_VUS).count(),
+        "abonnement_ouvert": evenements.filter(name=EventName.ABONNEMENT_OUVERT).count(),
+    }
+
+
+def rapport_campagnes(maintenant=None):
+    """
+    Une ligne par campagne promotionnelle commencée (voir subscriptions.models.Campagne), mesurée sur sa période
+    - bornée à `maintenant` tant qu'elle court - et comparée à la période de même durée juste avant. C'est la
+    réponse à « le frein est-il le prix ou la confiance ? » : si la conversion monte nettement pendant la
+    campagne, le prix pesait ; si elle ne bouge pas, c'est la confiance (ou le trafic) qu'il faut travailler.
+    Les volumes sont petits : lire les écarts comme des ordres de grandeur, pas comme des statistiques.
+    """
+    maintenant = maintenant or timezone.now()
+    lignes = []
+    for campagne in Campagne.objects.filter(debut__lte=maintenant).order_by("-debut"):
+        fin = min(campagne.fin, maintenant)
+        duree = fin - campagne.debut
+        lignes.append({
+            "nom": campagne.nom,
+            "pourcentage": campagne.pourcentage,
+            "debut": campagne.debut.isoformat(),
+            "fin": campagne.fin.isoformat(),
+            "en_cours": campagne.active and campagne.debut <= maintenant < campagne.fin,
+            "jours_mesures": round(duree.total_seconds() / 86400, 1),
+            "pendant": _mesure_fenetre(campagne.debut, fin),
+            "juste_avant": _mesure_fenetre(campagne.debut - duree, campagne.debut),
+        })
+    return lignes
+
+
 def _lisible(valeur):
     return "-" if valeur is None else valeur
 
@@ -223,4 +283,13 @@ def rendre_texte(rapport):
         "",
         f"Fréquentation (évènements de la période) : {rapport['frequentation']}",
     ]
+    for c in rapport["campagnes"]:
+        lignes += ["", f"Campagne « {c['nom']} » (-{c['pourcentage']} %, {c['jours_mesures']} jours mesurés{', en cours' if c['en_cours'] else ''})"]
+        for libelle, m in (("pendant", c["pendant"]), ("juste avant", c["juste_avant"])):
+            lignes.append(
+                f"  {libelle:<12} {m['comptes_crees']:>4} comptes créés, {m['comptes_devenus_payants']:>3} payants"
+                f" ({_lisible(m['taux_conversion'])} %), {m['paiements_valides']} paiement(s) validé(s)"
+                f" dont {m['paiements_au_prix_de_campagne']} au prix de campagne, {m['chiffre_affaires']} FCFA,"
+                f" {m['tarifs_vus']} tarifs vus, {m['abonnement_ouvert']} pages d'abonnement ouvertes",
+            )
     return "\n".join(lignes)

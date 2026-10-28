@@ -35,6 +35,8 @@ import { formatAmount } from "@/lib/utils"
 import { EpreuveMarkdownLazy } from "@/components/EpreuveMarkdownLazy"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { BandeauCampagne } from "@/components/BandeauCampagne"
+import { useCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
@@ -90,6 +92,7 @@ function CatalogueVitrine() {
   const { countries } = useCountry()
   const countryLabel = nomPays(countries, country)
   const { isAuthenticated } = useAuth()
+  const campagne = useCampagne()
   const [searchParams] = useSearchParams()
 
   // Un lien encore en circulation vers l'ancien catalogue-sur-l'accueil (ex.
@@ -662,6 +665,14 @@ function CatalogueVitrine() {
                 prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
               })}
             </p>
+            {campagne && (
+              <BandeauCampagne
+                campagne={campagne}
+                prix={campagne.prix}
+                prixReference={campagne.prix_reference}
+                className="mx-auto mt-4 max-w-xl justify-center text-left"
+              />
+            )}
             <div className="mt-5 flex justify-center">
               <Button size="lg" asChild>
                 <Link to="/tarifs">

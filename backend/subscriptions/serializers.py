@@ -3,37 +3,66 @@ from rest_framework import serializers
 from catalog.serializers import CursusSerializer
 from users.serializers import ProfilSerializer
 
-from .models import Plan, Subscription
+from .models import Campagne, Plan, Subscription, campagne_en_cours
+
+
+class CampagneSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Campagne
+        fields = ["id", "nom", "pourcentage", "debut", "fin"]
 
 
 class PlanSerializer(serializers.ModelSerializer):
     cursus = CursusSerializer(read_only=True)
     effective_duration_days = serializers.SerializerMethodField()
     effective_price = serializers.SerializerMethodField()
+    prix_reference = serializers.SerializerMethodField()
+    campagne = serializers.SerializerMethodField()
     prix_enfant_supplementaire = serializers.SerializerMethodField()
 
     class Meta:
         model = Plan
         fields = [
             "id", "name", "cursus", "product_type", "price", "duration_mode", "duration_days",
-            "effective_duration_days", "effective_price", "prix_enfant_supplementaire", "inclut_inedit",
+            "effective_duration_days", "effective_price", "prix_reference", "campagne",
+            "prix_enfant_supplementaire", "inclut_inedit",
         ]
 
     def get_effective_duration_days(self, obj):
         return obj.effective_duration_days()
 
-    def get_effective_price(self, obj):
-        """Prix pour l'enfant `?profil=` du compte connecté si fourni (enfant
+    def _tarif(self, obj):
+        """Tarif pour l'enfant `?profil=` du compte connecté si fourni (enfant
         supplémentaire de la famille = tarif remisé), sinon pour le premier profil du
-        compte connecté ; tarif de référence pour un visiteur anonyme."""
-        request = self.context.get("request")
-        user = getattr(request, "user", None)
-        if user is None or not user.is_authenticated:
-            return obj.effective_price()
-        profil = None
-        if profil_id := request.query_params.get("profil"):
-            profil = user.profils.filter(pk=profil_id).first() if str(profil_id).isdigit() else None
-        return obj.effective_price(user=user, profil=profil)
+        compte connecté ; tarif de référence pour un visiteur anonyme. Calculé une fois
+        par plan et par requête (trois champs en dépendent), campagne lue une seule fois."""
+        memo = self.context.setdefault("_tarifs", {})
+        if obj.pk not in memo:
+            if "_campagne" not in self.context:
+                self.context["_campagne"] = campagne_en_cours()
+            campagne = self.context["_campagne"]
+            request = self.context.get("request")
+            user = getattr(request, "user", None)
+            if user is None or not user.is_authenticated:
+                memo[obj.pk] = obj.tarif(campagne=campagne)
+            else:
+                profil = None
+                if profil_id := request.query_params.get("profil"):
+                    profil = user.profils.filter(pk=profil_id).first() if str(profil_id).isdigit() else None
+                memo[obj.pk] = obj.tarif(user=user, profil=profil, campagne=campagne)
+        return memo[obj.pk]
+
+    def get_effective_price(self, obj):
+        return self._tarif(obj).prix
+
+    def get_prix_reference(self, obj):
+        """Prix sans la campagne (barré à côté du prix réel) ; égal à `effective_price` hors campagne."""
+        return self._tarif(obj).reference
+
+    def get_campagne(self, obj):
+        """La campagne qui fait réellement baisser CE prix, ou None."""
+        campagne = self._tarif(obj).campagne
+        return CampagneSerializer(campagne).data if campagne else None
 
     def get_prix_enfant_supplementaire(self, obj):
         return obj.prix_enfant_supplementaire()

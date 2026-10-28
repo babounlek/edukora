@@ -1,10 +1,12 @@
 from rest_framework import generics, permissions
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from users.parent import portee_famille
 from users.profils import profil_actif
 
-from .models import Plan, Subscription
-from .serializers import PlanSerializer, SubscriptionSerializer
+from .models import Campagne, DureeMode, Plan, ProductType, Subscription
+from .serializers import CampagneSerializer, PlanSerializer, SubscriptionSerializer
 
 
 class PlanListView(generics.ListAPIView):
@@ -17,6 +19,41 @@ class PlanListView(generics.ListAPIView):
         if cursus_id := self.request.query_params.get("cursus"):
             qs = qs.filter(cursus_id=cursus_id)
         return qs
+
+
+class CampagneEnCoursView(APIView):
+    """
+    La campagne promotionnelle ouverte, ou `{"campagne": null}`. Public : sert aux pages qui
+    affichent un prix sans avoir chargé de plan (bandeau, accueil, accès refusé). Les prix
+    sont ceux du premier enfant, lus sur un plan Jusqu'à l'Examen concerné - la grille est
+    unique (même tarif pour tous les cursus), le détail par plan reste dans /plans/.
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        campagne = Campagne.objects.en_cours()
+        if campagne is None:
+            return Response({"campagne": None})
+        plan = next(
+            (
+                p for p in Plan.objects.filter(
+                    is_active=True, product_type=ProductType.ABONNEMENT, duration_mode=DureeMode.JUSQUA_EXAMEN,
+                ).select_related("cursus")
+                if campagne.concerne(p)
+            ),
+            None,
+        )
+        if plan is None:
+            return Response({"campagne": None})
+        tarif = plan.tarif(campagne=campagne)
+        return Response({"campagne": {
+            **CampagneSerializer(campagne).data,
+            "prix": tarif.prix,
+            "prix_reference": tarif.reference,
+            "prix_enfant_supplementaire": min(plan.prix_enfant_supplementaire(), tarif.prix),
+            "cursus": list(campagne.cursus.values_list("pk", flat=True)),
+        }})
 
 
 class MySubscriptionsView(generics.ListAPIView):

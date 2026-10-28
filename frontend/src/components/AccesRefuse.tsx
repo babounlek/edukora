@@ -2,8 +2,10 @@ import { Link } from "react-router-dom"
 import { ArrowLeft, ArrowRight, Check, Lock } from "lucide-react"
 
 import type { Cursus } from "@/api/types"
+import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
+import { useCampagne } from "@/lib/campagne"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { PRIX_ABONNEMENT_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
@@ -32,6 +34,7 @@ export function AccesRefuse({
   liens: { to: string; label: string }[]
 }) {
   useI18n()
+  const campagne = useCampagne()
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 sm:py-16">
       <section className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/[0.08] via-primary/[0.03] to-gold/[0.06] p-6 text-center shadow-lg shadow-primary/5 sm:p-9">
@@ -84,8 +87,16 @@ export function AccesRefuse({
           {/* Le prix avant le clic : « S'abonner » sans montant fait hésiter, et la page suivante
               demande déjà un numéro de téléphone. Aucun Plan n'est chargé ici (seulement des
               Cursus) : la valeur vient de la constante partagée, pas d'un nombre recopié. */}
+          {campagne && (
+            <BandeauCampagne
+              campagne={campagne}
+              prix={campagne.prix}
+              prixReference={campagne.prix_reference}
+              className="mt-4 justify-center text-left"
+            />
+          )}
           <p className="mt-3 text-sm text-muted-foreground">
-            {t("ar.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) })}
+            {t("ar.prix", { prix: formatAmount(campagne?.prix ?? PRIX_ABONNEMENT_FCFA) })}
           </p>
 
           <div className="mt-4 flex justify-center">

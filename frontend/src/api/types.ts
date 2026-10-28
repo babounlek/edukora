@@ -725,6 +725,26 @@ export type DureeMode = "FIXE" | "JUSQUA_EXAMEN"
 
 export type ProductType = "ABONNEMENT" | "ADDON_REPETITEUR"
 
+/** Promotion temporaire sur l'abonnement (voir subscriptions.models.Campagne). */
+export interface Campagne {
+  id: number
+  nom: string
+  pourcentage: number
+  debut: string
+  /** Date limite : au-delà, le prix normal est facturé. */
+  fin: string
+}
+
+/** `GET /subscriptions/campagne/` : la campagne ouverte, avec les prix du premier enfant. */
+export interface CampagneEnCours extends Campagne {
+  prix: number
+  prix_reference: number
+  /** Enfant supplémentaire de la même famille, jamais cumulé avec la campagne (le plus bas des deux). */
+  prix_enfant_supplementaire: number
+  /** Vide = tous les cursus. */
+  cursus: number[]
+}
+
 export interface Plan {
   id: number
   name: string
@@ -735,6 +755,10 @@ export interface Plan {
   duration_days: number
   effective_duration_days: number
   effective_price: number
+  /** Prix sans la campagne (à barrer) ; égal à `effective_price` hors campagne. */
+  prix_reference: number
+  /** La campagne qui fait réellement baisser CE prix, sinon null. */
+  campagne: Campagne | null
   /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %). */
   prix_enfant_supplementaire: number
   inclut_inedit: boolean

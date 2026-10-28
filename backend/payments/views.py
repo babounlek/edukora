@@ -88,7 +88,8 @@ def initiate_payment(request):
     if erreur is not None:
         return erreur
 
-    prix = plan.effective_price(user=request.user, profil=profil)
+    tarif = plan.tarif(user=request.user, profil=profil)
+    prix = tarif.prix
     # Remise automatique par crédit parrainage disponible (voir
     # subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le
     # 2026-09-28 (le parrainage est redevenu un simple partage de lien, sans
@@ -102,7 +103,7 @@ def initiate_payment(request):
     if montant_a_payer == 0:
         transaction = Transaction.objects.creer_couverte_par_credit(
             user=request.user, plan=plan, phone_number=phone_number, credit_applique=credit_applique,
-            profil=profil,
+            profil=profil, campagne=tarif.campagne,
         )
         return Response({
             "transaction_id": transaction.id, "status": transaction.status,
@@ -112,6 +113,7 @@ def initiate_payment(request):
     transaction = Transaction.objects.create(
         user=request.user, plan=plan, amount=montant_a_payer,
         phone_number=phone_number, credit_applique=credit_applique, profil=profil,
+        campagne=tarif.campagne,
     )
 
     try:

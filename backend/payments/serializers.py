@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import IntegrityError
 from rest_framework import serializers
 
-from subscriptions.models import Plan
+from subscriptions.models import Campagne, Plan
 from subscriptions.serializers import PlanSerializer
 from users.models import phone_validator
 from users.phone import to_e164, to_local
@@ -116,7 +116,9 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
         else:
             # Sans profil explicite : l'enfant actif, pas le premier du compte (voir payments.views._resoudre_profil).
             attrs["profil"] = profil_actif(request)
-        prix_attendu = plan.effective_price(user=request.user, profil=attrs.get("profil"))
+        # Même campagne que ManualPayment.objects.declare (dont le délai de grâce après la date limite).
+        campagne = Campagne.objects.pour_declaration(paid_at=attrs.get("paid_at"))
+        prix_attendu = plan.effective_price(user=request.user, profil=attrs.get("profil"), campagne=campagne)
         attrs.setdefault("amount_declared", prix_attendu)
         if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({

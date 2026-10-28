@@ -21,7 +21,9 @@ import { codeSerieAffiche } from "@/lib/cursus"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
+import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { BandeauEnfantVise } from "@/components/BandeauEnfantVise"
+import { useCampagne } from "@/lib/campagne"
 import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -181,8 +183,11 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
  * enfant paient tous le même prix.
  */
 function TarifFamille({ plan }: { plan: Plan }) {
-  const reference = plan.price
-  const supplementaire = plan.prix_enfant_supplementaire
+  // Pendant une campagne, le premier enfant paie le prix de campagne (`effective_price`, calculé pour un
+  // visiteur sans famille) et les suivants le plus bas des deux tarifs : la remise famille et la
+  // campagne ne se cumulent jamais (voir Plan.tarif côté serveur).
+  const reference = plan.effective_price
+  const supplementaire = Math.min(plan.prix_enfant_supplementaire, plan.effective_price)
   const total = (nbEnfants: number) => reference + (nbEnfants - 1) * supplementaire
 
   return (
@@ -240,6 +245,7 @@ export function PricingPage() {
   // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
   const { campayActif } = usePaymentConfig()
   const { isAuthenticated } = useAuth()
+  const campagne = useCampagne()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
   // Présent quand on arrive ici pour acheter l'abonnement d'un enfant qu'on vient de
   // créer ("Ajouter un enfant", AccesPage.tsx) - relayé tel quel vers /abonnement,
@@ -339,6 +345,9 @@ export function PricingPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <BandeauEnfantVise profilId={profilParam} />
+      {campagne && (campagne.cursus.length === 0 || !selectedCursus || campagne.cursus.includes(Number(selectedCursus))) && (
+        <BandeauCampagne campagne={campagne} prix={campagne.prix} prixReference={campagne.prix_reference} className="mb-6" />
+      )}
       {/* Même gabarit de hero que /quiz, /fiches et /cours. Un seul titre, là où la
           page en empilait deux ("Choisis ton profil." puis "Un seul prix...") avant
           d'avoir rien dit du prix ni de la façon de payer. Les trois puces répondent
@@ -522,9 +531,19 @@ export function PricingPage() {
                       <div>
                         {/* Jamais de repli sur 0 : sans plan chargé, on n'affiche pas de prix du tout. */}
                         {planTarif && (
-                          <p className="font-display text-3xl font-semibold text-primary">
-                            {formatAmount(planTarif.price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          <p className="flex flex-wrap items-baseline gap-x-2 font-display text-3xl font-semibold text-primary">
+                            <span>
+                              {formatAmount(planTarif.effective_price)}
+                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                            </span>
+                            {planTarif.campagne && (
+                              <>
+                                <s className="text-lg font-normal text-muted-foreground">{formatAmount(planTarif.prix_reference)}</s>
+                                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-gold-text">
+                                  {t("camp.etiquette", { pct: planTarif.campagne.pourcentage })}
+                                </span>
+                              </>
+                            )}
                           </p>
                         )}
                         <p className="mt-0.5 text-xs text-muted-foreground">

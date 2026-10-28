@@ -1,3 +1,8 @@
+from collections import namedtuple
+from datetime import timedelta
+
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import connection, models
 from django.db import transaction as db_transaction
 from django.utils import timezone
@@ -17,6 +22,128 @@ class DureeMode(models.TextChoices):
 # remise FIXE de 20 % sur ce tarif de référence (12 000 F), jamais cumulative : le 2e,
 # le 3e, le 4e enfant paient tous 12 000 F.
 REMISE_ENFANT_SUPPLEMENTAIRE_PCT = 20
+
+# Remise maximale d'une campagne : garde-fou contre une faute de frappe dans l'admin
+# (50 saisi pour 5) qui vendrait l'abonnement à moitié prix sans que personne le voie.
+CAMPAGNE_REMISE_MAX_PCT = 50
+
+# Sentinelle de `Plan.tarif`/`Plan.effective_price` : « lis la campagne en cours ». Distincte de
+# None, qui impose au contraire « aucune campagne ».
+AUTO = object()
+
+
+class Tarif(namedtuple("Tarif", ["prix", "reference", "campagne"])):
+    """
+    Prix à payer, prix qu'il aurait été sans la campagne (`reference`, déjà net de la
+    remise famille) et campagne réellement appliquée (None si elle ne fait rien baisser :
+    pas de campagne, plan non concerné, ou remise famille au moins aussi avantageuse).
+    """
+
+    __slots__ = ()
+
+
+class CampagneManager(models.Manager):
+    def en_cours(self, maintenant=None):
+        """La campagne ouverte à `maintenant`, ou None. Une seule est censée l'être (voir
+        Campagne.clean) ; en cas de chevauchement quand même, la plus récente l'emporte."""
+        maintenant = maintenant or timezone.now()
+        return self.filter(active=True, debut__lte=maintenant, fin__gt=maintenant).order_by("-debut").first()
+
+    def pour_declaration(self, maintenant=None, paid_at=None):
+        """
+        Campagne à appliquer à un paiement Mobile Money DÉCLARÉ à la main : la campagne en
+        cours, ou - dans le délai de grâce (`Campagne.grace_declaration_heures`) - celle qui
+        vient de se terminer, pour un parent qui a payé au prix affiché puis déclaré après la
+        date limite. Si `paid_at` est connu et postérieur à la fin, il a payé hors campagne.
+        """
+        maintenant = maintenant or timezone.now()
+        en_cours = self.en_cours(maintenant)
+        if en_cours is not None:
+            return en_cours
+        for campagne in self.filter(active=True, fin__lte=maintenant).order_by("-fin")[:3]:
+            if maintenant > campagne.fin + timedelta(hours=campagne.grace_declaration_heures):
+                continue
+            if paid_at is not None and paid_at > campagne.fin:
+                continue
+            return campagne
+        return None
+
+
+class Campagne(models.Model):
+    """
+    Promotion temporaire sur l'abonnement Jusqu'à l'Examen (ex. « Offre fondateurs », −20 %).
+    Une seule peut être ouverte à la fois (voir `clean`). Elle s'applique dans
+    `Plan.tarif`, donc au paiement Campay, à la déclaration manuelle, à l'affichage des prix
+    et à la commission revendeur (calculée sur le montant réellement encaissé). Chaque
+    paiement garde sa campagne (`Transaction.campagne`, `ManualPayment.campagne`) pour
+    mesurer ce qu'elle a rapporté (voir analytics.funnel).
+    """
+
+    nom = models.CharField(max_length=80, help_text="Affiché au public (ex. « Offre fondateurs »).")
+    pourcentage = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(CAMPAGNE_REMISE_MAX_PCT)],
+        help_text=f"Remise en % sur le tarif de référence, de 1 à {CAMPAGNE_REMISE_MAX_PCT}.",
+    )
+    debut = models.DateTimeField()
+    fin = models.DateTimeField(help_text="Date limite affichée au public : au-delà, le prix normal est facturé.")
+    active = models.BooleanField(
+        default=True, help_text="Décoche pour suspendre la campagne tout de suite, sans toucher aux dates.",
+    )
+    cursus = models.ManyToManyField(
+        Cursus, blank=True, related_name="campagnes",
+        help_text="Vide = tous les cursus. Sinon, seuls les plans de ces cursus sont remisés.",
+    )
+    grace_declaration_heures = models.PositiveSmallIntegerField(
+        default=48,
+        help_text=(
+            "Après la date limite, un paiement Mobile Money fait au prix de la campagne peut encore être déclaré à la main "
+            "pendant ce délai (le parent a payé au prix affiché, puis déclaré plus tard). Sans effet sur le paiement Campay."
+        ),
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = CampagneManager()
+
+    class Meta:
+        ordering = ["-debut"]
+        verbose_name = "campagne promotionnelle"
+        verbose_name_plural = "campagnes promotionnelles"
+
+    def __str__(self):
+        return f"{self.nom} (−{self.pourcentage} %)"
+
+    def clean(self):
+        if self.debut and self.fin and self.fin <= self.debut:
+            raise ValidationError({"fin": "La date limite doit être postérieure au début."})
+        if self.active and self.debut and self.fin:
+            chevauche = Campagne.objects.filter(active=True, debut__lt=self.fin, fin__gt=self.debut).exclude(pk=self.pk)
+            if chevauche.exists():
+                raise ValidationError(
+                    "Une autre campagne active couvre déjà une partie de cette période : une seule campagne à la fois. "
+                    f"Conflit avec « {chevauche.first().nom} ».",
+                )
+
+    def concerne(self, plan):
+        """Seul l'abonnement Jusqu'à l'Examen est remisé (même périmètre que la remise famille)."""
+        if plan.product_type != ProductType.ABONNEMENT or plan.duration_mode != DureeMode.JUSQUA_EXAMEN:
+            return False
+        if not self.pk:
+            return True
+        restreints = self.cursus.values_list("pk", flat=True)
+        return not restreints or plan.cursus_id in restreints
+
+    def appliquer(self, prix):
+        """Prix remisé, arrondi au franc inférieur."""
+        return prix * (100 - self.pourcentage) // 100
+
+    @property
+    def est_ouverte(self):
+        maintenant = timezone.now()
+        return self.active and self.debut <= maintenant < self.fin
+
+
+def campagne_en_cours():
+    return Campagne.objects.en_cours()
 
 
 class ProductType(models.TextChoices):
@@ -139,17 +266,34 @@ class Plan(models.Model):
             return self.price
         return self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
 
-    def effective_price(self, user=None, profil=None):
+    def tarif(self, user=None, profil=None, campagne=AUTO):
         """
-        Prix réel à facturer/afficher pour `profil` (l'enfant) du compte `user`. Pour
+        Tarif complet pour `profil` (l'enfant) du compte `user` : voir `Tarif`. Pour
         JUSQUA_EXAMEN : `price` pour le premier enfant de la famille,
         `prix_enfant_supplementaire()` si un AUTRE enfant du même compte a déjà un
         accès Jusqu'à l'Examen en cours (voir `est_enfant_supplementaire`). Sans `user`
         (affichage du catalogue) : le tarif de référence.
+
+        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite, mais
+        seulement si elle fait payer MOINS que ce tarif : la remise famille et la campagne
+        ne se cumulent jamais, la plus avantageuse l'emporte. `campagne` : `AUTO` lit la
+        campagne en cours ; `None` en impose l'absence ; une `Campagne` en impose une (paiement
+        manuel déclaré juste après la fin de l'offre, voir `campagne_pour_declaration`).
         """
+        reference = self.price
         if self.duration_mode == DureeMode.JUSQUA_EXAMEN and est_enfant_supplementaire(user, profil):
-            return self.prix_enfant_supplementaire()
-        return self.price
+            reference = self.prix_enfant_supplementaire()
+        if campagne is AUTO:
+            campagne = campagne_en_cours()
+        if campagne is not None and campagne.concerne(self):
+            prix_campagne = campagne.appliquer(self.price)
+            if prix_campagne < reference:
+                return Tarif(prix=prix_campagne, reference=reference, campagne=campagne)
+        return Tarif(prix=reference, reference=reference, campagne=None)
+
+    def effective_price(self, user=None, profil=None, campagne=AUTO):
+        """Prix réel à facturer/afficher : voir `tarif`, dont c'est le seul montant."""
+        return self.tarif(user, profil, campagne).prix
 
 
 def est_enfant_supplementaire(user, profil=None):

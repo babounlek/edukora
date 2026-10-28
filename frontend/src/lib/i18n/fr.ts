@@ -173,6 +173,13 @@ export const fr = {
   "accueil.pret_texte":
     "Un seul abonnement, valable jusqu'à ton examen : {prix} FCFA par enfant, puis {prix_sup} FCFA pour chaque enfant supplémentaire de la même famille. Paiement par Mobile Money, sans engagement.",
   "accueil.voir_prix": "Voir les prix",
+  "camp.etiquette": "−{pct} %",
+  "camp.bandeau_titre": "{nom} : −{pct} % sur l'abonnement",
+  "camp.bandeau_prix": "{prix} FCFA au lieu de {ref} FCFA, jusqu'au {date}.",
+  "camp.jours_restants_one": "Plus que {n} jour",
+  "camp.jours_restants_other": "Plus que {n} jours",
+  "camp.dernier_jour": "Dernier jour",
+  "camp.prix_ligne": "{nom} (−{pct} %) : {a} → {b} FCFA, jusqu'au {date}",
 
   "seance.aujourdhui": "Aujourd'hui",
   "seance.diagnostic": "on situe ton niveau",

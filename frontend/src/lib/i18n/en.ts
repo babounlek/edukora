@@ -167,6 +167,13 @@ export const en: Partial<Record<CleI18n, string>> = {
   "accueil.pret_texte":
     "One subscription, valid until your exam: {prix} FCFA per child, then {prix_sup} FCFA for each additional child in the same family. Pay by Mobile Money, no commitment.",
   "accueil.voir_prix": "See pricing",
+  "camp.etiquette": "−{pct}%",
+  "camp.bandeau_titre": "{nom}: −{pct}% on the subscription",
+  "camp.bandeau_prix": "{prix} FCFA instead of {ref} FCFA, until {date}.",
+  "camp.jours_restants_one": "Only {n} day left",
+  "camp.jours_restants_other": "Only {n} days left",
+  "camp.dernier_jour": "Last day",
+  "camp.prix_ligne": "{nom} (−{pct}%): {a} → {b} FCFA, until {date}",
 
   "seance.aujourdhui": "Today",
   "seance.diagnostic": "we find your level",

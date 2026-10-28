@@ -6,5 +6,6 @@ app_name = "subscriptions"
 
 urlpatterns = [
     path("plans/", views.PlanListView.as_view(), name="plan-list"),
+    path("campagne/", views.CampagneEnCoursView.as_view(), name="campagne-en-cours"),
     path("mine/", views.MySubscriptionsView.as_view(), name="my-subscriptions"),
 ]
