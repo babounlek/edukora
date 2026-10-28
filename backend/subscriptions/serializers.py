@@ -9,7 +9,7 @@ from .models import Campagne, Plan, Subscription, campagne_en_cours
 class CampagneSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campagne
-        fields = ["id", "nom", "pourcentage", "debut", "fin"]
+        fields = ["id", "nom", "nom_en", "pourcentage", "debut", "fin"]
 
 
 class PlanSerializer(serializers.ModelSerializer):
@@ -65,7 +65,9 @@ class PlanSerializer(serializers.ModelSerializer):
         return CampagneSerializer(campagne).data if campagne else None
 
     def get_prix_enfant_supplementaire(self, obj):
-        return obj.prix_enfant_supplementaire()
+        """Enfant supplémentaire de la famille, campagne en cours comprise (elle se cumule avec la remise famille)."""
+        self._tarif(obj)  # charge la campagne du contexte
+        return obj.prix_enfant_supplementaire(campagne=self.context["_campagne"])
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

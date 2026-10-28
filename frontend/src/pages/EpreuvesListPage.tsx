@@ -6,6 +6,7 @@ import {
   BookOpen,
   ChevronDown,
   Crown,
+  Timer,
   Gift,
   GraduationCap,
   LayoutGrid,
@@ -71,7 +72,7 @@ const VIEW_MODE_STORAGE_KEY = "edukamer_epreuves_catalogue_view"
 // "tout" inclus : le choix d'élargir au-delà de son cursus (voir filtreCursus) doit
 // se restaurer comme les autres filtres, sinon le pré-filtrage revient à la
 // navigation suivante et le bouton "Voir tout le catalogue" semble sans effet.
-const FILTER_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "search", "ordering", "tout"]
+const FILTER_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "mini", "search", "ordering", "tout"]
 
 const ORIGINE_LABELS: Record<Origine, CleI18n> = {
   OFFICIEL: "ep.origine_OFFICIEL",
@@ -189,6 +190,7 @@ export function EpreuvesListPage() {
   const origineFilter = (searchParams.get("origine") ?? "") as Origine | ""
   const natureFilter = (searchParams.get("nature") ?? "") as NatureEpreuve | ""
   const gratuitFilter = searchParams.get("gratuit") === "true"
+  const miniFilter = searchParams.get("mini") === "true"
   const search = searchParams.get("search") ?? ""
   const ordering = triDepuisUrl(searchParams.get("ordering"))
   // Germe du tri aléatoire : fixé pour la visite (le défilement infini redemande la liste page par page, il
@@ -265,7 +267,7 @@ export function EpreuvesListPage() {
   const [plusOuvert, setPlusOuvert] = useState(false)
 
   const filtresActifs = Boolean(
-    subjectFilter || cursusFilter || origineFilter || natureFilter || gratuitFilter || search,
+    subjectFilter || cursusFilter || origineFilter || natureFilter || gratuitFilter || miniFilter || search,
   )
 
   // Volumétrie totale du pays, affichée dans le hero - même clé de cache que sur
@@ -294,6 +296,7 @@ export function EpreuvesListPage() {
       origineFilter,
       natureFilter,
       gratuitFilter,
+      miniFilter,
       debouncedSearch,
       ordering,
       ordering === "aleatoire" ? germeAleatoire : null,
@@ -310,6 +313,7 @@ export function EpreuvesListPage() {
           // Jamais `false` : le backend ne teste que la valeur "true", envoyer
           // est_vitrine=false polluerait l'URL de l'API pour rien.
           est_vitrine: gratuitFilter || undefined,
+          mini: miniFilter || undefined,
           search: debouncedSearch || undefined,
           ordering: triPourApi(ordering),
           seed: ordering === "aleatoire" ? germeAleatoire : undefined,
@@ -440,6 +444,11 @@ export function EpreuvesListPage() {
         return c ? `${c.examen_display}${c.series ? ` - ${t("prix.serie", { code: c.series.code })}` : ""}` : cursusFilter
       })(),
       clear: () => updateFilter("cursus", ""),
+    },
+    miniFilter && {
+      key: "mini",
+      label: t("ep.mini_filtre"),
+      clear: () => updateFilter("mini", ""),
     },
     origineFilter && {
       key: "origine",
@@ -658,6 +667,20 @@ export function EpreuvesListPage() {
           >
             <Crown className="size-4" />
             {t("cpt.inedites")}
+          </button>
+          <button
+            type="button"
+            onClick={() => updateFilter("mini", miniFilter ? "" : "true")}
+            aria-pressed={miniFilter}
+            className={cn(
+              "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+              miniFilter
+                ? "border-gold bg-gold text-gold-foreground"
+                : "border-gold/40 text-gold-text hover:border-gold hover:bg-gold/10",
+            )}
+          >
+            <Timer className="size-4" />
+            {t("ep.mini_filtre")}
           </button>
           <button
             type="button"

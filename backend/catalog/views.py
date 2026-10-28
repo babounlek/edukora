@@ -184,6 +184,9 @@ class LessonListView(generics.ListAPIView):
             qs = qs.filter(lesson_type=lesson_type)
         if origine := params.get("origine"):
             qs = qs.filter(origine=origine)
+        if params.get("mini") == "true":
+            # Mini-inédites : n'existent que côté EpreuveInedite (voir build_inedit_queryset), jamais en classique.
+            qs = qs.none()
         if nature := params.get("nature"):
             qs = qs.filter(nature_epreuve=nature.upper())
         if partie_francais := params.get("partie_francais"):

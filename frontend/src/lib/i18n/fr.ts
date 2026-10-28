@@ -175,11 +175,14 @@ export const fr = {
   "accueil.voir_prix": "Voir les prix",
   "camp.etiquette": "−{pct} %",
   "camp.bandeau_titre": "{nom} : −{pct} % sur l'abonnement",
-  "camp.bandeau_prix": "{prix} FCFA au lieu de {ref} FCFA, jusqu'au {date}.",
+  "camp.bandeau_prix": "Prix promotionnel : {prix} FCFA au lieu de {ref} FCFA, jusqu'au {date}.",
   "camp.jours_restants_one": "Plus que {n} jour",
   "camp.jours_restants_other": "Plus que {n} jours",
   "camp.dernier_jour": "Dernier jour",
-  "camp.prix_ligne": "{nom} (−{pct} %) : {a} → {b} FCFA, jusqu'au {date}",
+  "camp.prix_ligne": "{nom} (−{pct} %), prix promotionnel : {a} → {b} FCFA, jusqu'au {date}",
+  "camp.prix_promo": "Prix promotionnel",
+  "camp.prix_promo_min": "prix promotionnel",
+  "camp.prix_promo_jusqu_au": "Prix promotionnel, valable jusqu'au {date}",
 
   "seance.aujourdhui": "Aujourd'hui",
   "seance.diagnostic": "on situe ton niveau",
@@ -244,6 +247,8 @@ export const fr = {
   "prix.serie": "Série {code}",
   "prix.famille_intro":
     "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille (20 % de réduction)",
+  "prix.famille_intro_campagne":
+    "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille (prix promotionnel : réduction famille et {nom} cumulées)",
   "prix.enfants_one": "{n} enfant",
   "prix.enfants_other": "{n} enfants",
   "prix.exclusif": "Exclusif {site}",
@@ -651,6 +656,7 @@ export const fr = {
   "ar.texte":
     "Un seul abonnement, valable jusqu'à ton examen, et tout s'ouvre : tu peux commencer à lire dès la confirmation du paiement.",
   "ar.formules": "Voir les formules",
+  "ar.prix_promo": "Prix promotionnel : {prix} FCFA, une seule fois, jusqu'à l'examen · Mobile Money",
   "ar.prix": "{prix} FCFA, une seule fois, jusqu'à l'examen · Mobile Money",
   "ar.sujet_libre": "Voir le sujet en libre accès",
   "ine.seo_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
@@ -670,6 +676,7 @@ export const fr = {
   "ine.comprise_acces": "Cette épreuve est comprise dans ton accès.",
   "ine.gratuite": "Gratuite",
   "ine.mini": "Mini-inédite",
+  "ep.mini_filtre": "Mini-inédites",
   "ine.mini_aide": "Deux exercices, un chrono court, la même notation : réservée aux abonnés.",
   "ine.duree_indicative": "Durée indicative : {n} min",
   "ine.partage": "Teste-toi sur « {titre} » sur {site} :",

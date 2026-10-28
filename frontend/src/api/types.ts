@@ -731,6 +731,8 @@ export type ProductType = "ABONNEMENT" | "ADDON_REPETITEUR"
 export interface Campagne {
   id: number
   nom: string
+  /** Version anglaise du nom ; vide = on garde `nom`. */
+  nom_en: string
   pourcentage: number
   debut: string
   /** Date limite : au-delà, le prix normal est facturé. */
@@ -741,7 +743,7 @@ export interface Campagne {
 export interface CampagneEnCours extends Campagne {
   prix: number
   prix_reference: number
-  /** Enfant supplémentaire de la même famille, jamais cumulé avec la campagne (le plus bas des deux). */
+  /** Enfant supplémentaire de la même famille : remise famille puis campagne, cumulées. */
   prix_enfant_supplementaire: number
   /** Vide = tous les cursus. */
   cursus: number[]
@@ -761,7 +763,7 @@ export interface Plan {
   prix_reference: number
   /** La campagne qui fait réellement baisser CE prix, sinon null. */
   campagne: Campagne | null
-  /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %). */
+  /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %, plus la campagne en cours le cas échéant). */
   prix_enfant_supplementaire: number
   inclut_inedit: boolean
 }

@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { afterEach, describe, expect, it } from "vitest"
 
 import type { Campagne } from "@/api/types"
-import { urgenceCampagne } from "@/lib/campagne"
+import { definirLangue } from "@/lib/i18n"
+import { nomCampagne, urgenceCampagne } from "@/lib/campagne"
 import { BandeauCampagne } from "./BandeauCampagne"
 
 const JOUR = 86_400_000
@@ -11,6 +12,7 @@ function campagne(finDansMs: number): Campagne {
   return {
     id: 1,
     nom: "Offre fondateurs",
+    nom_en: "Founders offer",
     pourcentage: 20,
     debut: new Date(Date.now() - JOUR).toISOString(),
     fin: new Date(Date.now() + finDansMs).toISOString(),
@@ -40,7 +42,7 @@ describe("BandeauCampagne", () => {
     render(<BandeauCampagne campagne={campagne(10 * JOUR)} prix={12000} prixReference={15000} />)
 
     expect(screen.getByText("Offre fondateurs : −20 % sur l'abonnement")).toBeInTheDocument()
-    expect(screen.getByText(/12 000 FCFA au lieu de 15 000 FCFA, jusqu'au/)).toBeInTheDocument()
+    expect(screen.getByText(/Prix promotionnel : 12 000 FCFA au lieu de 15 000 FCFA, jusqu'au/)).toBeInTheDocument()
     expect(screen.queryByText(/Plus que|Dernier jour/)).not.toBeInTheDocument()
   })
 
@@ -48,5 +50,22 @@ describe("BandeauCampagne", () => {
     render(<BandeauCampagne campagne={campagne(2 * JOUR - 1000)} prix={12000} prixReference={15000} />)
 
     expect(screen.getByText("Plus que 2 jours")).toBeInTheDocument()
+  })
+})
+
+describe("nomCampagne", () => {
+  afterEach(async () => {
+    localStorage.clear()
+    await definirLangue("fr")
+  })
+
+  it("donne le nom français en français", () => {
+    expect(nomCampagne({ nom: "Offre de la rentrée", nom_en: "Back-to-school offer" })).toBe("Offre de la rentrée")
+  })
+
+  it("donne le nom anglais en anglais, et le français à défaut", async () => {
+    await definirLangue("en")
+    expect(nomCampagne({ nom: "Offre de la rentrée", nom_en: "Back-to-school offer" })).toBe("Back-to-school offer")
+    expect(nomCampagne({ nom: "Offre de la rentrée", nom_en: "" })).toBe("Offre de la rentrée")
   })
 })

@@ -18,7 +18,7 @@ import { useSeo } from "@/lib/seo"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
-import { dateLimiteCampagne } from "@/lib/campagne"
+import { dateLimiteCampagne, nomCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { CodeRevendeur } from "@/components/CodeRevendeur"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -415,7 +415,7 @@ export function SubscribePage() {
           {plan.campagne ? (
             <span className="text-xs font-medium text-success">
               {t("camp.prix_ligne", {
-                nom: plan.campagne.nom,
+                nom: nomCampagne(plan.campagne),
                 pct: plan.campagne.pourcentage,
                 a: formatAmount(plan.prix_reference),
                 b: formatAmount(plan.effective_price),
@@ -465,6 +465,11 @@ export function SubscribePage() {
               <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
                 <Sparkles className="size-3" />
                 {t("ac.inedites_incluses")}
+              </span>
+            )}
+            {plan.campagne && (
+              <span className="text-xs font-medium text-success">
+                {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(plan.campagne.fin) })}
               </span>
             )}
           </span>
@@ -713,6 +718,11 @@ export function SubscribePage() {
                         <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
                           {selectedPlan ? t("sb.payer_montant", { montant: formatAmount(netAPayerSelection) }) : t("sb.payer")}
                         </Button>
+                        {selectedPlan?.campagne && (
+                          <p className="text-center text-xs font-medium text-success">
+                            {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(selectedPlan.campagne.fin) })}
+                          </p>
+                        )}
                       </form>
                     ) : (
                       selectedPlan && (

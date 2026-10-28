@@ -149,7 +149,7 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
               (inedite ? (
                 <Badge variant="gold" className="gap-1">
                   <Crown className="size-3" />
-                  {t("ep.origine_INEDITE")}
+                  {epreuve.est_mini ? t("ine.mini") : t("ep.origine_INEDITE")}
                 </Badge>
               ) : (
                 <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"}>

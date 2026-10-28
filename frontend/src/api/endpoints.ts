@@ -312,6 +312,8 @@ export interface EpreuveFilters {
   // Germe du tri aléatoire : le même germe redonne le même ordre, donc des pages suivantes cohérentes.
   seed?: number
   est_vitrine?: boolean
+  // Mini-inédites seules (EpreuveInedite.est_mini) : 2 exercices, chrono court, réservées aux abonnés.
+  mini?: boolean
   // Lien "s'entraîner sur ce thème" depuis ThemesFrequents - correspondance exacte sur
   // un nom de Tag déjà connu (voir catalog.views.LessonListView), pas une saisie libre.
   theme?: string

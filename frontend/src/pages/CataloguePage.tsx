@@ -254,6 +254,15 @@ function CatalogueVitrine() {
           </Link>
         </div>
       )}
+      {/* L'offre promotionnelle en haut de la vitrine, avant le premier écran de défilement : un visiteur
+          qui ne descend pas jusqu'au bloc « Prêt à commencer ? » doit quand même la voir. Cliquable vers /tarifs. */}
+      {campagne && (
+        <div className="mx-auto max-w-5xl px-4 pt-4 sm:px-6">
+          <Link to="/tarifs" className="block transition-opacity hover:opacity-90">
+            <BandeauCampagne campagne={campagne} prix={campagne.prix} prixReference={campagne.prix_reference} />
+          </Link>
+        </div>
+      )}
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 opacity-[0.05]"

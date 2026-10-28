@@ -96,7 +96,9 @@ export function AccesRefuse({
             />
           )}
           <p className="mt-3 text-sm text-muted-foreground">
-            {t("ar.prix", { prix: formatAmount(campagne?.prix ?? PRIX_ABONNEMENT_FCFA) })}
+            {campagne
+              ? t("ar.prix_promo", { prix: formatAmount(campagne.prix) })
+              : t("ar.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) })}
           </p>
 
           <div className="mt-4 flex justify-center">

@@ -468,6 +468,7 @@ export function EpreuveInediteDetailPage() {
                 {offre && (
                   <span className="text-sm text-muted-foreground">
                     <strong className="font-semibold text-foreground">{formatAmount(offre.effective_price)} FCFA</strong>
+                    {offre.campagne && <> ({t("camp.prix_promo_min")})</>}
                     {validite ? ` · ${validite}` : ""}
                   </span>
                 )}
@@ -546,7 +547,10 @@ export function EpreuveInediteDetailPage() {
         <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:hidden">
           <div className="flex items-center gap-3">
             {!epreuve.has_access && !epreuve.est_vitrine && offre && (
-              <span className="shrink-0 text-sm font-medium tabular-nums">{formatAmount(offre.effective_price)} FCFA</span>
+              <span className="shrink-0 text-sm font-medium tabular-nums">
+                {formatAmount(offre.effective_price)} FCFA
+                {offre.campagne && <span className="block text-xs font-normal text-gold-text">{t("camp.prix_promo_min")}</span>}
+              </span>
             )}
             {boutonPrincipal("min-w-0 flex-1")}
           </div>

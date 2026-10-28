@@ -1,7 +1,7 @@
 import { Tag } from "lucide-react"
 
 import type { Campagne } from "@/api/types"
-import { dateLimiteCampagne, urgenceCampagne } from "@/lib/campagne"
+import { dateLimiteCampagne, nomCampagne, urgenceCampagne } from "@/lib/campagne"
 import { t } from "@/lib/i18n"
 import { cn, formatAmount } from "@/lib/utils"
 
@@ -31,7 +31,7 @@ export function BandeauCampagne({ campagne, prix, prixReference, className }: Pr
     >
       <Tag className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
       <p className="font-display font-semibold text-gold-text">
-        {t("camp.bandeau_titre", { nom: campagne.nom, pct: campagne.pourcentage })}
+        {t("camp.bandeau_titre", { nom: nomCampagne(campagne), pct: campagne.pourcentage })}
       </p>
       <p className="text-foreground">
         {t("camp.bandeau_prix", {

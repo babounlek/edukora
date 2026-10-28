@@ -36,7 +36,7 @@ class Tarif(namedtuple("Tarif", ["prix", "reference", "campagne"])):
     """
     Prix à payer, prix qu'il aurait été sans la campagne (`reference`, déjà net de la
     remise famille) et campagne réellement appliquée (None si elle ne fait rien baisser :
-    pas de campagne, plan non concerné, ou remise famille au moins aussi avantageuse).
+    pas de campagne, ou plan non concerné).
     """
 
     __slots__ = ()
@@ -80,6 +80,10 @@ class Campagne(models.Model):
     """
 
     nom = models.CharField(max_length=80, help_text="Affiché au public (ex. « Offre fondateurs »).")
+    nom_en = models.CharField(
+        max_length=80, blank=True,
+        help_text="Version anglaise du nom, affichée quand l'interface est en anglais. Vide : le nom français est repris.",
+    )
     pourcentage = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(CAMPAGNE_REMISE_MAX_PCT)],
         help_text=f"Remise en % sur le tarif de référence, de 1 à {CAMPAGNE_REMISE_MAX_PCT}.",
@@ -258,13 +262,17 @@ class Plan(models.Model):
         fin = compte_a_rebours["date_fin"] or compte_a_rebours["date_examen"]
         return max((fin - timezone.now().date()).days, 1)
 
-    def prix_enfant_supplementaire(self):
+    def prix_enfant_supplementaire(self, campagne=None):
         """Tarif d'un enfant supplémentaire de la même famille : le tarif de référence
         moins la remise fixe (15 000 F -> 12 000 F). Identique à `price` hors
-        JUSQUA_EXAMEN, la remise famille ne s'appliquant qu'à cette formule."""
-        if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
-            return self.price
-        return self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
+        JUSQUA_EXAMEN, la remise famille ne s'appliquant qu'à cette formule. Avec une
+        `campagne` qui concerne ce plan, la campagne s'ajoute à la remise famille (voir `tarif`)."""
+        prix = self.price
+        if self.duration_mode == DureeMode.JUSQUA_EXAMEN:
+            prix = self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
+        if campagne is not None and campagne.concerne(self):
+            prix = campagne.appliquer(prix)
+        return prix
 
     def tarif(self, user=None, profil=None, campagne=AUTO):
         """
@@ -274,11 +282,12 @@ class Plan(models.Model):
         accès Jusqu'à l'Examen en cours (voir `est_enfant_supplementaire`). Sans `user`
         (affichage du catalogue) : le tarif de référence.
 
-        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite, mais
-        seulement si elle fait payer MOINS que ce tarif : la remise famille et la campagne
-        ne se cumulent jamais, la plus avantageuse l'emporte. `campagne` : `AUTO` lit la
-        campagne en cours ; `None` en impose l'absence ; une `Campagne` en impose une (paiement
-        manuel déclaré juste après la fin de l'offre, voir `campagne_pour_declaration`).
+        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite sur ce tarif,
+        donc elle se CUMULE avec la remise famille (décision du 2026-10-28) : −10 % de
+        campagne donnent 13 500 F au premier enfant et 10 800 F (12 000 × 0,9) aux suivants.
+        `campagne` : `AUTO` lit la campagne en cours ; `None` en impose l'absence ; une
+        `Campagne` en impose une (paiement manuel déclaré juste après la fin de l'offre, voir
+        `CampagneManager.pour_declaration`).
         """
         reference = self.price
         if self.duration_mode == DureeMode.JUSQUA_EXAMEN and est_enfant_supplementaire(user, profil):
@@ -286,7 +295,7 @@ class Plan(models.Model):
         if campagne is AUTO:
             campagne = campagne_en_cours()
         if campagne is not None and campagne.concerne(self):
-            prix_campagne = campagne.appliquer(self.price)
+            prix_campagne = campagne.appliquer(reference)
             if prix_campagne < reference:
                 return Tarif(prix=prix_campagne, reference=reference, campagne=campagne)
         return Tarif(prix=reference, reference=reference, campagne=None)

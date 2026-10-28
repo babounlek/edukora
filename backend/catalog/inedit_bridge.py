@@ -38,6 +38,9 @@ def build_inedit_queryset(params, *, min_popular_readers):
     origine = params.get("origine")
     if origine and origine != "INEDITE":
         return qs.none()
+    # Mini-inédites seules (puce « Mini-inédites » de la liste) ; sans ce paramètre, elles restent mêlées aux inédites.
+    if params.get("mini") == "true":
+        qs = qs.filter(est_mini=True)
 
     if subject := params.get("subject"):
         qs = qs.filter(subject__code=subject)

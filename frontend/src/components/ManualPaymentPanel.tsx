@@ -9,6 +9,7 @@ import { cn, formatAmount } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { dateLimiteCampagne } from "@/lib/campagne"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -182,6 +183,11 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
             {copiedAmount ? t("mp.copie") : t("mp.copier")}
           </Button>
         </div>
+        {plan.campagne && (
+          <p className="mt-1 text-xs font-semibold text-gold-text">
+            {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(plan.campagne.fin) })}
+          </p>
+        )}
         <p className="mt-1 text-xs text-muted-foreground">
           {t("mp.envoie", { prix: formatAmount(plan.effective_price) })}
         </p>

@@ -169,11 +169,14 @@ export const en: Partial<Record<CleI18n, string>> = {
   "accueil.voir_prix": "See pricing",
   "camp.etiquette": "−{pct}%",
   "camp.bandeau_titre": "{nom}: −{pct}% on the subscription",
-  "camp.bandeau_prix": "{prix} FCFA instead of {ref} FCFA, until {date}.",
+  "camp.bandeau_prix": "Promotional price: {prix} FCFA instead of {ref} FCFA, until {date}.",
   "camp.jours_restants_one": "Only {n} day left",
   "camp.jours_restants_other": "Only {n} days left",
   "camp.dernier_jour": "Last day",
-  "camp.prix_ligne": "{nom} (−{pct}%): {a} → {b} FCFA, until {date}",
+  "camp.prix_ligne": "{nom} (−{pct}%), promotional price: {a} → {b} FCFA, until {date}",
+  "camp.prix_promo": "Promotional price",
+  "camp.prix_promo_min": "promotional price",
+  "camp.prix_promo_jusqu_au": "Promotional price, valid until {date}",
 
   "seance.aujourdhui": "Today",
   "seance.diagnostic": "we find your level",
@@ -238,6 +241,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.serie": "Series {code}",
   "prix.famille_intro":
     "More than one child? {prix} FCFA for each additional child in the same family (20% off)",
+  "prix.famille_intro_campagne":
+    "Several children? {prix} FCFA for each additional child in the same family (promotional price: family discount and {nom} combined)",
   "prix.enfants_one": "{n} child",
   "prix.enfants_other": "{n} children",
   "prix.exclusif": "{site} exclusive",
@@ -645,6 +650,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ar.texte":
     "One subscription, valid until your exam, and everything opens up: you can start reading as soon as the payment is confirmed.",
   "ar.formules": "See the plans",
+  "ar.prix_promo": "Promotional price: {prix} FCFA, once only, until the exam · Mobile Money",
   "ar.prix": "{prix} FCFA, once only, until the exam · Mobile Money",
   "ar.sujet_libre": "See the free-access paper",
   "ine.seo_description": "{matiere} - original paper written by {site}, never taken from past papers.",
@@ -664,6 +670,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ine.comprise_acces": "This paper is included in your plan.",
   "ine.gratuite": "Free",
   "ine.mini": "Mini unseen paper",
+  "ep.mini_filtre": "Mini unseen papers",
   "ine.mini_aide": "Two exercises, a short timer, the same marking: for subscribers only.",
   "ine.duree_indicative": "Indicative duration: {n} min",
   "ine.partage": "Test yourself on \"{titre}\" on {site}:",

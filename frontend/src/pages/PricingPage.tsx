@@ -23,7 +23,7 @@ import { useCountry } from "@/context/CountryContext"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { BandeauEnfantVise } from "@/components/BandeauEnfantVise"
-import { useCampagne } from "@/lib/campagne"
+import { dateLimiteCampagne, nomCampagne, useCampagne } from "@/lib/campagne"
 import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -183,17 +183,19 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
  * enfant paient tous le même prix.
  */
 function TarifFamille({ plan }: { plan: Plan }) {
-  // Pendant une campagne, le premier enfant paie le prix de campagne (`effective_price`, calculé pour un
-  // visiteur sans famille) et les suivants le plus bas des deux tarifs : la remise famille et la
-  // campagne ne se cumulent jamais (voir Plan.tarif côté serveur).
+  // Pendant une campagne, le premier enfant paie `effective_price` (calculé pour un visiteur sans famille) et
+  // les suivants `prix_enfant_supplementaire`, que le serveur donne campagne comprise : la campagne se cumule
+  // avec la remise famille (voir Plan.tarif).
   const reference = plan.effective_price
-  const supplementaire = Math.min(plan.prix_enfant_supplementaire, plan.effective_price)
+  const supplementaire = plan.prix_enfant_supplementaire
   const total = (nbEnfants: number) => reference + (nbEnfants - 1) * supplementaire
 
   return (
     <div className="rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
       <p className="text-xs font-medium text-muted-foreground">
-        {t("prix.famille_intro", { prix: formatAmount(supplementaire) })}
+        {plan.campagne
+          ? t("prix.famille_intro_campagne", { prix: formatAmount(supplementaire), nom: nomCampagne(plan.campagne) })
+          : t("prix.famille_intro", { prix: formatAmount(supplementaire) })}
       </p>
       <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
         {[1, 2, 3, 4].map((n) => (
@@ -544,6 +546,11 @@ export function PricingPage() {
                                 </span>
                               </>
                             )}
+                          </p>
+                        )}
+                        {planTarif?.campagne && (
+                          <p className="mt-0.5 text-xs font-semibold text-gold-text">
+                            {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
                           </p>
                         )}
                         <p className="mt-0.5 text-xs text-muted-foreground">

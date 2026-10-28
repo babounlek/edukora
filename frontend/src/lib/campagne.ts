@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { getCampagneEnCours } from "@/api/endpoints"
-import type { CampagneEnCours } from "@/api/types"
-import { localeCourante, t, tn } from "@/lib/i18n"
+import type { Campagne, CampagneEnCours } from "@/api/types"
+import { langueCourante, localeCourante, t, tn } from "@/lib/i18n"
 
 export const CAMPAGNE_KEY = ["campagne-en-cours"] as const
 
@@ -25,6 +25,11 @@ export function useCampagne(): CampagneEnCours | null {
   })
   if (!data || new Date(data.fin).getTime() <= Date.now()) return null
   return data
+}
+
+/** Nom de la campagne dans la langue de l'interface (le français si la version anglaise n'est pas saisie). */
+export function nomCampagne(campagne: Pick<Campagne, "nom" | "nom_en">): string {
+  return langueCourante() === "en" && campagne.nom_en ? campagne.nom_en : campagne.nom
 }
 
 /** « 11 novembre » dans la langue courante. */

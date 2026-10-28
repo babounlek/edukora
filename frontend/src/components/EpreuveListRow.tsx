@@ -64,7 +64,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
         {epreuve.kind === "inedite" ? (
           <Badge variant="gold" className="hidden items-center gap-1 sm:inline-flex">
             <Crown className="size-3" />
-            {t("ep.origine_INEDITE")}
+            {epreuve.est_mini ? t("ine.mini") : t("ep.origine_INEDITE")}
           </Badge>
         ) : (
           <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"} className="hidden sm:inline-flex">
