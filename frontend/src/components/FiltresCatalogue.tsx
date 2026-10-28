@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useId, useRef, useState, type ReactNode } from "react"
+import { useCallback, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react"
 import { ChevronDown } from "lucide-react"
 
 import { cn } from "@/lib/utils"
@@ -17,38 +17,54 @@ import { t, useI18n } from "@/lib/i18n"
  *
  * Utilisé par FiltreLigne (catalogues) et par le bandeau « Choisis ton examen » : même geste partout.
  */
+const FONDU_DROITE = "[mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)]"
+
+/**
+ * Le fondu seul : pour une barre qui défile à toutes les largeurs (barre des exercices, sommaire d'un cours), sans « Tout voir ».
+ * Renvoie `fondu` (classe à poser sur le conteneur qui défile, vide quand tout est visible ou en bout de course) et `onScroll`.
+ * `actif` à faux gèle la mesure (rangée dépliée).
+ */
+export function useFonduDefilement(ref: RefObject<HTMLElement | null>, actif = true) {
+  const [deborde, setDeborde] = useState(false)
+  const [fin, setFin] = useState(true)
+
+  const mesurer = useCallback(() => {
+    const element = ref.current
+    // Dépliée, une rangée passe à la ligne et ne déborde plus : on garde alors la dernière mesure pour que « Réduire » reste là.
+    if (!element || !actif) return
+    setDeborde(element.scrollWidth > element.clientWidth + 1)
+    setFin(element.scrollLeft + element.clientWidth >= element.scrollWidth - 2)
+  }, [ref, actif])
+
+  // Le contenu arrive après le chargement des données : on mesure à chaque rendu (un état identique ne refait pas de rendu),
+  // et quand la largeur change (rotation du téléphone).
+  useEffect(() => {
+    mesurer()
+    const element = ref.current
+    if (!element || typeof ResizeObserver === "undefined") return
+    const observateur = new ResizeObserver(mesurer)
+    observateur.observe(element)
+    // Le contenu peut s'élargir sans que le conteneur change de taille (un compteur qui arrive dans un bouton) : on observe
+    // aussi ses enfants directs.
+    Array.from(element.children).forEach((enfant) => observateur.observe(enfant))
+    return () => observateur.disconnect()
+  })
+
+  return { deborde, fin, onScroll: mesurer, fondu: deborde && !fin ? FONDU_DROITE : "" }
+}
+
 export function useRangeeDefilante() {
   const ref = useRef<HTMLDivElement>(null)
   const id = useId()
-  const [deborde, setDeborde] = useState(false)
-  const [fin, setFin] = useState(true)
   const [deplie, setDeplie] = useState(false)
-
-  const mesurer = useCallback(() => {
-    const rangee = ref.current
-    // Dépliée, la rangée passe à la ligne et ne déborde plus : on garde alors la dernière mesure pour que « Réduire » reste là.
-    if (!rangee || deplie) return
-    setDeborde(rangee.scrollWidth > rangee.clientWidth + 1)
-    setFin(rangee.scrollLeft + rangee.clientWidth >= rangee.scrollWidth - 2)
-  }, [deplie])
-
-  // Les pastilles arrivent après le chargement des données : on mesure à chaque rendu (un état identique ne refait pas de
-  // rendu), et quand la largeur change (rotation du téléphone).
-  useEffect(() => {
-    mesurer()
-    const rangee = ref.current
-    if (!rangee || typeof ResizeObserver === "undefined") return
-    const observateur = new ResizeObserver(mesurer)
-    observateur.observe(rangee)
-    return () => observateur.disconnect()
-  })
+  const { deborde, fin, onScroll } = useFonduDefilement(ref, !deplie)
 
   return {
     ref,
     id,
     deborde,
     deplie,
-    onScroll: mesurer,
+    onScroll,
     basculer: () => setDeplie((d) => !d),
     /** Les classes de la rangée : `base` porte la mise en page propre à l'appelant (marges, écarts). */
     classe: (base: string) =>
@@ -56,7 +72,7 @@ export function useRangeeDefilante() {
         base,
         "sm:flex-wrap sm:overflow-visible sm:pb-0",
         deplie ? "flex-wrap" : "overflow-x-auto pb-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
-        deborde && !fin && !deplie && "[mask-image:linear-gradient(to_right,black_calc(100%-2.5rem),transparent)] sm:[mask-image:none]",
+        deborde && !fin && !deplie && `${FONDU_DROITE} sm:[mask-image:none]`,
       ),
   }
 }

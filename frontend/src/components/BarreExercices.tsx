@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 
 import type { EpreuveExercise } from "@/api/types"
 import { apercuQuestion, exerciceAnchorId, libelleCourtExercice, sectionsDEpreuve } from "@/components/EpreuveSommaire"
+import { useFonduDefilement } from "@/components/FiltresCatalogue"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -38,6 +39,9 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
   const listeRef = useRef<HTMLOListElement>(null)
   const sectionsRef = useRef<HTMLOListElement>(null)
   const sections = sectionsDEpreuve(exercises)
+  // Rangées qui défilent, barre de défilement masquée : un fondu à droite dit qu'il reste des exercices (ou des sections).
+  const fonduListe = useFonduDefilement(listeRef)
+  const fonduSections = useFonduDefilement(sectionsRef)
 
   useEffect(() => {
     if (exercises.length < 2) return
@@ -96,7 +100,7 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
   if (sections && sectionActive) {
     return (
       <nav aria-label={t("ed.exercices_aria")} className={cn(barre, "flex flex-col gap-1.5")}>
-        <ol ref={sectionsRef} className={rangee}>
+        <ol ref={sectionsRef} onScroll={fonduSections.onScroll} className={cn(rangee, fonduSections.fondu)}>
           {sections.map((section) => {
             const estCourante = section.cle === sectionActive.cle
             return (
@@ -117,7 +121,7 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
             )
           })}
         </ol>
-        <ol ref={listeRef} className={rangee}>
+        <ol ref={listeRef} onScroll={fonduListe.onScroll} className={cn(rangee, fonduListe.fondu)}>
           {pastilles(sectionActive.items)}
         </ol>
       </nav>
@@ -126,7 +130,7 @@ export function BarreExercices({ exercises }: { exercises: EpreuveExercise[] }) 
 
   return (
     <nav aria-label={t("ed.exercices_aria")} className={barre}>
-      <ol ref={listeRef} className={rangee}>
+      <ol ref={listeRef} onScroll={fonduListe.onScroll} className={cn(rangee, fonduListe.fondu)}>
         {pastilles(exercises.map((exercise) => ({ exercise })))}
       </ol>
     </nav>

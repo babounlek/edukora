@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { ArrowLeft, Check, NotebookPen } from "lucide-react"
 
@@ -34,7 +34,8 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
-import { capitaliserTheme } from "@/lib/utils"
+import { capitaliserTheme, cn } from "@/lib/utils"
+import { useFonduDefilement } from "@/components/FiltresCatalogue"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 export function CoursReaderPage() {
@@ -222,7 +223,7 @@ export function CoursReaderPage() {
         )}
         {slug && (
           // Une seule rangée qui défile sur téléphone : empilés, les trois boutons prenaient 150 px avant la première ligne du cours.
-          <span className="no-scrollbar -mx-4 mb-4 flex items-center gap-2 overflow-x-auto px-4 sm:col-start-2 sm:row-start-1 sm:mx-0 sm:mb-6 sm:flex-wrap sm:justify-end sm:overflow-visible sm:px-0 [&>*]:shrink-0">
+          <RangeeActions>
             <BoutonPartager
               chemin={coursDetailPath(slug)}
               texte={t("co.partage", { titre: content?.title ?? t("co.partage_defaut"), site: SITE_NAME })}
@@ -231,7 +232,7 @@ export function CoursReaderPage() {
             />
             <BoutonPdfCours slug={slug} />
             <BoutonHorsLigne type="cours" slug={slug} />
-          </span>
+          </RangeeActions>
         )}
       </div>
 
@@ -311,5 +312,23 @@ export function CoursReaderPage() {
         />
       )}
     </div>
+  )
+}
+
+/** Les actions du cours (partager, PDF, hors ligne) : une rangée qui défile sur téléphone, avec un fondu à droite tant qu'il reste un bouton hors de l'écran. */
+function RangeeActions({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const fondu = useFonduDefilement(ref)
+  return (
+    <span
+      ref={ref}
+      onScroll={fondu.onScroll}
+      className={cn(
+        "no-scrollbar -mx-4 mb-4 flex items-center gap-2 overflow-x-auto px-4 sm:col-start-2 sm:row-start-1 sm:mx-0 sm:mb-6 sm:flex-wrap sm:justify-end sm:overflow-visible sm:px-0 [&>*]:shrink-0",
+        fondu.fondu,
+      )}
+    >
+      {children}
+    </span>
   )
 }

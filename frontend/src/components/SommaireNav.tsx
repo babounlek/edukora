@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react"
 
+import { useFonduDefilement } from "@/components/FiltresCatalogue"
 import { cn } from "@/lib/utils"
 
 export interface SommaireEntry {
@@ -86,6 +87,22 @@ interface SommaireNavProps {
 export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
   const [activeId, setActiveId] = useState<string | null>(entries[0]?.id ?? null)
   const observerRef = useRef<IntersectionObserver | null>(null)
+  const barreRef = useRef<HTMLElement>(null)
+  // La barre mobile défile : un fondu à droite dit qu'il reste des sections.
+  const fondu = useFonduDefilement(barreRef)
+
+  // La section en cours reste visible dans la barre qui défile : sans cela, à la section 6 on ne voyait que les pastilles 1 à 3
+  // (la barre des exercices d'une épreuve fait déjà de même, voir BarreExercices).
+  useEffect(() => {
+    const barre = barreRef.current
+    const pastille = barre?.querySelector<HTMLElement>('[aria-current="true"]')
+    if (!barre || !pastille || barre.scrollWidth <= barre.clientWidth || typeof barre.scrollTo !== "function") return
+    const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    barre.scrollTo({
+      left: Math.max(0, pastille.offsetLeft - barre.clientWidth / 2 + pastille.clientWidth / 2),
+      behavior: reduit ? "auto" : "smooth",
+    })
+  }, [activeId])
 
   useEffect(() => {
     const elements = entries
@@ -119,8 +136,13 @@ export function SommaireNav({ entries, ariaLabel }: SommaireNavProps) {
           exacte du Header collant (z-40, même hauteur en mobile et en desktop, voir Header.tsx) :
           avec top-0, la barre se collait SOUS le header et ses pastilles étaient recouvertes. */}
       <nav
+        ref={barreRef}
+        onScroll={fondu.onScroll}
         aria-label={ariaLabel}
-        className="not-prose sticky top-[72px] z-10 -mx-4 mb-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden"
+        className={cn(
+          "not-prose sticky top-[72px] z-10 -mx-4 mb-6 overflow-x-auto border-b border-border bg-background/95 px-4 py-2.5 backdrop-blur sm:-mx-6 sm:px-6 lg:hidden",
+          fondu.fondu,
+        )}
       >
         <ul className="flex w-max gap-1.5">
           {entries.map((entry) => (
