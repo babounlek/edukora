@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { useI18n } from "@/lib/i18n"
-import { langueImposee } from "@/lib/langueProfil"
+import { systemeVerrouille } from "@/lib/langueProfil"
 import { cn } from "@/lib/utils"
 import { useChangerLangue } from "@/components/SelecteurLangue"
 
@@ -16,8 +16,8 @@ import { useChangerLangue } from "@/components/SelecteurLangue"
  * arrive sur la version française ne voit jamais son examen, et le sélecteur FR/EN ne lui dit pas que c'est
  * LUI qui l'y mène. Cette invitation vit aux endroits où l'on choisit son examen.
  *
- * Absente dès qu'un cursus est préparé : la langue est alors celle du cursus (voir langueProfil.ts) et un
- * parent change de sous-système en changeant de profil. Absente aussi quand le pays n'a aucun examen dans
+ * Absente une fois le profil abonné à son examen : la langue est alors celle du cursus (voir langueProfil.ts) et un
+ * parent change de sous-système en changeant de profil. Avant l'abonnement elle reste, même avec un examen déclaré. Absente aussi quand le pays n'a aucun examen dans
  * l'autre langue (`disponible` faux) : ne jamais promettre un GCE hors du Cameroun.
  *
  * Aucune détection par la langue du navigateur (décision du 2026-10-13) : sur beaucoup de téléphones
@@ -40,7 +40,7 @@ export function InviteAutreSousSysteme({
   const { t, langue } = useI18n()
   const { user } = useAuth()
   const changerLangue = useChangerLangue()
-  if (!disponible || langueImposee(user)) return null
+  if (!disponible || systemeVerrouille(user)) return null
 
   const cible = langue === "fr" ? "en" : "fr"
   const texte = t(cible === "en" ? "invite_ss.vers_gce" : "invite_ss.vers_francophone")

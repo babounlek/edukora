@@ -19,6 +19,21 @@ export function langueImposee(user: Pick<User, "cursus_prepare"> | null | undefi
   return langue === "fr" || langue === "en" ? langue : null
 }
 
+/**
+ * Le système (français / anglophone) est-il figé ? Seulement une fois le profil actif abonné à son examen :
+ * jusque-là, un compte qui a déclaré un examen par curiosité ou par erreur doit pouvoir passer dans l'autre
+ * système (sélecteur de langue, invitation « Tu prépares le GCE ? »). Le geste efface alors l'examen
+ * déclaré, qui appartient à l'autre système (voir useChangerLangue), et le bandeau « Choisis ton examen »
+ * revient avec les examens de la nouvelle langue.
+ *
+ * Après le premier abonnement, on change de système en changeant de profil (voir changerProfilActif.ts).
+ */
+export function systemeVerrouille(
+  user: Pick<User, "cursus_prepare" | "abonne_profil_actif"> | null | undefined,
+): boolean {
+  return langueImposee(user) !== null && Boolean(user?.abonne_profil_actif)
+}
+
 interface EntreeDecision {
   /** Langue du cursus du profil actif. */
   imposee: Langue

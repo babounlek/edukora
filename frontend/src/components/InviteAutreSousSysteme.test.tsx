@@ -60,10 +60,16 @@ describe("InviteAutreSousSysteme", () => {
     expect(container.innerHTML).toBe("")
   })
 
-  it("rien dès qu'un cursus est préparé : la langue est celle du cursus", () => {
-    auth.user = { id: 1, langue: "fr", cursus_prepare: { id: 2, langue: "fr" } }
+  it("rien une fois le profil abonné à son examen : la langue est celle du cursus", () => {
+    auth.user = { id: 1, langue: "fr", cursus_prepare: { id: 2, langue: "fr" }, abonne_profil_actif: true }
     const { container } = render(<InviteAutreSousSysteme disponible />)
     expect(container.innerHTML).toBe("")
+  })
+
+  it("reste proposée avec un examen déclaré tant que le profil n'est pas abonné", () => {
+    auth.user = { id: 1, langue: "fr", cursus_prepare: { id: 2, langue: "fr" }, abonne_profil_actif: false }
+    render(<InviteAutreSousSysteme disponible />)
+    expect(screen.getByRole("button", { name: "Switch to English" })).toBeTruthy()
   })
 
   it("compte connecté sans cursus : la langue du compte est mise à jour avant le rechargement", async () => {

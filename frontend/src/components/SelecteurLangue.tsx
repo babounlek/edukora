@@ -13,7 +13,7 @@ import {
   useI18n,
   type Langue,
 } from "@/lib/i18n"
-import { langueACharger, langueImposee } from "@/lib/langueProfil"
+import { langueACharger, langueImposee, systemeVerrouille } from "@/lib/langueProfil"
 import { cn } from "@/lib/utils"
 
 /**
@@ -80,7 +80,20 @@ export function useChangerLangue() {
   const { user, updateUser } = useAuth()
   return async function changerLangue(cible: Langue) {
     if (cible === langue) return
+    // Un examen déclaré dans l'autre système ne peut pas rester : sans abonnement, on l'efface avant de changer, sinon la
+    // synchronisation ramènerait aussitôt la page dans la langue de cet examen. Le choix est mémorisé AVANT, pour que la
+    // synchronisation, qui s'exécute dès que le compte change, ne lise pas l'ancienne langue. En cas d'échec, rien ne change.
+    const imposee = langueImposee(user)
+    const efface = Boolean(user && imposee && imposee !== cible && !systemeVerrouille(user))
     memoriserLangue(cible)
+    if (efface) {
+      try {
+        updateUser(await updateMe({ cursus_prepare: null }))
+      } catch {
+        memoriserLangue(langue)
+        return
+      }
+    }
     if (user && user.langue !== cible) {
       try {
         updateUser(await updateMe({ langue: cible }))
@@ -96,14 +109,15 @@ export function useChangerLangue() {
  * Bascule français / anglais. Visible partout (barre du haut, menu mobile) : un élève du GCE qui
  * arrive sur une interface en français doit pouvoir en sortir sans la chercher.
  *
- * Absent dès qu'un cursus est préparé : la langue est alors celle du cursus (voir langueProfil.ts), et
- * un parent change de langue en changeant de profil, pas avec ce bouton.
+ * Absent une fois le profil abonné à son examen : la langue est celle du cursus (voir langueProfil.ts), et
+ * un parent change de langue en changeant de profil, pas avec ce bouton. Avant l'abonnement il reste, même
+ * avec un examen déclaré : changer de langue efface alors cet examen (voir useChangerLangue).
  */
 export function SelecteurLangue({ className }: { className?: string }) {
   const { t, langue } = useI18n()
   const { user } = useAuth()
   const choisir = useChangerLangue()
-  if (langueImposee(user)) return null
+  if (systemeVerrouille(user)) return null
 
   return (
     <div

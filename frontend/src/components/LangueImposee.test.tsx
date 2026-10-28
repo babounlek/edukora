@@ -1,11 +1,12 @@
-import { fireEvent, render, screen } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
-const { auth, ouvrir } = vi.hoisted(() => ({
+const { auth, ouvrir, updateMe } = vi.hoisted(() => ({
   auth: { user: null as unknown },
   ouvrir: vi.fn(),
+  updateMe: vi.fn(() => Promise.resolve({})),
 }))
-vi.mock("@/api/endpoints", () => ({ updateMe: vi.fn(() => Promise.resolve({})) }))
+vi.mock("@/api/endpoints", () => ({ updateMe }))
 vi.mock("@/context/AuthContext", () => ({
   useAuth: () => ({ isAuthenticated: auth.user !== null, user: auth.user, updateUser: vi.fn() }),
 }))
@@ -18,9 +19,10 @@ import { definirLangue, initialiserLangue, LANGUE_STORAGE_KEY } from "@/lib/i18n
 import { BandeauLangueCursus } from "./BandeauLangueCursus"
 import { SelecteurLangue, useSynchroLangueCompte } from "./SelecteurLangue"
 
-const utilisateur = (langueCursus: "fr" | "en" | null, langueCompte: "fr" | "en" = "fr") => ({
+const utilisateur = (langueCursus: "fr" | "en" | null, langueCompte: "fr" | "en" = "fr", abonne = false) => ({
   id: 1,
   langue: langueCompte,
+  abonne_profil_actif: abonne,
   cursus_prepare: langueCursus ? { id: 1, langue: langueCursus } : null,
 })
 
@@ -32,6 +34,7 @@ function Sync() {
 beforeEach(() => {
   localStorage.clear()
   ouvrir.mockReset()
+  updateMe.mockClear()
   auth.user = null
   window.history.replaceState(null, "", "/")
 })
@@ -41,14 +44,37 @@ afterEach(async () => {
 })
 
 describe("langue imposée par le cursus du profil actif", () => {
-  it("le sélecteur disparaît dès qu'un cursus est préparé, et reste sinon", () => {
+  it("le sélecteur reste tant que le profil n'est pas abonné, même avec un examen déclaré, et disparaît ensuite", () => {
     auth.user = utilisateur(null)
     const { unmount } = render(<SelecteurLangue />)
     expect(screen.getByRole("group")).toBeTruthy()
     unmount()
     auth.user = utilisateur("fr")
+    const { unmount: unmount2 } = render(<SelecteurLangue />)
+    expect(screen.getByRole("group")).toBeTruthy()
+    unmount2()
+    auth.user = utilisateur("fr", "fr", true)
     render(<SelecteurLangue />)
     expect(screen.queryByRole("group")).toBeNull()
+  })
+
+  it("changer de système sans abonnement efface l'examen déclaré avant de recharger dans l'autre langue", async () => {
+    auth.user = utilisateur("fr")
+    render(<SelecteurLangue />)
+    fireEvent.click(screen.getByRole("button", { name: /english|anglais/i }))
+    await waitFor(() => expect(ouvrir).toHaveBeenCalledWith("en"))
+    expect(updateMe).toHaveBeenCalledWith({ cursus_prepare: null })
+    expect(localStorage.getItem(LANGUE_STORAGE_KEY)).toBe("en")
+  })
+
+  it("si l'examen ne peut pas être effacé, la langue ne change pas", async () => {
+    updateMe.mockRejectedValueOnce(new Error("réseau"))
+    auth.user = utilisateur("fr")
+    render(<SelecteurLangue />)
+    fireEvent.click(screen.getByRole("button", { name: /english|anglais/i }))
+    await waitFor(() => expect(updateMe).toHaveBeenCalled())
+    expect(ouvrir).not.toHaveBeenCalled()
+    expect(localStorage.getItem(LANGUE_STORAGE_KEY)).not.toBe("en")
   })
 
   it("profil du GCE sur une page française : renvoi vers /en et choix mémorisé aligné", () => {
