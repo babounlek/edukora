@@ -13,6 +13,7 @@ import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/l
 import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/Logo"
+import { PastilleOperateur } from "@/components/PastilleOperateur"
 import { SelecteurLangue } from "@/components/SelecteurLangue"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
@@ -349,8 +350,8 @@ export function Footer() {
                 <ShieldCheck className="size-3.5 shrink-0 text-primary" />
                 {t("ft.paiement_securise")}
               </span>
-              <span className="rounded-md bg-[#FF7900] px-2 py-0.5 text-[0.7rem] font-bold text-white">Orange Money</span>
-              <span className="rounded-md bg-[#FFCB05] px-2 py-0.5 text-[0.7rem] font-bold text-[#1a1a1a]">MTN MoMo</span>
+              <PastilleOperateur operateur="ORANGE">Orange Money</PastilleOperateur>
+              <PastilleOperateur operateur="MTN">MTN MoMo</PastilleOperateur>
             </div>
             <div className="flex items-center gap-3">
               {/* Le sélecteur s'efface de lui-même une fois le profil abonné (voir SelecteurLangue). */}
