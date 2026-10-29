@@ -12,9 +12,10 @@ import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useSeo } from "@/lib/seo"
+import { destinationApresConnexion, ouvrirDestination } from "@/lib/apresConnexion"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { useCountry } from "@/context/CountryContext"
-import { t, useI18n } from "@/lib/i18n"
+import { langueCourante, t, urlAnglaiseExplicite, useI18n } from "@/lib/i18n"
 
 const CLE_RAPPEL = "qe-rappel-code-parent-masque"
 
@@ -42,7 +43,8 @@ export function QuiEtudiePage() {
   const { country } = useCountry()
   const navigate = useNavigate()
   const location = useLocation()
-  const redirectTo = (location.state as { from?: string } | null)?.from ?? catalogueHomePath(country)
+  const demandee = (location.state as { from?: string } | null)?.from
+  const redirectTo = demandee ?? catalogueHomePath(country)
 
   const [profils, setProfils] = useState<Profil[] | null>(null)
   const [activatingId, setActivatingId] = useState<number | null>(null)
@@ -73,7 +75,18 @@ export function QuiEtudiePage() {
     try {
       const response = await activerProfilProtege(profil.id, profil.prenom)
       login(response.access, response.user)
-      navigate(redirectTo, { replace: true })
+      // Le pays et la langue sont ceux du profil choisi ; la page demandée à l'origine est conservée.
+      ouvrirDestination(
+        destinationApresConnexion({
+          user: response.user,
+          demandee,
+          paysNavigation: country,
+          courante: langueCourante(),
+          urlExplicite: urlAnglaiseExplicite(),
+          changement: true,
+        }),
+        navigate,
+      )
     } catch (err) {
       setActivatingId(null)
       // Annuler la saisie du code PIN est un choix de l'élève, pas une panne : pas de message.

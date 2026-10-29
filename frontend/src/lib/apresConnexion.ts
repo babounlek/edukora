@@ -1,6 +1,7 @@
 import type { User } from "@/api/types"
 import { COUNTRY_STORAGE_KEY, catalogueHomePath } from "@/lib/countryPath"
-import type { Langue } from "@/lib/i18n"
+import { oublierFiltresMemorises } from "@/lib/filtresListe"
+import { cheminDansLangue, memoriserLangue, type Langue } from "@/lib/i18n"
 import { langueACharger, langueImposee } from "@/lib/langueProfil"
 
 /**
@@ -25,6 +26,8 @@ interface EntreeDestination {
   paysNavigation: string
   courante: Langue
   urlExplicite: boolean
+  /** La langue imposée vient de changer pendant la session (autre profil choisi) : elle reprend la main sur un lien /en. */
+  changement?: boolean
 }
 
 export function destinationApresConnexion({
@@ -33,13 +36,14 @@ export function destinationApresConnexion({
   paysNavigation,
   courante,
   urlExplicite,
+  changement = false,
 }: EntreeDestination): { chemin: string; langue: Langue | null } {
   const imposee = langueImposee(user)
   return {
     // Une page précise demandée reste la destination ; sinon l'accueil du pays de l'examen de l'élève, pas du dernier
     // pays parcouru par le navigateur (un autre compte, ou une visite avant la connexion).
     chemin: demandee ?? catalogueHomePath(paysDuCompte(user) ?? paysNavigation),
-    langue: imposee ? langueACharger({ imposee, courante, urlExplicite, changement: false }) : null,
+    langue: imposee ? langueACharger({ imposee, courante, urlExplicite, changement }) : null,
   }
 }
 
@@ -55,4 +59,21 @@ export function memoriserPaysDuCompte(user: Pick<User, "cursus_prepare">): void 
   } catch {
     /* stockage indisponible : la redirection de « / » reprendra le pays par défaut */
   }
+}
+
+/**
+ * Conduit l'élève à sa destination : un rechargement direct dans la langue du cursus si elle diffère (la langue est la
+ * base du routeur, fixée au chargement), sinon une navigation ordinaire. Commun à la connexion et au choix du profil.
+ */
+export function ouvrirDestination(
+  { chemin, langue }: { chemin: string; langue: Langue | null },
+  naviguer: (chemin: string, options: { replace: boolean }) => void,
+): void {
+  if (!langue) {
+    naviguer(chemin, { replace: true })
+    return
+  }
+  memoriserLangue(langue)
+  oublierFiltresMemorises()
+  window.location.assign(cheminDansLangue(chemin, langue))
 }

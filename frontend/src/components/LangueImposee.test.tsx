@@ -92,6 +92,8 @@ describe("langue imposée par le cursus du profil actif", () => {
     }
     const { rerender } = render(<SyncA pathname="/connexion" />)
     expect(ouvrir).not.toHaveBeenCalled()
+    rerender(<SyncA pathname="/qui-etudie" />)
+    expect(ouvrir).not.toHaveBeenCalled()
     rerender(<SyncA pathname="/cm" />)
     expect(ouvrir).toHaveBeenCalledWith("en")
   })

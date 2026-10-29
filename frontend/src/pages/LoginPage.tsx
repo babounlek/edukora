@@ -22,12 +22,11 @@ import {
 import { useSeo } from "@/lib/seo"
 import { libellePays } from "@/lib/pays"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
-import { destinationApresConnexion } from "@/lib/apresConnexion"
-import { oublierFiltresMemorises } from "@/lib/filtresListe"
+import { destinationApresConnexion, ouvrirDestination } from "@/lib/apresConnexion"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 import { SITE_NAME } from "@/lib/site"
-import { cheminDansLangue, langueCourante, memoriserLangue, t, urlAnglaiseExplicite, useI18n } from "@/lib/i18n"
+import { langueCourante, t, urlAnglaiseExplicite, useI18n } from "@/lib/i18n"
 
 type Step = "identifiant" | "code"
 
@@ -147,7 +146,7 @@ export function LoginPage() {
   async function naviguerApresConnexion(user: User, sessionEnfant = false) {
     // Destination, langue et pays se décident sur le compte qui vient de répondre, pas sur ce que le navigateur
     // affichait avant la connexion (voir lib/apresConnexion.ts).
-    const { chemin, langue } = destinationApresConnexion({
+    const destination = destinationApresConnexion({
       user,
       demandee,
       paysNavigation: browsingCountry,
@@ -165,18 +164,12 @@ export function LoginPage() {
       }
     }
     if (versChoixDuProfil) {
-      navigate("/qui-etudie", { state: { from: chemin }, replace: true })
+      navigate("/qui-etudie", { state: { from: destination.chemin }, replace: true })
       return
     }
-    if (langue) {
-      // La page doit être rechargée dans la langue du cursus (c'est la base du routeur) : on y va directement, sur la
-      // destination, au lieu de laisser la synchronisation de langue recharger /connexion.
-      memoriserLangue(langue)
-      oublierFiltresMemorises()
-      window.location.assign(cheminDansLangue(chemin, langue))
-      return
-    }
-    navigate(chemin, { replace: true })
+    // Rechargement direct sur la destination si la langue du cursus l'exige, au lieu de laisser la synchronisation de
+    // langue recharger /connexion.
+    ouvrirDestination(destination, navigate)
   }
 
   const isSupported = SUPPORTED_REGISTRATION_COUNTRIES.includes(dialCountry)

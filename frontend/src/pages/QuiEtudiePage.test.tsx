@@ -3,6 +3,8 @@ import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listProfils = vi.hoisted(() => vi.fn())
+const activer = vi.hoisted(() => vi.fn())
+const ouvrir = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
   isLoading: false,
@@ -11,10 +13,14 @@ const auth = vi.hoisted(() => ({
 }))
 
 vi.mock("@/api/endpoints", () => ({ listProfils }))
-vi.mock("@/lib/changerProfilActif", () => ({ activerProfilProtege: vi.fn() }))
+vi.mock("@/lib/changerProfilActif", () => ({ activerProfilProtege: activer }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "CM" }) }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
+vi.mock("@/lib/apresConnexion", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/apresConnexion")>()),
+  ouvrirDestination: ouvrir,
+}))
 
 import { QuiEtudiePage } from "./QuiEtudiePage"
 
@@ -72,5 +78,37 @@ describe("QuiEtudiePage - rappel du code parent", () => {
 
     await waitFor(() => expect(screen.getByText("Cadet")).toBeTruthy())
     expect(screen.queryByText(/Chaque enfant peut voir/)).toBeNull()
+  })
+})
+
+describe("QuiEtudiePage - choix du profil", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    localStorage.clear()
+    auth.user = { id: 1, pin_parent_actif: false }
+    listProfils.mockResolvedValue(PROFILS)
+  })
+
+  async function choisirCadet(profilUser: unknown, from?: string) {
+    activer.mockResolvedValue({ access: "jeton", user: profilUser })
+    render(
+      <MemoryRouter initialEntries={[{ pathname: "/qui-etudie", state: from ? { from } : null }]}>
+        <QuiEtudiePage />
+      </MemoryRouter>,
+    )
+    fireEvent.click(await screen.findByRole("button", { name: /Cadet/ }))
+    await waitFor(() => expect(ouvrir).toHaveBeenCalled())
+    return ouvrir.mock.calls[0][0] as { chemin: string; langue: string | null }
+  }
+
+  it("profil du GCE, page demandée : la page est conservée et la langue du profil imposée", async () => {
+    const destination = await choisirCadet({ cursus_prepare: { id: 5, langue: "en", country: { code: "CM" } } }, "/cm/epreuves/x")
+    expect(destination).toEqual({ chemin: "/cm/epreuves/x", langue: "en" })
+  })
+
+  it("sans page demandée : l'accueil du pays de l'examen du profil, pas celui du navigateur", async () => {
+    const destination = await choisirCadet({ cursus_prepare: { id: 6, langue: "fr", country: { code: "SN" } } })
+    expect(destination.chemin).toBe("/sn")
+    expect(destination.langue).toBeNull()
   })
 })

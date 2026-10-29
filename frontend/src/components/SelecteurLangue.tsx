@@ -16,8 +16,8 @@ import {
 import { langueACharger, langueImposee, systemeVerrouille } from "@/lib/langueProfil"
 import { cn } from "@/lib/utils"
 
-// Chemin interne de la page de connexion (le routeur anglais traduit l'adresse : il voit aussi celui-ci).
-const PAGE_CONNEXION = "/connexion"
+// Pages internes (le routeur anglais traduit l'adresse : il voit aussi ces chemins) qui conduisent elles-mêmes l'élève à sa destination, dans la bonne langue : connexion, choix du profil.
+const PAGES_SANS_SYNCHRO = ["/connexion", "/qui-etudie"]
 
 /**
  * Accorde la langue de l'interface à l'élève connecté.
@@ -57,13 +57,13 @@ export function useSynchroLangueCompte(pathname?: string) {
         urlExplicite: urlAnglaiseExplicite(),
         changement: precedente !== undefined && precedente !== imposee,
       })
-      // Sur la page de connexion, c'est elle qui conduit l'élève à sa destination, dans la bonne langue (voir
-      // LoginPage) : recharger ici ramenait sur /connexion, destination perdue. Dès qu'il la quitte, `pathname`
+      // Sur ces pages, c'est la page qui conduit l'élève à sa destination, dans la bonne langue (voir
+      // LoginPage, QuiEtudiePage) : recharger ici ramenait sur la page elle-même, destination perdue. Dès qu'il la quitte, `pathname`
       // change et cette synchronisation reprend, ce qui sert de filet si la page de connexion n'a pas tout réglé.
-      if (cible && pathname !== PAGE_CONNEXION) ouvrirDansLangue(cible)
+      if (cible && !PAGES_SANS_SYNCHRO.includes(pathname ?? "")) ouvrirDansLangue(cible)
       return
     }
-    if (pathname === PAGE_CONNEXION) return
+    if (PAGES_SANS_SYNCHRO.includes(pathname ?? "")) return
     if (dejaFait.current === user.id) return
     dejaFait.current = user.id
     const locale = langueStockee()

@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { COUNTRY_STORAGE_KEY } from "@/lib/countryPath"
-import { destinationApresConnexion, memoriserPaysDuCompte, paysDuCompte } from "./apresConnexion"
+import { destinationApresConnexion, memoriserPaysDuCompte, ouvrirDestination, paysDuCompte } from "./apresConnexion"
 
 const compte = (pays: string | null, langue: "fr" | "en" = "fr") => ({
   cursus_prepare: pays ? ({ id: 1, langue, country: { code: pays.toUpperCase() } } as never) : null,
@@ -52,5 +52,24 @@ describe("pays du compte", () => {
     expect(localStorage.getItem(COUNTRY_STORAGE_KEY)).toBe("cm")
     memoriserPaysDuCompte(compte("sn"))
     expect(localStorage.getItem(COUNTRY_STORAGE_KEY)).toBe("sn")
+  })
+})
+
+describe("ouvrirDestination", () => {
+  it("sans changement de langue : navigation ordinaire, sans rechargement", () => {
+    const naviguer = vi.fn()
+    ouvrirDestination({ chemin: "/sn", langue: null }, naviguer)
+    expect(naviguer).toHaveBeenCalledWith("/sn", { replace: true })
+  })
+
+  it("avec changement de langue : rechargement direct sur la destination localisée, choix mémorisé", () => {
+    const naviguer = vi.fn()
+    const assign = vi.fn()
+    vi.stubGlobal("location", { ...window.location, assign })
+    ouvrirDestination({ chemin: "/cm", langue: "en" }, naviguer)
+    vi.unstubAllGlobals()
+    expect(naviguer).not.toHaveBeenCalled()
+    expect(assign).toHaveBeenCalledWith("/en/cm")
+    expect(localStorage.getItem("edukamer_langue")).toBe("en")
   })
 })
