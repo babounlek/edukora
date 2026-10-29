@@ -1,8 +1,9 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Crown, Lock, Unlock } from "lucide-react"
+import { CheckCircle2, Lock, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
+import { BadgeInedite } from "@/components/BadgeInedite"
 import { Badge } from "@/components/ui/badge"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -62,10 +63,7 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
           <Badge variant="outline" className="hidden sm:inline-flex">{libelleNature(epreuve.nature_epreuve, epreuve.nature_epreuve_display)}</Badge>
         )}
         {epreuve.kind === "inedite" ? (
-          <Badge variant="gold" className="hidden items-center gap-1 sm:inline-flex">
-            <Crown className="size-3" />
-            {epreuve.est_mini ? t("ine.mini") : t("ep.origine_INEDITE")}
-          </Badge>
+          <BadgeInedite mini={epreuve.est_mini} className="hidden sm:inline-flex" />
         ) : (
           <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"} className="hidden sm:inline-flex">
             {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}

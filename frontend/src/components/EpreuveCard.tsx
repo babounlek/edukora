@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, BookOpen, CheckCircle2, Clock, Crown, Eye, FileText, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle2, Clock, Eye, FileText, Sparkles, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -14,6 +14,7 @@ import { useAbonneActif } from "@/lib/abonneActif"
 import { formatDureeMinutes } from "@/lib/duration"
 import { libelleDuree, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { cn } from "@/lib/utils"
+import { BadgeInedite } from "@/components/BadgeInedite"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
@@ -147,10 +148,7 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
           <div className="flex flex-wrap items-center gap-1.5">
             {!masquerTypeBadge &&
               (inedite ? (
-                <Badge variant="gold" className="gap-1">
-                  <Crown className="size-3" />
-                  {epreuve.est_mini ? t("ine.mini") : t("ep.origine_INEDITE")}
-                </Badge>
+                <BadgeInedite mini={epreuve.est_mini} />
               ) : (
                 <Badge variant={epreuve.lesson_type === "SUJET" ? "gold" : "outline"}>
                   {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}

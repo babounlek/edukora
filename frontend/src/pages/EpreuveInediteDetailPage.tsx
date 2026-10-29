@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
-import { ArrowLeft, Check, Clock, Crown, Gift, GraduationCap, Lock, RotateCcw, Sparkles, Unlock } from "lucide-react"
+import { ArrowLeft, Check, Clock, Gift, GraduationCap, Lock, RotateCcw, Sparkles, Unlock } from "lucide-react"
 
 import { getEpreuveInedite, listPlans, startExamMode, startTentativeInedite } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Epreuve, Plan } from "@/api/types"
 import { Button } from "@/components/ui/button"
+import { BadgeInedite } from "@/components/BadgeInedite"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -317,19 +318,11 @@ export function EpreuveInediteDetailPage() {
           <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">{epreuve.title}</h1>
           <div className="mt-3 flex flex-wrap gap-1.5">
             <CountryBadge code={epreuve.subject.country.code} label={epreuve.subject.country.label} />
-            <Badge variant="gold" className="gap-1">
-              <Crown className="size-3" />
-              {t("ep.origine_INEDITE")}
-            </Badge>
+            <BadgeInedite mini={epreuve.est_mini} />
             {epreuve.est_vitrine && (
               <Badge variant="success" className="gap-1">
                 <Gift className="size-3" />
                 {t("ine.gratuite")}
-              </Badge>
-            )}
-            {epreuve.est_mini && (
-              <Badge variant="success" title={t("ine.mini_aide")}>
-                {t("ine.mini")}
               </Badge>
             )}
             <Badge variant="secondary">{epreuve.subject.label}</Badge>
