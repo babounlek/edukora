@@ -96,7 +96,9 @@ export function BandeauCursus() {
           <div className="flex items-center justify-between gap-3">
             <p className="text-sm font-medium">
               <span className="sm:hidden">{t("bandeau.titre_court")}</span>
-              <span className="hidden sm:inline">{t("bandeau.titre")}</span>
+              {/* La séance du jour n'existe que connecté : à un visiteur, on ne promet que ce que son choix change
+                  tout de suite (des listes réduites à son examen). */}
+              <span className="hidden sm:inline">{t(isAuthenticated ? "bandeau.titre" : "bandeau.titre_visiteur")}</span>
             </p>
             <BoutonToutVoir rangee={rangee} />
           </div>

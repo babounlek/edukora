@@ -1706,10 +1706,11 @@ export const fr = {
   "login.changer_adresse": "Changer d'adresse",
   "login.ou": "ou",
   "bandeau.titre": "Choisis ton examen pour recevoir ta séance du jour",
+  "bandeau.titre_visiteur": "Choisis ton examen : on te montre les épreuves et cours qui te concernent",
   "bandeau.titre_court": "Choisis ton examen",
   "bandeau.aria": "Choisir ton examen",
   "bandeau.note": "Noté : {cursus}",
-  "bandeau.connecte_toi": "Connecte-toi pour recevoir ta séance du jour.",
+  "bandeau.connecte_toi": "Tes listes sont adaptées. Connecte-toi pour garder ce choix et recevoir ta séance du jour.",
   "login.email_placeholder": "prenom@exemple.com",
 
   "cpt.reglage_erreur": "Impossible de modifier ce réglage pour le moment.",

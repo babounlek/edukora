@@ -1697,10 +1697,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "login.changer_adresse": "Change address",
   "login.ou": "or",
   "bandeau.titre": "Choose your exam to get your daily session",
+  "bandeau.titre_visiteur": "Choose your exam: we show you the papers and courses that concern you",
   "bandeau.titre_court": "Choose your exam",
   "bandeau.aria": "Choose your exam",
   "bandeau.note": "Noted: {cursus}",
-  "bandeau.connecte_toi": "Log in to get your daily session.",
+  "bandeau.connecte_toi": "Your lists are tailored. Log in to keep this choice and get your daily session.",
   "login.email_placeholder": "name@example.com",
 
   "cpt.reglage_erreur": "Could not change this setting right now.",
