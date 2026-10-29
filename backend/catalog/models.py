@@ -7,6 +7,8 @@ from django.db.models.functions import Upper
 from django.utils import timezone
 from django.utils.text import slugify
 
+from catalog.slugs_renommes import slug_actuel
+
 # `_join_fr` : nom historique, importé tel quel par catalog.ingestion et reclassify_physique_chimie.
 from .libelles import joindre_fr as _join_fr
 from .libelles import libelle_series
@@ -704,7 +706,10 @@ class VisibleQuerySet(models.QuerySet):
         tout marqueur [COURS_LINK:<id>]/COURS_REF:<id> déjà figé dans un content_markdown
         compilé avant l'introduction de Cours.slug).
         """
-        return self.filter(pk=value) if str(value).isdigit() else self.filter(slug=value)
+        if str(value).isdigit():
+            return self.filter(pk=value)
+        # Une adresse renommée (voir catalog.slugs_renommes) reste valable : les liens déjà partagés ne cassent pas.
+        return self.filter(slug=slug_actuel(self.model.__name__.lower(), value))
 
 
 def generate_unique_slug(model_cls, title, existing_pk=None):

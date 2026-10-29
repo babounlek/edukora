@@ -23,6 +23,7 @@ from access.services import has_access_inedite
 from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
 from catalog.libelles import libelle_cursus
 from catalog.models import Cours, Cursus, StatutContenu, TypeReponse, langue_examen
+from catalog.slugs_renommes import slug_actuel
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
 from quiz.models import CompetenceItem, ResultatDeclare
@@ -501,7 +502,7 @@ def epreuve_inedite_detail(request, id):
         EpreuveInedite.objects.select_related("subject__country", "blueprint")
         .prefetch_related("cursus__series", "cursus__country", "blueprint__competences")
     )
-    qs = qs.filter(pk=id) if id.isdigit() else qs.filter(slug=id)
+    qs = qs.filter(pk=id) if id.isdigit() else qs.filter(slug=slug_actuel("epreuveinedite", id))
     epreuve = get_object_or_404(qs, statut=StatutContenu.VALIDE)
     profil = profil_actif(request)
     payload = epreuve_inedite_catalogue_payload(

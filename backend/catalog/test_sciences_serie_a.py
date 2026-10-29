@@ -87,3 +87,58 @@ class SeparationSerieATests(_Base):
         sortie = self._lancer("--appliquer")
         self.assertEqual(CompetenceItem.objects.count(), total)
         self.assertIn("propres à la série A : 0", sortie)
+
+
+class RenommageTitresEtSlugsTests(_Base):
+    def setUp(self):
+        super().setUp()
+        import tempfile
+        from pathlib import Path
+        from unittest import mock
+        from catalog import slugs_renommes
+        from catalog.management.commands import renommer_sciences_serie_a as cmd
+
+        self.table = Path(tempfile.mkdtemp()) / "slugs_renommes.json"
+        self.table.write_text("{}", encoding="utf-8")
+        for module in (slugs_renommes, cmd):
+            patcher = mock.patch.object(module, "FICHIER", self.table)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        slugs_renommes.recharger()
+        self.addCleanup(slugs_renommes.recharger)
+        self.sciences = Subject.objects.create(country=self.pays, code="SCIENCES", label="Sciences")
+
+    def _sujet_sciences(self, titre):
+        lesson = self._sujet([self.bac_a], titre)
+        Lesson.objects.filter(pk=lesson.pk).update(subject=self.sciences)
+        lesson.refresh_from_db()
+        return lesson
+
+    def _lancer(self, *args):
+        call_command("renommer_sciences_serie_a", *args, stdout=StringIO())
+
+    def test_simulation_ne_change_rien(self):
+        lesson = self._sujet_sciences("Sciences de la Vie et de la Terre BAC A 2024")
+        ancien = lesson.slug
+        self._lancer()
+        lesson.refresh_from_db()
+        self.assertEqual((lesson.title, lesson.slug), ("Sciences de la Vie et de la Terre BAC A 2024", ancien))
+
+    def test_titre_et_slug_corriges_et_ancienne_adresse_toujours_valable(self):
+        lesson = self._sujet_sciences("Sciences de la Vie et de la Terre BAC A 2024")
+        ancien = lesson.slug
+        autre_matiere = self._sujet([self.bac_c], "Sciences de la Vie et de la Terre BAC C 2024")  # reste en SVT
+        self._lancer("--appliquer")
+        lesson.refresh_from_db(); autre_matiere.refresh_from_db()
+        self.assertEqual(lesson.title, "Sciences BAC A 2024")
+        self.assertEqual(lesson.slug, "sciences-bac-a-2024")
+        self.assertEqual(autre_matiere.title, "Sciences de la Vie et de la Terre BAC C 2024")
+        self.assertEqual(list(Lesson.objects.par_slug_ou_id(ancien)), [lesson])
+        self.assertEqual(list(Lesson.objects.par_slug_ou_id("sciences-bac-a-2024")), [lesson])
+
+    def test_idempotent(self):
+        self._sujet_sciences("Sciences de la Vie et de la Terre BAC A 2024")
+        self._lancer("--appliquer")
+        avant = self.table.read_text(encoding="utf-8")
+        self._lancer("--appliquer")
+        self.assertEqual(self.table.read_text(encoding="utf-8"), avant)
