@@ -14,6 +14,7 @@ import { GuideHost } from "@/components/guides/GuideHost"
 import { OnboardingModal } from "@/components/OnboardingModal"
 import { PinDialogs } from "@/components/PinDialogs"
 import { VerrouInactivite } from "@/components/VerrouInactivite"
+import { BandeauCampagneFin } from "@/components/BandeauCampagneFin"
 import { BandeauCursus } from "@/components/BandeauCursus"
 import { BandeauLangueCursus } from "@/components/BandeauLangueCursus"
 import { BarreSeance } from "@/components/BarreSeance"
@@ -148,6 +149,7 @@ function App({ basename = "" }: { basename?: string }) {
               {!enExamen && <Header />}
               <BandeauHorsLigne />
               {!enExamen && <BandeauCursus />}
+              {!enExamen && <BandeauCampagneFin />}
               {!enExamen && <BandeauLangueCursus />}
               {!enExamen && <BandeauReprisePaiement />}
               {!enExamen && <BarreSeance />}
