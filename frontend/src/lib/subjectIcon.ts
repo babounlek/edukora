@@ -39,6 +39,7 @@ const SUBJECT_ICONS: Record<string, LucideIcon> = {
   PHYSIQUE_CHIMIE: Beaker,
   PHYSIQUE_CHIMIE_TECH: Wrench,
   SVT: Dna,
+  SCIENCES: Dna,
   FRANCAIS: PenLine,
   PHILOSOPHIE: Brain,
   HISTOIRE: History,

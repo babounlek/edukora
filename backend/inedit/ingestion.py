@@ -53,6 +53,7 @@ from catalog.ingestion import (
     _resolve_cursus_list,
     _resolve_savoir_officiel,
     _resolve_subject,
+    sciences_si_serie_a,
     _strip_em_dash,
     _validate_pays_matches_country,
 )
@@ -295,6 +296,7 @@ def ingest_blueprint(data, country):
 
     subject = _resolve_subject(data["matiere"], country)
     cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    subject = sciences_si_serie_a(subject, cursus_list)  # série A : Sciences, pas SVT
     competences = _resolve_competences(data["competences"])
 
     with transaction.atomic():
@@ -587,6 +589,7 @@ def ingest_cours_inedite(data):
     country = rappel.exercice.epreuve.cursus.first().country
     _validate_pays_matches_country(meta.get("pays"), country)
     subject = _resolve_subject(meta["matiere"], country)
+    subject = sciences_si_serie_a(subject, list(rappel.exercice.epreuve.cursus.select_related("series")))
 
     with transaction.atomic():
         cours = Cours.objects.create(

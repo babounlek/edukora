@@ -8,6 +8,7 @@ const SUBJECT_SHORT_LABELS: Record<string, string> = {
   PHYSIQUE_CHIMIE: "PC",
   PHYSIQUE_CHIMIE_TECH: "PCT",
   SVT: "SVT",
+  SCIENCES: "Sciences",
   FRANCAIS: "Français",
   PHILOSOPHIE: "Philo",
   HISTOIRE: "Histoire",

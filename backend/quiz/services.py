@@ -49,7 +49,7 @@ _CoursCandidat = namedtuple("_CoursCandidat", "id slug titre sous_theme")
 # ingestions d'octobre). PHYSIQUE_CHIMIE et PHYSIQUE_CHIMIE_TECH sont la même matière (4e/3e) sous
 # deux codes historiques.
 SUBJECTS_PARCOURS_PAR_FREQUENCE = {
-    "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
+    "MATHS", "PHYSIQUE", "CHIMIE", "SVT", "SCIENCES", "PHYSIQUE_CHIMIE", "PHYSIQUE_CHIMIE_TECH",
     # Filière technique (TI) : signal de fréquence traité comme pour les sciences.
     "PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE",
     # Informatique (tronc commun) : le programme officiel (15 savoirs au BEPC) ignore les

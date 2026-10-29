@@ -46,6 +46,7 @@ from catalog.ingestion import (
     _resolve_cursus_list,
     _resolve_savoir_officiel,
     _resolve_subject,
+    sciences_si_serie_a,
     _strip_em_dash,
 )
 from catalog.models import Exercise, Question, StatutContenu, Subject, Tag, TypeReponse
@@ -531,9 +532,10 @@ def mettre_a_jour_item(existing, data, country, source_dir=None, sync=None):
         raise IngestionError(f"Champs obligatoires manquants : {missing}")
 
     subject = _resolve_subject(data["matiere"], country)
+    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    subject = sciences_si_serie_a(subject, cursus_list)  # série A : Sciences, pas SVT
     savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
     theme = _resolve_theme(data["theme"], allow_create=bool(savoir))
-    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
     _link_tags_to_savoir([theme], savoir)
 
     type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE
@@ -594,9 +596,10 @@ def ingest_competence_item(data, country, source_dir=None, sync=None):
             return existing, False
 
     subject = _resolve_subject(data["matiere"], country)
+    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    subject = sciences_si_serie_a(subject, cursus_list)  # série A : Sciences, pas SVT
     savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
     theme = _resolve_theme(data["theme"], allow_create=bool(savoir))
-    cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
     _link_tags_to_savoir([theme], savoir)
 
     type_reponse = TypeReponse.QCM if _normalize(data.get("type_reponse")) == "qcm" else TypeReponse.OUVERTE

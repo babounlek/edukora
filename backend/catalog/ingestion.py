@@ -455,6 +455,31 @@ def _resolve_subject(matiere_raw, country):
         raise IngestionError(f"Subject introuvable en base pour le code {code!r} et le pays {country}.")
 
 
+def sciences_si_serie_a(subject, cursus_list):
+    """
+    La série A n'a pas de « SVT » : sa matière s'appelle « Sciences » (code SCIENCES, séparée de la SVT le 2026-10-29 -
+    voir la commande separer_sciences_serie_a). Un contenu étiqueté « SVT » dont TOUS les cursus sont de série A est
+    donc rangé en Sciences, sans quoi chaque nouvelle ingestion recréerait du contenu de série A sous SVT. Un contenu
+    partagé avec une autre série reste en SVT. Sans matière Sciences en base (pays sans série A), rien ne change.
+    """
+    if subject.code != "SVT" or not cursus_list:
+        return subject
+    if not all(c.series_id is not None and c.series.code.upper() == "A" for c in cursus_list):
+        return subject
+    return Subject.objects.filter(code="SCIENCES", country=subject.country).first() or subject
+
+
+def _sciences_si_serie_a_depuis_donnees(subject, examen, serie, country):
+    """Même règle quand seuls `examen` et `serie` sont connus (le cursus n'est pas encore résolu) ; une erreur de
+    cursus est laissée à la résolution normale, plus loin, qui la signalera comme avant."""
+    if subject.code != "SVT":
+        return subject
+    try:
+        return sciences_si_serie_a(subject, _resolve_cursus_list(examen, serie, country))
+    except IngestionError:
+        return subject
+
+
 def _refuser_informatique_generique_en_serie_ti(subject, cursus_list):
     """
     Décision utilisateur du 2026-09-17 : en Série TI, l'Informatique se décompose toujours
@@ -1679,6 +1704,7 @@ def ingest_exercise(data, source_dir=None, force=False, exiger_themes=False, exi
     )
 
     subject = _resolve_subject(data["matiere"], country)
+    subject = _sciences_si_serie_a_depuis_donnees(subject, data["examen"], data.get("serie"), country)
     nature_epreuve = _resolve_nature_epreuve(data.get("nature_epreuve"))
     partie_epreuve_francais = _resolve_partie_epreuve_francais(data.get("matiere"), data.get("partie_epreuve_francais"))
     variante_sujet = _resolve_variante_sujet(data.get("variante_sujet"))
@@ -2103,7 +2129,8 @@ def chercher_exercice_existant(data, source_dir, pays=None):
         filtre_variante,
         numero_exercice=str(data["numero_exercice"]),
         lesson__epreuve_source=data["epreuve_source"],
-        lesson__subject__code__in=_subject_family_codes(subject.code), lesson__subject__country=country,
+        lesson__subject__code__in=_subject_family_codes(subject.code) | ({"SVT", "SCIENCES"} if subject.code in ("SVT", "SCIENCES") else set()),
+        lesson__subject__country=country,
         lesson__year=year, lesson__lesson_type=LessonType.CORR, lesson__cursus__country=country,
         **({"lesson__numero_paper": numero_paper} if numero_paper else {}),
     ).distinct().first()
@@ -2263,6 +2290,7 @@ def ingest_cours(data, source_dir=None):
     country = lesson_source.cursus.first().country
     _validate_pays_matches_country(meta.get("pays"), country)
     subject = _resolve_subject(meta["matiere"], country)
+    subject = sciences_si_serie_a(subject, list(lesson_source.cursus.select_related("series")))
     _refuser_informatique_generique_en_serie_ti(subject, list(lesson_source.cursus.select_related("series")))
 
     # all-or-nothing, même raison que le bloc équivalent d'ingest_exercise : sans ce
