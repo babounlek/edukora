@@ -245,7 +245,7 @@ function AccountMenu() {
  * contrainte de largeur y disparaît, le nom complet du pays est donc toujours
  * affiché - c'est dans la barre, et elle seule, qu'il faut se rabattre sur le code.
  */
-function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () => void; dansLeMenu?: boolean }) {
+export function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () => void; dansLeMenu?: boolean }) {
   const { country, countries, setCountry } = useCountry()
   const navigate = useNavigate()
   const { t } = useI18n()
@@ -262,14 +262,10 @@ function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate?: () =
     onNavigate?.()
   }
 
-  if (browsableCountries.length === 0) {
-    return (
-      <span className="flex items-center gap-1 px-2 text-xs font-medium text-muted-foreground">
-        <Globe className="size-3.5" />
-        {country.toUpperCase()}
-      </span>
-    )
-  }
+  // Un seul pays ouvert (aujourd'hui le Cameroun) : rien à choisir, le sélecteur ne ferait qu'encombrer la barre et
+  // suggérer un service ailleurs. Même règle que l'étape « pays » de l'onboarding ; dès qu'un second pays reçoit du
+  // contenu, le sélecteur réapparaît sans autre changement. Sans liste (pas encore arrivée, ou panne), rien non plus.
+  if (browsableCountries.length <= 1) return null
 
   const currentLabel = nomPays(browsableCountries, country)
 
