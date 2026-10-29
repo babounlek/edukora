@@ -66,9 +66,30 @@ def _epreuve_deep_link(epreuve):
     return f"{settings.PDF_SITE_URL}{chemin}?ref=pdf_sujet_inedit"
 
 
+_TEXTES_MINI = {
+    "fr": {
+        "inedite_brand": "Sujet - Mini-inédite",
+        "inedite_reserve": (
+            f"Document réservé aux abonnés de {settings.SITE_NAME} - le partage de ce document est une "
+            "violation des conditions d'utilisation."
+        ),
+    },
+    "en": {
+        "inedite_brand": "Subject - Mini unseen paper",
+        "inedite_reserve": (
+            f"Document reserved for {settings.SITE_NAME} subscribers - sharing this document is a breach of the "
+            "terms of use."
+        ),
+    },
+}
+
+
 def _render_html(epreuve):
     langue = langue_du_contenu(subject=epreuve.subject, cursus=epreuve.cursus.first())
     tx = textes_pdf(langue, site=settings.SITE_NAME)
+    if epreuve.est_mini:
+        # Mini-inédite : ouverte à tout abonné du cursus (voir access.has_access_inedite), pas seulement à l'add-on.
+        tx = {**tx, **_TEXTES_MINI.get(langue, _TEXTES_MINI["fr"])}
     markdown_text = _resolve_media_paths(adapter_markdown(epreuve.enonce_markdown, langue))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
