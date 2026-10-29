@@ -84,6 +84,18 @@ describe("langue imposée par le cursus du profil actif", () => {
     expect(localStorage.getItem(LANGUE_STORAGE_KEY)).toBe("en")
   })
 
+  it("sur la page de connexion, rien n'est rechargé (la destination serait perdue) ; la synchronisation reprend dès qu'elle est quittée", () => {
+    auth.user = utilisateur("en")
+    function SyncA({ pathname }: { pathname: string }) {
+      useSynchroLangueCompte(pathname)
+      return null
+    }
+    const { rerender } = render(<SyncA pathname="/connexion" />)
+    expect(ouvrir).not.toHaveBeenCalled()
+    rerender(<SyncA pathname="/cm" />)
+    expect(ouvrir).toHaveBeenCalledWith("en")
+  })
+
   it("profil français sur un lien /en explicite : la page reste, rien n'est rechargé", async () => {
     window.history.replaceState(null, "", "/en/cm/epreuves/x")
     await initialiserLangue()

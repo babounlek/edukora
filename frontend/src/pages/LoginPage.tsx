@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 
 import { googleSignIn, listProfils, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
+import type { User } from "@/api/types"
 import { dureeAttente } from "@/lib/messagesEnvoiCode"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -21,11 +22,12 @@ import {
 import { useSeo } from "@/lib/seo"
 import { libellePays } from "@/lib/pays"
 import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
-import { catalogueHomePath } from "@/lib/countryPath"
+import { destinationApresConnexion } from "@/lib/apresConnexion"
+import { oublierFiltresMemorises } from "@/lib/filtresListe"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 import { SITE_NAME } from "@/lib/site"
-import { t, useI18n } from "@/lib/i18n"
+import { cheminDansLangue, langueCourante, memoriserLangue, t, urlAnglaiseExplicite, useI18n } from "@/lib/i18n"
 
 type Step = "identifiant" | "code"
 
@@ -132,7 +134,7 @@ export function LoginPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const navigationState = location.state as { from?: string; intent?: string } | null
-  const redirectTo = navigationState?.from ?? catalogueHomePath(browsingCountry)
+  const demandee = navigationState?.from
   // Phrase posée par la page d'origine (Quiz, Fiches...) : arriver ici sans savoir
   // pourquoi on demande de se connecter est la première raison d'abandonner.
   // Facultative - les autres entrées vers /connexion n'en passent pas.
@@ -142,23 +144,39 @@ export function LoginPage() {
   // déjà déclaré 2+ enfants, auquel cas "Qui étudie ?" s'intercale une fois (voir
   // QuiEtudiePage.tsx) - comportement inchangé pour l'immense majorité des comptes
   // (un seul profil).
-  async function naviguerApresConnexion(sessionEnfant = false) {
+  async function naviguerApresConnexion(user: User, sessionEnfant = false) {
+    // Destination, langue et pays se décident sur le compte qui vient de répondre, pas sur ce que le navigateur
+    // affichait avant la connexion (voir lib/apresConnexion.ts).
+    const { chemin, langue } = destinationApresConnexion({
+      user,
+      demandee,
+      paysNavigation: browsingCountry,
+      courante: langueCourante(),
+      urlExplicite: urlAnglaiseExplicite(),
+    })
+    let versChoixDuProfil = false
     // Session ouverte par l'enfant avec son propre numéro : un seul profil possible, jamais « Qui étudie ? ».
-    if (sessionEnfant) {
-      navigate(redirectTo, { replace: true })
+    if (!sessionEnfant) {
+      try {
+        versChoixDuProfil = (await listProfils()).length > 1
+      } catch {
+        // Impossible de savoir : on part sur le chemin normal plutôt que de bloquer une
+        // connexion qui vient de réussir pour un aléa secondaire.
+      }
+    }
+    if (versChoixDuProfil) {
+      navigate("/qui-etudie", { state: { from: chemin }, replace: true })
       return
     }
-    try {
-      const profils = await listProfils()
-      if (profils.length > 1) {
-        navigate("/qui-etudie", { state: { from: redirectTo }, replace: true })
-        return
-      }
-    } catch {
-      // Impossible de savoir : on part sur le chemin normal plutôt que de bloquer une
-      // connexion qui vient de réussir pour un aléa secondaire.
+    if (langue) {
+      // La page doit être rechargée dans la langue du cursus (c'est la base du routeur) : on y va directement, sur la
+      // destination, au lieu de laisser la synchronisation de langue recharger /connexion.
+      memoriserLangue(langue)
+      oublierFiltresMemorises()
+      window.location.assign(cheminDansLangue(chemin, langue))
+      return
     }
-    navigate(redirectTo, { replace: true })
+    navigate(chemin, { replace: true })
   }
 
   const isSupported = SUPPORTED_REGISTRATION_COUNTRIES.includes(dialCountry)
@@ -260,7 +278,7 @@ export function LoginPage() {
         : await verifyEmailCode(email, code, referral)
       clearReferralCode()
       login(response.access, response.user)
-      await naviguerApresConnexion(response.user.session_restreinte)
+      await naviguerApresConnexion(response.user, response.user.session_restreinte)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {
@@ -275,7 +293,7 @@ export function LoginPage() {
       const response = await googleSignIn(credential, consumeReferralCode())
       clearReferralCode()
       login(response.access, response.user)
-      await naviguerApresConnexion()
+      await naviguerApresConnexion(response.user)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
     } finally {

@@ -31,7 +31,14 @@ export function useCursusPrepareDeclare(country: string | undefined): Cursus | n
   const enAttente = useCursusPrepareEnAttente()
   // La liste n'est demandée que pour un visiteur qui a déclaré quelque chose : même clé de cache que le reste du site.
   const { tous } = useCursusListe(country, { langue: undefined, enabled: !isAuthenticated && enAttente !== null })
-  if (isAuthenticated) return user?.cursus_prepare ?? null
+  if (isAuthenticated) {
+    const declare = user?.cursus_prepare ?? null
+    // Comme pour le visiteur : un examen d'un autre pays que celui affiché ne pré-filtre pas (`?cursus=` d'un examen
+    // sénégalais sur /cm donnait une liste vide).
+    const codeExamen = declare?.country?.code
+    if (declare && country && codeExamen && codeExamen.toLowerCase() !== country.toLowerCase()) return null
+    return declare
+  }
   return tous.find((c) => c.id === enAttente) ?? null
 }
 

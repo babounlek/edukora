@@ -6,7 +6,9 @@ import { ApiError, clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPI
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { viderCacheHorsLigne } from "@/lib/pwa"
-import { t } from "@/lib/i18n"
+import { memoriserPaysDuCompte } from "@/lib/apresConnexion"
+import { oublierFiltresMemorises } from "@/lib/filtresListe"
+import { oublierLangueMemorisee, t } from "@/lib/i18n"
 import { oublierPushLocal } from "@/lib/push"
 import { estVisiteurAnonymeConnu, marquerVisiteurAnonyme } from "@/lib/sessionAnonyme"
 
@@ -88,12 +90,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   function login(access: string, newUser: User) {
     setAccessToken(access)
+    // Les filtres de liste de la session venaient d'avant la connexion (ou d'un autre compte) : ils ne doivent pas être
+    // restaurés par-dessus l'examen de ce compte.
+    oublierFiltresMemorises()
+    memoriserPaysDuCompte(newUser)
     setUser(newUser)
   }
 
   function logout() {
     clearAccessToken()
     setUser(null)
+    // Examen, matière et langue mémorisés sont ceux du compte qui part : le suivant, sur le même appareil, repart de zéro.
+    oublierFiltresMemorises()
+    oublierLangueMemorisee()
     // Un corrigé lu hors connexion ne doit pas rester lisible pour le compte suivant.
     void viderCacheHorsLigne()
     // Même raison pour les rappels : le compte suivant sur cet appareil ne les reçoit pas.

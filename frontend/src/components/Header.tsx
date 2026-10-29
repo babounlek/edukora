@@ -318,8 +318,8 @@ export function Header() {
   const aUnCompteARebours = Boolean(user?.compte_a_rebours && user.cursus_prepare)
   const { country } = useCountry()
   const { t } = useI18n()
-  useSynchroLangueCompte()
   const { pathname, search } = useLocation()
+  useSynchroLangueCompte(pathname)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   // « / » et Ctrl/⌘+K mènent à la page de recherche, champ sélectionné (voir RecherchePage).
   const navigate = useNavigate()

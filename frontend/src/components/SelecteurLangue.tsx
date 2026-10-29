@@ -16,6 +16,9 @@ import {
 import { langueACharger, langueImposee, systemeVerrouille } from "@/lib/langueProfil"
 import { cn } from "@/lib/utils"
 
+// Chemin interne de la page de connexion (le routeur anglais traduit l'adresse : il voit aussi celui-ci).
+const PAGE_CONNEXION = "/connexion"
+
 /**
  * Accorde la langue de l'interface à l'élève connecté.
  *
@@ -31,7 +34,7 @@ import { cn } from "@/lib/utils"
  *    ouverte par un lien `/en/...` reste telle quelle, et ne touche ni au compte ni au choix local.
  * Silencieux en cas d'échec réseau : la langue locale reste, rien ne bloque l'élève.
  */
-export function useSynchroLangueCompte() {
+export function useSynchroLangueCompte(pathname?: string) {
   const { user, updateUser } = useAuth()
   const dejaFait = useRef<number | null>(null)
   // Langue imposée vue à l'exécution précédente : undefined tant qu'aucun utilisateur n'a été vu. Sert à
@@ -54,9 +57,13 @@ export function useSynchroLangueCompte() {
         urlExplicite: urlAnglaiseExplicite(),
         changement: precedente !== undefined && precedente !== imposee,
       })
-      if (cible) ouvrirDansLangue(cible)
+      // Sur la page de connexion, c'est elle qui conduit l'élève à sa destination, dans la bonne langue (voir
+      // LoginPage) : recharger ici ramenait sur /connexion, destination perdue. Dès qu'il la quitte, `pathname`
+      // change et cette synchronisation reprend, ce qui sert de filet si la page de connexion n'a pas tout réglé.
+      if (cible && pathname !== PAGE_CONNEXION) ouvrirDansLangue(cible)
       return
     }
+    if (pathname === PAGE_CONNEXION) return
     if (dejaFait.current === user.id) return
     dejaFait.current = user.id
     const locale = langueStockee()
@@ -66,7 +73,7 @@ export function useSynchroLangueCompte() {
       memoriserLangue("en")
       ouvrirDansLangue("en")
     }
-  }, [user, updateUser])
+  }, [user, updateUser, pathname])
 }
 
 /**

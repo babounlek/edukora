@@ -61,6 +61,19 @@ export function langueStockee(): Langue | null {
   }
 }
 
+/**
+ * Oublie la langue gardée par ce navigateur. À la déconnexion : cette valeur est écrite à chaque chargement d'un profil
+ * dont le cursus impose sa langue (voir useSynchroLangueCompte), donc c'est celle du compte qui s'en va, pas un choix de
+ * la personne suivante. Gardée, elle écrasait la langue du compte suivant sur un appareil partagé.
+ */
+export function oublierLangueMemorisee(): void {
+  try {
+    localStorage.removeItem(LANGUE_STORAGE_KEY)
+  } catch {
+    /* stockage indisponible : rien n'était gardé */
+  }
+}
+
 async function chargerSurcharge(cible: Langue): Promise<Dictionnaire> {
   return cible === "en" ? (await import("./en")).en : {}
 }
