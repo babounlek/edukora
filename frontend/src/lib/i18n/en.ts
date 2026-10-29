@@ -252,7 +252,8 @@ export const en: Partial<Record<CleI18n, string>> = {
     "You'll know what to revise first: \"the topics that come up most\", a ranking of the topics set most often in your exam, calculated from the real past papers.",
   "prix.titre_debut": "One price,",
   "prix.titre_accent": "until your exam",
-  "prix.pour_enfant": "You are choosing {prenom}'s subscription.",
+  "prix.pour_enfant": "{prenom}'s subscription",
+  "prix.pour_enfant_texte": "Choose their exam, then pay: access will open on {prenom}'s profile.",
   "prix.pour_enfant_autre": "Not the right child? My access",
   "prix.sous_titre":
     "{prix} FCFA per child, then {prix_sup} FCFA for each additional child in the same family.",

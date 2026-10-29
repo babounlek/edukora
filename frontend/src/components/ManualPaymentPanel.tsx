@@ -225,7 +225,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
                 id="payer-phone"
                 type="tel"
                 inputMode="numeric"
-                autoComplete="tel-national"
+                autoComplete="off"
                 placeholder="677123456"
                 value={payerPhoneNumber}
                 // Pas de maxLength : il tronquait un collage « +237 6… » ; le helper retire
@@ -237,6 +237,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
               <Label htmlFor="transaction-reference">{t("mp.reference")}</Label>
               <Input
                 id="transaction-reference"
+                autoComplete="off"
                 placeholder={t("mp.reference_placeholder")}
                 value={transactionReference}
                 onChange={(e) => setTransactionReference(e.target.value)}

@@ -26,7 +26,8 @@ describe("BandeauEnfantVise", () => {
   it("dit pour quel enfant on choisit la formule, et renvoie vers Mes accès", () => {
     afficher("9")
 
-    expect(screen.getByRole("status")).toHaveTextContent("Tu choisis l'abonnement de Awa.")
+    expect(screen.getByRole("status")).toHaveTextContent("Abonnement de Awa")
+    expect(screen.getByRole("status")).toHaveTextContent("Choisis son examen, puis paie : l'accès s'ouvrira sur le profil de Awa.")
     expect(screen.getByRole("link", { name: /pas le bon enfant/i }).getAttribute("href")).toBe("/mes-acces")
   })
 
