@@ -1,0 +1,242 @@
+{
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "5",
+      "enonce_intro_markdown": "On étudie les puissances de $3$ modulo $7$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Recopier et compléter le tableau suivant, où $r_n$ est le reste de la division euclidienne de $3^n$ par $7$. Que remarque-t-on ?\n\n| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| $r_n$ | | | | | | | |",
+          "corrige_markdown": "### Rappel de méthode\nPour étudier les restes de $a^n$ modulo $m$, on calcule les puissances de proche en proche en réduisant modulo $m$ à chaque étape, jusqu'à retrouver le reste $1$ : la suite des restes est alors périodique.\n\nOn calcule en réduisant modulo $7$ à chaque étape : $3^0=1$, $3^1\\equiv3$, $3^2=9\\equiv2$, $3^3\\equiv2\\times3=6$, $3^4\\equiv6\\times3=18\\equiv4$, $3^5\\equiv4\\times3=12\\equiv5$, $3^6\\equiv5\\times3=15\\equiv1$.\n\n| $n$ | 0 | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|---|\n| $r_n$ | 1 | 3 | 2 | 6 | 4 | 5 | 1 |\n\nOn retrouve le reste $1$ pour $n=6$ : les restes se répètent avec la période $6$.\n\n### Piège à éviter\nRéduire à chaque étape : calculer directement $3^5=243$ puis diviser par $7$ fonctionne, mais devient impraticable pour de grands exposants.",
+          "criteres_notation": [
+            {
+              "libelle": "Complète $r_0$ à $r_3$ correctement : $1$, $3$, $2$, $6$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Complète $r_4$ à $r_6$ correctement : $4$, $5$, $1$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Remarque que les restes sont périodiques de période $6$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "congruences"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex1-q1-0",
+              "competence": "Périodicité des restes d'une puissance modulo m",
+              "contenu_markdown": "Pour étudier les restes de $a^n$ modulo $m$, on calcule les puissances de proche en proche en réduisant modulo $m$ à chaque étape, jusqu'à retrouver le reste $1$ : la suite des restes est alors périodique.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Déterminer le reste de la division euclidienne de $3^{2026}$ par $7$. En déduire que $3^{2026}+3$ est divisible par $7$.",
+          "corrige_markdown": "### Rappel de méthode\nSi les restes de $a^n$ modulo $m$ se répètent avec la période $p$, le reste de $a^N$ est celui de $a^r$ où $r$ est le reste de la division euclidienne de $N$ par $p$.\n\nLa période est $6$. On divise $2026$ par $6$ : $2026=6\\times337+4$. Donc $3^{2026}=\\left(3^{6}\\right)^{337}\\times3^4\\equiv1^{337}\\times3^4=81\\equiv4\\pmod 7$. Le reste est $4$.\n\nAlors $3^{2026}+3\\equiv4+3=7\\equiv0\\pmod 7$ : le nombre $3^{2026}+3$ est divisible par $7$.\n\n### Piège à éviter\nDiviser $2026$ par $7$ au lieu de $6$ : c'est la période des restes, pas le modulo, qui sert de diviseur.",
+          "criteres_notation": [
+            {
+              "libelle": "Écrit $2026=6\\times337+4$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut que le reste est $4$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Montre $3^{2026}+3\\equiv0\\pmod7$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "congruences"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex1-q2-0",
+              "competence": "Reste d'une grande puissance par la période",
+              "contenu_markdown": "Si les restes de $a^n$ modulo $m$ se répètent avec la période $p$, le reste de $a^N$ est celui de $a^r$ où $r$ est le reste de la division euclidienne de $N$ par $p$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "enonce_markdown": "**a)** Vérifier que le couple $(3\\,;-2)$ est solution de l'équation $(E)$ : $5x+7y=1$.\n\n**b)** Résoudre dans $\\mathbb{Z}^2$ l'équation $(E)$.",
+          "corrige_markdown": "### Rappel de méthode\nPour résoudre $ax+by=c$ dans $\\mathbb{Z}^2$, on part d'une solution particulière $(x_0\\,;y_0)$, on soustrait pour obtenir $a(x-x_0)=-b(y-y_0)$, puis le théorème de Gauss donne toutes les solutions lorsque $a$ et $b$ sont premiers entre eux.\n\n**a)** $5\\times3+7\\times(-2)=15-14=1$ : le couple $(3\\,;-2)$ est bien solution.\n\n**b)** Soit $(x\\,;y)$ une solution. En soustrayant $5\\times3+7\\times(-2)=1$, on obtient $5(x-3)+7(y+2)=0$, soit $5(x-3)=-7(y+2)$. Donc $7$ divise $5(x-3)$. Comme $7$ et $5$ sont premiers entre eux, le théorème de Gauss donne : $7$ divise $x-3$, donc $x=3+7k$ avec $k\\in\\mathbb{Z}$. En remplaçant, $5\\times7k=-7(y+2)$, d'où $y=-2-5k$.\n\nRéciproquement, $5(3+7k)+7(-2-5k)=1$ pour tout $k$. L'ensemble des solutions est $\\{(3+7k\\,;-2-5k)\\ ;\\ k\\in\\mathbb{Z}\\}$.\n\n### Piège à éviter\nDonner seulement le couple $(3\\,;-2)$ : une équation diophantienne a une infinité de solutions, qu'il faut décrire toutes avec un paramètre $k$.",
+          "criteres_notation": [
+            {
+              "libelle": "Vérifie $5\\times3+7\\times(-2)=1$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Obtient $5(x-3)=-7(y+2)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Applique le théorème de Gauss : $x=3+7k$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les solutions $(3+7k\\,;-2-5k)$ et vérifie la réciproque",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "équation diophantienne",
+            "congruences"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex1-q3-0",
+              "competence": "Résoudre ax+by=c dans les entiers relatifs",
+              "contenu_markdown": "Pour résoudre $ax+by=c$ dans $\\mathbb{Z}^2$, on part d'une solution particulière $(x_0\\,;y_0)$, on soustrait pour obtenir $a(x-x_0)=-b(y-y_0)$, puis le théorème de Gauss donne toutes les solutions lorsque $a$ et $b$ sont premiers entre eux.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "5",
+      "enonce_intro_markdown": "La gérante d'une boutique de Garoua relève, pendant six mois, le nombre $x_i$ de clients (en centaines) et le chiffre d'affaires $y_i$ (en millions de francs CFA).\n\n| Mois | 1 | 2 | 3 | 4 | 5 | 6 |\n|---|---|---|---|---|---|---|\n| $x_i$ | 1 | 2 | 3 | 4 | 5 | 6 |\n| $y_i$ | 2,0 | 3,1 | 3,9 | 5,2 | 5,8 | 7,0 |",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Déterminer les coordonnées du point moyen $G$ du nuage, puis calculer la covariance $\\mathrm{cov}(x,y)$, arrondie à $10^{-2}$.",
+          "corrige_markdown": "### Rappel de méthode\nLe point moyen est $G(\\bar{x}\\,;\\bar{y})$ et la covariance vaut $\\mathrm{cov}(x,y)=\\dfrac{1}{n}\\displaystyle\\sum x_iy_i-\\bar{x}\\,\\bar{y}$.\n\n$\\bar{x}=\\dfrac{1+2+3+4+5+6}{6}=3{,}5$ et $\\bar{y}=\\dfrac{2{,}0+3{,}1+3{,}9+5{,}2+5{,}8+7{,}0}{6}=\\dfrac{27}{6}=4{,}5$, donc $G(3{,}5\\,;4{,}5)$.\n\nOn a $\\sum x_iy_i=2+6{,}2+11{,}7+20{,}8+29+42=111{,}7$. Donc\n\n$$\n\\mathrm{cov}(x,y)=\\dfrac{111{,}7}{6}-3{,}5\\times4{,}5=\\dfrac{1117}{60}-\\dfrac{63}{4}=\\dfrac{1117-945}{60}=\\dfrac{172}{60}=\\dfrac{43}{15}\\approx 2{,}87.\n$$\n\n### Piège à éviter\nOublier de retrancher $\\bar{x}\\,\\bar{y}$ : $\\dfrac{1}{n}\\sum x_iy_i$ seul n'est pas la covariance.",
+          "criteres_notation": [
+            {
+              "libelle": "Calcule $\\bar{x}=3{,}5$ et $\\bar{y}=4{,}5$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $\\sum x_iy_i=111{,}7$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Obtient $\\mathrm{cov}(x,y)\\approx2{,}87$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Statistiques à deux variables - covariance"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex2-q1-0",
+              "competence": "Point moyen et covariance",
+              "contenu_markdown": "Le point moyen est $G(\\bar{x}\\,;\\bar{y})$ et la covariance vaut $\\mathrm{cov}(x,y)=\\dfrac{1}{n}\\displaystyle\\sum x_iy_i-\\bar{x}\\,\\bar{y}$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Donner une équation de la droite de régression de $y$ en $x$, sous la forme $y=ax+b$, avec $a$ et $b$ arrondis à $10^{-3}$ (on rappelle que $V(x)=\\dfrac{35}{12}$).",
+          "corrige_markdown": "### Rappel de méthode\nLa droite de régression de $y$ en $x$ a pour équation $y=ax+b$ avec $a=\\dfrac{\\mathrm{cov}(x,y)}{V(x)}$ et $b=\\bar{y}-a\\bar{x}$ : elle passe par le point moyen.\n\nOn garde les fractions exactes : $\\mathrm{cov}(x,y)=\\dfrac{43}{15}$ et $V(x)=\\dfrac{35}{12}$. Donc\n\n$$\na=\\dfrac{\\mathrm{cov}(x,y)}{V(x)}=\\dfrac{43}{15}\\times\\dfrac{12}{35}=\\dfrac{516}{525}=\\dfrac{172}{175}\\approx0{,}983.\n$$\n\nPuis $b=\\bar{y}-a\\bar{x}=\\dfrac{9}{2}-\\dfrac{172}{175}\\times\\dfrac{7}{2}=\\dfrac{9}{2}-\\dfrac{172}{50}=4{,}5-3{,}44=1{,}06$.\n\nLa droite de régression de $y$ en $x$ a pour équation $y\\approx0{,}983\\,x+1{,}060$.\n\n### Piège à éviter\nCalculer $b$ avec un $a$ arrondi trop tôt : garde la fraction $\\dfrac{172}{175}$ jusqu'au bout, car l'arrondi de $a$ se multiplie par $\\bar{x}$ et décale $b$.",
+          "criteres_notation": [
+            {
+              "libelle": "Calcule $a=\\dfrac{\\mathrm{cov}(x,y)}{V(x)}=\\dfrac{172}{175}\\approx0{,}983$ sans arrondi intermédiaire",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $b=\\bar{y}-a\\bar{x}=1{,}06$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Écrit l'équation $y=0{,}983x+1{,}060$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Statistiques à deux variables - régression"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex2-q2-0",
+              "competence": "Droite de régression de y en x",
+              "contenu_markdown": "La droite de régression de $y$ en $x$ a pour équation $y=ax+b$ avec $a=\\dfrac{\\mathrm{cov}(x,y)}{V(x)}$ et $b=\\bar{y}-a\\bar{x}$ : elle passe par le point moyen.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "enonce_markdown": "**a)** Calculer le coefficient de corrélation linéaire $r$, arrondi à $10^{-3}$, sachant que $\\sigma_x\\approx1{,}708$ et $\\sigma_y\\approx1{,}683$. Le résultat justifie-t-il un ajustement affine ?\n\n**b)** Estimer le chiffre d'affaires pour $800$ clients.",
+          "corrige_markdown": "### Rappel de méthode\nLe coefficient de corrélation linéaire est $r=\\dfrac{\\mathrm{cov}(x,y)}{\\sigma_x\\,\\sigma_y}$ ; plus $|r|$ est proche de $1$, plus l'ajustement affine est justifié, et on prévoit une valeur en remplaçant $x$ dans l'équation de la droite.\n\n**a)** $r=\\dfrac{\\mathrm{cov}(x,y)}{\\sigma_x\\sigma_y}\\approx\\dfrac{2{,}8667}{1{,}708\\times1{,}683}\\approx0{,}997$. Cette valeur est très proche de $1$ : le nuage est presque aligné, l'ajustement affine est justifié.\n\n**b)** $800$ clients correspondent à $x=8$ (en centaines). Alors $y=\\dfrac{172}{175}\\times8+1{,}06\\approx7{,}863+1{,}06\\approx8{,}92$. Le chiffre d'affaires estimé est d'environ $8{,}92$ millions de francs CFA.\n\n### Piège à éviter\nRemplacer $x$ par $800$ : l'unité de $x$ est la centaine de clients, donc $800$ clients correspondent à $x=8$.",
+          "criteres_notation": [
+            {
+              "libelle": "Calcule $r\\approx0{,}997$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut que l'ajustement affine est justifié (proche de $1$)",
+              "points": 0.5
+            },
+            {
+              "libelle": "Traduit $800$ clients par $x=8$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Estime $y\\approx8{,}92$ millions de francs CFA",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Statistiques à deux variables - corrélation",
+            "Statistiques à deux variables - régression"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-e-mini-1-2026-s1-ex2-q3-0",
+              "competence": "Corrélation linéaire et prévision",
+              "contenu_markdown": "Le coefficient de corrélation linéaire est $r=\\dfrac{\\mathrm{cov}(x,y)}{\\sigma_x\\,\\sigma_y}$ ; plus $|r|$ est proche de $1$, plus l'ajustement affine est justifié, et on prévoit une valeur en remplaçant $x$ dans l'équation de la droite.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "epreuve",
+  "external_id": "ep-cm-maths-bac-e-mini-1-2026-s1",
+  "titre": "Mini-inédite Mathématiques BAC E n°1",
+  "blueprint_external_id": "bp-cm-maths-bac-e-mini-1"
+}

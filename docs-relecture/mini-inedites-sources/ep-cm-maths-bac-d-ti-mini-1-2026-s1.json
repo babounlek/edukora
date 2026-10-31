@@ -1,0 +1,245 @@
+{
+  "exercices": [
+    {
+      "numero_exercice": "1",
+      "points": "5",
+      "enonce_intro_markdown": "Une usine de Bafoussam fabrique des ampoules LED. Une ampoule prélevée au hasard est défectueuse avec la probabilité $0{,}08$. Le stock est assez grand pour que les prélèvements successifs soient assimilés à des tirages indépendants. On prélève $10$ ampoules et on note $X$ le nombre d'ampoules défectueuses parmi elles.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "difficulte_estimee": "faible",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Justifier que $X$ suit une loi binomiale dont on précisera les paramètres, puis calculer $P(X=0)$, arrondie à $10^{-3}$.",
+          "corrige_markdown": "### Rappel de méthode\nUne variable aléatoire $X$ qui compte les succès de $n$ épreuves identiques et indépendantes, chacune de probabilité de succès $p$, suit la loi binomiale $\\mathcal{B}(n\\,;p)$ : $P(X=k)=\\dbinom{n}{k}p^k(1-p)^{n-k}$.\n\nOn répète $10$ fois la même épreuve, de façon indépendante : prélever une ampoule. Elle a deux issues, « défectueuse » (succès, de probabilité $p=0{,}08$) ou non. Donc $X$ suit la loi binomiale $\\mathcal{B}(10\\,;0{,}08)$.\n\n$$\nP(X=0)=\\dbinom{10}{0}\\times0{,}08^0\\times0{,}92^{10}=0{,}92^{10}\\approx 0{,}434.\n$$\n\n### Piège à éviter\nÉcrire $0{,}08^{10}$ : c'est la probabilité que les $10$ ampoules soient toutes défectueuses, pas qu'aucune ne le soit.",
+          "criteres_notation": [
+            {
+              "libelle": "Identifie $10$ épreuves identiques et indépendantes à deux issues",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne les paramètres $n=10$ et $p=0{,}08$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $P(X=0)=0{,}92^{10}\\approx0{,}434$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Probabilités - loi binomiale",
+            "Probabilités (Tle D)"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex1-q1-0",
+              "competence": "Reconnaître et utiliser une loi binomiale",
+              "contenu_markdown": "Une variable aléatoire $X$ qui compte les succès de $n$ épreuves identiques et indépendantes, chacune de probabilité de succès $p$, suit la loi binomiale $\\mathcal{B}(n\\,;p)$ : $P(X=k)=\\dbinom{n}{k}p^k(1-p)^{n-k}$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Calculer la probabilité d'obtenir au moins deux ampoules défectueuses, arrondie à $10^{-3}$.",
+          "corrige_markdown": "### Rappel de méthode\nPour une probabilité du type « au moins $k$ succès », on passe par l'événement contraire : $P(X\\geqslant 2)=1-P(X=0)-P(X=1)$.\n\nOn a $P(X=0)=0{,}92^{10}\\approx0{,}4344$ et $P(X=1)=\\dbinom{10}{1}\\times0{,}08\\times0{,}92^{9}=10\\times0{,}08\\times0{,}92^{9}\\approx0{,}3777$. Donc\n\n$$\nP(X\\geqslant 2)=1-0{,}4344-0{,}3777\\approx 0{,}188.\n$$\n\n### Piège à éviter\nCalculer $1-P(X=1)$ : cela donne la probabilité d'avoir zéro ou au moins deux ampoules défectueuses, pas seulement au moins deux.",
+          "criteres_notation": [
+            {
+              "libelle": "Passe par l'événement contraire $1-P(X=0)-P(X=1)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $P(X=1)=10\\times0{,}08\\times0{,}92^9\\approx0{,}378$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne $P(X\\geqslant2)\\approx0{,}188$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Probabilités - loi binomiale"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex1-q2-0",
+              "competence": "Calculer une probabilité « au moins » par l'événement contraire",
+              "contenu_markdown": "Pour une probabilité du type « au moins $k$ succès », on passe par l'événement contraire : $P(X\\geqslant 2)=1-P(X=0)-P(X=1)$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "enonce_markdown": "**a)** Calculer l'espérance de $X$.\n\n**b)** On prélève maintenant $n$ ampoules. Quel est le plus petit entier $n$ pour que la probabilité d'obtenir au moins une ampoule défectueuse soit supérieure ou égale à $0{,}9$ ?",
+          "corrige_markdown": "### Rappel de méthode\nL'espérance d'une loi binomiale $\\mathcal{B}(n\\,;p)$ vaut $np$ ; pour résoudre $a^n\\leqslant c$ avec $0<a<1$, on prend le logarithme népérien des deux membres et on divise par $\\ln a$, qui est négatif, ce qui change le sens de l'inégalité.\n\n**a)** $E(X)=np=10\\times0{,}08=0{,}8$ : en moyenne, $0{,}8$ ampoule défectueuse par prélèvement de $10$.\n\n**b)** La probabilité d'avoir au moins une défectueuse est $1-0{,}92^n$. On veut $1-0{,}92^n\\geqslant0{,}9$, soit $0{,}92^n\\leqslant0{,}1$. On prend le logarithme népérien : $n\\ln0{,}92\\leqslant\\ln0{,}1$. Comme $\\ln0{,}92<0$, on divise en changeant le sens :\n\n$$\nn\\geqslant\\dfrac{\\ln0{,}1}{\\ln0{,}92}\\approx 27{,}6.\n$$\n\nLe plus petit entier convenable est $n=28$.\n\n### Piège à éviter\nOublier de changer le sens de l'inégalité en divisant par $\\ln0{,}92$, qui est négatif : on trouverait $n\\leqslant 27{,}6$.",
+          "criteres_notation": [
+            {
+              "libelle": "Calcule $E(X)=np=0{,}8$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Traduit la condition par $0{,}92^n\\leqslant0{,}1$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Passe au logarithme et change le sens de l'inégalité : $n\\geqslant\\dfrac{\\ln0{,}1}{\\ln0{,}92}$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut $n=28$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Probabilités - loi binomiale",
+            "Fonction logarithme népérien (Tle D)"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex1-q3-0",
+              "competence": "Espérance d'une loi binomiale et seuil par le logarithme",
+              "contenu_markdown": "L'espérance d'une loi binomiale $\\mathcal{B}(n\\,;p)$ vaut $np$ ; pour résoudre $a^n\\leqslant c$ avec $0<a<1$, on prend le logarithme népérien des deux membres et on divise par $\\ln a$, qui est négatif, ce qui change le sens de l'inégalité.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "numero_exercice": "2",
+      "points": "5",
+      "enonce_intro_markdown": "On considère la fonction $f$ définie sur $]0\\,;+\\infty[$ par $f(x)=2x-3\\ln x$. On rappelle qu'une primitive de la fonction $\\ln$ sur $]0\\,;+\\infty[$ est $x\\mapsto x\\ln x-x$.",
+      "questions": [
+        {
+          "numero": "1",
+          "ordre": 1,
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Calculer les limites de $f$ en $0$ et en $+\\infty$.",
+          "corrige_markdown": "### Rappel de méthode\nPour une limite avec $\\ln x$ en $+\\infty$, on met $x$ en facteur et on utilise $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x}=0$ ; en $0^+$, on utilise $\\displaystyle\\lim_{x\\to0^+}\\ln x=-\\infty$.\n\n**En $0^+$.** $2x\\to0$ et $-3\\ln x\\to+\\infty$, donc $\\displaystyle\\lim_{x\\to0^+}f(x)=+\\infty$.\n\n**En $+\\infty$.** On factorise : $f(x)=x\\left(2-3\\,\\dfrac{\\ln x}{x}\\right)$. Comme $\\dfrac{\\ln x}{x}\\to0$, la parenthèse tend vers $2$, et $x\\to+\\infty$. Donc $\\displaystyle\\lim_{x\\to+\\infty}f(x)=+\\infty$.\n\n### Piège à éviter\nÉcrire « $2x\\to+\\infty$ et $-3\\ln x\\to-\\infty$, donc $f$ a une forme indéterminée sans conclure » : en $+\\infty$, il faut mettre $x$ en facteur pour lever l'indétermination.",
+          "criteres_notation": [
+            {
+              "libelle": "Limite $+\\infty$ en $0^+$ justifiée par $\\ln x\\to-\\infty$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Met $x$ en facteur : $x\\left(2-3\\dfrac{\\ln x}{x}\\right)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut $+\\infty$ en $+\\infty$ avec $\\dfrac{\\ln x}{x}\\to0$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Fonction logarithme népérien (Tle D)",
+            "Fonctions numériques d'une variable réelle (Tle D)"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex2-q1-0",
+              "competence": "Limites avec le logarithme népérien",
+              "contenu_markdown": "Pour une limite avec $\\ln x$ en $+\\infty$, on met $x$ en facteur et on utilise $\\displaystyle\\lim_{x\\to+\\infty}\\dfrac{\\ln x}{x}=0$ ; en $0^+$, on utilise $\\displaystyle\\lim_{x\\to0^+}\\ln x=-\\infty$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "2",
+          "ordre": 2,
+          "difficulte_estimee": "moyenne",
+          "type_reponse": "ouverte",
+          "points": 1.5,
+          "enonce_markdown": "Calculer $f'(x)$ pour tout $x>0$, puis dresser le tableau de variations de $f$.",
+          "corrige_markdown": "### Rappel de méthode\nOn dérive terme à terme avec $(\\ln x)'=\\dfrac{1}{x}$ ; le signe de $f'$ donne les variations de $f$, et la valeur de $f$ au point où $f'$ s'annule donne un extremum.\n\nPour tout $x>0$, $f'(x)=2-\\dfrac{3}{x}=\\dfrac{2x-3}{x}$.\n\nComme $x>0$, le signe de $f'(x)$ est celui de $2x-3$ : $f'(x)<0$ pour $x<\\dfrac{3}{2}$ et $f'(x)>0$ pour $x>\\dfrac{3}{2}$. La fonction $f$ est décroissante sur $\\left]0\\,;\\dfrac{3}{2}\\right]$, croissante sur $\\left[\\dfrac{3}{2}\\,;+\\infty\\right[$, et son minimum est $f\\!\\left(\\dfrac{3}{2}\\right)=3-3\\ln\\dfrac{3}{2}$.\n\n| $x$ | $0$ | | $\\dfrac{3}{2}$ | | $+\\infty$ |\n|---|---|---|---|---|---|\n| $f'(x)$ | | $-$ | $0$ | $+$ | |\n| $f(x)$ | $+\\infty$ | $\\searrow$ | $3-3\\ln\\dfrac{3}{2}$ | $\\nearrow$ | $+\\infty$ |\n\n### Piège à éviter\nDériver $\\ln x$ en $\\ln x$ ou en $x$ : $(\\ln x)'=\\dfrac{1}{x}$, et le coefficient $3$ reste devant.",
+          "criteres_notation": [
+            {
+              "libelle": "Dérive : $f'(x)=2-\\dfrac{3}{x}$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Étudie le signe de $\\dfrac{2x-3}{x}$ sur $]0\\,;+\\infty[$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne le tableau et le minimum $3-3\\ln\\dfrac{3}{2}$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Fonction logarithme népérien (Tle D)",
+            "Fonctions numériques d'une variable réelle (Tle D)"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex2-q2-0",
+              "competence": "Dérivée avec ln et variations",
+              "contenu_markdown": "On dérive terme à terme avec $(\\ln x)'=\\dfrac{1}{x}$ ; le signe de $f'$ donne les variations de $f$, et la valeur de $f$ au point où $f'$ s'annule donne un extremum.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        },
+        {
+          "numero": "3",
+          "ordre": 3,
+          "difficulte_estimee": "elevee",
+          "type_reponse": "ouverte",
+          "points": 2,
+          "enonce_markdown": "**a)** Montrer que $f(x)>0$ pour tout $x>0$.\n\n**b)** Calculer $\\displaystyle\\int_1^e f(x)\\,dx$. Donner la valeur exacte puis l'arrondi à $10^{-2}$.",
+          "corrige_markdown": "### Rappel de méthode\nPour montrer qu'une fonction est positive, on compare son minimum à $0$ ; l'intégrale se calcule par $\\displaystyle\\int_a^b f(x)\\,dx=F(b)-F(a)$ avec une primitive $F$ de $f$.\n\n**a)** Le minimum de $f$ est $f\\!\\left(\\dfrac{3}{2}\\right)=3\\left(1-\\ln\\dfrac{3}{2}\\right)$. Comme $\\dfrac{3}{2}<e$, on a $\\ln\\dfrac{3}{2}<1$, donc ce minimum est strictement positif. Ainsi $f(x)>0$ pour tout $x>0$.\n\n**b)** Une primitive de $f$ est $F(x)=x^2-3\\,(x\\ln x-x)=x^2-3x\\ln x+3x$. Alors $F(e)=e^2-3e+3e=e^2$ et $F(1)=1-0+3=4$. Donc\n\n$$\n\\int_1^e f(x)\\,dx=F(e)-F(1)=e^2-4\\approx 3{,}39.\n$$\n\n### Piège à éviter\nPrendre $x\\ln x-x$ comme primitive de $3\\ln x$ : il faut la multiplier par $3$ avant de soustraire.",
+          "criteres_notation": [
+            {
+              "libelle": "Justifie $\\ln\\dfrac{3}{2}<1$ car $\\dfrac{3}{2}<e$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Conclut $f>0$ sur $]0\\,;+\\infty[$ grâce au minimum positif",
+              "points": 0.5
+            },
+            {
+              "libelle": "Donne une primitive $x^2-3(x\\ln x-x)$",
+              "points": 0.5
+            },
+            {
+              "libelle": "Calcule $e^2-4\\approx3{,}39$",
+              "points": 0.5
+            }
+          ],
+          "themes": [
+            "Fonction logarithme népérien (Tle D)",
+            "Calcul des intégrales (Tle D)"
+          ],
+          "rappels_de_methode": [
+            {
+              "id": "rdi-ep-cm-maths-bac-d-ti-mini-1-2026-s1-ex2-q3-0",
+              "competence": "Signe d'une fonction par son minimum et intégrale avec ln",
+              "contenu_markdown": "Pour montrer qu'une fonction est positive, on compare son minimum à $0$ ; l'intégrale se calcule par $\\displaystyle\\int_a^b f(x)\\,dx=F(b)-F(a)$ avec une primitive $F$ de $f$.",
+              "cours_genere": false,
+              "cours_id": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "type": "epreuve",
+  "external_id": "ep-cm-maths-bac-d-ti-mini-1-2026-s1",
+  "titre": "Mini-inédite Mathématiques BAC D et TI n°1",
+  "blueprint_external_id": "bp-cm-maths-bac-d-ti-mini-1"
+}
