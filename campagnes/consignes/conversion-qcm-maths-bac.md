@@ -13,8 +13,8 @@ SORTIE : `sortie_N.json` (UTF-8), de la forme :
 
 Le programme visé est celui de la Terminale (BAC). La liste à jour est dans `campagnes/programme/bac-notions-hors-programme.json`. Au programme de TOUTES les séries concernées par un item : celui qui est commun à la plus faible d'entre elles. Selon la série :
 
-- **A :** équations, inéquations, systèmes ; limites, continuité ; dérivées, courbes ; primitives ; logarithme népérien ; exponentielles ; études de fonctions ; statistiques ; probabilités.
-- **C et E :** nombres complexes (approche algébrique et géométrique), fonctions numériques, suites, primitives, logarithme, exponentielles et fonctions puissances, calcul intégral, équations différentielles ; statistiques, probabilités, théorie des graphes ; similitudes directes, coniques ; espaces vectoriels et applications, produit vectoriel. L'arithmétique est au programme de la série C.
+- **A :** équations, inéquations, systèmes ; limites, continuité ; dérivées, courbes ; primitives ; logarithme népérien ; exponentielles ; études de fonctions ; statistiques ; probabilités. **Avis de l'enseignant : la série A n'a NI convexité, NI dérivée seconde, NI points d'inflexion, NI équations différentielles.** Si l'item est posé en série A et repose sur l'une de ces notions, signale-le dans le rapport final (« série A à retirer : <external_id> ») ; ne l'écarte pas pour autant si C/D/E/TI le couvrent.
+- **C et E :** nombres complexes (approche algébrique et géométrique), fonctions numériques, suites, primitives, logarithme, exponentielles et fonctions puissances, calcul intégral, équations différentielles ; statistiques, probabilités, théorie des graphes ; similitudes directes, coniques ; espaces vectoriels et applications, produit vectoriel. L'arithmétique est au programme des séries C et E.
 - **D :** comme C-E sans l'arithmétique, les coniques, les espaces vectoriels ni le produit vectoriel ; avec nombres complexes, suites, intégrales, équations différentielles, probabilités, graphes, similitudes directes.
 - **TI :** arithmétique, nombres complexes, fonctions, suites, primitives, logarithme, exponentielle, intégrales, équations différentielles ; statistiques, probabilités, graphes ; similitudes, applications linéaires et matrices du plan.
 
@@ -47,3 +47,11 @@ Mieux vaut écarter que livrer un QCM douteux.
 ## 4. À la fin
 
 Relis le fichier écrit avec un script (JSON valide, 4 choix distincts par proposition, `reponse_correcte` dans {a,b,c,d}, aucun tiret cadratin, `$` pairs, aucun mot de la liste du §1). Réponds en UNE ligne : `N converties, M écartées` suivi des external_id écartés avec la raison en quelques mots, puis signale toute incohérence trouvée dans une question d'origine et tout changement de fond (clé modifiée, méthode remplacée, question réduite, donnée ajoutée).
+
+## Arbitrages de l'enseignant (2026-10-31)
+
+- **Arithmétique** (congruences, Gauss, Bézout, équations diophantiennes) : séries C, E et TI, pas D ni A. **Coniques** (ellipse, excentricité) : pas D. **Similitudes indirectes** : pas C. Algèbre linéaire en dimension 2 et 3 (noyau, image, projecteurs, symétries) : OK en C et E, pas en dimension 4. **Discriminant complexe** : pas D.
+- **Série A : retirer la série** de toute question qui utilise la fonction a^x (base 3, ln 3), les branches paraboliques, le prolongement par continuité, les combinaisons, la somme de plusieurs termes d'une loi binomiale, une convexité, une dérivée seconde, une équation différentielle ou des nombres complexes. Un schéma de Bernoulli simple (2 ou 3 issues, événement contraire) reste possible en A. Une équation du 3e degré (changement de variable $t=\ln x$) reste possible en A seulement si l'énoncé donne l'indication (poser $t$ et vérifier une racine donnée).
+- **Série TI :** les équations différentielles du second ordre sont au programme (relevé du 2026-10-31, qui remplace l'avis précédent).
+- **Vocabulaire :** ne pas écrire « produit mixte » dans un énoncé ; écrire la notation $\vec u\cdot(\vec v\wedge\vec w)$ ou le déterminant.
+- Dans le rapport final, signale pour chaque item les séries à retirer (« série X à retirer : <external_id> ») : c'est toi qui proposes le cursus final, l'enseignant tranche.

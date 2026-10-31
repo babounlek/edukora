@@ -2,14 +2,164 @@
   "programme": "BAC (classe de Terminale), maths, series A, C, D, E, TI",
   "origine": "referentiel officiel de l'application `programme` (modules Tle A, C-E, D, TI) ; a completer a chaque avis d'enseignant. Une notion peut etre au programme d'une serie et pas d'une autre : la consigne donne les series de chaque item, le niveau visé est celui de la PLUS FAIBLE des series indiquees.",
   "notions": [
-    {"id": "integrale-impropre", "gravite": "bloquant", "motif": "hors programme de Terminale", "motifs": ["impropre"]},
-    {"id": "developpement-limite", "gravite": "bloquant", "motif": "hors programme de Terminale", "motifs": ["d[ée]veloppements? limit[ée]s?", "formule de Taylor", "s[ée]ries? enti[èe]res?"]},
-    {"id": "analyse-superieure", "gravite": "bloquant", "motif": "hors programme de Terminale", "motifs": ["th[ée]or[èe]me de Rolle", "accroissements finis", "int[ée]grale double", "d[ée]riv[ée]e partielle"]},
-    {"id": "algebre-superieure", "gravite": "bloquant", "motif": "hors programme de Terminale", "motifs": ["valeurs? propres?", "vecteurs? propres?", "diagonalis", "polyn[ôo]me caract[ée]ristique", "dimension infinie"]},
-    {"id": "serie-A-complexes", "gravite": "alerte", "motif": "Terminale A : pas de nombres complexes, de suites, d'arithmetique, de similitudes, de coniques ni d'equations differentielles (programme : equations, limites, derivees, primitives, ln, exp, etudes de fonctions, statistiques, probabilites)", "motifs": ["nombres? complexes?", "similitude", "ellipse", "hyperbole", "[ée]quation diff[ée]rentielle"]},
-    {"id": "serie-CE-seulement", "gravite": "alerte", "motif": "coniques, produit vectoriel, espaces vectoriels et applications : series C et E seulement", "motifs": ["ellipse", "hyperbole", "excentricit", "produit vectoriel", "espace vectoriel", "endomorphisme", "noyau"]},
-    {"id": "arithmetique", "gravite": "alerte", "motif": "arithmetique (congruences, Gauss, Bezout) : series C (et TI), pas D ni E ni A selon le referentiel : a valider", "motifs": ["congruence", "B[ée]zout", "\\bGauss\\b", "\\\\equiv"]},
-    {"id": "matrices", "gravite": "alerte", "motif": "matrices : serie TI (applications lineaires du plan) ; pas au referentiel des series C, D, E, A en tant que tel", "motifs": ["matrice"]},
-    {"id": "niveau-cite", "gravite": "alerte", "motif": "ne pas citer un niveau de classe dans un enonce ou un corrige", "motifs": ["(classe|niveau|programme|cours)\\s+(de\\s+)?(seconde|première|terminale)\\b"]}
-  ]
+    {
+      "id": "integrale-impropre",
+      "gravite": "bloquant",
+      "motif": "hors programme de Terminale",
+      "motifs": [
+        "impropre"
+      ]
+    },
+    {
+      "id": "developpement-limite",
+      "gravite": "bloquant",
+      "motif": "hors programme de Terminale",
+      "motifs": [
+        "d[ée]veloppements? limit[ée]s?",
+        "formule de Taylor",
+        "s[ée]ries? enti[èe]res?"
+      ]
+    },
+    {
+      "id": "analyse-superieure",
+      "gravite": "bloquant",
+      "motif": "hors programme de Terminale",
+      "motifs": [
+        "th[ée]or[èe]me de Rolle",
+        "accroissements finis",
+        "int[ée]grale double",
+        "d[ée]riv[ée]e partielle"
+      ]
+    },
+    {
+      "id": "algebre-superieure",
+      "gravite": "bloquant",
+      "motif": "hors programme de Terminale",
+      "motifs": [
+        "valeurs? propres?",
+        "vecteurs? propres?",
+        "diagonalis",
+        "polyn[ôo]me caract[ée]ristique",
+        "dimension infinie"
+      ]
+    },
+    {
+      "id": "serie-A-complexes",
+      "gravite": "alerte",
+      "motif": "Terminale A : pas de nombres complexes, de suites, d'arithmetique, de similitudes, de coniques ni d'equations differentielles (programme : equations, limites, derivees, primitives, ln, exp, etudes de fonctions, statistiques, probabilites)",
+      "motifs": [
+        "nombres? complexes?",
+        "similitude",
+        "ellipse",
+        "hyperbole",
+        "[ée]quation diff[ée]rentielle"
+      ]
+    },
+    {
+      "id": "serie-A-convexite",
+      "gravite": "alerte",
+      "motif": "Terminale A (avis de l'enseignant, 2026-10-30) : ni convexite, ni derivee seconde, ni points d'inflexion, ni equations differentielles ; si l'item est pose en serie A, retirer la serie A du cursus ou l'ecarter",
+      "motifs": [
+        "convex",
+        "concave",
+        "point[s]? d'inflexion",
+        "inflexion",
+        "d[ée]riv[ée]e seconde",
+        "f''",
+        "y''"
+      ]
+    },
+    {
+      "id": "serie-CE-seulement",
+      "gravite": "alerte",
+      "motif": "coniques, produit vectoriel, espaces vectoriels et applications : series C et E seulement",
+      "motifs": [
+        "ellipse",
+        "hyperbole",
+        "excentricit",
+        "produit vectoriel",
+        "espace vectoriel",
+        "endomorphisme",
+        "noyau"
+      ]
+    },
+    {
+      "id": "arithmetique",
+      "gravite": "alerte",
+      "motif": "arithmetique (congruences, Gauss, Bezout) : series C, E et TI (avis de l'enseignant, 2e releve du 2026-10-31), pas D ni A",
+      "motifs": [
+        "congruence",
+        "B[ée]zout",
+        "\\bGauss\\b",
+        "\\\\equiv"
+      ]
+    },
+    {
+      "id": "matrices",
+      "gravite": "alerte",
+      "motif": "matrices : serie TI (applications lineaires du plan) ; pas au referentiel des series C, D, E, A en tant que tel",
+      "motifs": [
+        "matrice"
+      ]
+    },
+    {
+      "id": "niveau-cite",
+      "gravite": "alerte",
+      "motif": "ne pas citer un niveau de classe dans un enonce ou un corrige",
+      "motifs": [
+        "(classe|niveau|programme|cours)\\s+(de\\s+)?(seconde|première|terminale)\\b"
+      ]
+    },
+    {
+      "id": "serie-A-exponentielle-base-a",
+      "gravite": "alerte",
+      "motif": "Terminale A (avis de l'enseignant, 2026-10-31) : pas de fonction a^x ni de conversion a^x = e^{x ln a} ; item concerne = retirer la serie A",
+      "motifs": [
+        "3\\^\\{?[^$ ]*x",
+        "a\\^x",
+        "e\\^\\{x ?\\\\ln"
+      ]
+    },
+    {
+      "id": "serie-A-branche-parabolique",
+      "gravite": "alerte",
+      "motif": "Terminale A (avis de l'enseignant) : ni branche parabolique, ni prolongement par continuite ; retirer la serie A",
+      "motifs": [
+        "branche parabolique",
+        "prolongement par continuit",
+        "prolongeable par continuit"
+      ]
+    },
+    {
+      "id": "serie-A-combinatoire",
+      "gravite": "alerte",
+      "motif": "Terminale A (avis de l'enseignant) : ni combinaisons ni somme de plusieurs termes d'une loi binomiale ; seul un schema de Bernoulli simple (2 ou 3 issues, evenement contraire, arbre pondere) reste possible ; sinon retirer la serie A",
+      "motifs": [
+        "\\binom",
+        "loi binomiale",
+        "sch[ée]ma de Bernoulli",
+        "tirage simultan"
+      ]
+    },
+    {
+      "id": "serie-A-degre-3",
+      "gravite": "alerte",
+      "motif": "Terminale A (avis de l'enseignant, 2e releve du 2026-10-31) : equation du 3e degre a factoriser seulement avec une INDICATION explicite dans l'enonce (changement de variable et racine donnee) ; sinon retirer la serie A",
+      "motifs": [
+        "troisi[èe]me degr[ée]",
+        "3e degr[ée]"
+      ]
+    },
+    {
+      "id": "produit-mixte-terme",
+      "gravite": "alerte",
+      "motif": "Terminale C/E (avis de l'enseignant) : ecrire la notation u.(v^w) ou le determinant plutot que le terme produit mixte dans les enonces",
+      "motifs": [
+        "produit mixte"
+      ]
+    }
+  ],
+  "decisions_enseignant": {
+    "2026-10-31": "2e releve (remplace la 1re sur les points en conflit) : arithmetique en C, E et TI (pas D). Coniques : pas D. Similitudes indirectes : pas C. Algebre lineaire de dimension 2 et 3 : OK en C et E. Equations differentielles du second ordre : OK en TI. Discriminant complexe : pas D. Serie A : pas de a^x, branche parabolique, prolongement par continuite, loi binomiale a plusieurs termes, complexes ; equation du 3e degre admise avec indication. Voir les notions serie-A-*."
+  }
 }
