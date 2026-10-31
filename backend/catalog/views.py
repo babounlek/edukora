@@ -368,6 +368,9 @@ class LessonListView(generics.ListAPIView):
             lesson_objs_by_id = {
                 obj.id: obj
                 for obj in lesson_qs.filter(id__in=page_lesson_ids)
+                # content_markdown (le texte entier de l'épreuve : ~25 Ko par ligne, 616 Ko pour une page de 24)
+                # n'est lu par aucun champ de la liste : on ne le charge pas depuis PostgreSQL.
+                .defer("content_markdown")
                 .prefetch_related(None).prefetch_related("cursus__series", "cursus__country")
             }
             ordered_lesson_objs = [lesson_objs_by_id[i] for i in page_lesson_ids if i in lesson_objs_by_id]
@@ -550,7 +553,8 @@ class CoursListView(generics.ListAPIView):
         # Pas de .distinct() : tous les filtres ci-dessus passent par Exists()/pk__in, aucun
         # JOIN M2M ne multiplie les lignes. Le DISTINCT dédoublonnait pour rien des lignes
         # larges (sections_raw, content_markdown) : ~200 ms -> ~40 ms sur la liste complète.
-        return qs.order_by(*ordering)
+        # content_markdown (texte entier du cours) n'est lu par aucun champ de la liste (l'aperçu vient de sections_raw).
+        return qs.defer("content_markdown").order_by(*ordering)
 
     def list(self, request, *args, **kwargs):
         """Comme generics.ListAPIView.list(), à ceci près que le contexte de

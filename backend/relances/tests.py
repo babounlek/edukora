@@ -62,6 +62,19 @@ class RappelSeanceTests(RelancesTestCase):
         self.assertIn("/relances/desabonner/", message.body)
         self.assertIn(f"/{self.cursus.country.code.lower()}", message.body)
 
+    def test_le_message_a_une_version_html_aux_memes_liens(self):
+        user = self.eleve()
+
+        services.envoyer_rappels_seance()
+
+        message = mail.outbox[0]
+        html, type_mime = message.alternatives[0]
+        self.assertEqual(type_mime, "text/html")
+        self.assertIn("Bonjour Awa,", html)
+        self.assertIn("Ouvrir ma séance", html)
+        self.assertIn(f"{services.settings.FRONTEND_URL}/{self.cursus.country.code.lower()}", html)
+        self.assertIn(services.lien_desabonnement(user), html)
+
     def test_ne_part_qu_une_fois_par_jour(self):
         self.eleve()
         services.envoyer_rappels_seance()
@@ -106,7 +119,7 @@ class RappelSeanceTests(RelancesTestCase):
         vrai_envoi = services._envoyer_email
         appels = []
 
-        def envoi_capricieux(user, sujet, corps):
+        def envoi_capricieux(user, sujet, corps, html=None):
             appels.append(user.pk)
             if len(appels) == 1:
                 raise OSError("SMTP indisponible")

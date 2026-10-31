@@ -21,6 +21,7 @@ from django.conf import settings
 from django.core import signing
 from django.core.mail import send_mail
 from django.db import IntegrityError
+from django.template.loader import render_to_string
 from django.utils import timezone
 
 from catalog.models import ExamSession
@@ -78,8 +79,8 @@ def _salutation(user):
     return f"Bonjour {prenom}," if prenom else "Bonjour,"
 
 
-def _envoyer_email(user, sujet, corps):
-    send_mail(sujet, corps, None, [user.email], fail_silently=False)
+def _envoyer_email(user, sujet, corps, html=None):
+    send_mail(sujet, corps, None, [user.email], fail_silently=False, html_message=html)
 
 
 def _tracer(user, type_, reference):
@@ -110,37 +111,51 @@ def _formule_examen(cursus):
 
 
 def composer_rappel_seance(user):
-    """(sujet, corps) du rappel quotidien - sans jamais créer la séance elle-même :
+    """(sujet, corps, html) du rappel quotidien - sans jamais créer la séance elle-même :
     ouvrir l'application la crée, l'envoi d'un e-mail ne doit rien inscrire au nom de
-    l'élève (ni fausser ce que mesure l'entonnoir d'acquisition)."""
+    l'élève (ni fausser ce que mesure l'entonnoir d'acquisition). Le texte brut reste le
+    message de référence ; le HTML en reprend exactement les mêmes faits."""
     # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui qu'un
     # seul profil, la vraie bascule (JWT claim) n'étant pas branchée sur ce canal
     # hors requête HTTP.
     profil = user.profils.first()
     cursus = user.cursus_prepare
-    lignes = [_salutation(user), "", "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi."]
+    faits = []
 
     formule = _formule_examen(cursus)
     if formule:
-        lignes.append(formule)
+        faits.append(formule)
 
     serie = serie_de_jours(profil)
     if serie["jours"] >= 2:
-        lignes.append(f"Ta série est à {serie['jours']} jours de suite.")
+        faits.append(f"Ta série est à {serie['jours']} jours de suite.")
 
     dues = revisions_dues(profil, cursus).count()
     if dues:
-        lignes.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui pour qu'il{'s' if dues > 1 else ''} restent en mémoire.")
+        faits.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui pour qu'il{'s' if dues > 1 else ''} restent en mémoire.")
 
     pays = cursus.country.code.lower()
-    lignes += [
+    lien = f"{settings.FRONTEND_URL}/{pays}"
+    lien_arret = lien_desabonnement(user)
+    salutation = _salutation(user)
+    sujet = "Ta séance du jour est prête"
+
+    texte = [salutation, "", "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi.", *faits]
+    texte += [
         "",
-        f"Ouvrir ma séance : {settings.FRONTEND_URL}/{pays}",
+        f"Ouvrir ma séance : {lien}",
         "",
         "Tu reçois ce message parce que tu as activé les rappels quotidiens.",
-        f"Les arrêter en un clic : {lien_desabonnement(user)}",
+        f"Les arrêter en un clic : {lien_arret}",
     ]
-    return "Ta séance du jour est prête", "\n".join(lignes)
+    html = render_to_string(
+        "relances/emails/rappel_seance.html",
+        {
+            "site_name": settings.SITE_NAME, "salutation": salutation, "faits": faits, "lien": lien,
+            "lien_desabonnement": lien_arret, "apercu": "Environ 25 minutes, choisies pour toi.",
+        },
+    )
+    return sujet, "\n".join(texte), html
 
 
 def destinataires_rappel_seance(maintenant=None):
@@ -175,11 +190,11 @@ def envoyer_rappels_seance(maintenant=None, *, dry_run=False):
             envoyes += 1
             continue
         try:
-            sujet, corps = composer_rappel_seance(user)
+            sujet, corps, html = composer_rappel_seance(user)
             if not _tracer(user, TypeRelance.RAPPEL_SEANCE, aujourdhui.isoformat()):
                 continue
             try:
-                _envoyer_email(user, sujet, corps)
+                _envoyer_email(user, sujet, corps, html)
             except Exception:
                 # Un envoi raté ne doit pas être définitivement marqué « fait » : on retire la
                 # trace pour qu'une nouvelle exécution le retente.

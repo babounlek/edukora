@@ -1,0 +1,350 @@
+{
+  "_lisez_moi": "Registre des sites de sujets d'examen. 'acces' dit ce que le skill peut faire seul ; 'automatisable' = HEAD + téléchargement direct autorisés (jamais de contournement). Mettre à jour après chaque constat : verifie_le = date du dernier constat.",
+  "sources": [
+    {
+      "id": "sujetexa",
+      "nom": "SUJETEXA",
+      "domaine": "sujetexa.com",
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "BEPC, Probatoire, BAC, GCE O/A Level (officiels, mocks de lycées et séquences mélangés)",
+      "acces": [
+        "pdf_direct",
+        "api_wp"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "wp_search": "https://sujetexa.com/?s={q}",
+        "api": "https://sujetexa.com/index.php/wp-json/wp/v2/posts?search={q}&per_page=20",
+        "categories": {
+          "GCE O Level": "https://sujetexa.com/index.php/category/gce/gce-ol/",
+          "GCE A Level": "https://sujetexa.com/index.php/category/gce/gce-al/"
+        }
+      },
+      "notes": "PDF directs sous /wp-content/uploads/ (lien porté par l'image de couverture de chaque article). Au 2026-10-30 le certificat TLS du site est expiré : le skill ne désactive jamais la vérification, l'utilisateur télécharge dans son navigateur. API REST WordPress ouverte (catégorie 129 = O/L, 130 = A/L). Titres sans nom d'école = officiels ; « Mock », « GBHS », « Séquence », « Pre-mock » = à écarter. Un fichier peut être tronqué (Literature A/L P3 2024 : 6 p., 3 questions sur 4).",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "epreuvesetcorriges",
+      "nom": "Épreuves et corrigés",
+      "domaine": "epreuvesetcorriges.com",
+      "systemes": [
+        "fr"
+      ],
+      "couvre": "BEPC, Probatoire, BAC, CAP, CEP, BTS Cameroun (pas de GCE) ; sujets, corrigés, épreuves zéro ; 1 611 entrées Cameroun moissonnées le 2026-10-25",
+      "acces": [
+        "pdf_direct"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "wp_search": "https://epreuvesetcorriges.com/search?q={q}",
+        "categories": {
+          "Cameroun": "https://epreuvesetcorriges.com/categories/cameroun"
+        }
+      },
+      "notes": "2026-10-30 : les pages /categories/... répondent 403 (LiteSpeed), même dans le Chrome de l'utilisateur ; seule la page d'accueil répond (et affiche le Bénin). Ne pas contourner. Les liens /download des fiches (…/categories/cameroun/examens/bac/<id>-<slug>/download) répondent HTTP 200 application/pdf (testé 2026-10-25). Gratuit. Vérifier la page de garde : séries mélangées (A4/ABI, C, D, E, TI).",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "camerecole",
+      "nom": "Camerecole",
+      "domaine": "camerecole.org",
+      "systemes": [
+        "fr"
+      ],
+      "couvre": "BEPC, Probatoire, BAC (examens/<id>-<slug>.html), classes, concours ; 1 659 articles moissonnés",
+      "acces": [
+        "page_html",
+        "pdf_direct"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true,
+        "categories": {
+          "Examens": "http://www.camerecole.org/examens.html"
+        }
+      },
+      "notes": "Redirige vers http://www.camerecole.org/. Beaucoup d'épreuves sont TRANSCRITES dans la page HTML (pas de PDF) : lecture de la page, pas de téléchargement. Corrigés mêlés aux sujets, titres « Correction … » à écarter.",
+      "verifie_le": "2026-10-25"
+    },
+    {
+      "id": "concourscameroon",
+      "nom": "Concours Cameroon",
+      "domaine": "concourscameroon.com",
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "GCE O/A Level (jusqu'à juin 2023), BEPC, Probatoire, BAC",
+      "acces": [
+        "drive",
+        "bloque_automate"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true,
+        "categories": {
+          "GCE O Level": "https://www.concourscameroon.com/gce-ordinary-level-past-questions",
+          "GCE A Level": "https://www.concourscameroon.com/gce-advance-level-past-questions"
+        }
+      },
+      "notes": "403 sur tout accès automatique. Liens Google Drive (drive.google.com/uc?export=download&id=…) : ouverts par l'utilisateur. Rien de 2026. « O Level Religious Studies » est souvent un A Level : lire la page de garde. Slugs d'année parfois faux.",
+      "verifie_le": "2026-10-20"
+    },
+    {
+      "id": "cameroongcerevision",
+      "nom": "Cameroon GCE Revision (CGR)",
+      "domaine": "cameroongcerevision.com",
+      "systemes": [
+        "en"
+      ],
+      "couvre": "GCE O/A Level 2019-2026 (le seul à afficher du 2026), mocks régionaux 2026",
+      "acces": [
+        "visionneuse_integree",
+        "bloque_automate"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "wp_search": "https://cameroongcerevision.com/?s={q}",
+        "modele_url": "https://cameroongcerevision.com/cameroon-gce-{ordinary|advanced}-level-june-{annee}-{matiere}-{paper}/"
+      },
+      "notes": "Gratuit mais le PDF est dans une visionneuse (gview) sans lien direct ; Cloudflare/403 sur GET direct ; le navigateur peut télécharger l'URL du PDF. PDF filigranés (voir le skill reproduire-figure-sans-filigrane). Corrigés payants. Les pages de matière sont incomplètes : tester l'URL de même modèle. Étiquettes souvent fausses (A Level servi pour O Level, année décalée). Redirige parfois vers gcepanel.org (publicité). Pas de requêtes en parallèle (500).",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "temovision",
+      "nom": "Temo Vision",
+      "domaine": "temovision.com",
+      "systemes": [
+        "en"
+      ],
+      "couvre": "GCE O/A Level jusqu'à juin 2025",
+      "acces": [
+        "raccourci",
+        "drive"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true,
+        "categories": {
+          "Chemistry": "https://temovision.com/chemistry-past-questions-and-answers/"
+        }
+      },
+      "notes": "Liens raccourcis 5555575.xyz/xxxx qui passent par une page get.temovision.com puis Google Drive. Inaccessible depuis l'environnement du skill (erreur TLS/socket, 2026-10-24). Des identifiants Drive identiques pour deux matières ont été vus : un des deux est faux.",
+      "verifie_le": "2026-10-24"
+    },
+    {
+      "id": "meetlearn",
+      "nom": "MeetLearn",
+      "domaine": "meetlearn.com",
+      "systemes": [
+        "en"
+      ],
+      "couvre": "GCE O/A Level (aucun officiel 2021, 2023, 2026)",
+      "acces": [
+        "gestionnaire",
+        "drive"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true
+      },
+      "notes": "jDownloads : /downloads?task=download.send&id=…&catid=… ; la plupart redirigent vers Google Drive. Titres peu fiables (plus de 20 fiches mal classées). Certains fichiers sont servis en direct. Marque « More questions at www.meetlearn.com » en pied de page.",
+      "verifie_le": "2026-10-24"
+    },
+    {
+      "id": "kamerpower",
+      "nom": "Kamerpower",
+      "domaine": "kamerpower.com",
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "GCE O/A Level (surtout 2010-2015), BEPC, Probatoire, BAC, calendriers",
+      "acces": [
+        "gestionnaire"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true,
+        "categories": {
+          "GCE": "https://kamerpower.com/epreuves/cameroon-gce-board-past-questions/"
+        }
+      },
+      "notes": "Bouton « Télécharger » = /epreuves/func-startdown/<id>/ qui répond en HTML ; 6 téléchargements par jour et par utilisateur : ne pas les consommer en automatique. Bundles payants pour les années récentes.",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "orniformation",
+      "nom": "Orniformation",
+      "domaine": "orniformation.com",
+      "systemes": [
+        "fr"
+      ],
+      "couvre": "BEPC, Probatoire, BAC (catalogue moissonné le 2026-10-25)",
+      "acces": [
+        "pdf_direct"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true
+      },
+      "notes": "Plusieurs PDF cités comme absents du serveur (Histoire BEPC) : toujours tester un HEAD. Statut automatisable à confirmer par un HEAD avant usage.",
+      "verifie_le": "2026-10-25"
+    },
+    {
+      "id": "ndolomath",
+      "nom": "Ndolomath",
+      "domaine": "ndolomath.com",
+      "systemes": [
+        "fr"
+      ],
+      "couvre": "BEPC, Probatoire A/C/D, BAC A/C/D (2020 à 2026), mathématiques surtout ; pas de GCE ni de CAP vus",
+      "acces": [
+        "visionneuse_integree",
+        "payant_en_partie"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "wp_search": "https://ndolomath.com/?s={q}",
+        "api": "https://ndolomath.com/wp-json/wp/v2/posts?search={q}&per_page=20",
+        "categories": {
+          "BEPC": "https://www.ndolomath.com/tous-les-sujets-du-bepc/",
+          "BEPC avec corrections": "https://www.ndolomath.com/tous-les-sujets-du-bepc-avec-correction/",
+          "Probatoire A": "https://www.ndolomath.com/tous-les-sujets-de-probatoire-a/",
+          "Probatoire C": "https://www.ndolomath.com/toutes-les-epreuves-de-probatoire-c/",
+          "Probatoire D": "https://www.ndolomath.com/tous-les-sujets-de-probatoire-d/",
+          "BAC A": "https://www.ndolomath.com/toutes-les-epreuves-de-bac-a/",
+          "BAC C": "https://www.ndolomath.com/les-epreuves-de-bac-c/",
+          "BAC D": "https://www.ndolomath.com/toutes-les-epreuves-du-bac-d/"
+        }
+      },
+      "notes": "Plateforme de révision française (Mme Mba). Épreuves regroupées par examen dans une visionneuse (« Télécharger » + « Toucher l'épreuve »), pas de PDF direct vu. Packs corrigés payants (Mobile Money / WhatsApp) : ne jamais contourner. Recherche /?s= et API WordPress ouvertes ; robots.txt n'interdit ni la recherche ni les listes. Fiche vue sur la seule page d'accueil et la recherche : pages d'épreuves non ouvertes. 2026-10-30 (Chrome de l'utilisateur) : la page Probatoire D annonce « 16 matières · 112 sujets », onglets Épreuves/Corrections et bouton « Télécharger le PDF », mais la liste reste vide (application JavaScript sans contenu chargé, probablement derrière le pack payant) : rien d'exploitable sans achat.",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "scribd",
+      "nom": "Scribd",
+      "domaine": "scribd.com",
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "Sujets BEPC, Probatoire, BAC, CAP et GCE déposés par des particuliers (fiabilité variable, doublons, corrigés mêlés)",
+      "acces": [
+        "navigateur_utilisateur",
+        "connexion"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "scribd_search": "https://www.scribd.com/search?query={q}",
+        "google": true
+      },
+      "notes": "L'utilisateur est connecté dans Google Chrome : le skill ouvre et LIT les documents avec Claude in Chrome (skill chrome-browser) pour qualifier (page de garde, pages, corrigé) mais ne se connecte jamais, ne saisit aucun identifiant, ne contourne aucun mur. TÉLÉCHARGER = accord explicite de l'utilisateur fichier par fichier (nom, source, taille annoncés). Les documents Scribd peuvent être des compilations ou des copies d'autres sites : comparer au corpus (doublons).",
+      "verifie_le": "2026-10-30"
+    },
+    {
+      "id": "camgceb",
+      "nom": "Cameroon GCE Board (officiel)",
+      "domaine": "camgceb.org",
+      "systemes": [
+        "en"
+      ],
+      "couvre": "Syllabus, rapports de matière, spécimens, calendrier, matières et codes officiels ; pas les sujets passés",
+      "acces": [
+        "pdf_direct"
+      ],
+      "automatisable": true,
+      "recherche": {
+        "google": true
+      },
+      "notes": "Source de vérité pour les codes (ex. 0735 Literature) et les matières. Ne contient pas les past papers : utile pour vérifier une identité, jamais pour combler un trou de paper.",
+      "verifie_le": "2026-10-24"
+    },
+    {
+      "id": "gcepanel",
+      "nom": "GCE Panel",
+      "domaine": "gcepanel.org",
+      "systemes": [
+        "en"
+      ],
+      "couvre": "Quiz HTML (SBE French O/L P1 2020-2025, Accounting P1)",
+      "acces": [
+        "page_html"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true
+      },
+      "notes": "Pas de PDF. Page de publicité vers laquelle CGR redirige parfois.",
+      "verifie_le": "2026-10-19"
+    },
+    {
+      "id": "sujetexam",
+      "nom": "SujetExam",
+      "domaine": "sujetexam.com",
+      "systemes": [
+        "fr"
+      ],
+      "couvre": "BEPC, Probatoire, BAC (cité par un canal WhatsApp)",
+      "acces": [
+        "a_explorer"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true
+      },
+      "notes": "Seule la page d'accueil a été consultée (2026-10-25) : non moissonné. À explorer.",
+      "verifie_le": "2026-10-25"
+    },
+    {
+      "id": "occasionnels",
+      "nom": "Sites vus une ou deux fois",
+      "domaine": "237exams.com",
+      "hotes_supplementaires": [
+        "ektecknologies.com",
+        "edukamer.info",
+        "gceanswers.com",
+        "ecolesaucameroun.com"
+      ],
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "non évalué",
+      "acces": [
+        "a_explorer"
+      ],
+      "automatisable": false,
+      "recherche": {
+        "google": true
+      },
+      "notes": "Cités dans les rapports d'audit sans analyse. À évaluer avant de s'y fier.",
+      "verifie_le": "2026-10-25"
+    },
+    {
+      "id": "drive",
+      "nom": "Google Drive (transport, pas une source)",
+      "domaine": "drive.google.com",
+      "hotes_supplementaires": [
+        "docs.google.com",
+        "drive.usercontent.google.com",
+        "5555575.xyz"
+      ],
+      "systemes": [
+        "fr",
+        "en"
+      ],
+      "couvre": "hébergement des fichiers de concourscameroon, temovision, meetlearn",
+      "acces": [
+        "drive"
+      ],
+      "automatisable": false,
+      "recherche": {},
+      "notes": "Pas de lien direct automatisable : l'utilisateur ouvre le lien et télécharge (il a demandé de télécharger lui-même). Les identifiants Drive se recopient depuis la page, jamais depuis un résumé.",
+      "verifie_le": "2026-10-20"
+    }
+  ]
+}

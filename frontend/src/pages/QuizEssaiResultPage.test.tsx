@@ -131,3 +131,24 @@ describe("QuizEssaiResultPage : le gain du visiteur", () => {
     expect(screen.queryByRole("heading", { name: /Sans faute/ })).not.toBeInTheDocument()
   })
 })
+
+describe("QuizEssaiResultPage : la mascotte", () => {
+  it("réagit au résultat, dans l'écran du visiteur", async () => {
+    memoriserEssai(essai([true, true, true, true, false]))
+    afficher()
+
+    const mascotte = await screen.findByTestId("mascotte")
+    expect(mascotte).toHaveAttribute("data-situation", "succes")
+    expect(mascotte.textContent).toMatch(/\S/)
+  })
+
+  it("relève un record battu", async () => {
+    memoriserEssai(essai([true, false, false, false, false]))
+    memoriserRecord(essai([true, false, false, false, false]), 1, 5)
+    sessionStorage.clear()
+    memoriserEssai(essai([true, true, true, false, false]))
+    afficher()
+
+    expect(await screen.findByTestId("mascotte")).toHaveAttribute("data-situation", "record")
+  })
+})

@@ -1,6 +1,8 @@
+import { useState } from "react"
 import { Check, ChevronDown, Flame, Zap } from "lucide-react"
 
 import type { EtatXp, SerieDeJours } from "@/api/types"
+import { MascotteJour } from "@/components/MascotteJour"
 import { NiveauXp } from "@/components/NiveauXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
 import { cn } from "@/lib/utils"
@@ -18,11 +20,14 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
   const initiales = t("ligne.initiales").split(",")
   const noms = t("gl.sem_noms").split(",")
   const semaine = serie.semaine
+  // Le rappel de la mascotte : vide tant que l'élève ne l'a pas touchée, pour ne pas repousser « Commencer » sous le pli.
+  const [rappel, setRappel] = useState<string | null>(null)
   const part = etat.objectif > 0 ? Math.min(100, Math.round((100 * etat.xp) / etat.objectif)) : 0
 
   return (
     <div className="mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2.5 rounded-2xl border border-border/70 bg-muted/30 px-4 py-2.5">
       <div className="flex items-center gap-2.5 text-sm">
+        <MascotteJour etat={etat} serie={serie} rappel={rappel} onRappel={setRappel} />
         {etat.atteint ? (
           <Check className="size-4 text-success" aria-hidden="true" />
         ) : (
@@ -85,6 +90,11 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
           </ol>
         )}
       </div>
+      {rappel && (
+        <p role="status" className="basis-full rounded-xl bg-muted/60 px-3 py-2 text-sm font-medium leading-snug">
+          {rappel}
+        </p>
+      )}
     </div>
   )
 }

@@ -10,6 +10,7 @@ import { themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
+import { Mascotte } from "@/components/Mascotte"
 import { NiveauXp } from "@/components/NiveauXp"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
@@ -407,6 +408,8 @@ export function QuizResultPage() {
           </div>
         </div>
       </div>
+
+      {!diagnostic && <Mascotte className="mb-6" contexte={{ pourcentage, serieJours: result.serie?.jours }} />}
 
       {result.xp && (
         <BilanXp

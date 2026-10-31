@@ -352,3 +352,42 @@
     text-align: left;
   }
 }
+
+/* Mascotte de l'écran de résultat (components/Mascotte.tsx) : un personnage qui respire et cligne des yeux en continu
+   (très doux), et qui saute, salue ou hoche la tête selon l'humeur, quelques fois seulement. Tout en transform ; coupé
+   pour qui a demandé moins de mouvement (la phrase reste). */
+@keyframes mascotte-respire { 0%, 100% { transform: scaleY(1) translateY(0); } 50% { transform: scaleY(1.025) translateY(-1.5px); } }
+@keyframes mascotte-clin { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes mascotte-saut {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  30% { transform: translateY(-14px) rotate(-5deg); }
+  60% { transform: translateY(0) rotate(4deg); }
+  75% { transform: translateY(-4px) rotate(0); }
+}
+@keyframes mascotte-hoche { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-3deg) translateY(1px); } }
+@keyframes mascotte-bras-haut { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes mascotte-bras-salut { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes mascotte-parle { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.55) scaleX(0.95); } }
+@keyframes mascotte-curseur { 50% { opacity: 0; } }
+@keyframes mascotte-gland { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(14deg); } }
+@keyframes mascotte-etincelle { 0%, 100% { transform: scale(0.2); opacity: 0; } 50% { transform: scale(1); opacity: 1; } }
+.mascotte-corps, .mascotte-respire, .mascotte-yeux, .mascotte-gland, .mascotte-bras, .mascotte-etincelle {
+  transform-box: fill-box; transform-origin: 50% 100%;
+}
+.mascotte-bouche { transform-box: view-box; transform-origin: 60px 98px; }
+.mascotte-parle { animation: mascotte-parle 0.22s ease-in-out infinite; }
+.mascotte-curseur { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: text-bottom; background: currentColor; animation: mascotte-curseur 0.8s steps(1) infinite; }
+.mascotte-respire { animation: mascotte-respire 3.2s ease-in-out infinite; }
+.mascotte-yeux { transform-origin: 50% 50%; animation: mascotte-clin 5s ease-in-out infinite; }
+.mascotte-gland { transform-origin: 50% 0; animation: mascotte-gland 1.6s ease-in-out 4; }
+.mascotte-etincelle { transform-origin: 50% 50%; animation: mascotte-etincelle 1.6s ease-in-out infinite; }
+.mascotte-fete .mascotte-corps { animation: mascotte-saut 0.95s ease-in-out 3; }
+.mascotte-fete .mascotte-bras { animation: mascotte-bras-haut 0.5s ease-in-out 6; }
+.mascotte-content .mascotte-bras-d { animation: mascotte-bras-salut 0.6s ease-in-out 4; }
+.mascotte-courage .mascotte-corps { animation: mascotte-hoche 2.4s ease-in-out 2; }
+.mascotte-corps.mascotte-hop { animation: mascotte-saut 0.7s ease-in-out 1 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mascotte-corps, .mascotte-respire, .mascotte-yeux, .mascotte-gland, .mascotte-bras, .mascotte-etincelle, .mascotte-parle, .mascotte-curseur { animation: none !important; }
+  .mascotte-etincelle { opacity: 1; }
+}

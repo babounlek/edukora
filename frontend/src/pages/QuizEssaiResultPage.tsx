@@ -7,6 +7,7 @@ import { ApiError } from "@/api/client"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
+import { Mascotte } from "@/components/Mascotte"
 import { comparerDefi, lireDefiMemorise, memoriserDefi, parametresDefi } from "@/lib/defiEssai"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -99,7 +100,9 @@ export function QuizEssaiResultPage() {
       <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{titre}</h1>
       <p className="mt-2 text-muted-foreground">{texte}</p>
 
-      <div className="mt-6 flex items-center gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <Mascotte className="mt-4" contexte={{ pourcentage, recordBattu: recordBattu && Boolean(recordAvant) }} />
+
+      <div className="mt-4 flex items-center gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="font-display text-5xl font-semibold tabular-nums">
           {score.reussies}
           <span className="text-2xl font-normal text-muted-foreground"> / {score.total}</span>

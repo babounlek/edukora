@@ -33,7 +33,9 @@ _spec.loader.exec_module(emp)
 SCHEMA_SYNC = 1
 CLES_REQUISES = {
     emp.TYPE_EXERCICE: ("epreuve_source", "numero_exercice", "questions"),
-    emp.TYPE_COURS: ("cours_id", "meta", "sections"),
+    # `sections` n'est pas exigé : un squelette (`sections: []`, titre copié du catalogue) rattache un rappel à un
+    # cours déjà publié ; l'ingestion (`catalog.ingestion`) l'accepte ou le refuse selon le catalogue réel.
+    emp.TYPE_COURS: ("cours_id", "meta"),
     emp.TYPE_QUIZ: ("external_id", "theme", "enonce_markdown", "corrige_markdown"),
 }
 

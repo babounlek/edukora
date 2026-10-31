@@ -24,6 +24,8 @@ import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { jouerRetour } from "@/lib/retours"
+import { MascotteDessin } from "@/components/MascotteDessin"
+import { MASCOTTE_ACTIVE } from "@/lib/mascotte"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
@@ -538,7 +540,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               correct ? "animate-quiz-bravo border-success/40 bg-success/10" : "animate-fade-up border-border bg-muted/50",
             )}
           >
-            {correct ? (
+            {MASCOTTE_ACTIVE ? (
+              // Réaction à CHAQUE réponse : un salut pour une bonne, la fête à trois d'affilée, un petit mot doux sinon.
+              <MascotteDessin humeur={correct ? (streak >= 3 ? "fete" : "content") : "courage"} saut={question.id} taille={48} className="-my-1 shrink-0" />
+            ) : correct ? (
               <Sparkles className="mt-0.5 size-6 shrink-0 text-success" />
             ) : (
               <BookOpenText className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
