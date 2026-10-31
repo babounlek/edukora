@@ -34,7 +34,8 @@ SLUGS = {
     "GCE_HUMAN_BIOLOGY": "human-biology", "GCE_GEOLOGY": "geology", "GCE_ICT": "ict", "GCE_PHILOSOPHY": "philosophy",
     "GCE_PM_MECHANICS": "pm-mechanics", "GCE_PM_STATISTICS": "pm-statistics", "GCE_RELIGION": "religion",
     "GCE_SBE_FRENCH": "sbe-french", "GCE_CHEMISTRY": "chemistry", "GCE_PHYSICS": "physics", "GCE_MATHS": "maths",
-    "GCE_FURTHER_MATHS": "further-maths",
+    "GCE_FURTHER_MATHS": "further-maths", "GCE_CINEMATIC_ART": "cinematic-art", "GCE_LITERATURE": "literature",
+    "GCE_LOGIC": "logic",
 }
 
 

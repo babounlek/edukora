@@ -33,6 +33,7 @@ _MATIERES_COURT = {
     "GCE_ENGLISH": ("English Language", "english"), "GCE_LITERATURE": ("Literature in English", "literature"),
     "GCE_FRENCH": ("French", "french"), "GCE_SBE_FRENCH": ("Special Bilingual Education French", "sbe-french"),
     "GCE_FOOD_NUTRITION": ("Food and Nutrition", "food-nutrition"),
+    "GCE_CINEMATIC_ART": ("Cinematic Art", "cinematic-art"),
 }
 MATIERES = {code: libelle for code, (libelle, _) in _MATIERES_COURT.items()}
 COURT = {code: court for code, (_, court) in _MATIERES_COURT.items()}
