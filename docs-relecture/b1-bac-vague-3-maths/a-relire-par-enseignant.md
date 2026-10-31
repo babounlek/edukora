@@ -1474,7 +1474,7 @@ Avis :
 
 **Énoncé :**
 
-Après la fermeture d'un interrupteur dans un circuit, l'intensité $I(t)$ du courant (en milliampères), mesurée $t$ secondes après la fermeture, est modélisée par :
+Dans un circuit RLC série fonctionnant en régime critique, on ferme l'interrupteur à l'instant $t=0$. L'intensité $I(t)$ du courant (en milliampères), mesurée $t$ secondes après la fermeture, est modélisée par :
 $$I(t) = 4t\,e^{-2t}, \quad t\geq0$$
 
 Quelle est l'intensité maximale atteinte par le courant, et à quel instant est-elle atteinte ?
