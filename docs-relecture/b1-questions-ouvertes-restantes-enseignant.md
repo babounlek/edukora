@@ -1,0 +1,458 @@
+# Campagne B1 maths : 146 questions encore ouvertes, à trier par l'enseignant
+
+Date : 2026-11-01. Ces questions n'ont pas pu être converties en QCM. Pour chacune, trois réponses possibles :
+
+- **Déplacer** : le thème est bien au programme, mais d'un autre examen (dire lequel) ; on la convertit ensuite.
+- **Retirer l'examen** : l'examen ou la série listée est trop bas ou trop haut ; on l'enlève du cursus et on convertit si la question reste valable ailleurs.
+- **Laisser ouverte** : la question reste telle quelle, en réponse libre (démonstration, rédaction, trop facile).
+
+
+## Cursus incohérent (thème trop haut pour l'examen listé) (50)
+
+- `cqc-aire-elevee-0` : thème « aire », niveau ELEVEE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : logarithme népérien et calcul intégral au-dessus du BEPC (BEPC: dans les séries)
+  - Avis : 
+- `cqc-aire-moyenne-1` : thème « aire », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion calcul intégral (et discriminant) au-dessus du BEPC
+  - Avis : 
+- `cqc-axe-de-symetrie-elevee-5` : thème « axe de symétrie », niveau ELEVEE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion logarithme népérien (et ensemble de définition de ln u) au-dessus du BEPC ; de plus la réponse est une démonstration
+  - Avis : 
+- `cqc-axe-de-symetrie-moyenne-2` : thème « axe de symétrie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion fonction polynôme du second degré (axe de symétrie d'une parabole, forme canonique) au-dessus du BEPC ; de plus démonstration sans résultat court
+  - Avis : 
+- `cqc-axe-de-symetrie-moyenne-3` : thème « axe de symétrie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : axe de symétrie d'une courbe de fonction (f(2a-x)=f(x), valeurs absolues) au-dessus du BEPC ; de plus la réponse est une démonstration sans résultat court
+  - Avis : 
+- `cqc-axe-de-symetrie-moyenne-4` : thème « axe de symétrie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion fonction rationnelle et axe de symétrie d'une courbe (f(2a-x)=f(x)) au-dessus du BEPC
+  - Avis : 
+- `cqc-centre-de-symetrie-moyenne-2` : thème « centre de symétrie », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notions asymptotes, limites et centre de symétrie d'une courbe au-dessus du BEPC
+  - Avis : 
+- `cqc-centre-de-symetrie-moyenne-3` : thème « centre de symétrie », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion courbe d'équation $(x-1)(y-3)=5$ (hyperbole) et centre de symétrie d'une courbe au-dessus du BEPC ; de plus démonstration sans résultat court
+  - Avis : 
+- `cqc-centre-de-symetrie-moyenne-4` : thème « centre de symétrie », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : fonction polynôme de degré 3 et centre de symétrie de courbe au-dessus du BEPC ; de plus démonstration sans résultat court
+  - Avis : 
+- `cqc-determinant-elevee-0` : thème « déterminant », niveau ELEVEE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion déterminant de deux vecteurs (et aire par le déterminant) au-dessus du BEPC, seul examen listé ; aucune question honnête sur ce thème au niveau BEPC
+  - Avis : 
+- `cqc-determinant-faible-0` : thème « déterminant », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : déterminant de deux vecteurs au-dessus du BEPC (seule série listée)
+  - Avis : 
+- `cqc-determinant-faible-1` : thème « déterminant », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : déterminant de deux vecteurs au-dessus du BEPC (seule série listée)
+  - Avis : 
+- `cqc-determinant-moyenne-0` : thème « déterminant », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion de déterminant au-dessus du BEPC (seule étiquette listée)
+  - Avis : 
+- `cqc-determinant-moyenne-1` : thème « déterminant », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion de déterminant de deux vecteurs au-dessus du BEPC, seule série listée
+  - Avis : 
+- `cqc-forme-algebrique-bac-a-elevee-2` : thème « forme algébrique », niveau ELEVEE, cursus BAC:A.
+  - Motif de l'écart : cursus incohérent : nombres complexes hors programme de la série A, seule série listée
+  - Avis : 
+- `cqc-geometrie-dans-l-espace-elevee-0` : thème « géométrie dans l'espace », niveau ELEVEE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : coordonnées dans l'espace et tétraèdre au-dessus du BEPC
+  - Avis : 
+- `cqc-geometrie-dans-l-espace-faible-1` : thème « géométrie dans l'espace », niveau FAIBLE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : produit vectoriel et repère de l'espace au-dessus du BEPC
+  - Avis : 
+- `cqc-geometrie-dans-l-espace-moyenne-0` : thème « géométrie dans l'espace », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : produit vectoriel au-dessus du BEPC (et hors programme de la série D, également listée)
+  - Avis : 
+- `cqc-geometrie-dans-l-espace-moyenne-1` : thème « géométrie dans l'espace », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : produit vectoriel et plans de l'espace au-dessus du BEPC (retirer BEPC ; produit vectoriel hors programme D, retirer aussi BAC:D) ; de plus questions 2 et 3 sont des démonstrations
+  - Avis : 
+- `cqc-homothetie-elevee-5` : thème « homothétie », niveau ELEVEE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion de géométrie analytique de l'espace (repère de l'espace, surface d'équation cartésienne, homothétie de l'espace) au-dessus du BEPC ; de plus démonstration sans résultat court
+  - Avis : 
+- `cqc-homothetie-moyenne-2` : thème « homothétie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion nombres complexes (écriture complexe d'une homothétie) au-dessus du BEPC
+  - Avis : 
+- `cqc-homothetie-moyenne-3` : thème « homothétie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : équation de l'image d'une parabole par homothétie au-dessus du BEPC ; de plus démonstration (Montrer que)
+  - Avis : 
+- `cqc-homothetie-moyenne-4` : thème « homothétie », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : nombres complexes et similitudes au-dessus du BEPC
+  - Avis : 
+- `cqc-interpretation-graphique-moyenne-2` : thème « interprétation graphique », niveau MOYENNE, cursus BAC:D, BAC:TI, BEPC:.
+  - Motif de l'écart : cursus incohérent : primitive et intégrale au-dessus du BEPC (BEPC: dans les séries)
+  - Avis : 
+- `cqc-limite-moyenne-2` : thème « limite », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : limites avec logarithme et exponentielle au-dessus du Probatoire (retirer PROBATOIRE:A, C, D, E) ; série A aussi à vérifier (ln 3 et paramètre)
+  - Avis : 
+- `cqc-matrice-inverse-prob-c-faible-0` : thème « matrice inverse », niveau FAIBLE, cursus PROBATOIRE:C.
+  - Motif de l'écart : cursus incohérent : matrices hors programme de Probatoire C, seule série listée (avis enseignant) ; à réaffecter (Probatoire E ou BAC TI) avant toute réécriture
+  - Avis : 
+- `cqc-mise-en-equation-elevee-0` : thème « mise en équation », niveau ELEVEE, cursus BAC:A, BAC:C, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : notion dérivée (fonction rationnelle, tangente) au-dessus du BEPC
+  - Avis : 
+- `cqc-module-d-un-nombre-complexe-bac-a-moyenne-1` : thème « module d'un nombre complexe », niveau MOYENNE, cursus BAC:A.
+  - Motif de l'écart : cursus incohérent : nombres complexes hors programme de la série A, seule série listée ; aucune question honnête sur ce thème en A
+  - Avis : 
+- `cqc-orthogonalite-faible-0` : thème « orthogonalité », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion produit scalaire (thème) au-dessus du BEPC, seul examen listé
+  - Avis : 
+- `cqc-orthogonalite-moyenne-0` : thème « orthogonalité », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : produit scalaire (vecteur normal, orthogonalité par coordonnées) au-dessus du BEPC, seule étiquette listée
+  - Avis : 
+- `cqc-parabole-tle-c-moyenne-3` : thème « parabole », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : cursus incohérent : coniques (foyer, directrice) au-dessus du Probatoire et hors programme de la série A ; convertible en BAC C/E si PROBATOIRE:A est retiré
+  - Avis : 
+- `cqc-position-relative-moyenne-4` : thème « position relative », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : exponentielle, dérivée seconde et convexité au-dessus du Probatoire (PROBATOIRE:C/E) ; convertible en BAC C/D/E/TI si le Probatoire est retiré
+  - Avis : 
+- `cqc-produit-scalaire-faible-0` : thème « produit scalaire », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion produit scalaire au-dessus du BEPC (thème impossible au niveau BEPC, seule série listée)
+  - Avis : 
+- `cqc-produit-scalaire-faible-1` : thème « produit scalaire », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : le produit scalaire (orthogonalité par les coordonnées) est au-dessus du BEPC, seule série listée ; aucune question honnête sur ce thème au niveau BEPC
+  - Avis : 
+- `cqc-produit-scalaire-moyenne-0` : thème « produit scalaire », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : notion produit scalaire au-dessus du BEPC, seul examen listé
+  - Avis : 
+- `cqc-produit-scalaire-moyenne-1` : thème « produit scalaire », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : produit scalaire au-dessus du BEPC (seule série listée)
+  - Avis : 
+- `cqc-produit-scalaire-moyenne-2` : thème « produit scalaire », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : cursus incohérent : produit scalaire au-dessus du BEPC (seule série listée)
+  - Avis : 
+- `cqc-raison-bac-a-elevee-2` : thème « raison », niveau ELEVEE, cursus BAC:A.
+  - Motif de l'écart : cursus incohérent : raison d'une suite arithmétique ou géométrique, suites hors programme de la série A, seule série listée
+  - Avis : 
+- `cqc-sens-de-variation-moyenne-2` : thème « sens de variation », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : dérivée et sens de variation au-dessus du BEPC
+  - Avis : 
+- `cqc-sens-de-variation-moyenne-4` : thème « sens de variation », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : primitive, exponentielle et dérivée au-dessus du BEPC
+  - Avis : 
+- `cqc-somme-et-produit-de-deux-nombres-prob-a-moyenne-4` : thème « somme et produit de deux nombres », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : cursus incohérent : relations somme-produit hors programme de la série A selon l'avis de l'enseignant (vague 4b), seule série listée
+  - Avis : 
+- `cqc-suite-arithmetique-elevee-5` : thème « suite arithmétique », niveau ELEVEE, cursus BAC:A.
+  - Motif de l'écart : cursus incohérent : suites hors programme de la série A, seule série listée (BAC A) ; à réaffecter à C, D, E ou TI avant toute réécriture
+  - Avis : 
+- `cqc-suite-arithmetique-moyenne-4` : thème « suite arithmétique », niveau MOYENNE, cursus BAC:A.
+  - Motif de l'écart : cursus incohérent : suites hors programme de la série A, seule série listée
+  - Avis : 
+- `cqc-taux-d-accroissement-elevee-0` : thème « taux d'accroissement », niveau ELEVEE, cursus BAC:A, BAC:C, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : exponentielle et logarithme au-dessus du Probatoire (PROBATOIRE:C/E listés)
+  - Avis : 
+- `cqc-trace-de-courbe-moyenne-3` : thème « tracé de courbe », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : cursus incohérent : exponentielle au-dessus du Probatoire (PROBATOIRE:A) ; branche parabolique exclue de la série A
+  - Avis : 
+- `cqc-trace-de-courbe-moyenne-4` : thème « tracé de courbe », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : cursus incohérent : logarithme au-dessus du Probatoire (PROBATOIRE:A listé) ; branche parabolique exclue en série A
+  - Avis : 
+- `cqc-translation-moyenne-0` : thème « translation », niveau MOYENNE, cursus BAC:C, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : nombres complexes au-dessus du BEPC (et hors programme de la série A)
+  - Avis : 
+- `cqc-translation-moyenne-1` : thème « translation », niveau MOYENNE, cursus BAC:C, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : équation de l'image d'une parabole par translation (second degré) au-dessus du BEPC
+  - Avis : 
+- `cqc-equation-de-tangente-prob-a-moyenne-4` : thème « équation de tangente », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : cursus incohérent : dérivation et tangente hors programme du Probatoire A (avis de l'enseignant), seule série listée
+  - Avis : 
+- `cqc-equation-du-second-degre-moyenne-0` : thème « équation du second degré », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : cursus incohérent : nombres complexes et discriminant au-dessus du BEPC (complexes hors programme de la série A aussi)
+  - Avis : 
+
+## Notion hors programme d'une série listée (36)
+
+- `cqc-convexite-bac-a-elevee-2` : thème « convexité », niveau ELEVEE, cursus BAC:A.
+  - Motif de l'écart : thème hors programme de la série A, seule série listée (convexité, dérivée seconde, points d'inflexion) : aucune question honnête possible sur ce thème en série A ; à réaffecter aux séries C, D, E, TI si l'on veut le garder
+  - Avis : 
+- `cqc-distance-point-plan-prob-e-faible-0` : thème « distance point-plan », niveau FAIBLE, cursus PROBATOIRE:E.
+  - Motif de l'écart : thème hors programme des seules séries listées (Probatoire C et E) : distance d'un point à un plan ; à réaffecter au BAC C/D/E puis réécrire
+  - Avis : 
+- `cqc-distance-point-plan-prob-e-moyenne-2` : thème « distance point-plan », niveau MOYENNE, cursus PROBATOIRE:E.
+  - Motif de l'écart : thème hors programme des séries listées (Probatoire C et E) : la distance d'un point à un plan relève du BAC ; cursus à revoir (BAC C, D, E)
+  - Avis : 
+- `cqc-distance-point-plan-prob-e-moyenne-3` : thème « distance point-plan », niveau MOYENNE, cursus PROBATOIRE:E.
+  - Motif de l'écart : thème hors programme des seules séries listées (distance d'un point à un plan dans l'espace, retirée du Probatoire C et E par la relecture) : aucune question honnête au niveau Probatoire ; cursus à revoir (BAC C/E)
+  - Avis : 
+- `cqc-derivee-d-une-fonction-polynome-prob-a-moyenne-4` : thème « dérivée d'une fonction polynôme », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (PROBATOIRE A : dérivation et tangente, avis de l'enseignant vague 4b) ; aucune question honnête possible sans retirer la série, à réaffecter à d'autres séries
+  - Avis : 
+- `cqc-derivee-d-une-fonction-polynome-prob-a-moyenne-5` : thème « dérivée d'une fonction polynôme », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (Probatoire A : dérivation exclue par l'avis de l'enseignant) ; aucune question honnête sur ce thème à ce niveau. Une version Probatoire C/D/E serait possible si le cursus est changé
+  - Avis : 
+- `cqc-excentricite-elevee-0` : thème « excentricité », niveau ELEVEE, cursus BAC:C, BAC:D, BAC:E.
+  - Motif de l'écart : hors programme de la série D : coniques (ellipse, excentricité) ; convertible si D est retirée du cursus
+  - Avis : 
+- `cqc-integrale-impropre-bac-ti-mat-elevee-2` : thème « intégrale impropre », niveau ELEVEE, cursus BAC:TI.
+  - Motif de l'écart : hors programme de Terminale : intégrale impropre (le thème entier) ; une limite de $\int_1^{\lambda}$ quand $\lambda\to+\infty$ relèverait d'un autre thème
+  - Avis : 
+- `cqc-integrale-impropre-bac-ti-mat-moyenne-1` : thème « intégrale impropre », niveau MOYENNE, cursus BAC:TI.
+  - Motif de l'écart : thème hors programme de Terminale (intégrale impropre, liste bloquante) ; aucune question honnête sous ce thème
+  - Avis : 
+- `cqc-inegalite-des-accroissements-finis-tle-c-elevee-5` : thème « inégalité des accroissements finis », niveau ELEVEE, cursus BAC:C.
+  - Motif de l'écart : hors programme (liste du §1) : le thème « inégalité des accroissements finis » est interdit ; aucune question honnête à QCM sur ce thème sans employer la notion
+  - Avis : 
+- `cqc-inegalite-des-accroissements-finis-tle-c-faible-0` : thème « inégalité des accroissements finis », niveau FAIBLE, cursus BAC:C.
+  - Motif de l'écart : hors programme de Terminale pour toutes les séries : le thème est l'inégalité des accroissements finis (notion de la liste à ne jamais employer) ; aucune question QCM honnête ne peut viser ce thème sans l'employer
+  - Avis : 
+- `cqc-inegalite-des-accroissements-finis-tle-c-moyenne-2` : thème « inégalité des accroissements finis », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la Terminale (liste de la consigne) : inégalité des accroissements finis ; le thème lui-même est exclu, aucune question honnête possible sous ce thème
+  - Avis : 
+- `cqc-inegalite-des-accroissements-finis-tle-c-moyenne-4` : thème « inégalité des accroissements finis », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : hors programme : le thème lui-même est l'inégalité des accroissements finis (liste du §1) ; aucune question QCM honnête sur ce thème
+  - Avis : 
+- `cqc-limite-elevee-0` : thème « limite », niveau ELEVEE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : hors programme de la série Probatoire (C, D, E) : logarithme népérien et limite de référence ln(1+u)/u ; en outre le corrigé d'origine invoque un développement limité
+  - Avis : 
+- `cqc-limite-faible-0` : thème « limite », niveau FAIBLE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : hors programme de la série Probatoire (A, C, D, E) : exponentielle et croissances comparées (limite de lambda e^lambda), notions de Terminale ; l'énoncé évoque aussi une étude intégrale
+  - Avis : 
+- `cqc-limite-moyenne-0` : thème « limite », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : hors programme du Probatoire (niveau le plus bas listé) : exponentielle, croissances comparées et aire par intégration
+  - Avis : 
+- `cqc-limite-moyenne-1` : thème « limite », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : hors programme du Probatoire (niveau visé, PROBATOIRE et BAC listés) : logarithme népérien ; de plus le contexte (aire divergente donnée sans fonction) est artificiel
+  - Avis : 
+- `cqc-module-d-un-nombre-complexe-bac-a-elevee-2` : thème « module d'un nombre complexe », niveau ELEVEE, cursus BAC:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (BAC A : pas de nombres complexes) ; cursus à revoir (ce contenu relève de C/D/E/TI)
+  - Avis : 
+- `cqc-parabole-tle-c-moyenne-2` : thème « parabole », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : hors programme : coniques (parabole)
+  - Avis : 
+- `cqc-produit-vectoriel-moyenne-4` : thème « produit vectoriel », niveau MOYENNE, cursus BAC:C, BAC:E, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : hors programme : produit vectoriel
+  - Avis : 
+- `cqc-similitude-indirecte-elevee-0` : thème « similitude indirecte », niveau ELEVEE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la série C (seule série listée) : similitude indirecte, exclue de la série C par l'arbitrage du 2026-10-31 ; à réaffecter à la série E si l'enseignant le souhaite
+  - Avis : 
+- `cqc-similitude-indirecte-faible-0` : thème « similitude indirecte », niveau FAIBLE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la série C : similitudes indirectes (arbitrage de l'enseignant du 2026-10-31) ; BAC:C est la seule série listée, aucune série de repli
+  - Avis : 
+- `cqc-similitude-indirecte-faible-1` : thème « similitude indirecte », niveau FAIBLE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la série C : similitudes indirectes (arbitrage du 2026-10-31), et BAC:C est la seule série listée ; à réaffecter (ex. BAC:E) avant toute réécriture
+  - Avis : 
+- `cqc-similitude-indirecte-moyenne-0` : thème « similitude indirecte », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la série C : similitude indirecte (arbitrage du 2026-10-31), seule série listée ; thème à réaffecter à une autre série
+  - Avis : 
+- `cqc-similitude-indirecte-moyenne-1` : thème « similitude indirecte », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : hors programme de la série C (similitude indirecte, arbitrage du 2026-10-31), seule série listée ; à réaffecter à E ou TI le cas échéant
+  - Avis : 
+- `cqc-similitude-indirecte-moyenne-2` : thème « similitude indirecte », niveau MOYENNE, cursus BAC:C.
+  - Motif de l'écart : thème hors programme de la série C, seule série listée (similitudes indirectes, arbitrage du 2026-10-31) ; à réaffecter à la série E si on le garde
+  - Avis : 
+- `cqc-somme-et-produit-de-deux-nombres-prob-a-faible-0` : thème « somme et produit de deux nombres », niveau FAIBLE, cursus PROBATOIRE:A.
+  - Motif de l'écart : avis enseignant (vague 4b) : notion hors programme de la série A (dérivation, tangente, système avec déterminant, relations somme-produit) ; l'item ne concerne que la série A, il reste ouvert et inchangé en production (retrait de la série A à traiter à part)
+  - Avis : 
+- `cqc-somme-et-produit-de-deux-nombres-prob-a-moyenne-2` : thème « somme et produit de deux nombres », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (PROBATOIRE A : relations somme-produit, avis de l'enseignant vague 4b)
+  - Avis : 
+- `cqc-somme-et-produit-de-deux-nombres-prob-a-moyenne-3` : thème « somme et produit de deux nombres », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (Probatoire A : relations somme-produit exclues par l'avis de l'enseignant)
+  - Avis : 
+- `cqc-somme-et-produit-de-deux-nombres-prob-a-moyenne-5` : thème « somme et produit de deux nombres », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : avis enseignant (vague 4b) : notion hors programme de la série A (dérivation, tangente, système avec déterminant, relations somme-produit) ; l'item ne concerne que la série A, il reste ouvert et inchangé en production (retrait de la série A à traiter à part)
+  - Avis : 
+- `cqc-suite-arithmetique-faible-0` : thème « suite arithmétique », niveau FAIBLE, cursus BAC:A.
+  - Motif de l'écart : hors programme de la série A : suites (thème lui-même), seule série listée BAC:A ; aucune autre série pour reporter la question
+  - Avis : 
+- `cqc-suite-arithmetique-faible-1` : thème « suite arithmétique », niveau FAIBLE, cursus BAC:A.
+  - Motif de l'écart : hors programme de la série A : notion de suite (arithmétique)
+  - Avis : 
+- `cqc-suite-arithmetique-moyenne-2` : thème « suite arithmétique », niveau MOYENNE, cursus BAC:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (BAC A : pas de suites)
+  - Avis : 
+- `cqc-suite-arithmetique-moyenne-3` : thème « suite arithmétique », niveau MOYENNE, cursus BAC:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (BAC A : pas de suites) ; cursus à revoir (Probatoire ou BAC C/D/E/TI)
+  - Avis : 
+- `cqc-equation-de-tangente-prob-a-faible-0` : thème « équation de tangente », niveau FAIBLE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la seule série listée (Probatoire A : dérivation et tangente, avis enseignant vague 4b)
+  - Avis : 
+- `cqc-equation-de-tangente-prob-a-moyenne-3` : thème « équation de tangente », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : thème hors programme de la série A au Probatoire, seule série listée (dérivation et tangente, avis de l'enseignant vague 4b)
+  - Avis : 
+
+## Trop facile (34)
+
+- `cqc-fonction-exponentielle-neperienne-tle-ti-moyenne-2` : thème « Fonction exponentielle népérienne (Tle TI) », niveau MOYENNE, cursus BAC:TI.
+  - Motif de l'écart : quasi-doublon de cqc-fonction-exponentielle-neperienne-tle-d-moyenne-4 (même limite par croissances comparées), trop facile
+  - Avis : 
+- `cqc-lecture-graphique-faible-0` : thème « Lecture graphique », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile : effectif total (somme de 5 nombres) ou lecture du plus grand effectif, sans piège ; l'énoncé cite en outre un niveau de classe (« classe de 3e »)
+  - Avis : 
+- `cqc-aire-faible-0` : thème « aire », niveau FAIBLE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : application directe de la formule de l'aire du trapèze, sans piège
+  - Avis : 
+- `cqc-arrondi-moyenne-2` : thème « arrondi », niveau MOYENNE, cursus BAC:A, BAC:D, BEPC:.
+  - Motif de l'écart : trop facile : moyenne de 4 valeurs puis arrondi direct (25,25 donne 25), sans piège
+  - Avis : 
+- `cqc-construction-faible-0` : thème « construction », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile (MQ = 9 - 3,5) et description de construction en rédaction libre
+  - Avis : 
+- `cqc-construction-faible-1` : thème « construction », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile (AC = 6 + 4) ; le reste est une description de construction
+  - Avis : 
+- `cqc-construction-de-courbe-prob-a-moyenne-5` : thème « construction de courbe », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : trop facile (tableau de valeurs d'une droite, calcul direct sans piège)
+  - Avis : 
+- `cqc-construction-geometrique-faible-0` : thème « construction géométrique », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : rédaction libre : description d'une construction ; seul le contrôle $ST=13$ est chiffré, trop facile
+  - Avis : 
+- `cqc-coordonnees-moyenne-0` : thème « coordonnées », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : addition directe de deux couples de coordonnées, sans piège
+  - Avis : 
+- `cqc-diagramme-circulaire-faible-0` : thème « diagramme circulaire », niveau FAIBLE, cursus BAC:A, BAC:D, BEPC:.
+  - Motif de l'écart : trop facile : calcul direct de proportionnalité sans piège
+  - Avis : 
+- `cqc-diagramme-en-batons-moyenne-0` : thème « diagramme en bâtons », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : trop facile (hauteur = effectif lu dans l'énoncé) ; partie b) justification rédigée
+  - Avis : 
+- `cqc-division-euclidienne-moyenne-0` : thème « division euclidienne », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : réponse attendue = démonstration d'un critère de divisibilité ; la seule partie à résultat court (583 916 divisible par 4) est trop facile
+  - Avis : 
+- `cqc-droites-paralleles-faible-0` : thème « droites parallèles », niveau FAIBLE, cursus BAC:D, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : l'énoncé dit que les angles sont correspondants, la réponse est donnée
+  - Avis : 
+- `cqc-droites-paralleles-moyenne-3` : thème « droites parallèles », niveau MOYENNE, cursus BAC:D, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : la réponse recopie la donnée (97°) une fois la propriété des angles alternes-externes donnée dans l'énoncé ; pas 3 distracteurs réalistes
+  - Avis : 
+- `cqc-effectifs-faible-1` : thème « effectifs », niveau FAIBLE, cursus BAC:A, BAC:D, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : une addition et une soustraction directes dans un tableau à double entrée
+  - Avis : 
+- `cqc-effectifs-moyenne-0` : thème « effectifs », niveau MOYENNE, cursus BAC:A, BAC:D, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : effectifs manquants par simples soustractions et vérifications de totaux
+  - Avis : 
+- `cqc-figures-superposables-faible-0` : thème « figures superposables », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile (longueurs conservées lues directement) ; le reste est une justification rédigée
+  - Avis : 
+- `cqc-fraction-irreductible-faible-0` : thème « fraction irréductible », niveau FAIBLE, cursus BAC:D, BEPC:.
+  - Motif de l'écart : trop facile (simplification directe) ; et les erreurs typiques (simplification incomplète 6/9, 18/27) ont la même valeur que la clé, donc pas 3 distracteurs réalistes de valeur différente
+  - Avis : 
+- `cqc-frequence-moyenne-0` : thème « fréquence », niveau MOYENNE, cursus BEPC:, PROBATOIRE:A, PROBATOIRE:D.
+  - Motif de l'écart : trop facile : calcul direct de fréquences sans piège
+  - Avis : 
+- `cqc-histogramme-faible-0` : thème « histogramme », niveau FAIBLE, cursus BAC:A, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : amplitudes de 10 et somme 8+20+15+7=50 sans piège
+  - Avis : 
+- `cqc-image-d-une-figure-faible-1` : thème « image d'une figure », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile : rayon conservé (3,5 cm) et OO' = longueur du vecteur (5 cm) se lisent directement dans l'énoncé ; la question 4 est une rédaction libre
+  - Avis : 
+- `cqc-mise-en-equation-faible-1` : thème « mise en équation », niveau FAIBLE, cursus BAC:A, BAC:C, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : f(0) donne b directement, puis 3a + 4 = 13
+  - Avis : 
+- `cqc-pourcentages-faible-0` : thème « pourcentages », niveau FAIBLE, cursus BAC:A, BAC:D, BEPC:, PROBATOIRE:A.
+  - Motif de l'écart : trop facile : 42 % de 1 250 puis un complément, calcul direct sans piège
+  - Avis : 
+- `cqc-proportionnalite-moyenne-2` : thème « proportionnalité », niveau MOYENNE, cursus BAC:D, BAC:TI, BEPC:.
+  - Motif de l'écart : trop facile : l'énoncé donne déjà 1 cm = 2 km, il reste à calculer 8,5 × 2
+  - Avis : 
+- `cqc-perimetre-faible-0` : thème « périmètre », niveau FAIBLE, cursus BAC:A, BEPC:, PROBATOIRE:A, PROBATOIRE:D.
+  - Motif de l'écart : trop facile : périmètre d'un rectangle par calcul direct sans piège
+  - Avis : 
+- `cqc-perimetre-faible-1` : thème « périmètre », niveau FAIBLE, cursus BAC:A, BEPC:, PROBATOIRE:A, PROBATOIRE:D.
+  - Motif de l'écart : trop facile : produit direct 6 x 3,5 sans piège
+  - Avis : 
+- `cqc-report-de-longueur-faible-0` : thème « report de longueur », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : trop facile (9 - 3,5) et question 1 de rédaction libre
+  - Avis : 
+- `cqc-resolution-graphique-d-inequation-prob-a-moyenne-3` : thème « résolution graphique d'inéquation », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : trop facile (x+1 < -x+3 donne x < 1, calcul direct)
+  - Avis : 
+- `cqc-symetrie-par-rapport-a-l-axe-des-abscisses-prob-a-moyenne-2` : thème « symétrie par rapport à l'axe des abscisses », niveau MOYENNE, cursus PROBATOIRE:A.
+  - Motif de l'écart : trop facile : application directe de (x;y) vers (x;-y), doublon de l'item faible-0
+  - Avis : 
+- `cqc-tableau-de-valeurs-prob-c-faible-0` : thème « tableau de valeurs », niveau FAIBLE, cursus PROBATOIRE:C.
+  - Motif de l'écart : trop facile : quatre substitutions directes dans une fonction affine
+  - Avis : 
+- `cqc-tableau-de-valeurs-prob-c-moyenne-2` : thème « tableau de valeurs », niveau MOYENNE, cursus PROBATOIRE:C.
+  - Motif de l'écart : trop facile : calcul direct de six images, sans piège ; réponse sous forme de tableau
+  - Avis : 
+- `cqc-tableau-de-valeurs-prob-c-moyenne-4` : thème « tableau de valeurs », niveau MOYENNE, cursus PROBATOIRE:C.
+  - Motif de l'écart : trop facile : quatre calculs directs de racines carrées et une condition d'existence immédiate, sans piège exploitable pour un QCM
+  - Avis : 
+- `cqc-valeur-absolue-faible-0` : thème « valeur absolue », niveau FAIBLE, cursus BAC:D, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : calcul direct de deux valeurs absolues
+  - Avis : 
+- `cqc-valeur-absolue-moyenne-2` : thème « valeur absolue », niveau MOYENNE, cursus BAC:D, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : trop facile : produit de deux entiers puis comparaison, l'énoncé imposant en plus la méthode
+  - Avis : 
+
+## Autre motif (10)
+
+- `cqc-fonction-exponentielle-neperienne-tle-ti-moyenne-3` : thème « Fonction exponentielle népérienne (Tle TI) », niveau MOYENNE, cursus BAC:TI.
+  - Motif de l'écart : doublon exact de cqc-fonctions-exponentielles-tle-a-moyenne-2 (même équation e^{2x}-3e^x-4=0), converti sur cet autre item
+  - Avis : 
+- `cqc-fonction-logarithme-neperien-tle-ti-moyenne-3` : thème « Fonction logarithme népérien (Tle TI) », niveau MOYENNE, cursus BAC:TI.
+  - Motif de l'écart : doublon exact de cqc-fonction-logarithme-neperien-tle-a-moyenne-3 (même équation), converti sur cet autre item
+  - Avis : 
+- `cqc-construction-geometrique-faible-1` : thème « construction géométrique », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : construction à décrire, pas de résultat court et unique
+  - Avis : 
+- `cqc-distance-point-plan-prob-e-elevee-5` : thème « distance point-plan », niveau ELEVEE, cursus PROBATOIRE:E.
+  - Motif de l'écart : thème retiré par l'enseignant pour la série Probatoire C/E (distance point-plan, produit scalaire dans l'espace) ; aucune question honnête sans changer de compétence ; à réaffecter au BAC C/E si besoin
+  - Avis : 
+- `cqc-distance-point-plan-prob-e-moyenne-4` : thème « distance point-plan », niveau MOYENNE, cursus PROBATOIRE:E.
+  - Motif de l'écart : thème retiré du Probatoire C et E par l'enseignant (distance d'un point à un plan, produit scalaire dans l'espace) ; aucune autre série listée : cursus à réaffecter au BAC C, D, E avant toute réécriture
+  - Avis : 
+- `cqc-fraction-irreductible-elevee-5` : thème « fraction irréductible », niveau ELEVEE, cursus BAC:D, BEPC:.
+  - Motif de l'écart : la conversion changeait la question (probabilite devenue denombrement, cle modifiee) : item laisse ouvert
+  - Avis : 
+- `cqc-losange-moyenne-1` : thème « losange », niveau MOYENNE, cursus BAC:C, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : corrigé d'origine faux : PQRS est un carré (diagonales PR et QS de même longueur racine de 80, perpendiculaires, même milieu), pas seulement un losange ; en outre produit scalaire au-dessus du BEPC
+  - Avis : 
+- `cqc-nuage-de-points-moyenne-0` : thème « nuage de points », niveau MOYENNE, cursus BAC:A, BAC:D, BAC:TI, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : décision de l'enseignant : ajustement affine et tendance d'un nuage de points écartés ; pas d'autre compétence QCM honnête sur le thème « nuage de points » pour ces séries
+  - Avis : 
+- `cqc-theoreme-de-la-mediane-prob-d-moyenne-2` : thème « théorème de la médiane », niveau MOYENNE, cursus PROBATOIRE:D.
+  - Motif de l'écart : avis enseignant : doublon quasi exact de cqc-relation-de-la-mediane-prob-c-moyenne-3
+  - Avis : 
+- `cqc-trace-de-droites-moyenne-0` : thème « tracé de droites », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : réponse non unique : l'abscisse est au choix de l'élève
+  - Avis : 
+
+## Réponse rédigée ou démonstration (10)
+
+- `cqc-axe-de-symetrie-faible-0` : thème « axe de symétrie », niveau FAIBLE, cursus BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : démonstration sans résultat court et unique (trois justifications)
+  - Avis : 
+- `cqc-construction-au-compas-faible-0` : thème « construction au compas », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : rédaction libre : description d'une construction et explication, sans résultat court et unique
+  - Avis : 
+- `cqc-construction-au-compas-moyenne-0` : thème « construction au compas », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : réponse attendue = description d'une construction et justification rédigée, sans résultat court et unique
+  - Avis : 
+- `cqc-construction-geometrique-moyenne-2` : thème « construction géométrique », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : réponse = construction à la règle et au compas décrite en rédaction libre, sans résultat court et unique
+  - Avis : 
+- `cqc-image-d-une-figure-moyenne-1` : thème « image d'une figure », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : rédaction libre : quatre justifications ; la seule valeur ($II'=6$ cm) est triviale
+  - Avis : 
+- `cqc-mediatrice-moyenne-2` : thème « médiatrice », niveau MOYENNE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:E.
+  - Motif de l'écart : démonstration sans résultat discriminant : toute erreur de calcul symétrique (MA=MB=17, ou racine de 119) conduit aussi à MA=MB, donc pas de distracteurs réalistes
+  - Avis : 
+- `cqc-patron-faible-0` : thème « patron », niveau FAIBLE, cursus BEPC:.
+  - Motif de l'écart : rédaction libre : explication du recollement du patron, sans résultat court
+  - Avis : 
+- `cqc-reciproque-du-theoreme-de-thales-moyenne-1` : thème « réciproque du théorème de Thalès », niveau MOYENNE, cursus BEPC:.
+  - Motif de l'écart : démonstration ; un QCM sur le rapport serait contestable car $\frac{ST}{TU}=\frac{SV}{VW}$ est ici équivalent à $\frac{ST}{SU}=\frac{SV}{SW}$ (le « Conseil » du corrigé présente à tort cette comparaison comme une erreur)
+  - Avis : 
+- `cqc-translation-moyenne-2` : thème « translation », niveau MOYENNE, cursus BAC:C, BAC:E, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : démonstration (justifier une translation, démontrer une égalité par Chasles) sans résultat court et unique
+  - Avis : 
+- `cqc-vecteurs-elevee-0` : thème « vecteurs », niveau ELEVEE, cursus BAC:C, BAC:D, BAC:E, BAC:TI, BEPC:, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Motif de l'écart : démonstration d'une égalité vectorielle imposée, sans résultat court à choisir
+  - Avis : 
+
+## Motif non retrouvé (à relire) (6)
+
+- `cqc-factorisation-elevee-0` : thème « factorisation », niveau ELEVEE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Avis : 
+- `cqc-factorisation-moyenne-0` : thème « factorisation », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Avis : 
+- `cqc-factorisation-moyenne-1` : thème « factorisation », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Avis : 
+- `cqc-factorisation-moyenne-2` : thème « factorisation », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:E, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:E.
+  - Avis : 
+- `cqc-statistiques-elevee-0` : thème « statistiques », niveau ELEVEE, cursus BAC:A, BAC:C, BAC:D, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Avis : 
+- `cqc-statistiques-moyenne-2` : thème « statistiques », niveau MOYENNE, cursus BAC:A, BAC:C, BAC:D, BAC:TI, BEPC:, PROBATOIRE:A, PROBATOIRE:C, PROBATOIRE:D, PROBATOIRE:E.
+  - Avis : 
