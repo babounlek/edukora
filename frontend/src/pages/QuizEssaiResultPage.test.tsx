@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -13,6 +14,7 @@ vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 // Le compteur qui monte est de l'animation : le test lit la valeur finale.
 vi.mock("@/lib/useCompteur", () => ({ useCompteur: (cible: number) => cible }))
 
+import { trackEvent } from "@/lib/analytics"
 import { memoriserDefi } from "@/lib/defiEssai"
 import { memoriserEssai, memoriserRecord } from "@/lib/quizEssai"
 import { QuizEssaiResultPage } from "./QuizEssaiResultPage"
@@ -150,5 +152,13 @@ describe("QuizEssaiResultPage : la mascotte", () => {
     afficher()
 
     expect(await screen.findByTestId("mascotte")).toHaveAttribute("data-situation", "record")
+  })
+
+  it("mesure le toucher, sans texte", async () => {
+    memoriserEssai(essai([true, true, true, true, false]))
+    afficher()
+
+    await userEvent.click(await screen.findByRole("button", { name: "Une autre phrase" }))
+    expect(trackEvent).toHaveBeenCalledWith("mascotte_touchee", { surface: "resultat", situation: "succes" })
   })
 })

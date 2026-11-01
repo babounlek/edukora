@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { cn } from "@/lib/utils"
+import { trackEvent } from "@/lib/analytics"
 import { MascotteDessin } from "@/components/MascotteDessin"
 import {
   humeurMascotte, MASCOTTE_ACTIVE, phraseMascotte, situationMascotte, VARIANTES_MASCOTTE, type ContexteMascotte,
@@ -53,7 +54,10 @@ export function Mascotte({ contexte, className }: { contexte: ContexteMascotte; 
     >
       <button
         type="button"
-        onClick={() => setTouches((n) => n + 1)}
+        onClick={() => {
+          setTouches((n) => n + 1)
+          trackEvent("mascotte_touchee", { surface: "resultat", situation })
+        }}
         aria-label={t("mascotte.toucher")}
         className="shrink-0 cursor-pointer rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >

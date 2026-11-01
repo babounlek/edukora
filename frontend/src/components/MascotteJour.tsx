@@ -4,6 +4,7 @@ import type { EtatXp, SerieDeJours } from "@/api/types"
 import { MascotteDessin } from "@/components/MascotteDessin"
 import { MASCOTTE_ACTIVE, phraseJourMascotte, situationJourMascotte } from "@/lib/mascotte"
 import { cn } from "@/lib/utils"
+import { trackEvent } from "@/lib/analytics"
 import { t, useI18n } from "@/lib/i18n"
 
 /** Combien de temps sa bouche bouge après un toucher (ms) : le temps de « dire » la phrase. */
@@ -37,6 +38,7 @@ export function MascotteJour({
 
   function toucher() {
     setTouches((n) => n + 1)
+    trackEvent("mascotte_touchee", { surface: "accueil", situation })
     setParle(true)
     onRappel(phraseJourMascotte(situation, etat, serie, (touches % 2) / 2 + 0.01))
   }

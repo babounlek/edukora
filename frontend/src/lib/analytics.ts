@@ -43,6 +43,8 @@ export type AnalyticsEventName =
   | "guide_ignore"
   | "quiz_abandonne"
   | "objectif_xp_choisi"
+  // Mascotte touchée : la surface (resultat, accueil) et la situation, jamais de texte - voir analytics.models.
+  | "mascotte_touchee"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

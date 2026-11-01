@@ -70,6 +70,10 @@ class EventName(models.TextChoices):
     GUIDE_AFFICHE = "guide_affiche", "Guide d'aide affiché"
     GUIDE_TERMINE = "guide_termine", "Guide d'aide terminé"
     GUIDE_IGNORE = "guide_ignore", "Guide d'aide écarté"
+    # Mascotte (frontend components/Mascotte*) : l'élève la touche pour une autre phrase ou son rappel du jour. Seuls la surface
+    # (resultat, accueil) et la situation vont dans `properties` - jamais de texte. Rapporté aux quiz terminés et aux accueils
+    # ouverts, c'est la seule façon de savoir si elle est remarquée : le drapeau est global, il n'y a pas de groupe témoin.
+    MASCOTTE_TOUCHEE = "mascotte_touchee", "Mascotte touchée"
 
 
 class AnalyticsEvent(models.Model):

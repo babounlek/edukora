@@ -33,6 +33,15 @@ class TrackEventApiTests(TestCase):
             self.assertEqual(response.status_code, 201)
         self.assertEqual(AnalyticsEvent.objects.count(), 3)
 
+    def test_records_the_mascot_touch(self):
+        response = self.client.post(
+            "/analytics/events/",
+            {"name": EventName.MASCOTTE_TOUCHEE, "properties": {"surface": "resultat", "situation": "succes"}},
+            format="json",
+        )
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(AnalyticsEvent.objects.get().properties, {"surface": "resultat", "situation": "succes"})
+
     def test_records_properties(self):
         response = self.client.post(
             "/analytics/events/",
