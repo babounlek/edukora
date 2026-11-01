@@ -8,7 +8,7 @@ import {
   type SituationJourMascotte, type SituationMascotte,
 } from "./mascotte"
 
-const SITUATIONS: SituationMascotte[] = ["record", "serie", "succes", "moyen", "faible"]
+const SITUATIONS: SituationMascotte[] = ["record", "serie", "retour", "progres", "succes", "moyen", "faible"]
 
 afterEach(async () => {
   await definirLangue("fr", { persister: false })
@@ -22,6 +22,13 @@ describe("situationMascotte", () => {
     expect(situationMascotte({ pourcentage: 70 })).toBe("succes")
     expect(situationMascotte({ pourcentage: 40 })).toBe("moyen")
     expect(situationMascotte({ pourcentage: 39 })).toBe("faible")
+  })
+
+  it("se souvient : retour après une absence, progrès sur le dernier quiz", () => {
+    expect(situationMascotte({ pourcentage: 30, souvenir: { pourcentage: 80, jours: 5 } })).toBe("retour")
+    expect(situationMascotte({ pourcentage: 60, souvenir: { pourcentage: 40, jours: 1 } })).toBe("progres")
+    expect(situationMascotte({ pourcentage: 45, souvenir: { pourcentage: 40, jours: 1 } })).toBe("moyen")
+    expect(situationMascotte({ pourcentage: 30, recordBattu: true, souvenir: { pourcentage: 10, jours: 9 } })).toBe("record")
   })
 
   it("donne une humeur à chaque situation", () => {
@@ -49,6 +56,12 @@ describe("phrases de la mascotte", () => {
     const contexte = { pourcentage: 90 }
     expect(phraseMascotte("succes", contexte, 0)).toBe(fr["mascotte.succes_1"])
     expect(phraseMascotte("succes", contexte, 0.99)).toBe(fr["mascotte.succes_3"])
+  })
+
+  it("cite le score d'avant et l'absence", () => {
+    const contexte = { pourcentage: 80, souvenir: { pourcentage: 50, jours: 6 } }
+    expect(phraseMascotte("progres", contexte, 0)).toContain("50 %")
+    expect(phraseMascotte("retour", contexte, 0)).toContain("6 jours")
   })
 
   it("insère la série et suit la langue", async () => {

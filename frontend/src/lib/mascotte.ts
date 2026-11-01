@@ -8,7 +8,7 @@ import { t, type CleI18n } from "@/lib/i18n"
  */
 export const MASCOTTE_ACTIVE = import.meta.env.VITE_MASCOTTE !== "0"
 
-export type SituationMascotte = "record" | "serie" | "succes" | "moyen" | "faible"
+export type SituationMascotte = "record" | "serie" | "retour" | "progres" | "succes" | "moyen" | "faible"
 
 /** Nombre de variantes de phrase par situation dans fr.ts / en.ts (clés `mascotte.<situation>_1` à `_N`). */
 export const VARIANTES_MASCOTTE = 3
@@ -16,17 +16,27 @@ export const VARIANTES_MASCOTTE = 3
 /** Série de jours à partir de laquelle la mascotte la relève. */
 export const SERIE_MASCOTTE_MIN = 3
 
+/** Jours d'absence à partir desquels Kora dit qu'elle est contente de revoir l'élève. */
+export const ABSENCE_MASCOTTE_MIN = 3
+
+/** Points de pourcentage gagnés sur le dernier quiz pour qu'elle le relève. */
+export const PROGRES_MASCOTTE_MIN = 10
+
 export interface ContexteMascotte {
   pourcentage: number
   recordBattu?: boolean
   /** Série de jours en cours (élève connecté seulement). */
   serieJours?: number
+  /** Ce que Kora a retenu du quiz précédent de cet appareil (voir lib/memoireMascotte.ts). */
+  souvenir?: { pourcentage: number; jours: number } | null
 }
 
 /** La situation la plus parlante d'abord : un record ou une série valent mieux qu'un simple pourcentage. */
-export function situationMascotte({ pourcentage, recordBattu, serieJours }: ContexteMascotte): SituationMascotte {
+export function situationMascotte({ pourcentage, recordBattu, serieJours, souvenir }: ContexteMascotte): SituationMascotte {
   if (recordBattu) return "record"
   if (serieJours !== undefined && serieJours >= SERIE_MASCOTTE_MIN) return "serie"
+  if (souvenir && souvenir.jours >= ABSENCE_MASCOTTE_MIN) return "retour"
+  if (souvenir && pourcentage >= souvenir.pourcentage + PROGRES_MASCOTTE_MIN) return "progres"
   if (pourcentage >= 70) return "succes"
   if (pourcentage >= 40) return "moyen"
   return "faible"
@@ -35,15 +45,17 @@ export function situationMascotte({ pourcentage, recordBattu, serieJours }: Cont
 /** Une phrase au hasard parmi les variantes de la situation ; `hasard` (dans [0, 1[) est injectable pour les tests. */
 export function phraseMascotte(situation: SituationMascotte, contexte: ContexteMascotte, hasard = Math.random()): string {
   const rang = Math.min(VARIANTES_MASCOTTE, Math.floor(hasard * VARIANTES_MASCOTTE) + 1)
-  return t(`mascotte.${situation}_${rang}` as CleI18n, { n: contexte.serieJours ?? 0 })
+  return t(`mascotte.${situation}_${rang}` as CleI18n, {
+    n: contexte.serieJours ?? 0, avant: contexte.souvenir?.pourcentage ?? 0, jours: contexte.souvenir?.jours ?? 0,
+  })
 }
 
 /** L'humeur du dessin pour chaque situation (voir .mascotte-* dans index.css). */
 export type HumeurMascotte = "fete" | "content" | "courage"
 
 export function humeurMascotte(situation: SituationMascotte): HumeurMascotte {
-  if (situation === "record" || situation === "serie") return "fete"
-  return situation === "succes" ? "content" : "courage"
+  if (situation === "record" || situation === "serie" || situation === "progres") return "fete"
+  return situation === "succes" || situation === "retour" ? "content" : "courage"
 }
 
 export type SituationJourMascotte = "atteint" | "serie" | "debut" | "reste"

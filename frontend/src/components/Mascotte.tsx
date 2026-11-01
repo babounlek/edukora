@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 
 import { cn } from "@/lib/utils"
 import { trackEvent } from "@/lib/analytics"
@@ -7,6 +7,7 @@ import {
   humeurMascotte, MASCOTTE_ACTIVE, phraseMascotte, situationMascotte, VARIANTES_MASCOTTE, type ContexteMascotte,
 } from "@/lib/mascotte"
 import { t, useI18n } from "@/lib/i18n"
+import { lireSouvenir, memoriserPresentee, memoriserSouvenir, pasEncorePresentee } from "@/lib/memoireMascotte"
 import { useMediaQuery } from "@/lib/useMediaQuery"
 
 /** Vitesse à laquelle la phrase « sort de sa bouche » : une lettre toutes les 28 ms, une phrase en moins de 2 s. */
@@ -19,8 +20,12 @@ const MS_PAR_LETTRE = 28
  * bibliothèque, aucun son - rien de plus à télécharger. Le dessin est décoratif pour les lecteurs d'écran, qui lisent
  * la phrase. Ne rend rien quand MASCOTTE_ACTIVE est faux.
  */
-export function Mascotte({ contexte, className }: { contexte: ContexteMascotte; className?: string }) {
+export function Mascotte({ contexte: contexteBrut, className }: { contexte: ContexteMascotte; className?: string }) {
   useI18n()
+  // Ce que Kora savait AVANT ce quiz : lu une fois au montage, avant que l'effet plus bas n'écrive le nouveau résultat.
+  const [souvenir] = useState(() => lireSouvenir())
+  const [premiereFois] = useState(pasEncorePresentee)
+  const contexte = useMemo(() => ({ souvenir, ...contexteBrut }), [souvenir, contexteBrut])
   const situation = situationMascotte(contexte)
   // Le tirage est fait une fois au montage : un re-rendu ne doit pas changer la phrase sous les yeux de l'élève.
   const [depart] = useState(() => Math.floor(Math.random() * VARIANTES_MASCOTTE))
@@ -31,6 +36,16 @@ export function Mascotte({ contexte, className }: { contexte: ContexteMascotte; 
   const rang = (depart + touches) % VARIANTES_MASCOTTE
   // Au milieu de la tranche [rang/N, (rang+1)/N[ : le tirage de phraseMascotte retombe sur la variante `rang`.
   const phrase = phraseMascotte(situation, contexte, (rang + 0.5) / VARIANTES_MASCOTTE)
+  // La première fois, Kora se présente (une seule fois par navigateur) avant sa phrase.
+  const dite = premiereFois && touches === 0 ? `${t("mascotte.intro")} ${phrase}` : phrase
+
+  useEffect(() => {
+    if (!MASCOTTE_ACTIVE) return
+    memoriserPresentee()
+    memoriserSouvenir(contexteBrut.pourcentage)
+    // Une seule écriture, au montage : le résultat de ce quiz devient le « dernier » du suivant.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // La voix, sans son : la phrase s'écrit pendant que la bouche bouge, comme si elle la disait. Mouvement réduit : tout d'un coup.
   useEffect(() => {
@@ -38,12 +53,12 @@ export function Mascotte({ contexte, className }: { contexte: ContexteMascotte; 
     setLettres(0)
     const minuteur = setInterval(() => setLettres((n) => n + 1), MS_PAR_LETTRE)
     return () => clearInterval(minuteur)
-  }, [phrase, mouvementReduit])
+  }, [dite, mouvementReduit])
   useEffect(() => {
-    if (lettres >= phrase.length) setLettres(phrase.length)
-  }, [lettres, phrase])
-  const parle = !mouvementReduit && lettres < phrase.length
-  const visible = mouvementReduit ? phrase : phrase.slice(0, lettres)
+    if (lettres >= dite.length) setLettres(dite.length)
+  }, [lettres, dite])
+  const parle = !mouvementReduit && lettres < dite.length
+  const visible = mouvementReduit ? dite : dite.slice(0, lettres)
   if (!MASCOTTE_ACTIVE) return null
 
   return (
@@ -65,7 +80,7 @@ export function Mascotte({ contexte, className }: { contexte: ContexteMascotte; 
       </button>
       {/* La bulle : une queue vers la mascotte. Le texte entier est lu tel quel par les lecteurs d'écran ; le texte qui s'écrit est décoratif. */}
       <p className="relative min-w-0 flex-1 rounded-2xl bg-muted/60 px-3 py-2 text-sm font-medium leading-snug before:absolute before:-left-1.5 before:top-1/2 before:size-3 before:-translate-y-1/2 before:rotate-45 before:rounded-sm before:bg-muted/60 before:content-['']">
-        <span className="sr-only">{phrase}</span>
+        <span className="sr-only">{dite}</span>
         <span aria-hidden="true" className="relative block min-h-[2.75rem] sm:min-h-0">
           {visible}
           {parle && <span className="mascotte-curseur" />}

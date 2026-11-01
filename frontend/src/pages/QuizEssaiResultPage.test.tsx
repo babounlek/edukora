@@ -154,11 +154,24 @@ describe("QuizEssaiResultPage : la mascotte", () => {
     expect(await screen.findByTestId("mascotte")).toHaveAttribute("data-situation", "record")
   })
 
+  it("se présente la première fois seulement", async () => {
+    memoriserEssai(essai([true, true, true, true, false]))
+    const premier = render(
+      <MemoryRouter>
+        <QuizEssaiResultPage />
+      </MemoryRouter>,
+    )
+    expect((await screen.findByTestId("mascotte")).textContent).toContain("Kora")
+    premier.unmount()
+    afficher()
+    expect((await screen.findByTestId("mascotte")).textContent).not.toContain("moi c'est Kora")
+  })
+
   it("mesure le toucher, sans texte", async () => {
     memoriserEssai(essai([true, true, true, true, false]))
     afficher()
 
-    await userEvent.click(await screen.findByRole("button", { name: "Une autre phrase" }))
+    await userEvent.click(await screen.findByRole("button", { name: "Kora : une autre phrase" }))
     expect(trackEvent).toHaveBeenCalledWith("mascotte_touchee", { surface: "resultat", situation: "succes" })
   })
 })

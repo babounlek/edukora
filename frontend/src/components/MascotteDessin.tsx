@@ -1,4 +1,7 @@
+import { useRef } from "react"
+
 import { cn } from "@/lib/utils"
+import { useRegard } from "@/lib/useRegard"
 import type { HumeurMascotte } from "@/lib/mascotte"
 
 const ETINCELLES = [
@@ -38,8 +41,11 @@ function Bouche({ humeur }: { humeur: HumeurMascotte }) {
 export function MascotteDessin({
   humeur, parle = false, saut = 0, taille = 84, className,
 }: { humeur: HumeurMascotte; parle?: boolean; saut?: number; taille?: number; className?: string }) {
+  const ref = useRef<SVGSVGElement>(null)
+  const { dx, dy } = useRegard(ref)
   return (
     <svg
+      ref={ref}
       viewBox="0 0 120 128" width={taille} height={Math.round(taille * 90 / 84)} aria-hidden="true" focusable="false"
       className={cn("mascotte overflow-visible", `mascotte-${humeur}`, className)}
     >
@@ -64,12 +70,14 @@ export function MascotteDessin({
           <path d="M60 69V111" stroke="#E3D8B8" strokeWidth="1.5" />
           {/* visage */}
           <g className="mascotte-yeux">
-            <ellipse cx="43" cy="83" rx="7" ry="9" fill="#12301C" />
-            <ellipse cx="77" cy="83" rx="7" ry="9" fill="#12301C" />
-            <circle cx="45.5" cy="79.5" r="2.6" fill="#fff" />
-            <circle cx="79.5" cy="79.5" r="2.6" fill="#fff" />
-            <circle cx="41.5" cy="86" r="1.2" fill="#fff" />
-            <circle cx="75.5" cy="86" r="1.2" fill="#fff" />
+            <g className="mascotte-regard" style={{ transform: `translate(${dx.toFixed(2)}px, ${dy.toFixed(2)}px)` }}>
+              <ellipse cx="43" cy="83" rx="7" ry="9" fill="#12301C" />
+              <ellipse cx="77" cy="83" rx="7" ry="9" fill="#12301C" />
+              <circle cx="45.5" cy="79.5" r="2.6" fill="#fff" />
+              <circle cx="79.5" cy="79.5" r="2.6" fill="#fff" />
+              <circle cx="41.5" cy="86" r="1.2" fill="#fff" />
+              <circle cx="75.5" cy="86" r="1.2" fill="#fff" />
+            </g>
           </g>
           <ellipse cx="30" cy="94" rx="6" ry="3.6" fill="#F4A3A3" opacity="0.7" />
           <ellipse cx="90" cy="94" rx="6" ry="3.6" fill="#F4A3A3" opacity="0.7" />
