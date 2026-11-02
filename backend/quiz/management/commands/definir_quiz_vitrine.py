@@ -43,7 +43,8 @@ SELECTION = [
     ("CM", "BEPC", None, "MATHS", "identité remarquable"),
     ("CM", "BEPC", None, "ANGLAIS", "connecteurs logiques"),
     ("CM", "BEPC", None, "FRANCAIS", "passé simple"),
-    ("CM", "BEPC", None, "PHYSIQUE_CHIMIE_TECH", "masse molaire"),
+    # « masse molaire » (2026-11-02, test élève Guyguy) : 6 variantes du même calcul, 2 QCM sur 6 ; « vitesse » varie les situations (conversion, distance, moyenne, rattrapage) avec 4 QCM sur 6.
+    ("CM", "BEPC", None, "PHYSIQUE_CHIMIE_TECH", "vitesse"),
     ("CM", "BEPC", None, "ALLEMAND", "compréhension écrite"),
     ("CM", "BEPC", None, "ESPAGNOL", "versión"),
     ("CM", "BEPC", None, "GEOGRAPHIE", "sous-développement"),
