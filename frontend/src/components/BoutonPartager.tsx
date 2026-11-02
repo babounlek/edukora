@@ -16,7 +16,7 @@ interface BoutonPartagerProps {
   /** Accroche du message, sans le lien : « Regarde ce corrigé de Maths BAC C 2023 ». */
   texte: string
   /** Genre de contenu, pour mesurer ce qui se partage. */
-  type: "epreuve" | "cours" | "inedite" | "quiz"
+  type: "epreuve" | "cours" | "inedite" | "quiz" | "parents"
   className?: string
   variant?: "outline" | "ghost" | "secondary" | "default"
   size?: "sm" | "default" | "lg"

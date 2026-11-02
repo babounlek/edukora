@@ -23,6 +23,7 @@ import {
 } from "@/components/EpreuveSommaire"
 import { EnTeteSection } from "@/components/EnTeteSection"
 import { ReglesChoix } from "@/components/inedit/ReglesChoix"
+import { BoutonParents } from "@/components/BoutonParents"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
@@ -322,6 +323,15 @@ export function EpreuveDetailPage() {
               <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
                 <Link to="/tarifs">{t("ed.voir_prix")}</Link>
               </Button>
+            </div>
+            {/* Ce sont les parents qui paient : un message tout prêt avec le prix et le moyen de payer. */}
+            <div className="mt-4 flex flex-col items-start gap-1">
+              <BoutonParents
+                examen={epreuve.cursus.length === 1 ? epreuve.cursus[0].examen_display : undefined}
+                contenu={t("parents.contenu_epreuve", { titre: epreuve.title })}
+                className="h-11 rounded-full px-5"
+              />
+              <p className="text-xs text-muted-foreground">{t("parents.aide")}</p>
             </div>
             <div className="mt-4">
               <ParrainageHint

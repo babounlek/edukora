@@ -155,6 +155,7 @@ export function EpreuveReaderPage() {
         cursus={epreuve?.cursus ?? []}
         retour={epreuveReaderPath(displayCountry, slug ?? "")}
         nature="épreuve"
+        titre={epreuve?.title}
         liens={[
           { to: epreuveDetailPath(displayCountry, slug ?? ""), label: t("ar.sujet_libre") },
           { to: epreuvesListPath(displayCountry), label: t("ed.retour_catalogue") },

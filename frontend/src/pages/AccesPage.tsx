@@ -18,6 +18,7 @@ import {
 import { ApiError, modeParentActif } from "@/api/client"
 import type { InscriptionInedite, InscriptionRepetiteur, Profil, Subscription } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { BoutonParents } from "@/components/BoutonParents"
 import { ChoixMatieres } from "@/components/ChoixMatieres"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -237,17 +238,27 @@ function BadgeStatutProfil({ statut }: { statut: StatutProfil }) {
  * Le geste d'un enfant qui n'a encore rien payé : un bouton nommé, vers les formules de CET enfant (`profil=`), pour que le
  * parent de plusieurs enfants paie pour chacun sans se tromper de nom.
  */
-function PayerPourEnfant({ profil }: { profil: Profil }) {
+function PayerPourEnfant({ profil, ecranDeLEleve = false }: { profil: Profil; ecranDeLEleve?: boolean }) {
   const prenom = profil.prenom || t("ac.sans_nom_min")
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-warning/40 bg-warning/10 p-3.5 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm">{t("ac.sans_abonnement_texte", { prenom })}</p>
-      <Button asChild size="sm" className="h-11 w-full shrink-0 rounded-full text-xs sm:h-9 sm:w-auto">
-        <Link to={`/tarifs?profil=${profil.id}`}>
-          {t("ac.payer_pour", { prenom })}
-          <ArrowRight className="size-3.5" />
-        </Link>
-      </Button>
+    <div className="flex flex-col gap-3 rounded-xl border border-warning/40 bg-warning/10 p-3.5">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-sm">{t("ac.sans_abonnement_texte", { prenom })}</p>
+        <Button asChild size="sm" className="h-11 w-full shrink-0 rounded-full text-xs sm:h-9 sm:w-auto">
+          <Link to={`/tarifs?profil=${profil.id}`}>
+            {t("ac.payer_pour", { prenom })}
+            <ArrowRight className="size-3.5" />
+          </Link>
+        </Button>
+      </div>
+      {/* L'élève qui regarde son propre compte ne paie pas : il envoie à ses parents le prix et le moyen de payer. Jamais montré
+          au parent qui gère plusieurs enfants, qui est déjà celui qui paie. */}
+      {ecranDeLEleve && (
+        <div className="flex flex-col items-start gap-1 border-t border-warning/30 pt-3">
+          <BoutonParents className="h-11 rounded-full px-5 sm:h-9" size="sm" />
+          <p className="text-xs text-muted-foreground">{t("parents.aide")}</p>
+        </div>
+      )}
     </div>
   )
 }
@@ -548,7 +559,12 @@ export function AccesPage() {
                     {accesDuProfil.map(({ key, ...props }) => <LigneAcces key={key} {...props} />)}
                   </ul>
                 )}
-                {statut === "aucun" && <PayerPourEnfant profil={profil} />}
+                {statut === "aucun" && (
+                  <PayerPourEnfant
+                    profil={profil}
+                    ecranDeLEleve={!modeParentActif() && (groupes.length === 1 || Boolean(user?.session_restreinte))}
+                  />
+                )}
               </div>
             ))}
           </div>

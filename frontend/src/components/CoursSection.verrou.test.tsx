@@ -1,10 +1,13 @@
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import type { CoursSectionData } from "@/api/types"
 
 import { CoursSection } from "./CoursSection"
+
+// Le bouton lit la campagne (react-query) et le compte (AuthProvider) : ces tests ne regardent que la carte verrouillée.
+vi.mock("@/components/BoutonParents", () => ({ BoutonParents: () => <button type="button">Montrer à mes parents</button> }))
 
 /**
  * Tout cours est libre en lecture ; sa section « exercices d'application » est payante. Le serveur la remplace, pour un

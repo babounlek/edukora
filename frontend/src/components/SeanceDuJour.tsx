@@ -13,6 +13,7 @@ import {
 } from "@/api/endpoints"
 import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { BoutonParents } from "@/components/BoutonParents"
 import { Button } from "@/components/ui/button"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { lienEtape, ouvrirEtapeDeSeance, seanceAffichable } from "@/lib/seance"
@@ -415,6 +416,8 @@ function SeanceAFaire({
                 {t("seance.debloquer")}
               </Link>
             </Button>
+            {/* Ce sont les parents qui paient : de la séance verrouillée, l'élève leur envoie le prix et le moyen de payer. */}
+            <BoutonParents contenu={t("parents.contenu_seance")} className="h-12 rounded-full px-5" />
           </div>
         ) : (
           <div className="mt-6 flex flex-wrap items-center gap-3">

@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Lock } from "lucide-react"
 
 import type { Cursus } from "@/api/types"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
+import { BoutonParents } from "@/components/BoutonParents"
 import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { useCampagne } from "@/lib/campagne"
@@ -26,11 +27,14 @@ export function AccesRefuse({
   cursus,
   retour,
   nature,
+  titre,
   liens,
 }: {
   cursus: Cursus[]
   retour: string
   nature: "épreuve" | "cours"
+  /** Titre du contenu verrouillé, quand l'écran le connaît : il entre dans le message aux parents. */
+  titre?: string
   liens: { to: string; label: string }[]
 }) {
   useI18n()
@@ -100,6 +104,22 @@ export function AccesRefuse({
               ? t("ar.prix_promo", { prix: formatAmount(campagne.prix) })
               : t("ar.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) })}
           </p>
+
+          {/* Ce sont les parents qui paient : l'élève qui ne peut pas payer lui-même leur envoie le prix, ce que ça ouvre et le moyen de payer. */}
+          <div className="mt-5 flex flex-col items-center gap-1.5">
+            <BoutonParents
+              examen={cursus.length === 1 ? cursus[0].examen_display : undefined}
+              contenu={
+                nature === "cours"
+                  ? t("parents.contenu_cours")
+                  : titre
+                    ? t("parents.contenu_epreuve", { titre })
+                    : t("parents.contenu_corrige")
+              }
+              className="h-11 rounded-full px-5"
+            />
+            <p className="max-w-xs text-xs text-muted-foreground">{t("parents.aide")}</p>
+          </div>
 
           <div className="mt-4 flex justify-center">
             <ParrainageHint />

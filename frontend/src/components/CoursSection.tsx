@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { Lock } from "lucide-react"
 
 import type { CoursSectionData, CoursSectionExerciceItem } from "@/api/types"
+import { BoutonParents } from "@/components/BoutonParents"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { SolutionToggle } from "@/components/SolutionToggle"
 import { CoursRegleBox } from "@/components/CoursRegleBox"
@@ -80,9 +81,12 @@ function ExercicesVerrouilles({ nb, difficultes, lienAbonnement }: { nb: number;
         </div>
       )}
       <p className="text-sm text-muted-foreground">{t("cs.verrou_texte")}</p>
-      <Button asChild size="sm">
-        <Link to={lienAbonnement}>{t("prix.sabonner")}</Link>
-      </Button>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button asChild size="sm">
+          <Link to={lienAbonnement}>{t("prix.sabonner")}</Link>
+        </Button>
+        <BoutonParents contenu={t("parents.contenu_exercices")} size="sm" />
+      </div>
     </div>
   )
 }
