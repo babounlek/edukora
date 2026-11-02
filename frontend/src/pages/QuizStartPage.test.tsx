@@ -1,11 +1,13 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMySubscriptions = vi.hoisted(() => vi.fn())
 const listQuizSubjects = vi.hoisted(() => vi.fn())
-const getThemesFrequents = vi.hoisted(() => vi.fn(() => Promise.resolve({ themes: [], nb_sessions_disponibles: 0 })))
+const getReglageChrono = vi.hoisted(() => vi.fn())
+const definirReglageChrono = vi.hoisted(() => vi.fn())
+const getThemesFrequents = vi.hoisted(() => vi.fn((): Promise<Record<string, unknown>> => Promise.resolve({ themes: [], nb_sessions_disponibles: 0 })))
 
 const BEPC = { id: 14, examen: "BEPC", examen_display: "BEPC", series: null }
 const BAC_C = { id: 20, examen: "BAC", examen_display: "BAC", series: { id: 3, code: "C", label: "Série C" } }
@@ -24,6 +26,8 @@ vi.mock("@/api/endpoints", () => ({
   listMySubscriptions,
   listQuizSubjects,
   getThemesFrequents,
+  getReglageChrono,
+  definirReglageChrono,
   startQuizSession: vi.fn(),
 }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
@@ -54,9 +58,17 @@ function afficher(url = "/quiz") {
   return { ...rendu, rerenderPage: () => rendu.rerender(arbre(url)) }
 }
 
+const REGLAGE_CHRONO = {
+  quiz_chronometres: false,
+  temps_additionnel_possibles: [0, 25, 50, 100],
+  secondes_par_qcm: 60,
+  secondes_par_question_ouverte: 150,
+}
+
 describe("QuizStartPage - pastilles d'examen", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    getReglageChrono.mockResolvedValue(REGLAGE_CHRONO)
     auth.user.cursus_prepare = { id: 14 }
     getThemesFrequents.mockResolvedValue({ themes: [], nb_sessions_disponibles: 0 })
     listMySubscriptions.mockResolvedValue([
@@ -147,6 +159,7 @@ describe("QuizStartPage - pastilles d'examen", () => {
 describe("QuizStartPage - lancement automatique depuis un lien", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    getReglageChrono.mockResolvedValue(REGLAGE_CHRONO)
     auth.user.cursus_prepare = { id: 14 }
     getThemesFrequents.mockResolvedValue({ themes: [], nb_sessions_disponibles: 0 })
     listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
@@ -187,5 +200,92 @@ describe("QuizStartPage - lancement automatique depuis un lien", () => {
 
     await waitFor(() => expect(screen.getByTestId("lieu")).toHaveTextContent("/recherche"))
     expect(startQuizSession).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("QuizStartPage - chrono facultatif", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    auth.user.cursus_prepare = { id: 14 }
+    getReglageChrono.mockResolvedValue(REGLAGE_CHRONO)
+    definirReglageChrono.mockResolvedValue({ ...REGLAGE_CHRONO, quiz_chronometres: true })
+    getThemesFrequents.mockResolvedValue({ themes: [], nb_sessions_disponibles: 0 })
+    listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
+    listQuizSubjects.mockResolvedValue([
+      { id: 1, code: "MATHS", label: "Mathématiques", country: { code: "CM" }, nb_questions: 30, nb_vues: 0 },
+    ])
+    vi.mocked(startQuizSession).mockResolvedValue({ id: 467 } as never)
+  })
+
+  async function lancer() {
+    const bouton = await screen.findByRole("button", { name: /Lancer mon quiz/ })
+    await waitFor(() => expect(bouton).toBeEnabled())
+    fireEvent.click(bouton)
+    await waitFor(() => expect(startQuizSession).toHaveBeenCalledTimes(1))
+    return vi.mocked(startQuizSession).mock.calls[0][0]
+  }
+
+  it("ne chronomètre pas par défaut", async () => {
+    afficher()
+
+    const params = await lancer()
+
+    expect(params).not.toHaveProperty("chrono")
+    expect(params).not.toHaveProperty("temps_additionnel")
+  })
+
+  it("chronomètre quand l'élève coche la case, avec le temps supplémentaire choisi", async () => {
+    afficher()
+    fireEvent.click(await screen.findByRole("checkbox", { name: /Chronométrer ce quiz/ }))
+    fireEvent.click(await screen.findByRole("button", { name: "+50 %" }))
+
+    const params = await lancer()
+
+    expect(params).toMatchObject({ chrono: true, temps_additionnel: 50 })
+  })
+
+  it("annonce le temps alloué : 10 questions à 60 s, majoration comprise", async () => {
+    afficher()
+    fireEvent.click(await screen.findByRole("checkbox", { name: /Chronométrer ce quiz/ }))
+
+    expect(await screen.findByText("Temps alloué : à partir de 10 min (plus pour les questions à rédiger)")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "+50 %" }))
+    expect(screen.getByText("Temps alloué : à partir de 15 min (plus pour les questions à rédiger)")).toBeInTheDocument()
+  })
+
+  it("coche la case d'emblée quand le profil l'a demandé, mais l'élève peut la décocher", async () => {
+    getReglageChrono.mockResolvedValue({ ...REGLAGE_CHRONO, quiz_chronometres: true })
+    afficher()
+    const coche = await screen.findByRole("checkbox", { name: /Chronométrer ce quiz/ })
+    await waitFor(() => expect(coche).toBeChecked())
+
+    fireEvent.click(coche)
+    const params = await lancer()
+
+    expect(params).not.toHaveProperty("chrono")
+  })
+
+  it("enregistre la préférence du profil sans lancer de quiz", async () => {
+    afficher()
+    fireEvent.click(await screen.findByRole("checkbox", { name: /Cocher le chrono d'emblée/ }))
+
+    await waitFor(() => expect(definirReglageChrono).toHaveBeenCalledWith(true))
+    expect(startQuizSession).not.toHaveBeenCalled()
+  })
+
+  it("n'offre pas le chrono sur le test de niveau", async () => {
+    afficher()
+    fireEvent.click(await screen.findByRole("button", { name: /Test de niveau/ }))
+
+    expect(screen.getByRole("checkbox", { name: /Chronométrer ce quiz/ })).toBeDisabled()
+    const params = await lancer()
+    expect(params).not.toHaveProperty("chrono")
+  })
+
+  it("n'offre pas le chrono sur l'étape quiz d'une séance du jour", async () => {
+    afficher("/quiz?cursus=14&seance=1&n=5")
+
+    await screen.findByRole("button", { name: /Lancer mon quiz/ })
+    expect(screen.queryByRole("checkbox", { name: /Chronométrer ce quiz/ })).toBeNull()
   })
 })

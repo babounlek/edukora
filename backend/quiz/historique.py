@@ -33,13 +33,13 @@ from rest_framework.response import Response
 from subscriptions.models import Subscription
 from users.profils import profil_actif
 
-from . import instantane, textes
+from . import chrono, instantane, textes
 from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession
 
 TAILLE_PAGE = 20
 
 
-def rejouer_session(profil, session):
+def rejouer_session(profil, session, chronometre=False, temps_additionnel_pct=0):
     """
     Une nouvelle session indépendante, mêmes questions et même ordre que `session` (terminée),
     reconstruites depuis l'instantané. Renvoie (rejeu, cree) : `cree` est faux quand un rejeu
@@ -50,6 +50,10 @@ def rejouer_session(profil, session):
     crée pas de chaîne profonde, et le numéro de tentative reste lisible. Mode PRATIQUE quel
     que soit celui d'origine : un rejeu de test de niveau ne doit pas passer pour un nouveau
     diagnostic (voir quiz.priorites).
+
+    `chronometre` : le rejeu se joue contre la montre (voir quiz.chrono), au choix de l'élève. Un rejeu
+    vierge déjà créé n'est repris que s'il est dans le même cas et que son chrono n'est pas écoulé : un
+    chrono part à la création, il ne peut pas attendre qu'on le rouvre.
     """
     origine_id = session.rejeu_de_id or session.pk
     with transaction.atomic():
@@ -61,7 +65,7 @@ def rejouer_session(profil, session):
             .order_by("-started_at")
             .first()
         )
-        if vierge is not None:
+        if vierge is not None and vierge.chrono_actif == chronometre and not chrono.est_ecoule(vierge):
             return vierge, False
 
         rejeu = QuizSession.objects.create(
@@ -80,6 +84,8 @@ def rejouer_session(profil, session):
                 snapshot_retroactif=quiz_question.snapshot_retroactif,
             ))
         QuizQuestion.objects.bulk_create(questions)
+        if chronometre:
+            chrono.activer(rejeu, temps_additionnel_pct)
     return rejeu, True
 
 
@@ -138,6 +144,9 @@ def _resume(session, reponses, numeros, libelles):
         "rejeu_de": session.rejeu_de_id,
         "numero_tentative": numero,
         "nb_tentatives": nombre,
+        "chrono_actif": session.chrono_actif,
+        "duree_limite_secondes": session.duree_limite_secondes if session.chrono_actif else None,
+        "temps_utilise_secondes": chrono.temps_utilise_secondes(session),
     }
 
 
@@ -265,7 +274,17 @@ def rejouer(request, session_id):
         if not tous_vitrine:
             return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
 
-    rejeu, cree = rejouer_session(profil, session)
+    # Chrono au choix du rejeu (voir quiz.chrono) ; sans précision, on reprend le réglage de la tentative rejouée.
+    chronometre = request.data.get("chrono", session.chrono_actif) in (True, "true", "True", 1, "1")
+    try:
+        temps_additionnel = int(request.data.get("temps_additionnel", session.temps_additionnel_pct) or 0)
+    except (TypeError, ValueError):
+        temps_additionnel = -1
+    if temps_additionnel not in chrono.TEMPS_ADDITIONNEL_POSSIBLES:
+        return Response(
+            {"error": f"temps_additionnel invalide. Attendu {list(chrono.TEMPS_ADDITIONNEL_POSSIBLES)}."}, status=400,
+        )
+    rejeu, cree = rejouer_session(profil, session, chronometre=chronometre, temps_additionnel_pct=temps_additionnel)
     return Response(_session_payload(rejeu), status=201 if cree else 200)
 
 
@@ -324,6 +343,7 @@ def en_cours(request):
         {
             "id": s.id,
             "mode": s.mode,
+            **chrono.payload(s),
             "cursus": s.cursus_id,
             "cursus_display": _libelle_cursus(s.cursus, libelles),
             "subject": s.subject_id,
@@ -334,7 +354,8 @@ def en_cours(request):
             "nb_repondues": s.nb_repondues,
             "total_questions": s.nb_questions,
             # Tout répondu mais pas rendu : reprendre mène au résultat, pas à une question.
-            "a_terminer": s.nb_repondues >= s.nb_questions,
+            # Chrono écoulé : plus rien à répondre, reste à rendre la copie.
+            "a_terminer": s.nb_repondues >= s.nb_questions or chrono.est_ecoule(s),
             "rejeu_de": s.rejeu_de_id,
         }
         for s in sessions

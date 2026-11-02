@@ -310,6 +310,11 @@ class Profil(models.Model):
                   "choisies ; désactivée, tout le catalogue du cursus reste visible sans toucher à l'inscription. "
                   "Sans effet tant qu'aucune matière n'est choisie. Voir quiz.matieres.",
     )
+    quiz_chronometres = models.BooleanField(
+        default=False,
+        help_text="Préférence : la case « Chronométrer ce quiz » est cochée d'emblée au lancement d'un quiz. "
+                  "Le choix se refait à chaque quiz ; voir quiz.chrono.",
+    )
     rappels_actifs = models.BooleanField(
         default=False,
         help_text="Rappel quotidien de LA séance de ce profil par e-mail (voir "

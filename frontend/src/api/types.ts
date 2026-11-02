@@ -1020,6 +1020,13 @@ export interface QuizSession {
   completed_at: string | null
   total_questions: number
   xp_jour?: EtatXp
+  // Chrono facultatif (voir quiz.chrono côté backend) : l'échéance est celle du serveur, le compte à rebours
+  // du navigateur n'est qu'un affichage. Absents de l'essai gratuit.
+  chrono_actif?: boolean
+  duree_limite_secondes?: number | null
+  temps_additionnel_pct?: number
+  echeance?: string | null
+  chrono_ecoule?: boolean
   // Essai gratuit sans compte (voir quiz.essai côté backend) : id 0, rien n'est enregistré
   // côté serveur - le navigateur garde le quiz (lib/quizEssai.ts) et calcule le score.
   essai?: boolean
@@ -1086,6 +1093,23 @@ export interface QuizResult {
   // Où se situe l'élève parmi les candidats de son cursus cette semaine (voir quiz.classement) :
   // une bande, jamais un rang. `bande` est null presque tout le temps, c'est voulu.
   classement?: { disponible: boolean; bande: "quart" | "moitie" | null }
+  // Quiz chronométré : neutre pour la progression (ni XP, ni maîtrise), temps utilisé et record personnel.
+  chrono_actif?: boolean
+  neutre_progression?: boolean
+  duree_limite_secondes?: number | null
+  temps_additionnel_pct?: number
+  chrono_ecoule?: boolean
+  temps_utilise_secondes?: number | null
+  record_secondes?: number | null
+  nouveau_record?: boolean
+}
+
+/** Le réglage de chrono du profil (voir quiz.views.reglage_chrono_view côté backend). */
+export interface ReglageChrono {
+  quiz_chronometres: boolean
+  temps_additionnel_possibles: number[]
+  secondes_par_qcm: number
+  secondes_par_question_ouverte: number
 }
 
 /** Où en est le demandeur de PDF aujourd'hui (voir access.quota.etat_json) - aussi le corps d'un 429. */
@@ -1786,6 +1810,10 @@ export interface QuizHistoriqueItem {
   rejeu_de: number | null
   numero_tentative: number
   nb_tentatives: number
+  // Quiz chronométré : temps alloué et temps utilisé (null sans chrono).
+  chrono_actif?: boolean
+  duree_limite_secondes?: number | null
+  temps_utilise_secondes?: number | null
 }
 
 /** Une question telle qu'elle a été présentée lors de la tentative : tout vient de l'instantané figé. */
@@ -1841,6 +1869,10 @@ export interface QuizEnCoursItem {
   // Tout est répondu mais le quiz n'est pas rendu : reprendre mène à « terminer ».
   a_terminer: boolean
   rejeu_de: number | null
+  // Quiz chronométré : l'échéance (voir quiz.chrono) a pu passer pendant que l'élève était parti.
+  chrono_actif?: boolean
+  chrono_ecoule?: boolean
+  echeance?: string | null
 }
 
 // Revendeurs - voir backend/revendeurs/views.py.

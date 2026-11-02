@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowLeft, Check, Info, ListChecks, RotateCcw, X } from "lucide-react"
+import { ArrowLeft, Check, Info, ListChecks, RotateCcw, Timer, X } from "lucide-react"
 
 import { getQuizHistoriqueDetail, rejouerQuiz } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -130,12 +130,12 @@ export function QuizHistoriquePage() {
     staleTime: 5 * 60_000,
   })
 
-  async function rejouer() {
+  async function rejouer(options?: { chrono: boolean }) {
     if (rejeu) return
     setRejeu(true)
     setErreurRejeu("")
     try {
-      const session = await rejouerQuiz(Number(id))
+      const session = await rejouerQuiz(Number(id), options)
       // Le rejeu est une nouvelle tentative : elle apparaîtra dans l'historique une fois terminée.
       queryClient.invalidateQueries({ queryKey: ["quiz-historique"] })
       navigate(`/quiz/session/${session.id}`)
@@ -182,7 +182,10 @@ export function QuizHistoriquePage() {
   const details = [
     traduireLibelleSerie(detail.cursus_display),
     new Date(detail.completed_at).toLocaleDateString(localeCourante()),
-    detail.duree_secondes !== null ? formatDureeEcoulee(detail.duree_secondes) : null,
+    detail.temps_utilise_secondes != null
+      ? formatDureeEcoulee(detail.temps_utilise_secondes)
+      : detail.duree_secondes !== null ? formatDureeEcoulee(detail.duree_secondes) : null,
+    detail.chrono_actif ? t("chrono.pastille") : null,
     detail.nb_tentatives > 1 ? t("hq.tentative_n", { n: detail.numero_tentative, total: detail.nb_tentatives }) : null,
   ].filter(Boolean)
 
@@ -207,10 +210,17 @@ export function QuizHistoriquePage() {
         </div>
         {detail.peut_rejouer && (
           <div className="sm:max-w-xs">
-            <Button onClick={rejouer} disabled={rejeu} size="lg" className="w-full">
+            <Button onClick={() => rejouer()} disabled={rejeu} size="lg" className="w-full">
               <RotateCcw className="mr-2 size-4" aria-hidden="true" />
               {rejeu ? t("hq.rejouer_en_cours") : t("hq.rejouer")}
             </Button>
+            {/* Un rejeu reprend le réglage de la tentative ; celle-ci, jouée sans chrono, peut l'être contre la montre. */}
+            {!detail.chrono_actif && (
+              <Button onClick={() => rejouer({ chrono: true })} disabled={rejeu} variant="outline" className="mt-2 w-full">
+                <Timer className="mr-2 size-4" aria-hidden="true" />
+                {t("chrono.rejouer")}
+              </Button>
+            )}
             <p className="mt-1.5 text-xs text-muted-foreground">{t("hq.rejouer_aide")}</p>
             {erreurRejeu && <p role="alert" className="mt-2 text-sm text-destructive">{erreurRejeu}</p>}
           </div>

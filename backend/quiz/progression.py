@@ -23,6 +23,7 @@ def _reponses_chronologiques(profil, cursus):
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .order_by("answered_at", "id")
         .values_list("quiz_question__competence_item_id", flat=True),

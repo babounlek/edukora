@@ -118,7 +118,7 @@ describe("QuizHistoriquePage", () => {
 
     expect(await screen.findByText("Session de rejeu")).toBeInTheDocument()
     expect(rejouerQuiz).toHaveBeenCalledTimes(1)
-    expect(rejouerQuiz).toHaveBeenCalledWith(12)
+    expect(rejouerQuiz).toHaveBeenCalledWith(12, undefined)
   })
 
   it("affiche l'erreur du serveur si le rejeu est refusé et laisse réessayer", async () => {

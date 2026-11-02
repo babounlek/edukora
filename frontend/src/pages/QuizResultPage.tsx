@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Trophy, Zap } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Timer, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -21,6 +21,7 @@ import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCountry } from "@/context/CountryContext"
 import { useAuth } from "@/context/AuthContext"
+import { formatDureeEcoulee } from "@/lib/duration"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
 import { aChangeDeNiveau, nomNiveau } from "@/lib/niveau"
@@ -38,6 +39,39 @@ import { lienDeParrainage } from "@/lib/referral"
  * semaine de série. C'est l'écran qui donne envie de revenir demain, donc il dit les trois
  * choses d'un coup. Le petit jingle de fin part ici, une seule fois, au montage.
  */
+function BilanChrono({ result }: { result: QuizResult }) {
+  useI18n()
+  useEffect(() => {
+    jouerRetour(result.nouveau_record ? "objectif" : "fin")
+  }, [result.nouveau_record])
+  const utilise = result.temps_utilise_secondes
+  const alloue = result.duree_limite_secondes
+  return (
+    <section aria-label={t("chrono.restant")} className="mb-6 rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <p className="flex items-center gap-2 font-display text-xl font-semibold tabular-nums">
+        <Timer className="size-5 text-primary" aria-hidden="true" />
+        {utilise != null && alloue != null
+          ? t("chrono.temps_utilise", { utilise: formatDureeEcoulee(utilise), alloue: formatDureeEcoulee(alloue) })
+          : t("chrono.pastille")}
+      </p>
+      {result.nouveau_record ? (
+        <p className="animate-quiz-bravo mt-3 flex items-center gap-2 rounded-xl bg-gold/15 px-3 py-2 text-sm font-semibold text-gold-text">
+          <Trophy className="size-4 shrink-0" aria-hidden="true" />
+          {t("chrono.nouveau_record")}
+          {result.record_secondes != null && ` ${formatDureeEcoulee(result.record_secondes)}`}
+        </p>
+      ) : (
+        result.record_secondes != null && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            {t("chrono.record", { temps: formatDureeEcoulee(result.record_secondes) })}
+          </p>
+        )
+      )}
+      <p className="mt-2 text-sm text-muted-foreground">{t("chrono.neutre")}</p>
+    </section>
+  )
+}
+
 function BilanXp({
   xp, serie, classement, score, total,
 }: {
@@ -411,13 +445,15 @@ export function QuizResultPage() {
 
       {!diagnostic && <Mascotte className="mb-6" contexte={{ pourcentage, serieJours: result.serie?.jours }} />}
 
-      {result.xp && (
+      {/* Un quiz chronométré ne rapporte ni points ni maîtrise (voir quiz.chrono) : le bilan dit le temps, pas l'XP. */}
+      {result.chrono_actif && <BilanChrono result={result} />}
+      {result.xp && !result.chrono_actif && (
         <BilanXp
           xp={result.xp} serie={result.serie} classement={result.classement}
           score={result.score} total={result.questions_repondues}
         />
       )}
-      {result.xp && <InvitePush className="mb-6" />}
+      {result.xp && !result.chrono_actif && <InvitePush className="mb-6" />}
 
       {/* Le geste le plus court pour continuer, avant tout menu : un quiz de plus, ou le même pour faire mieux. */}
       {!diagnostic && result.par_theme.length > 0 && (

@@ -58,6 +58,7 @@ import type {
   QuizHistoriqueItem,
   QuizQuestion,
   QuizResult,
+  ReglageChrono,
   QuizEssai,
   QuizSession,
   CursusContenu,
@@ -628,6 +629,10 @@ export interface StartQuizSessionParams {
   // de l'utilisateur (voir quiz.services.rattacher_quiz_a_la_seance). Sert à clore la
   // séance automatiquement et à en afficher le score.
   seance?: number
+  // Quiz chronométré, au choix (voir quiz.chrono) : jamais sur le test de niveau ni l'étape quiz d'une séance du jour,
+  // le serveur l'ignore alors. `temps_additionnel` : majoration du temps en % (0, 25, 50 ou 100).
+  chrono?: boolean
+  temps_additionnel?: number
 }
 
 export function startQuizSession(params: StartQuizSessionParams) {
@@ -648,6 +653,8 @@ export function revealQuizCorrige(sessionId: number, quizQuestionId: number) {
 export interface AnswerQuizQuestionParams {
   reponse_choisie?: string
   resultat_declare?: string
+  // Secondes passées sur la question (mesurées par le client, indicatives : l'historique les additionne).
+  temps_secondes?: number
 }
 
 export function answerQuizQuestion(sessionId: number, quizQuestionId: number, params: AnswerQuizQuestionParams) {
@@ -710,6 +717,15 @@ export function getPlanDuJour(signal?: AbortSignal) {
  */
 export function getAccueil(signal?: AbortSignal) {
   return apiRequest<Accueil>("/quiz/accueil/", { signal })
+}
+
+/** Le réglage « Quiz chronométrés » du profil (case cochée d'emblée au lancement) - voir quiz.chrono côté backend. */
+export function getReglageChrono(signal?: AbortSignal) {
+  return apiRequest<ReglageChrono>("/quiz/chrono/", { signal })
+}
+
+export function definirReglageChrono(quizChronometres: boolean) {
+  return apiRequest<ReglageChrono>("/quiz/chrono/", { method: "PUT", body: { quiz_chronometres: quizChronometres } })
 }
 
 /** Change le rythme quotidien (10, 20 ou 30 points d'XP) - voir quiz.xp côté backend. */
@@ -1232,8 +1248,8 @@ export async function getQuizHistoriqueDetail(sessionId: number, signal?: AbortS
 }
 
 /** Rejoue une tentative terminée : une NOUVELLE session, mêmes questions, sans toucher à l'ancienne. */
-export function rejouerQuiz(sessionId: number) {
-  return apiRequest<QuizSession>(`/quiz/historique/${sessionId}/rejouer/`, { method: "POST" })
+export function rejouerQuiz(sessionId: number, options: { chrono?: boolean; temps_additionnel?: number } = {}) {
+  return apiRequest<QuizSession>(`/quiz/historique/${sessionId}/rejouer/`, { method: "POST", body: options })
 }
 
 /** Les quiz commencés et pas terminés du profil actif - « Reprendre le quiz ». */

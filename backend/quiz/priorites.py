@@ -48,6 +48,7 @@ def priorites_examen(profil, cursus):
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item")
     ):

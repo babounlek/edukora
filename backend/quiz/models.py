@@ -203,6 +203,22 @@ class QuizSession(models.Model):
         ),
     )
 
+    chrono_actif = models.BooleanField(
+        default=False,
+        help_text=(
+            "Quiz chronométré, au choix de l'élève (voir quiz.chrono). Une session chronométrée est NEUTRE "
+            "pour la progression comme un rejeu : ni XP, ni palier de révision, absente de la maîtrise - "
+            "une erreur faite faute de temps ne dit rien du niveau."
+        ),
+    )
+    duree_limite_secondes = models.PositiveIntegerField(
+        null=True, blank=True,
+        help_text="Temps alloué, figé à la création (nombre de questions, temps additionnel compris). Vide sans chrono.",
+    )
+    temps_additionnel_pct = models.PositiveSmallIntegerField(
+        default=0, help_text="Majoration du temps choisie par l'élève (0, 25, 50 ou 100 %), déjà comprise dans la durée.",
+    )
+
     fiche_pdf_statut = models.CharField(
         max_length=10, choices=StatutFichePdf.choices, blank=True,
         help_text="Vide tant qu'aucune fiche PDF n'a été demandée - voir StatutFichePdf.",

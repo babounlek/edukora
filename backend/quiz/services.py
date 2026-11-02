@@ -416,6 +416,7 @@ def _poids_par_theme(profil, cursus):
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item")
     )
@@ -469,6 +470,7 @@ def _historique_des_items(profil, cursus):
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item")
         .order_by("answered_at")
@@ -682,6 +684,7 @@ def maitrise_par_theme(profil, cursus=None):
         QuizAnswer.objects.filter(
             quiz_question__session__profil=profil, quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item__theme", "quiz_question__competence_item__subject")
     )
@@ -740,6 +743,7 @@ def maitrise_par_savoir(profil, cursus=None):
             quiz_question__competence_item__isnull=False,
             quiz_question__competence_item__theme__savoir_officiel__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item__theme")
     )
@@ -968,6 +972,7 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__theme_id__in=tous_tag_ids,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item")
     ):
@@ -1777,6 +1782,7 @@ def _theme_deja_maitrise(profil, cursus, theme):
         quiz_question__session__cursus=cursus,
         quiz_question__competence_item__theme=theme,
         quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+        quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
     ):
         stats["total"] += 1
         if reponse.est_correcte:
@@ -2145,6 +2151,7 @@ def _maitrise_par_subject(profil, cursus):
             quiz_question__session__cursus=cursus,
             quiz_question__competence_item__isnull=False,
             quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
         )
         .select_related("quiz_question__competence_item")
     ):

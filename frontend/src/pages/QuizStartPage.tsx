@@ -23,6 +23,7 @@ import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { useCountry } from "@/context/CountryContext"
 import { BandeauMatieres } from "@/components/ChoixMatieres"
+import { ChoixChrono } from "@/components/ChoixChrono"
 import { StatChip } from "@/components/Configurateur"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { QuizCompletVisiteur } from "@/components/QuizCompletVisiteur"
@@ -294,6 +295,10 @@ export function QuizStartPage() {
   const [selectedSubject, setSelectedSubject] = useState("")
   const [mode, setMode] = useState<ModeQuiz>("PRATIQUE")
   const [n, setN] = useState(10)
+  // Quiz chronométré, au choix à chaque lancement (voir ChoixChrono) : jamais sur le test de niveau ni sur l'étape
+  // quiz d'une séance du jour, que le serveur ne chronomètre pas non plus.
+  const [chrono, setChrono] = useState(false)
+  const [tempsAdditionnel, setTempsAdditionnel] = useState(0)
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState(false)
   // Échecs de chargement : sans eux, un .then sans .catch laissait le squelette (ou la liste de
   // matières) à l'écran pour toujours. Les compteurs d'essai relancent les effets via « Réessayer ».
@@ -448,6 +453,8 @@ export function QuizStartPage() {
     else setStarting(true)
     setError("")
     const modeEffectif: ModeQuiz = theme ? "PRATIQUE" : mode
+    // Un lancement automatique par lien ne passe pas par le formulaire : l'élève n'a pas vu la case, donc pas de chrono.
+    const chronometre = chrono && modeEffectif === "PRATIQUE" && !seanceParam && !depuisLeLien
     try {
       const session = await startQuizSession({
         cursus: Number(selectedCursus),
@@ -456,6 +463,7 @@ export function QuizStartPage() {
         theme,
         n: Number.isInteger(nParam) && nParam > 0 ? nParam : n,
         seance: seanceParam ? Number(seanceParam) : undefined,
+        ...(chronometre && { chrono: true, temps_additionnel: tempsAdditionnel }),
       })
       trackEvent("quiz_started", { cursus_id: Number(selectedCursus), mode: modeEffectif })
       navigate(`/quiz/session/${session.id}`, { replace: depuisLeLien })
@@ -655,6 +663,17 @@ export function QuizStartPage() {
                   </PastilleFiltre>
                 ))}
               </FiltreLigne>
+            )}
+
+            {!seanceParam && (
+              <ChoixChrono
+                actif={chrono}
+                onActif={setChrono}
+                tempsAdditionnel={tempsAdditionnel}
+                onTempsAdditionnel={setTempsAdditionnel}
+                nQuestions={nEffectif}
+                indisponible={mode === "DIAGNOSTIC"}
+              />
             )}
 
             {/* Pied de carte : le récapitulatif en une ligne, et l'unique action. */}

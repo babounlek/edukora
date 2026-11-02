@@ -38,6 +38,13 @@ TEXTES = {
         FR: "Ce quiz est terminé : tes réponses ne peuvent plus être modifiées. Tu peux le rejouer.",
         EN: "This quiz is finished: your answers can no longer be changed. You can replay it.",
     },
+    # --- Quiz chronométrés (quiz.chrono, quiz.views.answer_question) ---
+    "quiz.chrono_ecoule": {
+        FR: "Le temps est écoulé : tes réponses déjà données sont gardées, mais tu ne peux plus en ajouter. "
+            "Rends ta copie pour voir ton résultat.",
+        EN: "Time is up: the answers you already gave are kept, but you can't add more. "
+            "Hand in your paper to see your result.",
+    },
     "quiz.rejeu_session_en_cours": {
         FR: "Termine d'abord ce quiz avant de le rejouer.",
         EN: "Finish this quiz before replaying it.",

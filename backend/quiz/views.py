@@ -29,7 +29,7 @@ from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
     StatutFichePdf, StatutSeance,
 )
-from . import accueil, instantane, xp
+from . import accueil, chrono, instantane, xp
 from .classement import classement_hebdo
 from .gratuits import themes_gratuits_par_matiere
 from .pdf import queue_quiz_fiche_pdf_generation
@@ -362,6 +362,8 @@ def _session_payload(session):
         "completed_at": session.completed_at,
         "total_questions": quiz_questions.count(),
         "xp_jour": xp.etat_du_jour(session.profil),
+        # Chrono facultatif (voir quiz.chrono) : l'échéance absolue vient du serveur.
+        **chrono.payload(session),
         "questions": [_question_payload(qq) for qq in quiz_questions],
     }
 
@@ -465,7 +467,20 @@ def _resultat_payload(session, request):
         "xp": {"session": xp.bilan_session(session), "jour": xp.etat_du_jour(session.profil)},
         "serie": serie_de_jours(session.profil),
         "classement": classement_hebdo(session.profil, session.cursus),
+        **_chrono_resultat(session),
     }
+
+
+def _chrono_resultat(session):
+    """Bloc chrono de la page de résultat : vide sans chrono. Le temps et le record n'existent qu'une fois la
+    session terminée ; `neutre_progression` explique pourquoi aucun XP ni aucune maîtrise n'a bougé."""
+    if not session.chrono_actif:
+        return {"chrono_actif": False}
+    resultat = {**chrono.payload(session), "neutre_progression": True}
+    if session.completed_at:
+        resultat["temps_utilise_secondes"] = chrono.temps_utilise_secondes(session)
+        resultat.update(chrono.record(session))
+    return resultat
 
 
 @api_view(["POST"])
@@ -500,6 +515,21 @@ def start_session(request):
     except (TypeError, ValueError):
         n = 10
 
+    # Chrono facultatif (voir quiz.chrono) : valide AVANT de tirer les questions.
+    chrono_demande = request.data.get("chrono") in (True, "true", "True", 1, "1")
+    temps_additionnel = request.data.get("temps_additionnel") or 0
+    try:
+        temps_additionnel = int(temps_additionnel)
+    except (TypeError, ValueError):
+        temps_additionnel = -1
+    if temps_additionnel not in chrono.TEMPS_ADDITIONNEL_POSSIBLES:
+        return Response(
+            {"error": f"temps_additionnel invalide. Attendu {list(chrono.TEMPS_ADDITIONNEL_POSSIBLES)}."}, status=400,
+        )
+    # Ni sur le test de niveau (il règle le parcours et doit mesurer le niveau, pas la vitesse), ni sur l'étape
+    # quiz d'une séance du jour (elle compte pour la série, un chrono neutre contredirait cette promesse).
+    chrono_demande = chrono_demande and mode == ModeQuiz.PRATIQUE and not request.data.get("seance")
+
     profil = profil_actif(request)
     try:
         session = generer_session(
@@ -517,6 +547,8 @@ def start_session(request):
     # que la séance du jour de ce profil, sur ce cursus.
     if request.data.get("seance"):
         rattacher_quiz_a_la_seance(profil, session)
+    if chrono_demande:
+        chrono.activer(session, temps_additionnel)
 
     return Response(_session_payload(session), status=201)
 
@@ -586,12 +618,23 @@ def answer_question(request, session_id, quiz_question_id):
             return Response(
                 {"error": textes.texte("quiz.session_terminee", textes.langue_de(session.cursus))}, status=409,
             )
+        # Chrono écoulé : fin douce. Les réponses déjà données restent, seule une NOUVELLE réponse est refusée
+        # (avec une marge pour une réponse partie dans les temps et arrivée en retard sur un réseau lent).
+        if chrono.est_ecoule(session, tolerance=chrono.TOLERANCE_RESEAU_SECONDES):
+            return Response(
+                {"error": textes.texte("quiz.chrono_ecoule", textes.langue_de(session.cursus)), "chrono_ecoule": True, "code": "chrono_ecoule"},
+                status=409,
+            )
         answer, creee = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
 
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
         cursus = quiz_question.session.cursus
-        if quiz_question.session.rejeu_de_id:
+        if quiz_question.session.chrono_actif:
+            # Session chronométrée : neutre pour la progression, jusqu'aux erreurs (une erreur faite faute de
+            # temps ne dit rien du niveau) - voir quiz.chrono. Plus strict que le rejeu, dont l'erreur compte.
+            gain = None
+        elif quiz_question.session.rejeu_de_id:
             # Rejeu : neutre pour la progression (voir quiz.historique). Les réponses justes ne
             # rapportent ni XP ni palier - l'élève connaît déjà les questions. Une erreur reste un
             # vrai signal de faiblesse : elle (ré)ouvre quand même le suivi du thème.
@@ -1143,6 +1186,30 @@ def objectif_xp_view(request):
         return Response({"error": f"objectif invalide. Attendu {list(xp.OBJECTIFS_POSSIBLES)}."}, status=400)
     _tracer(EventName.OBJECTIF_XP_CHOISI, request.user, profil_id=profil.id, objectif=valeur)
     return Response(etat)
+
+
+@api_view(["GET", "PUT"])
+def reglage_chrono_view(request):
+    """
+    Le réglage de chrono du profil (voir quiz.chrono). GET : la préférence « Quiz chronométrés » (cochée
+    d'emblée au lancement d'un quiz, le choix se refait à chaque quiz) et de quoi estimer la durée côté
+    client. PUT {quiz_chronometres: bool} : la change. Un réglage d'étude que l'élève fait lui-même, comme
+    l'objectif quotidien : pas réservé au mode parent.
+    """
+    profil = profil_actif(request)
+    if request.method == "PUT":
+        valeur = request.data.get("quiz_chronometres")
+        if not isinstance(valeur, bool):
+            return Response({"error": "« quiz_chronometres » doit être un booléen."}, status=400)
+        if profil.quiz_chronometres != valeur:
+            profil.quiz_chronometres = valeur
+            profil.save(update_fields=["quiz_chronometres"])
+    return Response({
+        "quiz_chronometres": profil.quiz_chronometres,
+        "temps_additionnel_possibles": list(chrono.TEMPS_ADDITIONNEL_POSSIBLES),
+        "secondes_par_qcm": chrono.SECONDES_PAR_QCM,
+        "secondes_par_question_ouverte": chrono.SECONDES_PAR_QUESTION_OUVERTE,
+    })
 
 
 def _cible_matieres(request):

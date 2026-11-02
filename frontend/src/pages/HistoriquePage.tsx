@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
-import { BookOpen, CheckCircle2, Crown, History, ListChecks, Play, RotateCcw } from "lucide-react"
+import { BookOpen, CheckCircle2, Crown, History, ListChecks, Play, RotateCcw, Timer } from "lucide-react"
 
 import { getMyProgression, listMyTentativesInedites, listQuizHistorique } from "@/api/endpoints"
 import type { Progression, QuizEnCoursItem, QuizHistoriqueItem, TentativeInediteListItem } from "@/api/types"
@@ -122,7 +122,9 @@ function ListeQuiz({
         const details = [
           traduireLibelleSerie(q.cursus_display),
           new Date(q.completed_at).toLocaleDateString(localeCourante()),
-          q.duree_secondes !== null ? formatDureeEcoulee(q.duree_secondes) : null,
+          q.temps_utilise_secondes != null
+            ? formatDureeEcoulee(q.temps_utilise_secondes)
+            : q.duree_secondes !== null ? formatDureeEcoulee(q.duree_secondes) : null,
         ].filter(Boolean)
         return (
           <li key={q.id}>
@@ -133,6 +135,12 @@ function ListeQuiz({
               <span className="flex min-w-0 flex-col">
                 <span className="flex min-w-0 items-center gap-1.5 font-medium">
                   <span className="truncate">{q.subject_label || q.theme || t("hq.quiz_sans_titre")}</span>
+                  {q.chrono_actif && (
+                    <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-[11px] font-normal text-muted-foreground">
+                      <Timer className="size-3" aria-hidden="true" />
+                      {t("chrono.pastille")}
+                    </span>
+                  )}
                   {q.rejeu_de !== null && (
                     <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-[11px] font-normal text-muted-foreground">
                       <RotateCcw className="size-3" aria-hidden="true" />

@@ -14,6 +14,7 @@ import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSon } from "@/components/BoutonSon"
+import { ChronoQuiz } from "@/components/ChronoQuiz"
 import { lireDefiMemorise } from "@/lib/defiEssai"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -24,6 +25,7 @@ import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { jouerRetour } from "@/lib/retours"
+import { useSecondesRestantes } from "@/lib/quizChrono"
 import { MascotteDessin } from "@/components/MascotteDessin"
 import { MASCOTTE_ACTIVE } from "@/lib/mascotte"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -99,6 +101,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   // Le choix tapé, tant que le serveur n'a pas répondu : sur une connexion lente, la case doit
   // réagir tout de suite (sans connaître encore le verdict, que seul le serveur donne).
   const [choixEnCours, setChoixEnCours] = useState<string | null>(null)
+  // Quiz chronométré (voir quiz.chrono côté backend). Le serveur est seul juge de l'échéance : son refus d'une
+  // réponse tardive (code `chrono_ecoule`) fige l'écran même si l'horloge du navigateur retarde.
+  const [ecouleServeur, setEcouleServeur] = useState(false)
+  // Début de la question affichée : le temps passé est envoyé avec la réponse (indicatif, voir l'historique).
+  const debutQuestionRef = useRef(Date.now())
   // Toujours la dernière version des gestionnaires, pour un écouteur clavier posé une seule fois.
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {})
   // Posé quand une réponse vient d'être enregistrée : le retour qui apparaît alors est amené à l'écran (voir
@@ -119,6 +126,16 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
   }, [])
+
+  const restant = useSecondesRestantes(!essai && session?.chrono_actif ? session.echeance : null)
+  const chronoActif = !essai && Boolean(session?.chrono_actif)
+  // `restant` vaut null le temps d'un rendu après l'arrivée de la session : le drapeau du serveur couvre ce trou.
+  const chronoEcoule =
+    chronoActif && (ecouleServeur || (restant === null ? Boolean(session?.chrono_ecoule) : restant === 0))
+
+  useEffect(() => {
+    debutQuestionRef.current = Date.now()
+  }, [currentIndex, session?.id])
 
   useEffect(() => {
     if (essai) {
@@ -197,7 +214,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
 
   async function handleAnswerQcm(lettre: string) {
-    if (submitting || question.reponse) return
+    if (submitting || question.reponse || chronoEcoule) return
     setActionError("")
     setSubmitting(true)
     setChoixEnCours(lettre)
@@ -205,10 +222,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       const params = { reponse_choisie: lettre }
       const updated = essai
         ? await answerQuizEssai(session!.cursus, question.id, params)
-        : await answerQuizQuestion(session!.id, question.id, params)
+        : await answerQuizQuestion(session!.id, question.id, { ...params, temps_secondes: tempsPasse() })
       updateQuestion(updated)
-    } catch {
-      setActionError(t("qs.reponse_erreur"))
+    } catch (err) {
+      signalerEchec(err)
     } finally {
       setSubmitting(false)
       setChoixEnCours(null)
@@ -216,7 +233,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
 
   async function handleReveal() {
-    if (submitting) return
+    if (submitting || chronoEcoule) return
     setActionError("")
     setSubmitting(true)
     try {
@@ -232,18 +249,46 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
 
   async function handleDeclare(resultat: "REUSSI" | "PARTIEL" | "ECHEC") {
-    if (submitting || question.reponse) return
+    if (submitting || question.reponse || chronoEcoule) return
     setActionError("")
     setSubmitting(true)
     try {
       const params = { resultat_declare: resultat }
       const updated = essai
         ? await answerQuizEssai(session!.cursus, question.id, params)
-        : await answerQuizQuestion(session!.id, question.id, params)
+        : await answerQuizQuestion(session!.id, question.id, { ...params, temps_secondes: tempsPasse() })
       updateQuestion(updated)
-    } catch {
-      setActionError(t("qs.reponse_erreur"))
+    } catch (err) {
+      signalerEchec(err)
     } finally {
+      setSubmitting(false)
+    }
+  }
+
+  /** Secondes passées sur la question affichée, plafonnées : un onglet laissé ouvert une nuit n'est pas un temps de réponse. */
+  function tempsPasse() {
+    return Math.min(3600, Math.max(0, Math.round((Date.now() - debutQuestionRef.current) / 1000)))
+  }
+
+  /** Échec d'une réponse : le refus « temps écoulé » du serveur fige l'écran, tout autre échec reste réessayable. */
+  function signalerEchec(err: unknown) {
+    if (err instanceof ApiError && err.code === "chrono_ecoule") {
+      setEcouleServeur(true)
+      return
+    }
+    setActionError(t("qs.reponse_erreur"))
+  }
+
+  /** Fin douce d'un chrono écoulé : les réponses données sont gardées, l'élève rend sa copie quand il veut. */
+  async function rendreLaCopie() {
+    setActionError("")
+    setSubmitting(true)
+    try {
+      await completeQuizSession(session!.id)
+      trackEvent("quiz_completed", { cursus_id: session!.cursus, mode: session!.mode, source: "chrono_ecoule" })
+      navigate(`/quiz/session/${session!.id}/resultat`)
+    } catch {
+      setActionError(t("qs.terminer_erreur"))
       setSubmitting(false)
     }
   }
@@ -309,7 +354,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       void handleNext()
       return
     }
-    if (isQcm && !answered) {
+    if (isQcm && !answered && !chronoEcoule) {
       const choix = question.choix.find((c) => c.lettre.toLowerCase() === e.key.toLowerCase())
       if (choix) void handleAnswerQcm(choix.lettre)
     }
@@ -377,7 +422,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           {t("qs.question_sur", { n: currentIndex + 1, total })}
         </p>
         <div className="flex items-center gap-3">
-          {session.xp_jour && <ObjectifXp etat={session.xp_jour} compact />}
+          {chronoActif && restant !== null && session.duree_limite_secondes != null && (
+            <ChronoQuiz restant={chronoEcoule ? 0 : restant} duree={session.duree_limite_secondes} />
+          )}
+          {/* Un quiz chronométré ne rapporte pas de points : l'objectif du jour n'a rien à y montrer. */}
+          {session.xp_jour && !chronoActif && <ObjectifXp etat={session.xp_jour} compact />}
           {streak >= 2 && (
             <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2.5 py-0.5 font-semibold">
               <Flame className="animate-quiz-flame size-4 text-warning" />
@@ -389,6 +438,24 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           </span>
         </div>
       </div>
+
+      {chronoEcoule && (
+        <div
+          role="alert"
+          className="mb-4 flex flex-col gap-3 rounded-2xl border border-destructive/30 bg-destructive/5 p-4 sm:flex-row sm:items-center sm:justify-between"
+        >
+          <div>
+            <p className="font-display font-semibold">{t("chrono.ecoule_titre")}</p>
+            <p className="text-sm text-muted-foreground">
+              {answeredCount > 0 ? t("chrono.ecoule_texte") : t("chrono.ecoule_texte_vide")}
+            </p>
+          </div>
+          <Button onClick={rendreLaCopie} disabled={submitting} className="shrink-0">
+            {t("chrono.rendre")}
+            <ArrowRight />
+          </Button>
+        </div>
+      )}
 
       {/* key = id de la question : la carte se rejoue à chaque question, ça donne le rythme. */}
       <div key={question.id} className="animate-fade-up rounded-3xl border border-border bg-card p-5 shadow-lg shadow-primary/5 sm:p-8">
@@ -438,7 +505,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                   type="button"
                   aria-label={nomAccessibleDuChoix(choix.lettre, choix.texte)}
                   aria-busy={enCours || undefined}
-                  disabled={submitting || answered}
+                  disabled={submitting || answered || chronoEcoule}
                   onClick={() => handleAnswerQcm(choix.lettre)}
                   className={cn(
                     "group flex items-center gap-3 rounded-xl border-2 px-3.5 py-3 text-left text-[0.95rem] transition-all duration-200 disabled:cursor-default",
@@ -489,7 +556,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                   <Lightbulb className="mt-0.5 size-4 shrink-0 text-gold-text" />
                   {t("qs.brouillon")}
                 </p>
-                <Button size="lg" onClick={handleReveal} disabled={submitting} className="shrink-0">
+                <Button size="lg" onClick={handleReveal} disabled={submitting || chronoEcoule} className="shrink-0">
                   <Sparkles />
                   {t("qs.voir_correction")}
                 </Button>
@@ -510,7 +577,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                     <Button
                       key={option.value}
                       variant="outline"
-                      disabled={submitting}
+                      disabled={submitting || chronoEcoule}
                       onClick={() => handleDeclare(option.value)}
                       className={cn(
                         option.value === "REUSSI" && "hover:border-success hover:bg-success/10",

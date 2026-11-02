@@ -36,6 +36,7 @@ urlpatterns = [
     path("plan-du-jour/objectif/", views.objectif_matiere_view, name="objectif-matiere"),
     path("matieres/", views.matieres_view, name="matieres"),
     path("xp/objectif/", views.objectif_xp_view, name="objectif-xp"),
+    path("chrono/", views.reglage_chrono_view, name="reglage-chrono"),
     path("plan-du-jour/etape-ouverte/", views.etape_ouverte_view, name="etape-ouverte"),
     path("plan-du-jour/duree/", views.duree_seance_view, name="duree-seance"),
     # Essai gratuit sans compte : routes publiques, rien n'est enregistré (voir quiz.essai).
