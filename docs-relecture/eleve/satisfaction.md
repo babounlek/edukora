@@ -22,6 +22,9 @@ Les sessions du 2026-10-19 au 2026-10-24 ont été jouées **avant** l'ajout de 
 | 2026-10-25 | Guyguy (3e, orienté fun) | M1+M2+M3 visiteur | local | 8be75ff7 | 3 | 2 | 3 | peut-être | 5 | peut-être (parents) | Q4 QCM « Bravo ! » et corrigé 2026 libre (+1) | arrivée en anglais, mur de texte Q1 (-1) | 2026-10-25-guyguy-visiteur-M1-M2-M3-local.md |
 | 2026-10-26 | Guyguy (3e, orienté fun) | M2 visiteur, Identité remarquable (après B1 pilote + A1-A7 + lot B) | local | e377a4a6 + B1 non commité | 4 | 2 | 3 | cette semaine | 6 | peut-être (parents) | série « tu es en feu », 5/5 avec confettis et record (+2) | fenêtres avant la 1re question, correction trop longue après une erreur (-1) | 2026-10-26-guyguy-visiteur-M2-identite-remarquable-local.md |
 | 2026-10-25 | Guyguy (3e, orienté fun) | M8+M4+M5 abonné | local | 8be75ff7 | 3 | 3 | 3 | cette semaine | 5 | sans objet | résultat du quiz, +37 points (+2) | résultat inédite « 0,5 / 20 » (-2) | 2026-10-25-guyguy-abonne-M8-M4-M5-local.md |
+| 2026-11-02 | Guyguy (3e) | M1+M2+M3+M6 visiteur (sciences, SVT, prix) | local | 3b818788 | 3 | 3 | 2 | peut-être | 5 | peut-être (parents) | QCM CO2, « Tu maîtrises ! » + mascotte (+2) | corrigé SVT payant (-1) | 2026-11-02-guyguy-visiteur-M1-M2-M3-M6-local.md |
+| 2026-11-02 | Guyguy (3e) | M8+M4+M5 abonné (chrono, mini-inédite) | local | 3b818788 | 4 | 2 | 3 | demain | 6 | sans objet | objectif du jour atteint +10 (+2) | envoi du code 20 s, fin du quiz chrono (-1) | 2026-11-02-guyguy-abonne-M8-M4-M5-local.md |
+| 2026-11-02 | Guyguy (3e) | M3 + murs payants, compte libre | local | 3b818788 | 3 | 3 | 3 | cette semaine | 5 | peut-être (parents) | quiz Maths +10 (+2) | rien pour convaincre les parents (-1) | 2026-11-02-guyguy-libre-M3-paywalls-local.md |
 
 ## Calibrage de la satisfaction (2026-10-24)
 

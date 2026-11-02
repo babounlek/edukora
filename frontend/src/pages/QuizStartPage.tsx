@@ -103,8 +103,9 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
           {subjects.map((subject) => {
             const SubjectIcon = subjectIcon(subject.code)
             return (
-              <li key={subject.id} className="flex items-center justify-between gap-3 bg-card px-3.5 py-2.5">
-                <span className="flex min-w-0 items-center gap-2.5">
+              <li key={subject.id} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-card px-3.5 py-2.5">
+                {/* Sur 375 px le nom, le nombre de questions et le bouton ne tiennent pas sur une ligne : le groupe de droite passe dessous plutôt que d'écraser le nom. */}
+                <span className="flex min-w-[9rem] flex-1 items-center gap-2.5">
                   <span className={cn("flex size-7 shrink-0 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
                     <SubjectIcon className="size-3.5" aria-hidden="true" />
                   </span>
