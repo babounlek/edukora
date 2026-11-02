@@ -4,7 +4,7 @@ import { ArrowRight, BookOpen, History, RotateCcw, Sparkles, TrendingUp } from "
 import type { Accueil, DepuisLaDerniereVisite } from "@/api/types"
 import { Ecrin } from "@/components/Progression"
 import { formatDepuis } from "@/lib/formatDepuis"
-import { epreuveReaderPath } from "@/lib/countryPath"
+import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 
 /**
@@ -127,7 +127,7 @@ export function DepuisLaDerniereFois({
               {lecture && (
                 <li>
                   <Link
-                    to={epreuveReaderPath(lecture.country, lecture.slug)}
+                    to={lecture.type === "cours" ? coursReaderPath(lecture.slug) : epreuveReaderPath(lecture.country, lecture.slug)}
                     className="group flex items-center gap-2.5 rounded-lg border border-border bg-background px-3 py-2.5 text-sm transition-colors hover:border-primary/40"
                   >
                     <BookOpen className="size-4 shrink-0 text-primary" aria-hidden="true" />

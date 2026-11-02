@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Clock, Crown, Play } from "lucide-react"
+import { ArrowRight, ClipboardCheck, Clock, Crown, Play } from "lucide-react"
 
 import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
 import type { Accueil, TentativeInediteListItem } from "@/api/types"
@@ -103,6 +103,8 @@ export function AccueilEleve({ country }: { country: string }) {
     enabled: Boolean(cursusId),
   })
   const enCours = tentatives?.find((t) => t.submitted_at === null)
+  // La dernière copie rendue dont il reste des questions à noter (voir questions_a_noter côté serveur).
+  const aNoter = tentatives?.find((t) => t.submitted_at !== null && (t.questions_a_noter ?? 0) > 0)
 
   if (!data || !cursusId) {
     return isError ? <ErreurAccueil /> : <SqueletteAccueil />
@@ -114,6 +116,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
       {enCours && <LigneReprise tentative={enCours} />}
+      {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
       <ReprendreQuiz enveloppe />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
@@ -125,6 +128,30 @@ export function AccueilEleve({ country }: { country: string }) {
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
       <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
+  )
+}
+
+/** Une copie rendue dont la note n'est pas complète : l'élève se note lui-même, un rappel finit le travail. */
+function LigneNotation({ tentative }: { tentative: TentativeInediteListItem }) {
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <Link
+        to={`/inedit/tentative/${tentative.id}`}
+        className="group flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+          <ClipboardCheck className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {tn("abonne.a_noter", tentative.questions_a_noter ?? 0)}
+          </span>
+          <span className="block truncate text-sm font-medium">{tentative.epreuve_titre}</span>
+        </span>
+        <span className="shrink-0 text-sm font-medium text-gold-text">{t("abonne.finir_notation")}</span>
+        <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
+      </Link>
+    </section>
   )
 }
 

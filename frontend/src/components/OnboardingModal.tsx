@@ -27,7 +27,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 // lui, le compte à rebours jusqu'à l'examen ne s'affiche que pour les abonnés, dont
 // la déclaration est déduite de leur achat - c'est-à-dire pour les seules personnes
 // qui n'ont plus besoin d'être convaincues.
-const ONBOARDING_ENABLED = true
+// Désactivé de nouveau le 2026-11-02 à la demande du user ("on passe l'onboarding pour le moment") :
+// remettre à true pour le rétablir tel quel.
+export const ONBOARDING_ENABLED = false
 
 const ONBOARDING_DONE_KEY = "edukamer_onboarding_done"
 

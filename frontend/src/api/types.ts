@@ -1282,7 +1282,8 @@ export interface Accueil {
   resume: ResumeMatiere[]
   preparation: PreparationExamen | null
   revisions: RevisionAccueil[]
-  lecture: { slug: string; title: string; country: string } | null
+  // `type` : « cours » ou « epreuve » (absent sur une ancienne réponse en cache : une épreuve).
+  lecture: { slug: string; title: string; country: string; type?: "epreuve" | "cours" } | null
   simulation_suggeree: { id: number; slug: string; title: string; subject_label: string; year: number | null } | null
   bilan_semaine: BilanPeriode | null
 }
@@ -1319,6 +1320,8 @@ export interface TentativeInediteListItem {
   // tentative n'est pas rendue.
   note_obtenue: number | null
   bareme_snapshot: number | null
+  // Questions traitées mais pas encore notées par l'élève : fourni pour la dernière copie rendue seulement.
+  questions_a_noter?: number | null
 }
 
 export interface TentativeInediteAnswerInfo {

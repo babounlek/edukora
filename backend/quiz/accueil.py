@@ -26,7 +26,7 @@ from math import ceil
 from django.utils import timezone
 
 from access.models import LectureProgress
-from catalog.models import Lesson, LessonType, Origine, StatutContenu
+from catalog.models import Cours, Lesson, LessonType, Origine, StatutContenu, q_cours_du_cursus
 
 from . import textes
 from .models import OrigineSeance, QuizAnswer, SeanceJournaliere, StatutSeance, VisiteAccueil
@@ -396,8 +396,10 @@ def trajectoire(profil, cursus, resume, compte, aujourdhui=None):
 
 def lecture_a_reprendre(profil, cursus):
     """
-    La dernière épreuve DE SON CURSUS ouverte cette semaine, s'il y en a une - de quoi
-    finir ce qu'on a commencé sans passer par l'historique.
+    La dernière épreuve OU le dernier cours DE SON CURSUS ouvert cette semaine, s'il y en a un - de quoi
+    finir ce qu'on a commencé sans passer par l'historique. `type` dit lequel des deux (« epreuve » ou
+    « cours ») : le lien du lecteur n'est pas le même (test élève 2026-11-02 : un cours entamé n'était
+    jamais proposé à la reprise).
 
     Filtrée par cursus : la vitrine affiche un extrait de corrigé gratuit (une épreuve
     de BEPC) et cette lecture est enregistrée comme les autres - sans le filtre, un
@@ -411,12 +413,28 @@ def lecture_a_reprendre(profil, cursus):
         .order_by("-last_read_at")
         .first()
     )
-    if lecture is None or not lecture.lesson.slug:
+    if lecture is not None and not lecture.lesson.slug:
+        lecture = None
+    lecture_cours = (
+        LectureProgress.objects.filter(profil=profil, cours__isnull=False, last_read_at__gte=depuis)
+        .filter(cours__statut=StatutContenu.VALIDE, cours__subject__country__actif=True)
+        .filter(cours__in=Cours.objects.filter(q_cours_du_cursus([cursus.pk])))
+        .select_related("cours__subject__country")
+        .order_by("-last_read_at")
+        .first()
+    )
+    if lecture_cours is not None and not lecture_cours.cours.slug:
+        lecture_cours = None
+    if lecture_cours is not None and (lecture is None or lecture_cours.last_read_at > lecture.last_read_at):
+        cours = lecture_cours.cours
+        return {"slug": cours.slug, "title": cours.titre, "country": cours.subject.country.code.lower(), "type": "cours"}
+    if lecture is None:
         return None
     return {
         "slug": lecture.lesson.slug,
         "title": lecture.lesson.title,
         "country": lecture.lesson.subject.country.code.lower(),
+        "type": "epreuve",
     }
 
 

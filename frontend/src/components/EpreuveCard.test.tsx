@@ -86,6 +86,22 @@ describe("EpreuveListRow, épreuve inédite", () => {
   })
 })
 
+describe("EpreuveCard : corrigé payant d'une annale (test élève 2026-11-02)", () => {
+  const annale = (surcharge: Partial<Epreuve> = {}) =>
+    inedite({ kind: "classique", lesson_type: "CORR", has_access: false, est_vitrine: false, slug: "svt-2026", title: "SVT 2026", ...surcharge })
+
+  it("dit « Sujet libre · corrigé payant » à qui n'a pas accès au corrigé", () => {
+    carte(annale())
+    expect(screen.getByText("Sujet libre · corrigé payant")).toBeInTheDocument()
+    expect(screen.queryByText("Voir l'aperçu")).not.toBeInTheDocument()
+  })
+
+  it("ne le dit pas d'un corrigé en accès libre", () => {
+    carte(annale({ est_vitrine: true, has_access: true }))
+    expect(screen.queryByText("Sujet libre · corrigé payant")).not.toBeInTheDocument()
+  })
+})
+
 describe("EpreuveCard et EpreuveListRow : badge « Gratuit » (test élève Gogo)", () => {
   const gratuite = () => inedite({ kind: "classique", est_vitrine: true, has_access: true, slug: "maths-2019", title: "Maths 2019" })
 

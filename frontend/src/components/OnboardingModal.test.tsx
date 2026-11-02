@@ -28,7 +28,7 @@ vi.mock("@/context/CountryContext", () => ({
 }))
 
 import { definirLangue } from "@/lib/i18n"
-import { OnboardingModal } from "./OnboardingModal"
+import { ONBOARDING_ENABLED, OnboardingModal } from "./OnboardingModal"
 
 const pays = { id: 1, code: "CM", label: "Cameroun" }
 const serie = (id: number, code: string, label: string) => ({ id, code, label })
@@ -64,7 +64,7 @@ afterEach(async () => {
   await definirLangue("fr", { persister: false })
 })
 
-describe("OnboardingModal", () => {
+describe.skipIf(!ONBOARDING_ENABLED)("OnboardingModal", () => {
   it("GCE : propose la branche générale ET technique, sans mot « Série »", async () => {
     await definirLangue("en", { persister: false })
     afficher()
@@ -177,7 +177,7 @@ const MATIERES = {
   avertissements: [],
 }
 
-describe("OnboardingModal : étape des matières (GCE, élève connecté)", () => {
+describe.skipIf(!ONBOARDING_ENABLED)("OnboardingModal : étape des matières (GCE, élève connecté)", () => {
   /** Élève connecté sans cursus ; sa déclaration (updateMe) le met à jour comme le ferait updateUser. */
   function eleveSansCursus(echecDeclaration = false) {
     auth.current = { isAuthenticated: true, user: { id: 1, cursus_prepare: null } }

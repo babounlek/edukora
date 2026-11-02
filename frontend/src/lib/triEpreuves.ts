@@ -1,28 +1,28 @@
 /**
- * Le tri de la liste des épreuves. « Aléatoire » est le tri PAR DÉFAUT : il n'a donc pas de valeur dans
- * l'URL, et chaque visite montre un mélange différent (la page y ajoute un germe, voir
- * `nouveauGermeAleatoire`, pour que le défilement infini garde un ordre cohérent d'une page à l'autre).
- * « Ajoutées récemment » se choisit avec `?ordering=recent`. « Plus récentes (année) » se choisit avec
- * `?ordering=annee` ; il n'envoie aucun tri à l'API, ce qui donne le tri par défaut du backend (année
+ * Le tri de la liste des épreuves. « Plus récentes (année) » est le tri PAR DÉFAUT : il n'a donc pas de
+ * valeur dans l'URL et n'envoie aucun tri à l'API, ce qui donne le tri par défaut du backend (année
  * décroissante, niveau par niveau).
+ * « Ajoutées récemment » se choisit avec `?ordering=recent`. « Aléatoire » se choisit avec
+ * `?ordering=aleatoire` (la page y ajoute un germe, voir `nouveauGermeAleatoire`, pour que le défilement
+ * infini garde un ordre cohérent d'une page à l'autre).
  *
- * `?ordering=aleatoire` reste valide (c'est le défaut) ; `?ordering=year` (qui triait par année CROISSANTE)
- * et `?ordering=popular` (vide tant qu'aucune épreuve n'a 3 lecteurs) retombent sur le défaut.
+ * `?ordering=year` (qui triait par année CROISSANTE) et `?ordering=popular` (vide tant qu'aucune épreuve
+ * n'a 3 lecteurs) retombent sur le défaut.
  */
 export type TriEpreuves = "aleatoire" | "recent" | "annee"
 
-export const TRI_PAR_DEFAUT: TriEpreuves = "aleatoire"
+export const TRI_PAR_DEFAUT: TriEpreuves = "annee"
 
 /** Le tri d'après le paramètre `ordering` de l'URL. */
 export function triDepuisUrl(valeur: string | null): TriEpreuves {
-  if (valeur === "annee") return "annee"
+  if (valeur === "aleatoire") return "aleatoire"
   if (valeur === "recent") return "recent"
   return TRI_PAR_DEFAUT
 }
 
 /** La valeur à écrire dans l'URL : vide pour le tri par défaut, qui n'y figure pas. */
 export function valeurUrlDuTri(tri: string): string {
-  if (tri === "annee") return "annee"
+  if (tri === "aleatoire") return "aleatoire"
   if (tri === "recent") return "recent"
   return ""
 }

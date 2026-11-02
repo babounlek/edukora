@@ -361,6 +361,17 @@ class LectureAReprendreTests(AccueilFixture):
         self.assertIsNone(accueil.lecture_a_reprendre(self.profil, self.cursus))
         mienne = self._lecture("Mon épreuve", self.cursus)
         self.assertEqual(accueil.lecture_a_reprendre(self.profil, self.cursus)["slug"], mienne.slug)
+        self.assertEqual(accueil.lecture_a_reprendre(self.profil, self.cursus)["type"], "epreuve")
+
+    def test_un_cours_ouvert_plus_recemment_passe_avant_l_epreuve(self):
+        from access.models import LectureProgress
+        from catalog.models import Cours
+        self._lecture("Mon épreuve", self.cursus)
+        cours = Cours.objects.create(titre="Équilibrer une équation-bilan", subject=self.subject, statut=StatutContenu.VALIDE)
+        cours.cursus.add(self.cursus)
+        LectureProgress.objects.create(profil=self.profil, cours=cours)
+        reprise = accueil.lecture_a_reprendre(self.profil, self.cursus)
+        self.assertEqual((reprise["type"], reprise["slug"]), ("cours", cours.slug))
 
 
 class DerniereLigneDroiteTests(AccueilFixture):

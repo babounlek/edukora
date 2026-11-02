@@ -1454,6 +1454,18 @@ class ListMyTentativesInediteAPITests(TestCase):
         self.assertIsNone(by_id[en_cours.id]["submitted_at"])
         self.assertEqual(by_id[soumise.id]["score_obtenu"], 75)
 
+    def test_dit_combien_de_questions_de_la_derniere_copie_rendue_restent_a_noter(self):
+        en_cours = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
+        soumise = TentativeInedite.objects.create(
+            profil=self.user.profils.first(), epreuve=self.epreuve, submitted_at=timezone.now(),
+        )
+        self.client.force_authenticate(user=self.user)
+
+        by_id = {t["id"]: t for t in self.client.get("/inedit/mes-tentatives/").data}
+
+        self.assertIsNone(by_id[en_cours.id]["questions_a_noter"])
+        self.assertEqual(by_id[soumise.id]["questions_a_noter"], 0)
+
     def test_filtered_to_cursus_prepare_when_declared(self):
         """Même raison que access.views.my_progression : un compte avec deux
         abonnements actifs ne doit pas voir les tentatives de l'autre cursus mélangées

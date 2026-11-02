@@ -87,12 +87,12 @@ const NATURE_LABELS: Record<NatureEpreuve, CleI18n> = {
   PRATIQUE: "ep.nature_PRATIQUE",
 }
 
-// Trois tris : « Aléatoire » (le défaut : chaque visite montre d'autres épreuves), « Ajoutées récemment » puis
-// « Plus récentes (année) ». Les règles sont dans lib/triEpreuves.ts.
+// Trois tris : « Plus récentes (année) » (le défaut : des plus récentes aux plus anciennes), « Ajoutées
+// récemment » puis « Aléatoire ». Les règles sont dans lib/triEpreuves.ts.
 const ORDERING_LABELS = {
-  aleatoire: "ep.tri_aleatoire",
-  recent: "ep.tri_recent",
   annee: "ep.tri_annee",
+  recent: "ep.tri_recent",
+  aleatoire: "ep.tri_aleatoire",
 } as const satisfies Record<string, CleI18n>
 
 function EpreuveCardSkeleton() {
@@ -818,7 +818,7 @@ export function EpreuvesListPage() {
               }}
             >
               <SelectTrigger className="h-8 w-40 text-xs sm:w-48 sm:text-sm" aria-label={t("ep.trier")}>
-                <SelectValue placeholder={t("ep.tri_aleatoire")} />
+                <SelectValue placeholder={t("ep.tri_annee")} />
               </SelectTrigger>
               <SelectContent>
                 {(Object.keys(ORDERING_LABELS) as (keyof typeof ORDERING_LABELS)[]).map((key) => (

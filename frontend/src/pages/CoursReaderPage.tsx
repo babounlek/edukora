@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useNavigationType, useParams } from "react-router-dom"
 import { ArrowLeft, Check, NotebookPen } from "lucide-react"
 
 import { getCours, marquerCoursLu, readCours } from "@/api/endpoints"
@@ -35,13 +35,16 @@ import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 import { capitaliserTheme, cn } from "@/lib/utils"
-import { useFonduDefilement } from "@/components/FiltresCatalogue"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 export function CoursReaderPage() {
   useI18n()
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  // Lu dans un ref : un changement de type (PUSH -> REPLACE) ne doit pas rejouer le scroll (voir ScrollToTop).
+  const navigationType = useNavigationType()
+  const typeNavigation = useRef(navigationType)
+  typeNavigation.current = navigationType
   const { isAuthenticated, isLoading } = useAuth()
   const { country } = useCountry()
 
@@ -117,15 +120,13 @@ export function CoursReaderPage() {
     // (posé par le carnet) doit être rejoué une fois les sections rendues.
     if (!content) return
     const id = window.location.hash.slice(1)
-    if (id) document.getElementById(id)?.scrollIntoView()
-  }, [content])
-
-  useEffect(() => {
-    // Même raison que dans EpreuveReaderPage : le contenu arrive en asynchrone, le #hash
-    // (posé par le carnet) doit être rejoué une fois les sections rendues.
-    if (!content) return
-    const id = window.location.hash.slice(1)
-    if (id) document.getElementById(id)?.scrollIntoView()
+    if (id) {
+      document.getElementById(id)?.scrollIntoView()
+    } else if (typeNavigation.current !== "POP") {
+      // Sans ancre, on lit un cours depuis son début : un cours s'est ouvert tout en bas, sur le pied de page
+      // (test élève 2026-11-02), quand le scroll posé par ScrollToTop avait précédé l'arrivée du contenu.
+      window.scrollTo(0, 0)
+    }
   }, [content])
 
   if (isLoading || (!content && !error && !accesRefuse)) {
@@ -317,16 +318,11 @@ export function CoursReaderPage() {
 
 /** Les actions du cours (partager, PDF, hors ligne) : une rangée qui défile sur téléphone, avec un fondu à droite tant qu'il reste un bouton hors de l'écran. */
 function RangeeActions({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLSpanElement>(null)
-  const fondu = useFonduDefilement(ref)
+  // À la ligne plutôt qu'une rangée qui défile : sur 375 px le bouton PDF (avec son compteur « 12 restants »)
+  // était coupé au bord droit (test élève 2026-11-02).
   return (
     <span
-      ref={ref}
-      onScroll={fondu.onScroll}
-      className={cn(
-        "no-scrollbar -mx-4 mb-4 flex items-center gap-2 overflow-x-auto px-4 sm:col-start-2 sm:row-start-1 sm:mx-0 sm:mb-6 sm:flex-wrap sm:justify-end sm:overflow-visible sm:px-0 [&>*]:shrink-0",
-        fondu.fondu,
-      )}
+      className="mb-4 flex flex-wrap items-center gap-2 sm:col-start-2 sm:row-start-1 sm:mb-6 sm:justify-end"
     >
       {children}
     </span>

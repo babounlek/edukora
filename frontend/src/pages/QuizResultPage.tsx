@@ -67,6 +67,13 @@ function BilanChrono({ result }: { result: QuizResult }) {
           </p>
         )
       )}
+      {result.questions_repondues === result.total_questions && !result.chrono_ecoule && (
+        // Le gain d'un quiz chronométré : tout répondu dans le temps. Un badge, jamais des points (voir quiz.chrono).
+        <p className="mt-2 inline-flex items-center gap-2 rounded-full bg-success/15 px-3 py-1 text-sm font-medium">
+          <Timer className="size-4 shrink-0 text-success" aria-hidden="true" />
+          {t("chrono.tenu")}
+        </p>
+      )}
       <p className="mt-2 text-sm text-muted-foreground">{t("chrono.neutre")}</p>
     </section>
   )
@@ -260,14 +267,15 @@ function LigneTheme({
   )
 }
 
-function messageDeFin(pourcentage: number, diagnostic: boolean) {
+function messageDeFin(pourcentage: number, diagnostic: boolean, chrono = false) {
   // Un diagnostic n'est pas une note : un 30 % n'y est pas un échec, c'est un point
   // de départ. Le message ne doit ni féliciter ni consoler.
   if (diagnostic) return { titre: t("qr.diag_titre"), texte: t("qr.diag_texte") }
   if (pourcentage >= 100) return { titre: t("qr.fin100_titre"), texte: t("qr.fin100_texte") }
   if (pourcentage >= 90) return { titre: t("qr.fin90_titre"), texte: t("qr.fin90_texte") }
   if (pourcentage >= 70) return { titre: t("qr.fin70_titre"), texte: t("qr.fin70_texte") }
-  if (pourcentage >= 40) return { titre: t("qr.fin40_titre"), texte: t("qr.fin40_texte") }
+  // Un quiz chronométré ne rapporte pas de points : ne pas en promettre au prochain essai (test élève 2026-11-02).
+  if (pourcentage >= 40) return { titre: t("qr.fin40_titre"), texte: t(chrono ? "qr.fin40_texte_chrono" : "qr.fin40_texte") }
   return { titre: t("qr.fin0_titre"), texte: t("qr.fin0_texte") }
 }
 
@@ -388,7 +396,7 @@ export function QuizResultPage() {
   const aRevoir = result.par_theme
     .filter((theme) => theme.cours && 100 * theme.reussies / theme.total < 70)
     .sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
-  const message = messageDeFin(pourcentage, diagnostic)
+  const message = messageDeFin(pourcentage, diagnostic, Boolean(result.chrono_actif))
   // Par le code de la matière du premier thème : `result.subject` est vide quand le quiz a été lancé par thème (« encore 5 questions »).
   const codeMatiere = result.par_theme[0]?.subject_code
   const essaiDuDefi = codeMatiere ? (essais ?? []).find((e) => e.cursus === result.cursus && e.subject_code === codeMatiere) : undefined

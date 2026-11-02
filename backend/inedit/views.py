@@ -542,6 +542,14 @@ def list_my_tentatives_inedites(request):
     # paresseuse, l'accueil proposerait de « reprendre » une épreuve déjà rendue.
     for tentative in tentatives:
         _auto_complete_if_expired(tentative)
+    # Copie rendue mais pas (entièrement) notée : l'accueil propose de finir la notation (test élève 2026-11-02 :
+    # « Ta note arrive dès que tu as tout noté », puis plus aucun rappel). Calculé pour la dernière copie rendue
+    # seulement : le bilan relit tout l'énoncé, inutile de le refaire pour tout l'historique.
+    a_noter = {}
+    derniere_rendue = next((t for t in tentatives if t.submitted_at is not None), None)
+    if derniere_rendue is not None:
+        exercices = derniere_rendue.epreuve.exercices_ordonnes("questions__themes")
+        a_noter[derniere_rendue.id] = notation.calculer(derniere_rendue, exercices)["questions_a_noter"]
     return Response([
         {
             "id": tentative.id,
@@ -556,6 +564,7 @@ def list_my_tentatives_inedites(request):
             "score_obtenu": tentative.score_obtenu,
             "note_obtenue": notation.en_nombre(tentative.note_obtenue),
             "bareme_snapshot": notation.en_nombre(tentative.bareme_snapshot),
+            "questions_a_noter": a_noter.get(tentative.id),
         }
         for tentative in tentatives
     ])

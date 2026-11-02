@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, BookOpen, CheckCircle2, Clock, Eye, FileText, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle2, Clock, Eye, FileText, Lock, Sparkles, Unlock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -63,6 +63,7 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
   const Icone = subjectIcon(epreuve.subject.code)
   const couleur = couleurMatiere(epreuve.subject.code)
   const duree = dureeAffichee(epreuve)
+  const corrigePayant = !inedite && epreuve.lesson_type !== "SUJET"
   // Une inédite se REFAIT et se REPREND : « Lu » ne dit rien d'une copie, sa note si.
   const faite = inedite ? libelleFaite(epreuve.mes_tentatives) : null
 
@@ -198,10 +199,19 @@ export function EpreuveCard({ epreuve, className, style, masquerTypeBadge, nivea
                   </span>
                 </>
               ) : (
-                <>
-                  <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span className="truncate font-medium text-foreground">{t("ep.voir_apercu")}</span>
-                </>
+                // Une annale dont seul le sujet est libre : le dire sur la carte, sinon « Corrigé d'annale » laisse croire
+                // que le corrigé est ouvert (test élève 2026-11-02).
+                corrigePayant ? (
+                  <>
+                    <Lock className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                    <span className="truncate font-medium text-foreground">{t("ep.sujet_libre_corrige_payant")}</span>
+                  </>
+                ) : (
+                  <>
+                    <Eye className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                    <span className="truncate font-medium text-foreground">{t("ep.voir_apercu")}</span>
+                  </>
+                )
               )}
               {(inedite ? faite : epreuve.is_read) && (
                 <span className="inline-flex shrink-0 items-center gap-1 text-success">
