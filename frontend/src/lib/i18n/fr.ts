@@ -1587,6 +1587,8 @@ export const fr = {
   "qd.abonne_toi": "Abonne-toi pour lancer une séance - voici déjà tout ce qu'il y a à réviser.",
   "qd.essayer_gratuit": "Essayer gratuitement",
   "qd.sessions_sur": "{n} sessions sur {total}",
+  "qd.vues_sur": "{vues} questions vues sur {total}",
+  "qd.tour_termine": "Tour terminé : tu as vu toutes les questions. Elles reviendront en commençant par les plus anciennes.",
   "qd.pas_de_quiz_theme": "Pas encore de question de quiz sur ce thème précis",
   "qd.quiz_theme": "Quiz sur ce thème",
   "qd.exercices": "Exercices",

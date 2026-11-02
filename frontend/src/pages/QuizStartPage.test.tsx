@@ -94,6 +94,28 @@ describe("QuizStartPage - pastilles d'examen", () => {
     await waitFor(() => expect(listQuizSubjects).toHaveBeenCalledWith(20))
   })
 
+  it("affiche « vues/total » sur la matière dès qu'une question a été vue, le total seul sinon", async () => {
+    listQuizSubjects.mockResolvedValue([
+      { id: 1, code: "MATHS", label: "Mathématiques", country: { code: "CM" }, nb_questions: 30, nb_vues: 12 },
+      { id: 2, code: "SVT", label: "SVT", country: { code: "CM" }, nb_questions: 20, nb_vues: 0 },
+    ])
+    afficher()
+
+    const vues = await screen.findByText("12/30")
+    expect(vues.getAttribute("title")).toMatch(/12.*30/)
+    expect(screen.queryByText("0/20")).toBeNull()
+  })
+
+  it("dit « tour terminé » quand toutes les questions d'une matière ont été vues", async () => {
+    listQuizSubjects.mockResolvedValue([
+      { id: 1, code: "MATHS", label: "Mathématiques", country: { code: "CM" }, nb_questions: 30, nb_vues: 30 },
+    ])
+    afficher()
+
+    const tour = await screen.findByText("30/30")
+    expect(tour.getAttribute("title")).toMatch(/Tour terminé/)
+  })
+
   it("propose tous les abonnements quand aucun examen n'est préparé", async () => {
     auth.user.cursus_prepare = null
     afficher()

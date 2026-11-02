@@ -101,9 +101,12 @@ class SubjectWithQuizCountSerializer(SubjectSerializer):
     # matière n'a pas de thème vitrine curé. DRF sérialise déjà None en null pour un
     # champ read_only sans qu'allow_null soit nécessaire (voir Serializer.to_representation).
     vitrine_theme_id = serializers.IntegerField(read_only=True)
+    # Questions de cette matière déjà répondues par le profil actif (posé par la vue, comme vitrine_theme_id) :
+    # « nb_vues sur nb_questions ». Tour terminé quand les deux sont égaux.
+    nb_vues = serializers.IntegerField(read_only=True)
 
     class Meta(SubjectSerializer.Meta):
-        fields = [*SubjectSerializer.Meta.fields, "nb_questions", "vitrine_theme_id"]
+        fields = [*SubjectSerializer.Meta.fields, "nb_questions", "vitrine_theme_id", "nb_vues"]
 
 
 class TagSerializer(serializers.ModelSerializer):

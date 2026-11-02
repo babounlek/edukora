@@ -140,9 +140,21 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
   )
 }
 
-function CompteurPastille({ actif, children }: { actif: boolean; children: ReactNode }) {
+/** « 12/30 » dès qu'une question a été vue, le total seul sinon ; « tour terminé » quand tout est vu. */
+function compteurQuestions(subject: Subject): { texte: string; titre?: string } {
+  const total = subject.nb_questions ?? 0
+  const vues = Math.min(subject.nb_vues ?? 0, total)
+  if (vues === 0) return { texte: String(total) }
+  return {
+    texte: `${vues}/${total}`,
+    titre: vues >= total ? t("qd.tour_termine") : t("qd.vues_sur", { vues, total }),
+  }
+}
+
+function CompteurPastille({ actif, titre, children }: { actif: boolean; titre?: string; children: ReactNode }) {
   return (
     <span
+      title={titre}
       className={cn(
         "rounded-full px-1.5 text-[0.7rem] font-semibold tabular-nums",
         actif ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground",
@@ -597,13 +609,14 @@ export function QuizStartPage() {
                 subjects.map((subject) => {
                   const Icon = subjectIcon(subject.code)
                   const actif = selectedSubject === String(subject.id)
+                  const compteur = compteurQuestions(subject)
                   return (
                     <PastilleFiltre key={subject.id} actif={actif} onClick={() => setSelectedSubject(String(subject.id))}>
                       <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
                         <Icon className="size-3" aria-hidden="true" />
                       </span>
                       {subjectShortLabel(subject.code, subject.label)}
-                      <CompteurPastille actif={actif}>{subject.nb_questions ?? 0}</CompteurPastille>
+                      <CompteurPastille actif={actif} titre={compteur.titre}>{compteur.texte}</CompteurPastille>
                     </PastilleFiltre>
                   )
                 })

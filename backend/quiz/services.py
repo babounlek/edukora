@@ -455,6 +455,112 @@ def _selection_ponderee_par_theme(items, poids_par_theme, n):
     return [item for _, item in cles[:n]]
 
 
+def _historique_des_items(profil, cursus):
+    """
+    item_id -> (jour de la DERNIÈRE réponse, réussie ?) pour ce profil sur ce cursus : ce que l'élève a déjà vu.
+
+    Mêmes réponses que _poids_par_theme (items de compétence, rejeux exclus : un rejeu est neutre, il ne doit pas
+    faire passer une question pour « déjà vue » ni pour « maîtrisée »). Une question servie mais jamais répondue
+    n'y figure pas : elle n'a pas été vue.
+    """
+    reponses = (
+        QuizAnswer.objects.filter(
+            quiz_question__session__profil=profil,
+            quiz_question__session__cursus=cursus,
+            quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True,
+        )
+        .select_related("quiz_question__competence_item")
+        .order_by("answered_at")
+    )
+    historique = {}
+    for reponse in reponses:  # chronologique : la dernière réponse écrase les précédentes
+        historique[reponse.quiz_question.competence_item_id] = (
+            timezone.localtime(reponse.answered_at).date(), reponse.est_correcte,
+        )
+    return historique
+
+
+def nb_vues_par_matiere(profil, cursus):
+    """
+    subject_id -> nombre de questions VALIDES de ce cursus auxquelles ce profil a déjà répondu au moins une fois
+    (rejeux exclus, comme _historique_des_items) - le « 12 vues sur 30 » des listes de quiz. Une question dépubliée
+    depuis ne compte plus : le total affiché ne la compte pas non plus.
+    """
+    lignes = (
+        QuizAnswer.objects.filter(
+            quiz_question__session__profil=profil,
+            quiz_question__session__cursus=cursus,
+            quiz_question__session__rejeu_de__isnull=True,
+            quiz_question__competence_item__statut=StatutContenu.VALIDE,
+            quiz_question__competence_item__cursus=cursus,
+        )
+        .values("quiz_question__competence_item__subject_id")
+        .annotate(vues=Count("quiz_question__competence_item", distinct=True))
+    )
+    return {ligne["quiz_question__competence_item__subject_id"]: ligne["vues"] for ligne in lignes}
+
+
+def _paliers_de_reprise(items, historique, aujourdhui):
+    """
+    Range les items selon ce que l'élève en a fait. Retourne (jamais vues, ratées à revoir, réussies, ratées du jour) :
+    les ratées lors d'un jour antérieur sont à revoir, celles du jour attendent le lendemain (comme le J+1 de la
+    révision) ; les réussies sont triées de la réponse la plus ancienne à la plus récente (mélangées à égalité de jour).
+    Servir les réussies dans l'ordre de leur dernière réponse fait des « tours » sans mémoire à stocker : une question
+    réussie ne revient qu'après toutes les autres du périmètre. L'ordre de service est dans _selection_par_reprise.
+    """
+    jamais, a_revoir, reussies, recentes = [], [], [], []
+    for item in items:
+        derniere = historique.get(item.pk)
+        if derniere is None:
+            jamais.append(item)
+        elif derniere[1]:
+            reussies.append((derniere[0], item))
+        elif derniere[0] < aujourdhui:
+            a_revoir.append(item)
+        else:
+            recentes.append(item)
+    random.shuffle(reussies)
+    reussies.sort(key=lambda paire: paire[0])
+    return jamais, a_revoir, [item for _, item in reussies], recentes
+
+
+def _selection_par_reprise(items, historique, poids_par_theme, n, aujourdhui=None):
+    """
+    Tirage du mode pratique qui tient compte de ce que l'élève a déjà fait (voir _paliers_de_reprise) :
+    un tiers de la séance (au moins une) est réservé aux ratées à revoir, le reste va aux questions jamais vues -
+    tirées avec la pondération par thème habituelle -, puis, seulement si le périmètre n'en a plus assez, aux ratées
+    restantes, aux ratées du jour, enfin aux réussies les plus anciennes (une réussie ne revient qu'une fois le périmètre
+    épuisé : un tour fini, le suivant recommence par les plus anciennes). Une séance a toujours n questions quand le
+    périmètre en a n : on complète plutôt que de renvoyer moins.
+    Sans historique, tout est « jamais vu » et le tirage est celui d'avant.
+    """
+    jamais, a_revoir, reussies, recentes = _paliers_de_reprise(items, historique, aujourdhui or timezone.localdate())
+
+    selection = _selection_ponderee_par_theme(a_revoir, poids_par_theme, min(len(a_revoir), max(1, n // 3)))
+    deja = {item.pk for item in selection}
+    selection += _selection_ponderee_par_theme(jamais, poids_par_theme, n - len(selection))
+    if len(selection) < n:
+        deja.update(item.pk for item in selection)
+        restantes = [item for item in a_revoir if item.pk not in deja]
+        selection += _selection_ponderee_par_theme(restantes, poids_par_theme, n - len(selection))
+    if len(selection) < n:
+        selection += _selection_ponderee_par_theme(recentes, poids_par_theme, n - len(selection))
+    if len(selection) < n:
+        selection += reussies[: n - len(selection)]
+    random.shuffle(selection)  # les ratées à revoir ne doivent pas toutes ouvrir la séance
+    return selection
+
+
+def _preferer_non_reussies(items, historique, n):
+    """
+    Pour le diagnostic, qui mesure un niveau : on évite de reposer ce que l'élève a réussi, sans l'imposer. Sans exclusion
+    stricte - si les autres ne suffisent pas à remplir n, on garde tout le périmètre.
+    """
+    frais = [item for item in items if not historique.get(item.pk, (None, False))[1]]
+    return frais if len(frais) >= n else items
+
+
 class AucuneQuestionPlusDure(ValueError):
     """Le périmètre existe mais n'a aucune question de difficulté moyenne ou élevée (voir `plus_dur`)."""
 
@@ -488,16 +594,19 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
         if not items:
             raise AucuneQuestionPlusDure("Aucune question plus difficile pour ces critères.")
 
+    historique = _historique_des_items(profil, cursus)
     if mode == ModeQuiz.DIAGNOSTIC:
         # Sans matière, thème ni savoir imposé : le diagnostic d'accueil, équilibré par
         # matière. Avec l'un des trois, on sonde déjà un périmètre précis.
         if subject or theme or savoir:
-            selection = _selection_stratifiee_par_difficulte(items, n)
+            selection = _selection_stratifiee_par_difficulte(_preferer_non_reussies(items, historique, n), n)
         else:
-            selection = _selection_diagnostic_par_matiere(restreindre_items(profil, items), n, cursus)
+            restreints = restreindre_items(profil, items)
+            selection = _selection_diagnostic_par_matiere(_preferer_non_reussies(restreints, historique, n), n, cursus)
     else:
+        # Pratique : ce que l'élève a déjà fait compte (jamais vues d'abord, ratées qui reviennent, réussies en dernier).
         poids_par_theme = _poids_par_theme(profil, cursus)
-        selection = _selection_ponderee_par_theme(items, poids_par_theme, n)
+        selection = _selection_par_reprise(items, historique, poids_par_theme, n)
 
     session = QuizSession.objects.create(profil=profil, cursus=cursus, subject=subject, theme=theme, mode=mode)
     creer_questions(session, selection)

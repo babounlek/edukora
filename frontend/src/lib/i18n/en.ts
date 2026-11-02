@@ -1579,6 +1579,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "qd.abonne_toi": "Subscribe to start a session - here is already everything there is to revise.",
   "qd.essayer_gratuit": "Try it free",
   "qd.sessions_sur": "{n} of {total} sessions",
+  "qd.vues_sur": "{vues} of {total} questions seen",
+  "qd.tour_termine": "Round complete: you have seen every question. They will come back starting with the oldest.",
   "qd.pas_de_quiz_theme": "No quiz questions on this exact topic yet",
   "qd.quiz_theme": "Quiz on this topic",
   "qd.exercices": "Exercises",

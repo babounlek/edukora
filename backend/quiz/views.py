@@ -41,6 +41,7 @@ from .services import (
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     perimetre_est_vitrine,
+    nb_vues_par_matiere,
     remplacer_seance,
     score_de_la_seance,
     seance_du_jour,
@@ -774,8 +775,11 @@ def list_quiz_subjects(request):
     # cursus, et seulement s'il est ENTIÈREMENT gratuit (sinon start_session le refuserait) : voir
     # quiz.gratuits.themes_gratuits_par_matiere, partagé avec l'essai sans compte.
     vitrine_par_matiere = {g["subject"]: g["theme"] for g in themes_gratuits_par_matiere([cursus.id])}
+    # Ce que CE profil a déjà fait : « 12 vues sur 30 ». Zéro pour un visiteur sans historique.
+    vues_par_matiere = nb_vues_par_matiere(profil_actif(request), cursus)
     for s in subjects:
         s.vitrine_theme_id = vitrine_par_matiere.get(s.id)
+        s.nb_vues = vues_par_matiere.get(s.id, 0)
 
     return Response(SubjectWithQuizCountSerializer(subjects, many=True, context={"request": request}).data)
 

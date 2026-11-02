@@ -235,6 +235,9 @@ export interface Subject {
    * backend), null si cette matière n'a pas de thème vitrine curé. Servi par
    * /quiz/subjects/ seul, comme nb_questions. */
   vitrine_theme_id?: number | null
+  /** Questions de cette matière déjà répondues par le profil actif. Servi par /quiz/subjects/ seul ;
+   * égal à nb_questions quand le tour est terminé. */
+  nb_vues?: number
 }
 
 export interface Pays {

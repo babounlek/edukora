@@ -49,7 +49,7 @@ from .services import (
     BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
     SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PAR_MATIERE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
-    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, parcours_par_theme,
+    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, nb_vues_par_matiere, parcours_par_theme,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
     seance_supplementaire, DUREE_OBJECTIF_MATIERE_JOURS, objectif_matiere_actif, raisons_de_la_seance,
@@ -945,12 +945,17 @@ class GenererSessionPratiqueWeightingTests(TestCase):
         self.assertEqual(list(session.quiz_questions.values_list("competence_item_id", flat=True)), [item.id])
 
     def test_selection_is_biased_toward_the_theme_with_more_failures(self):
+        # L'historique fixe les poids ; le tirage porte sur les questions jamais vues des deux thèmes (une question
+        # déjà répondue n'est resservie qu'une fois le périmètre épuisé : voir GenererSessionRepriseTests).
         for i in range(20):
             item = _make_competence_item(self.subject, self.cursus, theme=self.theme_faible, numero=f"faible-{i}")
             self._repondre(item, correcte=False)
         for i in range(20):
             item = _make_competence_item(self.subject, self.cursus, theme=self.theme_fort, numero=f"fort-{i}")
             self._repondre(item, correcte=True)
+        for i in range(20):
+            _make_competence_item(self.subject, self.cursus, theme=self.theme_faible, numero=f"faible-neuve-{i}")
+            _make_competence_item(self.subject, self.cursus, theme=self.theme_fort, numero=f"fort-neuve-{i}")
 
         random.seed(20260807)  # tirage pondéré, probabiliste par nature - déterministe pour ce test
         tirages_faible = 0
@@ -967,6 +972,140 @@ class GenererSessionPratiqueWeightingTests(TestCase):
         # dans _poids_par_theme, jamais 0).
         self.assertGreater(tirages_faible, tirages_fort * 2)
         self.assertGreater(tirages_fort, 0)
+
+
+class GenererSessionRepriseTests(TestCase):
+    """Le tirage tient compte de ce que le profil a déjà fait (quiz.services._selection_par_reprise) : jamais vues
+    d'abord, ratées qui reviennent (à partir du lendemain), réussies seulement une fois le périmètre épuisé, et par
+    « tours » - la réussie répondue le plus anciennement revient la première."""
+
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200031", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="theme-reprise")
+
+    def _item(self, numero):
+        return _make_competence_item(self.subject, self.cursus, theme=self.theme, numero=numero)
+
+    def _repondre(self, item, correcte, jours=0, rejeu=False):
+        """Une réponse de l'élève, datée d'il y a `jours` jours."""
+        origine = None
+        if rejeu:
+            origine = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        session = QuizSession.objects.create(
+            profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE, rejeu_de=origine,
+        )
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        reponse = QuizAnswer.objects.create(
+            quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI if correcte else ResultatDeclare.ECHEC,
+        )
+        QuizAnswer.objects.filter(pk=reponse.pk).update(answered_at=timezone.now() - timedelta(days=jours))
+
+    def _tirer(self, n, mode=ModeQuiz.PRATIQUE):
+        session = generer_session(self.profil, self.cursus, mode, n=n)
+        return set(session.quiz_questions.values_list("competence_item_id", flat=True))
+
+    def test_never_seen_questions_come_before_answered_ones(self):
+        vues = [self._item(f"vue-{i}") for i in range(3)]
+        neuves = [self._item(f"neuve-{i}") for i in range(5)]
+        for item in vues:
+            self._repondre(item, correcte=True, jours=2)
+
+        for _ in range(10):
+            self.assertEqual(self._tirer(5), {i.id for i in neuves})
+
+    def test_a_succeeded_question_returns_only_when_the_scope_is_exhausted(self):
+        neuves = [self._item(f"neuve-{i}") for i in range(2)]
+        reussies = [self._item(f"reussie-{i}") for i in range(3)]
+        for age, item in zip((30, 10, 2), reussies):  # la plus ancienne d'abord
+            self._repondre(item, correcte=True, jours=age)
+
+        tirage = self._tirer(4)
+
+        self.assertEqual(tirage, {neuves[0].id, neuves[1].id, reussies[0].id, reussies[1].id})
+
+    def test_a_failed_question_of_a_previous_day_comes_back_while_new_ones_remain(self):
+        neuves = [self._item(f"neuve-{i}") for i in range(12)]
+        ratee = self._item("ratee")
+        self._repondre(ratee, correcte=False, jours=1)
+
+        for _ in range(10):
+            tirage = self._tirer(6)
+            self.assertIn(ratee.id, tirage)
+            self.assertEqual(len(tirage & {i.id for i in neuves}), 5)
+
+    def test_a_question_failed_today_waits_for_tomorrow_unless_nothing_else_is_left(self):
+        neuves = [self._item(f"neuve-{i}") for i in range(3)]
+        ratee_aujourdhui = self._item("ratee-du-jour")
+        self._repondre(ratee_aujourdhui, correcte=False, jours=0)
+
+        for _ in range(10):
+            self.assertEqual(self._tirer(3), {i.id for i in neuves})
+        # Plus rien d'autre à servir : mieux vaut la ratée du jour que de compter moins de questions.
+        self.assertIn(ratee_aujourdhui.id, self._tirer(4))
+
+    def test_a_failed_question_of_today_comes_before_a_succeeded_one(self):
+        neuve = self._item("neuve")
+        ratee_aujourdhui = self._item("ratee-du-jour")
+        reussie = self._item("reussie")
+        self._repondre(ratee_aujourdhui, correcte=False, jours=0)
+        self._repondre(reussie, correcte=True, jours=20)
+
+        self.assertEqual(self._tirer(2), {neuve.id, ratee_aujourdhui.id})
+
+    def test_a_full_pass_over_the_pool_never_repeats_a_question(self):
+        items = [self._item(f"q-{i}") for i in range(6)]
+        vus = set()
+        for jour in range(2):
+            tirage = self._tirer(3)
+            self.assertFalse(tirage & vus)
+            vus |= tirage
+            for item in items:
+                if item.id in tirage:
+                    self._repondre(item, correcte=True, jours=5 - jour)
+
+        self.assertEqual(vus, {i.id for i in items})
+        # Tour terminé : le suivant recommence par les réponses les plus anciennes (la première séance).
+        premiere_seance = QuizSession.objects.filter(profil=self.profil).order_by("started_at").first()
+        anciennes = set(premiere_seance.quiz_questions.values_list("competence_item_id", flat=True))
+        self.assertEqual(self._tirer(3), anciennes)
+
+    def test_a_replay_does_not_make_a_question_seen(self):
+        rejouee = self._item("rejouee")
+        autre = self._item("autre")
+        self._repondre(rejouee, correcte=True, jours=3, rejeu=True)
+
+        # Le rejeu est neutre : la question rejouée reste « jamais vue », donc aussi prioritaire que l'autre
+        # (si elle comptait comme réussie, elle ne sortirait jamais en tirant une seule question).
+        sorties = set().union(*(self._tirer(1) for _ in range(30)))
+        self.assertEqual(sorties, {rejouee.id, autre.id})
+        self.assertEqual(nb_vues_par_matiere(self.profil, self.cursus), {})
+
+    def test_diagnostic_prefers_questions_not_yet_succeeded_without_excluding_them(self):
+        reussies = [self._item(f"reussie-{i}") for i in range(3)]
+        neuves = [self._item(f"neuve-{i}") for i in range(3)]
+        for item in reussies:
+            self._repondre(item, correcte=True, jours=2)
+
+        for _ in range(5):
+            self.assertEqual(self._tirer(3, mode=ModeQuiz.DIAGNOSTIC), {i.id for i in neuves})
+        # Plus de neuves que le périmètre n'en a : on garde tout, jamais moins de questions.
+        self.assertEqual(len(self._tirer(6, mode=ModeQuiz.DIAGNOSTIC)), 6)
+
+    def test_subjects_api_exposes_the_number_of_questions_already_seen(self):
+        items = [self._item(f"q-{i}") for i in range(4)]
+        self._repondre(items[0], correcte=True)
+        self._repondre(items[0], correcte=False)  # deux réponses à la même question : une seule vue
+        self._repondre(items[1], correcte=False)
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+
+        response = client.get(f"/quiz/subjects/?cursus={self.cursus.id}")
+
+        self.assertEqual(response.data[0]["nb_questions"], 4)
+        self.assertEqual(response.data[0]["nb_vues"], 2)
 
 
 class QuizQuestionDeletionTests(TestCase):
