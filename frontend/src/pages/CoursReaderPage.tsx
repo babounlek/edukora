@@ -34,7 +34,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useSeo } from "@/lib/seo"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
-import { capitaliserTheme, cn } from "@/lib/utils"
+import { capitaliserTheme } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 export function CoursReaderPage() {
