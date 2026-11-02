@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMySubscriptions = vi.hoisted(() => vi.fn())
 const listQuizSubjects = vi.hoisted(() => vi.fn())
+const getThemesFrequents = vi.hoisted(() => vi.fn(() => Promise.resolve({ themes: [], nb_sessions_disponibles: 0 })))
 
 const BEPC = { id: 14, examen: "BEPC", examen_display: "BEPC", series: null }
 const BAC_C = { id: 20, examen: "BAC", examen_display: "BAC", series: { id: 3, code: "C", label: "Série C" } }
@@ -22,7 +23,7 @@ const auth = vi.hoisted(() => ({
 vi.mock("@/api/endpoints", () => ({
   listMySubscriptions,
   listQuizSubjects,
-  getThemesFrequents: vi.fn(() => Promise.resolve({ themes: [], nb_sessions_disponibles: 0 })),
+  getThemesFrequents,
   startQuizSession: vi.fn(),
 }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
@@ -57,6 +58,7 @@ describe("QuizStartPage - pastilles d'examen", () => {
   beforeEach(() => {
     vi.clearAllMocks()
     auth.user.cursus_prepare = { id: 14 }
+    getThemesFrequents.mockResolvedValue({ themes: [], nb_sessions_disponibles: 0 })
     listMySubscriptions.mockResolvedValue([
       abonnement(253, BAC_C),
       abonnement(258, BEPC),
@@ -106,14 +108,32 @@ describe("QuizStartPage - pastilles d'examen", () => {
     expect(screen.queryByText("0/20")).toBeNull()
   })
 
-  it("dit « tour terminé » quand toutes les questions d'une matière ont été vues", async () => {
+  it("repart à zéro quand le tour d'une matière est terminé, en le disant au survol", async () => {
     listQuizSubjects.mockResolvedValue([
-      { id: 1, code: "MATHS", label: "Mathématiques", country: { code: "CM" }, nb_questions: 30, nb_vues: 30 },
+      { id: 1, code: "MATHS", label: "Mathématiques", country: { code: "CM" }, nb_questions: 30, nb_vues: 0, nb_tours: 1 },
     ])
     afficher()
 
-    const tour = await screen.findByText("30/30")
-    expect(tour.getAttribute("title")).toMatch(/Tour terminé/)
+    const tour = await screen.findByText("0/30")
+    expect(tour.getAttribute("title")).toMatch(/Tour terminé.*1 tour terminé/)
+  })
+
+  it("montre l'avancement du thème sur sa carte quand le profil a déjà répondu", async () => {
+    getThemesFrequents.mockResolvedValue({
+      disponible: true,
+      has_access: true,
+      nb_sessions_disponibles: 10,
+      nb_themes_verrouilles: 0,
+      themes: [
+        { id: 5, tag: "dérivation", nb_epreuves: 8, frequence_pct: 80, quiz_disponible: true, quiz_total: 30, quiz_vues: 12, quiz_tours: 2 },
+        { id: 6, tag: "limites", nb_epreuves: 5, frequence_pct: 50, quiz_disponible: true, quiz_total: 20, quiz_vues: 0, quiz_tours: 0 },
+      ],
+    })
+    afficher()
+
+    const carte = await screen.findByText(/12\/30/)
+    expect(carte.getAttribute("title")).toMatch(/12.*30.*2 tours terminés/)
+    expect(screen.queryByText(/0\/20/)).toBeNull()
   })
 
   it("propose tous les abonnements quand aucun examen n'est préparé", async () => {
@@ -128,6 +148,7 @@ describe("QuizStartPage - lancement automatique depuis un lien", () => {
   beforeEach(() => {
     vi.clearAllMocks()
     auth.user.cursus_prepare = { id: 14 }
+    getThemesFrequents.mockResolvedValue({ themes: [], nb_sessions_disponibles: 0 })
     listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
     listQuizSubjects.mockResolvedValue([])
     vi.mocked(startQuizSession).mockResolvedValue({ id: 467 } as never)

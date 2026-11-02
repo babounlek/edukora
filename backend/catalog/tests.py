@@ -22,7 +22,7 @@ from rest_framework.test import APIClient, APIRequestFactory
 
 from access.models import LectureProgress
 from inedit.models import Blueprint, EpreuveInedite, ExerciceInedite, QuestionInedite, RappelDeMethodeInedite, TentativeInedite
-from quiz.models import CompetenceItem
+from quiz.models import CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare
 from subscriptions.models import DureeMode, Subscription
 from users.models import User
 
@@ -5045,6 +5045,32 @@ class ThemesFrequentsApiTests(TestCase):
 
         data = self.client.get(self._url(), {"subject": self.subject.code}).json()
         self.assertTrue(data["themes"][0]["quiz_disponible"])
+
+    def test_theme_exposes_the_quiz_progress_of_the_signed_in_profile(self):
+        """« 12 vues sur 30 » sur la carte du thème : le tour en cours et les tours terminés du profil (voir
+        quiz.progression) ; rien pour un visiteur."""
+        self._seed_above_threshold()
+        premier = self.client.get(self._url(), {"subject": self.subject.code}).json()["themes"][0]
+        tag = Tag.objects.get(pk=premier["id"])
+        items = []
+        for i in range(2):
+            item = CompetenceItem.objects.create(
+                theme=tag, subject=self.subject, statut=StatutContenu.VALIDE, enonce_markdown="a", corrige_markdown="b",
+            )
+            item.cursus.add(self.cursus)
+            items.append(item)
+        profil = self.user.profils.first()
+        session = QuizSession.objects.create(profil=profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        for ordre, item in enumerate([items[0], items[1], items[0]], start=1):
+            quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=ordre)
+            QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+        visiteur = self.client.get(self._url(), {"subject": self.subject.code}).json()["themes"][0]
+        self.assertEqual((visiteur["quiz_total"], visiteur["quiz_vues"], visiteur["quiz_tours"]), (0, 0, 0))
+
+        self.client.force_authenticate(user=self.user)
+        connecte = self.client.get(self._url(), {"subject": self.subject.code}).json()["themes"][0]
+        self.assertEqual((connecte["quiz_total"], connecte["quiz_vues"], connecte["quiz_tours"]), (2, 1, 1))
 
     def test_quiz_unavailable_stays_false_without_savoir_officiel(self):
         """Un thème sans savoir_officiel du tout ne peut pas bénéficier de la cascade -

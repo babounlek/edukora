@@ -235,9 +235,11 @@ export interface Subject {
    * backend), null si cette matière n'a pas de thème vitrine curé. Servi par
    * /quiz/subjects/ seul, comme nb_questions. */
   vitrine_theme_id?: number | null
-  /** Questions de cette matière déjà répondues par le profil actif. Servi par /quiz/subjects/ seul ;
-   * égal à nb_questions quand le tour est terminé. */
+  /** Questions de cette matière déjà répondues par le profil actif DANS LE TOUR EN COURS : repart à zéro quand
+   * le tour est terminé (voir nb_tours). Servi par /quiz/subjects/ seul. */
   nb_vues?: number
+  /** Tours complets déjà terminés dans cette matière. Servi par /quiz/subjects/ seul. */
+  nb_tours?: number
 }
 
 export interface Pays {
@@ -799,6 +801,11 @@ export interface ThemeFrequent {
   // incomplète, voir la campagne de rattachement au référentiel) - le bouton "Quiz"
   // doit se désactiver plutôt que mener à une session vide.
   quiz_disponible: boolean
+  // Avancement du profil connecté dans le quiz de ce thème (voir lib/progressionQuiz.ts) : 0 pour un
+  // visiteur ou un thème sans question.
+  quiz_total?: number
+  quiz_vues?: number
+  quiz_tours?: number
 }
 
 /** Matière proposée au choix sur /themes-frequents (voir ThemesFrequentsMatieresView) :

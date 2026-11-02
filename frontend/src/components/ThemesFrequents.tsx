@@ -7,6 +7,7 @@ import type { ThemeFrequent } from "@/api/types"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { libelleAvancement } from "@/lib/progressionQuiz"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -64,6 +65,9 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
           {themesAffiches.map((theme, index) => {
             const rang = index + 1
             const enTete = rang === 1
+            const avancement = libelleAvancement({
+              total: theme.quiz_total ?? 0, vues: theme.quiz_vues ?? 0, tours: theme.quiz_tours ?? 0,
+            })
             return (
             <div
               key={theme.id}
@@ -115,9 +119,13 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
                 </Button>
                 {theme.quiz_disponible ? (
                   <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
-                    <Link to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}>
+                    <Link
+                      to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}
+                      title={avancement?.titre}
+                    >
                       <ListChecks className="size-3.5" />
                       {t("qd.onglet_quiz")}
+                      {avancement && <span className="tabular-nums text-muted-foreground">{avancement.texte}</span>}
                     </Link>
                   </Button>
                 ) : (

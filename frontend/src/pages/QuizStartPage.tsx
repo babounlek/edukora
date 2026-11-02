@@ -16,6 +16,7 @@ import {
 } from "lucide-react"
 
 import { getThemesFrequents, listMySubscriptions, listQuizSubjects, startQuizSession } from "@/api/endpoints"
+import { libelleAvancement } from "@/lib/progressionQuiz"
 import { ApiError } from "@/api/client"
 import type { ModeQuiz, Subject, Subscription, ThemeFrequent } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
@@ -140,15 +141,10 @@ function ApercuMatieresQuiz({ cursusId, subjects }: { cursusId: number; subjects
   )
 }
 
-/** « 12/30 » dès qu'une question a été vue, le total seul sinon ; « tour terminé » quand tout est vu. */
+/** « 12/30 » dès qu'une question a été vue ou qu'un tour est fini, le total seul sinon. */
 function compteurQuestions(subject: Subject): { texte: string; titre?: string } {
   const total = subject.nb_questions ?? 0
-  const vues = Math.min(subject.nb_vues ?? 0, total)
-  if (vues === 0) return { texte: String(total) }
-  return {
-    texte: `${vues}/${total}`,
-    titre: vues >= total ? t("qd.tour_termine") : t("qd.vues_sur", { vues, total }),
-  }
+  return libelleAvancement({ total, vues: subject.nb_vues ?? 0, tours: subject.nb_tours ?? 0 }) ?? { texte: String(total) }
 }
 
 function CompteurPastille({ actif, titre, children }: { actif: boolean; titre?: string; children: ReactNode }) {
@@ -202,6 +198,9 @@ function CarteThemeCible({
   desactive: boolean
 }) {
   const premier = rang === 1
+  const avancement = libelleAvancement({
+    total: theme.quiz_total ?? 0, vues: theme.quiz_vues ?? 0, tours: theme.quiz_tours ?? 0,
+  })
   return (
     <div
       className={cn(
@@ -224,6 +223,11 @@ function CarteThemeCible({
           <p className="mt-0.5 text-xs text-muted-foreground">
             {t("qd.sessions_sur", { n: theme.nb_epreuves, total })}
           </p>
+          {avancement && (
+            <p className="mt-0.5 text-xs font-medium tabular-nums text-primary" title={avancement.titre}>
+              {avancement.texte} {t("qd.questions_vues")}
+            </p>
+          )}
         </div>
         <AnneauFrequence pct={theme.frequence_pct} dore={premier} />
       </div>

@@ -481,26 +481,6 @@ def _historique_des_items(profil, cursus):
     return historique
 
 
-def nb_vues_par_matiere(profil, cursus):
-    """
-    subject_id -> nombre de questions VALIDES de ce cursus auxquelles ce profil a déjà répondu au moins une fois
-    (rejeux exclus, comme _historique_des_items) - le « 12 vues sur 30 » des listes de quiz. Une question dépubliée
-    depuis ne compte plus : le total affiché ne la compte pas non plus.
-    """
-    lignes = (
-        QuizAnswer.objects.filter(
-            quiz_question__session__profil=profil,
-            quiz_question__session__cursus=cursus,
-            quiz_question__session__rejeu_de__isnull=True,
-            quiz_question__competence_item__statut=StatutContenu.VALIDE,
-            quiz_question__competence_item__cursus=cursus,
-        )
-        .values("quiz_question__competence_item__subject_id")
-        .annotate(vues=Count("quiz_question__competence_item", distinct=True))
-    )
-    return {ligne["quiz_question__competence_item__subject_id"]: ligne["vues"] for ligne in lignes}
-
-
 def _paliers_de_reprise(items, historique, aujourdhui):
     """
     Range les items selon ce que l'élève en a fait. Retourne (jamais vues, ratées à revoir, réussies, ratées du jour) :

@@ -18,6 +18,7 @@ from access.services import (
 from inedit.models import EpreuveInedite
 from quiz.matieres import sujets_a_afficher
 from quiz.models import CompetenceItem
+from quiz.progression import progression_par_theme
 from users.profils import profil_actif
 
 from .inedit_bridge import (
@@ -994,6 +995,12 @@ class ThemesFrequentsView(APIView):
             t.id for t in themes_visibles if t.savoir_officiel_id in savoirs_avec_quiz
         }
 
+        # Où en est le profil dans chaque quiz de thème : « 12 vues sur 30 » dans le tour en cours (voir
+        # quiz.progression, même périmètre que le lancement du quiz). Vide pour un visiteur.
+        progression = {}
+        if request.user.is_authenticated:
+            progression = progression_par_theme(profil_actif(request), cursus, themes_visibles, subject=subject)
+
         return Response({
             "nb_sessions_disponibles": nb_sessions_disponibles,
             "seuil_minimum": SEUIL_MINIMUM_THEMES_FREQUENTS,
@@ -1007,6 +1014,9 @@ class ThemesFrequentsView(APIView):
                     "nb_epreuves": t.nb_epreuves,
                     "frequence_pct": round(100 * t.nb_epreuves / nb_sessions_disponibles),
                     "quiz_disponible": t.id in tags_avec_quiz,
+                    "quiz_total": progression.get(t.id, {}).get("total", 0),
+                    "quiz_vues": progression.get(t.id, {}).get("vues", 0),
+                    "quiz_tours": progression.get(t.id, {}).get("tours", 0),
                 }
                 for t in themes_visibles
             ],

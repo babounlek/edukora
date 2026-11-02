@@ -49,13 +49,14 @@ from .services import (
     BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
     SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PAR_MATIERE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
-    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, nb_vues_par_matiere, parcours_par_theme,
+    construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, parcours_par_theme,
     _coefficient_par_subject, _subjects_par_priorite, maitrise_par_theme, plan_du_jour, resume_parcours,
     REFUS_MAX_PAR_JOUR, _contient_quiz, ajuster_duree_seance, remplacer_seance, revisions_dues, seance_du_jour,
     seance_supplementaire, DUREE_OBJECTIF_MATIERE_JOURS, objectif_matiere_actif, raisons_de_la_seance,
     terminer_seance,
     seances_terminees_cette_semaine,
 )
+from .progression import etat_du_tour, progression_par_matiere, progression_par_theme
 from .views import _clean_quiz_markdown, _question_payload
 
 
@@ -1081,7 +1082,7 @@ class GenererSessionRepriseTests(TestCase):
         # (si elle comptait comme réussie, elle ne sortirait jamais en tirant une seule question).
         sorties = set().union(*(self._tirer(1) for _ in range(30)))
         self.assertEqual(sorties, {rejouee.id, autre.id})
-        self.assertEqual(nb_vues_par_matiere(self.profil, self.cursus), {})
+        self.assertEqual(progression_par_matiere(self.profil, self.cursus), {})
 
     def test_diagnostic_prefers_questions_not_yet_succeeded_without_excluding_them(self):
         reussies = [self._item(f"reussie-{i}") for i in range(3)]
@@ -1106,6 +1107,97 @@ class GenererSessionRepriseTests(TestCase):
 
         self.assertEqual(response.data[0]["nb_questions"], 4)
         self.assertEqual(response.data[0]["nb_vues"], 2)
+        self.assertEqual(response.data[0]["nb_tours"], 0)
+
+    def test_subjects_api_restarts_the_counter_when_the_round_is_complete(self):
+        items = [self._item(f"q-{i}") for i in range(3)]
+        for jours, item in zip((3, 2, 1), items):
+            self._repondre(item, correcte=True, jours=jours)
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+
+        premier_tour = client.get(f"/quiz/subjects/?cursus={self.cursus.id}").data[0]
+        self.assertEqual((premier_tour["nb_vues"], premier_tour["nb_tours"]), (0, 1))
+
+        self._repondre(items[0], correcte=True)
+        self._repondre(items[1], correcte=False)
+        second_tour = client.get(f"/quiz/subjects/?cursus={self.cursus.id}").data[0]
+        self.assertEqual((second_tour["nb_vues"], second_tour["nb_tours"]), (2, 1))
+
+
+class ProgressionTourTests(TestCase):
+    """quiz.progression : le tour en cours se rejoue depuis l'historique (voir sa docstring)."""
+
+    def test_empty_scope_or_history_has_no_progress(self):
+        self.assertEqual(etat_du_tour(set(), [1, 2]), (0, 0))
+        self.assertEqual(etat_du_tour({1, 2}, []), (0, 0))
+
+    def test_counts_distinct_questions_seen_in_the_current_round(self):
+        self.assertEqual(etat_du_tour({1, 2, 3}, [1, 1, 2]), (2, 0))
+
+    def test_round_completes_when_the_last_missing_question_is_answered(self):
+        self.assertEqual(etat_du_tour({1, 2}, [1, 2]), (0, 1))
+        # Une ratée répondue deux fois dans le même tour ne le fait pas avancer deux fois.
+        self.assertEqual(etat_du_tour({1, 2}, [1, 1, 1]), (1, 0))
+
+    def test_next_round_starts_over_and_can_complete_too(self):
+        self.assertEqual(etat_du_tour({1, 2}, [1, 2, 2]), (1, 1))
+        self.assertEqual(etat_du_tour({1, 2}, [1, 2, 2, 1, 1]), (1, 2))
+        self.assertEqual(etat_du_tour({1, 2}, [1, 2, 2, 1]), (0, 2))
+
+    def test_questions_outside_the_scope_are_ignored(self):
+        self.assertEqual(etat_du_tour({1, 2}, [9, 1, 8, 2, 7]), (0, 1))
+
+    def test_a_question_added_after_a_complete_round_reopens_one(self):
+        self.assertEqual(etat_du_tour({1, 2, 3}, [1, 2]), (2, 0))
+
+
+class ProgressionParThemeTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(phone_number="677200032", password="x")
+        self.profil = self.user.profils.first()
+        self.subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.autre_subject = Subject.objects.get(country__code="CM", code="PHYSIQUE_CHIMIE")
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
+        self.theme = Tag.objects.create(name="theme-progression")
+
+    def _repondre(self, item):
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+    def test_counts_total_seen_and_rounds_of_the_theme(self):
+        items = [_make_competence_item(self.subject, self.cursus, theme=self.theme, numero=f"t-{i}") for i in range(3)]
+        for item in items:
+            self._repondre(item)
+        self._repondre(items[0])
+
+        resultat = progression_par_theme(self.profil, self.cursus, [self.theme], subject=self.subject)
+
+        self.assertEqual(resultat, {self.theme.id: {"total": 3, "vues": 1, "tours": 1}})
+
+    def test_scope_is_the_requested_subject(self):
+        _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="maths")
+        _make_competence_item(self.autre_subject, self.cursus, theme=self.theme, numero="physique")
+
+        resultat = progression_par_theme(self.profil, self.cursus, [self.theme], subject=self.subject)
+
+        self.assertEqual(resultat[self.theme.id]["total"], 1)
+
+    def test_falls_back_to_the_questions_of_the_official_knowledge_like_the_launch(self):
+        module = Module.objects.create(subject=self.subject, classe="Tle", serie_label="C", numero="2", titre="M")
+        savoir = Savoir.objects.create(module=module, numero="I", intitule="Savoir de repli")
+        theme_classe = Tag.objects.create(name="theme-classe-sans-quiz", savoir_officiel=savoir)
+        theme_quiz = Tag.objects.create(name="theme-du-quiz", savoir_officiel=savoir)
+        item = _make_competence_item(self.subject, self.cursus, theme=theme_quiz, numero="savoir")
+        self._repondre(item)
+
+        resultat = progression_par_theme(self.profil, self.cursus, [theme_classe], subject=self.subject)
+
+        self.assertEqual(resultat, {theme_classe.id: {"total": 1, "vues": 0, "tours": 1}})
+
+    def test_theme_without_any_question_has_no_entry(self):
+        self.assertEqual(progression_par_theme(self.profil, self.cursus, [self.theme], subject=self.subject), {})
 
 
 class QuizQuestionDeletionTests(TestCase):
