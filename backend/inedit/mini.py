@@ -69,9 +69,11 @@ def candidats(epreuve):
     return sortie
 
 
-def choisir_paires(epreuves, nombre):
+def choisir_paires(epreuves, nombre, duree_max=None):
     """Jusqu'à `nombre` paires d'exercices, déterministes : exercices triés du plus court au plus long, deux exercices
-    d'épreuves différentes, thèmes disjoints de préférence, aucun exercice réutilisé."""
+    d'épreuves différentes, thèmes disjoints de préférence, aucun exercice réutilisé. `duree_max` (minutes) : une paire
+    dont la durée arrondie dépasse ce plafond n'est jamais proposée - sans quoi, passé les premières, les minis
+    deviennent des épreuves entières (60 min)."""
     tous = sorted(
         (c for e in epreuves for c in candidats(e)),
         key=lambda c: (c["minutes"], c["epreuve"].pk, cle_numero_exercice(c["exercice"].numero_exercice)),
@@ -85,6 +87,8 @@ def choisir_paires(epreuves, nombre):
             for b in tous[i + 1:]:
                 if b["exercice"].pk in utilises or b["epreuve"].pk == a["epreuve"].pk:
                     continue
+                if duree_max is not None and duree_mini(a, b) > duree_max:
+                    break  # b est le plus court des partenaires restants pour a : les suivants sont plus longs
                 disjoints = not (a["themes"] & b["themes"])
                 cout = (0 if disjoints else 1, a["minutes"] + b["minutes"])
                 if meilleure is None or cout < meilleure[0]:
@@ -153,9 +157,10 @@ def construire(cle_groupe, titre_base, cursus, sujet, paire, numero):
     return epreuve, True
 
 
-def creer_pour_matiere(code_matiere="MATHS", par_groupe=3, a_blanc=False):
+def creer_pour_matiere(code_matiere="MATHS", par_groupe=3, a_blanc=False, duree_max=None):
     """Crée les mini-inédites de toutes les épreuves inédites VALIDES (non mini) de la matière, groupées par ensemble de
-    cursus. Renvoie [(groupe, titre, durée, sources, créée?)]. `a_blanc` : calcule sans rien écrire."""
+    cursus. Renvoie [(groupe, titre, durée, sources, créée?)]. `a_blanc` : calcule sans rien écrire. `duree_max` : voir
+    choisir_paires (les minis déjà créées restent, la numérotation continue là où elle en est)."""
     from collections import defaultdict
 
     groupes = defaultdict(list)
@@ -165,7 +170,7 @@ def creer_pour_matiere(code_matiere="MATHS", par_groupe=3, a_blanc=False):
         groupes[cursus].append(e)
     rapport = []
     for cursus_ids, epreuves in sorted(groupes.items()):
-        paires = choisir_paires(epreuves, par_groupe)
+        paires = choisir_paires(epreuves, par_groupe, duree_max)
         cursus = list(epreuves[0].cursus.all())
         libelle = " / ".join(sorted({c.examen if not c.series else f"{c.examen} {c.series.code}" for c in cursus}))
         cle = "-".join(str(i) for i in cursus_ids)

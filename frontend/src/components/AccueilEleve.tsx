@@ -7,6 +7,7 @@ import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
 import type { Accueil, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
+import { MiniDeLaSemaine } from "@/components/MiniDeLaSemaine"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
@@ -121,6 +122,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
+      <MiniDeLaSemaine country={country} cursusId={cursusAccueil} />
       {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
           première séance. */}
       {!data.premiers_pas && <InviteRappels />}

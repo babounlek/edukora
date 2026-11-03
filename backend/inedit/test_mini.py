@@ -65,6 +65,15 @@ class ConstructionTests(TestCase):
         self.assertEqual(len(paires), 1)
         self.assertEqual(mini.duree_mini(*paires[0]), 40)
 
+    def test_le_plafond_de_duree_ecarte_les_paires_trop_longues(self):
+        for epreuve in (self.a, self.b):
+            epreuve.blueprint.duree_minutes = 60  # 20 min par exercice : une paire fait 40 min
+            epreuve.blueprint.save()
+        self.assertEqual(len(mini.choisir_paires([self.a, self.b], 1, duree_max=40)), 1)
+        self.assertEqual(mini.choisir_paires([self.a, self.b], 1, duree_max=35), [])
+        rapport = mini.creer_pour_matiere(self.a.subject.code, 1, a_blanc=True, duree_max=35)
+        self.assertEqual(rapport, [])
+
     def test_la_mini_est_une_vraie_epreuve_copiee_et_idempotente(self):
         for epreuve in (self.a, self.b):
             epreuve.blueprint.duree_minutes = 60
