@@ -61,7 +61,7 @@ export function EpreuveInediteDetailPage() {
 
   useSeo({
     title: epreuve?.title ?? t("ep.origine_INEDITE"),
-    description: epreuve ? t("ine.seo_description", { matiere: epreuve.subject.label, site: SITE_NAME }) : undefined,
+    description: epreuve ? t(epreuve.est_mini ? "ine.seo_description_mini" : "ine.seo_description", { matiere: epreuve.subject.label, site: SITE_NAME }) : undefined,
   })
 
   useEffect(() => {
@@ -350,7 +350,7 @@ export function EpreuveInediteDetailPage() {
         </div>
 
         <p className="text-sm text-muted-foreground">
-          {t("ine.intro", { site: SITE_NAME })}
+          {t(epreuve.est_mini ? "ine.intro_mini" : "ine.intro", { site: SITE_NAME })}
         </p>
 
         {/* Les actions AVANT l'aperçu : placées après lui, le bouton d'accès se trouvait à

@@ -684,6 +684,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "parents.contenu_exercices": "do this lesson's practice exercises",
   "parents.contenu_seance": "do my session of the day",
   "ine.seo_description": "{matiere} - original paper written by {site}, never taken from past papers.",
+  "ine.seo_description_mini": "{matiere} - original mini paper written by {site}, never taken from past papers: two exercises and a short timer.",
   "ine.demarrer_erreur": "Could not start this paper right now. Try again later.",
   "ine.chrono_en_cours": "Timer running: {duree} left.",
   "ine.traitees": "{n} of {total} done: your paper is waiting for you.",
@@ -706,6 +707,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ine.partage": "Test yourself on \"{titre}\" on {site}:",
   "ine.intro":
     "An original paper written by {site}, never taken from past papers - same level, same structure, same mark scheme as the real exam. The only way to test yourself under real conditions without already knowing the answers.",
+  "ine.intro_mini":
+    "An original mini paper written by {site}, never taken from past papers: two exercises in the format of the real exam, a short timer and the same marking. Ideal to test yourself in a short time, without already knowing the answers.",
   "ine.recommencer_zero": "Start again from scratch",
   "ine.offerte": "This paper is on the house: sit the whole thing, for free",
   "ine.offerte1": "The timer, marking and end report of a real original paper",

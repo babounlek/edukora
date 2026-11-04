@@ -50,8 +50,10 @@ TEXTES = {
         "epreuve_description": "{type} de {matiere}{annee} - sujet en accès libre, corrigé détaillé par abonnement.",
         "cours_description": "Cours de {matiere}{theme} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.",
         "inedite_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
+        "mini_description": "{matiere} - mini-épreuve originale conçue par {site}, jamais tirée des annales : deux exercices et un chrono court.",
         "cours_etiquette": "Cours · {matiere}",
         "inedite_etiquette": "Épreuve inédite · {matiere}",
+        "mini_etiquette": "Mini-inédite · {matiere}",
         "quiz_titre": "Quiz gratuit : {theme}",
         "quiz_description": "{n} questions de {matiere} ({public}) : un quiz gratuit, sans compte, avec le corrigé de chaque question.",
         "quiz_etiquette": "Quiz gratuit · {matiere}",
@@ -68,8 +70,10 @@ TEXTES = {
         "epreuve_description": "{type} - {matiere}{annee} - free access to the paper, detailed correction with a subscription.",
         "cours_description": "{matiere} lesson{theme}: method, worked example, classic mistakes and practice exercises.",
         "inedite_description": "{matiere} - original practice paper written by {site}, never taken from past papers.",
+        "mini_description": "{matiere} - original mini paper written by {site}, never taken from past papers: two exercises and a short timer.",
         "cours_etiquette": "Lesson · {matiere}",
         "inedite_etiquette": "Original paper · {matiere}",
+        "mini_etiquette": "Mini unseen paper · {matiere}",
         "quiz_titre": "Free quiz: {theme}",
         "quiz_description": "{n} questions on {matiere} ({public}): a free quiz, no account needed, with the correction of every question.",
         "quiz_etiquette": "Free quiz · {matiere}",
@@ -130,10 +134,11 @@ def _infos_inedite(ident, langue="fr"):
         return None
     textes = TEXTES[langue]
     pays = epreuve.cursus.first().country.code.lower()
+    prefixe = "mini" if epreuve.est_mini else "inedite"
     return {
         "titre": epreuve.titre,
-        "description": textes["inedite_description"].format(matiere=epreuve.subject.label, site=settings.SITE_NAME),
-        "etiquette": textes["inedite_etiquette"].format(matiere=epreuve.subject.label),
+        "description": textes[f"{prefixe}_description"].format(matiere=epreuve.subject.label, site=settings.SITE_NAME),
+        "etiquette": textes[f"{prefixe}_etiquette"].format(matiere=epreuve.subject.label),
         "public": libelle_cursus(epreuve.cursus.all()),
         "chemin": f"{pays}/epreuves-inedites/{epreuve.slug}",
         "image": _image_url("inedites", epreuve.slug, langue),

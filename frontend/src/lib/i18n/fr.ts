@@ -690,6 +690,7 @@ export const fr = {
   "parents.contenu_exercices": "faire les exercices d'application de ce cours",
   "parents.contenu_seance": "faire ma séance du jour",
   "ine.seo_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
+  "ine.seo_description_mini": "{matiere} - mini-épreuve originale conçue par {site}, jamais tirée des annales : deux exercices et un chrono court.",
   "ine.demarrer_erreur": "Impossible de démarrer cette épreuve pour le moment. Réessaie plus tard.",
   "ine.chrono_en_cours": "Chrono en cours : il te reste {duree}.",
   "ine.traitees": "{n} sur {total} traitées : ta copie t'attend.",
@@ -712,6 +713,8 @@ export const fr = {
   "ine.partage": "Teste-toi sur « {titre} » sur {site} :",
   "ine.intro":
     "Une épreuve originale conçue par {site}, jamais tirée des annales - même niveau, même structure, même barème que l'examen réel. Le seul moyen de te tester en conditions réelles sans déjà connaître les réponses.",
+  "ine.intro_mini":
+    "Une mini-épreuve originale conçue par {site}, jamais tirée des annales : deux exercices au format de l'examen réel, un chrono court et la même notation. Idéale pour te tester en peu de temps, sans déjà connaître les réponses.",
   "ine.recommencer_zero": "Recommencer à zéro",
   "ine.offerte": "Cette épreuve est offerte : passe-la en entier, gratuitement",
   "ine.offerte1": "Le chrono, la notation et le rapport de fin d'une vraie épreuve inédite",
