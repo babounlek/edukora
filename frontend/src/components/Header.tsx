@@ -15,6 +15,7 @@ import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
 import { libellePays, nomPays } from "@/lib/pays"
 import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
 import { CompteAReboursBadge, formatCursus } from "@/components/CompteAReboursBadge"
+import { PastilleExamen } from "@/components/ChoixExamen"
 import { useCursusAbonnesEtat } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
@@ -437,6 +438,9 @@ export function Header() {
             )}
           </Link>
           <CompteAReboursBadge variant="pilule" className="hidden whitespace-nowrap md:inline" />
+          {/* L'examen d'un visiteur ou d'un compte sans abonnement : rien d'autre ne le rappelle une fois le bandeau
+              disparu. Dans la barre dès `md`, dans le menu en dessous (voir plus bas) - même partage que le compte à rebours. */}
+          <PastilleExamen className="hidden min-w-0 md:inline-flex" />
         </div>
         <div className="flex items-center gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
@@ -466,6 +470,7 @@ export function Header() {
               {/* Même raison que le pays et le thème plus bas : retiré de la barre
                   sous `sm` faute de place, jamais retiré du mobile. */}
               <CompteAReboursBadge className="mt-3 block md:hidden" />
+              <PastilleExamen className="mt-3 block md:hidden" />
               <nav aria-label={t("nav.menu")} className="mt-3 flex flex-col gap-1">
                 {navLinks.map((link) => (
                   <Link

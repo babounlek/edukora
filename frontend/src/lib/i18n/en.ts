@@ -163,6 +163,16 @@ export const en: Partial<Record<CleI18n, string>> = {
   "accueil.repli_titre": "Original papers are waiting for you",
   "accueil.repli_texte": "Original papers written by {site}, under exam-day conditions.",
   "accueil.repli_bouton": "See the original papers",
+  "accueil.inedites_aucune": "No original paper for {cursus} yet.",
+  "accueil.inedites_autres": "See the ones for other exams",
+  "accueil.exemple_commun":
+    "Example shared by every exam: there is no free sample solution for {cursus} yet.",
+  "choix.tu_prepares": "You're preparing: {cursus}",
+  "choix.changer": "change",
+  "choix.menu_titre": "Your exam",
+  "choix.pastille_aria": "Your exam: {cursus}. Change exam",
+  "choix.autre_langue":
+    "This exam is in the other language from the interface: the lists are not narrowed to it.",
   "accueil.pret_titre": "Ready to start?",
   "accueil.pret_texte":
     "One subscription, valid until your exam: {prix} FCFA per child, then {prix_sup} FCFA for each additional child in the same family. Pay by Mobile Money, no commitment.",

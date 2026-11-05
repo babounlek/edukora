@@ -169,6 +169,16 @@ export const fr = {
   "accueil.repli_titre": "Des épreuves inédites t'attendent",
   "accueil.repli_texte": "Des sujets originaux conçus par {site}, dans les conditions du jour J.",
   "accueil.repli_bouton": "Voir les épreuves inédites",
+  "accueil.inedites_aucune": "Pas encore d'épreuve inédite pour {cursus}.",
+  "accueil.inedites_autres": "Voir celles des autres examens",
+  "accueil.exemple_commun":
+    "Exemple commun à tous les examens : aucun corrigé en accès libre n'est encore proposé pour {cursus}.",
+  "choix.tu_prepares": "Tu prépares : {cursus}",
+  "choix.changer": "changer",
+  "choix.menu_titre": "Ton examen",
+  "choix.pastille_aria": "Ton examen : {cursus}. Changer d'examen",
+  "choix.autre_langue":
+    "Cet examen est dans l'autre langue que l'interface : les listes ne sont pas réduites à lui.",
   "accueil.pret_titre": "Prêt à commencer ?",
   "accueil.pret_texte":
     "Un seul abonnement, valable jusqu'à ton examen : {prix} FCFA par enfant, puis {prix_sup} FCFA pour chaque enfant supplémentaire de la même famille. Paiement par Mobile Money, sans engagement.",

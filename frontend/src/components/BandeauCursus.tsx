@@ -1,15 +1,14 @@
 import { useState } from "react"
 import { useLocation } from "react-router-dom"
 import { X } from "lucide-react"
-import { toast } from "sonner"
 import type { Cursus } from "@/api/types"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { trierCursus } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
-import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
+import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { useDeclarerCursus } from "@/lib/declarerCursus"
 import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { BoutonToutVoir, useRangeeDefilante } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
@@ -59,22 +58,13 @@ export function BandeauCursus() {
   // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
   const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
 
-  const declarer = useChangerCursusPrepare()
+  // Connecté : écrit sur le compte. Visiteur : gardé dans le navigateur, avec une confirmation immédiate à l'endroit du
+  // clic (le seul autre effet, la vedette « épreuve inédite », est hors champ) - voir lib/declarerCursus.
+  const { declarer, enCours } = useDeclarerCursus()
   const rangee = useRangeeDefilante()
 
   function choisir(cursus: Cursus) {
-    if (isAuthenticated) {
-      declarer.mutate(cursus.id)
-      return
-    }
-    memoriserCursusPrepareEnAttente(cursus.id)
-    // Sans compte, le seul changement visible ailleurs sur la page est discret (la
-    // vedette "épreuve inédite" du catalogue, hors champ de vision) - un visiteur qui
-    // ne la remarque pas a l'impression que son choix n'a rien fait. Une confirmation
-    // immédiate, à l'endroit même du clic, ne dépend d'aucun autre composant.
-    toast.success(t("bandeau.note", { cursus: `${cursus.examen_display}${cursus.series ? ` ${cursus.series.code}` : ""}` }), {
-      description: t("bandeau.connecte_toi"),
-    })
+    declarer(cursus)
   }
 
   function fermer() {
@@ -109,7 +99,7 @@ export function BandeauCursus() {
                 variant="outline"
                 size="sm"
                 className="h-8 shrink-0 rounded-full px-3.5 text-sm"
-                disabled={declarer.isPending}
+                disabled={enCours}
                 onClick={() => choisir(cursus)}
               >
                 {cursus.examen_display}

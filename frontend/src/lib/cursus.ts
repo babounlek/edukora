@@ -29,6 +29,11 @@ export function trierCursus<T extends { examen: string; series: { code: string }
   )
 }
 
+/** « BAC C », « BEPC », « GCE O Level » : le libellé court d'un examen, tel qu'il s'écrit sur une pastille ou dans une phrase. */
+export function libelleCursus(cursus: { examen_display: string; series: { code: string } | null }): string {
+  return cursus.series ? `${cursus.examen_display} ${cursus.series.code}` : cursus.examen_display
+}
+
 /** Le cursus relève-t-il du GCE (sous-système anglophone) ? Pas de séries : on y choisit ses matières. */
 export function estGce(cursus: { examen: string } | null | undefined): boolean {
   return cursus?.examen === "GCE_OL" || cursus?.examen === "GCE_AL"

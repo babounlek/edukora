@@ -76,6 +76,24 @@ export function exempleDuCursus(
   return EXEMPLES_CORRIGE[langue]
 }
 
+/**
+ * L'exemple affiché est-il celui de cet examen ? Faux pour les examens qui n'ont pas de mathématique gratuite propre (Probatoire,
+ * BAC A, BAC TI...) : ils voient l'exemple par défaut d'un autre examen, et la page doit le dire - sinon un élève de Probatoire,
+ * devant un corrigé de BEPC, croit que son choix a été ignoré. Les examens dont l'exemple par défaut EST la mathématique
+ * (BEPC en français, GCE O Level en anglais) comptent comme servis. Miroir de `exempleDuCursus` : à tenir d'accord avec lui.
+ */
+export function exempleEstPropre(
+  langue: Langue,
+  cursus: { examen: string; series: { code: string } | null } | null | undefined,
+): boolean {
+  if (!cursus) return false
+  if (langue === "fr") {
+    const cle = cursus.series ? `${cursus.examen}:${cursus.series.code}` : cursus.examen
+    return cursus.examen === "BEPC" || cle in EXEMPLES_FR_PAR_CURSUS
+  }
+  return cursus.examen === "GCE_OL" || cursus.examen in EXEMPLES_EN_PAR_EXAMEN
+}
+
 const REPERE_SOUS_QUESTION = /^\*\*(?:[IVX]+[.)]?\s*)?\d+[.)]\*\*/gm
 
 /**

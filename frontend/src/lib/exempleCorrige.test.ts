@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { EpreuveContent, EpreuveExercise } from "@/api/types"
-import { EXEMPLES_CORRIGE, exempleDuCursus, extraireExempleCorrige } from "./exempleCorrige"
+import { EXEMPLES_CORRIGE, exempleDuCursus, exempleEstPropre, extraireExempleCorrige } from "./exempleCorrige"
 
 const exercice = (numero: string, enonce: string, corrige: string): EpreuveExercise => ({
   numero_exercice: numero, titre: "", points: "", groupes: [], enonce_intro_markdown: `**Exercice ${numero}**`,
@@ -119,5 +119,38 @@ describe("extraireExempleCorrige : coupe par repère de sous-question", () => {
   it("un seul repère : corrigé entier", () => {
     const exo = exercice("3", "intro", "**1.** A\n\nRéponse")
     expect(extraireExempleCorrige(epreuve(exo), BAC_C)?.corrigeMarkdown).toBe("**1.** A\n\nRéponse")
+  })
+})
+
+describe("exempleEstPropre", () => {
+  const serie = (examen: string, code: string) => ({ examen, series: { code } })
+
+  it("sans examen déclaré : faux, il n'y a rien à annoncer", () => {
+    expect(exempleEstPropre("fr", null)).toBe(false)
+    expect(exempleEstPropre("fr", undefined)).toBe(false)
+  })
+
+  it("français : BEPC et BAC C, D, E ont leur mathématique ; Probatoire, BAC A et BAC TI voient un exemple d'un autre examen", () => {
+    expect(exempleEstPropre("fr", { examen: "BEPC", series: null })).toBe(true)
+    for (const code of ["C", "D", "E"]) expect(exempleEstPropre("fr", serie("BAC", code))).toBe(true)
+    expect(exempleEstPropre("fr", serie("BAC", "A"))).toBe(false)
+    expect(exempleEstPropre("fr", serie("BAC", "TI"))).toBe(false)
+    expect(exempleEstPropre("fr", serie("PROBATOIRE", "C"))).toBe(false)
+  })
+
+  it("anglais : O Level et A Level (branche technique comprise) sont servis", () => {
+    expect(exempleEstPropre("en", { examen: "GCE_OL", series: null })).toBe(true)
+    expect(exempleEstPropre("en", serie("GCE_OL", "GCE_TECHNICAL"))).toBe(true)
+    expect(exempleEstPropre("en", { examen: "GCE_AL", series: null })).toBe(true)
+  })
+
+  it("reste le miroir de exempleDuCursus : « propre » veut dire que l'exemple a été choisi pour lui ou que c'est le défaut de son examen", () => {
+    // Un examen servi par une entrée dédiée n'a jamais l'exemple par défaut, sauf le BEPC / O Level dont le défaut EST leur mathématique.
+    for (const code of ["C", "D", "E"]) {
+      const cursus = serie("BAC", code)
+      expect(exempleEstPropre("fr", cursus)).toBe(exempleDuCursus("fr", cursus) !== EXEMPLES_CORRIGE.fr)
+    }
+    const alevel = { examen: "GCE_AL", series: null }
+    expect(exempleEstPropre("en", alevel)).toBe(exempleDuCursus("en", alevel) !== EXEMPLES_CORRIGE.en)
   })
 })

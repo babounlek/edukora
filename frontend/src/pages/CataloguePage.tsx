@@ -15,11 +15,12 @@ import {
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
 import { nomPays } from "@/lib/pays"
-import { examLevelsFor, joinExamLevelsProse } from "@/lib/cursus"
+import { examLevelsFor, joinExamLevelsProse, libelleCursus } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { useCursusListe } from "@/lib/cursusLangue"
-import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
+import { exempleDuCursus, exempleEstPropre, extraireExempleCorrige } from "@/lib/exempleCorrige"
+import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
@@ -42,7 +43,8 @@ import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
-import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
+import { requeteInedites, useCursusAccueil, useCursusPrepareDeclare, useInedites } from "@/lib/cursusAccueil"
+import { LigneExamenChoisi } from "@/components/ChoixExamen"
 
 // Clés de filtre reconnues par /epreuves (voir EpreuvesListPage) - un lien déjà en
 // circulation qui les porte encore sur cette URL (recherche sauvegardée en session,
@@ -145,7 +147,10 @@ function CatalogueVitrine() {
   // un GCE en anglais - et l'examen déclaré quand une mathématique gratuite existe pour lui (BAC C, D, E).
   // Le slug fait partie de la clé de cache, donc un changement de langue ou d'examen recharge.
   const cursusAccueil = useCursusAccueil(country ?? "")
-  const exemple = exempleDuCursus(langueCourante(), cursusList?.find((c) => c.id === cursusAccueil))
+  // L'examen déclaré en entier (compte ou visiteur), pour le dire à l'écran : hero, exemple, inédites.
+  const examenChoisi = useCursusPrepareDeclare(country)
+  const examenServi = cursusList?.find((c) => c.id === cursusAccueil)
+  const exemple = exempleDuCursus(langueCourante(), examenServi)
   const { data: exempleContent } = useQuery({
     queryKey: ["epreuve-exemple-corrige", exemple.slug],
     queryFn: () => readEpreuve(exemple.slug),
@@ -177,6 +182,10 @@ function CatalogueVitrine() {
   // useInedites.
   const { data: inediteRecenteData } = useInedites(country ?? "", cursusAccueil, !hasLegacyFilters)
   const inediteVedetteId = inediteRecenteData?.results[0]?.slug ?? inediteRecenteData?.results[0]?.id
+  // Les inédites de tout le pays (même clé de cache que l'en-tête), demandées seulement quand l'examen déclaré n'en a aucune :
+  // c'est ce qui permet de proposer « celles des autres examens » sans promettre une liste vide.
+  const aucuneInedite = examenServi != null && inediteRecenteData?.count === 0
+  const { data: ineditesDuPays } = useInedites(country ?? "", null, aucuneInedite && !hasLegacyFilters)
 
   // Fiche complète de cette même épreuve : apercu_enonce_markdown (l'unique question
   // publique) n'est jamais renseigné sur le catalogue fusionné ci-dessus, seulement sur
@@ -276,9 +285,15 @@ function CatalogueVitrine() {
             ne doit pas en être séparé par 56 px de vide. */}
         <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-8 pt-14 sm:px-6 md:grid-cols-[1.15fr_1fr] md:items-center md:gap-10">
           <div>
-            <p className="mb-2 font-display text-sm italic text-primary">
-              {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
-            </p>
+            {/* Qui a déclaré son examen le voit ici, avec le moyen de le changer ; sans déclaration (visiteur neuf,
+                robots), l'accroche d'origine, qui énumère les examens du pays. */}
+            {examenChoisi ? (
+              <LigneExamenChoisi cursus={examenChoisi} />
+            ) : (
+              <p className="mb-2 font-display text-sm italic text-primary">
+                {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
+              </p>
+            )}
             {/* La promesse vendait une bibliothèque ("cours structurés et corrigés
                 d'annales, classés par matière et par série") alors que le produit est
                 devenu un coach : une séance par jour, choisie pour l'élève. Le
@@ -408,6 +423,14 @@ function CatalogueVitrine() {
                   l'examen sans dupliquer matière/niveau/année séparément. */}
               {t("accueil.exemple_texte", { titre: exempleContent?.title ?? "" })}
             </p>
+            {/* L'examen déclaré n'a pas de mathématique gratuite propre : sans cette phrase, un élève de Probatoire devant
+                un corrigé de BEPC croit que son choix a été ignoré. Seulement quand le choix est pris en compte
+                (examenServi : même langue que l'interface, pays affiché). */}
+            {examenServi && !exempleEstPropre(langueCourante(), examenServi) && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {t("accueil.exemple_commun", { cursus: libelleCursus(examenServi) })}
+              </p>
+            )}
           </div>
           <div className="mt-5 rounded-2xl border border-border bg-card p-5 sm:p-8">
             {/* enonce_intro_markdown ("**Exercice 1 (2 points)**") situe l'extrait comme
@@ -498,6 +521,23 @@ function CatalogueVitrine() {
               <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
             </span>
           </Link>
+        )}
+        {/* L'examen déclaré n'a aucune inédite : plutôt que de faire disparaître le bloc, on le dit (sinon le choix semble
+            ignoré), et on ouvre celles des autres examens quand il y en a. `tout=1` : sans lui, la liste se réduirait
+            aussitôt à l'examen déclaré, c'est-à-dire à rien (voir useFiltreCursusParDefaut). */}
+        {aucuneInedite && examenServi && (
+          <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground">
+            <Crown className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+            <span>{t("accueil.inedites_aucune", { cursus: libelleCursus(examenServi) })}</span>
+            {ineditesDuPays && ineditesDuPays.count > 0 && (
+              <Link
+                to={`${epreuvesListPath(country ?? "")}?origine=INEDITE&${PARAM_VOIR_TOUT}=1`}
+                className="underline underline-offset-4 transition-colors hover:text-primary"
+              >
+                {t("accueil.inedites_autres")}
+              </Link>
+            )}
+          </p>
         )}
       </section>
 
