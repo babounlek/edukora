@@ -31,3 +31,14 @@ Relues par un relecteur independant (aveugle puis comparaison), aucune erreur nu
 `bp-cm-informatique-bepc-mini-1` a `-3` (numeration et boucle for PHP ; unites, debit et tableur ; code ASCII et boucle while PHP). Generateur : `generateur/spec_info.py`.
 Relues par un relecteur independant ; corrections appliquees (1 Ko = 1 024 octets comme les epreuves de la plateforme, donnee 37 au lieu de 45, tableaux fournis, grilles assouplies).
 Piege PDF : dans un enonce, deux `$` sur la meme ligne (variables PHP en code en ligne) sont pris pour une formule par le moteur de PDF ; une seule variable `$` par ligne, hors blocs de code.
+
+## Ajout du 2026-11-05 : 3 minis de SVT BEPC
+
+`bp-cm-svt-bepc-mini-1` a `-3` (caryotype de Klinefelter et paludisme ; VIH et lymphocytes T4, roches sedimentaires d'une carriere ; tests allergiques et hypertension). Generateur : `generateur/spec_svt.py`.
+Chaque exercice s'appuie sur un tableau chiffre. Relues par un relecteur independant (exactitude medicale verifiee), corrections appliquees. Pas d'avis d'enseignant humain.
+
+## Ajout du 2026-11-05 (2) : 8 minis d'Informatique pour les series A, C, D et E
+
+Probatoire A n°1-2, BAC A n°1-2, Probatoire C/D/E n°1-2, BAC C/D/E n°1-2 (`bp-cm-informatique-<cursus>-mini-N`). Generateurs : `generateur/spec_info_a.py` et `spec_info_cde.py`.
+Valeurs verifiees par execution (Python, SQLite en memoire, Node, module ipaddress) ; relues par 2 relecteurs independants, corrections appliquees.
+Pieges du moteur de PDF : pas de guillemets droits dans un bloc de code d'enonce (ils sont mis en italique), pas de `%d` entre `$` (commentaire LaTeX), une seule variable PHP `$x` par ligne.
