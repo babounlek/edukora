@@ -171,8 +171,6 @@ export const fr = {
   "accueil.repli_bouton": "Voir les épreuves inédites",
   "accueil.inedites_aucune": "Pas encore d'épreuve inédite pour {cursus}.",
   "accueil.inedites_autres": "Voir celles des autres examens",
-  "accueil.exemple_commun":
-    "Exemple commun à tous les examens : aucun corrigé en accès libre n'est encore proposé pour {cursus}.",
   "choix.tu_prepares": "Tu prépares : {cursus}",
   "choix.changer": "changer",
   "choix.menu_titre": "Ton examen",

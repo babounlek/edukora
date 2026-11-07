@@ -37,21 +37,43 @@ export const EXEMPLES_CORRIGE: Record<Langue, ExempleCorrige> = {
  * L'exemple de l'accueil adapté à l'examen déclaré (voir useCursusAccueil), en français : un élève de BAC C n'a que faire d'un
  * corrigé de BEPC. Clé : « EXAMEN » ou « EXAMEN:SÉRIE » (code de série du cursus).
  *
- * Seules les épreuves de mathématiques GRATUITES comptent : BEPC et BAC C, D, E, TI. Le BAC A et le BAC C et E (épreuves
- * blanches ou à corrigé sans repères de sous-question) donneraient un exemple trop long ou mal découpé ; le Probatoire
- * n'a pas de mathématiques gratuites. Ces cursus gardent l'exemple par défaut de la langue.
- * Exercices retenus (mesurés le 2026-10-19) : un énoncé d'introduction court et une première question d'environ 800 caractères
- * qui se suffit à elle-même (BAC C : exercice 3, équation en entiers ; BAC D : exercice 2, suite numérique).
+ * RÈGLE : l'épreuve montrée est TOUJOURS rattachée au cursus déclaré (jamais le corrigé d'un autre examen « faute de mieux »).
+ * Un cursus sans épreuve gratuite (BAC A2, G, L, S, séries techniques, CAP...) n'a pas d'entrée : `exempleDuCursus` renvoie
+ * alors null et la section disparaît. Le rattachement se vérifie en base (Lesson.est_vitrine, Lesson.cursus) ; ajouter une entrée
+ * = mesurer l'extrait (énoncé d'introduction court, première question de 500 à 1 600 caractères qui se suffit à elle-même) puis
+ * contrôler ce rattachement.
+ *
+ * Mathématiques quand le cursus a une épreuve de maths gratuite ; sinon sa première épreuve gratuite exploitable (Probatoire TI :
+ * Systèmes d'Information).
  */
 const BAC_C: ExempleCorrige = { slug: "mathematiques-bac-c-2026", exercice: "3", question1Seule: true, coupeParRepere: true }
+// Probatoire C et E passent la même épreuve (« Mathématiques Probatoire C et E 2025 ») : même entrée.
+const PROBATOIRE_C_E: ExempleCorrige = {
+  slug: "mathematiques-probatoire-c-et-e-2025",
+  exercice: "4",
+  question1Seule: true,
+  coupeParRepere: true,
+}
 const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
+  BEPC: EXEMPLES_CORRIGE.fr,
   "BAC:C": BAC_C,
-  // La Série E passe la même épreuve de mathématiques que la C (voir « Mathématiques BAC C et E 2026 »).
-  "BAC:E": BAC_C,
+  // La Série E a sa propre entrée : « Mathématiques BAC C et E 2026 » est la seule épreuve gratuite rattachée à la fois à C et à E
+  // (« Mathématiques BAC C 2026 » ne l'est qu'à C). Exercice 3, question 1 : repère « 1) » non gras (voir REPERE_SOUS_QUESTION).
+  "BAC:E": { slug: "mathematiques-bac-c-et-e-2026", exercice: "3", question1Seule: true, coupeParRepere: true },
   "BAC:D": { slug: "mathematiques-bac-d-2026", exercice: "2", question1Seule: true, coupeParRepere: true },
   // BAC TI : la mathématique gratuite « BAC D et TI 2025 ». Exercice 1 (dénombrement d'un tirage simultané) : la 1.a
   // seule, 866 caractères avec son rappel de méthode. Ses repères sont de la forme « **1.a.** » (voir REPERE_SOUS_QUESTION).
   "BAC:TI": { slug: "mathematiques-bac-d-et-ti-2025", exercice: "1", question1Seule: true, coupeParRepere: true },
+  // BAC A : « Mathématiques BAC A 2001 » (officielle ; les maths gratuites de 2026 sont des épreuves blanches). Exercice 1, question 1.
+  "BAC:A": { slug: "mathematiques-bac-a-2001", exercice: "1", question1Seule: true, coupeParRepere: true },
+  "BAC:A1": { slug: "mathematiques-bac-a1-2015", exercice: "3", question1Seule: true, coupeParRepere: true },
+  "PROBATOIRE:C": PROBATOIRE_C_E,
+  "PROBATOIRE:E": PROBATOIRE_C_E,
+  // Exercice 1 : un QCM (« Partie A »), sa première question tient en 546 caractères.
+  "PROBATOIRE:D": { slug: "mathematiques-probatoire-d-2025", exercice: "1", question1Seule: true, coupeParRepere: true },
+  "PROBATOIRE:A": { slug: "mathematiques-probatoire-a", exercice: "1", question1Seule: true, coupeParRepere: true },
+  // Pas de mathématiques gratuites au Probatoire TI : son épreuve gratuite de Systèmes d'Information (exercice 3, bases de données).
+  "PROBATOIRE:TI": { slug: "systemes-dinformation-probatoire-ti-2023", exercice: "3", question1Seule: true, coupeParRepere: true },
 }
 
 /**
@@ -64,41 +86,29 @@ const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
  *   cinq parties ou à preuve par récurrence, trop longs pour une page d'accueil.
  */
 const EXEMPLES_EN_PAR_EXAMEN: Record<string, ExempleCorrige> = {
+  GCE_OL: EXEMPLES_CORRIGE.en,
   GCE_AL: { slug: "pure-mathematics-with-mechanics-gce-a-level-2023-paper-2", exercice: "4", question1Seule: false },
 }
 
+/**
+ * L'exemple à montrer pour l'examen déclaré, ou null s'il n'a aucune épreuve gratuite : mieux vaut ne rien montrer que le
+ * corrigé d'un autre examen. Sans examen déclaré (visiteur neuf), l'exemple par défaut de la langue.
+ */
 export function exempleDuCursus(
   langue: Langue,
   cursus: { examen: string; series: { code: string } | null } | null | undefined,
-): ExempleCorrige {
-  if (langue === "fr" && cursus) {
-    const cle = cursus.series ? `${cursus.examen}:${cursus.series.code}` : cursus.examen
-    return EXEMPLES_FR_PAR_CURSUS[cle] ?? EXEMPLES_CORRIGE.fr
-  }
-  if (langue === "en" && cursus) return EXEMPLES_EN_PAR_EXAMEN[cursus.examen] ?? EXEMPLES_CORRIGE.en
-  return EXEMPLES_CORRIGE[langue]
-}
-
-/**
- * L'exemple affiché est-il celui de cet examen ? Faux pour les examens qui n'ont pas de mathématique gratuite propre (Probatoire,
- * BAC A...) : ils voient l'exemple par défaut d'un autre examen, et la page doit le dire - sinon un élève de Probatoire,
- * devant un corrigé de BEPC, croit que son choix a été ignoré. Les examens dont l'exemple par défaut EST la mathématique
- * (BEPC en français, GCE O Level en anglais) comptent comme servis. Miroir de `exempleDuCursus` : à tenir d'accord avec lui.
- */
-export function exempleEstPropre(
-  langue: Langue,
-  cursus: { examen: string; series: { code: string } | null } | null | undefined,
-): boolean {
-  if (!cursus) return false
+): ExempleCorrige | null {
+  if (!cursus) return EXEMPLES_CORRIGE[langue]
   if (langue === "fr") {
     const cle = cursus.series ? `${cursus.examen}:${cursus.series.code}` : cursus.examen
-    return cursus.examen === "BEPC" || cle in EXEMPLES_FR_PAR_CURSUS
+    return EXEMPLES_FR_PAR_CURSUS[cle] ?? null
   }
-  return cursus.examen === "GCE_OL" || cursus.examen in EXEMPLES_EN_PAR_EXAMEN
+  return EXEMPLES_EN_PAR_EXAMEN[cursus.examen] ?? null
 }
 
-// « **1.** », « **I.1.** », « **2)** » et, avec lettre, « **1.a.** » (BAC TI) : la coupe se fait avant la 2e sous-question.
-const REPERE_SOUS_QUESTION = /^\*\*(?:[IVX]+[.)]?\s*)?\d+[.)](?:[a-z][.)])?\*\*/gm
+// « **1.** », « **I.1.** », « **2)** », avec lettre « **1.a.** » (BAC TI), ou « 1) » non gras en début de ligne (BAC C et E) :
+// la coupe se fait avant la 2e sous-question.
+const REPERE_SOUS_QUESTION = /^(?:\*\*(?:[IVX]+[.)]?\s*)?\d+[.)](?:[a-z][.)])?\*\*|\d+\)\s)/gm
 
 /**
  * L'exercice retenu et le corrigé à montrer, ou null si l'épreuve ne contient pas cet exercice.
@@ -111,8 +121,9 @@ const REPERE_SOUS_QUESTION = /^\*\*(?:[IVX]+[.)]?\s*)?\d+[.)](?:[a-z][.)])?\*\*/
  */
 export function extraireExempleCorrige(
   epreuve: Pick<EpreuveContent, "exercises"> | undefined,
-  exemple: ExempleCorrige,
+  exemple: ExempleCorrige | null,
 ): { exercice: EpreuveExercise; corrigeMarkdown: string } | null {
+  if (!exemple) return null
   const exercices = epreuve?.exercises ?? []
   const exercice = exemple.exercice
     ? exercices.find((e) => String(e.numero_exercice) === exemple.exercice)

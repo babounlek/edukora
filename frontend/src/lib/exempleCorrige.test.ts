@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import type { EpreuveContent, EpreuveExercise } from "@/api/types"
-import { EXEMPLES_CORRIGE, exempleDuCursus, exempleEstPropre, extraireExempleCorrige } from "./exempleCorrige"
+import { EXEMPLES_CORRIGE, exempleDuCursus, extraireExempleCorrige } from "./exempleCorrige"
 
 const exercice = (numero: string, enonce: string, corrige: string): EpreuveExercise => ({
   numero_exercice: numero, titre: "", points: "", groupes: [], enonce_intro_markdown: `**Exercice ${numero}**`,
@@ -18,6 +18,10 @@ describe("EXEMPLES_CORRIGE", () => {
 })
 
 describe("extraireExempleCorrige", () => {
+  it("sans exemple (cursus sans épreuve gratuite) : null", () => {
+    expect(extraireExempleCorrige(epreuve(exercice("1", "x", "y")), null)).toBeNull()
+  })
+
   const Q2 = "**2.** Seconde question"
   const Q1 = "**1.** Première question"
   const exo = exercice("1", `${Q1}\n\n${Q2}`, `${Q1}\n\nRéponse 1\n\n${Q2}\n\nRéponse 2`)
@@ -55,51 +59,80 @@ describe("extraireExempleCorrige", () => {
 
 describe("exempleDuCursus", () => {
   const bac = (code: string) => ({ examen: "BAC", series: { code } })
+  const probatoire = (code: string) => ({ examen: "PROBATOIRE", series: { code } })
+  const slug = (langue: "fr" | "en", cursus: Parameters<typeof exempleDuCursus>[1]) => exempleDuCursus(langue, cursus)?.slug
 
-  it("BAC C et D : la mathématique gratuite de leur examen", () => {
-    expect(exempleDuCursus("fr", bac("C")).slug).toBe("mathematiques-bac-c-2026")
-    expect(exempleDuCursus("fr", bac("D")).slug).toBe("mathematiques-bac-d-2026")
+  // Rattachement vérifié en base le 2026-11-08 (Lesson.est_vitrine, Lesson.cursus) : chaque épreuve est gratuite, validée, et
+  // rattachée au cursus pour lequel elle est montrée. Un changement ici doit être recontrôlé de même.
+  it("chaque cursus francophone a SA propre épreuve gratuite", () => {
+    expect(slug("fr", { examen: "BEPC", series: null })).toBe("mathematiques-bepc-2026")
+    expect(slug("fr", bac("C"))).toBe("mathematiques-bac-c-2026")
+    expect(slug("fr", bac("D"))).toBe("mathematiques-bac-d-2026")
+    expect(slug("fr", bac("A"))).toBe("mathematiques-bac-a-2001")
+    expect(slug("fr", bac("A1"))).toBe("mathematiques-bac-a1-2015")
+    expect(slug("fr", probatoire("D"))).toBe("mathematiques-probatoire-d-2025")
+    expect(slug("fr", probatoire("A"))).toBe("mathematiques-probatoire-a")
+    expect(slug("fr", probatoire("TI"))).toBe("systemes-dinformation-probatoire-ti-2023")
   })
 
-  it("BAC E : la même épreuve que la série C", () => {
-    expect(exempleDuCursus("fr", bac("E"))).toBe(exempleDuCursus("fr", bac("C")))
+  it("BAC E : l'épreuve commune C et E (celle de la série C n'est pas rattachée à E)", () => {
+    expect(slug("fr", bac("E"))).toBe("mathematiques-bac-c-et-e-2026")
+    expect(exempleDuCursus("fr", bac("E"))).not.toBe(exempleDuCursus("fr", bac("C")))
   })
 
   it("BAC TI : sa propre mathématique gratuite, jamais le corrigé de BEPC", () => {
-    expect(exempleDuCursus("fr", bac("TI")).slug).toBe("mathematiques-bac-d-et-ti-2025")
+    expect(slug("fr", bac("TI"))).toBe("mathematiques-bac-d-et-ti-2025")
     expect(exempleDuCursus("fr", bac("TI"))).not.toBe(EXEMPLES_CORRIGE.fr)
   })
 
-  it("sans épreuve gratuite adaptée (BAC A, Probatoire) ou sans examen déclaré : l'exemple par défaut", () => {
-    expect(exempleDuCursus("fr", bac("A"))).toBe(EXEMPLES_CORRIGE.fr)
-    expect(exempleDuCursus("fr", { examen: "PROBATOIRE", series: { code: "C" } })).toBe(EXEMPLES_CORRIGE.fr)
-    expect(exempleDuCursus("fr", { examen: "BEPC", series: null })).toBe(EXEMPLES_CORRIGE.fr)
+  it("Probatoire C et E passent la même épreuve", () => {
+    expect(slug("fr", probatoire("C"))).toBe("mathematiques-probatoire-c-et-e-2025")
+    expect(exempleDuCursus("fr", probatoire("E"))).toBe(exempleDuCursus("fr", probatoire("C")))
+  })
+
+  it("un cursus sans épreuve gratuite n'a AUCUN exemple (jamais celui d'un autre examen)", () => {
+    expect(exempleDuCursus("fr", bac("A2"))).toBeNull()
+    expect(exempleDuCursus("fr", bac("G"))).toBeNull()
+    expect(exempleDuCursus("fr", bac("ELECTRICITE"))).toBeNull()
+    expect(exempleDuCursus("fr", { examen: "CAP", series: { code: "COMMERCE" } })).toBeNull()
+    expect(exempleDuCursus("fr", probatoire("COMMERCE"))).toBeNull()
+  })
+
+  it("sans examen déclaré : l'exemple par défaut de la langue", () => {
     expect(exempleDuCursus("fr", null)).toBe(EXEMPLES_CORRIGE.fr)
     expect(exempleDuCursus("fr", undefined)).toBe(EXEMPLES_CORRIGE.fr)
+    expect(exempleDuCursus("en", null)).toBe(EXEMPLES_CORRIGE.en)
   })
 
   it("en anglais, jamais un exemple français, quel que soit l'examen déclaré", () => {
-    expect(exempleDuCursus("en", bac("C"))).toBe(EXEMPLES_CORRIGE.en)
+    expect(exempleDuCursus("en", bac("C"))).toBeNull()
   })
 
   it("GCE A Level : une mathématique gratuite de l'A Level, branches générale et technique", () => {
     const general = exempleDuCursus("en", { examen: "GCE_AL", series: null })
-    expect(general.slug).toBe("pure-mathematics-with-mechanics-gce-a-level-2023-paper-2")
-    expect(general.slug).toMatch(/a-level/)
+    expect(general?.slug).toBe("pure-mathematics-with-mechanics-gce-a-level-2023-paper-2")
+    expect(general?.slug).toMatch(/a-level/)
     expect(exempleDuCursus("en", { examen: "GCE_AL", series: { code: "GCE_TECHNICAL" } })).toBe(general)
   })
 
-  it("GCE O Level (générale ou technique) ou sans examen déclaré : l'exemple par défaut de l'anglais", () => {
+  it("GCE O Level (générale ou technique) : l'exemple par défaut de l'anglais", () => {
     expect(exempleDuCursus("en", { examen: "GCE_OL", series: null })).toBe(EXEMPLES_CORRIGE.en)
     expect(exempleDuCursus("en", { examen: "GCE_OL", series: { code: "GCE_TECHNICAL" } })).toBe(EXEMPLES_CORRIGE.en)
-    expect(exempleDuCursus("en", null)).toBe(EXEMPLES_CORRIGE.en)
   })
 
   it("l'exemple A Level retient l'exercice entier : l'exercice 4, avec ses deux questions", () => {
     const AL = exempleDuCursus("en", { examen: "GCE_AL", series: null })
     const Q_I = "**i.** A"
     const Q_II = "**ii.** B"
-    const quatre = exercice("4", `${Q_I}\n\n${Q_II}`, `${Q_I}\n\nRéponse 1\n\n${Q_II}\n\nRéponse 2`)
+    const quatre = exercice("4", `${Q_I}
+
+${Q_II}`, `${Q_I}
+
+Réponse 1
+
+${Q_II}
+
+Réponse 2`)
     const extrait = extraireExempleCorrige(epreuve(exercice("1", "x", "y"), quatre), AL)
     expect(extrait?.exercice).toBe(quatre)
     expect(extrait?.corrigeMarkdown).toBe(quatre.corrige_markdown)
@@ -127,40 +160,14 @@ describe("extraireExempleCorrige : coupe par repère de sous-question", () => {
     expect(extraireExempleCorrige(epreuve(exo), TI)?.corrigeMarkdown).toBe("**1.a.** A\n\nRéponse")
   })
 
+  it("repère « 1) » non gras en début de ligne (BAC C et E)", () => {
+    const E = exempleDuCursus("fr", { examen: "BAC", series: { code: "E" } })
+    const exo = exercice("3", "intro", "1) Étudier g\n\nRéponse\n\n2) Calculer les limites\n\nRéponse")
+    expect(extraireExempleCorrige(epreuve(exo), E)?.corrigeMarkdown).toBe("1) Étudier g\n\nRéponse")
+  })
+
   it("un seul repère : corrigé entier", () => {
     const exo = exercice("3", "intro", "**1.** A\n\nRéponse")
     expect(extraireExempleCorrige(epreuve(exo), BAC_C)?.corrigeMarkdown).toBe("**1.** A\n\nRéponse")
-  })
-})
-
-describe("exempleEstPropre", () => {
-  const serie = (examen: string, code: string) => ({ examen, series: { code } })
-
-  it("sans examen déclaré : faux, il n'y a rien à annoncer", () => {
-    expect(exempleEstPropre("fr", null)).toBe(false)
-    expect(exempleEstPropre("fr", undefined)).toBe(false)
-  })
-
-  it("français : BEPC et BAC C, D, E, TI ont leur mathématique ; Probatoire et BAC A voient un exemple d'un autre examen", () => {
-    expect(exempleEstPropre("fr", { examen: "BEPC", series: null })).toBe(true)
-    for (const code of ["C", "D", "E", "TI"]) expect(exempleEstPropre("fr", serie("BAC", code))).toBe(true)
-    expect(exempleEstPropre("fr", serie("BAC", "A"))).toBe(false)
-    expect(exempleEstPropre("fr", serie("PROBATOIRE", "C"))).toBe(false)
-  })
-
-  it("anglais : O Level et A Level (branche technique comprise) sont servis", () => {
-    expect(exempleEstPropre("en", { examen: "GCE_OL", series: null })).toBe(true)
-    expect(exempleEstPropre("en", serie("GCE_OL", "GCE_TECHNICAL"))).toBe(true)
-    expect(exempleEstPropre("en", { examen: "GCE_AL", series: null })).toBe(true)
-  })
-
-  it("reste le miroir de exempleDuCursus : « propre » veut dire que l'exemple a été choisi pour lui ou que c'est le défaut de son examen", () => {
-    // Un examen servi par une entrée dédiée n'a jamais l'exemple par défaut, sauf le BEPC / O Level dont le défaut EST leur mathématique.
-    for (const code of ["C", "D", "E", "TI"]) {
-      const cursus = serie("BAC", code)
-      expect(exempleEstPropre("fr", cursus)).toBe(exempleDuCursus("fr", cursus) !== EXEMPLES_CORRIGE.fr)
-    }
-    const alevel = { examen: "GCE_AL", series: null }
-    expect(exempleEstPropre("en", alevel)).toBe(exempleDuCursus("en", alevel) !== EXEMPLES_CORRIGE.en)
   })
 })

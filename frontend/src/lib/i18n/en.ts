@@ -165,8 +165,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "accueil.repli_bouton": "See the original papers",
   "accueil.inedites_aucune": "No original paper for {cursus} yet.",
   "accueil.inedites_autres": "See the ones for other exams",
-  "accueil.exemple_commun":
-    "Example shared by every exam: there is no free sample solution for {cursus} yet.",
   "choix.tu_prepares": "You're preparing: {cursus}",
   "choix.changer": "change",
   "choix.menu_titre": "Your exam",

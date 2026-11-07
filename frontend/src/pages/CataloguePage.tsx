@@ -19,7 +19,7 @@ import { examLevelsFor, joinExamLevelsProse, libelleCursus } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { useCursusListe } from "@/lib/cursusLangue"
-import { exempleDuCursus, exempleEstPropre, extraireExempleCorrige } from "@/lib/exempleCorrige"
+import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
 import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
@@ -150,11 +150,13 @@ function CatalogueVitrine() {
   // L'examen déclaré en entier (compte ou visiteur), pour le dire à l'écran : hero, exemple, inédites.
   const examenChoisi = useCursusPrepareDeclare(country)
   const examenServi = cursusList?.find((c) => c.id === cursusAccueil)
-  const exemple = exempleDuCursus(langueCourante(), examenServi)
+  // Toujours un corrigé de l'examen déclaré, ou rien : null tant que la liste des examens charge (sinon l'exemple par
+  // défaut, celui d'un autre examen, clignoterait avant le bon) et pour un examen sans épreuve gratuite.
+  const exemple = cursusAccueil === undefined ? null : exempleDuCursus(langueCourante(), examenServi)
   const { data: exempleContent } = useQuery({
-    queryKey: ["epreuve-exemple-corrige", exemple.slug],
-    queryFn: () => readEpreuve(exemple.slug),
-    enabled: !hasLegacyFilters,
+    queryKey: ["epreuve-exemple-corrige", exemple?.slug],
+    queryFn: () => readEpreuve(exemple!.slug),
+    enabled: !hasLegacyFilters && exemple !== null,
     retry: false,
   })
   // Le corrigé à montrer (question 1 seule ou exercice entier, selon l'exemple) : voir extraireExempleCorrige.
@@ -423,14 +425,6 @@ function CatalogueVitrine() {
                   l'examen sans dupliquer matière/niveau/année séparément. */}
               {t("accueil.exemple_texte", { titre: exempleContent?.title ?? "" })}
             </p>
-            {/* L'examen déclaré n'a pas de mathématique gratuite propre : sans cette phrase, un élève de Probatoire devant
-                un corrigé de BEPC croit que son choix a été ignoré. Seulement quand le choix est pris en compte
-                (examenServi : même langue que l'interface, pays affiché). */}
-            {examenServi && !exempleEstPropre(langueCourante(), examenServi) && (
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t("accueil.exemple_commun", { cursus: libelleCursus(examenServi) })}
-              </p>
-            )}
           </div>
           <div className="mt-5 rounded-2xl border border-border bg-card p-5 sm:p-8">
             {/* enonce_intro_markdown ("**Exercice 1 (2 points)**") situe l'extrait comme
