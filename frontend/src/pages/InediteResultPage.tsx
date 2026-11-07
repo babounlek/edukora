@@ -125,6 +125,12 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
     const tauxB = b.points_possibles ? (b.points_obtenus ?? 0) / b.points_possibles : 1
     return tauxA - tauxB
   })
+  // « 0 point » ne dit pas la même chose d'un thème raté et d'un thème jamais abordé : vingt compétences à 0 alignées
+  // faisaient lire un échec là où il n'y avait pas eu de tentative (test élève 2026-11-07). Les premiers gardent leur
+  // barre ; les seconds sont rangés à part, sans barre ni score.
+  const abordee = (theme: (typeof themes)[number]) => theme.traitees === undefined || theme.traitees > 0
+  const themesAbordes = themes.filter(abordee)
+  const themesNonAbordes = themes.filter((theme) => !abordee(theme))
   // Une question qui porte plusieurs thèmes compte dans chacun : la somme des points par compétence peut alors
   // dépasser le barème de l'épreuve, ce que l'élève prendrait pour une erreur de calcul.
   const themesSeRecoupent =
@@ -260,7 +266,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         </Card>
       )}
 
-      {!notationEnCours && themes.length > 0 && (
+      {!notationEnCours && themesAbordes.length > 0 && (
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="font-display text-lg">{t("rp.par_competence")}</CardTitle>
@@ -271,7 +277,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
           </CardHeader>
           <CardContent>
             <ul className="flex flex-col gap-4">
-              {themes.map((theme) => (
+              {themesAbordes.map((theme) => (
                 <li key={theme.theme}>
                   <div className="mb-1.5 flex items-start justify-between gap-3 text-sm">
                     <span>{capitaliserTheme(theme.theme)}</span>
@@ -287,6 +293,24 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
                 </li>
               ))}
             </ul>
+          </CardContent>
+        </Card>
+      )}
+
+      {!notationEnCours && themesNonAbordes.length > 0 && (
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <details>
+              <summary className="cursor-pointer text-sm font-medium">
+                {t("rp.non_abordees", { n: themesNonAbordes.length })}
+              </summary>
+              <p className="mt-2 text-xs text-muted-foreground">{t("rp.non_abordees_texte")}</p>
+              <ul className="mt-3 flex flex-col gap-1.5 text-sm text-muted-foreground">
+                {themesNonAbordes.map((theme) => (
+                  <li key={theme.theme}>{capitaliserTheme(theme.theme)}</li>
+                ))}
+              </ul>
+            </details>
           </CardContent>
         </Card>
       )}

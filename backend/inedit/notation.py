@@ -213,12 +213,15 @@ def calculer(tentative, exercices):
             for theme in question.themes.all():
                 stats = par_theme.setdefault(
                     theme.name,
-                    {"id": theme.pk, "points_possibles": ZERO, "points_obtenus": ZERO, "total": 0, "reussies": 0},
+                    {"id": theme.pk, "points_possibles": ZERO, "points_obtenus": ZERO, "total": 0, "reussies": 0, "traitees": 0},
                 )
                 stats["points_possibles"] += points
                 stats["points_obtenus"] += obtenus
                 stats["total"] += 1
                 stats["reussies"] += entier
+                # Questions de ce thème réellement abordées : sans ça, « 0 point » ne dit pas si le thème a été
+                # raté ou simplement pas traité (test élève 2026-11-07 : 20 compétences à 0 alignées).
+                stats["traitees"] += traitee
 
         par_exercice.append({
             "numero_exercice": exercice.numero_exercice,

@@ -182,6 +182,8 @@ class RapportDansLeResultatTests(NotationAPITestCase):
         self.assertIsNone(resultat["comparaison"])
         self.assertIsNone(resultat["temps_par_exercice"])  # entraînement libre : pas de chrono
         self.assertIn("theme_id", resultat["par_theme"][0])
+        # Le bilan par compétence distingue « raté » de « pas traité » : il lui faut le nombre de questions abordées.
+        self.assertIn("traitees", resultat["par_theme"][0])
         self.assertIn("theme_id", resultat["themes_a_reviser"][0])
 
     def test_le_temps_par_exercice_n_existe_qu_apres_avoir_coche_assez_de_questions_sous_chrono(self):

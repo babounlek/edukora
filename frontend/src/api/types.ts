@@ -1585,6 +1585,8 @@ export interface TentativeInediteResultTheme {
   theme_id: number
   total: number
   reussies: number
+  // Questions de ce thème réellement abordées (absent d'une réponse antérieure : on suppose alors le thème abordé).
+  traitees?: number
   points_possibles: number | null
   points_obtenus: number | null
 }

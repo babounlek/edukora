@@ -1,7 +1,7 @@
 import type { CampagneEnCours } from "@/api/types"
 import { dateLimiteCampagne } from "@/lib/campagne"
 import { t } from "@/lib/i18n"
-import { SITE_NAME } from "@/lib/site"
+import { CONTACT_WHATSAPP_AFFICHAGE, SITE_NAME } from "@/lib/site"
 import { PRIX_ABONNEMENT_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
 
@@ -33,6 +33,8 @@ export function messageParents({ examen, contenu, campagne }: ContexteMessagePar
         })
       : t("parents.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) }),
     t("parents.paiement"),
+    // Un parent qui hésite doit pouvoir poser sa question à quelqu'un avant de payer (test élève 2026-11-07).
+    t("parents.contact", { tel: CONTACT_WHATSAPP_AFFICHAGE }),
     t("parents.fin"),
   ]
   return morceaux.join(" ")

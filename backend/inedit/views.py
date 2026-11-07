@@ -417,6 +417,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
                 "theme_id": s["id"],
                 "total": s["total"],
                 "reussies": s["reussies"],
+                "traitees": s["traitees"],
                 "points_possibles": notation.en_nombre(s["points_possibles"]),
                 "points_obtenus": notation.en_nombre(s["points_obtenus"]),
             }

@@ -26,7 +26,7 @@ import { BandeauEnfantVise } from "@/components/BandeauEnfantVise"
 import { dateLimiteCampagne, nomCampagne, useCampagne } from "@/lib/campagne"
 import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
-import { SITE_NAME } from "@/lib/site"
+import { CONTACT_WHATSAPP_AFFICHAGE, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
@@ -576,7 +576,36 @@ export function PricingPage() {
                           </Button>
                           {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
                           {!isAuthenticated && (
-                            <p className="-mt-2 text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                            <>
+                              <p className="-mt-2 text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                              {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se lire
+                                  ici, pas derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). */}
+                              <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm">
+                                <p className="font-medium">{t("prix.etapes_titre")}</p>
+                                <ol className="mt-1.5 list-decimal space-y-0.5 pl-5 text-muted-foreground">
+                                  <li>{t("prix.etape1")}</li>
+                                  <li>{t("prix.etape2")}</li>
+                                  <li>
+                                    {campayActif
+                                      ? t("prix.etape3_immediat")
+                                      : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() })}
+                                  </li>
+                                </ol>
+                                <p className="mt-2 text-xs text-muted-foreground">
+                                  {t("prix.contact_paiement")}{" "}
+                                  <a
+                                    href={CONTACT_WHATSAPP_URL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-medium text-primary underline-offset-2 hover:underline"
+                                  >
+                                    {CONTACT_WHATSAPP_AFFICHAGE}
+                                  </a>
+                                  {" · "}
+                                  {EDITEUR_NOM}
+                                </p>
+                              </div>
+                            </>
                           )}
                         </>
                       ) : (

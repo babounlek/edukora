@@ -179,7 +179,7 @@ describe("InediteResultPage", () => {
     expect(screen.getByText("4 questions notées sur 7")).toBeInTheDocument()
     expect(screen.getByRole("progressbar", { name: "4 questions notées sur 7" })).toHaveAttribute("aria-valuenow", "4")
     expect(screen.queryByText(/0,5/)).not.toBeInTheDocument()
-    expect(screen.queryByText(/Tu as perdu/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/à aller chercher/)).not.toBeInTheDocument()
     expect(screen.queryByText("Où sont passés tes points")).not.toBeInTheDocument()
     expect(screen.queryByText("Note provisoire")).not.toBeInTheDocument()
   })
@@ -193,7 +193,7 @@ describe("InediteResultPage", () => {
     )
     afficher()
 
-    expect(await screen.findByText(/Tu as perdu 7,5 points/)).toBeInTheDocument()
+    expect(await screen.findByText(/Il te reste 7,5 points à aller chercher/)).toBeInTheDocument()
     expect(screen.queryByText("Ta note arrive dès que tu as tout noté")).not.toBeInTheDocument()
   })
 
@@ -227,6 +227,27 @@ describe("InediteResultPage", () => {
     afficher()
 
     expect(await screen.findByText(/3 min 31 s/)).toBeInTheDocument()
+  })
+
+  it("range à part les compétences jamais abordées, au lieu de les aligner à 0 point", async () => {
+    completeTentative.mockResolvedValue(
+      resultat({
+        par_theme: [
+          { theme: "suites", theme_id: 11, total: 2, reussies: 0, traitees: 2, points_possibles: 8, points_obtenus: 1 },
+          { theme: "probabilités", theme_id: 12, total: 2, reussies: 0, traitees: 0, points_possibles: 6, points_obtenus: 0 },
+          { theme: "statistiques", theme_id: 13, total: 1, reussies: 0, traitees: 0, points_possibles: 6, points_obtenus: 0 },
+        ],
+      }),
+    )
+    afficher()
+
+    // Le thème raté garde sa barre ; les deux autres n'en ont plus.
+    expect(await screen.findByRole("progressbar", { name: "Suites" })).toBeInTheDocument()
+    expect(screen.queryByRole("progressbar", { name: "Probabilités" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("progressbar", { name: "Statistiques" })).not.toBeInTheDocument()
+    expect(screen.getByText("Pas encore abordées : 2")).toBeInTheDocument()
+    expect(screen.getByText("Probabilités")).toBeInTheDocument()
+    expect(screen.getByText(/ce n'est pas un échec/)).toBeInTheDocument()
   })
 
   it("prévient quand les points par compétence dépassent le barème de l'épreuve", async () => {
@@ -267,7 +288,7 @@ describe("InediteResultPage", () => {
     afficher()
 
     expect(await screen.findByText("Où sont passés tes points")).toBeInTheDocument()
-    expect(screen.getByText(/Tu as perdu 7,5 points/)).toBeInTheDocument()
+    expect(screen.getByText(/Il te reste 7,5 points à aller chercher/)).toBeInTheDocument()
     expect(screen.getByText("Erreur de calcul")).toBeInTheDocument()
     expect(screen.getByText("4,5 pts · 60 %")).toBeInTheDocument()
   })

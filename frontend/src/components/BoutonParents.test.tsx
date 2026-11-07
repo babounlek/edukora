@@ -44,6 +44,7 @@ describe("BoutonParents", () => {
     expect(text).toContain("lire le corrigé de « SVT BEPC 2025 »")
     expect(text).toContain("15 000 FCFA")
     expect(text).toContain("Mobile Money")
+    expect(text).toContain("WhatsApp +237 689 49 26 25")
     expect(text).toMatch(/\/tarifs\?ref=GUY123$/)
   })
 })
