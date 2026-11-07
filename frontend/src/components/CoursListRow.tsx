@@ -8,7 +8,7 @@ import { capitaliserTheme, cn } from "@/lib/utils"
 import { coursDetailPath, coursReaderPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { t, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 interface CoursListRowProps {
   cours: Cours
@@ -46,7 +46,7 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
                 className="size-3.5 shrink-0 text-gold-text"
                 fill="currentColor"
                 role="img"
-                aria-label={t("seance.frequence", { n: cours.tombe_souvent.nb_epreuves, total: cours.tombe_souvent.nb_sessions })}
+                aria-label={tn("seance.frequence", cours.tombe_souvent.nb_epreuves, { total: cours.tombe_souvent.nb_sessions })}
               />
             )}
           </h2>

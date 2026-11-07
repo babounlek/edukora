@@ -38,6 +38,7 @@ from . import textes
 from .progression import progression_par_matiere
 from .services import libelle_etape
 from .services import (
+    EPREUVES_MINIMUM_FREQUENCE,
     SEUIL_MAITRISE, AucuneQuestionPlusDure, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
@@ -948,7 +949,8 @@ def _frequence_du_theme(seance):
         cursus=seance.cursus_id, origine=Origine.OFFICIEL,
     ).distinct()
     total = lessons.count()
-    if not total:
+    # « Tombé dans 1 épreuves sur 1 » n'apprend rien et se lit comme une statistique : sous le seuil, on se tait.
+    if total < EPREUVES_MINIMUM_FREQUENCE:
         return None
     concernees = lessons.filter(exercises__questions__themes__id=seance.theme_id).distinct().order_by("-year")
     occurrences = concernees.count()

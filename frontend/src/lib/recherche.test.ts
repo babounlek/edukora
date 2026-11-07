@@ -131,7 +131,7 @@ describe("actionsTheme", () => {
       ["exercices", "1 exercice"],
       ["quiz", "Quiz · 12 questions"],
     ])
-    expect(actions[0].to).toBe("/cm/cours?theme=7&subject=MATHS&cursus=5")
+    expect(actions[0].to).toBe("/cm/cours?theme=7&subject=MATHS")
     expect(actions[1].to).toBe("/cm/themes-frequents/7/exercices?subject=MATHS&cursus=5")
     expect(actions[2].to).toBe("/quiz?cursus=5&theme=7")
   })
@@ -148,7 +148,7 @@ describe("actionsTheme", () => {
 
   it("mène un thème à sa première ressource", () => {
     expect(cibleResultat("cm", theme({ nb_quiz: 3 }))).toBe("/quiz?cursus=5&theme=7")
-    expect(cibleResultat("cm", theme({ nb_cours: 1, nb_quiz: 3 }))).toBe("/cm/cours?theme=7&subject=MATHS&cursus=5")
+    expect(cibleResultat("cm", theme({ nb_cours: 1, nb_quiz: 3 }))).toBe("/cm/cours?theme=7&subject=MATHS")
   })
 })
 

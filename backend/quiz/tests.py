@@ -3498,6 +3498,37 @@ class PlanDuJourTests(TestCase):
         # sans elles, "tombé dans 2 des 3 dernières épreuves" est à croire sur parole.
         self.assertEqual(frequence, {"occurrences": 2, "epreuves_total": 3, "annees": [2024, 2023]})
 
+    def test_pas_de_frequence_annoncee_sur_moins_de_trois_epreuves(self):
+        # « Tombé dans 1 épreuves sur 1 » (test élève Nadège, Tle C, 2026-11-07) : un 100 % sur une seule épreuve n'apprend rien.
+        self._abonner()
+        self._item(self.subject, self.theme)
+        self._epreuve_sur_le_theme(self.subject, self.theme, annee=2024)
+        RevisionSchedule.objects.create(
+            profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
+            palier=0, due_at=timezone.localdate(),
+        )
+
+        self.assertIsNone(self.client.get("/quiz/plan-du-jour/").data["seance"]["frequence"])
+
+    def test_une_matiere_a_une_seule_epreuve_ne_passe_pas_devant_une_matiere_documentee(self):
+        # Observé en BAC C : l'Histoire (1 épreuve, 100 %) passait devant les Mathématiques (28 sur 44, 64 %).
+        self._abonner()
+        self._item(self.subject, self.theme)
+        self._item(self.autre_subject, self.autre_theme)
+        for annee in (2021, 2022, 2023, 2024):
+            self._epreuve_sur_le_theme(self.subject, self.theme, annee=annee)
+        # Cinq épreuves de maths dont quatre sur le thème (80 %) ; une seule épreuve de SVT, sur le thème (100 %).
+        autre = Lesson.objects.create(
+            title="Épreuve maths sans thème", subject=self.subject, year=2020,
+            lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        autre.cursus.add(self.cursus)
+        self._epreuve_sur_le_theme(self.autre_subject, self.autre_theme, annee=2024)
+
+        seance = plan_du_jour(self.profil, self.cursus)
+
+        self.assertEqual(seance.subject_id, self.subject.id)
+
     def test_terminer_la_seance_bascule_letat(self):
         self._abonner()
         self._item(self.subject, self.theme)

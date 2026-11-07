@@ -199,7 +199,8 @@ export const fr = {
 
   "seance.aujourdhui": "Aujourd'hui",
   "seance.diagnostic": "on situe ton niveau",
-  "seance.frequence": "Tombé dans {n} épreuves sur {total}",
+  "seance.frequence_one": "Tombé dans {n} épreuve sur {total}",
+  "seance.frequence_other": "Tombé dans {n} épreuves sur {total}",
   "seance.debloquer": "Débloquer ma séance",
   "seance.acces_termine": "Ton accès a pris fin le {date}. Réabonne-toi pour reprendre ta séance.",
   "seance.commencer": "Commencer",
@@ -761,7 +762,7 @@ export const fr = {
   "cm.reelles": "Conditions réelles",
   "cm.reelles1": "Chrono de {duree}, sans pause",
   "cm.reelles2": "Corrigé masqué jusqu'à la fin",
-  "cm.reelles3": "Copie rendue toute seule à zéro",
+  "cm.reelles3": "Copie rendue automatiquement à la fin du temps",
   "cm.papier": "Sur papier",
   "cm.papier1": "Tu imprimes le sujet et tu composes à la main",
   "cm.papier2": "Même chrono, même corrigé masqué",

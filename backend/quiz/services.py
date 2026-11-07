@@ -1643,6 +1643,14 @@ def _seance_de_calibrage(profil, cursus):
     }
 
 
+# Sous ce nombre d'épreuves officielles, un pourcentage de fréquence ne dit rien : « 1 sur 1 » vaut 100 %. Observé sur le
+# BAC C (test élève 2026-11-07) : l'Histoire (1 épreuve) et la Physique-Chimie (1 épreuve) passaient à 100 % devant les
+# Mathématiques (28 sur 44, 64 %), et la séance du jour d'une Terminale C était « Seconde Guerre mondiale, tombé dans
+# 1 épreuves sur 1 ». Un thème qui ne repose que sur 1 ou 2 épreuves ne se classe plus par fréquence (il passe après tous
+# ceux qui en ont une) et l'annonce « tombé dans N sur M » n'est pas affichée.
+EPREUVES_MINIMUM_FREQUENCE = 3
+
+
 def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=frozenset()):
     """
     Le thème qui revient le plus souvent à l'examen, parmi ceux que l'élève n'a pas
@@ -1696,7 +1704,12 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
                 "entree": entree,
                 "cle_theme": cle_theme,
                 "cle_savoir": cle_savoir,
-                "frequence_pct": entree.get("frequence_pct"),
+                # Une fréquence sur trop peu d'épreuves ne classe rien (voir EPREUVES_MINIMUM_FREQUENCE).
+                "frequence_pct": (
+                    entree.get("frequence_pct")
+                    if (entree.get("nb_epreuves") or 0) >= EPREUVES_MINIMUM_FREQUENCE
+                    else None
+                ),
             })
 
     if not candidats:

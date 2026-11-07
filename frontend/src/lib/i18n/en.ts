@@ -193,7 +193,8 @@ export const en: Partial<Record<CleI18n, string>> = {
 
   "seance.aujourdhui": "Today",
   "seance.diagnostic": "we find your level",
-  "seance.frequence": "Came up in {n} of {total} papers",
+  "seance.frequence_one": "Came up in {n} of {total} papers",
+  "seance.frequence_other": "Came up in {n} of {total} papers",
   "seance.debloquer": "Unlock my session",
   "seance.acces_termine": "Your access ended on {date}. Renew it to pick up your session again.",
   "seance.commencer": "Start",
@@ -755,7 +756,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cm.reelles": "Real conditions",
   "cm.reelles1": "{duree} timer, no pauses",
   "cm.reelles2": "Solution hidden until the end",
-  "cm.reelles3": "Paper handed in automatically at zero",
+  "cm.reelles3": "Paper handed in automatically when time is up",
   "cm.papier": "On paper",
   "cm.papier1": "You print the paper and write by hand",
   "cm.papier2": "Same timer, same hidden solution",

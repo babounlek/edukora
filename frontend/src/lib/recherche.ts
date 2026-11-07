@@ -125,7 +125,11 @@ export function actionsTheme(country: string, resultat: ResultatRecherche): Acti
       cle: "cours",
       libelle: tn("rc.n_cours", nb_cours),
       nb: nb_cours,
-      to: `${coursListPath(country)}${parametres({ theme: tag_id, subject: subject_code, cursus })}`,
+      // Sans `cursus` : le nombre de cours annoncé vient de l'index (tous les cours portant ce thème), alors que la liste
+      // d'un examen ne garde que les cours rattachés à lui ou à l'une de ses épreuves. Un cours « Tle C/E » sans examen
+      // rattaché disparaissait : la carte disait « 1 cours », la liste « Aucun cours ne correspond » (test élève Nadège
+      // 2026-11-07). Thème et matière suffisent à cibler.
+      to: `${coursListPath(country)}${parametres({ theme: tag_id, subject: subject_code })}`,
     })
   }
   // La page des exercices d'un thème est propre à un (cursus, matière) : sans cursus connu, elle n'existe pas.

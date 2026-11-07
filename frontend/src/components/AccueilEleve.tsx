@@ -119,12 +119,14 @@ export function AccueilEleve({ country }: { country: string }) {
   return (
     <div className="pb-4">
       {enCours && chronoEnCours && <LigneReprise tentative={enCours} />}
+      {/* Un quiz commencé passe lui aussi avant la tête de page (test élève 2026-11-07, deux testeurs : « Quiz en cours »
+          à ~1 180 px du haut, sous le premier écran). Ordre : chrono d'examen, puis quiz, puis la séance du jour. */}
+      <ReprendreQuiz enveloppe />
       <TeteAccueil accueil={data} country={country} />
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
       {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
       {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
-      <ReprendreQuiz enveloppe />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />

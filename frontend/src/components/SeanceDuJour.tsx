@@ -840,7 +840,7 @@ function PastilleFrequence({
   const contenu = (
     <>
       <Target className="size-3.5 shrink-0" />
-      {t("seance.frequence", { n: frequence.occurrences, total: frequence.epreuves_total })}
+      {tn("seance.frequence", frequence.occurrences, { total: frequence.epreuves_total })}
     </>
   )
   if (ouvert === undefined) return <span className={classes}>{contenu}</span>

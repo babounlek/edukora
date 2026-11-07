@@ -286,6 +286,20 @@ describe("AccueilEleve", () => {
       expect(reprise.compareDocumentPosition(tete as Element) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     })
 
+    it("met un quiz commencé avant la séance du jour (test élève Nadège 2026-11-07 : à 1,5 écran du haut)", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listQuizEnCours.mockResolvedValue([
+        { id: 9, mode: "DIAGNOSTIC", cursus: 4, cursus_display: "BAC D", subject: 1, subject_label: "Maths", theme: "x",
+          started_at: "2026-11-07T06:00:00Z", derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 2, total_questions: 10,
+          a_terminer: false, rejeu_de: null },
+      ])
+      const { container } = afficher()
+      const reprise = await screen.findByRole("link", { name: /Test de niveau/ })
+      const tete = container.querySelector("[data-guide='seance-commencer']") ?? container.querySelector("h1, h2")
+      expect(tete).not.toBeNull()
+      expect(reprise.compareDocumentPosition(tete as Element) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    })
+
     it("laisse la reprise d'une copie sans chrono sous la séance du jour", async () => {
       getAccueil.mockResolvedValue(accueil())
       listMyTentativesInedites.mockResolvedValue([tentative])
