@@ -46,6 +46,8 @@ const LoginPage = lazy(() => import("@/pages/LoginPage").then((m) => ({ default:
 const QuiEtudiePage = lazy(() => import("@/pages/QuiEtudiePage").then((m) => ({ default: m.QuiEtudiePage })))
 const SubscribePage = lazy(() => import("@/pages/SubscribePage").then((m) => ({ default: m.SubscribePage })))
 const PricingPage = lazy(() => import("@/pages/PricingPage").then((m) => ({ default: m.PricingPage })))
+const AidePage = lazy(() => import("@/pages/AidePage").then((m) => ({ default: m.AidePage })))
+const AideArticlePage = lazy(() => import("@/pages/AideArticlePage").then((m) => ({ default: m.AideArticlePage })))
 const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ default: m.AccountPage })))
 const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default: m.AccesPage })))
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
@@ -216,6 +218,8 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/confidentialite" element={<PrivacyPage />} />
                       <Route path="/cgu" element={<TermsPage />} />
                       <Route path="/a-propos" element={<AboutPage />} />
+                      <Route path="/aide" element={<AidePage />} />
+                      <Route path="/aide/:slug" element={<AideArticlePage />} />
                       <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                   </Suspense>

@@ -1310,3 +1310,22 @@ export function postRattachementRevendeur(code: string) {
     body: { code },
   })
 }
+
+// ---- Centre d'aide (backend : aide/) ----------------------------------------------------------------------------
+
+/** Tous les articles publiés, sans leur corps : de quoi chercher et ranger. Public, sans connexion. */
+export function listAideArticles(langue: "fr" | "en") {
+  return apiRequest<import("@/lib/aide/types").ArticleAideResume[]>(`/aide-api/articles/?langue=${langue}`, { auth: false })
+}
+
+export function getAideArticle(slug: string, langue: "fr" | "en") {
+  return apiRequest<import("@/lib/aide/types").ArticleAideDetail>(
+    `/aide-api/articles/${encodeURIComponent(slug)}/?langue=${langue}`,
+    { auth: false },
+  )
+}
+
+/** Le code d'assistance du compte connecté (à donner au support). */
+export function getCodeAssistance() {
+  return apiRequest<{ code: string }>("/aide-api/mon-code/")
+}

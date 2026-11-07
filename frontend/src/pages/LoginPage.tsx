@@ -25,6 +25,7 @@ import { clearReferralCode, consumeReferralCode } from "@/lib/referral"
 import { destinationApresConnexion, ouvrirDestination } from "@/lib/apresConnexion"
 import { countryFlagClassName } from "@/lib/countryFlag"
 import { chiffresNumeroLocal } from "@/lib/telephone"
+import { LienAide } from "@/components/aide/LienAide"
 import { SITE_NAME } from "@/lib/site"
 import { langueCourante, t, urlAnglaiseExplicite, useI18n } from "@/lib/i18n"
 
@@ -487,6 +488,7 @@ export function LoginPage() {
                 <p className="text-xs text-muted-foreground">
                   {t(methode === "phone" ? "login.pas_recu_tel" : "login.pas_recu_email", { site: SITE_NAME })}
                 </p>
+                <LienAide slug="code-non-recu">{t("aide.lien.code")}</LienAide>
               </div>
               {codeExpire && (
                 <p role="alert" className="text-sm text-destructive">

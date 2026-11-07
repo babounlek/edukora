@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { CheckCircle2, Download, Loader2 } from "lucide-react"
 
@@ -16,6 +17,7 @@ import { t, useI18n } from "@/lib/i18n"
  */
 export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: string }) {
   useI18n()
+  const navigate = useNavigate()
   const enLigne = useEnLigne()
   const [disponible, setDisponible] = useState<boolean | null>(null)
   const [enCours, setEnCours] = useState(false)
@@ -41,7 +43,11 @@ export function BoutonHorsLigne({ type, slug }: { type: TypeContenu; slug: strin
       const ok = await estDisponibleHorsLigne(type, slug)
       setDisponible(ok)
       if (ok) toast.success(t("ed.hors_ligne"))
-      else toast.error(t("ed.hors_ligne_erreur"))
+      else {
+        toast.error(t("ed.hors_ligne_erreur"), {
+          action: { label: t("aide.lien.hors_ligne"), onClick: () => navigate("/aide/lire-hors-ligne") },
+        })
+      }
     } catch {
       toast.error(t("ed.telechargement_erreur"))
     } finally {

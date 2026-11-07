@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { Link, MemoryRouter, useLocation } from "react-router-dom"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -17,6 +17,11 @@ const { trackEvent } = vi.hoisted(() => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/analytics", () => ({ trackEvent }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth.current }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
+// Le panneau d'aide charge les articles du centre d'aide par le réseau : ces tests ne portent que sur les guides.
+vi.mock("@/lib/aide/hooks", () => ({
+  useArticlesAide: () => ({ data: undefined }),
+  useCodeAssistance: () => null,
+}))
 
 import { definirModeExamen } from "@/lib/modeExamen"
 import { memoriserCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
@@ -527,7 +532,18 @@ describe("centre d'aide : questions et contact", () => {
     const panneau = await screen.findByRole("dialog", { name: /Aide/ })
     expect(panneau).toHaveTextContent("Mon paiement n'a pas fonctionné, que faire ?")
     expect(panneau).toHaveTextContent("courriers indésirables")
-    expect(screen.getByRole("link", { name: "Écris-nous sur WhatsApp" })).toHaveAttribute("href", expect.stringContaining("wa.me"))
+    const contact = screen.getByRole("link", { name: "Écrire au support sur WhatsApp" })
+    expect(contact).toHaveAttribute("href", expect.stringContaining("wa.me"))
+    // Le message arrive déjà commencé : la page d'où l'on écrit y figure, pour éviter les allers-retours.
+    expect(decodeURIComponent(contact.getAttribute("href") ?? "")).toContain("Page : /cm")
+  })
+
+  it("mène au centre d'aide complet", async () => {
+    monter()
+    await waitFor(() => expect(lireEtat().identite).toBe("7:3"))
+    act(() => ouvrirCentre())
+    const panneau = await screen.findByRole("dialog", { name: /Aide/ })
+    expect(within(panneau).getByRole("link", { name: /Voir tout le centre d'aide/ })).toHaveAttribute("href", "/aide")
   })
 })
 

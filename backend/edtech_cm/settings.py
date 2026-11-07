@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     "relances",
     "simulations",
     "recherche",
+    "aide",  # centre d aide : articles FR/EN (aide/models.py), API sous /aide-api/
     "synchro",  # journal et moteur de la chaîne de synchronisation des contenus (deploy/SPEC-SYNC-CONTENU.md)
 ]
 

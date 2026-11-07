@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.http import Http404, HttpResponse
 
+from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
 from .models import Cours, Country, Langue, Lesson, StatutContenu
@@ -23,6 +24,7 @@ MAX_URLS_PER_SITEMAP = 1000
 
 _STATIC_PAGES = [
     ("/tarifs", "0.5", "weekly"),
+    ("/aide", "0.6", "weekly"),
     ("/cgu", "0.3", "monthly"),
     ("/confidentialite", "0.3", "monthly"),
 ]
@@ -115,6 +117,11 @@ def _all_entries():
         entries.extend(_entries(
             base, f"/cours/{cours.slug}", cours.subject.langue == Langue.EN, lastmod=cours.updated_at, priority="0.7",
         ))
+
+    # Centre d'aide : un article n'a de version anglaise indexable que s'il est traduit (sinon /en/help/x ne serait que
+    # du français habillé d'une interface anglaise, comme pour un corrigé de BEPC - même règle que plus haut).
+    for article in ArticleAide.objects.filter(publie=True).only("slug", "maj_le", "titre_en", "corps_en"):
+        entries.extend(_entries(base, f"/aide/{article.slug}", article.traduit, lastmod=article.maj_le, priority="0.5"))
 
     return entries
 

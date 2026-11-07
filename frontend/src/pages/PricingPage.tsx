@@ -30,6 +30,7 @@ import { CONTACT_WHATSAPP_AFFICHAGE, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAM
 import { Button } from "@/components/ui/button"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
+import { LienAide } from "@/components/aide/LienAide"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
@@ -604,6 +605,7 @@ export function PricingPage() {
                                   {" · "}
                                   {EDITEUR_NOM}
                                 </p>
+                                <LienAide slug="comment-payer" className="mt-1">{t("aide.lien.comment_payer")}</LienAide>
                               </div>
                             </>
                           )}

@@ -1,8 +1,12 @@
 import { useState } from "react"
-import { useLocation, useNavigate } from "react-router-dom"
-import { Check, MessageCircle } from "lucide-react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { ArrowRight, Check } from "lucide-react"
 
+import { ContactAide } from "@/components/aide/ContactAide"
 import { LivreOuvert } from "@/components/guides/LivreOuvert"
+import { useArticlesAide } from "@/lib/aide/hooks"
+import { articlesPourPage } from "@/lib/aide/recherche"
+import { remplirGabarits } from "@/lib/aide/texte"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
 import { useAuth } from "@/context/AuthContext"
@@ -16,7 +20,6 @@ import { resoudreTexte } from "@/lib/guides/resoudre"
 import { estAJour } from "@/lib/guides/store"
 import type { DefinitionGuide } from "@/lib/guides/types"
 import { catalogueHomePath } from "@/lib/countryPath"
-import { CONTACT_WHATSAPP_URL } from "@/lib/site"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
@@ -36,6 +39,10 @@ export function CentreAide() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [revoir, setRevoir] = useState(false)
+  // Les articles du centre d'aide ne sont demandés qu'à l'ouverture du panneau : il est monté sur toutes les pages.
+  const { data: articles } = useArticlesAide(centreOuvert)
+  const articlesDePage = articles ? articlesPourPage(articles, pathname) : []
+  const frequentes = (articles ?? []).filter((a) => a.populaire && !articlesDePage.some((p) => p.slug === a.slug)).slice(0, 5)
   // Ce que la page ouverte derrière le panneau affiche : les textes dynamiques s'en servent aussi ici.
   const pageSeance = useContextePage("seance")
   const pageCours = useContextePage("cours")
@@ -73,7 +80,33 @@ export function CentreAide() {
         </SheetTitle>
         <SheetDescription>{t("guide.centre.description")}</SheetDescription>
 
-        <ul className="mt-5 space-y-4">
+        {articlesDePage.length > 0 && (
+          <section aria-labelledby="centre-pour-page" className="mt-5">
+            <h3 id="centre-pour-page" className="font-display text-base font-semibold">
+              {t("aide.panneau.pour_page")}
+            </h3>
+            <ListeArticles articles={articlesDePage} />
+          </section>
+        )}
+        {frequentes.length > 0 && (
+          <section aria-labelledby="centre-frequentes" className="mt-5">
+            <h3 id="centre-frequentes" className="font-display text-base font-semibold">
+              {t("aide.panneau.frequentes")}
+            </h3>
+            <ListeArticles articles={frequentes} />
+          </section>
+        )}
+        <Link
+          to="/aide"
+          onClick={fermerCentre}
+          className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md border border-primary/30 bg-primary/5 px-4 text-sm font-semibold text-primary hover:bg-primary/10"
+        >
+          {t("aide.panneau.tout")}
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
+
+        <h3 className="mt-7 font-display text-base font-semibold">{t("aide.panneau.guides")}</h3>
+        <ul className="mt-3 space-y-4">
           {guides.map((guide) => (
             <li key={guide.id} className="rounded-xl border border-border bg-card p-4">
               <div className="flex items-start justify-between gap-3">
@@ -106,11 +139,10 @@ export function CentreAide() {
           ))}
         </ul>
 
-        <section aria-labelledby="centre-questions" className="mt-6 border-t border-border pt-4">
-          <h3 id="centre-questions" className="font-display text-base font-semibold">
-            {t("guide.centre.questions")}
-          </h3>
-          <dl className="mt-2 space-y-3 text-sm">
+        <ContactAide source="panneau" className="mt-6" />
+        {/* Hors réseau ou avant le premier chargement des articles, les deux réponses les plus demandées restent lisibles. */}
+        {!articles && (
+          <dl className="mt-4 space-y-3 text-sm">
             <div>
               <dt className="font-medium">{t("guide.centre.faq_paiement_q")}</dt>
               <dd className="mt-0.5 text-muted-foreground">{t("guide.centre.faq_paiement_r")}</dd>
@@ -120,13 +152,7 @@ export function CentreAide() {
               <dd className="mt-0.5 text-muted-foreground">{t("guide.centre.faq_code_r")}</dd>
             </div>
           </dl>
-          <Button asChild variant="outline" className="mt-3 min-h-11 w-full">
-            <a href={CONTACT_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-              <MessageCircle className="size-4" aria-hidden="true" />
-              {t("guide.centre.contact")}
-            </a>
-          </Button>
-        </section>
+        )}
 
         <div className="mt-6 space-y-3 border-t border-border pt-4">
           <label className="flex min-h-11 items-start gap-3 text-sm">
@@ -159,5 +185,25 @@ export function CentreAide() {
         </div>
       </SheetContent>
     </Sheet>
+  )
+}
+
+/** Une courte liste de liens vers des articles d'aide, dans le panneau. Un clic ferme le panneau et ouvre l'article. */
+function ListeArticles({ articles }: { articles: { slug: string; titre: string }[] }) {
+  return (
+    <ul className="mt-2 space-y-1.5">
+      {articles.map((article) => (
+        <li key={article.slug}>
+          <Link
+            to={`/aide/${article.slug}`}
+            onClick={fermerCentre}
+            className="flex min-h-11 items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium hover:border-primary/40 hover:bg-accent/40"
+          >
+            <span>{remplirGabarits(article.titre)}</span>
+            <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          </Link>
+        </li>
+      ))}
+    </ul>
   )
 }

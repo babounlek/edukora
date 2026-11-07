@@ -312,6 +312,7 @@ export function Footer() {
         </Colonne>
 
         <Colonne titre={t("ft.col_aide")}>
+          <Lien to="/aide">{t("ft.aide_centre")}</Lien>
           <button
             type="button"
             onClick={ouvrirCentre}

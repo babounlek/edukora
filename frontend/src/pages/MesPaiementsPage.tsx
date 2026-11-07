@@ -10,6 +10,7 @@ import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { catalogueHomePath } from "@/lib/countryPath"
+import { LienAide } from "@/components/aide/LienAide"
 import { useSeo } from "@/lib/seo"
 import { cn, formatAmount } from "@/lib/utils"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
@@ -201,6 +202,7 @@ function CartePaiement({
           {t("pm.verifie", { delai: delaiVerificationPaiementAffiche() })}
         </p>
       )}
+      {payment.status === "PENDING" && <LienAide slug="paiement-en-verification" className="mt-1">{t("aide.lien.verification")}</LienAide>}
 
       {payment.status === "REJECTED" && (
         <div role="alert" className="mt-4 flex flex-wrap items-center justify-between gap-3">
@@ -217,6 +219,7 @@ function CartePaiement({
           </Button>
         </div>
       )}
+      {payment.status === "REJECTED" && <LienAide slug="paiement-refuse" className="mt-1">{t("aide.lien.refuse")}</LienAide>}
 
       {payment.status === "APPROVED" && (
         <div className="mt-3 flex flex-wrap items-center justify-between gap-3">

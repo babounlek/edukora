@@ -45,6 +45,10 @@ export type AnalyticsEventName =
   | "objectif_xp_choisi"
   // Mascotte touchée : la surface (resultat, accueil) et la situation, jamais de texte - voir analytics.models.
   | "mascotte_touchee"
+  // Centre d'aide : article lu, jugé utile ou non, contact WhatsApp ouvert. Slug et rubrique seulement, jamais de texte - voir analytics.models.
+  | "aide_article_vu"
+  | "aide_article_utile"
+  | "aide_contact_clic"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

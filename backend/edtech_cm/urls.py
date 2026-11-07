@@ -41,6 +41,7 @@ urlpatterns = [
     path("relances/", include("relances.urls")),
     path("simulations/", include("simulations.urls")),
     path("recherche/", include("recherche.urls")),
+    path("aide-api/", include("aide.urls")),
     # Aperçu des liens partagés (WhatsApp, Facebook...) : Caddy y envoie les robots d'aperçu à la
     # place de la SPA, voir catalog/apercu_partage.py.
     path("partage-apercu/", apercu_partage, name="partage-apercu-racine"),

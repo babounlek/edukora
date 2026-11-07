@@ -74,6 +74,12 @@ class EventName(models.TextChoices):
     # (resultat, accueil) et la situation vont dans `properties` - jamais de texte. Rapporté aux quiz terminés et aux accueils
     # ouverts, c'est la seule façon de savoir si elle est remarquée : le drapeau est global, il n'y a pas de groupe témoin.
     MASCOTTE_TOUCHEE = "mascotte_touchee", "Mascotte touchée"
+    # Centre d'aide (frontend pages/Aide*, backend aide/) : article lu, jugé utile ou non, contact WhatsApp ouvert depuis l'aide.
+    # Seuls le slug de l'article, la rubrique et le oui/non vont dans `properties` - jamais le texte d'une recherche
+    # (les recherches sans résultat de l'aide passent par `search_no_results` avec source "aide", sans le texte).
+    AIDE_ARTICLE_VU = "aide_article_vu", "Article d'aide lu"
+    AIDE_ARTICLE_UTILE = "aide_article_utile", "Article d'aide jugé utile ou non"
+    AIDE_CONTACT_CLIC = "aide_contact_clic", "Contact WhatsApp ouvert depuis l'aide"
 
 
 class AnalyticsEvent(models.Model):
