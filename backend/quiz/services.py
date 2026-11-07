@@ -1,4 +1,5 @@
 import random
+import re
 import unicodedata
 from collections import Counter, defaultdict, namedtuple
 from functools import lru_cache
@@ -1658,7 +1659,8 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
 
     Le classement se fait sur le POURCENTAGE d'épreuves touchées, pas sur le nombre
     brut : un thème tombé 9 fois sur 10 en SVT pèse plus qu'un thème tombé 11 fois sur
-    41 en anglais, alors que le compte brut dirait l'inverse. Une matière qui n'a aucun
+    41 en anglais, alors que le compte brut dirait l'inverse - pondéré par le
+    coefficient de la matière (voir cle_de_tri). Une matière qui n'a aucun
     thème classé (aucune question étiquetée) retombe sur le programme officiel : elle
     n'a aucune fréquence à annoncer, elle passe après, jamais devant, plutôt que de se
     voir attribuer un chiffre inventé.
@@ -1670,8 +1672,8 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
     ce serait à revoir si elle devait se recalculer à chaque affichage.
 
     Le rang de la matière (voir _subjects_par_priorite : coefficient x (1 - maîtrise))
-    ne décide plus, il départage : à fréquence égale, on préfère la matière qui pèse le
-    plus au diplôme et où l'élève est le plus faible.
+    ne décide pas, il départage : à poids égal, on préfère la matière où l'élève est le
+    plus faible.
     """
     # Seules les matières qui ont une banque de quiz sur ce cursus : ailleurs, aucun
     # thème ne passerait le filtre "sans quiz" de toute façon, autant ne pas payer le
@@ -1732,12 +1734,19 @@ def _seance_depuis_parcours(profil, cursus, matieres_exclues, themes_interdits=f
         ]
         pool = jamais_travailles or candidats
 
+    coefficients = _coefficient_par_subject(cursus)
+
     def cle_de_tri(c):
-        # Fréquence décroissante d'abord ; une matière sans classement par fréquence
-        # (frequence_pct absent) passe après toutes celles qui en ont un.
+        # Poids décroissant d'abord : fréquence x coefficient, comme poids_savoir
+        # (« ce qui tombe vraiment » ET « ce que ça rapporte »). Sans le coefficient, un
+        # thème tombé à chaque épreuve d'une matière à coefficient 2 passait devant un
+        # thème des Mathématiques (coefficient 7) tombé aux deux tiers des épreuves.
+        # Une matière sans classement par fréquence (frequence_pct absent) passe après
+        # toutes celles qui en ont un.
+        coefficient = coefficients.get(c["subject"].id, COEFFICIENT_PAR_DEFAUT)
         return (
             c["frequence_pct"] is None,
-            -(c["frequence_pct"] or 0),
+            -(c["frequence_pct"] or 0) * coefficient,
             0 if jamais_travailles else (c["entree"]["taux"] or 0),
             c["rang_matiere"],
             c["entree"]["intitule"],
@@ -2124,35 +2133,85 @@ def _coefficient_par_subject(cursus):
     tard" (voir sa docstring) et ne l'a jamais reçu. En attendant, l'information est
     bien là, transcrite épreuve par épreuve depuis les sujets réels.
 
-    Ne retient que les valeurs NUMÉRIQUES SIMPLES ("4", "1,5"). Le champ est du texte
-    libre et une minorité de valeurs sont composites ("D:4", "C,D : 1,5 ; E : 2",
-    mesuré à 19 sur 154 pour BAC D) : deviner quelle part s'applique à quelle série
-    demanderait un analyseur de codes de série, pour un gain nul - il reste presque
-    toujours une épreuve à valeur simple sur la même matière, et à défaut le
-    coefficient par défaut s'applique.
+    Trois précautions, toutes constatées sur BAC C où elles faisaient classer les
+    Mathématiques à 4 et la Physique à 1 (les sujets officiels disent 7 et 3) :
+
+    - Les épreuves PRATIQUES sont écartées : leur coefficient (1) est celui du TP, pas
+      celui de la matière, et elles tiraient la valeur dominante vers le bas.
+    - Une valeur par série ("7(C) / 6(E)", "C,D : 1,5 ; E : 2", "D:4") est lue pour la
+      série du cursus (voir _coefficient_de_la_serie). Une valeur composite sans code
+      de série, ou dont le code n'est pas celui du cursus, reste écartée : il reste
+      presque toujours une épreuve à valeur simple, et à défaut le coefficient par
+      défaut s'applique.
+    - Seules les épreuves des COEFFICIENT_FENETRE_ANNEES dernières années de la
+      matière comptent : les coefficients changent avec les réformes (Maths BAC C : 4
+      jusqu'en 1995, 5 de 2001 à 2019, 7 depuis 2022) et trente ans de sujets
+      anciens ne doivent pas décider de ce qui pèse AUJOURD'HUI.
 
     Valeur dominante (la plus fréquente) et non moyenne : une transcription erronée
     isolée ne doit pas décaler le coefficient de toute une matière. Départage par la
     plus grande valeur, pour que le résultat ne dépende jamais de l'ordre des lignes.
     """
-    valeurs = defaultdict(Counter)
-    for subject_id, brut in (
+    serie = getattr(getattr(cursus, "series", None), "code", None)
+    lignes = defaultdict(list)  # subject_id -> [(année, valeur)]
+    for subject_id, brut, annee in (
         Lesson.objects.filter(statut=StatutContenu.VALIDE, cursus=cursus)
         .exclude(coefficient="")
-        .values_list("subject_id", "coefficient")
+        .exclude(nature_epreuve="PRATIQUE")
+        .values_list("subject_id", "coefficient", "year")
     ):
-        texte = (brut or "").strip().replace(",", ".")
-        try:
-            valeur = float(texte)
-        except ValueError:
-            continue  # valeur composite : voir la docstring
-        if valeur > 0:
-            valeurs[subject_id][valeur] += 1
+        valeur = _coefficient_de_la_serie(brut, serie)
+        if valeur is not None:
+            lignes[subject_id].append((annee or 0, valeur))
 
-    return {
-        subject_id: max(compteur.most_common(), key=lambda paire: (paire[1], paire[0]))[0]
-        for subject_id, compteur in valeurs.items()
-    }
+    resultat = {}
+    for subject_id, paires in lignes.items():
+        recent = max(annee for annee, _ in paires) - COEFFICIENT_FENETRE_ANNEES
+        compteur = Counter(valeur for annee, valeur in paires if annee >= recent)
+        resultat[subject_id] = max(compteur.most_common(), key=lambda paire: (paire[1], paire[0]))[0]
+    return resultat
+
+
+# Les coefficients d'une matière changent avec les réformes : on ne regarde que ses
+# sujets des dix dernières années (comptées depuis son sujet le plus récent, pour
+# qu'une matière dont le dernier sujet date de 2019 garde une valeur).
+COEFFICIENT_FENETRE_ANNEES = 10
+
+_NOMBRE = r"\d+(?:[.,]\d+)?"
+_CODES = r"(?:séries?\s+)?[A-Za-z][A-Za-z0-9]*(?:\s*(?:,|/|-|\bet\b)\s*[A-Za-z][A-Za-z0-9]*)*"
+_SEGMENT_CODES_PUIS_VALEUR = re.compile(rf"^\s*(?P<codes>{_CODES})\s*:\s*(?P<nombre>{_NOMBRE})\s*$", re.IGNORECASE)
+_SEGMENT_VALEUR_PUIS_CODES = re.compile(rf"^\s*(?P<nombre>{_NOMBRE})\s*\(\s*(?P<codes>{_CODES})\s*\)\s*$", re.IGNORECASE)
+# Séparateurs entre deux séries : ";", un "/" suivi d'un chiffre ("7(C)/6(E)", mais pas
+# "C/D/TI : 2"), une virgule qui suit un chiffre ("C : 04, E : 03", mais pas "C,D : 1,5").
+_SEPARATEUR_DE_SEGMENTS = re.compile(r";|/(?=\s*\d)|(?<=\d),(?=\s*[A-Za-z])")
+
+
+def _coefficient_de_la_serie(brut, serie):
+    """
+    Valeur numérique d'un coefficient transcrit tel que sur le sujet, pour la série
+    donnée ; None quand on ne peut pas dire. Formes lues : "4", "1,5", "02", "7(C) /
+    6(E)", "C,D : 1,5 ; E : 2", "D-TI:2", "A : 4 ; C, D, TI : 3". Une forme que cet
+    analyseur ne comprend pas ("4 (2 en A5)", "5/4") donne None plutôt qu'une
+    supposition : l'appelant retombe alors sur une autre épreuve ou sur le défaut.
+    """
+    texte = (brut or "").strip()
+    try:
+        valeur = float(texte.replace(",", "."))
+        return valeur if valeur > 0 else None
+    except ValueError:
+        pass
+    if not serie:
+        return None
+    for segment in _SEPARATEUR_DE_SEGMENTS.split(texte):
+        trouve = _SEGMENT_CODES_PUIS_VALEUR.match(segment) or _SEGMENT_VALEUR_PUIS_CODES.match(segment)
+        if not trouve:
+            continue
+        codes = re.sub(r"(?i)séries?\s+", "", trouve["codes"])
+        jetons = {j.strip().upper() for j in re.split(r"[,/-]|\bet\b", codes, flags=re.IGNORECASE) if j.strip()}
+        if serie.upper() in jetons:
+            valeur = float(trouve["nombre"].replace(",", "."))
+            return valeur if valeur > 0 else None
+    return None
 
 
 def _maitrise_par_subject(profil, cursus):

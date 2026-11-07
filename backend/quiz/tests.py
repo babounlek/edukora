@@ -3295,10 +3295,11 @@ class PlanDuJourTests(TestCase):
         item.cursus.add(self.cursus)
         return item
 
-    def _epreuve_sur_le_theme(self, subject, theme, annee=2024):
+    def _epreuve_sur_le_theme(self, subject, theme, annee=2024, coefficient=""):
         lesson = Lesson.objects.create(
             title=f"Épreuve {subject.code} {annee}", subject=subject, year=annee,
             lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+            coefficient=coefficient,
         )
         lesson.cursus.add(self.cursus)
         question = _make_question(lesson, "1")
@@ -3524,6 +3525,29 @@ class PlanDuJourTests(TestCase):
         )
         autre.cursus.add(self.cursus)
         self._epreuve_sur_le_theme(self.autre_subject, self.autre_theme, annee=2024)
+
+        seance = plan_du_jour(self.profil, self.cursus)
+
+        self.assertEqual(seance.subject_id, self.subject.id)
+
+    def test_le_coefficient_pese_dans_le_choix_de_la_seance(self):
+        # BAC C : un thème de Physique tombé à chaque épreuve (coefficient 2) passait devant les
+        # Mathématiques (coefficient 7, thème aux deux tiers des épreuves). Le poids est
+        # fréquence x coefficient, comme poids_savoir.
+        self._abonner()
+        self._item(self.subject, self.theme)
+        self._item(self.autre_subject, self.autre_theme)
+        # self.subject : 3 épreuves sur 4 portent le thème (75 %), coefficient 6.
+        for annee in (2021, 2022, 2023):
+            self._epreuve_sur_le_theme(self.subject, self.theme, annee=annee, coefficient="6")
+        sans_le_theme = Lesson.objects.create(
+            title="Épreuve sans le thème", subject=self.subject, year=2020, coefficient="6",
+            lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        sans_le_theme.cursus.add(self.cursus)
+        # autre_subject : 3 épreuves sur 3 portent le thème (100 %), coefficient 2.
+        for annee in (2022, 2023, 2024):
+            self._epreuve_sur_le_theme(self.autre_subject, self.autre_theme, annee=annee, coefficient="2")
 
         seance = plan_du_jour(self.profil, self.cursus)
 
@@ -3847,11 +3871,11 @@ class PrioriteMatiereTests(TestCase):
     def _subject(self, code, label):
         return Subject.objects.create(code=code, label=label, country=self.cursus.country)
 
-    def _epreuve(self, subject, coefficient, annee=2024):
+    def _epreuve(self, subject, coefficient, annee=2024, nature=""):
         lesson = Lesson.objects.create(
             title=f"Épreuve {subject.code} {annee}", subject=subject, year=annee,
             lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
-            coefficient=coefficient,
+            coefficient=coefficient, nature_epreuve=nature,
         )
         lesson.cursus.add(self.cursus)
         return lesson
@@ -3903,17 +3927,72 @@ class PrioriteMatiereTests(TestCase):
 
         self.assertEqual(classement[0], self.fort_coef)
 
-    def test_un_coefficient_composite_est_ignore_sans_casser_le_classement(self):
-        self._epreuve(self.fort_coef, "D:4")
+    def test_un_coefficient_composite_sans_ma_serie_est_ignore(self):
         self._epreuve(self.fort_coef, "4")
-        self._epreuve(self.faible_coef, "C,D : 1,5 ; E : 2")
+        self._epreuve(self.fort_coef, "C : 9 ; E : 8")  # ni D ni rien qui s'y rapporte
+        self._epreuve(self.faible_coef, "5/4")  # deux valeurs sans code de série
 
         coefficients = _coefficient_par_subject(self.cursus)
 
-        # La valeur composite est écartée, la valeur simple de la même matière suffit ;
-        # une matière qui n'a que du composite retombe sur le défaut.
+        # La valeur composite qui ne parle pas de la série est écartée, la valeur simple
+        # de la même matière suffit ; une matière qui n'a que du composite illisible
+        # retombe sur le défaut.
         self.assertEqual(coefficients[self.fort_coef.id], 4.0)
         self.assertNotIn(self.faible_coef.id, coefficients)
+
+    def test_la_valeur_propre_a_la_serie_du_cursus_est_lue(self):
+        # Le cursus du test est BAC D. Formes réelles relevées dans le corpus.
+        formes = {
+            "D:4": 4.0,
+            "C,D : 1,5 ; E : 2": 1.5,
+            "C et D : 1,5 ; E : 2": 1.5,
+            "C : 4 ; D : 3": 3.0,
+            "C : 04, D : 03": 3.0,
+            "A : 3 ; C/D/TI : 2": 2.0,
+            "A : 4 ; C, D, TI : 3": 3.0,
+            "3 (série A) / 2 (séries C, D, TI)": 2.0,
+            "7(C) / 6(D)": 6.0,
+            "7(C)/6(D)": 6.0,
+            "D-TI:2": 2.0,
+        }
+        for index, (forme, attendu) in enumerate(formes.items()):
+            matiere = self._subject(f"FORME_TEST_{index}", f"Forme {index}")
+            self._epreuve(matiere, forme)
+            self.assertEqual(_coefficient_par_subject(self.cursus)[matiere.id], attendu, forme)
+
+    def test_une_forme_incomprise_ne_donne_pas_une_valeur_inventee(self):
+        for index, forme in enumerate(["4 (2 en A5)", "5/4", "abc", "D"]):
+            matiere = self._subject(f"INCOMPRIS_TEST_{index}", f"Incompris {index}")
+            self._epreuve(matiere, forme)
+            self.assertNotIn(matiere.id, _coefficient_par_subject(self.cursus), forme)
+
+    def test_une_epreuve_pratique_ne_donne_pas_le_coefficient_de_la_matiere(self):
+        # Constaté sur BAC C : les travaux pratiques de physique (coefficient 1) étaient
+        # plus nombreux que les écrits d'une même valeur et tiraient la matière à 1.
+        self._epreuve(self.fort_coef, "3", annee=2024)
+        self._epreuve(self.fort_coef, "3", annee=2023)
+        for annee in (2021, 2022, 2023, 2024):
+            self._epreuve(self.fort_coef, "1", annee=annee, nature="PRATIQUE")
+
+        self.assertEqual(_coefficient_par_subject(self.cursus)[self.fort_coef.id], 3.0)
+
+    def test_les_sujets_anciens_ne_decident_pas_du_coefficient_actuel(self):
+        # Maths BAC C : 4 jusqu'en 1995, 7 depuis 2022 - treize sujets anciens contre
+        # trois récents ne doivent pas l'emporter.
+        for annee in range(1983, 1996):
+            self._epreuve(self.fort_coef, "4", annee=annee)
+        for annee in (2022, 2023, 2024):
+            self._epreuve(self.fort_coef, "7", annee=annee)
+
+        self.assertEqual(_coefficient_par_subject(self.cursus)[self.fort_coef.id], 7.0)
+
+    def test_une_matiere_sans_sujet_recent_garde_sa_derniere_valeur(self):
+        # La fenêtre se compte depuis le sujet le plus récent DE LA MATIÈRE : une matière
+        # dont le dernier sujet date de 2012 ne disparaît pas.
+        for annee in (2010, 2011, 2012):
+            self._epreuve(self.faible_coef, "3", annee=annee)
+
+        self.assertEqual(_coefficient_par_subject(self.cursus)[self.faible_coef.id], 3.0)
 
     def test_une_virgule_decimale_est_comprise(self):
         self._epreuve(self.fort_coef, "1,5")
