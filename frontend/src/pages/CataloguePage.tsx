@@ -414,7 +414,7 @@ function CatalogueVitrine() {
           rendu par le même composant que la lecture complète (EpreuveMarkdown) - donc
           le même KaTeX, pas une capture d'écran ni un mock. Disparaît silencieusement
           si le slug ne charge pas (même patron que SocialProofSection/EpreuveRail). */}
-      {exempleExercice && exempleCorrigeQ1 && (
+      {exemple && exempleExercice && exempleCorrigeQ1 && (
         <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6">
           <div className="max-w-2xl">
             <h2 className="font-display text-xl font-semibold">{t("accueil.exemple_titre")}</h2>
