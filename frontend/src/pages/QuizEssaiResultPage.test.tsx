@@ -49,6 +49,25 @@ beforeEach(() => {
   auth.isAuthenticated = false
 })
 
+describe("QuizEssaiResultPage : le thème à revoir", () => {
+  it("propose le cours du thème le plus faible, avec son nom et son score", async () => {
+    memoriserEssai(essai([true, false, false, false, false]))
+    afficher()
+
+    expect(await screen.findByText("À revoir en premier")).toBeInTheDocument()
+    const lien = screen.getByRole("link", { name: /Revoir le cours/ })
+    expect(lien).toHaveAttribute("href", "/cm/cours?theme=77&cursus=1")
+  })
+
+  it("ne propose rien quand le thème est maîtrisé", async () => {
+    memoriserEssai(essai([true, true, true, true, true]))
+    afficher()
+
+    await screen.findByText("Ce quiz t'aurait rapporté")
+    expect(screen.queryByText("À revoir en premier")).not.toBeInTheDocument()
+  })
+})
+
 describe("QuizEssaiResultPage : le gain du visiteur", () => {
   it("montre les points que l'essai aurait rapportés, et dit qu'ils ne sont pas gardés", async () => {
     memoriserEssai(essai([true, true, true, false, false]))

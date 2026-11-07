@@ -12,6 +12,17 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
+/**
+ * Sous ce pourcentage de préparation, l'élève démarre : on lui montre ce qu'il a gagné et le prochain palier, pas « 1 % ».
+ * Un chiffre minuscule le jour 1 se lit comme un échec (passe Guyguy 2026-11-07 : « 1 % », « Anglais 0 % »).
+ */
+const SEUIL_DEBUT_PCT = 10
+const PALIERS_SAVOIRS = [5, 10, 25, 50, 100, 200, 400, 800, 1600]
+
+function prochainPalier(maitrises: number): number {
+  return PALIERS_SAVOIRS.find((p) => p > maitrises) ?? maitrises + 100
+}
+
 /** Les matières où il y a le plus à faire, montrées sous l'anneau : les autres sont à « Ma progression ». */
 const NB_MATIERES_AFFICHEES = 2
 
@@ -48,6 +59,7 @@ export function OuJenSuis({
   // Deux cartes sur six matières, sans un mot : un élève GCE en suit six et se demandait où étaient les autres (test
   // élève Gogo). La légende dit pourquoi celles-ci, le bouton dit combien il y en a.
   const matieresMasquees = suivies.length > matieres.length
+  const debut = pourcent(preparation.ponderee) < SEUIL_DEBUT_PCT
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("oujensuis.aria")}>
@@ -63,14 +75,23 @@ export function OuJenSuis({
                 {t("oujensuis.titre")}
               </span>
             </h2>
-            <p className="mt-1.5 text-sm text-muted-foreground">
-              <span className="font-semibold tabular-nums text-foreground">{t("oujensuis.pct", { pct: pourcent(preparation.ponderee) })}</span>{" "}
-              {t("oujensuis.part_examen")}{" "}
-              <span className="tabular-nums">{preparation.maitrises}</span> {tn("oujensuis.savoirs_sur", preparation.maitrises)}{" "}
-              <span className="tabular-nums">{preparation.exploitables}</span>
-            </p>
+            {debut ? (
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                {t("oujensuis.debut", { m: preparation.maitrises, p: prochainPalier(preparation.maitrises) })}
+              </p>
+            ) : (
+              <p className="mt-1.5 text-sm text-muted-foreground">
+                <span className="font-semibold tabular-nums text-foreground">{t("oujensuis.pct", { pct: pourcent(preparation.ponderee) })}</span>{" "}
+                {t("oujensuis.part_examen")}{" "}
+                <span className="tabular-nums">{preparation.maitrises}</span> {tn("oujensuis.savoirs_sur", preparation.maitrises)}{" "}
+                <span className="tabular-nums">{preparation.exploitables}</span>
+              </p>
+            )}
           </div>
-          <AnneauProgression part={preparation.ponderee} />
+          <AnneauProgression
+            part={preparation.ponderee}
+            centre={debut ? <span className="tabular-nums">{preparation.maitrises}</span> : undefined}
+          />
         </div>
 
         {trajectoire && phase !== "apres" && <BlocTrajectoire trajectoire={trajectoire} phase={phase} country={country} />}
@@ -179,6 +200,8 @@ function partMaitrisee(matiere: ResumeMatiere): number {
 function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId: number }) {
   const exploitables = matiere.total - matiere.sans_contenu
   const Icone = subjectIcon(matiere.subject_code)
+  // Une matière pas encore ouverte : « À découvrir » plutôt que « 0 % », qui se lit comme un échec.
+  const intacte = matiere.maitrises === 0 && matiere.en_revision === 0 && matiere.en_cours === 0
   return (
     <Link
       // `?cursus=` est requis par ParcoursSubjectPage.
@@ -192,10 +215,16 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
           </span>
           <span className="min-w-0 truncate text-sm font-semibold">{matiere.subject_label}</span>
         </span>
-        <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
-          {pourcent(partMaitrisee(matiere))}
-          <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
-        </span>
+        {intacte ? (
+          <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+            {t("oujensuis.a_decouvrir")}
+          </span>
+        ) : (
+          <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
+            {pourcent(partMaitrisee(matiere))}
+            <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
+          </span>
+        )}
       </div>
       <BarreSegmentee
         className="mt-3"

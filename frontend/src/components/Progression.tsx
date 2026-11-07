@@ -50,7 +50,13 @@ export function Ecrin({
  * maîtrisés. Un anneau à 0 % pour qui a déjà travaillé dix thèmes disait « tu n'as rien fait » (test élève Guyguy : « 0 %,
  * 1 savoir sur 1101 ») ; le chiffre au centre reste celui des thèmes maîtrisés.
  */
-export function AnneauProgression({ part, partTravaillee = 0, className }: { part: number; partTravaillee?: number; className?: string }) {
+/**
+ * `centre` remplace le pourcentage lu au milieu de l'anneau (l'`aria-label` garde le pourcentage exact) : un tout nouvel
+ * élève lisait « 1 % » en grand, le jour où il vient de commencer (passe Guyguy 2026-11-07).
+ */
+export function AnneauProgression({
+  part, partTravaillee = 0, className, centre,
+}: { part: number; partTravaillee?: number; className?: string; centre?: ReactNode }) {
   const rayon = 30
   const circonference = 2 * Math.PI * rayon
   return (
@@ -80,8 +86,12 @@ export function AnneauProgression({ part, partTravaillee = 0, className }: { par
         />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center font-display text-lg font-semibold tabular-nums sm:text-xl">
-        {pourcent(part)}
-        <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
+        {centre ?? (
+          <>
+            {pourcent(part)}
+            <span className="ml-px text-xs font-medium text-muted-foreground">%</span>
+          </>
+        )}
       </span>
     </div>
   )

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { ArrowRight, FileText, Lock, RotateCcw, Sparkles, Swords, Trophy, Zap } from "lucide-react"
+import { ArrowRight, BookOpen, FileText, Lock, RotateCcw, Sparkles, Swords, Trophy, Zap } from "lucide-react"
 
 import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -11,7 +11,7 @@ import { Mascotte } from "@/components/Mascotte"
 import { comparerDefi, lireDefiMemorise, memoriserDefi, parametresDefi } from "@/lib/defiEssai"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { themeExercicesPath } from "@/lib/countryPath"
+import { coursListPath, themeExercicesPath } from "@/lib/countryPath"
 import {
   bat, cheminEssai, lireEssai, lireRecord, memoriserEssai, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
   texteDeDefiEssai,
@@ -77,6 +77,12 @@ export function QuizEssaiResultPage() {
   const themeId = premiere.theme_id
   const subjectCode = premiere.subject_code
   const subjectId = session.subject
+  // Le thème à revoir en premier : le moins bien réussi (sous 70 %), à égalité celui qui a le plus de questions. Le bilan
+  // d'un quiz gratuit disait « 3 / 5 » et s'arrêtait là : l'élève ne savait pas quoi réviser, ni où (passe Guyguy 2026-11-07).
+  const aRevoir = [...score.parTheme]
+    .filter((th) => th.reussies / th.total < 0.7)
+    .sort((a, b) => a.reussies / a.total - b.reussies / b.total || b.total - a.total)[0]
+  const aRevoirId = aRevoir ? session.questions.find((q) => (q.theme ?? q.subject_label) === aRevoir.theme)?.theme_id : undefined
 
   async function refaire() {
     if (relance || !subjectId || !themeId) return
@@ -173,6 +179,23 @@ export function QuizEssaiResultPage() {
             )
           })}
         </ul>
+      )}
+
+      {aRevoir && aRevoirId && (
+        <section aria-label={t("essai.revoir_titre")} className="mt-4 rounded-2xl border border-primary/30 bg-primary/5 p-4 sm:p-5">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{t("essai.revoir_titre")}</p>
+          <p className="mt-1 font-medium">
+            {capitaliserTheme(aRevoir.theme)}{" "}
+            <span className="font-normal text-muted-foreground">({aRevoir.reussies} / {aRevoir.total})</span>
+          </p>
+          <p className="mt-0.5 text-sm text-muted-foreground">{t("essai.revoir_texte")}</p>
+          <Button asChild size="sm" className="mt-3 rounded-full">
+            <Link to={`${coursListPath(country)}?theme=${aRevoirId}&cursus=${session.cursus}`}>
+              <BookOpen />
+              {t("essai.revoir_cours")}
+            </Link>
+          </Button>
+        </section>
       )}
 
       <div className="mt-4 flex flex-wrap gap-2">

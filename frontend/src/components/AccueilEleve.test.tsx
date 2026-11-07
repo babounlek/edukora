@@ -531,6 +531,23 @@ describe("AccueilEleve", () => {
     expect(screen.queryByRole("img", { name: /de ce qui tombe à l'examen est maîtrisé/ })).not.toBeInTheDocument()
   })
 
+  it("au démarrage, montre les savoirs gagnés et le prochain palier au lieu d'un pourcentage minuscule", async () => {
+    getAccueil.mockResolvedValue(accueil({
+      preparation: { ponderee: 0.01, brute: 0.01, maitrises: 6, exploitables: 1120 },
+      resume: [
+        { subject_id: 1, subject_code: "MATHS", subject_label: "Mathématiques", total: 10, maitrises: 3, en_revision: 0, en_cours: 0, a_decouvrir: 7, sans_contenu: 0, poids_total: 20, poids_maitrise: 7 },
+        { subject_id: 2, subject_code: "ANG", subject_label: "Anglais", total: 8, maitrises: 0, en_revision: 0, en_cours: 0, a_decouvrir: 8, sans_contenu: 0, poids_total: 8, poids_maitrise: 0 },
+      ],
+    }))
+    afficher()
+    expect(await screen.findByText(/Savoirs maîtrisés : 6. Prochain palier : 10./)).toBeInTheDocument()
+    expect(screen.queryByText(/de ce qui tombe vraiment/)).not.toBeInTheDocument()
+    // Une matière pas encore ouverte : « À découvrir », jamais « 0 % ».
+    const anglais = screen.getByRole("link", { name: /Anglais/ })
+    expect(anglais).toHaveTextContent("À découvrir")
+    expect(anglais).not.toHaveTextContent("0 %")
+  })
+
   it("affiche l'anneau de préparation dès qu'il a de quoi dire", async () => {
     getAccueil.mockResolvedValue(accueil())
     afficher()

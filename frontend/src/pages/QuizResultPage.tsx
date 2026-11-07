@@ -128,8 +128,10 @@ function BilanXp({
         {xp.session.seance > 0 && (
           <p className="text-xs text-muted-foreground">{t("qr.dont_seance", { n: xp.session.seance })}</p>
         )}
+        {/* Zéro point avec des bonnes réponses : rejeu ou quiz chronométré (neutres pour les points). « Les points se gagnent
+            sur les bonnes réponses » y sonnait faux. */}
         {xp.session.total === 0 && (
-          <p className="text-xs text-muted-foreground">{t("qr.points_bonnes")}</p>
+          <p className="text-xs text-muted-foreground">{score > 0 ? t("qr.points_zero_bonnes") : t("qr.points_bonnes")}</p>
         )}
       </div>
       <div>
