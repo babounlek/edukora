@@ -334,6 +334,23 @@
   overflow-y: hidden;
 }
 
+/* Un tableau de variations (565 px sur un écran de 270) n'était signalé que par un fin trait gris :
+   la colonne +∞ semblait absente. Le côté où il reste de la formule à voir s'estompe (voir
+   lib/indiceDefilementFormules.ts, qui pose data-defile). Un masque plutôt qu'une ombre : il ne
+   dépend d'aucune couleur de fond, donc rien ne se voit sur une formule qui tient dans son bloc. */
+.katex-display[data-defile="droite"] {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+.katex-display[data-defile="gauche"] {
+  -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to left, #000 calc(100% - 2.5rem), transparent);
+}
+.katex-display[data-defile="les-deux"] {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 2.5rem, #000 calc(100% - 2.5rem), transparent);
+}
+
 /* Texte justifié en français sur ~375 px : de larges blancs entre les mots. Sur petit écran on
    aligne à gauche, au-delà on garde le justifié avec césure pour réduire ces blancs. Hors du
    @layer pour primer sur la classe utilitaire text-justify. */

@@ -19,6 +19,7 @@ import { captureReferralCode } from '@/lib/referral'
 import { initialiserPwa } from '@/lib/pwa'
 import { initSentry } from '@/lib/sentry'
 import { initialiserLangue, t } from '@/lib/i18n'
+import { installerIndiceDefilementFormules } from '@/lib/indiceDefilementFormules'
 import { ApiError } from '@/api/client'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
@@ -31,6 +32,9 @@ initSentry()
 // interne à l'app - un appel unique ici suffit, pas besoin de suivre les
 // changements de route.
 captureReferralCode()
+
+// Une formule plus large que l'écran (tableau de variations) s'estompe du côté où elle continue.
+installerIndiceDefilementFormules()
 
 // staleTime > 0 par défaut : le catalogue/les fiches épreuve ne changent pas d'une
 // minute à l'autre pour un même visiteur - sans ça, TanStack Query revalide par

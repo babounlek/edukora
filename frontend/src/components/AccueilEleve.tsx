@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, ClipboardCheck, Clock, Crown, Play } from "lucide-react"
+import { ArrowRight, BookOpen, ClipboardCheck, Clock, Crown, Play } from "lucide-react"
 
 import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
 import type { Accueil, TentativeInediteListItem } from "@/api/types"
@@ -16,7 +16,7 @@ import { InvitationMatieres } from "@/components/ChoixMatieres"
 import { TeteAccueil } from "@/components/TeteAccueil"
 import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
 import { marquerAffichageAccueil } from "@/lib/accueilChrono"
-import { epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
+import { coursReaderPath, epreuveInediteDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 import { formatDuration } from "@/lib/duration"
 import { maintenantServeur } from "@/lib/horlogeServeur"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
@@ -115,6 +115,10 @@ export function AccueilEleve({ country }: { country: string }) {
   // tête de page occupe plus d'un écran, et la reprise (sous elle) tombait à ~1 290 px du haut, 1,6 écran
   // (test élève 2026-11-07, chrono de 1 h 59 en cours). Elle passe donc AVANT la séance du jour.
   const chronoEnCours = Boolean(enCours?.echeance)
+  // Une lecture ouverte cette semaine : « Lecture en cours » vivait tout en bas, dans « Depuis la dernière fois »,
+  // à ~1 380 px du haut (test élève 2026-11-07). Elle remonte sous la séance, avec les autres reprises. Sauf si la
+  // séance du jour EST cette lecture : le bouton de la tête de page y mène déjà, un second serait un doublon.
+  const lectureAReprendre = data.lecture && data.plan?.seance?.origine !== "LECTURE_EN_COURS" ? data.lecture : null
 
   return (
     <div className="pb-4">
@@ -126,6 +130,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
       {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
+      {lectureAReprendre && <LigneLecture lecture={lectureAReprendre} />}
       {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
@@ -134,7 +139,11 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
           première séance. */}
       {!data.premiers_pas && <InviteRappels />}
-      <DepuisLaDerniereFois depuis={data.depuis} revisions={data.revisions} lecture={data.lecture} />
+      <DepuisLaDerniereFois
+        depuis={data.depuis}
+        revisions={data.revisions}
+        lecture={lectureAReprendre ? null : data.lecture}
+      />
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
       <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
@@ -160,6 +169,30 @@ function LigneNotation({ tentative }: { tentative: TentativeInediteListItem }) {
         </span>
         <span className="shrink-0 text-sm font-medium text-gold-text">{t("abonne.finir_notation")}</span>
         <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
+      </Link>
+    </section>
+  )
+}
+
+/** La lecture ouverte cette semaine (cours ou épreuve), à reprendre là où l'élève s'est arrêté. */
+function LigneLecture({ lecture }: { lecture: NonNullable<Accueil["lecture"]> }) {
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+      <Link
+        to={lecture.type === "cours" ? coursReaderPath(lecture.slug) : epreuveReaderPath(lecture.country, lecture.slug)}
+        className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3.5 transition-colors hover:border-primary/40"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <BookOpen className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {t("depuis.lecture_en_cours")}
+          </span>
+          <span className="block truncate text-sm font-medium">{lecture.title}</span>
+        </span>
+        <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
+        <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
       </Link>
     </section>
   )

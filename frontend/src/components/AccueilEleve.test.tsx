@@ -316,7 +316,37 @@ describe("AccueilEleve", () => {
       afficher()
 
       await screen.findByText(/Dérivées est tombé dans 28 des 44/)
-      expect(screen.queryByText("Reprendre")).not.toBeInTheDocument()
+      expect(screen.queryByRole("link", { name: /Épreuve blanche n°1/ })).not.toBeInTheDocument()
+    })
+  })
+
+  describe("la lecture en cours", () => {
+    it("remonte sous la séance, avant « Depuis la dernière fois » (test élève 2026-11-07 : à ~1 380 px du haut)", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+
+      const lecture = await screen.findByRole("link", { name: /BAC D Maths 2024/ })
+      expect(screen.getByText("Lecture en cours")).toBeInTheDocument()
+      const depuis = screen.getByText(/Depuis/)
+      expect(lecture.compareDocumentPosition(depuis) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    })
+
+    it("ne se répète pas en bas de page", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      afficher()
+
+      await screen.findByRole("link", { name: /BAC D Maths 2024/ })
+      expect(screen.getAllByRole("link", { name: /BAC D Maths 2024/ })).toHaveLength(1)
+    })
+
+    it("n'ajoute pas de second bouton quand la séance du jour EST cette lecture", async () => {
+      const base = accueil()
+      getAccueil.mockResolvedValue(accueil({ plan: { ...base.plan, seance: { ...base.plan.seance!, origine: "LECTURE_EN_COURS" } } }))
+      afficher()
+
+      await screen.findByText(/Dérivées est tombé dans 28 des 44/)
+      // Une seule ligne « Lecture en cours » : celle, déjà là, du bas de page.
+      expect(screen.getAllByText("Lecture en cours")).toHaveLength(1)
     })
   })
 

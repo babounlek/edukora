@@ -1788,6 +1788,37 @@ class QuizApiTests(TestCase):
         self.assertIsNotNone(theme_entry["cours"])
         self.assertEqual(theme_entry["cours"]["slug"], cours.slug)
 
+    def test_le_cours_recommande_repond_a_la_question_ratee_pas_a_la_derniere(self):
+        # Test élève Tle C 2026-11-07 : « Revoir le cours : équation du second degré à discriminant complexe »
+        # alors que cette question-là était réussie et que la ratée portait sur les similitudes. Les deux
+        # questions sont du même thème ; la réussie est la DERNIÈRE de la séance.
+        rate = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="rate")
+        rate.enonce_markdown = "Déterminer le centre, le rapport et l'angle de la similitude directe."
+        rate.save(update_fields=["enonce_markdown"])
+        reussie = _make_competence_item(self.subject, self.cursus, theme=self.theme, numero="reussie")
+        reussie.enonce_markdown = "Résoudre l'équation du second degré à discriminant complexe."
+        reussie.save(update_fields=["enonce_markdown"])
+        # Le cours « discriminant » est créé en premier : à égalité de mots il l'emporterait au plus petit id.
+        _make_cours(
+            self.subject, cursus=self.cursus, tags=[self.theme], titre="Équation du second degré à discriminant complexe",
+            external_id="cours-discriminant",
+        )
+        similitudes = _make_cours(
+            self.subject, cursus=self.cursus, tags=[self.theme], titre="Similitude directe : centre, rapport et angle",
+            external_id="cours-similitudes",
+        )
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        for ordre, (item, resultat) in enumerate(((rate, ResultatDeclare.ECHEC), (reussie, ResultatDeclare.REUSSI)), start=1):
+            quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=ordre)
+            QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=resultat)
+        self._subscribe()
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.post(f"/quiz/sessions/{session.id}/completer/")
+
+        entree = next(e for e in response.data["par_theme"] if e["theme"] == "dérivation")
+        self.assertEqual(entree["cours"]["slug"], similitudes.slug)
+
     def test_complete_session_cours_stays_null_without_a_matching_cours(self):
         # Thème raté, mais aucun Cours publié ne le couvre - jamais de lien mort.
         self._subscribe()

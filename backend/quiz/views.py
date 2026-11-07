@@ -411,7 +411,8 @@ def _resultat_payload(session, request):
             themes = []  # contenu supprimé depuis : seul l'instantané reste, sans objet Tag à lier
         for theme in themes:
             stats = par_theme.setdefault(
-                theme.name, {"total": 0, "reussies": 0, "theme": None, "competence_item": None, "theme_id": theme.pk},
+                theme.name,
+                {"total": 0, "reussies": 0, "theme": None, "competence_item": None, "item_rate": None, "theme_id": theme.pk},
             )
             stats["total"] += 1
             if correcte:
@@ -424,6 +425,12 @@ def _resultat_payload(session, request):
             if quiz_question.competence_item_id:
                 stats["theme"] = theme
                 stats["competence_item"] = quiz_question.competence_item
+                # Le cours recommandé doit répondre à ce qui a été RATÉ : sans cette trace, c'était la
+                # dernière question du thème qui le décidait, réussie ou non (test élève Tle C 2026-11-07 :
+                # « Revoir le cours : équation du second degré à discriminant complexe » alors que cette
+                # question-là était juste et que les ratées portaient sur les similitudes).
+                if not correcte and stats["item_rate"] is None:
+                    stats["item_rate"] = quiz_question.competence_item
 
     par_theme_payload = []
     for nom, s in sorted(par_theme.items()):
@@ -443,7 +450,7 @@ def _resultat_payload(session, request):
         # (5 questions, un seul thème parfois raté une fois) profite ainsi de la même
         # suggestion qu'une séance normale, sans règle spéciale.
         if s["theme"] is not None and 100 * s["reussies"] / s["total"] < SEUIL_MAITRISE:
-            item = s["competence_item"]
+            item = s["item_rate"] or s["competence_item"]
             cours = _cours_pour_theme(s["theme"], item.subject, [session.cursus_id], _texte_item(item))
             if cours:
                 entree["cours"] = CoursSummarySerializer(cours, context={"request": request}).data
