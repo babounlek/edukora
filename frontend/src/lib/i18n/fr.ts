@@ -3020,6 +3020,12 @@ export const fr = {
   "aide.lien.comment_payer": "Comment payer ?",
   "aide.lien.hors_ligne": "Que faire ?",
   "aide.lien.verrouille": "Pourquoi c'est verrouillé ?",
+  "aide.lien.abonnement": "Que contient l'abonnement ?",
+  "aide.lien.quota": "Comment fonctionne la limite de PDF ?",
+  "aide.etat.titre": "Ton dernier paiement",
+  "aide.etat.depose": "déposé le {date}",
+  "aide.etat.depasse": "Le délai annoncé ({delai}) est dépassé : écris-nous avec la référence {ref}.",
+  "aide.etat.voir": "Voir tous mes paiements",
   "ft.aide_centre": "Centre d'aide",
 } as const
 

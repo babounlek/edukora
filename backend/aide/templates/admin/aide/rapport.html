@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+  <p>
+    {% for n in fenetres %}<a href="?jours={{ n }}"{% if n == rapport.jours %} style="font-weight:bold"{% endif %}>{{ n }} jours</a>{% if not forloop.last %} · {% endif %}{% endfor %}
+  </p>
+  <p>
+    <strong>{{ rapport.total_vues }}</strong> lectures ·
+    <strong>{{ rapport.total_contacts }}</strong> clics vers le support ·
+    <strong>{{ rapport.recherches_sans_resultat }}</strong> recherches sans résultat
+    (le texte tapé n'est jamais conservé).
+  </p>
+
+  {% if rapport.a_reecrire %}
+  <h2>À réécrire en priorité</h2>
+  <ul>
+    {% for ligne in rapport.a_reecrire %}
+    <li><a href="{% url 'admin:aide_articleaide_changelist' %}?q={{ ligne.slug }}">{{ ligne.titre }}</a> : {{ ligne.a_reecrire|join:", " }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  <h2>Article par article</h2>
+  <table>
+    <thead>
+      <tr><th>Article</th><th>Rubrique</th><th>Lectures</th><th>Oui</th><th>Non</th><th>Utile</th><th>Clics support</th><th>Clics / lectures</th></tr>
+    </thead>
+    <tbody>
+      {% for ligne in rapport.articles %}
+      <tr>
+        <td>{{ ligne.titre }}</td>
+        <td>{{ ligne.categorie }}</td>
+        <td>{{ ligne.vues }}</td>
+        <td>{{ ligne.oui }}</td>
+        <td>{{ ligne.non }}</td>
+        <td>{% if ligne.taux_utile is None %}-{% else %}{{ ligne.taux_utile }} %{% endif %}</td>
+        <td>{{ ligne.contacts }}</td>
+        <td>{% if ligne.taux_contact is None %}-{% else %}{{ ligne.taux_contact }} %{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if rapport.jamais_lus %}
+  <p style="margin-top:1em">Jamais lus sur la période : {{ rapport.jamais_lus|join:", " }}.</p>
+  {% endif %}
+</div>
+{% endblock %}

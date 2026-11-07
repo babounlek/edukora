@@ -4,6 +4,7 @@ import { ArrowLeft, ThumbsDown, ThumbsUp } from "lucide-react"
 
 import { ContactAide } from "@/components/aide/ContactAide"
 import { ArticleMarkdown } from "@/components/aide/ArticleMarkdown"
+import { ARTICLES_ETAT_PAIEMENT, EtatPaiementAide } from "@/components/aide/EtatPaiementAide"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useArticleAide } from "@/lib/aide/hooks"
@@ -47,7 +48,7 @@ export function AideArticlePage() {
   const introuvable = isError && error instanceof ApiError && error.status === 404
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-6 sm:py-10">
+    <div className="mx-auto w-full max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
       <Link to="/aide" className="inline-flex min-h-10 items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" aria-hidden="true" />
         {t("aide.article.retour")}
@@ -71,13 +72,15 @@ export function AideArticlePage() {
       )}
 
       {article && (
-        <article className="mt-4">
+        <article className="mt-4 max-w-3xl">
           <p className="text-sm font-medium text-primary">{t(`aide.cat.${article.categorie}` as Parameters<typeof t>[0], { site: SITE_NAME })}</p>
           <h1 className="mt-1 font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{titre}</h1>
           <p className="mt-2 text-muted-foreground">{remplirGabarits(article.resume)}</p>
           {langueCourante() === "en" && !article.traduit && (
             <p className="mt-3 rounded-lg bg-muted px-3 py-2 text-sm text-muted-foreground">{t("aide.article.fr_seulement")}</p>
           )}
+
+          {ARTICLES_ETAT_PAIEMENT.includes(article.slug) && <EtatPaiementAide className="mt-5" />}
 
           <div className="mt-6 border-t border-border pt-2">
             <ArticleMarkdown corps={article.corps} />

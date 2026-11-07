@@ -11,6 +11,7 @@ mots_cles: about, discover, how it works, bepc, probatoire, bac, gce, o level, a
 - **Lessons** that explain what the papers ask for, with practice exercises.
 - **Quizzes** that find your weak spots and bring them back at the right time.
 - **Original mock papers** in your exam's format, never seen elsewhere.
+- **Mini mock papers**: short original papers (two exercises and a short timer) to test yourself in little time. One is featured every week on the subscriber home page.
 - **A daily session**: we tell you what to revise today, so you don't have to choose.
 
 ## Where to start

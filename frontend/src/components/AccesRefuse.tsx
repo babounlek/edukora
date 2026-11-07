@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, Check, Lock } from "lucide-react"
 import type { Cursus } from "@/api/types"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { BoutonParents } from "@/components/BoutonParents"
+import { LienAide } from "@/components/aide/LienAide"
 import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { useCampagne } from "@/lib/campagne"
@@ -123,6 +124,11 @@ export function AccesRefuse({
 
           <div className="mt-4 flex justify-center">
             <ParrainageHint />
+          </div>
+
+          <div className="mt-3 flex flex-wrap justify-center gap-x-5 gap-y-1">
+            <LienAide slug="contenu-abonnement">{t("aide.lien.abonnement")}</LienAide>
+            <LienAide slug="comment-payer">{t("aide.lien.comment_payer")}</LienAide>
           </div>
         </div>
       </section>

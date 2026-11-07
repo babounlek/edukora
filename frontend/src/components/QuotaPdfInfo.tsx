@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 
+import { LienAide } from "@/components/aide/LienAide"
 import { messageLimiteAtteinte, messageRestants } from "@/lib/quotaPdf"
 import { useQuotaPdf } from "@/lib/useQuotaPdf"
 import { t, useI18n } from "@/lib/i18n"
@@ -33,6 +34,9 @@ export function QuotaPdfInfo({ doc, className }: { doc?: string; className?: str
       ) : epuise ? (
         <>
           <p>{messageLimiteAtteinte(quota)}</p>
+          <p>
+            <LienAide slug="telecharger-en-pdf" className="min-h-0 text-xs">{t("aide.lien.quota")}</LienAide>
+          </p>
           {quota.profil === "visiteur" && (
             <p>
               <Link to="/connexion" className="underline underline-offset-2">{t("qpdf.connecte_toi")}</Link>

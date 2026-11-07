@@ -3008,5 +3008,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "aide.lien.comment_payer": "How to pay?",
   "aide.lien.hors_ligne": "What can I do?",
   "aide.lien.verrouille": "Why is it locked?",
+  "aide.lien.abonnement": "What does the subscription include?",
+  "aide.lien.quota": "How does the PDF limit work?",
+  "aide.etat.titre": "Your latest payment",
+  "aide.etat.depose": "submitted on {date}",
+  "aide.etat.depasse": "The announced time ({delai}) has passed: write to us with reference {ref}.",
+  "aide.etat.voir": "See all my payments",
   "ft.aide_centre": "Help centre",
 }

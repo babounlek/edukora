@@ -25,6 +25,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { langueCourante, localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { Ecrin } from "@/components/Progression"
+import { LienAide } from "@/components/aide/LienAide"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 
 /**
@@ -435,6 +436,7 @@ function SeanceAFaire({
             </Button>
             {/* Ce sont les parents qui paient : de la séance verrouillée, l'élève leur envoie le prix et le moyen de payer. */}
             <BoutonParents contenu={t("parents.contenu_seance")} className="h-12 rounded-full px-5" />
+            <LienAide slug="seance-verrouillee">{t("aide.lien.verrouille")}</LienAide>
           </div>
         ) : (
           <div className="mt-6 flex flex-wrap items-center gap-3">

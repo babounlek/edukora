@@ -88,7 +88,9 @@ describe("QuotaPdfInfo", () => {
     afficher()
 
     expect(await screen.findByText(/limite quotidienne/)).toBeInTheDocument()
-    expect(screen.queryByRole("link")).not.toBeInTheDocument()
+    // Aucun lien vers l'abonnement ou la connexion ; seul le lien d'aide (comment fonctionne la limite) reste.
+    const liens = screen.queryAllByRole("link").map((lien) => lien.getAttribute("href"))
+    expect(liens).toEqual(["/aide/telecharger-en-pdf"])
   })
 
   it("n'affiche rien quand le compteur est introuvable (réseau coupé) : le bouton reste utilisable", async () => {

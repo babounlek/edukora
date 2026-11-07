@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getAideArticle, getCodeAssistance, listAideArticles } from "@/api/endpoints"
+import { getAideArticle, getCodeAssistance, listAideArticles, listMyManualPayments } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { langueCourante, useI18n } from "@/lib/i18n"
 
@@ -39,4 +39,19 @@ export function useCodeAssistance(): string | null {
     retry: false,
   })
   return isAuthenticated ? (data?.code ?? null) : null
+}
+
+/** Le paiement manuel le plus récent du compte connecté (null s'il n'en a pas ou hors connexion) : l'aide en montre l'état. */
+export function useDernierPaiement() {
+  const { isAuthenticated } = useAuth()
+  return useQuery({
+    queryKey: ["aide", "dernier-paiement"],
+    queryFn: async () => {
+      const paiements = await listMyManualPayments()
+      return [...paiements].sort((a, b) => b.created_at.localeCompare(a.created_at))[0] ?? null
+    },
+    enabled: isAuthenticated,
+    staleTime: 60_000,
+    retry: false,
+  })
 }

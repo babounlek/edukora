@@ -190,3 +190,133 @@ class SitemapAideTests(TestCase):
         self.assertNotIn("/en/help/en-francais-seulement", xml)
         self.assertIn(f"<loc>{base}/en/help/traduit</loc>", xml)
         self.assertNotIn("/aide/brouillon", xml)
+
+
+class ApercuAideTests(TestCase):
+    """Aperçu d'un lien /aide/<article> collé dans WhatsApp : titre et résumé de l'article, pas la carte générique."""
+
+    def setUp(self):
+        creer_article(
+            slug="comment-payer", categorie=CategorieAide.PAIEMENT, titre_fr="Comment payer {{site}} ?",
+            resume_fr="Les étapes du paiement Mobile Money. Écris-nous au {{whatsapp}}.",
+        )
+        creer_article(
+            slug="traduit", titre_fr="Un article traduit", resume_fr="Le résumé français.",
+            titre_en="A translated article", resume_en="The English summary.", corps_en="Body",
+        )
+
+    def test_francais(self):
+        html = self.client.get("/partage-apercu/aide/comment-payer").content.decode()
+        self.assertIn('<html lang="fr">', html)
+        self.assertIn("Comment payer ", html)
+        self.assertNotIn("{{", html)
+        self.assertIn("Les étapes du paiement Mobile Money.", html)
+        self.assertIn("/aide/comment-payer", html)
+        self.assertIn("/partage-image/aide/comment-payer.png", html)
+
+    def test_anglais_traduit_et_non_traduit(self):
+        html = self.client.get("/partage-apercu/en/help/traduit").content.decode()
+        self.assertIn('<html lang="en">', html)
+        self.assertIn("A translated article", html)
+        self.assertIn("/en/help/traduit", html)
+        # Non traduit : le texte français, mais le lien reste celui de la langue demandée.
+        html = self.client.get("/partage-apercu/en/help/comment-payer").content.decode()
+        self.assertIn("Les étapes du paiement Mobile Money.", html)
+        self.assertIn("/en/help/comment-payer", html)
+
+    def test_article_inconnu_ou_masque_retombe_sur_la_carte_generique(self):
+        creer_article(slug="cache", publie=False, titre_fr="Article caché")
+        for chemin in ("aide/n-existe-pas", "aide/cache"):
+            html = self.client.get(f"/partage-apercu/{chemin}").content.decode()
+            self.assertNotIn("Article caché", html)
+            self.assertIn("/partage-image/defaut.png", html)
+
+    def test_image_png(self):
+        from io import BytesIO
+
+        from PIL import Image
+
+        reponse = self.client.get("/partage-image/aide/comment-payer.png")
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(Image.open(BytesIO(reponse.content)).size, (1200, 630))
+        self.assertEqual(self.client.get("/partage-image/aide/n-existe-pas.png").status_code, 404)
+
+    def test_caddy_envoie_les_robots_vers_l_apercu_des_articles(self):
+        from pathlib import Path
+
+        chemin = Path(__file__).resolve().parents[2] / "docker" / "caddy" / "Caddyfile"
+        if not chemin.exists():  # dans l'image backend, le dépôt n'est pas là
+            self.skipTest("Caddyfile absent de cet environnement")
+        caddyfile = chemin.read_text(encoding="utf-8")
+        self.assertIn("mock-papers|aide|help)/[^/]+", caddyfile)
+
+
+class RapportAideTests(TestCase):
+    def evenement(self, nom, **props):
+        from analytics.models import AnalyticsEvent
+
+        AnalyticsEvent.objects.create(name=nom, properties=props)
+
+    def test_lectures_avis_contacts_et_articles_a_reecrire(self):
+        from .rapport import rapport_aide
+
+        creer_article(slug="bon", titre_fr="Bon")
+        creer_article(slug="mauvais", titre_fr="Mauvais")
+        creer_article(slug="jamais-lu", titre_fr="Jamais lu")
+        for _ in range(12):
+            self.evenement(EventName.AIDE_ARTICLE_VU, slug="mauvais", categorie="connexion")
+        for _ in range(4):
+            self.evenement(EventName.AIDE_ARTICLE_VU, slug="bon", categorie="connexion")
+        for utile in (True, True, True, True, True, True):
+            self.evenement(EventName.AIDE_ARTICLE_UTILE, slug="bon", utile=utile)
+        for utile in (False, False, False, True, False):
+            self.evenement(EventName.AIDE_ARTICLE_UTILE, slug="mauvais", utile=utile)
+        for _ in range(4):
+            self.evenement(EventName.AIDE_CONTACT_CLIC, source="article", slug="mauvais")
+        self.evenement(EventName.AIDE_CONTACT_CLIC, source="centre")
+        self.evenement(EventName.SEARCH_NO_RESULTS, source="aide")
+        self.evenement(EventName.SEARCH_NO_RESULTS, source="recherche")
+
+        rapport = rapport_aide(30)
+        lignes = {ligne["slug"]: ligne for ligne in rapport["articles"]}
+        self.assertEqual(rapport["articles"][0]["slug"], "mauvais")  # le plus lu d'abord
+        self.assertEqual((lignes["mauvais"]["vues"], lignes["mauvais"]["oui"], lignes["mauvais"]["non"]), (12, 1, 4))
+        self.assertEqual(lignes["mauvais"]["taux_utile"], 20.0)
+        self.assertEqual(lignes["mauvais"]["taux_contact"], 33.3)
+        self.assertEqual(lignes["mauvais"]["a_reecrire"], ["jugé peu utile", "souvent suivi d'un message au support"])
+        self.assertEqual(lignes["bon"]["a_reecrire"], [])  # 4 lectures : trop peu pour juger
+        self.assertEqual(rapport["jamais_lus"], ["jamais-lu"])
+        self.assertEqual(rapport["total_contacts"], 5)
+        self.assertEqual(rapport["contacts_hors_article"], 1)
+        self.assertEqual(rapport["recherches_sans_resultat"], 1)  # seule la source « aide » compte
+
+    def test_fenetre_en_jours(self):
+        from datetime import timedelta
+
+        from django.utils import timezone
+
+        from analytics.models import AnalyticsEvent
+
+        from .rapport import rapport_aide
+
+        creer_article(slug="bon", titre_fr="Bon")
+        self.evenement(EventName.AIDE_ARTICLE_VU, slug="bon")
+        AnalyticsEvent.objects.update(created_at=timezone.now() - timedelta(days=40))
+        self.assertEqual(rapport_aide(30)["total_vues"], 0)
+        self.assertEqual(rapport_aide(90)["total_vues"], 1)
+
+    def test_commande_et_page_d_admin(self):
+        from io import StringIO
+
+        creer_article(slug="bon", titre_fr="Bon")
+        sortie = StringIO()
+        call_command("rapport_aide", "--jours", "7", stdout=sortie)
+        self.assertIn("Centre d'aide - 7 derniers jours", sortie.getvalue())
+
+        admin = get_user_model().objects.create_superuser(phone_number="+237600000097", password="x")
+        self.client.force_login(admin)
+        reponse = self.client.get(reverse("admin:aide_rapport"), {"jours": "90"})
+        self.assertEqual(reponse.status_code, 200)
+        self.assertContains(reponse, "Le centre d&#x27;aide sert-il ?")
+        self.assertContains(reponse, "Bon")
+        self.assertEqual(self.client.get(reverse("admin:aide_rapport"), {"jours": "abc"}).status_code, 200)

@@ -54,7 +54,7 @@ export function AidePage() {
   const frequentes = (articles ?? []).filter((a) => a.populaire)
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:py-12">
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
       <header className="text-center">
         <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
           <LifeBuoy className="size-6" aria-hidden="true" />

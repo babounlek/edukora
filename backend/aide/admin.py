@@ -1,14 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.http import Http404, HttpResponseRedirect
+from django.template.response import TemplateResponse
 from django.urls import path, reverse
 
 from .code_assistance import user_id_depuis_code
 from .models import ArticleAide
+from .rapport import rapport_aide
 
 
 @admin.register(ArticleAide)
 class ArticleAideAdmin(admin.ModelAdmin):
+    change_list_template = "admin/aide/articleaide/change_list.html"
     list_display = ("titre_fr", "categorie", "ordre", "populaire", "publie", "traduit", "modifie_a_la_main", "maj_le")
     list_filter = ("categorie", "publie", "populaire", "modifie_a_la_main")
     search_fields = ("slug", "titre_fr", "titre_en", "mots_cles_fr", "corps_fr")
@@ -36,6 +39,7 @@ class ArticleAideAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         return [
             path("retrouver-compte/", self.admin_site.admin_view(self.retrouver_compte), name="aide_retrouver_compte"),
+            path("rapport/", self.admin_site.admin_view(self.rapport), name="aide_rapport"),
         ] + urls
 
     def retrouver_compte(self, request):
@@ -46,3 +50,17 @@ class ArticleAideAdmin(admin.ModelAdmin):
         if utilisateur is None:
             raise Http404("Code d'assistance inconnu ou mal recopié.")
         return HttpResponseRedirect(reverse(f"admin:{modele._meta.app_label}_{modele._meta.model_name}_change", args=[utilisateur.pk]))
+
+    def rapport(self, request):
+        """/admin/aide/articleaide/rapport/ : lectures, avis et clics vers le support, article par article."""
+        try:
+            jours = min(max(int(request.GET.get("jours", 30)), 1), 365)
+        except ValueError:
+            jours = 30
+        contexte = {
+            **self.admin_site.each_context(request),
+            "title": "Le centre d'aide sert-il ?",
+            "rapport": rapport_aide(jours),
+            "fenetres": (7, 30, 90),
+        }
+        return TemplateResponse(request, "admin/aide/rapport.html", contexte)

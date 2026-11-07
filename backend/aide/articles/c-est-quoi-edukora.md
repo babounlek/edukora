@@ -14,6 +14,7 @@ mots_cles: présentation, découvrir, fonctionnement, bepc, probatoire, bac, gce
 - **Des cours** qui expliquent ce que les sujets demandent, avec des exercices d'application.
 - **Des quiz** qui repèrent tes lacunes et te les reproposent au bon moment.
 - **Des épreuves inédites** au format de ton examen, jamais vues ailleurs.
+- **Des mini-inédites** : de courtes épreuves originales (deux exercices et un chrono court) pour te tester en peu de temps. Une est mise en avant chaque semaine sur l'accueil des abonnés.
 - **Une séance par jour** : on te dit quoi réviser aujourd'hui, tu n'as pas à choisir.
 
 ## Par où commencer ?

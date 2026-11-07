@@ -33,7 +33,7 @@ LARGEUR, HAUTEUR = 1200, 630
 
 # Le chemin INTERNE (français, sans le préfixe /en) : l'URL publique anglaise y est ramenée d'abord (voir infos_page).
 _CHEMIN_RE = re.compile(
-    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites)/(?P<ident>[^/]+)(?:/lire)?$"
+    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites|aide)/(?P<ident>[^/]+)(?:/lire)?$"
 )
 
 # Textes de l'aperçu par langue. Les titres viennent du contenu lui-même (déjà dans sa langue) ;
@@ -54,6 +54,7 @@ TEXTES = {
         "cours_etiquette": "Cours · {matiere}",
         "inedite_etiquette": "Épreuve inédite · {matiere}",
         "mini_etiquette": "Mini-inédite · {matiere}",
+        "aide_etiquette": "Centre d'aide",
         "quiz_titre": "Quiz gratuit : {theme}",
         "quiz_description": "{n} questions de {matiere} ({public}) : un quiz gratuit, sans compte, avec le corrigé de chaque question.",
         "quiz_etiquette": "Quiz gratuit · {matiere}",
@@ -74,6 +75,7 @@ TEXTES = {
         "cours_etiquette": "Lesson · {matiere}",
         "inedite_etiquette": "Original paper · {matiere}",
         "mini_etiquette": "Mini unseen paper · {matiere}",
+        "aide_etiquette": "Help centre",
         "quiz_titre": "Free quiz: {theme}",
         "quiz_description": "{n} questions on {matiere} ({public}): a free quiz, no account needed, with the correction of every question.",
         "quiz_etiquette": "Free quiz · {matiere}",
@@ -145,6 +147,35 @@ def _infos_inedite(ident, langue="fr"):
     }
 
 
+_GABARIT_RE = re.compile(r"\{\{\s*(\w+)\s*\}\}")
+
+
+def _sans_gabarits(texte):
+    """Un titre ou un résumé d'article d'aide, où `{{site}}` devient le nom du site. Les autres gabarits (WhatsApp,
+    e-mail, délai...) ne se remplissent que dans le frontend : ici on les retire plutôt que d'afficher des accolades."""
+    return _GABARIT_RE.sub(lambda m: settings.SITE_NAME if m.group(1) == "site" else "", texte).strip()
+
+
+def _infos_aide(ident, langue="fr"):
+    """Un article du centre d'aide (/aide/<slug>) : son titre, son résumé, et la carte « Centre d'aide ». Un article
+    non traduit garde son texte français, y compris sous /en/help (l'élève lira la même chose en suivant le lien)."""
+    from aide.models import ArticleAide
+
+    article = ArticleAide.objects.filter(slug=ident, publie=True).first()
+    if not article:
+        return None
+    anglais = langue == "en" and article.traduit
+    textes = TEXTES[langue]
+    return {
+        "titre": _sans_gabarits(article.titre_en if anglais else article.titre_fr),
+        "description": _sans_gabarits(article.resume_en if anglais else article.resume_fr),
+        "etiquette": textes["aide_etiquette"],
+        "public": "",
+        "chemin": f"aide/{article.slug}",
+        "image": _image_url("aide", article.slug, langue),
+    }
+
+
 def _infos_quiz_essai(cursus_id, subject_id, theme_id, langue="fr"):
     """Le quiz gratuit partagé (/quiz/essai/<cursus>/<matière>/<thème>) : le nom du thème, la matière et le public
     visé. Même garde que le lancement de l'essai : un périmètre qui n'est pas entièrement gratuit n'a pas d'aperçu
@@ -170,7 +201,7 @@ def _infos_quiz_essai(cursus_id, subject_id, theme_id, langue="fr"):
     }
 
 
-_RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite}
+_RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite, "aide": _infos_aide}
 # Le quiz gratuit n'a ni pays ni slug dans son adresse : trois identifiants numériques.
 _QUIZ_ESSAI_RE = re.compile(r"^quiz/essai/(\d+)/(\d+)/(\d+)$")
 
@@ -414,7 +445,7 @@ def image_partage(request, genre, ident):
         ids = re.fullmatch(r"(\d+)-(\d+)-(\d+)", ident)
         infos = _infos_quiz_essai(*map(int, ids.groups()), langue) if ids else None
     else:
-        resolveur = {"epreuves": _infos_epreuve, "cours": _infos_cours, "inedites": _infos_inedite}.get(genre)
+        resolveur = {"epreuves": _infos_epreuve, "cours": _infos_cours, "inedites": _infos_inedite, "aide": _infos_aide}.get(genre)
         infos = resolveur(ident, langue) if resolveur else None
     if not infos:
         raise Http404("Aperçu introuvable.")
