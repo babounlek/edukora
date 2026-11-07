@@ -19,6 +19,7 @@ import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { lienEtape, ouvrirEtapeDeSeance, seanceAffichable } from "@/lib/seance"
 import { delaiDepuisAffichageAccueil } from "@/lib/accueilChrono"
 import { trackEvent } from "@/lib/analytics"
+import { lireQuizIgnores, useCleQuizEnCours, useQuizEnCours } from "@/lib/quizEnCours"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
@@ -308,6 +309,20 @@ function SeanceAFaire({
   const etapeQuiz = etapes.find((e) => e.type === "quiz")
   const quizExpress = etapeQuiz && !etapeQuiz.ouverte && prochaine && prochaine.type !== "quiz" ? etapeQuiz : null
 
+  // Un quiz déjà commencé : « Reprendre : faire le quiz » doit le rouvrir à la question où l'élève s'est arrêté,
+  // pas lancer une nouvelle série à la question 1 (passe Guyguy 2026-11-07 : la vraie reprise était une carte plus
+  // bas, retrouvée en 25 à 30 s). Même liste que la carte « en cours » (le serveur la tient à jour), mêmes quiz
+  // écartés par l'élève ; ni test de niveau, ni rejeu, ni chrono écoulé, et seulement dans l'examen de la séance.
+  const cleQuizEnCours = useCleQuizEnCours()
+  const { data: quizEnCours } = useQuizEnCours()
+  const ignores = cleQuizEnCours ? lireQuizIgnores(cleQuizEnCours) : []
+  const quizAReprendre = quizEnCours?.find(
+    (s) => !ignores.includes(s.id) && s.mode !== "DIAGNOSTIC" && s.rejeu_de === null && !s.chrono_ecoule
+      && s.cursus === plan.cursus?.id,
+  )
+  const lienDeLEtape = (etape: EtapeSeance) =>
+    etape.type === "quiz" && quizAReprendre ? `/quiz/session/${quizAReprendre.id}` : lienEtape(etape, country, plan)
+
   // Ce que cette séance montre vraiment, publié pour les guides (bienvenue, aide de la séance) : le libellé
   // du bouton, les étapes dans leur ordre, le quiz express. Une aide qui décrit une séance à trois étapes
   // devant une séance à deux ne correspond à rien de visible.
@@ -429,7 +444,7 @@ function SeanceAFaire({
               >
                 <Link
                   data-guide="seance-commencer"
-                  to={lienEtape(prochaine, country, plan)}
+                  to={lienDeLEtape(prochaine)}
                   onClick={() => {
                     // Le démarrage ne se compte qu'une fois : reprendre n'est pas démarrer.
                     // `delai_s` : secondes entre l'affichage de l'accueil et ce clic - LE
@@ -443,7 +458,7 @@ function SeanceAFaire({
                   }}
                 >
                   {t("seance.bouton_etape", {
-                    verbe: dejaCommencee ? t("seance.reprendre") : t("seance.commencer"),
+                    verbe: dejaCommencee || (prochaine.type === "quiz" && quizAReprendre) ? t("seance.reprendre") : t("seance.commencer"),
                     action: actionDeLEtape(prochaine),
                   })}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -460,7 +475,7 @@ function SeanceAFaire({
                 className="h-auto min-h-11 max-w-full flex-wrap justify-start gap-x-2 gap-y-0.5 whitespace-normal rounded-full border-gold/50 bg-gold/10 px-5 py-2 text-left text-sm text-gold-foreground hover:bg-gold/20 dark:text-gold-text"
               >
                 <Link
-                  to={lienEtape(quizExpress, country, plan)}
+                  to={lienDeLEtape(quizExpress)}
                   onClick={() => {
                     if (!dejaCommencee) {
                       trackEvent("plan_seance_demarree", {

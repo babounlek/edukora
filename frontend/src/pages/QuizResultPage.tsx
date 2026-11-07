@@ -6,6 +6,7 @@ import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, Lis
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
+import { oublierAccueilEnCache } from "@/lib/accueilCache"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
@@ -361,9 +362,14 @@ export function QuizResultPage() {
         // donc rien ne déclenchait de rafraîchissement. Le travail était bien
         // enregistré côté serveur - il ne se voyait simplement pas, ce qui est pire
         // qu'une erreur : l'élève croit que son quiz n'a servi à rien.
-        for (const cle of ["parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour", "priorites", "bilan-periode", "quiz-historique", "quiz-en-cours"]) {
+        for (const cle of ["accueil", "parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour", "priorites", "bilan-periode", "quiz-historique", "quiz-en-cours"]) {
           queryClient.invalidateQueries({ queryKey: [cle] })
         }
+        // L'accueil garde sa dernière version dans le navigateur pour s'afficher avant la réponse du serveur (voir
+        // lib/accueilCache) : juste après un quiz, cette version est fausse (points, séance, « Commencer » au lieu de
+        // « Séance faite » : passe Guyguy 2026-11-07, 2 à 3 s d'état périmé). On l'oublie : un squelette d'une
+        // seconde vaut mieux que des chiffres d'avant.
+        oublierAccueilEnCache()
       })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : t("qr.err_charger"))

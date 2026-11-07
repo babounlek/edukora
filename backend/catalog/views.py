@@ -514,7 +514,13 @@ class CoursListView(generics.ListAPIView):
                 Q(titre__icontains=search) | Q(content_markdown__icontains=search),
             ).values("pk")
             tag_match = Cours.objects.filter(tags__name__icontains=search).values("pk")
-            qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=tag_match))
+            # Titres et étiquettes sans accents (« electricite » trouve « Électricité », passe Guyguy 2026-11-07 : 0
+            # résultat contre 46 avec l'accent). Évalué À PART, en liste d'ids, comme pour les épreuves ci-dessus :
+            # l'expression régulière ne doit pas entrer dans le OR qui garde le BitmapOr sur les index trigramme.
+            motif = motif_sans_accent(search)
+            sans_accent = set(Cours.objects.filter(titre__iregex=motif).values_list("pk", flat=True)[:2000])
+            sans_accent.update(Cours.objects.filter(tags__name__iregex=motif).values_list("pk", flat=True)[:2000])
+            qs = qs.filter(Q(pk__in=texte_match) | Q(pk__in=tag_match) | Q(pk__in=sans_accent))
 
         # Cours qui tombent souvent (voir catalog.FrequenceCours) : seulement ceux de la table, qui ne
         # contient que le quart supérieur de chaque matière classée. Avec ?cursus=, ceux de CET examen.

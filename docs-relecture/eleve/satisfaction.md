@@ -25,6 +25,8 @@ Les sessions du 2026-10-19 au 2026-10-24 ont été jouées **avant** l'ajout de 
 | 2026-11-02 | Guyguy (3e) | M1+M2+M3+M6 visiteur (sciences, SVT, prix) | local | 3b818788 | 3 | 3 | 2 | peut-être | 5 | peut-être (parents) | QCM CO2, « Tu maîtrises ! » + mascotte (+2) | corrigé SVT payant (-1) | 2026-11-02-guyguy-visiteur-M1-M2-M3-M6-local.md |
 | 2026-11-02 | Guyguy (3e) | M8+M4+M5 abonné (chrono, mini-inédite) | local | 3b818788 | 4 | 2 | 3 | demain | 6 | sans objet | objectif du jour atteint +10 (+2) | envoi du code 20 s, fin du quiz chrono (-1) | 2026-11-02-guyguy-abonne-M8-M4-M5-local.md |
 | 2026-11-02 | Guyguy (3e) | M3 + murs payants, compte libre | local | 3b818788 | 3 | 3 | 3 | cette semaine | 5 | peut-être (parents) | quiz Maths +10 (+2) | rien pour convaincre les parents (-1) | 2026-11-02-guyguy-libre-M3-paywalls-local.md |
+| 2026-11-07 | Guyguy (3e) | M1+M2+M3+M6 visiteur (maths, physique, épreuve, prix) | local | 14dd5ee1 | 4 | 2 | 3 | peut-être | 7 | peut-être (parents) | résultat du quiz de maths, +30 points (+2) ; corrigé 2026 gratuit (+2) | physique : exercices longs puis « +0 points » (-1) | 2026-11-07-guyguy-visiteur-M1-M2-M3-M6-local.md |
+| 2026-11-07 | Guyguy (3e) | M8+M4+M5 abonné (reprise, cours PCT, mini-inédite, chrono) | local | 14dd5ee1 | 3 | 3 | 3 | cette semaine | 6 | sans objet | chrono en cours conservé, « Reprendre » (+2) | recherche « electricite » sans résultat (-2) | 2026-11-07-guyguy-abonne-M8-M4-M5-local.md |
 
 ## Calibrage de la satisfaction (2026-10-24)
 

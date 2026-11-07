@@ -8,6 +8,7 @@ import type { Accueil, EtapeSeance } from "@/api/types"
 
 const getAccueil = vi.hoisted(() => vi.fn())
 const listMyTentativesInedites = vi.hoisted(() => vi.fn())
+const listQuizEnCours = vi.hoisted(() => vi.fn())
 const trackEvent = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
@@ -26,6 +27,7 @@ const auth = vi.hoisted(() => ({
 vi.mock("@/api/endpoints", () => ({
   getAccueil,
   listMyTentativesInedites,
+  listQuizEnCours,
   getPlanDuJour: vi.fn(),
   terminerSeanceDuJour: vi.fn(),
   continuerSeanceDuJour: vi.fn(),
@@ -140,6 +142,8 @@ beforeEach(() => {
   getAccueil.mockReset()
   listMyTentativesInedites.mockReset()
   listMyTentativesInedites.mockResolvedValue([])
+  listQuizEnCours.mockReset()
+  listQuizEnCours.mockResolvedValue([])
   trackEvent.mockReset()
   localStorage.clear()
 })
@@ -299,6 +303,43 @@ describe("AccueilEleve", () => {
       afficher()
       expect(await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })).toBeInTheDocument()
       expect(screen.queryByRole("link", { name: /Quiz express/ })).not.toBeInTheDocument()
+    })
+
+    it("rouvre le quiz commencé au lieu d'en lancer un nouveau (passe Guyguy 2026-11-07)", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).map((e) => ({ ...e, ouverte: e.type !== "quiz" }))
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes } },
+      }))
+      listQuizEnCours.mockResolvedValue([
+        { id: 321, mode: "PRATIQUE", cursus: 4, cursus_display: "BAC D", subject: 1, subject_label: "Maths", theme: "x",
+          started_at: "2026-11-07T06:00:00Z", derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 4, total_questions: 7,
+          a_terminer: false, rejeu_de: null },
+      ])
+      afficher()
+      const bouton = await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })
+      await vi.waitFor(() => expect(bouton).toHaveAttribute("href", "/quiz/session/321"))
+    })
+
+    it("ne reprend ni le test de niveau ni un quiz d'un autre examen", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).map((e) => ({ ...e, ouverte: e.type !== "quiz" }))
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes } },
+      }))
+      const session = {
+        cursus_display: "BAC D", subject: 1, subject_label: "Maths", theme: "x", started_at: "2026-11-07T06:00:00Z",
+        derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 4, total_questions: 7, a_terminer: false, rejeu_de: null,
+      }
+      listQuizEnCours.mockResolvedValue([
+        { ...session, id: 1, mode: "DIAGNOSTIC", cursus: 4 },
+        { ...session, id: 2, mode: "PRATIQUE", cursus: 99 },
+      ])
+      afficher()
+      const bouton = await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })
+      await vi.waitFor(() => expect(listQuizEnCours).toHaveBeenCalled())
+      await new Promise((r) => setTimeout(r, 50))
+      expect(bouton.getAttribute("href")).toContain("/quiz?")
     })
 
     it("ne propose plus le quiz express une fois le quiz ouvert", async () => {
