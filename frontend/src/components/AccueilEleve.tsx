@@ -111,12 +111,18 @@ export function AccueilEleve({ country }: { country: string }) {
     return isError ? <ErreurAccueil /> : <SqueletteAccueil />
   }
 
+  // Une épreuve au chrono lancé ne peut pas attendre : la copie est rendue à zéro à l'échéance. Sur téléphone la
+  // tête de page occupe plus d'un écran, et la reprise (sous elle) tombait à ~1 290 px du haut, 1,6 écran
+  // (test élève 2026-11-07, chrono de 1 h 59 en cours). Elle passe donc AVANT la séance du jour.
+  const chronoEnCours = Boolean(enCours?.echeance)
+
   return (
     <div className="pb-4">
+      {enCours && chronoEnCours && <LigneReprise tentative={enCours} />}
       <TeteAccueil accueil={data} country={country} />
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
-      {enCours && <LigneReprise tentative={enCours} />}
+      {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
       {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
       <ReprendreQuiz enveloppe />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}

@@ -236,6 +236,7 @@ export const fr = {
   "seance.continuer": "Continuer maintenant",
   "seance.tour_fait": "Tu as fait le tour de ce qu'on peut te proposer aujourd'hui.",
   "seance.combien_temps": "Combien de temps as-tu ?",
+  "seance.duree_abonnement": "Avec l'abonnement, tu choisis la durée de ta séance : {durees}.",
   "seance.phase_cours": "Comprendre",
   "seance.phase_exercice": "S'entraîner",
   "seance.phase_quiz": "Vérifier",

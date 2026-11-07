@@ -273,6 +273,29 @@ describe("AccueilEleve", () => {
       expect(await screen.findByText(/Chrono en cours · il te reste 1:1\d:\d\d/)).toBeInTheDocument()
     })
 
+    it("met la reprise d'un chrono lancé AVANT la séance du jour", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listMyTentativesInedites.mockResolvedValue([
+        { ...tentative, exam_mode_started_at: "2026-10-04T08:00:00Z", echeance: new Date(Date.now() + 75 * 60_000).toISOString() },
+      ])
+      const { container } = afficher()
+      const reprise = await screen.findByRole("link", { name: /Épreuve blanche n°1/ })
+      const tete = container.querySelector("[data-guide='seance-commencer']") ?? container.querySelector("h1, h2")
+      expect(tete).not.toBeNull()
+      // La reprise précède la tête de page dans le document (DOCUMENT_POSITION_FOLLOWING = la tête vient après).
+      expect(reprise.compareDocumentPosition(tete as Element) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    })
+
+    it("laisse la reprise d'une copie sans chrono sous la séance du jour", async () => {
+      getAccueil.mockResolvedValue(accueil())
+      listMyTentativesInedites.mockResolvedValue([tentative])
+      const { container } = afficher()
+      const reprise = await screen.findByRole("link", { name: /Épreuve blanche n°1/ })
+      const tete = container.querySelector("[data-guide='seance-commencer']") ?? container.querySelector("h1, h2")
+      expect(tete).not.toBeNull()
+      expect(reprise.compareDocumentPosition(tete as Element) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy()
+    })
+
     it("ne propose rien quand toutes les copies sont rendues", async () => {
       getAccueil.mockResolvedValue(accueil())
       listMyTentativesInedites.mockResolvedValue([{ ...tentative, submitted_at: "2026-10-03T09:00:00Z" }])

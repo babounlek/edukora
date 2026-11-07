@@ -36,7 +36,12 @@ export function ScrollToTop() {
     const premierRendu = previousPathname.current === null
     previousPathname.current = pathname
     if (navigationType !== "POP") {
-      window.scrollTo(0, 0)
+      // « instant » est indispensable : index.css pose `scroll-behavior: smooth` sur <html> (hors
+      // reduced-motion), donc un simple scrollTo(0, 0) ANIME le retour en haut. La nouvelle page, plus
+      // courte, raccourcit le document en cours d'animation et le navigateur l'interrompt au milieu :
+      // la page s'ouvrait déjà défilée (test élève 2026-11-07 : 2500 px avant le clic, 1452 px après,
+      // reproduit en navigateur). Changer de page n'est pas un défilement à animer.
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" })
     }
     // Un changement de page ne déplace pas le focus tout seul : au clavier ou au lecteur
     // d'écran on resterait sur le lien cliqué, dans un contenu qui n'existe plus. On le

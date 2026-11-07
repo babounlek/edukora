@@ -198,7 +198,9 @@ export function SeanceCorps({
   // c'est un choix pour la semaine entière.
   const matieresObjectif = data.matieres_objectif ?? []
   const afficherObjectif = matieresObjectif.length >= 2 || Boolean(data.objectif_matiere)
-  const afficherSecours = data.etat === "plan_pret"
+  // Pas verrouillée : le bouton était grisé sans un mot (test élève 2026-11-07, compte libre). Ce qu'on ne peut
+  // pas faire ne se montre pas ; ce que l'abonnement ouvre se dit une fois, près du bouton « Débloquer ».
+  const afficherSecours = data.etat === "plan_pret" && !data.seance?.verrouillee
 
   return (
     <>
@@ -966,6 +968,15 @@ function ChoixDuree({
   // Un calibrage a une longueur fixe (quinze questions) : proposer 10 ou 45 minutes
   // n'aurait aucun effet, ou le dénaturerait (voir ajuster_duree_seance).
   if (seance.origine === "DIAGNOSTIC" || seance.budgets_possibles.length < 2) return null
+  // Verrouillée : trois boutons grisés sans explication se lisaient comme une panne. On dit ce que l'abonnement
+  // ouvre, en une phrase, au lieu de montrer un réglage qu'on ne peut pas toucher.
+  if (desactive) {
+    return (
+      <p className="mt-5 text-xs text-muted-foreground">
+        {t("seance.duree_abonnement", { durees: seance.budgets_possibles.map((m) => `${m} min`).join(", ") })}
+      </p>
+    )
+  }
   return (
     <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2">
       <span className="text-xs text-muted-foreground">{t("seance.combien_temps")}</span>

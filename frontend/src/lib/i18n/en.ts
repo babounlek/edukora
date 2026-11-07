@@ -230,6 +230,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "seance.continuer": "Keep going now",
   "seance.tour_fait": "You've done everything we can suggest for today.",
   "seance.combien_temps": "How much time do you have?",
+  "seance.duree_abonnement": "With a subscription, you choose how long your session lasts: {durees}.",
   "seance.phase_cours": "Understand",
   "seance.phase_exercice": "Practise",
   "seance.phase_quiz": "Check",

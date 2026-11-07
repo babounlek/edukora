@@ -125,7 +125,7 @@ export function CoursReaderPage() {
     } else if (typeNavigation.current !== "POP") {
       // Sans ancre, on lit un cours depuis son début : un cours s'est ouvert tout en bas, sur le pied de page
       // (test élève 2026-11-02), quand le scroll posé par ScrollToTop avait précédé l'arrivée du contenu.
-      window.scrollTo(0, 0)
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" }) // pas d'animation : voir ScrollToTop
     }
   }, [content])
 
