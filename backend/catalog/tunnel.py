@@ -374,8 +374,10 @@ FAMILLE_QCM = {
     ), "MIXTE"),
     **dict.fromkeys(("PHILOSOPHIE", "LITTERATURE", "GCE_PHILOSOPHY", "GCE_RELIGION", "GCE_LITERATURE"), "REDIGE"),
 }
-# Sous ce nombre d'items, le taux de réussite d'un thème repose sur trop peu de réponses objectives.
-MIN_QCM_PAR_THEME = {"OBJECTIVE": 2, "MIXTE": 2, "REDIGE": 1}
+# Sous ce nombre de QCM, le taux de réussite d'un thème repose sur trop peu de réponses objectives.
+# 6 = plancher de la campagne « 6 questions minimum par thème » (11-2026) pour les matières objectives et
+# mixtes ; les matières rédigées (philosophie, littérature) n'ont pas vocation à être évaluées en QCM.
+MIN_QCM_PAR_THEME = {"OBJECTIVE": 6, "MIXTE": 6, "REDIGE": 1}
 MIN_ITEMS_POUR_CONTROLE_THEME = 3
 
 

@@ -141,8 +141,19 @@ class GateQcmTests(TestCase):
         self.assertTrue(any(f.severity == ALERTE and "MATHS : 3/6" in f.message and "plancher 70" in f.message for f in findings))
 
     def test_objective_subject_at_threshold_passes_subject_check(self):
-        self._items("MATHS", "Dérivation", nb_qcm=5, nb_ouvertes=1)
+        self._items("MATHS", "Dérivation", nb_qcm=6, nb_ouvertes=1)
         self.assertFalse([f for f in self._findings() if "MATHS :" in f.message])
+
+    def test_theme_floor_is_six_qcm_for_objective_and_mixed_subjects(self):
+        self._items("MATHS", "Limites", nb_qcm=5, nb_ouvertes=0)
+        self._items("HISTOIRE", "Colonisation", nb_qcm=5, nb_ouvertes=0)
+        self._items("MATHS", "Suites", nb_qcm=6, nb_ouvertes=0)
+        alertes = [f for f in self._findings() if "trop peu de QCM" in f.message]
+        self.assertEqual(len(alertes), 1)
+        self.assertIn("minimum 6 QCM", alertes[0].message)
+        self.assertIn("'Limites'", alertes[0].message)
+        self.assertIn("'Colonisation'", alertes[0].message)
+        self.assertNotIn("'Suites'", alertes[0].message)
 
     def test_written_subject_only_needs_thirty_percent(self):
         self._items("PHILOSOPHIE", "Dissertation", nb_qcm=2, nb_ouvertes=4)
