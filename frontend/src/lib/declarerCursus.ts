@@ -19,15 +19,17 @@ export function useDeclarerCursus() {
   const { isAuthenticated } = useAuth()
   const changer = useChangerCursusPrepare()
 
-  function declarer(cursus: Cursus) {
+  /** `apres` : appelé une fois le choix enregistré (compte) ou mémorisé (visiteur) - par exemple pour revenir à l'accueil. */
+  function declarer(cursus: Cursus, apres?: () => void) {
     if (isAuthenticated) {
-      changer.mutate(cursus.id)
+      changer.mutate(cursus.id, { onSuccess: apres })
       return
     }
     memoriserCursusPrepareEnAttente(cursus.id)
     toast.success(t("bandeau.note", { cursus: libelleCursus(cursus) }), {
       description: t("bandeau.connecte_toi"),
     })
+    apres?.()
   }
 
   return { declarer, enCours: changer.isPending }

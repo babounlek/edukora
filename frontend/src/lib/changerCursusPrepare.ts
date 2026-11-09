@@ -92,6 +92,9 @@ export function useChangerCursusPrepare() {
       // du staleTime par défaut.
       queryClient.invalidateQueries({ queryKey: ["plan-du-jour"] })
       queryClient.invalidateQueries({ queryKey: ["progression"] })
+      // Changer d'examen change presque tout ce qui est affiché (listes, thèmes, quiz, inédites) : plutôt que d'énumérer
+      // les clés une à une - et d'en oublier une à chaque nouvelle page -, tout ce qui est en cache est tenu pour périmé.
+      queryClient.invalidateQueries()
     },
   })
 }

@@ -173,6 +173,7 @@ export const fr = {
   "accueil.inedites_autres": "Voir celles des autres examens",
   "choix.tu_prepares": "Tu prépares : {cursus}",
   "choix.changer": "changer",
+  "choix.quitter_tentative": "Changer d'examen te ramène à l'accueil. Ton quiz ou ton épreuve en cours est enregistré : tu pourras le reprendre. Continuer ?",
   "choix.menu_titre": "Ton examen",
   "choix.pastille_aria": "Ton examen : {cursus}. Changer d'examen",
   "choix.autre_langue":

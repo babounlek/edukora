@@ -167,6 +167,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "accueil.inedites_autres": "See the ones for other exams",
   "choix.tu_prepares": "You're preparing: {cursus}",
   "choix.changer": "change",
+  "choix.quitter_tentative": "Changing exam takes you back to the home page. Your quiz or paper in progress is saved: you can resume it later. Continue?",
   "choix.menu_titre": "Your exam",
   "choix.pastille_aria": "Your exam: {cursus}. Change exam",
   "choix.autre_langue":

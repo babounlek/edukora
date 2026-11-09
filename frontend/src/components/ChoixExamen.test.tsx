@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { render, screen, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { MemoryRouter, useLocation } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const { auth, listCursus, mutate, toast } = vi.hoisted(() => ({
@@ -27,16 +28,27 @@ const BEPC = { id: 1, examen: "BEPC", examen_display: "BEPC", series: null, lang
 const BAC_C = { id: 2, examen: "BAC", examen_display: "BAC", series: { code: "C", label: "C" }, langue: "fr", country: { code: "CM" } }
 const GCE = { id: 3, examen: "GCE_OL", examen_display: "GCE O Level", series: null, langue: "en", country: { code: "CM" } }
 
-function afficher(ui: React.ReactNode) {
+function Page() {
+  return <div data-testid="chemin">{useLocation().pathname}</div>
+}
+
+function afficher(ui: React.ReactNode, chemin = "/cm/epreuves") {
   return render(
-    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>{ui}</QueryClientProvider>,
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+      <MemoryRouter initialEntries={[chemin]}>
+        {ui}
+        <Page />
+      </MemoryRouter>
+    </QueryClientProvider>,
   )
 }
 
 describe("examen choisi : rappel à l'écran", () => {
   beforeEach(() => {
     localStorage.clear()
-    mutate.mockClear()
+    mutate.mockReset()
+    // Le compte : l'écriture réussit tout de suite, donc `onSuccess` est appelé comme le ferait react-query.
+    mutate.mockImplementation((_id: number, options?: { onSuccess?: () => void }) => options?.onSuccess?.())
     toast.success.mockClear()
     listCursus.mockResolvedValue([BEPC, BAC_C, GCE])
     auth.isAuthenticated = false
@@ -105,8 +117,61 @@ describe("examen choisi : rappel à l'écran", () => {
       await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
       await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
 
-      expect(mutate).toHaveBeenCalledWith(2)
+      expect(mutate).toHaveBeenCalledWith(2, expect.objectContaining({ onSuccess: expect.any(Function) }))
       expect(lireCursusPrepareEnAttente()).toBeNull()
+    })
+
+    it("changer d'examen ramène à l'accueil du pays, visiteur comme compte", async () => {
+      memoriserCursusPrepareEnAttente(1)
+      afficher(
+        <SelecteurExamen>
+          <button type="button">ouvrir</button>
+        </SelecteurExamen>,
+        "/cm/cours",
+      )
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm/cours")
+      await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
+      await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm")
+    })
+
+    it("un compte revient à l'accueil seulement une fois le choix enregistré", async () => {
+      auth.isAuthenticated = true
+      auth.user = { id: 1, cursus_prepare: BEPC, a_un_abonnement_actif: false }
+      mutate.mockImplementation(() => {}) // l'enregistrement n'a pas encore abouti
+      afficher(
+        <SelecteurExamen>
+          <button type="button">ouvrir</button>
+        </SelecteurExamen>,
+        "/cm/cours",
+      )
+      await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
+      await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm/cours")
+    })
+
+    it("pendant un quiz en cours : on demande avant de quitter, et refuser laisse tout en place", async () => {
+      memoriserCursusPrepareEnAttente(1)
+      const confirmer = vi.spyOn(window, "confirm").mockReturnValue(false)
+      afficher(
+        <SelecteurExamen>
+          <button type="button">ouvrir</button>
+        </SelecteurExamen>,
+        "/quiz/session/12",
+      )
+      await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
+      await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
+
+      expect(confirmer).toHaveBeenCalledTimes(1)
+      expect(lireCursusPrepareEnAttente()).toBe(1)
+      expect(screen.getByTestId("chemin").textContent).toBe("/quiz/session/12")
+
+      confirmer.mockReturnValue(true)
+      await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
+      await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
+      expect(lireCursusPrepareEnAttente()).toBe(2)
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm")
+      confirmer.mockRestore()
     })
 
     it("re-choisir l'examen déjà actif ne fait rien", async () => {
