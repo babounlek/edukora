@@ -444,9 +444,17 @@ export function previewCours(slug: string) {
 
 /** `cursus` : ne garde que les matières ayant du contenu publié pour ce cursus (filtre
  * Examen choisi → pastilles Matière limitées à cet examen). */
-export function listSubjects(country?: string, signal?: AbortSignal, cursus?: number, langue?: string) {
+export function listSubjects(
+  country?: string,
+  signal?: AbortSignal,
+  cursus?: number,
+  langue?: string,
+  /** "epreuves" : seulement les matières qui ont une épreuve (annale ou inédite), sans compter les cours. */
+  source?: "epreuves",
+) {
   const params = new URLSearchParams()
   if (country) params.set("country", country)
+  if (source) params.set("source", source)
   if (cursus) params.set("cursus", String(cursus))
   // Sans examen choisi : limite aux matières de cette langue (fr | en) - voir SubjectListView.
   if (langue && !cursus) params.set("langue", langue)

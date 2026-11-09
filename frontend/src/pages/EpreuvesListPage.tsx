@@ -216,8 +216,9 @@ export function EpreuvesListPage() {
   // Un examen choisi → seules les matières de cet examen (« Allemand » sous BEPC menait à une
   // liste vide). Sans examen, toutes les matières du pays.
   const { data: subjects = [], isSuccess: subjectsChargees, isPlaceholderData: subjectsPlaceholder } = useQuery({
-    queryKey: ["subjects", country, cursusFilter, langueFiltre],
-    queryFn: ({ signal }) => listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined, langueFiltre),
+    queryKey: ["subjects", country, cursusFilter, langueFiltre, "epreuves"],
+    queryFn: ({ signal }) =>
+      listSubjects(country, signal, cursusFilter ? Number(cursusFilter) : undefined, langueFiltre, "epreuves"),
     placeholderData: keepPreviousData,
   })
 

@@ -687,9 +687,19 @@ class SubjectListView(generics.ListAPIView):
         # bug réel, constaté en local le 2026-08-17. Sans jointure il n'y a plus de
         # doublons à écarter, donc plus de DISTINCT, et la sous-requête ne tourne
         # qu'une fois par matière.
-        a_du_contenu = Exists(lessons_publiees) | Exists(cours_publies)
-        if inedites_publiees is not None:
-            a_du_contenu = a_du_contenu | Exists(inedites_publiees)
+        #
+        # ?source=epreuves : les pastilles de la page /epreuves (annales + inédites, jamais les cours). Les cours sans
+        # épreuve source étant proposés à tout examen (voir q_cours_du_cursus), « Probatoire A » montrait Chimie, SVT,
+        # Réseaux... sans une seule épreuve derrière.
+        if self.request.query_params.get("source") == "epreuves":
+            if inedites_publiees is None:
+                inedites_publiees = EpreuveInedite.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE)
+            a_du_contenu = Exists(lessons_publiees) | Exists(inedites_publiees)
+            # cours_count reste celui des cours : la page /epreuves ne l'affiche pas.
+        else:
+            a_du_contenu = Exists(lessons_publiees) | Exists(cours_publies)
+            if inedites_publiees is not None:
+                a_du_contenu = a_du_contenu | Exists(inedites_publiees)
         qs = (
             Subject.objects.select_related("country")
             .filter(country__actif=True)

@@ -1204,6 +1204,25 @@ class SubjectCursusContentFilterTests(TestCase):
         self.assertNotIn('JOIN "catalog_lesson"', sql)
         self.assertNotIn('JOIN "catalog_cours"', sql)
 
+    def test_subject_list_source_epreuves_ignore_les_cours(self):
+        """La page /epreuves ne liste pas les cours : ?source=epreuves ne propose que les matières qui ont une
+        épreuve. Sans cela, un cours sans épreuve source (proposé à tout examen) faisait apparaître sa matière
+        sous un examen qui n'en a aucune épreuve."""
+        Cours.objects.create(
+            external_id="seul-cours", titre="Cours sans épreuve", subject=self.empty_subject,
+            statut=StatutContenu.VALIDE,
+        )
+        response = self.client.get(reverse("catalog:subject-list"), {"country": "cm"})
+        self.assertIn("PHYSIQUE_CHIMIE_2", [item["code"] for item in response.json()])
+        response = self.client.get(reverse("catalog:subject-list"), {"country": "cm", "source": "epreuves"})
+        self.assertNotIn("PHYSIQUE_CHIMIE_2", [item["code"] for item in response.json()])
+        Lesson.objects.create(
+            title="Une épreuve", subject=self.empty_subject, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+        response = self.client.get(reverse("catalog:subject-list"), {"country": "cm", "source": "epreuves"})
+        self.assertIn("PHYSIQUE_CHIMIE_2", [item["code"] for item in response.json()])
+
     def test_subject_list_renvoie_zero_cours_pour_une_matiere_sans_cours(self):
         """Une matière qui n'a que des épreuves : la sous-requête ne remonte aucune
         ligne, le client doit quand même recevoir un entier et non null."""
