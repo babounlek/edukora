@@ -86,6 +86,7 @@ def liens_de_recherche(cible, sources=None):
     """
     Liste de liens utiles pour trouver une cible. Chaque lien :
     {source, nom, type, url, automatisable, note}. `type` : recherche_site | api | google_site | rubrique | scribd.
+    Un site marqué `hors_service` dans sources.json (ne répond plus) n'est jamais proposé.
     """
     sources = sources or charger()
     systeme = systeme_de(cible)
@@ -93,7 +94,7 @@ def liens_de_recherche(cible, sources=None):
     q = urllib.parse.quote_plus(terme)
     liens = []
     for s in sources:
-        if systeme not in s.get("systemes", []) or "a_explorer" in s.get("acces", []) or s["id"] in ("drive", "camgceb", "gcepanel"):
+        if s.get("hors_service") or systeme not in s.get("systemes", []) or "a_explorer" in s.get("acces", []) or s["id"] in ("drive", "camgceb", "gcepanel"):
             continue
         rec = s.get("recherche", {})
         base = {"source": s["id"], "nom": s["nom"], "automatisable": bool(s.get("automatisable"))}

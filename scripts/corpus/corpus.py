@@ -6,6 +6,8 @@
     python scripts/corpus/corpus.py collecter <url> --langue fr|en ...   # COLLECTE (télécharge dans la zone de dépôt)
     python scripts/corpus/corpus.py synchroniser <pdf-accepté> ...       # SYNCHRONISATION (copie vers ingest/_telechargements_*)
     python scripts/corpus/corpus.py registre ...                  # lecture/écriture du registre de recherches
+    python scripts/corpus/corpus.py decouper <compilation.pdf>    # QUALIFICATION : une compilation -> un PDF par épreuve
+    python scripts/corpus/corpus.py base-doublons <pdf>...        # CONTRÔLE : le candidat est-il déjà en base ? (lecture seule)
 
 Jamais de `publish`, jamais de ssh, jamais d'écriture dans `ingest/cm/` ni en base.
 """
@@ -17,6 +19,13 @@ import subprocess
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Sous `python -I`, la console Windows écrit en cp1252 : accents cassés ou UnicodeEncodeError. UTF-8 imposé.
+for _flux in (sys.stdout, sys.stderr):
+    try:
+        _flux.reconfigure(encoding="utf-8")
+    except (AttributeError, ValueError):  # flux déjà redirigé ou remplacé (tests)
+        pass
 
 import cartographie  # noqa: E402
 from commun import AUDIT, INGEST, RACINE_DEPOT  # noqa: E402

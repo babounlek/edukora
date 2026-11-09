@@ -1,12 +1,15 @@
 """Sous-commandes de corpus.py autres qu'`audit` : qualifier, head, collecter, synchroniser, controle, registre."""
 import json
 import os
+import subprocess
 import sys
 
 import collecte
+import decoupe
 import doublons
 import qualification
 import registre
+import similarite
 import sources
 import synchro
 from commun import INGEST, ZONE_EN, ZONE_FR
@@ -31,6 +34,8 @@ def commande_qualifier(args):
     q = qualification.qualifier(args.pdf, _cible(args))
     if args.doublons:
         index = doublons.construire_index(_zones_connues(), cache=os.path.join(INGEST, "_audit", "corpus", "index_empreintes.json"))
+        ignores = {os.path.abspath(p) for p in (args.ignorer_source or [])}
+        index = {c: e for c, e in index.items() if os.path.abspath(c) not in ignores}
         q["doublons"] = [list(d) for d in doublons.chercher(args.pdf, index)]
         if q["doublons"] and not q["eliminatoires"]:
             q["eliminatoires"].append(("E6", "doublon (%s) de %s" % (q["doublons"][0][0], q["doublons"][0][1])))
@@ -42,7 +47,7 @@ def commande_qualifier(args):
 
 
 def commande_head(args):
-    r = collecte.verifier_url(args.url)
+    r = collecte.verifier_url(args.url, tete_seule=True)
     print(json.dumps(r, ensure_ascii=False, indent=2))
     return 0 if r["ok"] else 3
 
@@ -77,6 +82,44 @@ def commande_controle(args):
                           "avertissements": q["avertissements"]})
     print(json.dumps(bilan, ensure_ascii=False, indent=2))
     return 0
+
+
+def commande_decouper(args):
+    """Une compilation -> un PDF par épreuve (ou simple inventaire avec --liste)."""
+    sortie = None if args.liste else (args.dossier_sortie or os.path.join(INGEST, "_audit", "corpus", "decoupes"))
+    epreuves = decoupe.decouper(args.pdf, sortie, garde=args.garde or decoupe.GARDE_PAR_DEFAUT)
+    for e in epreuves:
+        pub = " (pub retirée p%s)" % ",".join(map(str, e["pages_publicitaires"])) if e["pages_publicitaires"] else ""
+        print("%-10s %-28s %s  p%-9s %s%s" % (e["examen"], e["matiere"], e["annee"], e["pages_source"], e["fichier"], pub))
+    print("%d épreuve(s)%s" % (len(epreuves), "" if args.liste else " écrites dans " + sortie))
+    return 0 if epreuves else 3
+
+
+def _texte_pdf(chemin):
+    """Texte du PDF sans pages publicitaires ni mentions « corrigé disponible sur le site » (bruit de comparaison)."""
+    import fitz
+    with fitz.open(chemin) as doc:
+        pages = [p.get_text() for p in doc if not qualification.page_publicitaire(p.get_text())]
+    return qualification.MENTIONS_SITE.sub(" ", " ".join(pages))
+
+
+def commande_base_doublons(args):
+    """Compare chaque PDF au contenu de la base locale (lecture seule, via le conteneur Docker)."""
+    ici = os.path.dirname(os.path.abspath(__file__))
+    candidats = {os.path.basename(p): _texte_pdf(p) for p in args.pdf}
+    charge = os.path.join(os.environ.get("TEMP", "."), "candidats_base.json")
+    with open(charge, "w", encoding="utf-8") as fh:
+        json.dump({"annee_min": args.depuis_annee, "candidats": candidats}, fh, ensure_ascii=False)
+    conteneur = "edukora-backend-1"
+    for source, cible in ((charge, "candidats_base.json"), (os.path.join(ici, "similarite.py"), "similarite.py"),
+                          (os.path.join(ici, "comparer_base.py"), "comparer_base.py")):
+        subprocess.run(["docker", "cp", source, "%s:/tmp/%s" % (conteneur, cible)], check=True, capture_output=True)
+    r = subprocess.run(["docker", "exec", conteneur, "python", "manage.py", "shell", "-c",
+                        "exec(open('/tmp/comparer_base.py', encoding='utf-8').read())"],
+                       check=True, capture_output=True, encoding="utf-8")
+    bilan = [json.loads(ligne[2:]) for ligne in r.stdout.splitlines() if ligne.startswith("@@")]
+    print(json.dumps(bilan, ensure_ascii=False, indent=2))
+    return 3 if any(m["niveau"] == "DOUBLON_BASE" for b in bilan for m in b["meilleurs"]) else 0
 
 
 def commande_registre(args):
@@ -123,8 +166,21 @@ def ajouter(sous):
     q.add_argument("pdf")
     cible_opts(q)
     q.add_argument("--doublons", action="store_true", help="compare aux zones connues")
+    q.add_argument("--ignorer-source", action="append", help="PDF à ne pas compter comme doublon (la compilation dont le candidat est extrait)")
     q.add_argument("--rendre", help="dossier où rendre les pages en PNG (lecture visuelle)")
     q.set_defaults(fonction=commande_qualifier)
+
+    d = sous.add_parser("decouper", help="découpe une compilation en un PDF par épreuve (pages de garde), sans pages publicitaires")
+    d.add_argument("pdf")
+    d.add_argument("--dossier-sortie", help="défaut : ingest/_audit/corpus/decoupes")
+    d.add_argument("--garde", help="expression avec groupes nommés matiere, annee (et examen) pour un autre format de page de garde")
+    d.add_argument("--liste", action="store_true", help="inventaire seulement, rien n'est écrit")
+    d.set_defaults(fonction=commande_decouper)
+
+    bd = sous.add_parser("base-doublons", help="compare des PDF au contenu déjà en base (lecture seule, Docker requis)")
+    bd.add_argument("pdf", nargs="+")
+    bd.add_argument("--depuis-annee", type=int, default=2019)
+    bd.set_defaults(fonction=commande_base_doublons)
 
     h = sous.add_parser("head", help="valide une URL de PDF sans la télécharger")
     h.add_argument("url")

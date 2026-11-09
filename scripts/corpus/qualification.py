@@ -19,10 +19,19 @@ MOTS_CORRIGE = (
     "marking scheme", "answer key", "suggested answers", "examiner s report", "examiners report",
     "marking guide", "solution", "solutions to",
 )
-# Mots qui ne prouvent rien seuls (un sujet peut dire « solution » ou « correction ») : pondérés plus bas.
-MOTS_FAIBLES = {"solution", "solutions to", "correction"}
+# Mots qui ne prouvent rien seuls (un sujet peut dire « solution », « correction » ou « barème » : « Barème : une
+# victoire vaut 2 points » dans un énoncé d'EPS, « proposition de solution » dans une consigne de SVT) : pondérés plus bas.
+MOTS_FAIBLES = {"solution", "solutions to", "correction", "bareme", "proposition de solution"}
+
+# Mentions de sites qui annoncent un corrigé AILLEURS (« Épreuve disponible avec correction sur le site… ») : ce n'est
+# pas un corrigé dans le document, on les retire avant de chercher des mots de corrigé.
+MENTIONS_SITE = re.compile(r"(?i)(?:épreuve|epreuve|correction)\s+disponible[^\n]{0,160}")
+# Une page de publicité (pack payant, groupe WhatsApp, « 140 épreuves corrigées ») n'est pas du sujet : ignorée.
+MARQUES_PUBLICITE = ("groupe whatsapp", "acheter ndolobepc", "voir ndolobepc", "plus de 140 epreuves corrigees",
+                     "packs corriges")
 
 MARQUES_SITES = {
+    "ndolomath": "ndolomath.com",
     "gcerevision": "cameroongcerevision.com / Kawlo", "kawlo": "Kawlo", "meetlearn": "MeetLearn",
     "cgce revision": "cgce-revision.com", "sujetexa": "sujetexa.com", "camerecole": "camerecole.org",
     "epreuvesetcorriges": "epreuvesetcorriges.com", "concourscameroon": "concourscameroon.com",
@@ -85,11 +94,23 @@ def lire_page_de_garde(texte):
     return garde
 
 
+def page_publicitaire(texte):
+    """Page de promotion d'un site (pack payant, groupe WhatsApp…) : jamais du contenu d'épreuve."""
+    n = normaliser(texte)
+    return any(m in n for m in MARQUES_PUBLICITE)
+
+
 def detecter_corrige(textes):
-    """Mots-clés de corrigé trouvés, avec leurs pages. Un mot faible seul ne suffit pas à rejeter."""
+    """Mots-clés de corrigé trouvés, avec leurs pages. Un mot faible seul ne suffit pas à rejeter.
+
+    Les pages publicitaires et les mentions « corrigé disponible sur le site… » ne comptent pas : elles annoncent un
+    corrigé, elles n'en contiennent pas.
+    """
     trouves = []
     for numero, texte in enumerate(textes, 1):
-        n = normaliser(texte)
+        if page_publicitaire(texte):
+            continue
+        n = normaliser(MENTIONS_SITE.sub(" ", texte))
         for mot in MOTS_CORRIGE:
             if normaliser(mot) in n:
                 trouves.append({"mot": mot, "page": numero, "faible": mot in MOTS_FAIBLES})
@@ -211,6 +232,9 @@ def qualifier(chemin_pdf, cible=None):
         blanches = pages_blanches(doc)
         if blanches:
             resultat["avertissements"].append("pages blanches : %s" % blanches)
+        publicitaires = [i for i, t in enumerate(textes, 1) if page_publicitaire(t)]
+        if publicitaires:
+            resultat["avertissements"].append("pages publicitaires ignorées pour les mots de corrigé : %s" % publicitaires)
         texte_total = " ".join(textes)
         if len(texte_total.strip()) < 40:
             resultat["avertissements"].append("aucune couche de texte : lecture visuelle obligatoire (scan)")

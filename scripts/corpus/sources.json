@@ -1,5 +1,5 @@
 {
-  "_lisez_moi": "Registre des sites de sujets d'examen. 'acces' dit ce que le skill peut faire seul ; 'automatisable' = HEAD + téléchargement direct autorisés (jamais de contournement). Mettre à jour après chaque constat : verifie_le = date du dernier constat.",
+  "_lisez_moi": "Registre des sites de sujets d'examen. 'acces' dit ce que le skill peut faire seul ; 'automatisable' = HEAD + téléchargement direct autorisés (jamais de contournement). Mettre à jour après chaque constat : verifie_le = date du dernier constat. 'hors_service': true = le site ne répond plus : ses liens ne sont plus proposés (retirer le drapeau au prochain constat favorable).",
   "sources": [
     {
       "id": "sujetexa",
@@ -23,8 +23,9 @@
           "GCE A Level": "https://sujetexa.com/index.php/category/gce/gce-al/"
         }
       },
-      "notes": "PDF directs sous /wp-content/uploads/ (lien porté par l'image de couverture de chaque article). Au 2026-10-30 le certificat TLS du site est expiré : le skill ne désactive jamais la vérification, l'utilisateur télécharge dans son navigateur. API REST WordPress ouverte (catégorie 129 = O/L, 130 = A/L). Titres sans nom d'école = officiels ; « Mock », « GBHS », « Séquence », « Pre-mock » = à écarter. Un fichier peut être tronqué (Literature A/L P3 2024 : 6 p., 3 questions sur 4).",
-      "verifie_le": "2026-10-30"
+      "notes": "PDF directs sous /wp-content/uploads/ (lien porté par l'image de couverture de chaque article). Au 2026-10-30 le certificat TLS du site est expiré : le skill ne désactive jamais la vérification, l'utilisateur télécharge dans son navigateur. API REST WordPress ouverte (catégorie 129 = O/L, 130 = A/L). Titres sans nom d'école = officiels ; « Mock », « GBHS », « Séquence », « Pre-mock » = à écarter. Un fichier peut être tronqué (Literature A/L P3 2024 : 6 p., 3 questions sur 4). 2026-11-09 : le site ne répond plus du tout depuis ce poste (délai dépassé sur la recherche et sur le fascicule BEPC 2026) : liens de recherche sujetexa retirés des listes remises à l'utilisateur tant que le site ne répond pas.",
+      "verifie_le": "2026-11-09",
+      "hors_service": true
     },
     {
       "id": "epreuvesetcorriges",
@@ -44,8 +45,8 @@
           "Cameroun": "https://epreuvesetcorriges.com/categories/cameroun"
         }
       },
-      "notes": "2026-10-30 : les pages /categories/... répondent 403 (LiteSpeed), même dans le Chrome de l'utilisateur ; seule la page d'accueil répond (et affiche le Bénin). Ne pas contourner. Les liens /download des fiches (…/categories/cameroun/examens/bac/<id>-<slug>/download) répondent HTTP 200 application/pdf (testé 2026-10-25). Gratuit. Vérifier la page de garde : séries mélangées (A4/ABI, C, D, E, TI).",
-      "verifie_le": "2026-10-30"
+      "notes": "2026-10-30 : les pages /categories/... répondent 403 (LiteSpeed), même dans le Chrome de l'utilisateur ; seule la page d'accueil répond (et affiche le Bénin). Ne pas contourner. Les liens /download des fiches (…/categories/cameroun/examens/bac/<id>-<slug>/download) répondent HTTP 200 application/pdf (testé 2026-10-25). Gratuit. Vérifier la page de garde : séries mélangées (A4/ABI, C, D, E, TI). 2026-11-09 : la recherche (/search?q=) et les rubriques par année (/bepc/2024) répondent 403 aux accès automatisés ; les pages de documents (…/<id>-<slug>) répondent 200. Le fascicule BEPC 2026 (id 42998) ne contient pas les sujets d'Allemand, Anglais, Histoire ni d'EPS : seuls les corrigés Anglais/Allemand existent.",
+      "verifie_le": "2026-11-09"
     },
     {
       "id": "camerecole",
@@ -203,7 +204,9 @@
       ],
       "couvre": "BEPC, Probatoire A/C/D, BAC A/C/D (2020 à 2026), mathématiques surtout ; pas de GCE ni de CAP vus",
       "acces": [
+        "pages_epreuve_par_matiere",
         "visionneuse_integree",
+        "pdf_compilation_direct",
         "payant_en_partie"
       ],
       "automatisable": false,
@@ -221,8 +224,8 @@
           "BAC D": "https://www.ndolomath.com/toutes-les-epreuves-du-bac-d/"
         }
       },
-      "notes": "Plateforme de révision française (Mme Mba). Épreuves regroupées par examen dans une visionneuse (« Télécharger » + « Toucher l'épreuve »), pas de PDF direct vu. Packs corrigés payants (Mobile Money / WhatsApp) : ne jamais contourner. Recherche /?s= et API WordPress ouvertes ; robots.txt n'interdit ni la recherche ni les listes. Fiche vue sur la seule page d'accueil et la recherche : pages d'épreuves non ouvertes. 2026-10-30 (Chrome de l'utilisateur) : la page Probatoire D annonce « 16 matières · 112 sujets », onglets Épreuves/Corrections et bouton « Télécharger le PDF », mais la liste reste vide (application JavaScript sans contenu chargé, probablement derrière le pack payant) : rien d'exploitable sans achat.",
-      "verifie_le": "2026-10-30"
+      "notes": "Plateforme de révision française (Mme Mba). Épreuves regroupées par examen dans une visionneuse (« Télécharger » + « Toucher l'épreuve »), pas de PDF direct vu. Packs corrigés payants (Mobile Money / WhatsApp) : ne jamais contourner. Recherche /?s= et API WordPress ouvertes ; robots.txt n'interdit ni la recherche ni les listes. Fiche vue sur la seule page d'accueil et la recherche : pages d'épreuves non ouvertes. 2026-10-30 (Chrome de l'utilisateur) : la page Probatoire D annonce « 16 matières · 112 sujets », onglets Épreuves/Corrections et bouton « Télécharger le PDF », mais la liste reste vide (application JavaScript sans contenu chargé, probablement derrière le pack payant) : rien d'exploitable sans achat. 2026-11-09 : (1) pages d'épreuve par matière et année sous /ndolobepc/epreuve-d<matiere>-du-bepc-<année>/ (HTTP 200, titre conforme) avec une page « correction » jumelle ; le PDF est dans une visionneuse sans lien direct : rien à télécharger par le skill. (2) La compilation « Tout le BEPC de 2026 à 2020 » est un PDF public direct (wp-content/uploads/2026/09/Tout-le-BEPC-de-2026-a-2020-Ndolomath.pdf, 11,9 Mo, 297 p., 20 matières, ~107 épreuves) : à l'utilisateur de le télécharger ; `corpus.py decouper` le découpe par page de garde. Ce sont des mises en page refaites par Ndolomath (filigrane NDOLOMATH, téléphone, publicité, pas d'en-tête officiel) : officialité non prouvée, à qualifier épreuve par épreuve. (3) Pièges mesurés : « Anglais BEPC 2024 » de la compilation = épreuve du collège F. X. Vogt (doublon d'une Lesson de la base) ; EPS 2020-2022 partagent une trame commune (origine reconstituée probable) ; « EPS BEPC 2027 » = erreur d'année du site. (4) La compilation alterne Histoire et Géographie selon les années (pas les deux chaque année).",
+      "verifie_le": "2026-11-09"
     },
     {
       "id": "scribd",

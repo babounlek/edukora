@@ -61,14 +61,24 @@ def robots_autorise(url, ouvrir=urllib.request.urlopen):
     return rp.can_fetch(AGENT, url)
 
 
-def verifier_url(url, ouvrir=urllib.request.urlopen):
+def _est_pdf_direct(url):
+    """Adresse qui se termine par .pdf (hors paramètres) : un fichier public, pas une page ni une visionneuse."""
+    return urllib.parse.urlparse(url).path.lower().endswith(".pdf")
+
+
+def verifier_url(url, ouvrir=urllib.request.urlopen, tete_seule=False):
     """
     HEAD d'une URL de PDF, sans la télécharger. Retourne
     {"ok", "statut", "type", "taille", "motif", "manuel"} ; `manuel` = à ouvrir à la main (protection, Drive).
+
+    `tete_seule=True` (commande `head`) : sur un site « à la main », une adresse qui se termine par .pdf reçoit quand
+    même sa requête HEAD (vérifier qu'un lien existe n'est pas le télécharger). Le résultat reste `manuel` : la
+    collecte, elle, n'utilise jamais ce mode et ne télécharge toujours rien sur un site à la main.
     """
     hote = _hote(url)
     sortie = {"url": url, "ok": False, "statut": None, "type": None, "taille": None, "motif": "", "manuel": False}
-    if any(h in hote for h in HOTES_MANUELS):
+    hote_manuel = any(h in hote for h in HOTES_MANUELS)
+    if hote_manuel and not (tete_seule and _est_pdf_direct(url)):
         sortie.update(motif="hôte à ouvrir à la main (pas de lien direct)", manuel=True)
         return sortie
     if _echecs.get(hote, 0) >= 3:
@@ -108,6 +118,9 @@ def verifier_url(url, ouvrir=urllib.request.urlopen):
         sortie["motif"] = "taille implausible (%d octets)" % sortie["taille"]
     else:
         sortie["ok"] = True
+    if hote_manuel:
+        # Le lien existe et c'est un PDF, mais le site est « à la main » : l'utilisateur le télécharge lui-même.
+        sortie.update(manuel=True, motif=sortie["motif"] or "lien PDF direct vérifié ; site à la main : téléchargement par l'utilisateur")
     return sortie
 
 

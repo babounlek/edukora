@@ -19,8 +19,11 @@ import fitz  # noqa: E402
 
 import collecte  # noqa: E402
 import commun  # noqa: E402
+import commandes_extra  # noqa: E402
+import decoupe  # noqa: E402
 import doublons  # noqa: E402
 import qualification  # noqa: E402
+import similarite  # noqa: E402
 import registre  # noqa: E402
 import synchro  # noqa: E402
 import sources  # noqa: E402
@@ -258,7 +261,7 @@ class Sources(unittest.TestCase):
         liens = sources.liens_de_recherche({"niveau": "GCE_AL", "matiere": "GCE_ENGLISH", "annee": 2023, "paper": 2})
         ids = {l["source"] for l in liens}
         self.assertIn("scribd", ids)
-        self.assertIn("sujetexa", ids)
+        self.assertNotIn("sujetexa", ids)  # marqué hors_service le 2026-11-09 : plus proposé
         self.assertNotIn("ndolomath", ids)
         self.assertNotIn("epreuvesetcorriges", ids)
         self.assertTrue(any("Advanced+Level+English+paper+2+june+2023" in l["url"] for l in liens))
@@ -266,7 +269,8 @@ class Sources(unittest.TestCase):
     def test_liens_francophones_incluent_ndolomath_et_scribd(self):
         liens = sources.liens_de_recherche({"examen": "probatoire", "matiere": "MATHS", "serie": "D", "annee": 2024, "langue": "fr"})
         ids = {l["source"] for l in liens}
-        self.assertTrue({"ndolomath", "scribd", "epreuvesetcorriges", "sujetexa"} <= ids)
+        self.assertTrue({"ndolomath", "scribd", "epreuvesetcorriges"} <= ids)
+        self.assertNotIn("sujetexa", ids)
 
     def test_collecte_impossible_propose_des_liens(self):
         base = tempfile.mkdtemp(prefix="corpus_test_")
@@ -285,12 +289,180 @@ class Sources(unittest.TestCase):
         for s in registre_test:
             if s["id"] == "sujetexa":
                 s["automatisable"] = True
+                s.pop("hors_service", None)
         r = sources.rapport_markdown({"niveau": "GCE_AL", "matiere": "GCE_PHYSICS", "annee": 2023, "paper": 1}, registre_test)
         self.assertIn("Téléchargeables par le skill", r)
         self.assertIn("À ouvrir à la main", r)
         r2 = sources.rapport_markdown({"niveau": "GCE_AL", "matiere": "GCE_PHYSICS", "annee": 2023, "paper": 1})
         self.assertNotIn("Téléchargeables par le skill", r2)
         self.assertIn("À ouvrir à la main", r2)
+
+PUBLICITE = ("Acheter NdoloBEPC\nGroupe WhatsApp d'entraide\nPlus de 140 epreuves corrigees\nCorrections claires pour chaque reponse attendue")
+
+
+class FauxPositifsCorrige(Base):
+    """Mesurés le 2026-11-09 sur la compilation Ndolomath : quatre sujets complets rejetés à tort (E1)."""
+
+    def codes(self, pages):
+        return {c for c, _ in qualification.qualifier(self.pdf("t.pdf", pages))["eliminatoires"]}
+
+    def test_bareme_dans_un_enonce_ne_rejette_pas(self):
+        self.assertNotIn("E1", self.codes(["Epreuve d'EPS\n1. Bareme : une victoire vaut 2 points\n2. Calcule le total"]))
+
+    def test_proposition_de_solution_dans_une_consigne_ne_rejette_pas(self):
+        self.assertNotIn("E1", self.codes(["SVT\n1. Ecris un slogan\n2. Fais une proposition de solution pour la foret"]))
+
+    def test_mention_corrige_disponible_sur_le_site_ignoree(self):
+        pages = ["Epreuve disponible avec correction sur le site www.exemple.com\n1. Solve x\n2. Find y\n3. Compute z",
+                 "4. Expand\n5. Factorise\nCorrection disponible au +237 600 000 000 ou sur www.exemple.com"]
+        self.assertNotIn("E1", self.codes(pages))
+
+    def test_page_publicitaire_ignoree_et_signalee(self):
+        q = qualification.qualifier(self.pdf("p.pdf", ["1. Solve x\n2. Find y\n3. Compute z", PUBLICITE]))
+        self.assertNotIn("E1", {c for c, _ in q["eliminatoires"]})
+        self.assertTrue(any("publicitaires" in a for a in q["avertissements"]))
+
+    def test_un_vrai_corrige_est_toujours_rejete(self):
+        self.assertIn("E1", self.codes(["CORRIGE\n1. x = 1\n2. y = 2\n3. z = 3"]))
+        self.assertIn("E1", self.codes(["MARKING SCHEME\n1. x = 1"]))
+
+
+class TeteSeule(Base):
+    def setUp(self):
+        super().setUp()
+        self.ancien = collecte.PAUSE_MINIMALE
+        collecte.PAUSE_MINIMALE = 0
+        collecte._echecs.clear()
+        self.addCleanup(lambda: setattr(collecte, "PAUSE_MINIMALE", self.ancien))
+        self.contenu = b"%PDF-1.4 " + b" " * 40000
+
+    def interdit(self, requete, timeout=0):
+        raise AssertionError("aucune requête attendue : %s" % requete.full_url)
+
+    def test_pdf_direct_sur_site_a_la_main_verifie_mais_reste_manuel(self):
+        r = collecte.verifier_url("https://www.ndolomath.com/wp-content/uploads/x.pdf", ouvrir=reseau(self.contenu), tete_seule=True)
+        self.assertTrue(r["ok"])
+        self.assertTrue(r["manuel"])
+        self.assertEqual(r["statut"], 200)
+
+    def test_sans_tete_seule_un_site_a_la_main_n_est_jamais_interroge(self):
+        r = collecte.verifier_url("https://www.ndolomath.com/wp-content/uploads/x.pdf", ouvrir=self.interdit)
+        self.assertFalse(r["ok"])
+        self.assertTrue(r["manuel"])
+
+    def test_page_html_sur_site_a_la_main_pas_interrogee_meme_en_tete_seule(self):
+        r = collecte.verifier_url("https://www.ndolomath.com/ndolobepc/epreuve-dallemand-du-bepc-2020/", ouvrir=self.interdit, tete_seule=True)
+        self.assertFalse(r["ok"])
+        self.assertTrue(r["manuel"])
+
+    def test_protection_non_contournee_en_tete_seule(self):
+        r = collecte.verifier_url("https://www.ndolomath.com/x.pdf", ouvrir=reseau(b"", statut=403), tete_seule=True)
+        self.assertFalse(r["ok"])
+        self.assertTrue(r["manuel"])
+
+
+class Similarite(unittest.TestCase):
+    ENONCE = ("Part I evaluation of resources 20 marks section I grammar 10 marks task 1 Ada and Foka are two neighbours "
+              "Ada has learnt about good hygiene and sanitation rules and is trying to share his knowledge with his friend")
+
+    def mesure(self, a, b):
+        cc, cb, n = similarite.comparer(similarite.sequences(a), similarite.sequences(b))
+        return similarite.niveau(cc, cb, n)
+
+    def test_meme_epreuve_est_un_doublon_de_base(self):
+        self.assertEqual(self.mesure(self.ENONCE, self.ENONCE + " et quelques mots de plus en fin de page"), "DOUBLON_BASE")
+
+    def test_epreuve_differente_n_est_pas_un_doublon(self):
+        autre = ("Section II reading comprehension read the passage below and answer the questions that follow "
+                 "the village of Menka lies in the north west region of Cameroon and its people are farmers")
+        self.assertEqual(self.mesure(self.ENONCE, autre), "AUCUN")
+
+    def test_quelques_sequences_communes_restent_du_bruit(self):
+        self.assertEqual(self.mesure("answer all the questions 1 mark each", "please answer all the questions in this paper"), "AUCUN")
+
+    def test_vide(self):
+        self.assertEqual(similarite.comparer(set(), {"a b c d"}), (0.0, 0.0, 0))
+
+
+class Decoupe(Base):
+    def compilation(self):
+        return self.pdf("compilation.pdf", [
+            "Troisieme\nEpreuve d'Allemand\nBEPC 2026\nLIES DEN TEXT\n1. Frage eins",
+            "TEIL 2\n2. Frage zwei\n3. Frage drei",
+            "Acheter NdoloBEPC\nGroupe WhatsApp d'entraide",
+            "Troisieme\nEpreuve d'Anglais\nBEPC 2024\nPART I\n1. Task one",
+            "PART II\n2. Task two",
+        ])
+
+    def test_liste_sans_ecriture(self):
+        sortie = os.path.join(self.tmp, "decoupes")
+        epreuves = decoupe.decouper(self.compilation())
+        self.assertEqual([(e["matiere"], e["annee"]) for e in epreuves], [("Allemand", 2026), ("Anglais", 2024)])
+        self.assertFalse(os.path.exists(sortie))
+
+    def test_pages_et_publicite(self):
+        a, b = decoupe.decouper(self.compilation())
+        self.assertEqual(a["pages"], [1, 2])
+        self.assertEqual(a["pages_publicitaires"], [3])
+        self.assertEqual(b["pages"], [4, 5])
+        self.assertEqual(a["pages_source"], "1-2")
+
+    def test_ecriture_un_pdf_par_epreuve_et_trace(self):
+        sortie = os.path.join(self.tmp, "decoupes")
+        epreuves = decoupe.decouper(self.compilation(), sortie)
+        with fitz.open(os.path.join(sortie, epreuves[0]["fichier"])) as doc:
+            self.assertEqual(len(doc), 2)  # la page de publicité n'est pas reprise
+        self.assertTrue(os.path.isfile(os.path.join(sortie, "decoupes.json")))
+        self.assertEqual(epreuves[1]["fichier"], "bepc-anglais-2024.pdf")
+
+    def test_deux_epreuves_de_meme_nom_ne_s_ecrasent_pas(self):
+        chemin = self.pdf("deux.pdf", ["Epreuve d'EPS\nBEPC 2022\n1. a", "Epreuve d'EPS\nBEPC 2022\n1. b"])
+        noms = [e["fichier"] for e in decoupe.decouper(chemin, os.path.join(self.tmp, "o"))]
+        self.assertEqual(len(set(noms)), 2)
+
+    def test_garde_personnalisee(self):
+        chemin = self.pdf("autre.pdf", ["SUJET DE PHYSIQUE SESSION 2023\n1. a", "2. b"])
+        epreuves = decoupe.decouper(chemin, garde=r"SUJET DE (?P<matiere>[A-Z]+) SESSION (?P<annee>\d{4})")
+        self.assertEqual([(e["matiere"], e["annee"]) for e in epreuves], [("PHYSIQUE", 2023)])
+
+
+class IgnorerSource(Base):
+    def test_extrait_non_compte_comme_doublon_de_sa_compilation(self):
+        compilation = self.pdf("compilation.pdf", SUJET)
+        extrait = os.path.join(self.tmp, "extrait.pdf")
+        shutil.copy(compilation, extrait)
+        ancien = commandes_extra._zones_connues
+        commandes_extra._zones_connues = lambda: [self.tmp]
+        self.addCleanup(lambda: setattr(commandes_extra, "_zones_connues", ancien))
+        args = type("A", (), dict(pdf=extrait, doublons=True, rendre=None, ignorer_source=[compilation], niveau=None,
+                                  matiere=None, annee=None, paper=None, code=None, examen_cible=None, origine=None))()
+        flux, ecran = sys.stdout, io.StringIO()
+        sys.stdout = ecran
+        try:
+            commandes_extra.commande_qualifier(args)
+        finally:
+            sys.stdout = flux
+        import json
+        self.assertEqual(json.loads(ecran.getvalue())["doublons"], [])
+
+
+class SourcesHorsService(unittest.TestCase):
+    def test_site_hors_service_jamais_propose(self):
+        registre_test = [dict(s) for s in sources.charger()]
+        for s in registre_test:
+            if s["id"] == "sujetexa":
+                s["hors_service"] = True
+        ids = {l["source"] for l in sources.liens_de_recherche({"examen": "bepc", "matiere": "SVT", "annee": 2024, "langue": "fr"}, registre_test)}
+        self.assertNotIn("sujetexa", ids)
+        self.assertIn("ndolomath", ids)
+
+    def test_meme_site_propose_une_fois_remis_en_service(self):
+        registre_test = [dict(s) for s in sources.charger()]
+        for s in registre_test:
+            s.pop("hors_service", None)
+        ids = {l["source"] for l in sources.liens_de_recherche({"examen": "bepc", "matiere": "SVT", "annee": 2024, "langue": "fr"}, registre_test)}
+        self.assertIn("sujetexa", ids)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=1)
