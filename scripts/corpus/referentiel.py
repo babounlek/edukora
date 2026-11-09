@@ -41,7 +41,9 @@ PERIODE_DEFAUT = (2019, 2025)
 SESSION_EN_COURS = 2026
 
 # D5 : hors périmètre et hors priorité, ni cherchés ni comptés dans les taux de couverture.
-HORS_PERIMETRE = ("LCN", "LANGUES_NATIONALES", "CHINOIS", "ARABE", "DESSIN", "MUSIQUE", "TVEE")
+# MUSIQUE et TRAVAIL_MANUEL (Probatoire A) sont dans le périmètre depuis le 2026-11-09 : leurs épreuves sont ingérées
+# et les matières existent en base. La grille attendue les déduit comme les autres matières.
+HORS_PERIMETRE = ("LCN", "LANGUES_NATIONALES", "CHINOIS", "ARABE", "DESSIN", "TVEE")
 
 # Matières que le corpus range sous un autre code selon l'épreuve : une cellule attendue est satisfaite si l'une
 # des matières équivalentes est présente (même examen, série, année). Histoire et Géographie sont deux matières

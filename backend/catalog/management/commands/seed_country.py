@@ -37,6 +37,8 @@ SUBJECTS = [
     ("RESEAUX_SECURITE", "Réseaux, Internet et Sécurité Informatique"),
     ("PHYSIQUE_CHIMIE_TECH", "Physique-Chimie-Technologie"),
     ("DESSIN", "Dessin"),
+    ("MUSIQUE", "Musique"),
+    ("TRAVAIL_MANUEL", "Travail manuel"),
 ]
 
 SERIES = [

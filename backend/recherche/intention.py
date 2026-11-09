@@ -126,6 +126,8 @@ _ALIAS_BRUTS = {
     ("eps",): ("EPS",),
     ("litterature",): ("LITTERATURE",),
     ("dessin",): ("DESSIN",),
+    ("musique",): ("MUSIQUE",),
+    ("travail", "manuel"): ("TRAVAIL_MANUEL",),
     ("education", "civique"): ("EDUCATION_CIVIQUE",),
     ("ecm",): ("EDUCATION_CIVIQUE",),
 }

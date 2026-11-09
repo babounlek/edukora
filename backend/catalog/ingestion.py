@@ -229,6 +229,11 @@ MATIERE_MAP = {
     # Espagnol/Éducation Civique par le passé. Contenu resté bloqué à l'ingestion
     # jusqu'ici, faute d'exister au référentiel.
     "dessin": "DESSIN",
+    # Matières du Probatoire A camerounais (décision utilisateur du 2026-11-09) : Subject à part entière.
+    "musique": "MUSIQUE",
+    "travail manuel": "TRAVAIL_MANUEL",
+    "travail manuel (tm)": "TRAVAIL_MANUEL",
+    "tm": "TRAVAIL_MANUEL",
 }
 
 # Matières du GCE (sous-système anglophone, contenu en anglais) - décision utilisateur du
