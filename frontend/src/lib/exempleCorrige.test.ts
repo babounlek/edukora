@@ -68,7 +68,7 @@ describe("exempleDuCursus", () => {
     expect(slug("fr", { examen: "BEPC", series: null })).toBe("mathematiques-bepc-2026")
     expect(slug("fr", bac("C"))).toBe("mathematiques-bac-c-2026")
     expect(slug("fr", bac("D"))).toBe("mathematiques-bac-d-2026")
-    expect(slug("fr", bac("A"))).toBe("mathematiques-bac-a-2001")
+    expect(slug("fr", bac("A"))).toBe("mathematiques-bac-a-2026-blanc-2")
     expect(slug("fr", bac("A1"))).toBe("mathematiques-bac-a1-2015")
     expect(slug("fr", probatoire("D"))).toBe("mathematiques-probatoire-d-2025")
     expect(slug("fr", probatoire("A"))).toBe("mathematiques-probatoire-a")

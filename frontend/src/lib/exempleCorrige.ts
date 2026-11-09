@@ -64,8 +64,10 @@ const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
   // BAC TI : la mathématique gratuite « BAC D et TI 2025 ». Exercice 1 (dénombrement d'un tirage simultané) : la 1.a
   // seule, 866 caractères avec son rappel de méthode. Ses repères sont de la forme « **1.a.** » (voir REPERE_SOUS_QUESTION).
   "BAC:TI": { slug: "mathematiques-bac-d-et-ti-2025", exercice: "1", question1Seule: true, coupeParRepere: true },
-  // BAC A : « Mathématiques BAC A 2001 » (officielle ; les maths gratuites de 2026 sont des épreuves blanches). Exercice 1, question 1.
-  "BAC:A": { slug: "mathematiques-bac-a-2001", exercice: "1", question1Seule: true, coupeParRepere: true },
+  // BAC A : « Mathématiques BAC A 2026 blanc 2 », la maths gratuite du Cameroun pour la série A. Exercice 1, question 1.a (primitive) :
+  // 1 312 caractères avec son rappel de méthode. L'ancien slug « mathematiques-bac-a-2001 » est celui de l'épreuve du BÉNIN (pays
+  // inactif : 404, donc aucun exemple) ; celle du Cameroun est « -2 » et n'est pas gratuite. Vérifier le pays avant tout slug.
+  "BAC:A": { slug: "mathematiques-bac-a-2026-blanc-2", exercice: "1", question1Seule: true, coupeParRepere: true },
   "BAC:A1": { slug: "mathematiques-bac-a1-2015", exercice: "3", question1Seule: true, coupeParRepere: true },
   "PROBATOIRE:C": PROBATOIRE_C_E,
   "PROBATOIRE:E": PROBATOIRE_C_E,
