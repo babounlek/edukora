@@ -28,6 +28,7 @@ import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useSeo } from "@/lib/seo"
 import { CONTACT_WHATSAPP_AFFICHAGE, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { Button } from "@/components/ui/button"
+import { ComparatifFascicule } from "@/components/ComparatifFascicule"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { LienAide } from "@/components/aide/LienAide"
@@ -635,6 +636,8 @@ export function PricingPage() {
             les questions en bas de page : la répéter une troisième fois ne rassurait
             personne. */}
       </div>
+
+      <ComparatifFascicule />
 
       {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant
           la FAQ qui traite les dernières objections - de vrais témoignages publiés
