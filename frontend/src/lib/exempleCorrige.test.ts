@@ -76,7 +76,7 @@ describe("exempleDuCursus", () => {
   })
 
   it("BAC E : l'épreuve commune C et E (celle de la série C n'est pas rattachée à E)", () => {
-    expect(slug("fr", bac("E"))).toBe("mathematiques-bac-c-et-e-2026")
+    expect(slug("fr", bac("E"))).toBe("mathematiques-bac-c-et-e-2026-2")
     expect(exempleDuCursus("fr", bac("E"))).not.toBe(exempleDuCursus("fr", bac("C")))
   })
 

@@ -59,7 +59,9 @@ const EXEMPLES_FR_PAR_CURSUS: Record<string, ExempleCorrige> = {
   "BAC:C": BAC_C,
   // La Série E a sa propre entrée : « Mathématiques BAC C et E 2026 » est la seule épreuve gratuite rattachée à la fois à C et à E
   // (« Mathématiques BAC C 2026 » ne l'est qu'à C). Exercice 3, question 1 : repère « 1) » non gras (voir REPERE_SOUS_QUESTION).
-  "BAC:E": { slug: "mathematiques-bac-c-et-e-2026", exercice: "3", question1Seule: true, coupeParRepere: true },
+  // Depuis le retrait du doublon « mathematiques-bac-c-et-e-2026 » (corrigé abrégé, mots sans accent), l'épreuve est celle d'adresse « -2 » :
+  // même exercice 3, question 1 (repère « **1.** » en gras), 1 137 caractères avec son rappel de méthode.
+  "BAC:E": { slug: "mathematiques-bac-c-et-e-2026-2", exercice: "3", question1Seule: true, coupeParRepere: true },
   "BAC:D": { slug: "mathematiques-bac-d-2026", exercice: "2", question1Seule: true, coupeParRepere: true },
   // BAC TI : la mathématique gratuite « BAC D et TI 2025 ». Exercice 1 (dénombrement d'un tirage simultané) : la 1.a
   // seule, 866 caractères avec son rappel de méthode. Ses repères sont de la forme « **1.a.** » (voir REPERE_SOUS_QUESTION).
