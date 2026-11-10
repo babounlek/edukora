@@ -84,15 +84,17 @@ class CoherenceDesCopiesTests(SimpleTestCase):
         if not CADDYFILE.is_file():
             self.skipTest("Caddyfile absent (exécution dans le conteneur)")
         regles = re.findall(r"path_regexp (\^/\(en/\)\?.*\$)", CADDYFILE.read_text(encoding="utf-8"))
-        self.assertEqual(len(regles), 1, "règle d'aperçu introuvable dans le Caddyfile")
-        regle = re.compile(regles[0])
+        # Deux règles de mêmes chemins : les aperçus de liens (WhatsApp...) et le prérendu des moteurs de recherche
+        # (voir catalog/prerendu.py). Chacune doit couvrir toutes les pages de détail, dans les deux langues.
+        self.assertEqual(len(regles), 2, "règles d'aperçu et de prérendu introuvables dans le Caddyfile")
         details = [p for p in segments_url.PATRONS_INTERNES
                    if re.search(r"/(epreuves|cours|epreuves-inedites)/:\w+(/lire)?$", p)]
         self.assertGreaterEqual(len(details), 5)
-        for patron in details:
-            interne = _exemple(patron)
-            self.assertTrue(regle.match(interne), f"FR non couvert : {interne}")
-            self.assertTrue(regle.match(chemin_public(interne, "en")), f"EN non couvert : {chemin_public(interne, 'en')}")
+        for regle in map(re.compile, regles):
+            for patron in details:
+                interne = _exemple(patron)
+                self.assertTrue(regle.match(interne), f"FR non couvert : {interne}")
+                self.assertTrue(regle.match(chemin_public(interne, "en")), f"EN non couvert : {chemin_public(interne, 'en')}")
 
     def test_les_redirections_301_couvrent_toutes_les_routes_traduites(self):
         if not CADDYFILE.is_file():

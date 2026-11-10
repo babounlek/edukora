@@ -32,6 +32,7 @@ import { annoncerGain } from "@/lib/gainXp"
 import { useFinDeLecture } from "@/lib/useFinDeLecture"
 import { useQueryClient } from "@tanstack/react-query"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { coursDetailPath, coursListPath, coursReaderPath } from "@/lib/countryPath"
 import { capitaliserTheme } from "@/lib/utils"
@@ -60,6 +61,7 @@ export function CoursReaderPage() {
   const [coursFailed, setCoursFailed] = useState(false)
 
   useSeo({ title: content?.title ?? t("co.seo_cours") })
+  useDeclarerLangueContenu(cours?.subject.langue)
 
   const articleRef = useRef<HTMLElement>(null)
   const queryClient = useQueryClient()

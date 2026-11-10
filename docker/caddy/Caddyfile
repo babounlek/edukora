@@ -171,6 +171,20 @@
         reverse_proxy backend:8000
     }
 
+    # Moteurs de recherche : la SPA ne donne à ces robots qu'un HTML identique pour toutes les pages (titre générique,
+    # aucun texte) tant que le JavaScript n'a pas tourné et que les API n'ont pas répondu. Pour les pages de contenu,
+    # ils reçoivent à la place la page complète - titre, description, canonical, hreflang, texte public (voir
+    # backend/catalog/prerendu.py). Seulement les moteurs : les robots d'entraînement de l'IA (GPTBot, ClaudeBot...) n'y
+    # sont pas, et les visiteurs n'y passent jamais. Mêmes chemins que les aperçus de liens ci-dessous.
+    @robots_moteurs {
+        header_regexp User-Agent (?i)(googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/)
+        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers|aide|help)/[^/]+(/lire|/read)?/?$
+    }
+    handle @robots_moteurs {
+        rewrite * /prerendu{path}
+        reverse_proxy backend:8000
+    }
+
     # Aperçu des liens partagés : les robots de WhatsApp, Facebook, Telegram... ne lancent pas le
     # JavaScript de la SPA, donc ne voient que les balises génériques d'index.html. Pour les pages
     # d'épreuve, de cours et d'épreuve inédite, ils reçoivent à la place une page de balises <meta>

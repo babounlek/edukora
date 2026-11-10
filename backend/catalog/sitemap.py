@@ -113,9 +113,13 @@ def _all_entries():
             lastmod=epreuve.updated_at, priority="0.7",
         ))
 
+    # L'adresse de LECTURE (/lire), pas la fiche /cours/<slug> : les cours sont en accès libre, donc la fiche
+    # redirige tout visiteur anonyme (Googlebot compris) vers /lire (voir CoursDetailPage). Annoncer la fiche faisait
+    # classer ~14 000 URL du sitemap en « Page avec redirection » dans la Search Console.
     for cours in Cours.objects.visibles().select_related("subject").only("slug", "updated_at", "subject__langue"):
         entries.extend(_entries(
-            base, f"/cours/{cours.slug}", cours.subject.langue == Langue.EN, lastmod=cours.updated_at, priority="0.7",
+            base, f"/cours/{cours.slug}/lire", cours.subject.langue == Langue.EN, lastmod=cours.updated_at,
+            priority="0.7",
         ))
 
     # Centre d'aide : un article n'a de version anglaise indexable que s'il est traduit (sinon /en/help/x ne serait que

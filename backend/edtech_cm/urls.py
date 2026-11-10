@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import include, path
 
 from catalog.apercu_partage import apercu_partage, image_partage
+from catalog.prerendu import prerendu
 from catalog.sitemap import sitemap_chunk, sitemap_index
 
 from .health import healthz
@@ -46,6 +47,9 @@ urlpatterns = [
     # place de la SPA, voir catalog/apercu_partage.py.
     path("partage-apercu/", apercu_partage, name="partage-apercu-racine"),
     path("partage-apercu/<path:chemin>", apercu_partage, name="partage-apercu"),
+    # Pages complètes pour Googlebot, Bingbot... (titre, canonical, hreflang, texte) : même principe, voir
+    # catalog/prerendu.py.
+    path("prerendu/<path:chemin>", prerendu, name="prerendu"),
     path("partage-image/defaut.png", image_partage, {"genre": "defaut", "ident": ""}, name="partage-image-defaut"),
     path("partage-image/<str:genre>/<str:ident>.png", image_partage, name="partage-image"),
     path("sitemap.xml", sitemap_index, name="sitemap-index"),

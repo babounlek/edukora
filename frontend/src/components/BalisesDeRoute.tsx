@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
 
 import { cheminDansLangue, useI18n } from "@/lib/i18n"
+import { useLangueContenu } from "@/lib/langueContenu"
 import { SITE_URL } from "@/lib/site"
 
 // Pages propres à un compte ou à une session : aucun intérêt à les indexer, et rien de public
@@ -56,9 +57,13 @@ const LOCALE_OG = { fr: "fr_FR", en: "en_GB" } as const
 export function BalisesDeRoute() {
   const { pathname } = useLocation()
   const { langue } = useI18n()
+  // Langue du texte de la page, quand c'est un contenu (voir lib/langueContenu). Un contenu uniquement français n'a
+  // qu'une adresse : sous `/en/...` il déclare la française pour canonical et n'annonce aucun hreflang.
+  const langueContenu = useLangueContenu()
+  const uniquementFrancais = langueContenu === "fr"
 
   useEffect(() => {
-    const url = urlPublique(pathname, langue)
+    const url = urlPublique(pathname, uniquementFrancais ? "fr" : langue)
     upsertTag(
       'link[rel="canonical"]',
       () => {
@@ -87,14 +92,15 @@ export function BalisesDeRoute() {
         return m
       },
       "content",
-      LOCALE_OG[langue],
+      LOCALE_OG[uniquementFrancais ? "fr" : langue],
     )
-  }, [pathname, langue])
+  }, [pathname, langue, uniquementFrancais])
 
   // Les deux versions de la page, déclarées l'une à l'autre (le français est la version par défaut).
   // Les pages privées n'en ont pas : elles ne sont pas indexées.
   useEffect(() => {
-    if (estRoutePrivee(pathname)) return
+    // Un contenu uniquement français n'a pas de version anglaise à déclarer (voir plus haut).
+    if (estRoutePrivee(pathname) || uniquementFrancais) return
     const balises = (
       [
         ["fr", urlPublique(pathname, "fr")],
@@ -110,7 +116,7 @@ export function BalisesDeRoute() {
       return l
     })
     return () => balises.forEach((l) => l.remove())
-  }, [pathname])
+  }, [pathname, uniquementFrancais])
 
   useEffect(() => {
     if (!estRoutePrivee(pathname)) return

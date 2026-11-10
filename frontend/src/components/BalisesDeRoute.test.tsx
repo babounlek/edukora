@@ -1,9 +1,10 @@
-import { render } from "@testing-library/react"
+import { render, waitFor } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
 import { afterEach, describe, expect, it } from "vitest"
 
 import { BalisesDeRoute, estRoutePrivee } from "@/components/BalisesDeRoute"
 import { definirLangue } from "@/lib/i18n"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { SITE_URL } from "@/lib/site"
 
 afterEach(async () => {
@@ -78,6 +79,40 @@ describe("BalisesDeRoute", () => {
     )
     expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`${SITE_URL}/en`)
     expect(alternates().fr).toBe(`${SITE_URL}/`)
+  })
+
+  function Declarer({ langue }: { langue: "fr" | "en" }) {
+    useDeclarerLangueContenu(langue)
+    return null
+  }
+
+  it("contenu français sous /en : canonical = la page française, aucun hreflang", async () => {
+    await definirLangue("en", { persister: false })
+    render(
+      <MemoryRouter initialEntries={["/cm/epreuves/maths-bac-c-2023"]}>
+        <BalisesDeRoute />
+        <Declarer langue="fr" />
+      </MemoryRouter>,
+    )
+    await waitFor(() =>
+      expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`${SITE_URL}/cm/epreuves/maths-bac-c-2023`),
+    )
+    expect(document.head.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe(`${SITE_URL}/cm/epreuves/maths-bac-c-2023`)
+    expect(document.head.querySelector('meta[property="og:locale"]')?.getAttribute("content")).toBe("fr_FR")
+    expect(alternates()).toEqual({})
+  })
+
+  it("contenu avec version anglaise : canonical dans la langue de la page et hreflang des deux côtés", async () => {
+    await definirLangue("en", { persister: false })
+    render(
+      <MemoryRouter initialEntries={["/cm/epreuves/o-level-maths"]}>
+        <BalisesDeRoute />
+        <Declarer langue="en" />
+      </MemoryRouter>,
+    )
+    expect(document.head.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(`${SITE_URL}/en/cm/past-papers/o-level-maths`)
+    expect(alternates().fr).toBe(`${SITE_URL}/cm/epreuves/o-level-maths`)
+    expect(alternates().en).toBe(`${SITE_URL}/en/cm/past-papers/o-level-maths`)
   })
 
   it("marque une page privée en noindex et retire la balise au départ", () => {

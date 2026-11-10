@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext"
 import { formatCursusGroups } from "@/lib/cursus"
 import { capitaliserTheme } from "@/lib/utils"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -32,6 +33,7 @@ export function CoursDetailPage() {
   const [preview, setPreview] = useState<CoursPreview | null>(null)
   const [error, setError] = useState("")
 
+  useDeclarerLangueContenu(cours?.subject.langue)
   useSeo({
     title: cours?.titre ?? t("co.seo_cours"),
     description: cours

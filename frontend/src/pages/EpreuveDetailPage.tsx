@@ -39,6 +39,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
@@ -54,6 +55,7 @@ export function EpreuveDetailPage() {
   const [preview, setPreview] = useState<EpreuvePreview | null>(null)
   const [error, setError] = useState("")
 
+  useDeclarerLangueContenu(epreuve?.subject.langue)
   useSeo({
     title: epreuve?.title ?? t("ed.seo_corrige"),
     description: epreuve

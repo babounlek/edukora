@@ -13,6 +13,7 @@ import { trackEvent } from "@/lib/analytics"
 import { ApiError } from "@/api/client"
 import { langueCourante, localeCourante, t, useI18n } from "@/lib/i18n"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { SITE_NAME } from "@/lib/site"
 
 /** /aide/:slug : un article. Titre, réponse, « Cet article t'a aidé ? », puis la suite de la rubrique et le contact. */
@@ -25,6 +26,7 @@ export function AideArticlePage() {
   const titre = article ? remplirGabarits(article.titre) : t("aide.titre")
   // Un article non traduit s'affiche en français sous /en/help/… : il reste lisible mais n'est pas proposé aux moteurs
   // de recherche (le sitemap ne l'annonce pas non plus).
+  useDeclarerLangueContenu(article ? (article.traduit ? "en" : "fr") : null)
   useSeo({
     title: titre,
     description: article ? remplirGabarits(article.resume) : t("aide.seo_description", { site: SITE_NAME }),

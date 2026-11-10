@@ -45,6 +45,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, useI18n } from "@/lib/i18n"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
@@ -63,6 +64,7 @@ export function EpreuveReaderPage() {
   const [accesRefuse, setAccesRefuse] = useState(false)
 
   useSeo({ title: content?.title ?? t("ed.seo_corrige") })
+  useDeclarerLangueContenu(epreuve?.subject.langue)
 
   const articleRef = useRef<HTMLElement>(null)
   // Signets et notes par exercice - pas de "compris" ici : l'exercice a déjà sa validation

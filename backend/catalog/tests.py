@@ -7748,15 +7748,17 @@ class SitemapAnglaisTests(TestCase):
         b = self.base
         self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_en.slug}</loc>", self.xml)
         self.assertIn(f"<loc>{b}/en/cm/past-papers/{self.lesson_en.slug}</loc>", self.xml)
-        self.assertIn(f"<loc>{b}/cours/{self.cours_en.slug}</loc>", self.xml)
-        self.assertIn(f"<loc>{b}/en/lessons/{self.cours_en.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/cours/{self.cours_en.slug}/lire</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/en/lessons/{self.cours_en.slug}/read</loc>", self.xml)
 
     def test_contenu_francais_une_seule_url(self):
         b = self.base
         self.assertIn(f"<loc>{b}/cm/epreuves/{self.lesson_fr.slug}</loc>", self.xml)
         self.assertNotIn(f"/en/cm/past-papers/{self.lesson_fr.slug}", self.xml)
-        self.assertIn(f"<loc>{b}/cours/{self.cours_fr.slug}</loc>", self.xml)
+        self.assertIn(f"<loc>{b}/cours/{self.cours_fr.slug}/lire</loc>", self.xml)
         self.assertNotIn(f"/en/lessons/{self.cours_fr.slug}", self.xml)
+        # jamais la fiche, qui redirige vers /lire pour un visiteur anonyme
+        self.assertNotIn(f"<loc>{b}/cours/{self.cours_fr.slug}</loc>", self.xml)
 
     def test_aucune_url_anglaise_ne_garde_un_segment_francais(self):
         # Garde-fou : une page anglaise n'a qu'une adresse, aux segments anglais (ni dans <loc>, ni en hreflang).

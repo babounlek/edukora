@@ -29,6 +29,7 @@ import { formatDuration } from "@/lib/duration"
 import { formatNote } from "@/lib/notation"
 import { choisirCursusPourAchat, lienAbonnement } from "@/lib/retourAchat"
 import { useSeo } from "@/lib/seo"
+import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { coursDetailPath, coursReaderPath, epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -59,6 +60,7 @@ export function EpreuveInediteDetailPage() {
   const actionsRef = useRef<HTMLDivElement>(null)
   const [actionsVisibles, setActionsVisibles] = useState(true)
 
+  useDeclarerLangueContenu(epreuve?.subject.langue)
   useSeo({
     title: epreuve?.title ?? t("ep.origine_INEDITE"),
     description: epreuve ? t(epreuve.est_mini ? "ine.seo_description_mini" : "ine.seo_description", { matiere: epreuve.subject.label, site: SITE_NAME }) : undefined,
