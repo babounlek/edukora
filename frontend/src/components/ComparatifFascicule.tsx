@@ -16,18 +16,21 @@ import { SITE_NAME } from "@/lib/site"
  */
 type Valeur = "oui" | "non" | "rarement"
 
+// Clés complètes (et non `comparatif.${cle}`) : `t` n'accepte que des clés connues
+// du dictionnaire, un gabarit de chaîne ferait échouer `tsc -b`.
 interface Ligne {
-  cle: string
+  libelle: Parameters<typeof t>[0]
+  detail: Parameters<typeof t>[0]
   fascicule: Valeur
 }
 
 const LIGNES: Ligne[] = [
-  { cle: "corriges", fascicule: "oui" },
-  { cle: "cours", fascicule: "rarement" },
-  { cle: "quiz", fascicule: "non" },
-  { cle: "themes", fascicule: "rarement" },
-  { cle: "suivi", fascicule: "non" },
-  { cle: "maj", fascicule: "non" },
+  { libelle: "comparatif.corriges", detail: "comparatif.corriges_detail", fascicule: "oui" },
+  { libelle: "comparatif.cours", detail: "comparatif.cours_detail", fascicule: "rarement" },
+  { libelle: "comparatif.quiz", detail: "comparatif.quiz_detail", fascicule: "non" },
+  { libelle: "comparatif.themes", detail: "comparatif.themes_detail", fascicule: "rarement" },
+  { libelle: "comparatif.suivi", detail: "comparatif.suivi_detail", fascicule: "non" },
+  { libelle: "comparatif.maj", detail: "comparatif.maj_detail", fascicule: "non" },
 ]
 
 function Cellule({ valeur }: { valeur: Valeur }) {
@@ -74,11 +77,11 @@ export function ComparatifFascicule() {
           </thead>
           <tbody>
             {LIGNES.map((ligne) => (
-              <tr key={ligne.cle} className="border-b border-border last:border-b-0">
+              <tr key={ligne.libelle} className="border-b border-border last:border-b-0">
                 <th scope="row" className="px-4 py-3 text-left font-normal">
-                  {t(`comparatif.${ligne.cle}`)}
+                  {t(ligne.libelle)}
                   <span className="block text-xs text-muted-foreground">
-                    {t(`comparatif.${ligne.cle}_detail`)}
+                    {t(ligne.detail)}
                   </span>
                 </th>
                 <td className="px-3 py-3">
