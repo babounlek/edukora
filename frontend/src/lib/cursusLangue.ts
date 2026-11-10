@@ -43,7 +43,7 @@ export function estDeLangue(cursus: Pick<Cursus, "langue"> | null | undefined, l
  */
 export function useCursusListe(
   country: string | undefined,
-  options: { langue: Langue | undefined; garder?: IdCursus[]; enabled?: boolean },
+  options: { langue: Langue | undefined; garder?: IdCursus[]; fixeLaLangue?: boolean; enabled?: boolean },
 ) {
   const requete = useQuery({
     queryKey: ["cursus", country],
@@ -51,7 +51,11 @@ export function useCursusListe(
     enabled: Boolean(country) && (options.enabled ?? true),
   })
   const tous = requete.data ?? []
-  return { ...requete, data: cursusDeLangue(tous, langueDuChoix(tous, options.langue, options.garder), options.garder), tous }
+  // `fixeLaLangue` : l'examen gardé vient d'un CHOIX de la page (lien partagé, pastille cliquée) et impose sa langue aux
+  // pastilles. Sans lui, les ids gardés restent proposés mais la langue reste celle de l'interface : un examen seulement
+  // déclaré (visiteur passé en anglais) ne doit pas figer le menu sur l'autre langue.
+  const langue = options.fixeLaLangue ? langueDuChoix(tous, options.langue, options.garder) : options.langue
+  return { ...requete, data: cursusDeLangue(tous, langue, options.garder), tous }
 }
 
 /**

@@ -9,7 +9,7 @@ import type { Cursus } from "@/api/types"
 const { listCursus } = vi.hoisted(() => ({ listCursus: vi.fn() }))
 vi.mock("@/api/endpoints", () => ({ listCursus }))
 
-import { cursusDeLangue, estDeLangue, langueDuChoix, useAbandonCursusHorsLangue } from "./cursusLangue"
+import { cursusDeLangue, estDeLangue, langueDuChoix, useAbandonCursusHorsLangue, useCursusListe } from "./cursusLangue"
 import { definirLangue, useI18n } from "./i18n"
 
 const pays = { id: 1, code: "CM", label: "Cameroun" } as Cursus["country"]
@@ -63,6 +63,36 @@ describe("langueDuChoix", () => {
 
   it("« toutes les langues » reste ouvert, même avec un examen choisi", () => {
     expect(langueDuChoix(LISTE, undefined, [1])).toBeUndefined()
+  })
+})
+
+describe("useCursusListe : garder et fixeLaLangue", () => {
+  function monterListe(options: Parameters<typeof useCursusListe>[1]) {
+    listCursus.mockResolvedValue(LISTE)
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+    )
+    return renderHook(() => useCursusListe("cm", options), { wrapper })
+  }
+
+  it("sans fixeLaLangue, un examen gardé (déclaré) reste proposé mais ne fige pas les pastilles dans son autre langue", async () => {
+    const { result } = monterListe({ langue: "en", garder: [3] })
+    await waitFor(() => expect(result.current.tous).toHaveLength(4))
+    // BAC (id 3) gardé, GCE en plus : jamais la liste française entière.
+    expect(result.current.data.map((c) => c.examen)).toEqual(["BAC", "GCE_OL"])
+  })
+
+  it("sans rien à garder : le GCE seul en anglais", async () => {
+    const { result } = monterListe({ langue: "en" })
+    await waitFor(() => expect(result.current.tous).toHaveLength(4))
+    expect(result.current.data.map((c) => c.examen)).toEqual(["GCE_OL"])
+  })
+
+  it("avec fixeLaLangue, l'examen choisi dans l'URL impose sa langue aux pastilles", async () => {
+    const { result } = monterListe({ langue: "en", garder: ["3"], fixeLaLangue: true })
+    await waitFor(() => expect(result.current.tous).toHaveLength(4))
+    expect(result.current.data.map((c) => c.examen)).toEqual(["BEPC", "PROBATOIRE", "BAC"])
   })
 })
 

@@ -22,6 +22,7 @@ import {
   memoriserCursusPrepareEnAttente,
   oublierCursusPrepareEnAttente,
 } from "@/lib/cursusPrepare"
+import { definirLangue } from "@/lib/i18n"
 import { LigneExamenChoisi, PastilleExamen, SelecteurExamen } from "./ChoixExamen"
 
 const BEPC = { id: 1, examen: "BEPC", examen_display: "BEPC", series: null, langue: "fr", country: { code: "CM" } }
@@ -104,6 +105,24 @@ describe("examen choisi : rappel à l'écran", () => {
       expect(lireCursusPrepareEnAttente()).toBe(2)
       expect(toast.success).toHaveBeenCalledTimes(1)
       expect(mutate).not.toHaveBeenCalled()
+    })
+
+    it("un visiteur passé en anglais avec un examen français déclaré ne voit que les examens du GCE", async () => {
+      memoriserCursusPrepareEnAttente(2)
+      await definirLangue("en", { persister: false })
+      try {
+        afficher(
+          <SelecteurExamen>
+            <button type="button">open</button>
+          </SelecteurExamen>,
+        )
+        await userEvent.click(screen.getByRole("button", { name: "open" }))
+        expect(await screen.findByRole("menuitem", { name: /GCE/ })).toBeTruthy()
+        expect(screen.queryByRole("menuitem", { name: /BEPC/ })).toBeNull()
+        expect(screen.queryByRole("menuitem", { name: /BAC/ })).toBeNull()
+      } finally {
+        await definirLangue("fr", { persister: false })
+      }
     })
 
     it("un compte connecté l'écrit sur son compte, sans rien garder dans le navigateur", async () => {

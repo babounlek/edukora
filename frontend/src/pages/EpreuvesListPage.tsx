@@ -179,7 +179,7 @@ export function EpreuvesListPage() {
   // Pré-filtrage sur l'examen déclaré, déclaré APRÈS la restauration de session
   // ci-dessus : l'ordre des deux effets compte, sans quoi une recherche sauvegardée
   // serait ignorée (voir useFiltreCursusParDefaut).
-  const { cursusPrepare } = useFiltreCursusParDefaut()
+  const { cursusPrepare, rangeeExamenMasquee } = useFiltreCursusParDefaut()
   useAbandonCursusHorsLangue(country)
 
   const subjectFilter = searchParams.get("subject") ?? ""
@@ -261,6 +261,7 @@ export function EpreuvesListPage() {
   const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter],
+    fixeLaLangue: true,
   })
 
   // Origine et nature sont des filtres de second rang : repliés tant qu'ils ne servent pas, mais
@@ -594,7 +595,7 @@ export function EpreuvesListPage() {
           )}
         </div>
 
-        {!abonne && cursusTries.length > 0 && (
+        {!abonne && !rangeeExamenMasquee && cursusTries.length > 0 && (
           <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
               {t("ep.tous")}

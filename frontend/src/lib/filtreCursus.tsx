@@ -59,13 +59,19 @@ export function useEtatFiltreCursus() {
   const cursusDansUrl = searchParams.get("cursus") ?? ""
   const voirTout = searchParams.get(PARAM_VOIR_TOUT) === "1"
 
+  const applique = Boolean(cursusPrepare) && cursusDansUrl === String(cursusPrepare?.id)
+
   return {
     cursusPrepare,
     cursusDansUrl,
     voirTout,
     searchParams,
     setSearchParams,
-    applique: Boolean(cursusPrepare) && cursusDansUrl === String(cursusPrepare?.id),
+    applique,
+    // La rangée de pastilles « Examen » ne sert plus à rien quand la liste est déjà réduite à l'examen déclaré (la puce
+    // retirable et « Voir tout » restent la porte de sortie). Elle revient dès que l'élève élargit (`tout=1`, plus de
+    // cursus dans l'URL) ou quand l'examen déclaré est de l'autre langue (rien n'est alors pré-filtré).
+    rangeeExamenMasquee: applique && estDeLangue(cursusPrepare, langueCourante()),
   }
 }
 

@@ -35,7 +35,7 @@ export function SelecteurExamen({ children }: { children: ReactNode }) {
   const { t } = useI18n()
   const { country } = useCountry()
   const choisi = useCursusPrepareDeclare(country)
-  const { data: liste } = useCursusListe(country, { langue: langueDeListe("", false), garder: [choisi?.id] })
+  const { data: liste } = useCursusListe(country, { langue: langueDeListe("", false) })
   const { declarer, enCours } = useDeclarerCursus()
   const navigate = useNavigate()
   const { pathname } = useLocation()

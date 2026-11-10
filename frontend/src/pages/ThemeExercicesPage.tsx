@@ -64,7 +64,7 @@ export function ThemeExercicesPage() {
   })
 
   // Examens de la langue de l'interface ; celui du lien reste proposé (voir lib/cursusLangue).
-  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusId] })
+  const { data: cursusList } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusId], fixeLaLangue: true })
 
   // Fréquence du thème pour la sélection COURANTE, lue dans le classement (même clé de
   // cache que ThemesFrequentsPage : aucun appel de plus en venant de là). Les params

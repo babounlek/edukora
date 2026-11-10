@@ -86,6 +86,39 @@ describe("useFiltreCursusParDefaut", () => {
   })
 })
 
+describe("rangeeExamenMasquee", () => {
+  function lire(urlInitiale: string) {
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <QueryClientProvider client={client}>
+        <MemoryRouter initialEntries={[urlInitiale]}>{children}</MemoryRouter>
+      </QueryClientProvider>
+    )
+    return renderHook(() => useFiltreCursusParDefaut(), { wrapper })
+  }
+
+  it("masquée quand la liste est réduite à l'examen déclaré", () => {
+    expect(lire("/cm/epreuves").result.current.rangeeExamenMasquee).toBe(true)
+  })
+
+  it("visible après « Voir tout » (tout=1 : plus de cursus dans l'URL)", () => {
+    expect(lire("/cm/epreuves?tout=1").result.current.rangeeExamenMasquee).toBe(false)
+  })
+
+  it("visible quand un autre examen a été choisi (lien partagé ou pastille)", () => {
+    expect(lire("/cm/epreuves?cursus=35").result.current.rangeeExamenMasquee).toBe(false)
+  })
+
+  it("visible quand l'examen déclaré est de l'autre langue : rien n'est pré-filtré", () => {
+    auth.user.cursus_prepare.langue = "en"
+    try {
+      expect(lire("/cm/epreuves").result.current.rangeeExamenMasquee).toBe(false)
+    } finally {
+      delete (auth.user.cursus_prepare as { langue?: string }).langue
+    }
+  })
+})
+
 describe("useFiltreCursusParDefaut : visiteur sans compte", () => {
   const BAC_C = { id: 20, examen: "BAC", examen_display: "BAC", series: { code: "C" }, langue: "fr" }
   const GCE_AL = { id: 1416, examen: "GCE_AL", examen_display: "GCE A Level", series: null, langue: "en" }

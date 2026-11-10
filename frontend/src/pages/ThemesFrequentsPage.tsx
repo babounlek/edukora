@@ -394,7 +394,7 @@ export function ThemesFrequentsPage() {
     data: cursusList,
     isError: cursusEnErreur,
     refetch: recharger,
-  } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusFilter] })
+  } = useCursusListe(country, { langue: langueDeListe("", false), garder: [cursusFilter], fixeLaLangue: true })
   // Même tri que /epreuves : les séries d'un même examen se suivent.
   const cursusTries = [...cursusList].sort(
     (x, y) =>

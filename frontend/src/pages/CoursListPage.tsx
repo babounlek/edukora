@@ -120,7 +120,7 @@ export function CoursListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   // Pré-filtrage sur l'examen déclaré - voir useFiltreCursusParDefaut : un défaut
   // annoncé et réversible, jamais un masquage.
-  const { cursusPrepare } = useFiltreCursusParDefaut()
+  const { cursusPrepare, rangeeExamenMasquee } = useFiltreCursusParDefaut()
   useAbandonCursusHorsLangue(country)
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
@@ -192,6 +192,7 @@ export function CoursListPage() {
   const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter],
+    fixeLaLangue: true,
   })
 
   const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || frequentFilter || search || savoirFilter || themeFilter)
@@ -558,7 +559,7 @@ export function CoursListPage() {
           )}
         </div>
 
-        {!abonne && cursusTries.length > 0 && (
+        {!abonne && !rangeeExamenMasquee && cursusTries.length > 0 && (
           <FiltreLigne titre={t("quiz.examen")}>
             <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
               {t("ep.tous")}
