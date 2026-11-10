@@ -1,3 +1,5 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import type { ReactNode } from "react"
 import { fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -18,6 +20,10 @@ vi.mock("@/lib/i18n", async (importOriginal) => ({
 import { definirLangue, initialiserLangue, LANGUE_STORAGE_KEY } from "@/lib/i18n"
 import { BandeauLangueCursus } from "./BandeauLangueCursus"
 import { SelecteurLangue, useSynchroLangueCompte } from "./SelecteurLangue"
+
+function Fournisseur({ children }: { children: ReactNode }) {
+  return <QueryClientProvider client={new QueryClient()}>{children}</QueryClientProvider>
+}
 
 const utilisateur = (langueCursus: "fr" | "en" | null, langueCompte: "fr" | "en" = "fr", abonne = false) => ({
   id: 1,
@@ -46,21 +52,21 @@ afterEach(async () => {
 describe("langue imposée par le cursus du profil actif", () => {
   it("le sélecteur reste tant que le profil n'est pas abonné, même avec un examen déclaré, et disparaît ensuite", () => {
     auth.user = utilisateur(null)
-    const { unmount } = render(<SelecteurLangue />)
+    const { unmount } = render(<SelecteurLangue />, { wrapper: Fournisseur })
     expect(screen.getByRole("group")).toBeTruthy()
     unmount()
     auth.user = utilisateur("fr")
-    const { unmount: unmount2 } = render(<SelecteurLangue />)
+    const { unmount: unmount2 } = render(<SelecteurLangue />, { wrapper: Fournisseur })
     expect(screen.getByRole("group")).toBeTruthy()
     unmount2()
     auth.user = utilisateur("fr", "fr", true)
-    render(<SelecteurLangue />)
+    render(<SelecteurLangue />, { wrapper: Fournisseur })
     expect(screen.queryByRole("group")).toBeNull()
   })
 
   it("changer de système sans abonnement efface l'examen déclaré avant de recharger dans l'autre langue", async () => {
     auth.user = utilisateur("fr")
-    render(<SelecteurLangue />)
+    render(<SelecteurLangue />, { wrapper: Fournisseur })
     fireEvent.click(screen.getByRole("button", { name: /english|anglais/i }))
     await waitFor(() => expect(ouvrir).toHaveBeenCalledWith("en"))
     expect(updateMe).toHaveBeenCalledWith({ cursus_prepare: null })
@@ -70,7 +76,7 @@ describe("langue imposée par le cursus du profil actif", () => {
   it("si l'examen ne peut pas être effacé, la langue ne change pas", async () => {
     updateMe.mockRejectedValueOnce(new Error("réseau"))
     auth.user = utilisateur("fr")
-    render(<SelecteurLangue />)
+    render(<SelecteurLangue />, { wrapper: Fournisseur })
     fireEvent.click(screen.getByRole("button", { name: /english|anglais/i }))
     await waitFor(() => expect(updateMe).toHaveBeenCalled())
     expect(ouvrir).not.toHaveBeenCalled()

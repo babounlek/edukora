@@ -1,7 +1,11 @@
 import { useEffect, useRef } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 
 import { updateMe } from "@/api/endpoints"
+import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { estDeLangue } from "@/lib/cursusLangue"
+import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import {
   langueCourante,
   langueDuChemin,
@@ -85,8 +89,21 @@ export function useSynchroLangueCompte(pathname?: string) {
 export function useChangerLangue() {
   const { langue } = useI18n()
   const { user, updateUser } = useAuth()
+  const queryClient = useQueryClient()
   return async function changerLangue(cible: Langue) {
     if (cible === langue) return
+    // Un visiteur n'a pas de compte où effacer l'examen : celui qu'il a choisi, gardé dans le navigateur, appartient à
+    // l'ancien système. Laissé, la pastille d'en-tête continuait d'afficher « GCE O Level » devant des listes françaises.
+    // Même geste que pour un compte (voir plus bas) : l'examen s'en va, le bandeau « Choisis ton examen » revient avec
+    // ceux de la nouvelle langue. Un examen déjà de la langue cible (arrivé par un lien `/en`) est gardé.
+    if (!user) {
+      const enAttente = lireCursusPrepareEnAttente()
+      if (enAttente !== null) {
+        const examens = queryClient.getQueriesData<Cursus[]>({ queryKey: ["cursus"] }).flatMap(([, liste]) => liste ?? [])
+        const examen = examens.find((c) => c.id === enAttente)
+        if (examen && !estDeLangue(examen, cible)) oublierCursusPrepareEnAttente()
+      }
+    }
     // Un examen déclaré dans l'autre système ne peut pas rester : sans abonnement, on l'efface avant de changer, sinon la
     // synchronisation ramènerait aussitôt la page dans la langue de cet examen. Le choix est mémorisé AVANT, pour que la
     // synchronisation, qui s'exécute dès que le compte change, ne lise pas l'ancienne langue. En cas d'échec, rien ne change.
