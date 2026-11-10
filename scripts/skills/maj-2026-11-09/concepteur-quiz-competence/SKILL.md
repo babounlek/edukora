@@ -244,6 +244,9 @@ Règles de champs :
   | **MIXTE** | Français, Histoire, Géographie, Éducation civique, EPS, Musique, Travail manuel, Économie ; GCE : History, Geography, Economics, Commerce, Citizenship ; toute matière absente de ce tableau | **50 %** | au moins 3 QCM |
   | **REDIGE** | Philosophie, Littérature ; GCE : Philosophy, Religious Studies, Literature in English | **30 %** | au moins 2 QCM |
 
+  Les colonnes « Plancher » et « Sur un lot de 6 items » valent pour le **lot** ; le minimum
+  **par compétence** (6 QCM en OBJECTIVE et MIXTE) est plus strict et prime pour une compétence livrée seule.
+
   La table de référence est dans le code (`backend/catalog/tunnel.py` :
   `FAMILLE_QCM` et `PLANCHER_QCM`, reprise par `scripts/gce/valider_quiz_gce.py` pour
   les tranches GCE) : en cas d'écart avec ce tableau, le code fait foi, et une matière
@@ -253,12 +256,16 @@ Règles de champs :
   Le plancher se vérifie à **deux niveaux** :
   - **le lot** (toutes les compétences que tu livres pour une matière) : au moins le
     plancher de la famille ;
-  - **chaque compétence** (chaque `theme`), à partir de 3 items : **au moins 2 QCM**
-    (1 seul en famille REDIGE). Un lot qui tient 70 % en mettant une compétence à
+  - **chaque compétence** (chaque `theme`), à partir de 3 items : **au moins 6 QCM**
+    en famille OBJECTIVE et MIXTE, 1 seul en famille REDIGE (`MIN_QCM_PAR_THEME` dans
+    `backend/catalog/tunnel.py`, plancher de la campagne « 6 questions minimum par
+    thème » de novembre 2026). Une compétence livrée par lot de 6 items est donc
+    **entièrement en QCM** (6 sur 6) en OBJECTIVE et MIXTE : le seul item élevé
+    n'échappe plus au QCM. Un lot qui tient 70 % en mettant une compétence à
     100 % de QCM et une autre à 100 % d'ouvertes échoue : c'est le thème, pas le lot,
     qui entre en révision espacée, et son taux ne repose alors sur aucune réponse
-    objective. Pour une compétence qui demande surtout du rédigé, garde au moins les
-    2 QCM (définition, identification, choix de méthode) et mets le reste en ouvertes.
+    objective. Seule la famille REDIGE (Philosophie, Littérature) garde des ouvertes :
+    elle exige au moins 1 QCM par compétence.
 
   Prends le QCM chaque fois que la réponse est objective : résultat numérique,
   définition, identification, formule, choix de méthode, correction grammaticale.
@@ -578,8 +585,9 @@ Une dernière case se vérifie sur le LOT entier, pas item par item :
       matière (70 % OBJECTIVE, 50 % MIXTE, 30 % REDIGE - voir « Part minimale de QCM »)
       - compte-les avant de livrer. Sous ce seuil, le lot n'est livrable qu'accompagné
       de la raison explicite (compétence non QCMisable honnêtement), jamais en silence.
-- [ ] Chaque compétence (`theme`) de 3 items ou plus compte au moins 2 QCM (1 en famille
-      REDIGE), même quand le lot entier passe son plancher.
+- [ ] Chaque compétence (`theme`) de 3 items ou plus compte au moins 6 QCM (1 en famille
+      REDIGE), même quand le lot entier passe son plancher : 6 items sur 6 en QCM en
+      matière OBJECTIVE ou MIXTE.
 
 Attention à l'effet pervers du retrait : si tu écartes des items défaillants à l'étape
 précédente et que ce sont surtout des QCM, le lot peut repasser sous son plancher sans
@@ -593,7 +601,7 @@ Un round n'est JAMAIS déclaré terminé sur la seule foi de « l'ingestion n'a 
 bash scripts/tunnel_validation.sh <since> [--strict]
 ```
 
-`<since>` = durée depuis le début du round (`2h`, `90m`, `1d`) ou datetime ISO : le tunnel ne valide que le contenu créé ou modifié depuis cet instant. Il enchaîne (1) la structure - Question sans thème, QCM incohérent (BLOQUANT) ; (2) le vocabulaire de thèmes - quasi-doublons de Tag, thèmes partagés entre matières (ALERTE) ; (3) **la part de QCM** - par matière contre le plancher de sa famille, puis par thème contre le minimum de 2 QCM (ALERTE, jamais bloquant : une compétence réellement non QCMisable s'arbitre avec la justification du compte rendu de lot) ; (4) la couverture - quiz/cours manquants pour les thèmes touchés (INFO) ; (5) le rendu - le VRAI moteur KaTeX/remark sur ce périmètre. Une ALERTE QCM s'ouvre en convertissant des items objectifs en QCM (jamais en inventant des distracteurs de remplissage) puis en réingérant, ou se solde dans le rapport avec sa raison.
+`<since>` = durée depuis le début du round (`2h`, `90m`, `1d`) ou datetime ISO : le tunnel ne valide que le contenu créé ou modifié depuis cet instant. Il enchaîne (1) la structure - Question sans thème, QCM incohérent (BLOQUANT) ; (2) le vocabulaire de thèmes - quasi-doublons de Tag, thèmes partagés entre matières (ALERTE) ; (3) **la part de QCM** - par matière contre le plancher de sa famille, puis par thème contre le minimum de 6 QCM, 1 en famille REDIGE (ALERTE, jamais bloquant : une compétence réellement non QCMisable s'arbitre avec la justification du compte rendu de lot) ; (4) la couverture - quiz/cours manquants pour les thèmes touchés (INFO) ; (5) le rendu - le VRAI moteur KaTeX/remark sur ce périmètre. Une ALERTE QCM s'ouvre en convertissant des items objectifs en QCM (jamais en inventant des distracteurs de remplissage) puis en réingérant, ou se solde dans le rapport avec sa raison.
 
 - La sortie `TUNNEL VALIDÉ` (code 0) est exigée avant de conclure ; la citer dans le rapport final.
 - BLOQUANT ou échec de rendu : corriger la donnée (JSON source) puis réingérer. Si la même anomalie revient d'un round à l'autre, la signaler à l'utilisateur comme défaut de plateforme (`catalog/rendering.py`, `catalog/ingestion_repairs.py`) au lieu de la repatcher à la main.
