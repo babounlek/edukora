@@ -1,24 +1,68 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <title>{{ site_name }}</title>
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+<style>
+  /* Seuls les clients qui lisent <style> (Apple Mail, Gmail récent, Outlook mobile) en profitent : les autres gardent le rendu clair en ligne. */
+  @media only screen and (max-width: 520px) {
+    .conteneur { width: 100% !important; }
+    .carte { padding: 28px 22px !important; }
+    .titre { font-size: 22px !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .fond { background-color: #0f1512 !important; }
+    .carte { background-color: #17201b !important; border-color: #26332c !important; }
+    .texte { color: #e8efeb !important; }
+    .titre { color: #b6ecd3 !important; }
+    .discret { color: #98a69e !important; }
+    .encart { background-color: #12372a !important; }
+    .encart td { color: #d6f3e6 !important; }
+    .lien { color: #7fd6ad !important; }
+  }
+</style>
 </head>
-<body style="margin:0; padding:0; background-color:#fbfaf7; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-  <!-- Aperçu affiché dans la boîte de réception -->
-  <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:#fbfaf7;">{{ apercu }}</div>
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#fbfaf7; padding:32px 16px;">
-    <tr>
-      <td align="center">
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:480px;">
+<body class="fond" style="margin:0; padding:0; width:100%; background-color:#f3f1ea; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
 
-          <!-- Bandeau de marque -->
+  <!-- Aperçu affiché dans la boîte de réception, prolongé d'espaces insécables pour que le client n'y accole pas le début du message -->
+  <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:#f3f1ea; font-size:1px; line-height:1px;">
+    {{ apercu }}{% for i in "123456789012345678901234567890" %}&#8199;&#847;{% endfor %}
+  </div>
+
+  <table role="presentation" class="fond" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f3f1ea;">
+    <tr>
+      <td align="center" style="padding:32px 16px 40px 16px;">
+
+        <table role="presentation" class="conteneur" width="520" cellpadding="0" cellspacing="0" border="0" style="width:520px; max-width:520px;">
+
+          <!-- En-tête de marque -->
           <tr>
-            <td bgcolor="#0a6745" style="background-color:#0a6745; border-radius:12px 12px 0 0; padding:24px 32px 22px 32px;">
-              <span style="color:#fbfaf7; font-size:20px; font-weight:700; letter-spacing:0.01em;">{{ site_name }}</span>
-              <br>
-              <span style="color:#a7e3c9; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;">Réussis ton examen</span>
+            <td bgcolor="#0a6745" style="background-color:#0a6745; border-radius:14px 14px 0 0; padding:26px 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td valign="middle" style="padding-right:14px;">
+                    <!-- Pastille blanche : l'icône est verte, elle se fondrait dans le bandeau -->
+                    <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                      <tr>
+                        <td bgcolor="#ffffff" style="background-color:#ffffff; border-radius:13px; padding:3px;">
+                          <img src="{{ site_url }}/pwa-192.png" width="44" height="44" alt="{{ site_name }}"
+                               style="display:block; width:44px; height:44px; border:0; border-radius:10px; outline:none; text-decoration:none;">
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td valign="middle">
+                    <span style="display:block; color:#ffffff; font-size:21px; line-height:24px; font-weight:700; letter-spacing:0.01em;">{{ site_name }}</span>
+                    <span style="display:block; color:#a7e3c9; font-size:11px; line-height:16px; letter-spacing:0.12em; text-transform:uppercase;">Réussis ton examen</span>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <tr>
@@ -27,37 +71,45 @@
 
           <!-- Carte -->
           <tr>
-            <td style="background-color:#ffffff; border:1px solid #dce6e1; border-top:0; border-radius:0 0 12px 12px; padding:32px;">
+            <td class="carte" bgcolor="#ffffff" style="background-color:#ffffff; border:1px solid #dce6e1; border-top:0; border-radius:0 0 14px 14px; padding:34px 36px 36px 36px;">
 
-              <p style="margin:0 0 6px 0; color:#161d1a; font-size:15px; line-height:1.5;">{{ salutation }}</p>
-              <h1 style="margin:0 0 20px 0; color:#07492f; font-size:22px; line-height:1.3; font-weight:700;">Ta séance du jour t'attend</h1>
-              <p style="margin:0 0 22px 0; color:#161d1a; font-size:15px; line-height:1.6;">
-                Environ 25&nbsp;minutes, choisies pour toi.
+              <p class="texte" style="margin:0 0 8px 0; color:#161d1a; font-size:15px; line-height:1.5;">{{ salutation }}</p>
+              <h1 class="titre" style="margin:0 0 14px 0; color:#07492f; font-size:25px; line-height:1.25; font-weight:700;">Ta séance du jour t'attend</h1>
+              <p class="texte" style="margin:0 0 24px 0; color:#161d1a; font-size:15px; line-height:1.65;">
+                Environ <strong>25&nbsp;minutes</strong>, choisies pour toi parmi ce qui te fera le plus progresser aujourd'hui.
               </p>
 
               {% if faits %}
-              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#e1f4ed; border-radius:8px; margin:0 0 26px 0;">
+              <table role="presentation" class="encart" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#e8f6f0; border-left:4px solid #e4a425; border-radius:6px; margin:0 0 28px 0;">
                 {% for fait in faits %}
                 <tr>
-                  <td style="padding:{% if forloop.first %}14px{% else %}0{% endif %} 18px {% if forloop.last %}14px{% else %}8px{% endif %} 18px; color:#07492f; font-size:14px; line-height:1.5;">
-                    <span style="color:#e4a425; font-weight:700;">&#9679;</span>&nbsp; {{ fait }}
+                  <td style="padding:{% if forloop.first %}16px{% else %}0{% endif %} 20px {% if forloop.last %}16px{% else %}10px{% endif %} 20px; color:#07492f; font-size:14px; line-height:1.55;">
+                    {{ fait }}
                   </td>
                 </tr>
                 {% endfor %}
               </table>
               {% endif %}
 
-              <!-- Bouton -->
-              <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+              <!-- Bouton (VML pour Outlook de bureau, lien stylé pour les autres) -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
                 <tr>
-                  <td align="center" bgcolor="#0a6745" style="background-color:#0a6745; border-radius:8px;">
-                    <a href="{{ lien }}" style="display:block; padding:14px 24px; color:#fbfaf7; font-size:16px; font-weight:600; text-decoration:none;">Ouvrir ma séance</a>
+                  <td align="center">
+                    <!--[if mso]>
+                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ lien }}" style="height:50px; v-text-anchor:middle; width:448px;" arcsize="16%" stroke="f" fillcolor="#0a6745">
+                      <w:anchorlock/>
+                      <center style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; font-weight:bold;">Ouvrir ma séance</center>
+                    </v:roundrect>
+                    <![endif]-->
+                    <!--[if !mso]><!-->
+                    <a href="{{ lien }}" style="display:block; background-color:#0a6745; border-radius:8px; padding:15px 24px; color:#ffffff; font-size:16px; line-height:20px; font-weight:600; text-align:center; text-decoration:none;">Ouvrir ma séance&nbsp;&nbsp;&rarr;</a>
+                    <!--<![endif]-->
                   </td>
                 </tr>
               </table>
 
-              <p style="margin:20px 0 0 0; color:#576159; font-size:12px; line-height:1.6; word-break:break-all;">
-                Le bouton ne s'affiche pas&nbsp;? Copie ce lien dans ton navigateur&nbsp;: <a href="{{ lien }}" style="color:#0a6745;">{{ lien }}</a>
+              <p class="discret" style="margin:22px 0 0 0; color:#576159; font-size:12px; line-height:1.6; overflow-wrap:anywhere;">
+                Le bouton ne s'affiche pas&nbsp;? Copie ce lien dans ton navigateur&nbsp;: <a class="lien" href="{{ lien }}" style="color:#0a6745;">{{ lien }}</a>
               </p>
 
             </td>
@@ -65,16 +117,22 @@
 
           <!-- Pied -->
           <tr>
-            <td style="padding:20px 8px 0 8px;">
-              <p style="margin:0; color:#576159; font-size:12px; line-height:1.6;">
+            <td style="padding:22px 8px 0 8px;">
+              <p class="discret" style="margin:0; color:#576159; font-size:12px; line-height:1.65;">
                 Tu reçois ce message parce que tu as activé les rappels quotidiens.
-                <a href="{{ lien_desabonnement }}" style="color:#0a6745;">Les arrêter en un clic</a>.
+                <a class="lien" href="{{ lien_desabonnement }}" style="color:#0a6745; text-decoration:underline;">Les arrêter en un clic</a>.
               </p>
-              <p style="margin:10px 0 0 0; color:#8a948d; font-size:12px; line-height:1.5;">{{ site_name }}</p>
+              <p class="discret" style="margin:10px 0 0 0; color:#8a948d; font-size:12px; line-height:1.6;">
+                Une question&nbsp;? Réponds simplement à ce message ou écris à <a class="lien" href="mailto:{{ support_email }}" style="color:#8a948d; text-decoration:underline;">{{ support_email }}</a>.
+              </p>
+              <p class="discret" style="margin:10px 0 0 0; color:#8a948d; font-size:12px; line-height:1.5;">
+                <a href="{{ site_url }}" style="color:#8a948d; text-decoration:none;">{{ site_name }}</a>
+              </p>
             </td>
           </tr>
 
         </table>
+
       </td>
     </tr>
   </table>

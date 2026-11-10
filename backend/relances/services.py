@@ -19,7 +19,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.core import signing
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.db import IntegrityError
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -80,7 +80,12 @@ def _salutation(user):
 
 
 def _envoyer_email(user, sujet, corps, html=None):
-    send_mail(sujet, corps, None, [user.email], fail_silently=False, html_message=html)
+    # Texte brut toujours fourni, HTML en alternative (voir users.email_service). Reply-To sur la boîte surveillée :
+    # « réponds simplement à ce message » ne doit pas tomber dans une adresse d'expédition jamais relevée.
+    message = EmailMultiAlternatives(sujet, corps, None, [user.email], reply_to=[settings.SUPPORT_EMAIL])
+    if html:
+        message.attach_alternative(html, "text/html")
+    message.send(fail_silently=False)
 
 
 def _tracer(user, type_, reference):
@@ -153,6 +158,7 @@ def composer_rappel_seance(user):
         {
             "site_name": settings.SITE_NAME, "salutation": salutation, "faits": faits, "lien": lien,
             "lien_desabonnement": lien_arret, "apercu": "Environ 25 minutes, choisies pour toi.",
+            "site_url": settings.FRONTEND_URL, "support_email": settings.SUPPORT_EMAIL,
         },
     )
     return sujet, "\n".join(texte), html

@@ -74,6 +74,11 @@ class RappelSeanceTests(RelancesTestCase):
         self.assertIn("Ouvrir ma séance", html)
         self.assertIn(f"{services.settings.FRONTEND_URL}/{self.cursus.country.code.lower()}", html)
         self.assertIn(services.lien_desabonnement(user), html)
+        # Logo en PNG absolu (un SVG ne s'affiche pas dans Gmail/Outlook) et aucune variable de gabarit restée vide.
+        self.assertIn(f'src="{services.settings.FRONTEND_URL}/pwa-192.png"', html)
+        self.assertIn(f"mailto:{services.settings.SUPPORT_EMAIL}", html)
+        # « Réponds simplement à ce message » : la réponse part vers la boîte surveillée.
+        self.assertEqual(message.reply_to, [services.settings.SUPPORT_EMAIL])
 
     def test_ne_part_qu_une_fois_par_jour(self):
         self.eleve()
