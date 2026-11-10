@@ -100,6 +100,10 @@ _ALIAS_BRUTS = {
     ("math",): ("MATHS",),
     ("mathematiques",): ("MATHS",),
     ("svt",): ("SVT", "SCIENCES"),
+    # Nom officiel des sujets camerounais récents (Sciences de la Vie et de la Terre, Éducation à l'Environnement,
+    # à l'Hygiène et à la Biotechnologie) : c'est la même matière que la SVT dans la base, l'élève recopie le mot du sujet.
+    ("svteehb",): ("SVT", "SCIENCES"),
+    ("svt", "eehb"): ("SVT", "SCIENCES"),
     ("sciences",): ("SCIENCES", "SVT"),
     ("physique", "chimie", "technologie"): ("PHYSIQUE_CHIMIE_TECH",),
     ("pct",): ("PHYSIQUE_CHIMIE_TECH", "PHYSIQUE_CHIMIE"),

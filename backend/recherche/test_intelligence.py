@@ -79,6 +79,14 @@ class IntentionTests(_CorpusMixin, TestCase):
         self.assertEqual(i.annees, [2019])
         self.assertEqual(i.restants, [])
 
+    def test_svteehb_designe_la_svt(self):
+        # Nom officiel des sujets camerounais récents : même matière que la SVT dans la base.
+        for requete in ("bepc svteehb 2022", "bepc svt eehb 2022", "bepc svt 2022"):
+            i = self.analyser(requete)
+            self.assertEqual(i.matiere_codes[0], "SVT", requete)
+            self.assertEqual(i.annees, [2022], requete)
+            self.assertEqual(i.restants, [], requete)
+
     def test_plusieurs_series_a_la_suite(self):
         i = self.analyser("bac c e maths")
         self.assertEqual(len(i.cursus_ids), 2)
