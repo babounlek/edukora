@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { createPortal } from "react-dom"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowRight,
   ArrowRightLeft,
   Check,
-  Crown,
   Lock,
   ShieldCheck,
   Smartphone,
@@ -80,7 +80,7 @@ function ChipCursus({ texte, selected, onClick }: { texte: string; selected: boo
       onClick={onClick}
       className={cn(
         // min-h-11 : cible tactile de 44 px, sinon la puce ne fait qu'une trentaine de pixels de haut.
-        "inline-flex min-h-11 items-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
+        "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
         selected
           ? "border-primary bg-primary text-primary-foreground shadow-sm"
           : "border-border bg-background text-foreground hover:border-primary/40 hover:bg-primary/5",
@@ -115,31 +115,52 @@ function CursusChips({
   describedBy?: string
 }) {
   const groupes = useMemo(() => grouperParExamen(liste), [liste])
+  // Les examens sans série (BEPC, GCE O Level, GCE A Level) n'ont pas d'en-tête de groupe : la puce
+  // porte directement leur nom. Plutôt qu'une puce pleine largeur par ligne, les examens sans série
+  // qui se suivent dans l'ordre de lecture partagent une même rangée.
+  const rangees = useMemo(() => {
+    const resultat: Array<{ cle: string; groupe?: GroupeCursus; simples?: Cursus[] }> = []
+    groupes.forEach((groupe) => {
+      if (groupe.cursus.length === 1 && !groupe.cursus[0].series) {
+        const derniere = resultat[resultat.length - 1]
+        if (derniere?.simples) derniere.simples.push(groupe.cursus[0])
+        else resultat.push({ cle: `simples-${groupe.examen}`, simples: [groupe.cursus[0]] })
+      } else {
+        resultat.push({ cle: groupe.examen, groupe })
+      }
+    })
+    return resultat
+  }, [groupes])
   return (
     <div
       role="group"
       aria-label={label}
       aria-describedby={describedBy}
-      className={cn("flex flex-col gap-2.5", centre && "items-center")}
+      className={cn("flex flex-col gap-3", centre ? "items-center" : "items-start")}
     >
-      {groupes.map((groupe) => {
-        // Un seul cursus dans le groupe et pas de série (ex. BEPC) : la puce porte
-        // directement le nom de l'examen, un en-tête de groupe ne ferait que le répéter.
-        if (groupe.cursus.length === 1 && !groupe.cursus[0].series) {
-          const c = groupe.cursus[0]
-          return (
-            <ChipCursus
-              key={c.id}
-              texte={cursusLabel(c)}
-              selected={selected === String(c.id)}
-              onClick={() => onSelect(String(c.id))}
-            />
-          )
-        }
-        return (
-          <div key={groupe.examen} className={cn("flex flex-wrap items-center gap-2", centre && "justify-center")}>
-            <span className="w-[4.5rem] shrink-0 text-xs font-medium text-muted-foreground">{groupe.examenLabel}</span>
-            {groupe.cursus.map((c) => (
+      {rangees.map((rangee) =>
+        rangee.simples ? (
+          <div key={rangee.cle} className={cn("flex flex-wrap gap-2", centre && "justify-center")}>
+            {rangee.simples.map((c) => (
+              <ChipCursus
+                key={c.id}
+                texte={cursusLabel(c)}
+                selected={selected === String(c.id)}
+                onClick={() => onSelect(String(c.id))}
+              />
+            ))}
+          </div>
+        ) : (
+          // Mobile : l'intitulé passe au-dessus des puces, sinon « TI » tombait seule sur une 2e ligne
+          // (4,5 rem d'intitulé + cinq puces de 44 px ne tiennent pas en 303 px).
+          <div
+            key={rangee.cle}
+            className={cn("flex flex-wrap items-center gap-x-2 gap-y-1.5", centre && "justify-center")}
+          >
+            <span className="w-full text-xs font-medium text-muted-foreground sm:w-[4.5rem] sm:shrink-0">
+              {rangee.groupe!.examenLabel}
+            </span>
+            {rangee.groupe!.cursus.map((c) => (
               <ChipCursus
                 key={c.id}
                 texte={c.series ? codeSerieAffiche(c.series) : cursusLabel(c)}
@@ -148,8 +169,8 @@ function CursusChips({
               />
             ))}
           </div>
-        )
-      })}
+        ),
+      )}
     </div>
   )
 }
@@ -167,10 +188,25 @@ function cursusVendables(plans: Plan[], productType: Plan["product_type"]): Curs
   return Array.from(parId.values()).sort(trierCursus)
 }
 
-/** Puce de réassurance du hero - même gabarit que /quiz et /cours. */
+/** Ce que contient l'abonnement, dans l'ordre d'affichage. Les deux derniers sont les seuls
+ * introuvables ailleurs : ils portent la pastille « Exclusif ». */
+const AVANTAGES: Array<{
+  titre: Parameters<typeof t>[0]
+  texte: Parameters<typeof t>[0]
+  exclusif: boolean
+}> = [
+  { titre: "prix.inclus1_titre", texte: "prix.inclus1_texte", exclusif: false },
+  { titre: "prix.inclus2_titre", texte: "prix.inclus2_texte", exclusif: false },
+  { titre: "prix.inclus3_titre", texte: "prix.inclus3_texte", exclusif: false },
+  { titre: "prix.inclus4_titre", texte: "prix.inclus4_texte", exclusif: true },
+  { titre: "prix.inclus5_titre", texte: "prix.inclus5_texte", exclusif: true },
+]
+
+/** Puce de réassurance du hero - même gabarit que /quiz et /cours (plus petite sur mobile, où les
+ * trois puces occupaient près de 200 px de haut). */
 function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactNode }) {
   return (
-    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm">
       {icon}
       <span className="text-muted-foreground">{children}</span>
     </span>
@@ -207,32 +243,67 @@ function TarifFamille({ plan }: { plan: Plan }) {
           </div>
         ))}
       </dl>
+      {plan.campagne && (
+        <p className="mt-3 text-xs text-muted-foreground">
+          {t("prix.famille_note_campagne", { nom: nomCampagne(plan.campagne) })}
+        </p>
+      )}
     </div>
   )
 }
 
-/** Callout unique, seul argument mis en avant sur la carte (voir son usage plus bas) :
- * les annales seules sont gratuites ailleurs, ce qui justifie le prix d'Edukora ce
- * sont les à-côtés introuvables ailleurs - un entraînement au format et au programme
- * réels de l'examen (inédites), et la connaissance de ce qui tombe vraiment
- * (classement des thèmes fréquents, voir ThemesFrequents.tsx côté catalogue). */
-function CalloutExclusifsJusquaExamen() {
+/** Pastille « Exclusif » des deux avantages introuvables ailleurs : les annales seules sont
+ * gratuites ailleurs, ce qui justifie le prix d'Edukora ce sont les épreuves inédites et le
+ * classement des thèmes fréquents. Elle remplace l'encart doré qui répétait ces deux lignes
+ * juste sous la liste des avantages. */
+function PastilleExclusif() {
   return (
-    <div className="flex items-start gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3 py-2.5">
-      <Crown className="mt-0.5 size-4 shrink-0 text-gold-text" />
-      <div>
-        <p className="flex items-center gap-1 font-display text-xs font-semibold uppercase tracking-wide text-gold-text">
-          <Sparkles className="size-3" />
-          {t("prix.exclusif", { site: SITE_NAME })}
-        </p>
-        <p className="mt-0.5 text-sm text-foreground">
-          {t("prix.exclusif_inedites")}
-        </p>
-        <p className="mt-1 text-sm text-foreground">
-          {t("prix.exclusif_themes")}
-        </p>
+    <span className="ml-1.5 inline-flex items-center gap-0.5 whitespace-nowrap rounded-full bg-gold/15 px-1.5 py-0.5 align-middle font-display text-[10px] font-semibold uppercase tracking-wide text-gold-text">
+      <Sparkles className="size-2.5" aria-hidden />
+      {t("prix.exclusif", { site: SITE_NAME })}
+    </span>
+  )
+}
+
+/** Barre d'action collée en bas de l'écran sur mobile : le bouton de la carte se trouve à ~3 écrans du
+ * haut, et rien ne le gardait à portée de pouce. Elle se retire quand le bouton de la carte est visible. */
+function BarreActionMobile({
+  prix,
+  prixBarre,
+  cursusChoisi,
+  onClick,
+}: {
+  prix: number
+  prixBarre?: number
+  cursusChoisi: boolean
+  onClick: () => void
+}) {
+  // Portail : le conteneur de la page porte `animate-fade-up` (transform), qui devient le repère des
+  // éléments `fixed` - sans portail, la barre se collait au bas de la page entière et non de l'écran.
+  return createPortal(
+    <div
+      // Au-dessus de la barre d'onglets des élèves connectés (--bottom-tab-bar, publiée par BottomTabBar).
+      style={{ bottom: "var(--bottom-tab-bar, 0px)" }}
+      className="fixed inset-x-0 z-30 border-t border-border bg-background/95 px-4 py-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] shadow-[0_-4px_12px_rgba(0,0,0,0.06)] backdrop-blur sm:hidden"
+    >
+      <div className="mx-auto flex max-w-5xl items-center gap-3">
+        <div className="min-w-0 shrink-0">
+          <p className="font-display text-lg font-semibold leading-tight text-primary tabular-nums">
+            {formatAmount(prix)} <span className="text-xs font-normal text-muted-foreground">FCFA</span>
+            {prixBarre !== undefined && (
+              <s className="ml-1.5 text-xs font-normal text-muted-foreground">{formatAmount(prixBarre)}</s>
+            )}
+          </p>
+          <p className="text-[11px] leading-tight text-muted-foreground">{t("prix.par_enfant")}</p>
+        </div>
+        <Button onClick={onClick} className="min-w-0 flex-1">
+          <span className="truncate">
+            {cursusChoisi ? t("prix.sabonner") : t("prix.choisir_cursus_court")}
+          </span>
+        </Button>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
 
@@ -282,6 +353,18 @@ export function PricingPage() {
     setSelectedCursus(String(cursusDeclare))
   }, [cursusDeclare, selectedCursus])
   const cursusRef = useRef<HTMLDivElement>(null)
+  // Bloc du bouton principal : la barre d'action mobile ne s'affiche que lorsqu'il est hors écran.
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const [ctaVisible, setCtaVisible] = useState(false)
+
+  useEffect(() => {
+    const cible = ctaRef.current
+    if (!cible || typeof IntersectionObserver === "undefined") return
+    const observateur = new IntersectionObserver(([entree]) => setCtaVisible(entree.isIntersecting))
+    observateur.observe(cible)
+    return () => observateur.disconnect()
+    // Le bloc n'existe qu'une fois les offres chargées.
+  }, [chargement, erreurPlans])
 
   useEffect(() => {
     let annule = false
@@ -346,18 +429,34 @@ export function PricingPage() {
     navigate(`/abonnement?cursus=${selectedCursus}&duree=examen${profilParam ? `&profil=${profilParam}` : ""}`)
   }
 
+  // Prix et sous-titre du hero : ceux de l'offre en cours (campagne comprise), pour que le haut de page ne
+  // dise pas « 15 000 FCFA » pendant que la carte et le bandeau affichent 13 500. Masqué le temps du
+  // chargement des offres plutôt que de afficher les montants de référence puis de les corriger.
+  const offresPretes = !chargement || allPlans.length > 0
+  const prixHero = planTarif?.effective_price ?? PRIX_ABONNEMENT_FCFA
+  const prixSupHero = planTarif?.prix_enfant_supplementaire ?? PRIX_ENFANT_SUPPLEMENTAIRE_FCFA
+  const libelleCursusChoisi = jusquaExamen ? cursusLabel(jusquaExamen.cursus) : ""
+  const afficherBarreMobile = !!planTarif && !ctaVisible
+
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       <BandeauEnfantVise profilId={profilParam} />
       {campagne && (campagne.cursus.length === 0 || !selectedCursus || campagne.cursus.includes(Number(selectedCursus))) && (
-        <BandeauCampagne campagne={campagne} prix={campagne.prix} prixReference={campagne.prix_reference} className="mb-6" />
+        // Compact : le prix et sa date limite sont déjà dans la carte, juste en dessous.
+        <BandeauCampagne
+          campagne={campagne}
+          prix={campagne.prix}
+          prixReference={campagne.prix_reference}
+          className="mb-4 sm:mb-6"
+          compact
+        />
       )}
       {/* Même gabarit de hero que /quiz, /fiches et /cours. Un seul titre, là où la
           page en empilait deux ("Choisis ton profil." puis "Un seul prix...") avant
           d'avoir rien dit du prix ni de la façon de payer. Les trois puces répondent
           d'entrée aux objections qui bloquent un achat Mobile Money : combien, avec
           quoi, et est-ce que ça va me prélever tous les mois. */}
-      <div className="relative mb-8 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-6 sm:p-10">
+      <div className="relative mb-5 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-5 sm:mb-8 sm:p-10">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -382,14 +481,14 @@ export function PricingPage() {
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
             {t("prix.titre_debut")} <span className="text-primary">{t("prix.titre_accent")}</span>.
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className={cn("mt-2 text-muted-foreground transition-opacity", !offresPretes && "opacity-0")}>
             {t("prix.sous_titre", {
-              prix: formatAmount(PRIX_ABONNEMENT_FCFA),
-              prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
+              prix: formatAmount(prixHero),
+              prix_sup: formatAmount(prixSupHero),
             })}
           </p>
 
-          <div className="mt-5 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
             <ChipReassurance icon={<Smartphone className="size-3.5 text-primary" />}>
               Mobile Money (MTN, Orange)
             </ChipReassurance>
@@ -410,28 +509,21 @@ export function PricingPage() {
           classique, add-on Fiches pour répétiteurs/enseignants) - l'add-on Fiches et le
           public répétiteur/enseignant sont mis en veilleuse (2026-09-15), l'onglet est
           donc retiré et seule l'offre élève reste affichée. */}
-      <div className="mt-8">
-        {/* Cursus et prix fusionnés dans un seul panneau large (retouche du 2026-08-30) :
-            deux colonnes séparées par une bordure à partir de sm, plutôt que deux
-            boîtes à max-w-md empilées avec plein de vide de chaque côté sur desktop -
-            défaut resté depuis la grille à deux formules (Mensuel + Jusqu'à l'Examen),
-            qui n'a plus lieu d'être avec une offre unique. Choisir un cursus met à jour
-            le prix juste à côté, sans scroll ni "étape 2" à débloquer : plus besoin de
-            l'effet qui défilait vers un second bloc pour le révéler (formuleRef/
-            formuleMiseEnAvant, retirés) - les deux tiennent déjà dans le même regard. */}
-        {/* Pleine largeur du conteneur, comme le hero juste au-dessus : le `max-w-3xl`
-            précédent laissait la carte visiblement plus étroite que le bandeau qu'elle
-            suit, ce qui se lisait comme un décalage plutôt que comme une hiérarchie -
-            et sa colonne de droite, la plus dense (prix, encart exclusif, histogramme
-            du tarif famille), s'en trouvait comprimée. */}
+      <div className="mt-5 sm:mt-8">
+        {/* Une seule carte, deux colonnes à partir de sm (cursus + avantages à gauche, prix + bouton +
+            famille à droite). Sur mobile, les deux colonnes passent en `contents` et leurs blocs
+            s'ordonnent d'eux-mêmes (max-sm:order-N) : prix → cursus → bouton → avantages → famille →
+            étapes. Avant, la colonne du cursus et ses cinq avantages précédaient le prix, qui
+            n'apparaissait qu'après deux écrans de défilement, et le bouton arrivait en dernier. */}
         <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-            <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
-            <div className="grid grid-cols-1 sm:grid-cols-2">
+          <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
+          <div className="flex flex-col gap-6 p-5 sm:grid sm:grid-cols-2 sm:gap-0 sm:p-0">
+            <div className="max-sm:contents sm:flex sm:flex-col sm:gap-6 sm:p-6">
               <div
                 ref={cursusRef}
                 className={cn(
-                  "scroll-mt-24 p-6 transition-colors",
-                  cursusManquant && "ring-2 ring-inset ring-primary/40",
+                  "scroll-mt-24 rounded-lg max-sm:order-2",
+                  cursusManquant && "outline outline-2 outline-offset-8 outline-primary/40",
                 )}
               >
                 <p className="mb-2.5 font-display font-semibold">{t("prix.ton_cursus")}</p>
@@ -447,194 +539,165 @@ export function PricingPage() {
                   role={cursusManquant ? "alert" : undefined}
                   className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
                 >
-                  {cursusManquant
-                    ? t("prix.cursus_manquant")
-                    : t("prix.cursus_aide")}
+                  {cursusManquant ? t("prix.cursus_manquant") : t("prix.cursus_aide")}
                 </p>
-
-                {/* Rapatrié depuis sa propre boîte sous le panneau (retouche du
-                    2026-08-30) : la colonne de droite grandit beaucoup plus que
-                    celle-ci une fois l'échéancier affiché (mesuré : jusqu'à 536 px de
-                    vide sous les puces sur desktop) - autant combler cet espace avec du
-                    vrai contenu déjà présent sur la page plutôt qu'un centrage
-                    artificiel ou une boîte séparée en plus. Liste verticale, pas la
-                    grille sm:grid-cols-3 de l'ancienne boîte pleine largeur : cette
-                    colonne fait environ la moitié de cette largeur. */}
-                <div className="mt-6 border-t border-border pt-5">
-                  <p className="font-display text-sm font-semibold">{t("prix.tout_besoin")}</p>
-                  <ul className="mt-3 flex flex-col gap-2.5 text-sm">
-                    <li className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      <span>
-                        {t("prix.inclus1_titre")}
-                        <span className="block text-xs text-muted-foreground">
-                          {t("prix.inclus1_texte")}
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      <span>
-                        {t("prix.inclus2_titre")}
-                        <span className="block text-xs text-muted-foreground">
-                          {t("prix.inclus2_texte")}
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      <span>
-                        {t("prix.inclus3_titre")}
-                        <span className="block text-xs text-muted-foreground">
-                          {t("prix.inclus3_texte")}
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      <span>
-                        {t("prix.inclus4_titre", { site: SITE_NAME })}
-                        <span className="block text-xs text-muted-foreground">
-                          {t("prix.inclus4_texte")}
-                        </span>
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      <span>
-                        {t("prix.inclus5_titre")}
-                        <span className="block text-xs text-muted-foreground">
-                          {t("prix.inclus5_texte")}
-                        </span>
-                      </span>
-                    </li>
-                  </ul>
-                </div>
               </div>
 
-              <div className="border-t border-border p-6 sm:border-l sm:border-t-0">
-                {chargement && allPlans.length === 0 ? (
-                  <div className="flex flex-col gap-4" aria-hidden>
-                    <div className="h-4 w-28 animate-pulse rounded bg-muted" />
-                    <div className="h-16 w-full animate-pulse rounded-lg bg-muted" />
-                    <div className="h-9 w-32 animate-pulse rounded bg-muted" />
-                    <div className="h-28 w-full animate-pulse rounded bg-muted" />
-                  </div>
-                ) : erreurPlans && allPlans.length === 0 ? (
-                  <ErreurChargement compact objet={t("prix.objet_tarifs")} onRetry={reessayerPlans} className="h-full justify-center" />
-                ) : (
-                  <>
+              <div className="border-t border-border pt-5 max-sm:order-4">
+                <p className="font-display text-sm font-semibold">{t("prix.tout_besoin")}</p>
+                <ul role="list" className="mt-3 flex flex-col gap-2.5 text-sm">
+                  {AVANTAGES.map((avantage) => (
+                    <li key={avantage.titre} className="flex items-start gap-2">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+                      <span>
+                        {t(avantage.titre, { site: SITE_NAME })}
+                        {avantage.exclusif && <PastilleExclusif />}
+                        <span className="block text-xs text-muted-foreground">{t(avantage.texte)}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="max-sm:contents sm:flex sm:flex-col sm:gap-5 sm:border-l sm:border-border sm:p-6">
+              {chargement && allPlans.length === 0 ? (
+                <div className="flex flex-col gap-4 max-sm:order-1" aria-hidden>
+                  <div className="h-4 w-28 animate-pulse rounded bg-muted" />
+                  <div className="h-16 w-full animate-pulse rounded-lg bg-muted" />
+                  <div className="h-9 w-32 animate-pulse rounded bg-muted" />
+                  <div className="h-28 w-full animate-pulse rounded bg-muted" />
+                </div>
+              ) : erreurPlans && allPlans.length === 0 ? (
+                <ErreurChargement
+                  compact
+                  objet={t("prix.objet_tarifs")}
+                  onRetry={reessayerPlans}
+                  className="h-full justify-center max-sm:order-1"
+                />
+              ) : (
+                <>
+                  {/* Tarif unique (2026-10-02) : le même prix quel que soit le cursus et le moment de
+                      l'année, donc affiché d'emblée, avant même le choix du cursus - `jusquaExamen`
+                      sert surtout à la durée et à la date d'examen. */}
+                  <div className="max-sm:order-1">
                     <p className="font-display font-semibold">{t("prix.formule")}</p>
-                    <p className="text-sm text-muted-foreground">{t("prix.formule_texte")}</p>
-                    {/* Tarif unique (2026-10-02) : le même prix quel que soit le cursus et
-                        le moment de l'année, donc affiché d'emblée, avant même le choix du
-                        cursus - `jusquaExamen` sert surtout à la durée et à la date
-                        d'examen. Le prix passe AVANT le callout "Exclusif Edukora" : sur
-                        une page Tarifs, c'est la première chose qu'on scanne. */}
-                    <div className="mt-4 flex flex-col gap-4">
-                      <div>
-                        {/* Jamais de repli sur 0 : sans plan chargé, on n'affiche pas de prix du tout. */}
-                        {planTarif && (
-                          <p className="flex flex-wrap items-baseline gap-x-2 font-display text-3xl font-semibold text-primary">
-                            <span>
-                              {formatAmount(planTarif.effective_price)}
-                              <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
-                            </span>
-                            {planTarif.campagne && (
-                              <>
-                                <s className="text-lg font-normal text-muted-foreground">{formatAmount(planTarif.prix_reference)}</s>
-                                <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-gold-text">
-                                  {t("camp.etiquette", { pct: planTarif.campagne.pourcentage })}
-                                </span>
-                              </>
-                            )}
-                          </p>
-                        )}
-                        {planTarif?.campagne && (
-                          <p className="mt-0.5 text-xs font-semibold text-gold-text">
-                            {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
-                          </p>
-                        )}
-                        <p className="mt-0.5 text-xs text-muted-foreground">
-                          {t("prix.par_enfant")}
-                          {jusquaExamen && (
+                    <p className="hidden text-sm text-muted-foreground sm:block">{t("prix.formule_texte")}</p>
+                    <div className="mt-2 sm:mt-4">
+                      {/* Jamais de repli sur 0 : sans plan chargé, on n'affiche pas de prix du tout. */}
+                      {planTarif && (
+                        <p className="flex flex-wrap items-baseline gap-x-2 font-display text-3xl font-semibold text-primary">
+                          <span>
+                            {formatAmount(planTarif.effective_price)}
+                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                          </span>
+                          {planTarif.campagne && (
                             <>
-                              {" - "}
-                              {t("prix.compte_a_rebours", {
-                                n: jusquaExamen.effective_duration_days,
-                                examen: jusquaExamen.cursus.examen_display,
-                                date: formatDateDansNJours(jusquaExamen.effective_duration_days),
-                              })}
+                              <s className="text-lg font-normal text-muted-foreground">
+                                {formatAmount(planTarif.prix_reference)}
+                              </s>
+                              <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-gold-text">
+                                {t("camp.etiquette", { pct: planTarif.campagne.pourcentage })}
+                              </span>
                             </>
                           )}
                         </p>
-                      </div>
-                      <CalloutExclusifsJusquaExamen />
-                      {planTarif && <TarifFamille plan={planTarif} />}
-                      {jusquaExamen ? (
-                        <>
-                          <Button onClick={choisirFormule} size="lg" className="w-full">
-                            {t("prix.sabonner")}
-                          </Button>
-                          {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
-                          {!isAuthenticated && (
-                            <>
-                              <p className="-mt-2 text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
-                              {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se lire
-                                  ici, pas derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). */}
-                              <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm">
-                                <p className="font-medium">{t("prix.etapes_titre")}</p>
-                                <ol className="mt-1.5 list-decimal space-y-0.5 pl-5 text-muted-foreground">
-                                  <li>{t("prix.etape1")}</li>
-                                  <li>{t("prix.etape2")}</li>
-                                  <li>
-                                    {campayActif
-                                      ? t("prix.etape3_immediat")
-                                      : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() })}
-                                  </li>
-                                </ol>
-                                <p className="mt-2 text-xs text-muted-foreground">
-                                  {t("prix.contact_paiement")}{" "}
-                                  <a
-                                    href={CONTACT_WHATSAPP_URL}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="font-medium text-primary underline-offset-2 hover:underline"
-                                  >
-                                    {CONTACT_WHATSAPP_AFFICHAGE}
-                                  </a>
-                                  {" · "}
-                                  {EDITEUR_NOM}
-                                </p>
-                                <LienAide slug="comment-payer" className="mt-1">{t("aide.lien.comment_payer")}</LienAide>
-                              </div>
-                            </>
-                          )}
-                        </>
-                      ) : (
-                        // "Choisir ton cursus", pas "S'abonner" : dans cet état,
-                        // selectedCursus est par définition vide (voir jusquaExamen plus
-                        // haut), le clic ne fait jamais que signaler la colonne de gauche -
-                        // le libellé doit décrire CETTE action, pas l'achat qui suivra.
-                        // Cliquable, jamais disabled - un bouton mort ne donne aucun
-                        // feedback au clic et peut passer pour une page cassée.
-                        <Button onClick={choisirFormule} variant="outline" size="lg" className="w-full">
-                          {t("prix.choisir_cursus")}
-                        </Button>
                       )}
+                      {planTarif?.campagne && (
+                        <p className="mt-0.5 text-xs font-semibold text-gold-text">
+                          {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
+                        </p>
+                      )}
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        {t("prix.par_enfant")}
+                        {jusquaExamen && (
+                          <>
+                            {" - "}
+                            {t("prix.compte_a_rebours", {
+                              n: jusquaExamen.effective_duration_days,
+                              examen: jusquaExamen.cursus.examen_display,
+                              date: formatDateDansNJours(jusquaExamen.effective_duration_days),
+                            })}
+                          </>
+                        )}
+                      </p>
                     </div>
-                  </>
-                )}
-              </div>
+                  </div>
+
+                  <div className="flex flex-col gap-3 max-sm:order-3">
+                    {/* Toujours le bouton principal, plein : « Choisir ton cursus » en contour discret
+                        ressemblait à un lien secondaire alors que c'est l'action de la page. Cliquable,
+                        jamais disabled - un bouton mort ne donne aucun feedback au clic et peut passer
+                        pour une page cassée ; sans cursus, il remonte au sélecteur et le signale. */}
+                    {/* La barre mobile se retire quand CE bouton est à l'écran (et non tout le bloc : le
+                        texte sous le bouton gardait la barre cachée alors que le bouton était déjà sorti). */}
+                    <div ref={ctaRef}>
+                      <Button onClick={choisirFormule} size="lg" className="w-full">
+                        {jusquaExamen
+                          ? t("prix.sabonner_cursus", { cursus: libelleCursusChoisi })
+                          : t("prix.choisir_cursus")}
+                      </Button>
+                    </div>
+                    {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
+                    {!isAuthenticated && (
+                      <p className="text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                    )}
+                    {/* L'essai gratuit se lit ici, à côté du bouton, et non plus tout en bas après la FAQ. */}
+                    <p className="text-center text-sm text-muted-foreground">
+                      {t("prix.essayer_avant")}{" "}
+                      {/* Jamais "/cm/cours" en dur : /tarifs n'est pas une route préfixée par pays, le pays
+                          courant vient du contexte (voir CountryContext et coursListPath). */}
+                      <Link
+                        to={coursListPath(country)}
+                        className="group inline-flex min-h-11 items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+                      >
+                        {t("prix.decouvrir_cours")}
+                        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                      </Link>
+                    </p>
+                  </div>
+
+                  {planTarif && (
+                    <div className="max-sm:order-5">
+                      <TarifFamille plan={planTarif} />
+                    </div>
+                  )}
+
+                  {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se
+                      lire ici, pas derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). */}
+                  {!isAuthenticated && (
+                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm max-sm:order-6">
+                      <p className="font-medium">{t("prix.etapes_titre")}</p>
+                      <ol className="mt-1.5 list-decimal space-y-0.5 pl-5 text-muted-foreground">
+                        <li>{t("prix.etape1")}</li>
+                        <li>{t("prix.etape2")}</li>
+                        <li>
+                          {campayActif
+                            ? t("prix.etape3_immediat")
+                            : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() })}
+                        </li>
+                      </ol>
+                      <p className="mt-2 text-xs text-muted-foreground">
+                        {t("prix.contact_paiement")}{" "}
+                        <a
+                          href={CONTACT_WHATSAPP_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-primary underline-offset-2 hover:underline"
+                        >
+                          {CONTACT_WHATSAPP_AFFICHAGE}
+                        </a>
+                        {" · "}
+                        {EDITEUR_NOM}
+                      </p>
+                      <LienAide slug="comment-payer" className="mt-1">{t("aide.lien.comment_payer")}</LienAide>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
-
-        {/* L'encart "Prêt à t'abonner ?" vivait ici, sans bouton (la carte porte déjà
-            le sien) : une invite à agir qui ne menait nulle part elle-même, retirée
-            plutôt que complétée. La mention Mobile Money vivait ici aussi, en 12 px
-            sous la grille. Elle est remontée dans les puces du hero et détaillée dans
-            les questions en bas de page : la répéter une troisième fois ne rassurait
-            personne. */}
+        </div>
       </div>
 
       <ComparatifFascicule />
@@ -724,18 +787,16 @@ export function PricingPage() {
             </div>
           </li>
         </ul>
-
-        {/* Jamais "/cm/cours" en dur : /tarifs n'est pas une route préfixée par pays,
-            le pays courant vient donc du contexte (URL précédente, sinon dernier choix
-            mémorisé) - voir CountryContext et coursListPath. */}
-        <Link
-          to={coursListPath(country)}
-          className="group mt-8 inline-flex min-h-11 items-center gap-1.5 text-sm font-medium text-primary underline-offset-4 hover:underline"
-        >
-          {t("prix.decouvrir_cours")}
-          <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-        </Link>
       </section>
+
+      {afficherBarreMobile && planTarif && (
+        <BarreActionMobile
+          prix={planTarif.effective_price}
+          prixBarre={planTarif.campagne ? planTarif.prix_reference : undefined}
+          cursusChoisi={!!jusquaExamen}
+          onClick={choisirFormule}
+        />
+      )}
     </div>
   )
 }

@@ -12,6 +12,9 @@ interface Props {
   /** Prix normal (barré à côté dans la carte de prix, rappelé ici en toutes lettres). */
   prixReference: number
   className?: string
+  /** Sans la phrase de prix : à utiliser quand le prix et sa date limite sont déjà affichés juste à côté
+   * (page Tarifs), pour ne pas répéter la même offre quatre fois d'affilée. */
+  compact?: boolean
 }
 
 /**
@@ -19,7 +22,7 @@ interface Props {
  * limite. Composant d'affichage pur - la campagne vient de `useCampagne()` ou de `plan.campagne`,
  * jamais calculée ici (le serveur facture ce qu'il a lui-même calculé).
  */
-export function BandeauCampagne({ campagne, prix, prixReference, className }: Props) {
+export function BandeauCampagne({ campagne, prix, prixReference, className, compact = false }: Props) {
   const urgence = urgenceCampagne(campagne.fin)
   return (
     <div
@@ -29,17 +32,20 @@ export function BandeauCampagne({ campagne, prix, prixReference, className }: Pr
         className,
       )}
     >
-      <Tag className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
-      <p className="font-display font-semibold text-gold-text">
+      {/* L'icône vit dans le titre : en flex-wrap, seule, elle prenait une ligne entière sur mobile. */}
+      <p className="flex items-center gap-2 font-display font-semibold text-gold-text">
+        <Tag className="size-4 shrink-0" aria-hidden="true" />
         {t("camp.bandeau_titre", { nom: nomCampagne(campagne), pct: campagne.pourcentage })}
       </p>
-      <p className="text-foreground">
-        {t("camp.bandeau_prix", {
-          prix: formatAmount(prix),
-          ref: formatAmount(prixReference),
-          date: dateLimiteCampagne(campagne.fin),
-        })}
-      </p>
+      {!compact && (
+        <p className="text-foreground">
+          {t("camp.bandeau_prix", {
+            prix: formatAmount(prix),
+            ref: formatAmount(prixReference),
+            date: dateLimiteCampagne(campagne.fin),
+          })}
+        </p>
+      )}
       {urgence && <p className="font-medium text-destructive">{urgence}</p>}
     </div>
   )

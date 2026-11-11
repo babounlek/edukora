@@ -262,7 +262,8 @@ export const fr = {
   "prix.famille_intro":
     "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille (20 % de réduction)",
   "prix.famille_intro_campagne":
-    "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille (prix promotionnel : réduction famille et {nom} cumulées)",
+    "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille",
+  "prix.famille_note_campagne": "Prix promotionnel : la réduction famille et {nom} se cumulent.",
   "prix.enfants_one": "{n} enfant",
   "prix.enfants_other": "{n} enfants",
   "prix.exclusif": "Exclusif {site}",
@@ -298,6 +299,7 @@ export const fr = {
   "comparatif.intro": "Un fascicule de corrigés est un document que tu lis. {site} est une plateforme où tu t'entraînes, et qui suit ta progression.",
   "comparatif.colonne_critere": "Fonction",
   "comparatif.fascicule": "Un fascicule de corrigés",
+  "comparatif.fascicule_court": "Fascicule",
   "comparatif.oui": "Oui",
   "comparatif.non": "Non",
   "comparatif.rarement": "Rarement",
@@ -327,7 +329,10 @@ export const fr = {
   "prix.etape3_immediat": "Ton accès s'active dès le paiement.",
   "prix.etape3_verifie": "Notre équipe vérifie ton transfert, généralement sous {delai}, puis ton accès s'active.",
   "prix.contact_paiement": "Un souci de paiement ou d'activation ? Écris-nous sur WhatsApp :",
-  "prix.choisir_cursus": "Choisir ton cursus",
+  "prix.choisir_cursus": "Choisis ton cursus pour continuer",
+  "prix.choisir_cursus_court": "Choisir mon cursus",
+  "prix.sabonner_cursus": "S'abonner pour {cursus}",
+  "prix.essayer_avant": "Pas encore sûr ?",
   "prix.avant_payer": "Avant de payer",
   "prix.faq1_q": "Comment je paie ?",
   "prix.faq1_r_campay":

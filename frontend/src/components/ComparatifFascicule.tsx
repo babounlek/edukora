@@ -33,6 +33,12 @@ const LIGNES: Ligne[] = [
   { libelle: "comparatif.maj", detail: "comparatif.maj_detail", fascicule: "non" },
 ]
 
+const LIBELLE_VALEUR: Record<Valeur, Parameters<typeof t>[0]> = {
+  oui: "comparatif.oui",
+  non: "comparatif.non",
+  rarement: "comparatif.rarement",
+}
+
 function Cellule({ valeur }: { valeur: Valeur }) {
   if (valeur === "oui") {
     return (
@@ -60,7 +66,32 @@ export function ComparatifFascicule() {
       </h2>
       <p className="mt-1.5 max-w-2xl text-sm text-muted-foreground">{t("comparatif.intro", { site: SITE_NAME })}</p>
 
-      <div className="mt-5 overflow-x-auto rounded-xl border border-border">
+      {/* Mobile : une carte par fonction plutôt qu'un tableau de 420 px mini, dont la 3e colonne
+          sortait de l'écran (« Un fa… », « Ra… ») sans rien signaler. */}
+      <ul role="list" className="mt-5 divide-y divide-border rounded-xl border border-border sm:hidden">
+        {LIGNES.map((ligne) => (
+          <li key={ligne.libelle} className="px-4 py-3">
+            <p className="text-sm font-medium">{t(ligne.libelle)}</p>
+            <p className="text-xs text-muted-foreground">{t(ligne.detail)}</p>
+            <div className="mt-2 flex flex-wrap gap-2 text-xs">
+              <span className="inline-flex items-center gap-1 rounded-full bg-success/10 px-2.5 py-1 font-medium text-success">
+                <Check className="size-3.5" aria-hidden />
+                {SITE_NAME}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
+                {ligne.fascicule === "oui" ? (
+                  <Check className="size-3.5" aria-hidden />
+                ) : (
+                  <Minus className="size-3.5" aria-hidden />
+                )}
+                {t("comparatif.fascicule_court")} : {t(LIBELLE_VALEUR[ligne.fascicule])}
+              </span>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div className="mt-5 hidden overflow-x-auto rounded-xl border border-border sm:block">
         <table className="w-full min-w-[420px] text-sm">
           <thead>
             <tr className="border-b border-border bg-muted/40 text-left">

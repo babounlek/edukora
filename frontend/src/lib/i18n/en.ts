@@ -256,7 +256,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.famille_intro":
     "More than one child? {prix} FCFA for each additional child in the same family (20% off)",
   "prix.famille_intro_campagne":
-    "Several children? {prix} FCFA for each additional child in the same family (promotional price: family discount and {nom} combined)",
+    "Several children? {prix} FCFA for each additional child in the same family",
+  "prix.famille_note_campagne": "Promotional price: the family discount and {nom} combine.",
   "prix.enfants_one": "{n} child",
   "prix.enfants_other": "{n} children",
   "prix.exclusif": "{site} exclusive",
@@ -292,6 +293,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "comparatif.intro": "A booklet of solutions is a document you read. {site} is a platform where you practise, and that tracks your progress.",
   "comparatif.colonne_critere": "Feature",
   "comparatif.fascicule": "A booklet of solutions",
+  "comparatif.fascicule_court": "Booklet",
   "comparatif.oui": "Yes",
   "comparatif.non": "No",
   "comparatif.rarement": "Rarely",
@@ -321,7 +323,10 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.etape3_immediat": "Your access is activated as soon as you pay.",
   "prix.etape3_verifie": "Our team checks your transfer, usually within {delai}, then your access is activated.",
   "prix.contact_paiement": "A problem with payment or activation? Write to us on WhatsApp:",
-  "prix.choisir_cursus": "Choose your exam",
+  "prix.choisir_cursus": "Choose your exam to continue",
+  "prix.choisir_cursus_court": "Choose my exam",
+  "prix.sabonner_cursus": "Subscribe for {cursus}",
+  "prix.essayer_avant": "Not sure yet?",
   "prix.avant_payer": "Before you pay",
   "prix.faq1_q": "How do I pay?",
   "prix.faq1_r_campay":
