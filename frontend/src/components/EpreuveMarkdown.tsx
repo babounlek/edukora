@@ -12,6 +12,7 @@ import {
   type ReactNode,
 } from "react"
 import { Link } from "react-router-dom"
+import { ZoomIn } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
@@ -22,6 +23,7 @@ import remarkBreaks from "remark-breaks"
 import { t, useI18n } from "@/lib/i18n"
 
 import { Callout } from "@/components/Callout"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { LienCours } from "@/components/LienCours"
 import { ReponseBox } from "@/components/ReponseBox"
 import { SolutionToggle, SolutionsOuvertesContext } from "@/components/SolutionToggle"
@@ -262,7 +264,41 @@ function MarkdownTableCell({ children, style }: { children?: ReactNode; style?: 
  */
 function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
   const resolvedSrc = src?.startsWith("/") ? `${API_BASE_URL}${src}` : src
-  return <img src={resolvedSrc} alt={alt?.trim() ? alt : t("ed.figure")} loading="lazy" className="rounded-md border border-border" />
+  const texteAlt = alt?.trim() ? alt : t("ed.figure")
+  const [ouverte, setOuverte] = useState(false)
+  // Les figures sont dessinées à ~1000 px de large : affichées telles quelles dans la colonne, elles
+  // remplissaient l'écran (jusqu'à 750 px de haut) alors que le dessin en occupe souvent la moitié. On
+  // plafonne la hauteur (50 % de l'écran, 420 px au plus) en gardant les proportions, sans jamais
+  // agrandir une petite figure, et un clic ouvre la figure en grand pour lire les cotes.
+  return (
+    <>
+      <button
+        type="button"
+        onClick={() => setOuverte(true)}
+        aria-label={`${t("ed.agrandir_figure")} : ${texteAlt}`}
+        className="not-prose group relative mx-auto my-2 flex w-fit max-w-full cursor-zoom-in rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
+      >
+        <img
+          src={resolvedSrc}
+          alt={texteAlt}
+          loading="lazy"
+          className="m-0 h-auto max-h-[min(50vh,420px)] w-auto max-w-full rounded-md border border-border bg-white object-contain"
+        />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute bottom-1.5 right-1.5 rounded-md bg-background/85 p-1 text-muted-foreground shadow-sm ring-1 ring-border transition-colors group-hover:text-foreground"
+        >
+          <ZoomIn className="size-4" />
+        </span>
+      </button>
+      <Dialog open={ouverte} onOpenChange={setOuverte}>
+        <DialogContent className="p-3 pt-11 sm:max-w-4xl" aria-describedby={undefined}>
+          <DialogTitle className="sr-only">{texteAlt}</DialogTitle>
+          <img src={resolvedSrc} alt={texteAlt} className="mx-auto h-auto rounded-md bg-white object-contain max-sm:w-[640px] max-sm:max-w-none sm:max-h-[70vh] sm:w-auto sm:max-w-full" />
+        </DialogContent>
+      </Dialog>
+    </>
+  )
 }
 
 const MARKDOWN_COMPONENTS = {

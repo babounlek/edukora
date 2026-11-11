@@ -662,6 +662,7 @@ export const fr = {
   "ed.cours_lies": "Cours liés à cet exercice",
   "ed.voir_cours": "Voir le cours complet",
   "ed.figure": "Figure de l'exercice",
+  "ed.agrandir_figure": "Agrandir la figure",
   "ed.ami": "Ou partage-le avec un ami",
   "ed.section_questions_one": "{n} question",
   "ed.section_questions_other": "{n} questions",
