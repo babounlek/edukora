@@ -268,7 +268,7 @@ function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
   const [ouverte, setOuverte] = useState(false)
   // Les figures sont dessinées à ~1000 px de large : affichées telles quelles dans la colonne, elles
   // remplissaient l'écran (jusqu'à 750 px de haut) alors que le dessin en occupe souvent la moitié. On
-  // plafonne la hauteur (50 % de l'écran, 420 px au plus) en gardant les proportions, sans jamais
+  // plafonne la hauteur (45 % de l'écran, 360 px au plus) et la largeur (600 px : une figure basse mais très large n'est pas touchée par le plafond de hauteur) en gardant les proportions, sans jamais
   // agrandir une petite figure, et un clic ouvre la figure en grand pour lire les cotes.
   return (
     <>
@@ -282,7 +282,7 @@ function MarkdownImage({ src, alt }: { src?: string; alt?: string }) {
           src={resolvedSrc}
           alt={texteAlt}
           loading="lazy"
-          className="m-0 h-auto max-h-[min(50vh,420px)] w-auto max-w-full rounded-md border border-border bg-white object-contain"
+          className="m-0 h-auto max-h-[min(45vh,360px)] w-auto max-w-[min(100%,600px)] rounded-md border border-border bg-white object-contain"
         />
         <span
           aria-hidden="true"
