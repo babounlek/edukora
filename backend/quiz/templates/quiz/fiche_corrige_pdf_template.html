@@ -74,12 +74,21 @@
         margin: 22px 0 6px 0;
     }
     img {
-        max-width: 100%;
+        /* Mêmes plafonds que les figures à l'écran (EpreuveMarkdown.tsx) : une figure dessinée à ~1000 px
+           de large, étirée à la largeur de la page, en occupait la moitié. object-fit garde les proportions. */
+        max-width: min(100%, 600px);
+        max-height: 360px;
+        object-fit: contain;
         height: auto;
         display: block;
         margin: 14px 0;
         border: 1px solid #ddd;
         border-radius: 4px;
+    }
+    /* Figures centrées (plafonnées en largeur) ; ni le QR ni le drapeau de l'en-tête, qui ont leurs propres marges. */
+    img:not(.flag-icon):not(.qr-image) {
+        margin-left: auto;
+        margin-right: auto;
     }
     table {
         border-collapse: collapse;
