@@ -39,7 +39,7 @@ export function ExamenPage() {
   if (requete.isError) {
     const introuvable = requete.error instanceof ApiError && requete.error.status === 404
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         {introuvable ? (
           <div className="flex flex-col items-center gap-4 text-center">
             <SearchX className="size-10 text-muted-foreground" aria-hidden="true" />
@@ -62,7 +62,7 @@ function ExamenSquelette() {
   return (
     // Un écran entier réservé : sinon le pied de page, juste sous ce petit squelette, saute à l'arrivée du contenu
     // (même cause et même remède que RouteFallback).
-    <div className="mx-auto min-h-[100svh] max-w-3xl px-4 py-8 sm:px-6" aria-hidden="true">
+    <div className="mx-auto min-h-[100svh] max-w-5xl px-4 py-8 sm:px-6" aria-hidden="true">
       <Skeleton className="mb-3 h-8 w-2/3" />
       <Skeleton className="h-4 w-full" />
       <Skeleton className="mt-2 h-4 w-full" />
@@ -90,11 +90,11 @@ function ExamenContenu({ examen }: { examen: ExamenPageData }) {
   }
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <article className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <FilAriane maillons={[{ libelle: t("ex.accueil"), to: catalogueHomePath(pays) }, { libelle: examen.libelle }]} />
 
       <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight">{examen.textes.titre}</h1>
-      <p className="mt-3 text-muted-foreground">{examen.textes.intro}</p>
+      <p className="mt-3 max-w-3xl text-muted-foreground">{examen.textes.intro}</p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Compteur valeur={examen.nb_epreuves} libelle={t("ex.c_epreuves")} />
