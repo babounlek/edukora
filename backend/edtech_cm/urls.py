@@ -49,6 +49,8 @@ urlpatterns = [
     path("partage-apercu/<path:chemin>", apercu_partage, name="partage-apercu"),
     # Pages complètes pour Googlebot, Bingbot... (titre, canonical, hreflang, texte) : même principe, voir
     # catalog/prerendu.py.
+    # Sans chemin : l'accueil « / » réécrit par Caddy en /prerendu/ (voir catalog.pages_statiques).
+    path("prerendu/", prerendu, {"chemin": ""}, name="prerendu-accueil"),
     path("prerendu/<path:chemin>", prerendu, name="prerendu"),
     path("partage-image/defaut.png", image_partage, {"genre": "defaut", "ident": ""}, name="partage-image-defaut"),
     path("partage-image/<str:genre>/<str:ident>.png", image_partage, name="partage-image"),

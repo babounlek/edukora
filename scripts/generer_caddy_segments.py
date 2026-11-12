@@ -21,6 +21,53 @@ JSON_SEGMENTS = RACINE / "frontend" / "src" / "lib" / "i18n" / "segments-url.jso
 CADDYFILE = RACINE / "docker" / "caddy" / "Caddyfile"
 DEBUT = "    # >>> redirections-segments-en (GÉNÉRÉ par scripts/generer_caddy_segments.py : ne pas modifier à la main)"
 FIN = "    # <<< redirections-segments-en"
+DEBUT_404 = "    # >>> routes-spa-connues (GÉNÉRÉ par scripts/generer_caddy_segments.py : ne pas modifier à la main)"
+FIN_404 = "    # <<< routes-spa-connues"
+REPERE_404 = "    # Toute autre adresse = une page de l'application"
+MOTEURS = "googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/"
+
+
+def _regex_route(patron, segments, anglais):
+    morceaux = []
+    for p in (s for s in patron.split("/") if s):
+        if p == ":country":
+            morceaux.append("[a-z]{2}")
+        elif p.startswith(":"):
+            morceaux.append("[^/]+")
+        else:
+            morceaux.append(re.escape(segments.get(p, p) if anglais else p))
+    return "/" + "/".join(morceaux)
+
+
+def generer_routes_connues(donnees):
+    """Le bloc des routes de l'application, pour répondre un VRAI 404 aux moteurs de recherche sur une adresse qui n'en
+    est pas une (la SPA répondait 200 avec son index.html : « soft 404 »). Un visiteur n'est jamais concerné : il garde
+    la page « introuvable » de l'application. Les formes françaises et anglaises de chaque route (table partagée avec
+    le routeur), plus « / », « /en », « /<pays> » et « /en/<pays> » qui n'ont pas de motif propre."""
+    segments = donnees["segments"]
+    alternatives = ["/", "/en", "/[a-z]{2}", "/en/[a-z]{2}"]
+    for patron in donnees["patrons"]:
+        alternatives.append(_regex_route(patron, segments, anglais=False))
+        alternatives.append("/en" + _regex_route(patron, segments, anglais=True))
+    regex = "^(?:" + "|".join(dict.fromkeys(alternatives)) + ")/?$"
+    return "\n".join([
+        DEBUT_404,
+        "    # Un moteur de recherche qui demande une adresse que l'application ne connaît pas reçoit un vrai 404 (un visiteur,",
+        "    # lui, garde la page introuvable de l'application). Un fichier existant passe toujours.",
+        "    @bot_adresse_inconnue {",
+        f"        header_regexp User-Agent (?i)({MOTEURS})",
+        f"        not path_regexp {regex}",
+        "        not file {",
+        "            root /srv/frontend",
+        "            try_files {path}",
+        "        }",
+        "    }",
+        "    handle @bot_adresse_inconnue {",
+        '        header Cache-Control "no-store"',
+        '        respond "Not found" 404',
+        "    }",
+        FIN_404,
+    ]) + "\n"
 
 
 def generer(donnees):
@@ -55,12 +102,11 @@ def generer(donnees):
     return "\n".join(lignes) + "\n"
 
 
-def appliquer(contenu, bloc):
-    """Remplace le bloc balisé, ou l'insère avant le premier `handle_path /static`."""
-    motif = re.compile(re.escape(DEBUT) + r".*?" + re.escape(FIN) + r"\n", re.S)
+def appliquer(contenu, bloc, debut=DEBUT, fin=FIN, repere="    handle_path /static/*"):
+    """Remplace le bloc balisé, ou l'insère avant `repere`."""
+    motif = re.compile(re.escape(debut) + r".*?" + re.escape(fin) + r"\n", re.S)
     if motif.search(contenu):
         return motif.sub(lambda _m: bloc, contenu)
-    repere = "    handle_path /static/*"
     assert repere in contenu, "repère introuvable dans le Caddyfile"
     return contenu.replace(repere, bloc + "\n" + repere, 1)
 
@@ -70,6 +116,7 @@ def main():
     with open(CADDYFILE, encoding="utf-8", newline="") as f:
         contenu = f.read()
     attendu = appliquer(contenu, generer(donnees))
+    attendu = appliquer(attendu, generer_routes_connues(donnees), DEBUT_404, FIN_404, REPERE_404)
     if "--verifier" in sys.argv:
         if attendu != contenu:
             print("Caddyfile obsolète : relancer scripts/generer_caddy_segments.py --ecrire", file=sys.stderr)

@@ -187,6 +187,18 @@
         reverse_proxy backend:8000
     }
 
+    # Les pages SANS identifiant (accueil du pays, listes d'épreuves / cours / thèmes, tarifs, à propos, aide) : même
+    # traitement, pour que leur HTML initial porte un titre propre, un texte et des liens vers les pages d'examen au lieu
+    # du HTML vide de la SPA (voir backend/catalog/pages_statiques.py). `/`, `/en` et `/cm` y sont compris.
+    @robots_moteurs_statique {
+        header_regexp User-Agent (?i)(googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/)
+        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|a-propos|about|aide|help)?/?$
+    }
+    handle @robots_moteurs_statique {
+        rewrite * /prerendu{path}
+        reverse_proxy backend:8000
+    }
+
     # Aperçu des liens partagés : les robots de WhatsApp, Facebook, Telegram... ne lancent pas le
     # JavaScript de la SPA, donc ne voient que les balises génériques d'index.html. Pour les pages
     # d'épreuve, de cours et d'épreuve inédite, ils reçoivent à la place une page de balises <meta>
@@ -224,6 +236,16 @@
         reverse_proxy backend:8000
     }
 
+    # Aperçu des pages sans identifiant (accueil du pays, listes, tarifs, à propos, aide) : titre et description propres.
+    @robots_apercu_statique {
+        header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
+        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|a-propos|about|aide|help)?/?$
+    }
+    handle @robots_apercu_statique {
+        rewrite * /partage-apercu{path}
+        reverse_proxy backend:8000
+    }
+
     # Fichiers de /assets : le nom contient le hash du contenu (Vite), un fichier ne change
     # jamais sous un même nom - cache navigateur d'un an, aucune revalidation aux visites
     # suivantes (sur une connexion mobile lente, c'est ce qui fait la différence entre
@@ -246,6 +268,23 @@
         header Cache-Control "public, max-age=86400"
         file_server
     }
+
+    # >>> routes-spa-connues (GÉNÉRÉ par scripts/generer_caddy_segments.py : ne pas modifier à la main)
+    # Un moteur de recherche qui demande une adresse que l'application ne connaît pas reçoit un vrai 404 (un visiteur,
+    # lui, garde la page introuvable de l'application). Un fichier existant passe toujours.
+    @bot_adresse_inconnue {
+        header_regexp User-Agent (?i)(googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/)
+        not path_regexp ^(?:/|/en|/[a-z]{2}|/en/[a-z]{2}|/epreuves/[^/]+|/en/past\-papers/[^/]+|/epreuves/[^/]+/lire|/en/past\-papers/[^/]+/read|/cours/[^/]+|/en/lessons/[^/]+|/cours/[^/]+/lire|/en/lessons/[^/]+/read|/connexion|/en/login|/qui\-etudie|/en/who\-is\-studying|/tarifs|/en/pricing|/abonnement|/en/subscription|/compte|/en/account|/mes\-acces|/en/my\-access|/historique|/en/history|/carnet|/en/notebook|/mes\-paiements|/en/my\-payments|/espace\-revendeur|/en/reseller\-area|/devenir\-revendeur|/en/become\-a\-reseller|/quiz|/en/quiz|/quiz/essai|/en/quiz/trial|/quiz/essai/resultat|/en/quiz/trial/result|/quiz/essai/[^/]+/[^/]+/[^/]+|/en/quiz/trial/[^/]+/[^/]+/[^/]+|/quiz/session/[^/]+|/en/quiz/session/[^/]+|/quiz/session/[^/]+/resultat|/en/quiz/session/[^/]+/result|/historique/quiz/[^/]+|/en/history/quiz/[^/]+|/revision|/en/revision|/parcours|/en/learning\-paths|/parcours/[^/]+|/en/learning\-paths/[^/]+|/inedit/tentative/[^/]+|/en/mock/attempt/[^/]+|/inedit/tentative/[^/]+/resultat|/en/mock/attempt/[^/]+/result|/simulation/[^/]+|/en/simulation/[^/]+|/simulation/[^/]+/resultat|/en/simulation/[^/]+/result|/fiches|/en/study\-sheets|/confidentialite|/en/privacy|/cgu|/en/terms|/a\-propos|/en/about|/aide|/en/help|/aide/[^/]+|/en/help/[^/]+|/[a-z]{2}/epreuves|/en/[a-z]{2}/past\-papers|/[a-z]{2}/examens/[^/]+|/en/[a-z]{2}/exams/[^/]+|/[a-z]{2}/recherche|/en/[a-z]{2}/search|/[a-z]{2}/themes\-frequents|/en/[a-z]{2}/frequent\-topics|/[a-z]{2}/themes\-frequents/[^/]+/exercices|/en/[a-z]{2}/frequent\-topics/[^/]+/exercises|/[a-z]{2}/themes\-frequents/[^/]+/exercices/[^/]+|/en/[a-z]{2}/frequent\-topics/[^/]+/exercises/[^/]+|/[a-z]{2}/cours|/en/[a-z]{2}/lessons|/[a-z]{2}/epreuves/[^/]+|/en/[a-z]{2}/past\-papers/[^/]+|/[a-z]{2}/epreuves/[^/]+/lire|/en/[a-z]{2}/past\-papers/[^/]+/read|/[a-z]{2}/epreuves\-inedites/[^/]+|/en/[a-z]{2}/mock\-papers/[^/]+)/?$
+        not file {
+            root /srv/frontend
+            try_files {path}
+        }
+    }
+    handle @bot_adresse_inconnue {
+        header Cache-Control "no-store"
+        respond "Not found" 404
+    }
+    # <<< routes-spa-connues
 
     # Toute autre adresse = une page de l'application : index.html, à revalider à chaque visite (il
     # référence les fichiers hashés de la version courante). Sans en-tête, le navigateur appliquait

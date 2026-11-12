@@ -36,7 +36,7 @@ from django.utils.html import escape
 from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
-from . import pages_examen
+from . import pages_examen, pages_statiques
 from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, description_epreuve, langue_du_chemin, titre_epreuve
 from .libelles import libelle_cursus
 from .models import Cours, Langue, Lesson, StatutContenu
@@ -104,6 +104,23 @@ def _page_cours(ident, langue_page, pays=None):
     }
 
 
+def _autres_epreuves_markdown(lesson, code_pays, langue, langue_page, limite=10):
+    """Les épreuves voisines (même matière, même examen, autres années) : un lien de chacune vers les autres, comme la
+    page rendue en a (« Autres épreuves de Mathématiques »). Sans cela, une épreuve n'avait pour les moteurs que deux
+    liens sortants dans son HTML initial (audit du 2026-11-12, SEO-08)."""
+    voisines = (
+        Lesson.objects.visibles().filter(subject=lesson.subject, cursus__in=lesson.cursus.all())
+        .exclude(pk=lesson.pk).order_by("-year", "title").distinct()[:limite]
+    )
+    lignes = [
+        f"- [{v.title}]({chemin_public(f'/{code_pays}/epreuves/{v.slug}', langue_page)})" for v in voisines
+    ]
+    if not lignes:
+        return ""
+    titre = f"Other {lesson.subject.label} papers" if langue == "en" else f"Autres épreuves de {lesson.subject.label}"
+    return "\n\n## " + titre + "\n\n" + "\n".join(lignes)
+
+
 def _page_epreuve(ident, langue_page, pays=None):
     lesson = (
         Lesson.objects.visibles().par_slug_ou_id(ident)
@@ -137,7 +154,8 @@ def _page_epreuve(ident, langue_page, pays=None):
         "bilingue": bilingue,
         "meta": [m for m in meta if m],
         # Sinon, le sujet public (voir access.views.preview_lesson) : tous les énoncés, jamais le corrigé.
-        "corps": lesson.content_markdown if lesson.est_vitrine else lesson.preview_markdown(),
+        "corps": (lesson.content_markdown if lesson.est_vitrine else lesson.preview_markdown())
+        + _autres_epreuves_markdown(lesson, code_pays, langue, langue_page),
         "liens": [("liste_epreuves", f"/{code_pays}/epreuves")],
         "image": f"{settings.FRONTEND_URL}/partage-image/epreuves/{lesson.slug}.png" + ("?lang=en" if langue_page == "en" else ""),
     }
@@ -272,7 +290,11 @@ def prerendu(request, chemin=""):
     brut = chemin.strip("/")
     interne = chemin_interne("/" + re.sub(r"^en(/|$)", "", brut)).strip("/") if langue_page == "en" else brut
     m = _CHEMIN_RE.match(interne)
-    page = _PAGES[m.group("genre")](m.group("ident"), langue_page, m.group("pays")) if m else None
+    if m:
+        page = _PAGES[m.group("genre")](m.group("ident"), langue_page, m.group("pays"))
+    else:
+        # Accueil, listes, tarifs, à propos, aide : les pages sans identifiant (voir catalog.pages_statiques).
+        page = pages_statiques.page_statique(interne, langue_page)
     if not page:
         return _introuvable(langue_page)
 
@@ -292,7 +314,7 @@ def prerendu(request, chemin=""):
     meta = f"<p>{escape(' · '.join(page['meta']))}</p>" if page["meta"] else ""
     corps = _html(_sans_gabarits(page["corps"]) if page["corps"] else "", langue_page)
     liens = [(libelles["accueil"], chemin_public("/", langue_page))] + [
-        (libelles[cle], chemin_public(href, langue_page)) for cle, href in page["liens"]
+        (libelles.get(cle, cle), chemin_public(href, langue_page)) for cle, href in page["liens"]
     ]
     nav = "".join(f'<li><a href="{escape(href)}">{escape(libelle)}</a></li>' for libelle, href in liens)
 

@@ -252,6 +252,24 @@ def _infos_examen(pays, ident, langue="fr"):
     }
 
 
+def _infos_statique(interne, langue):
+    """L'aperçu d'une page sans identifiant (accueil du pays, listes, tarifs, à propos, aide) : son titre et sa
+    description propres, au lieu de la carte générique avec l'adresse de l'accueil (audit du 2026-11-12, SEO-06)."""
+    from . import pages_statiques
+
+    page = pages_statiques.page_statique(interne, langue)
+    if page is None:
+        return None
+    return {
+        "titre": page["titre"],
+        "description": page["description"],
+        "etiquette": page["titre"],
+        "public": "",
+        "chemin": page["interne"].strip("/"),
+        "image": page["image"],
+    }
+
+
 _RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite, "aide": _infos_aide}
 # Le quiz gratuit n'a ni pays ni slug dans son adresse : trois identifiants numériques.
 _QUIZ_ESSAI_RE = re.compile(r"^quiz/essai/(\d+)/(\d+)/(\d+)$")
@@ -278,7 +296,10 @@ def infos_page(chemin):
         return infos
     m = _CHEMIN_RE.match(interne)
     if not m:
-        return None
+        infos = _infos_statique(interne, langue)
+        if infos and langue == "en":
+            infos["chemin"] = "en" + chemin_anglais("/" + infos["chemin"])
+        return infos
     if m.group("genre") == "examens":
         infos = _infos_examen(m.group("pays"), m.group("ident"), langue)
     else:
