@@ -135,8 +135,10 @@ function Lien({ to, children, vedette }: { to: string; children: ReactNode; vede
 
 const PAGES_SANS_PIED = /^\/quiz\/(session|essai)/
 // Pages où le bandeau « crée ton compte / voir les prix » parlerait d'autre chose que de la page : la candidature et l'espace
-// des revendeurs ont leur propre appel à l'action (le chemin du routeur est toujours en français, même sous /en).
-const PAGES_SANS_INVITATION = /^\/(devenir-revendeur|espace-revendeur)/
+// des revendeurs ont leur propre appel à l'action ; sur /tarifs, il renvoyait vers les prix depuis la page des prix, et le
+// bouton « Continuer » du récapitulatif mène déjà à la création du compte (le chemin du routeur est toujours en français,
+// même sous /en).
+const PAGES_SANS_INVITATION = /^\/(devenir-revendeur|espace-revendeur)|^\/tarifs\/?$/
 
 function remonter() {
   const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches

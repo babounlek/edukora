@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it, vi } from "vitest"
+import { afterEach, describe, expect, it, vi } from "vitest"
 
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
@@ -40,6 +40,34 @@ describe("Footer : absent pendant un quiz", () => {
     afficher(<Footer />, "/quiz")
 
     expect(screen.getByRole("contentinfo")).toBeInTheDocument()
+  })
+})
+
+describe("Footer : bandeau d'invitation", () => {
+  // `auth` est partagé avec les tests suivants (élève connecté) : on le remet comme on l'a trouvé.
+  const connecte = { isAuthenticated: auth.isAuthenticated, user: auth.user }
+  afterEach(() => {
+    auth.isAuthenticated = connecte.isAuthenticated
+    auth.user = connecte.user
+  })
+
+  it("ne propose pas « Voir les prix » depuis la page des prix", () => {
+    auth.isAuthenticated = false
+    auth.user = null
+    afficher(<Footer />, "/tarifs")
+
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument()
+    expect(screen.queryByText("Créer mon compte")).not.toBeInTheDocument()
+    expect(screen.queryByText("Voir les prix")).not.toBeInTheDocument()
+  })
+
+  it("reste proposé à un visiteur sur les autres pages", () => {
+    auth.isAuthenticated = false
+    auth.user = null
+    afficher(<Footer />, "/cm/epreuves")
+
+    expect(screen.getByText("Créer mon compte")).toBeInTheDocument()
+    expect(screen.getByText("Voir les prix")).toBeInTheDocument()
   })
 })
 
