@@ -97,7 +97,7 @@ class SujetPdfLangueTests(_Base):
     def test_sujet_du_gce_en_anglais(self):
         html = _render_html(self._lesson(self.matiere_gce, self.cursus_al, "Physics GCE A Level - Paper 2"))
         self.assertIn('<html lang="en">', html)
-        for attendu in ("Free paper", "Want to check your answers?", "15,000 FCFA per child", "View the correction",
+        for attendu in ("Free paper", "Want to check your answers?", "2,000 FCFA per month and per child", "View the correction",
                         "QR code to the correction", "Scan me", "Free-access paper", "Duration: 2 hours",
                         "Session 2023", "Cameroon", "Exercise 1 (6 marks)"):
             self.assertIn(attendu, html)
@@ -106,7 +106,7 @@ class SujetPdfLangueTests(_Base):
     def test_sujet_francophone_inchange(self):
         html = _render_html(self._lesson(self.matiere_fr, self.cursus_bac, "Mathématiques BAC C 2023"))
         self.assertIn('<html lang="fr">', html)
-        for attendu in ("Sujet gratuit", "Envie de vérifier tes réponses ?", "15 000 FCFA par enfant", "Scanne-moi",
+        for attendu in ("Sujet gratuit", "Envie de vérifier tes réponses ?", "2 000 FCFA par mois et par enfant", "Scanne-moi",
                         "Durée : 2 hours"):
             self.assertIn(attendu, html)
 
