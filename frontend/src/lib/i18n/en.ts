@@ -173,6 +173,16 @@ export const en: Partial<Record<CleI18n, string>> = {
   "choix.autre_langue":
     "This exam is in the other language from the interface: the lists are not narrowed to it.",
   "accueil.pret_titre": "Ready to start?",
+  "parents.titre": "Are you a parent?",
+  "parents.sous_titre": "Here is what your child gets, how payment works, and what you keep control of.",
+  "parents.c1_titre": "One account, several children",
+  "parents.c1_texte": "Each child has their own profile, progress and subscription. From the second child: {prix_sup} FCFA a month.",
+  "parents.c2_titre": "Mobile Money payment, no surprises",
+  "parents.c2_texte": "{prix} FCFA a month, you choose the number of months. Orange Money or MTN MoMo, no bank card and no automatic charges: the total is shown before you pay.",
+  "parents.c3_titre": "You stay in control",
+  "parents.c3_texte": "A parent code reserves payments and managing children. The papers stay free: you can see everything before paying.",
+  "parents.voir_prix": "See pricing",
+  "parents.comment_payer": "How to pay?",
   "accueil.pret_texte":
     "A monthly subscription: {prix} FCFA per month and per child, and you choose how many months up to your exam ({prix_sup} FCFA per month for each additional child in the same family). Pay by Mobile Money, no commitment.",
   "accueil.voir_prix": "See pricing",

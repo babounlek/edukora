@@ -24,6 +24,7 @@ import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { PRIX_MOIS_FCFA, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
+import { SectionParents } from "@/components/SectionParents"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import {
@@ -684,6 +685,9 @@ function CatalogueVitrine() {
           en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
       <SocialProofSection />
+
+      {/* Le parent qui paie : voir SectionParents (audit du 2026-11-12, UX-03). */}
+      <SectionParents />
 
       {/* Dernière section avant le footer (audit UX externe, 2026-09-04) : la page
           démontrait la valeur du produit (démo de corrigé, inédites, preuve sociale)

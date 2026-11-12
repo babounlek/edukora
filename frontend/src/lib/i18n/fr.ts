@@ -179,6 +179,16 @@ export const fr = {
   "choix.autre_langue":
     "Cet examen est dans l'autre langue que l'interface : les listes ne sont pas réduites à lui.",
   "accueil.pret_titre": "Prêt à commencer ?",
+  "parents.titre": "Tu es parent ?",
+  "parents.sous_titre": "Voici ce que ton enfant obtient, comment on paie, et ce que tu gardes sous ton contrôle.",
+  "parents.c1_titre": "Un compte, plusieurs enfants",
+  "parents.c1_texte": "Chaque enfant a son profil, sa progression et son abonnement. À partir du deuxième enfant : {prix_sup} FCFA par mois.",
+  "parents.c2_titre": "Paiement Mobile Money, sans surprise",
+  "parents.c2_texte": "{prix} FCFA par mois, tu choisis le nombre de mois. Orange Money ou MTN MoMo, sans carte bancaire et sans prélèvement automatique : le total est affiché avant de payer.",
+  "parents.c3_titre": "Tu gardes la main",
+  "parents.c3_texte": "Un code parent réserve les paiements et la gestion des enfants. Les sujets restent gratuits : tu peux tout voir avant de payer.",
+  "parents.voir_prix": "Voir les prix",
+  "parents.comment_payer": "Comment payer ?",
   "accueil.pret_texte":
     "Un abonnement au mois : {prix} FCFA par mois et par enfant, tu choisis le nombre de mois jusqu'à ton examen ({prix_sup} FCFA par mois pour chaque enfant supplémentaire de la même famille). Paiement par Mobile Money, sans engagement.",
   "accueil.voir_prix": "Voir les prix",
