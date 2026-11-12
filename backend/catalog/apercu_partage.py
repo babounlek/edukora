@@ -47,7 +47,11 @@ TEXTES = {
         "defaut_titre_page": "Corrigés BEPC, Probatoire et BAC",
         "defaut_titre_image": "Chaque jour, on te dit quoi réviser",
         "defaut_etiquette": "BEPC · Probatoire · BAC",
-        "epreuve_description": "{type} de {matiere}{annee} - sujet en accès libre, corrigé détaillé par abonnement.",
+        # Deux gabarits : une épreuve « vitrine » (Lesson.est_vitrine) a son corrigé en accès libre - la phrase
+        # « corrigé détaillé par abonnement » y était fausse. `{public}` (BEPC, Probatoire C et E...) et le pays
+        # portent les mots que cherche un élève (« épreuve BEPC maths corrigé Cameroun »).
+        "epreuve_description": "{type} de {matiere}{public}{annee} au Cameroun : sujet en accès libre, corrigé détaillé par abonnement.",
+        "epreuve_description_libre": "{type} de {matiere}{public}{annee} au Cameroun : sujet et corrigé détaillé en accès libre, sans abonnement.",
         "cours_description": "Cours de {matiere}{theme} : méthode, exemple résolu, erreurs classiques et exercices d'appropriation.",
         "inedite_description": "{matiere} - épreuve inédite originale conçue par {site}, jamais tirée des annales.",
         "mini_description": "{matiere} - mini-épreuve originale conçue par {site}, jamais tirée des annales : deux exercices et un chrono court.",
@@ -68,7 +72,8 @@ TEXTES = {
         "defaut_titre_page": "GCE, BEPC, Probatoire and BAC corrections",
         "defaut_titre_image": "Know what to revise, every day",
         "defaut_etiquette": "GCE O Level · A Level",
-        "epreuve_description": "{type} - {matiere}{annee} - free access to the paper, detailed correction with a subscription.",
+        "epreuve_description": "{type} - {matiere}{public}{annee}, Cameroon: free access to the paper, detailed correction with a subscription.",
+        "epreuve_description_libre": "{type} - {matiere}{public}{annee}, Cameroon: free access to the paper and its detailed correction, no subscription needed.",
         "cours_description": "{matiere} lesson{theme}: method, worked example, classic mistakes and practice exercises.",
         "inedite_description": "{matiere} - original practice paper written by {site}, never taken from past papers.",
         "mini_description": "{matiere} - original mini paper written by {site}, never taken from past papers: two exercises and a short timer.",
@@ -91,6 +96,15 @@ def _image_url(genre, ident, langue="fr"):
     return f"{settings.FRONTEND_URL}/partage-image/{genre}/{ident}.png{suffixe}"
 
 
+def description_epreuve(lesson, textes, type_affiche, public, annee):
+    """La meta description d'une épreuve (aperçu de partage ET page prérendue pour les moteurs) : elle dit la vérité
+    sur l'accès - le corrigé d'une épreuve vitrine est libre, celui des autres est réservé aux abonnés."""
+    cle = "epreuve_description_libre" if lesson.est_vitrine else "epreuve_description"
+    return textes[cle].format(
+        type=type_affiche, matiere=lesson.subject.label, public=f" {public}" if public else "", annee=annee,
+    )
+
+
 def _infos_epreuve(ident, langue="fr"):
     lesson = (
         Lesson.objects.visibles().par_slug_ou_id(ident)
@@ -104,7 +118,7 @@ def _infos_epreuve(ident, langue="fr"):
     type_affiche = textes["types"].get(lesson.lesson_type) or lesson.get_lesson_type_display()
     return {
         "titre": lesson.title,
-        "description": textes["epreuve_description"].format(type=type_affiche, matiere=lesson.subject.label, annee=annee),
+        "description": description_epreuve(lesson, textes, type_affiche, public, annee),
         "etiquette": f"{type_affiche} · {lesson.subject.label}" + (f" · {lesson.year}" if lesson.year else ""),
         "public": public,
         "chemin": f"epreuves/{lesson.slug}",

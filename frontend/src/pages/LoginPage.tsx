@@ -133,12 +133,15 @@ export function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const navigationState = location.state as { from?: string; intent?: string } | null
+  const navigationState = location.state as { from?: string; intent?: string; recap?: string } | null
   const demandee = navigationState?.from
   // Phrase posée par la page d'origine (Quiz, Fiches...) : arriver ici sans savoir
   // pourquoi on demande de se connecter est la première raison d'abandonner.
   // Facultative - les autres entrées vers /connexion n'en passent pas.
   const intent = navigationState?.intent
+  // Le choix d'abonnement fait juste avant (« BEPC · 3 mois · 6 000 FCFA ») : le parent le retrouve ici au lieu
+  // d'un écran de connexion muet sur ce qu'il vient de décider.
+  const recapChoix = navigationState?.recap
 
   // Après une connexion réussie : direct vers la destination, sauf si le compte a
   // déjà déclaré 2+ enfants, auquel cas "Qui étudie ?" s'intercale une fois (voir
@@ -319,6 +322,9 @@ export function LoginPage() {
                 ? t("login.code_recu_pour", { destination })
                 : t(methode === "phone" ? "login.code_envoye_tel" : "login.code_envoye_email", { destination })}
           </CardDescription>
+          {step === "identifiant" && recapChoix && (
+            <p className="mt-2 rounded-md bg-secondary/60 px-3 py-2 text-sm font-medium">{t("login.recap", { recap: recapChoix })}</p>
+          )}
         </CardHeader>
         <CardContent>
           {/* En premier, et hors du <form> : le bouton est rendu par Google et déclenche

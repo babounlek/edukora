@@ -59,9 +59,12 @@ export function EpreuveDetailPage() {
   useSeo({
     title: epreuve?.title ?? t("ed.seo_corrige"),
     description: epreuve
-      ? t("ed.seo_description", {
+      ? // Même texte que la page prérendue des moteurs (backend/catalog/apercu_partage.description_epreuve) :
+        // le corrigé d'une épreuve vitrine est en accès libre, la phrase « par abonnement » y serait fausse.
+        t(epreuve.est_vitrine ? "ed.seo_description_libre" : "ed.seo_description", {
           type: libelleType(epreuve.lesson_type, epreuve.lesson_type_display),
           matiere: epreuve.subject.label,
+          public: formatCursusGroups(epreuve.cursus).map((g) => ` ${g.label}`).join(","),
           annee: epreuve.year ? ` (${epreuve.year})` : "",
         })
       : undefined,

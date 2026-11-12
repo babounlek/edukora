@@ -8,7 +8,9 @@ leur User-Agent et leur envoie la page ici : le HTML complet de la page - titre,
 hreflang, texte - sans attendre de JavaScript (voir docker/caddy/Caddyfile). Les visiteurs n'y passent jamais.
 
 Règle d'or : on ne sert que ce qu'un visiteur ANONYME voit déjà dans l'application. Un cours : la version libre,
-sans ses exercices d'application (payants). Une épreuve : le sujet, jamais le corrigé. Une épreuve inédite :
+sans ses exercices d'application (payants). Une épreuve : le sujet, jamais le corrigé - sauf une épreuve vitrine
+(Lesson.est_vitrine), dont le corrigé est en accès libre pour un visiteur anonyme : elle sert tout le contenu du
+lecteur. Une épreuve inédite :
 seulement sa fiche (titre, matière, public), jamais l'énoncé. Servir autre chose serait à la fois une fuite de
 contenu payant et un contenu différent de celui des visiteurs (ce que les moteurs sanctionnent).
 
@@ -18,7 +20,8 @@ Une page, une adresse :
 - un contenu français n'a qu'une adresse : sous `/en/...` (lien de partage, bascule de langue) le canonical est
   la forme française et aucun hreflang n'est annoncé - sinon deux pages quasi identiques se disputeraient l'index ;
 - le lecteur de cours est la page canonique d'un cours (la fiche `/cours/x` y redirige les visiteurs) ; le lecteur
-  d'une épreuve exige un compte, c'est donc la fiche `/<pays>/epreuves/x` qui est canonique.
+  d'une épreuve exige un compte, c'est donc la fiche `/<pays>/epreuves/x` qui est canonique - sauf pour une
+  épreuve vitrine, dont le lecteur est ouvert à tous : c'est lui, la page canonique, comme un cours.
 """
 import re
 from html import escape as echapper_texte
@@ -32,7 +35,7 @@ from django.utils.html import escape
 from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
-from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, langue_du_chemin
+from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, description_epreuve, langue_du_chemin
 from .libelles import libelle_cursus
 from .models import Cours, Langue, Lesson, StatutContenu
 from .segments_url import chemin_interne, chemin_public
@@ -114,12 +117,17 @@ def _page_epreuve(ident, langue_page):
     meta = [type_affiche, lesson.subject.label, libelle_cursus(lesson.cursus.all()), str(lesson.year or "")]
     return {
         "titre": lesson.title,
-        "description": textes["epreuve_description"].format(type=type_affiche, matiere=lesson.subject.label, annee=annee),
-        "interne": f"/{code_pays}/epreuves/{lesson.slug}",
+        "description": description_epreuve(
+            lesson, textes, type_affiche, libelle_cursus(lesson.cursus.all()), annee,
+        ),
+        # Une épreuve vitrine (corrigé en accès libre, voir Lesson.est_vitrine) : le lecteur est ouvert à tous, c'est
+        # lui la page canonique (comme un cours) et on y sert le corrigé complet, exactement ce que lit un visiteur
+        # anonyme sur /lire (access.views.read_lesson, has_access). Les autres : la fiche et le sujet seulement.
+        "interne": f"/{code_pays}/epreuves/{lesson.slug}" + ("/lire" if lesson.est_vitrine else ""),
         "bilingue": bilingue,
         "meta": [m for m in meta if m],
-        # Le sujet public (voir access.views.preview_lesson) : tous les énoncés, jamais le corrigé.
-        "corps": lesson.preview_markdown(),
+        # Sinon, le sujet public (voir access.views.preview_lesson) : tous les énoncés, jamais le corrigé.
+        "corps": lesson.content_markdown if lesson.est_vitrine else lesson.preview_markdown(),
         "liens": [("liste_epreuves", f"/{code_pays}/epreuves")],
         "image": f"{settings.FRONTEND_URL}/partage-image/epreuves/{lesson.slug}.png" + ("?lang=en" if langue_page == "en" else ""),
     }

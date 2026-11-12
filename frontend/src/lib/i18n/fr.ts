@@ -661,7 +661,9 @@ export const fr = {
   "ed.retour_fiche": "Retour à la fiche de l'épreuve",
   "ed.seo_corrige": "Corrigé",
   "ed.seo_description":
-    "{type} de {matiere}{annee} - sujet en accès libre, corrigé détaillé par abonnement.",
+    "{type} de {matiere}{public}{annee} au Cameroun : sujet en accès libre, corrigé détaillé par abonnement.",
+  "ed.seo_description_libre":
+    "{type} de {matiere}{public}{annee} au Cameroun : sujet et corrigé détaillé en accès libre, sans abonnement.",
   "ed.introuvable": "Cette épreuve n'existe pas ou n'est plus disponible.",
   "ed.charger_erreur": "Impossible de charger cette épreuve.",
   "ed.contenu_erreur": "Impossible de charger ce contenu.",
@@ -1472,7 +1474,10 @@ export const fr = {
   "tl.fin": "Fin de la liste : retour au thème",
 
   "sb.seo": "Abonnement",
-  "sb.intent": "Connecte-toi pour finaliser ton abonnement.",
+  "sb.intent": "Plus qu'une étape pour finaliser ton abonnement.",
+  "login.recap": "Ton choix : {recap}",
+  "prix.recap_choix_one": "{cursus} · {n} mois · {montant} FCFA",
+  "prix.recap_choix_other": "{cursus} · {n} mois · {montant} FCFA",
   "sb.erreur_numero": "Entre un numéro Mobile Money valide (9 chiffres, commence par 6).",
   "sb.erreur_initie": "Le paiement n'a pas pu être initié.",
   "sb.plan_pour": "{plan} pour {prenom}",

@@ -48,6 +48,10 @@ class PrerenduTests(TestCase):
             title="Maths BAC C 2023", subject=cls.fr, lesson_type=LessonType.CORR, year=2023,
             content_markdown="Énoncé public de l'épreuve.", statut=StatutContenu.VALIDE,
         )
+        cls.vitrine = Lesson.objects.create(
+            title="Maths BEPC 2026", subject=cls.fr, lesson_type=LessonType.CORR, year=2026, est_vitrine=True,
+            content_markdown="Énoncé public. VITRINE-CORRIGE-LIBRE : le corrigé complet.", statut=StatutContenu.VALIDE,
+        )
         cls.aide = ArticleAide.objects.create(
             slug="comment-payer", categorie=CategorieAide.choices[0][0], titre_fr="Comment payer ?",
             resume_fr="Les moyens de paiement.", corps_fr="## Payer\n\nPar mobile money.",
@@ -102,6 +106,33 @@ class PrerenduTests(TestCase):
             self.assertEqual(_canonical(html), attendu, chemin)
             self.assertIn("Énoncé public de l'épreuve.", html)
             self.assertIn("<h1>Maths BAC C 2023</h1>", html)
+
+    def test_epreuve_vitrine_sert_le_corrige_libre_et_le_lecteur_est_canonique(self):
+        # Corrigé en accès libre : un visiteur anonyme le lit sur /lire, les moteurs reçoivent donc la même chose.
+        attendu = f"{self.base}/cm/epreuves/{self.vitrine.slug}/lire"
+        for chemin in (f"cm/epreuves/{self.vitrine.slug}", f"cm/epreuves/{self.vitrine.slug}/lire"):
+            html = self.get(chemin).content.decode()
+            self.assertEqual(_canonical(html), attendu, chemin)
+            self.assertIn("VITRINE-CORRIGE-LIBRE", html, chemin)
+
+    def test_epreuve_payante_ne_sert_pas_le_corrige_et_garde_la_fiche_canonique(self):
+        # Le payant garde sa fiche comme page canonique, et le gabarit « vitrine » ne s'y applique pas.
+        html = self.get(f"cm/epreuves/{self.epreuve.slug}").content.decode()
+        self.assertEqual(_canonical(html), f"{self.base}/cm/epreuves/{self.epreuve.slug}")
+        self.assertNotIn("VITRINE-CORRIGE-LIBRE", html)
+
+    def test_description_d_epreuve_dit_la_verite_sur_l_acces_au_corrige(self):
+        libre = self.get(f"cm/epreuves/{self.vitrine.slug}").content.decode()
+        payant = self.get(f"cm/epreuves/{self.epreuve.slug}").content.decode()
+        description = lambda html: re.search(r'<meta name="description" content="([^"]+)">', html).group(1)
+        # Libre : le corrigé est annoncé en accès libre, jamais « par abonnement ».
+        self.assertIn("corrigé détaillé en accès libre", description(libre))
+        self.assertNotIn("par abonnement", description(libre))
+        # Payant : sujet libre, corrigé par abonnement.
+        self.assertIn("corrigé détaillé par abonnement", description(payant))
+        # Le pays est dans les deux (ce que cherche un élève : « ... Cameroun »).
+        self.assertIn("Cameroun", description(libre))
+        self.assertIn("Cameroun", description(payant))
 
     def test_article_d_aide_non_traduit_une_seule_adresse(self):
         html = self.get("aide/comment-payer").content.decode()

@@ -655,7 +655,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ed.retour_fiche": "Back to the paper's page",
   "ed.seo_corrige": "Solution",
   "ed.seo_description":
-    "{type} - {matiere}{annee}: free-access paper, detailed solution with a subscription.",
+    "{type} - {matiere}{public}{annee}, Cameroon: free-access paper, detailed solution with a subscription.",
+  "ed.seo_description_libre":
+    "{type} - {matiere}{public}{annee}, Cameroon: free-access paper and detailed solution, no subscription needed.",
   "ed.introuvable": "This paper does not exist or is no longer available.",
   "ed.charger_erreur": "Could not load this paper.",
   "ed.contenu_erreur": "Could not load this content.",
@@ -1464,7 +1466,10 @@ export const en: Partial<Record<CleI18n, string>> = {
   "tl.fin": "End of the list: back to the topic",
 
   "sb.seo": "Subscription",
-  "sb.intent": "Log in to complete your subscription.",
+  "sb.intent": "One more step to complete your subscription.",
+  "login.recap": "Your choice: {recap}",
+  "prix.recap_choix_one": "{cursus} · {n} month · {montant} FCFA",
+  "prix.recap_choix_other": "{cursus} · {n} months · {montant} FCFA",
   "sb.erreur_numero": "Enter a valid Mobile Money number (9 digits, starting with 6).",
   "sb.erreur_initie": "The payment could not be started.",
   "sb.plan_pour": "{plan} for {prenom}",

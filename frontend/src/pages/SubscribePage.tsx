@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, User, XCircle, Zap } from "lucide-react"
 
@@ -108,6 +108,7 @@ export function SubscribePage() {
   useSeo({ title: t("sb.seo") })
 
   const [searchParams] = useSearchParams()
+  const recapChoix = (useLocation().state as { recap?: string } | null)?.recap
   const cursusId = searchParams.get("cursus")
   // Garde-fou pour le CTA "Débloquer l'add-on Fiches" (voir FichesPage.tsx) -
   // ADDON_REPETITEUR est un product_type à part entière (pas un booléen sur un Plan
@@ -191,10 +192,12 @@ export function SubscribePage() {
         state: {
           from: `/abonnement?${searchParams.toString()}`,
           intent: t("sb.intent"),
+          // Le choix fait sur /tarifs (« BEPC · 3 mois · 6 000 FCFA »), s'il vient de là : voir PricingPage.
+          recap: recapChoix,
         },
       })
     }
-  }, [isLoading, isAuthenticated, searchParams, navigate])
+  }, [isLoading, isAuthenticated, searchParams, navigate, recapChoix])
 
   useEffect(() => {
     // Le numéro du compte peut être stocké avec l'indicatif : le champ attend les 9 chiffres locaux.

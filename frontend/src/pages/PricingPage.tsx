@@ -447,7 +447,14 @@ export function PricingPage() {
       cursusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
       return
     }
-    navigate(`/abonnement?cursus=${selectedCursus}&mois=${mois}${profilParam ? `&profil=${profilParam}` : ""}`)
+    // `recap` : le choix (cursus, mois, total) accompagne le visiteur jusqu'à la connexion, qui le rappelle -
+    // sinon l'écran de connexion ne dit rien de ce qu'il vient de choisir.
+    const recap = planCursus
+      ? tn("prix.recap_choix", mois, { cursus: cursusLabel(planCursus.cursus), montant: formatAmount(totalChoisi) })
+      : undefined
+    navigate(`/abonnement?cursus=${selectedCursus}&mois=${mois}${profilParam ? `&profil=${profilParam}` : ""}`, {
+      state: { recap },
+    })
   }
 
   function choisirDuree(n: number) {
