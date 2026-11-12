@@ -4,7 +4,8 @@ import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuel
 import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, User, XCircle, Zap } from "lucide-react"
 
 import {
-  checkPaymentStatus, initiatePayment, listCursus, listMyInscriptionsInedites, listPlans, listProfils,
+  checkPaymentStatus, initiatePayment, listCursus, listMyInscriptionsInedites, listMySubscriptions, listPlans,
+  listProfils,
 } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ManualPayment, MobileMoneyOperator, Plan } from "@/api/types"
@@ -19,6 +20,8 @@ import { epreuvesListPath } from "@/lib/countryPath"
 import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
 import { dateLimiteCampagne, nomCampagne } from "@/lib/campagne"
+import { MOIS_PAR_DEFAUT, estAuMois, moisValides, prixTotal } from "@/lib/tarifs"
+import { SelecteurDuree } from "@/components/SelecteurDuree"
 import { Button } from "@/components/ui/button"
 import { CodeRevendeur } from "@/components/CodeRevendeur"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -82,8 +85,9 @@ const MANUAL_METHODS: PaymentMethodOption[] = [
   },
 ]
 
-/** Le nom d'un plan : en français celui du serveur ; ailleurs, la formule unique « Jusqu'à l'Examen » est traduite. */
+/** Le nom d'un plan : « Abonnement au mois » pour la formule vendue ; en français celui du serveur pour le reste ; ailleurs, l'ancienne formule « Jusqu'à l'Examen » est traduite. */
 function nomPlan(plan: Plan): string {
+  if (plan.product_type === "ABONNEMENT" && plan.duration_mode === "MENSUEL") return t("sb.formule_mois")
   if (langueCourante() !== "fr" && plan.product_type === "ABONNEMENT" && plan.duration_mode === "JUSQUA_EXAMEN") return t("prix.formule")
   return plan.name
 }
@@ -121,6 +125,9 @@ export function SubscribePage() {
   // formulaire présélectionné sur une autre formule - le choix venait d'être fait, la
   // page suivante le perdait.
   const dureeParam = searchParams.get("duree")
+  // Durée déjà choisie sur la page Tarifs (`?mois=5`) : le choix arrive ici présélectionné, jamais perdu.
+  // `duree=examen` (anciens liens) vaut « tous les mois qui restent ».
+  const moisParam = Number(searchParams.get("mois"))
   // Le contenu verrouillé qui a motivé l'achat (une épreuve inédite) : on y ramène l'élève
   // une fois abonné, au lieu de le laisser sur un diagnostic sans rapport. Voir retourAchat.ts.
   const retour = cheminRetourSur(searchParams.get("retour"))
@@ -146,6 +153,10 @@ export function SubscribePage() {
   // Incrémenté par « Réessayer » pour relancer l'effet de chargement des offres.
   const [tentativePlans, setTentativePlans] = useState(0)
   const [selectedPlanId, setSelectedPlanId] = useState<number | null>(null)
+  // La fin de l'accès en cours de cet enfant sur ce cursus (un renouvellement) : les nouveaux mois s'y ajoutent.
+  const [accesActuelJusqua, setAccesActuelJusqua] = useState<Date | null>(null)
+  // Le nombre de mois que l'élève a choisi lui-même (null : il n'a encore rien touché, voir `mois` plus bas).
+  const [moisChoisi, setMoisChoisi] = useState<number | null>(null)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CAMPAY")
   // Replié par défaut - voir la note sur CAMPAY_METHOD/MANUAL_METHODS ci-dessus.
@@ -240,7 +251,9 @@ export function SubscribePage() {
               : p.duration_mode === "FIXE" && p.duration_days === Number(dureeParam),
           )
         : undefined
-      const populaire = eligiblePlans.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
+      const populaire =
+        eligiblePlans.find((p) => p.duration_mode === "MENSUEL") ??
+        eligiblePlans.find((p) => p.duration_mode === "JUSQUA_EXAMEN")
       setSelectedPlanId((demande ?? populaire ?? eligiblePlans[0])?.id ?? null)
       setPlansPrets(true)
     }).catch(() => {
@@ -261,6 +274,24 @@ export function SubscribePage() {
       annule = true
     }
   }, [cursusId, requireRepetiteur, dureeParam, profilId, tentativePlans])
+
+  // Seulement un confort d'affichage (la date de fin annoncée) : sans réponse, on part d'aujourd'hui.
+  useEffect(() => {
+    if (!isAuthenticated || !cursusId) return
+    let annule = false
+    listMySubscriptions()
+      .then((abonnements) => {
+        if (annule) return
+        const courant = abonnements.find(
+          (a) => a.is_active && a.cursus.id === Number(cursusId) && (profilId === undefined || a.profil.id === profilId),
+        )
+        setAccesActuelJusqua(courant ? new Date(courant.expires_at) : null)
+      })
+      .catch(() => {})
+    return () => {
+      annule = true
+    }
+  }, [isAuthenticated, cursusId, profilId])
 
   function reessayerPlans() {
     setPlansErreur(false)
@@ -337,10 +368,10 @@ export function SubscribePage() {
     }
 
     setPhase("pending")
-    const properties = { cursus_id: cursusId ? Number(cursusId) : undefined, plan_id: selectedPlanId }
+    const properties = { cursus_id: cursusId ? Number(cursusId) : undefined, plan_id: selectedPlanId, mois }
     trackEvent("payment_initiated", properties)
     try {
-      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber, profilId })
+      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber, profilId, mois })
       if (response.status === "FAILED") {
         setPhase("failed")
         trackEvent("payment_failed", properties)
@@ -372,14 +403,22 @@ export function SubscribePage() {
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId) ?? null
 
+  // Le nombre de mois à payer : le choix de l'élève, sinon celui de la page Tarifs, sinon un trimestre - toujours
+  // ramené à ce que le plan autorise (1 à mois_max : au-delà, l'examen serait déjà passé). Dérivé plutôt que stocké :
+  // il suit le plan sélectionné et ne peut jamais sortir de la plage.
+  const moisSouhaite =
+    moisChoisi ?? (dureeParam === "examen" ? Number.POSITIVE_INFINITY : moisParam > 0 ? moisParam : MOIS_PAR_DEFAUT)
+  const mois = selectedPlan ? moisValides(selectedPlan, moisSouhaite) : 1
+  const totalSelection = selectedPlan ? prixTotal(selectedPlan, mois) : 0
+
   // Remise appliquée automatiquement côté serveur (voir payments.views.initiate_payment)
   // pour un paiement Campay uniquement - recalculée ici à l'identique (min(prix, solde))
   // seulement pour l'affichage, jamais pour fixer un montant. Le paiement manuel
   // (ManualPaymentPanel) ne consomme pas ce crédit - voir sa portée volontairement
   // limitée côté backend - donc jamais montré comme réduisant son montant à déclarer.
   const creditDisponible = user?.credit_parrainage_disponible ?? 0
-  const creditAppliqueSelection = selectedPlan ? Math.min(selectedPlan.effective_price, creditDisponible) : 0
-  const netAPayerSelection = (selectedPlan?.effective_price ?? 0) - creditAppliqueSelection
+  const creditAppliqueSelection = Math.min(totalSelection, creditDisponible)
+  const netAPayerSelection = totalSelection - creditAppliqueSelection
 
   // Plan B proposé directement depuis l'écran d'échec / de délai dépassé : retour au
   // formulaire avec le paiement manuel déjà déplié, plutôt que de laisser l'élève
@@ -394,7 +433,31 @@ export function SubscribePage() {
   // Une seule offre à choisir : un bouton radio à valider ne servirait à rien, on montre
   // un récapitulatif (pour qui, quoi, combien) plutôt qu'un choix. Le choix par radio
   // reste pour plusieurs offres (ex. l'add-on Fiches).
+  // Le choix de la durée (abonnement au mois) : voir SelecteurDuree, partagé avec la page Tarifs.
+  function renderSelecteurDuree(plan: Plan) {
+    function choisir(n: number) {
+      if (n === mois) return
+      setMoisChoisi(n)
+      trackEvent("tarifs_duree_choisie", { mois: n, mois_max: plan.mois_max, cursus_id: cursusId ? Number(cursusId) : undefined })
+    }
+    return (
+      <div key={plan.id} className="flex flex-col gap-4">
+        <div>
+          <p className="font-display font-medium">
+            {profilPrenom ? t("sb.plan_pour", { plan: nomPlan(plan), prenom: profilPrenom }) : nomPlan(plan)}
+          </p>
+          <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
+            <Sparkles className="size-3" aria-hidden />
+            {t("sb.tout_inclus")}
+          </span>
+        </div>
+        <SelecteurDuree plan={plan} mois={mois} onChoisir={choisir} accesActuelJusqua={accesActuelJusqua} />
+      </div>
+    )
+  }
+
   function renderPlanRecap(plan: Plan) {
+    if (estAuMois(plan)) return renderSelecteurDuree(plan)
     return (
       <div key={plan.id} className="flex items-center justify-between gap-3 rounded-xl border-2 border-primary bg-accent px-4 py-3.5 text-sm ring-1 ring-primary">
         <span className="flex flex-col gap-1">
@@ -552,6 +615,7 @@ export function SubscribePage() {
               ) : (
                 <div className="flex flex-col gap-2">
                   {plans.length === 1 ? renderPlanRecap(plans[0]) : plans.map(renderPlanOption)}
+                  {plans.length > 1 && selectedPlan && estAuMois(selectedPlan) && renderSelecteurDuree(selectedPlan)}
                   {plans.length === 0 && (
                     <p className="text-sm text-muted-foreground">
                       {requireRepetiteur
@@ -712,7 +776,7 @@ export function SubscribePage() {
 
                         {selectedPlan && creditAppliqueSelection > 0 && (
                           <p className="text-xs text-muted-foreground">
-                            {t("sb.credit_ligne", { prix: formatAmount(selectedPlan.effective_price), credit: formatAmount(creditAppliqueSelection) })}
+                            {t("sb.credit_ligne", { prix: formatAmount(totalSelection), credit: formatAmount(creditAppliqueSelection) })}
                           </p>
                         )}
                         <Button type="submit" disabled={!selectedPlan} size="lg" className="w-full">
@@ -728,6 +792,8 @@ export function SubscribePage() {
                       selectedPlan && (
                         <ManualPaymentPanel
                           plan={selectedPlan}
+                          mois={mois}
+                          montant={totalSelection}
                           operator={methode}
                           profilId={profilId}
                           defaultPayerPhone={phoneNumber}
@@ -740,6 +806,7 @@ export function SubscribePage() {
                             trackEvent("payment_initiated", {
                               cursus_id: cursusId ? Number(cursusId) : undefined,
                               plan_id: selectedPlan.id,
+                              mois,
                               operator: methode,
                             })
                           }}

@@ -49,6 +49,10 @@ export type AnalyticsEventName =
   | "aide_article_vu"
   | "aide_article_utile"
   | "aide_contact_clic"
+  // Tarification au mois : le bouton cliqué sur /tarifs (source : bouton, barre, lien) et la durée gardée dans le tunnel.
+  // Le nombre de mois et la source seulement, jamais de texte - voir analytics.models.
+  | "tarifs_bouton_clic"
+  | "tarifs_duree_choisie"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

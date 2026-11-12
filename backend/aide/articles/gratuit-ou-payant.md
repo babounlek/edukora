@@ -20,7 +20,7 @@ mots_cles: gratuit, payant, abonnement, sans payer, essai, free, prix, cours gra
 - Le **quiz qui cible tes révisions** et ta **séance du jour** complète.
 - Les **épreuves inédites**.
 
-Le détail, les offres du moment et le prix sont sur la page [Tarifs](/tarifs). Le paiement est **unique**, sans renouvellement automatique : voir [Comment payer](/aide/comment-payer).
+Le détail, les offres du moment et le prix sont sur la page [Tarifs](/tarifs). Le prix est **par mois** (tu choisis le nombre de mois), sans renouvellement automatique : voir [Comment payer](/aide/comment-payer).
 
 ## Un contenu est grisé ?
 

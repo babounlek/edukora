@@ -180,14 +180,15 @@ export const fr = {
     "Cet examen est dans l'autre langue que l'interface : les listes ne sont pas réduites à lui.",
   "accueil.pret_titre": "Prêt à commencer ?",
   "accueil.pret_texte":
-    "Un seul abonnement, valable jusqu'à ton examen : {prix} FCFA par enfant, puis {prix_sup} FCFA pour chaque enfant supplémentaire de la même famille. Paiement par Mobile Money, sans engagement.",
+    "Un abonnement au mois : {prix} FCFA par mois et par enfant, tu choisis le nombre de mois jusqu'à ton examen ({prix_sup} FCFA par mois pour chaque enfant supplémentaire de la même famille). Paiement par Mobile Money, sans engagement.",
   "accueil.voir_prix": "Voir les prix",
   "camp.etiquette": "−{pct} %",
   "camp.fin_titre": "{nom} : −{pct} %",
   "camp.fin_jusqu_au": "jusqu'au {date}",
   "camp.fin_voir": "Voir l'offre",
   "camp.bandeau_titre": "{nom} : −{pct} % sur l'abonnement",
-  "camp.bandeau_prix": "Prix promotionnel : {prix} FCFA au lieu de {ref} FCFA, jusqu'au {date}.",
+  "camp.bandeau_prix":
+    "Prix promotionnel : {prix} FCFA par mois au lieu de {ref} FCFA, jusqu'au {date}.",
   "camp.jours_restants_one": "Plus que {n} jour",
   "camp.jours_restants_other": "Plus que {n} jours",
   "camp.dernier_jour": "Dernier jour",
@@ -257,12 +258,12 @@ export const fr = {
   "delai.heures_other": "{n} heures",
 
   "prix.seo_description":
-    "Abonnement {site} par Mobile Money, jusqu'à ton examen, pour accéder à tous les corrigés et cours de ton cursus.",
+    "Abonnement {site} au mois par Mobile Money : tu choisis le nombre de mois, pour accéder à tous les corrigés et cours de ton cursus.",
   "prix.serie": "Série {code}",
   "prix.famille_intro":
-    "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille (20 % de réduction)",
+    "Plusieurs enfants ? {prix} FCFA par mois pour chaque enfant supplémentaire de la même famille (20 % de réduction)",
   "prix.famille_intro_campagne":
-    "Plusieurs enfants ? {prix} FCFA pour chaque enfant supplémentaire de la même famille",
+    "Plusieurs enfants ? {prix} FCFA par mois pour chaque enfant supplémentaire de la même famille",
   "prix.famille_note_campagne": "Prix promotionnel : la réduction famille et {nom} se cumulent.",
   "prix.enfants_one": "{n} enfant",
   "prix.enfants_other": "{n} enfants",
@@ -271,13 +272,15 @@ export const fr = {
     "Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.",
   "prix.exclusif_themes":
     "Tu sauras ce que tu dois réviser en priorité : « les thèmes qui reviennent le plus », le classement des notions les plus posées à ton examen, calculé sur les vraies annales.",
-  "prix.titre_debut": "Un seul prix,",
-  "prix.titre_accent": "jusqu'à ton examen",
+  "prix.titre_debut":
+    "Un prix simple :",
+  "prix.titre_accent":
+    "{prix} FCFA par mois",
   "prix.pour_enfant": "Abonnement de {prenom}",
   "prix.pour_enfant_texte": "Choisis son examen, puis paie : l'accès s'ouvrira sur le profil de {prenom}.",
   "prix.pour_enfant_autre": "Ce n'est pas le bon enfant ? Mes accès",
   "prix.sous_titre":
-    "{prix} FCFA par enfant, puis {prix_sup} FCFA pour chaque enfant supplémentaire de la même famille.",
+    "Tu choisis le nombre de mois, de 1 mois jusqu'à ton examen. Enfant supplémentaire de la même famille : {prix_sup} FCFA par mois.",
   "prix.puce_aucun_prelevement": "Aucun prélèvement automatique",
   "prix.puce_acces_immediat": "Accès activé dès le paiement",
   "prix.puce_acces_verifie": "Activé après vérification (≈ {delai})",
@@ -317,15 +320,42 @@ export const fr = {
   "comparatif.maj_detail": "De nouvelles épreuves et de nouveaux cours sont ajoutés pendant l'année.",
   "comparatif.note": "Comparaison avec un fascicule de corrigés « type » : un document figé, acheté une fois. Chaque fascicule est différent ; vérifie ce que contient celui que tu compares.",
   "prix.objet_tarifs": "les tarifs",
-  "prix.formule": "Jusqu'à l'Examen",
-  "prix.formule_texte": "Toute l'année scolaire, jusqu'au jour de l'examen",
-  "prix.par_enfant": "par enfant, jusqu'à l'examen",
+  "prix.formule":
+    "Abonnement au mois",
+  "prix.formule_texte":
+    "Tu paies seulement les mois que tu choisis, jusqu'à ton examen",
+  "prix.par_enfant":
+    "par mois et par enfant",
+  "prix.par_mois_court":
+    "par mois",
+  "prix.duree_apres_cursus":
+    "Choisis ton cursus : tu verras combien de mois tu peux prendre, et le total à payer.",
+  "prix.continuer":
+    "Continuer",
+  "prix.continuer_mois_one":
+    "Continuer · {n} mois · {montant} FCFA",
+  "prix.continuer_mois_other":
+    "Continuer · {n} mois · {montant} FCFA",
+  "prix.sous_barre_mois_one":
+    "pour {n} mois",
+  "prix.sous_barre_mois_other":
+    "pour {n} mois",
+  "prix.faq5_q":
+    "Que se passe-t-il à la fin de mes mois ?",
+  "prix.faq5_r":
+    "Ton accès s'arrête à la date affichée avant le paiement. Rien n'est renouvelé automatiquement : tu prolonges quand tu veux, et les nouveaux mois s'ajoutent à la suite de ceux en cours.",
+  "prix.faq6_q":
+    "Puis-je prendre plus de mois que ce qu'il reste avant l'examen ?",
+  "prix.faq6_r":
+    "Non. Le maximum correspond à la fin de ton examen : tu ne paies jamais des mois qui tombent après. L'option la plus longue s'appelle « Jusqu'à l'examen ».",
   "prix.compte_a_rebours": "accès pendant {n} jours, jusqu'à la fin du {examen} (le {date})",
   "prix.sabonner": "S'abonner",
   "prix.avant_connexion": "Tu te connectes d'abord (e-mail, téléphone ou Google), puis tu vois le numéro Mobile Money où envoyer ton paiement.",
   "prix.etapes_titre": "Comment ça se passe",
-  "prix.etape1": "Tu te connectes et tu choisis ton offre.",
-  "prix.etape2": "Tu paies une seule fois par Mobile Money (MTN ou Orange).",
+  "prix.etape1":
+    "Tu te connectes et tu choisis ton nombre de mois.",
+  "prix.etape2":
+    "Tu paies en une fois, par Mobile Money (MTN ou Orange).",
   "prix.etape3_immediat": "Ton accès s'active dès le paiement.",
   "prix.etape3_verifie": "Notre équipe vérifie ton transfert, généralement sous {delai}, puis ton accès s'active.",
   "prix.contact_paiement": "Un souci de paiement ou d'activation ? Écris-nous sur WhatsApp :",
@@ -342,9 +372,10 @@ export const fr = {
   "prix.faq2_q": "Est-ce que je serai prélevé une deuxième fois ?",
   "prix.faq2_r":
     "Non. Chaque paiement est unique et volontaire - aucune carte enregistrée, aucun renouvellement automatique. Rien ne se redéclenche sans que tu repasses toi-même par Mobile Money.",
-  "prix.faq3_q": "Le prix change-t-il selon la date d'achat ?",
+  "prix.faq3_q":
+    "Combien je paie exactement ?",
   "prix.faq3_r":
-    "Non, le prix de référence ne dépend pas de la date : {prix} FCFA par enfant, accès jusqu'à ton examen. Pour chaque enfant supplémentaire de la même famille, c'est {prix_sup} FCFA. Pendant une offre (comme celle de la rentrée), le prix réduit s'affiche en haut de la page, avec sa date de fin : c'est celui que tu paies.",
+    "{prix} FCFA par mois et par enfant, pour le nombre de mois que tu choisis : 3 mois, c'est {prix3} FCFA. Le dernier mois que tu peux choisir couvre la fin de ton examen. Chaque enfant supplémentaire de la même famille paie {prix_sup} FCFA par mois. Pendant une offre (comme celle de la rentrée), le prix réduit s'affiche en haut de la page, avec sa date de fin : c'est celui que tu paies.",
   "prix.faq4_q_campay": "Et si le paiement Mobile Money échoue ?",
   "prix.faq4_q_manuel": "Quand mon accès est-il activé ?",
   "prix.faq4_r_campay":
@@ -712,10 +743,12 @@ export const fr = {
   "ar.titre_cours": "Ce cours est réservé aux abonnés",
   "ar.titre_corrige": "Ce corrigé est réservé aux abonnés",
   "ar.texte":
-    "Un seul abonnement, valable jusqu'à ton examen, et tout s'ouvre : tu peux commencer à lire dès la confirmation du paiement.",
+    "Un abonnement au mois, et tout s'ouvre : tu peux commencer à lire dès la confirmation du paiement.",
   "ar.formules": "Voir les formules",
-  "ar.prix_promo": "Prix promotionnel : {prix} FCFA, une seule fois, jusqu'à l'examen · Mobile Money",
-  "ar.prix": "{prix} FCFA, une seule fois, jusqu'à l'examen · Mobile Money",
+  "ar.prix_promo":
+    "Prix promotionnel : {prix} FCFA par mois, tu choisis le nombre de mois · Mobile Money",
+  "ar.prix":
+    "{prix} FCFA par mois, tu choisis le nombre de mois · Mobile Money",
   "ar.sujet_libre": "Voir le sujet en libre accès",
   // --- « Montrer à mes parents » : le message envoyé depuis un mur payant (voir lib/messageParents) ---
   "parents.bouton": "Montrer à mes parents",
@@ -724,9 +757,11 @@ export const fr = {
   "parents.intro_examen": "Bonjour, je prépare le {examen} avec {site}.",
   "parents.besoin": "Pour voir les corrigés complets et faire les exercices, il faut l'abonnement.",
   "parents.besoin_contenu": "Pour {contenu}, il faut l'abonnement.",
-  "parents.donne": "Il donne accès aux corrigés détaillés, aux exercices d'application, aux quiz et aux épreuves inédites, jusqu'à l'examen.",
-  "parents.prix": "Prix : {prix} FCFA, payés une seule fois.",
-  "parents.prix_promo": "Prix : {prix} FCFA, payés une seule fois (au lieu de {ref} FCFA jusqu'au {date}).",
+  "parents.donne": "Il donne accès aux corrigés détaillés, aux exercices d'application, aux quiz et aux épreuves inédites, pendant les mois que tu choisis.",
+  "parents.prix":
+    "Prix : {prix} FCFA par mois, le nombre de mois est au choix.",
+  "parents.prix_promo":
+    "Prix : {prix} FCFA par mois (au lieu de {ref} FCFA jusqu'au {date}), le nombre de mois est au choix.",
   "parents.paiement": "Paiement par Mobile Money (MTN ou Orange), sans prélèvement automatique.",
   "parents.contact": "Une question ? WhatsApp {tel}.",
   "parents.fin": "Tous les détails ici :",
@@ -742,6 +777,7 @@ export const fr = {
   "ine.traitees": "{n} sur {total} traitées : ta copie t'attend.",
   "ine.ce_cursus": "ce cursus",
   "ine.validite_unique": "paiement unique, valable jusqu'à ton examen",
+  "ine.validite_mois": "par mois, tu choisis le nombre de mois",
   "ine.validite_jours": "valable {n} jours",
   "ine.rendue_une": "Déjà rendue une fois",
   "ine.rendue_n": "Déjà rendue {n} fois",
@@ -773,7 +809,7 @@ export const fr = {
   "ine.inclus1_n": "Les {n} épreuves inédites de ce cursus, chronométrées, avec grille de notation et rapport de fin",
   "ine.inclus1": "Les épreuves inédites de ce cursus, chronométrées, avec grille de notation et rapport de fin",
   "ine.inclus2": "Tous les corrigés d'annales et les cours de méthode",
-  "ine.inclus3": "La séance du jour et les quiz, jusqu'à ton examen",
+  "ine.inclus3": "La séance du jour et les quiz, pendant toute la durée de ton abonnement",
   "ine.deja_abonne": "Déjà abonné ?",
   "ine.reste_inedit": "Le reste de l'épreuve reste inédit jusqu'à ce que tu la commences.",
   "ine.dialogue_titre": "Recommencer à zéro ?",
@@ -1380,7 +1416,7 @@ export const fr = {
   "te.verrou_tous": "Les {n} corrigés de ce thème t'attendent",
   "te.verrou_n_one": "{n} corrigé sur {total} réservé aux abonnés",
   "te.verrou_n_other": "{n} corrigés sur {total} réservés aux abonnés",
-  "te.verrou_texte": "Débloque-les tous avec Jusqu'à l'Examen, et suis ta progression exercice par exercice.",
+  "te.verrou_texte": "Débloque-les tous avec l'abonnement, et suis ta progression exercice par exercice.",
   "te.les_exercices": "Les exercices",
   "te.filtre_origine": "Filtrer par origine",
   "te.officiels": "Sujets officiels",
@@ -1420,7 +1456,7 @@ export const fr = {
   "tl.cherche": "Cherche chaque question sur ton brouillon, puis dévoile sa correction.",
   "tl.corrige_attend": "Le corrigé détaillé de chaque question t'attend",
   "tl.corrige_inclus":
-    "Rappels de méthode, pièges à éviter et correction pas à pas : tout est inclus dans Jusqu'à l'Examen.",
+    "Rappels de méthode, pièges à éviter et correction pas à pas : tout est inclus dans l'abonnement.",
   "tl.voir_correction": "Voir la correction",
   "tl.voir_correction_q": "Voir la correction de la question {n}",
   "tl.sur_ton_theme": "Sur ton thème",
@@ -1439,13 +1475,33 @@ export const fr = {
   "sb.acces_jusqua_one": "Accès jusqu'à la fin de son examen - {n} jour",
   "sb.acces_jusqua_other": "Accès jusqu'à la fin de son examen - {n} jours",
   "sb.prix_enfant": "Prix enfant supplémentaire (−20 %) : {a} → {b} FCFA",
+  "sb.formule_mois": "Abonnement au mois",
+  "sb.tout_inclus": "Tout est inclus : corrigés, cours, quiz et épreuves inédites",
+  "sb.duree_titre": "Pour combien de mois ?",
+  "sb.unite_mois_one": "mois",
+  "sb.unite_mois_other": "mois",
+  "sb.jusqua_examen_one": "Jusqu'à l'examen ({n} mois)",
+  "sb.jusqua_examen_other": "Jusqu'à l'examen ({n} mois)",
+  "sb.un_seul_mois": "Il te reste un mois avant la fin de ton examen : 1 mois d'accès.",
+  "sb.total": "Total à payer",
+  "sb.au_lieu_de": "au lieu de {prix} FCFA",
+  "sb.total_calcul_one": "{n} mois × {prix} FCFA par mois",
+  "sb.total_calcul_other": "{n} mois × {prix} FCFA par mois",
+  "sb.acces_jusqu_au": "Accès jusqu'au {date}",
+  "sb.acces_prolonge_jusqu_au": "Ton accès actuel est prolongé jusqu'au {date}",
+  "sb.couvre_examen": "Tu couvres tout le temps qui reste avant la fin de ton examen.",
+  "sb.prix_mois_enfant": "Enfant supplémentaire (−20 %) : {a} → {b} FCFA par mois",
+  "sb.camp_ligne_mois": "{nom} (−{pct} %) : {a} → {b} FCFA par mois, jusqu'au {date}",
+  "sb.sans_renouvellement": "Un seul paiement, rien à renouveler : à la fin, c'est toi qui décides de prolonger.",
+  "mp.duree_one": "{n} mois d'accès",
+  "mp.duree_other": "{n} mois d'accès",
   "sb.paiement_pour": "Tu paies pour : {prenom}",
   "pm.pour_enfant": "Pour {prenom}",
   "sb.abonnement_pour": "Abonnement pour {prenom}",
   "sb.sous_titre_fiches":
     "Seul l'add-on Fiches (répétiteurs) pour ce cursus est proposé ici - il ne débloque pas les corrigés classiques.",
   "sb.sous_titre":
-    "Corrigés, cours, quiz et épreuves inédites - un seul abonnement, valable jusqu'à ton examen.",
+    "Corrigés, cours, quiz et épreuves inédites - tu choisis le nombre de mois.",
   "sb.ton_offre": "Ton offre",
   "sb.chargement_offre": "Chargement de l'offre",
   "sb.objet_offre": "l'offre",
@@ -1724,7 +1780,7 @@ export const fr = {
   "qd.vise_texte": "Les thèmes les plus fréquents en {matiere}, sur {n} sessions officielles.",
   "qd.tout_classement": "Tout le classement",
   "qd.themes_classes": "+{n} thèmes classés",
-  "qd.avec_abonnement": "Avec l'abonnement Jusqu'à l'Examen",
+  "qd.avec_abonnement": "Avec l'abonnement",
   "qd.debloquer": "Débloquer",
   "qd.onglet_themes": "Thèmes",
   "qd.onglet_quiz": "Quiz",
@@ -1961,13 +2017,13 @@ export const fr = {
   "tf.present_milieu": " sessions sur ",
   "tf.present_apres": "",
   "tf.n3_suivants": "N°3 et suivants",
-  "tf.reserve_abo": "Réservés à l'abonnement Jusqu'à l'Examen",
+  "tf.reserve_abo": "Réservés aux abonnés",
   "tf.debloquer": "Débloquer",
   "tf.encore_one": "Encore {n} thème classé",
   "tf.encore_other": "Encore {n} thèmes classés",
   "tf.encore_matiere_one": "Encore {n} thème classé en {matiere}",
   "tf.encore_matiere_other": "Encore {n} thèmes classés en {matiere}",
-  "tf.suite_texte": "Le classement complet, avec les exercices corrigés et les quiz de chaque thème, est inclus dans l'abonnement Jusqu'à l'Examen.",
+  "tf.suite_texte": "Le classement complet, avec les exercices corrigés et les quiz de chaque thème, est inclus dans l'abonnement.",
   "tf.debloquer_complet": "Débloquer le classement complet",
   "tf.methode_officielles_titre": "Épreuves officielles uniquement",
   "tf.methode_officielles_texte": "Les examens blancs et les sujets d'établissement ne comptent pas.",
@@ -2089,7 +2145,7 @@ export const fr = {
   "cgu.titre": "Conditions générales d'utilisation et de vente",
   "cgu.description": "Fonctionnement de l'abonnement {site}, prix, paiement, remboursement et propriété intellectuelle.",
   "cgu.intro": "Comment fonctionne {site} : comptes et profils, abonnement, prix, paiement et résiliation.",
-  "cgu.chip1": "Un seul prix, jusqu'à l'examen",
+  "cgu.chip1": "Un prix par mois, sans surprise",
   "cgu.chip2": "Pas de reconduction automatique",
   "cgu.chip3": "Paiement Mobile Money",
   "cgu.voir_aussi": "Politique de confidentialité",
@@ -2106,9 +2162,12 @@ export const fr = {
   "cgu.contenu_titre": "Contenu gratuit et contenu payant",
   "cgu.contenu": "Une sélection de contenus est en libre accès, sans abonnement : certains sujets et corrigés présentés en vitrine, ainsi que le PDF de l'énoncé d'un sujet, que tu peux partager librement. Le reste - corrigés détaillés, exercices d'application des cours, quiz, parcours, épreuves inédites et séance du jour - est réservé aux abonnés actifs sur l'examen concerné. Tous les cours sont en libre accès ; seuls leurs exercices d'application corrigés sont réservés.",
   "cgu.abo_titre": "Abonnement et prix",
-  "cgu.abo1": "Il n'existe qu'une seule formule, **Jusqu'à l'examen** : l'accès est valable pour un enfant et un examen donnés, de la date du paiement jusqu'à la fin de la session d'examen visée. Les épreuves inédites y sont incluses.",
-  "cgu.abo_prix1": "**15 000 FCFA** par enfant (prix de référence, identique quelle que soit la date d'achat dans l'année scolaire). Une offre promotionnelle affichée sur le site peut le réduire pour une durée limitée.",
-  "cgu.abo_prix2": "**12 000 FCFA** pour chaque enfant supplémentaire de la même famille (réduction fixe de 20 % sur le prix de référence, identique pour le 2^e^, le 3^e^, le 4^e^ enfant, et ainsi de suite). Exemple : 2 enfants, 27 000 FCFA ; 3 enfants, 39 000 FCFA.",
+  "cgu.abo1":
+    "Une seule formule est vendue : **l'abonnement au mois**. L'accès est valable pour un enfant et un examen donnés, pour le nombre de mois choisi à l'achat (de 1 mois jusqu'à la fin de la session d'examen visée ; un mois = 30 jours). Les épreuves inédites y sont incluses. Les abonnements « Jusqu'à l'examen » achetés avant le 11 novembre 2026 restent valables jusqu'à leur date de fin prévue.",
+  "cgu.abo_prix1":
+    "**2 000 FCFA** par mois et par enfant (prix de référence). Le total, égal au prix du mois multiplié par le nombre de mois choisi, est affiché avant le paiement. Une offre promotionnelle affichée sur le site peut réduire le prix du mois pour une durée limitée.",
+  "cgu.abo_prix2":
+    "**1 600 FCFA** par mois pour chaque enfant supplémentaire de la même famille (réduction fixe de 20 % sur le prix de référence, identique pour le 2^e^, le 3^e^, le 4^e^ enfant, et ainsi de suite). Exemple : 2 enfants pendant 3 mois, 10 800 FCFA (6 000 + 4 800).",
   "cgu.abo3": "L'abonnement n'est **pas reconduit automatiquement** : à son terme, l'accès réservé aux abonnés est retiré jusqu'à un nouveau paiement. Aucun prélèvement n'est effectué sans ta demande.",
   "cgu.paiement_titre": "Paiement et remboursement",
   "cgu.paiement1": "Le paiement se fait par Mobile Money (MTN MoMo, Orange Money). Deux modes sont proposés : le paiement automatique via notre prestataire CamPay, qui active l'accès en quelques secondes, ou le paiement manuel - tu transfères toi-même le montant au numéro indiqué puis tu déclares ta transaction, que notre équipe vérifie, généralement sous {delai}, avant d'activer l'accès. Tu suis l'état de tes déclarations dans « Mes paiements ».",
@@ -2199,7 +2258,7 @@ export const fr = {
   "ab.aud1_p4": "Accessible depuis un téléphone simple, aucune carte bancaire à saisir.",
   "ab.aud2_titre": "Parent",
   "ab.aud2_p1": "**Un seul compte pour plusieurs enfants** : chacun a son profil, sa progression et son abonnement.",
-  "ab.aud2_p2": "Un abonnement unique, valable jusqu'à l'examen, dont le prix payé est figé le jour de l'achat.",
+  "ab.aud2_p2": "Un abonnement au mois : tu choisis le nombre de mois, et le total est affiché avant le paiement.",
   "ab.aud2_p3": "Paiement direct par Mobile Money (Orange Money, MTN), sans carte bancaire et sans reconduction automatique.",
   "ab.aud2_p4": "Un éditeur identifié et joignable, et aucune donnée revendue ni utilisée à des fins publicitaires.",
   "ab.aud3_titre": "Établissement & autorité éducative",
@@ -2785,7 +2844,7 @@ export const fr = {
   "rev.guide_intro": "Le compte reste celui du parent, sur son téléphone. Vous l'accompagnez, vous ne le remplacez pas.",
   "rev.guide_1": "Le parent s'inscrit lui-même sur son téléphone, avec votre code ou votre lien. Ne gardez jamais son code SMS ni son mot de passe.",
   "rev.guide_2": "Ajoutez l'enfant avec lui : prénom, examen préparé, bon cursus et bonne série.",
-  "rev.guide_3": "Sur la page d'abonnement, choisissez la formule « Jusqu'à l'examen » du bon enfant.",
+  "rev.guide_3": "Sur la page d'abonnement, choisissez le nombre de mois du bon enfant.",
   "rev.guide_4": "Si vous payez à la place du parent, faites-vous remettre la somme avant d'envoyer l'argent : vous l'avancez à vos risques. Envoyez le montant exact au numéro indiqué, depuis votre numéro Mobile Money.",
   "rev.guide_5": "Le parent déclare ensuite le paiement, coche « mon revendeur a envoyé cet argent pour moi », saisit votre numéro et la référence de la transaction.",
   "rev.guide_6": "L'équipe vérifie le paiement, puis l'accès s'active et le parent reçoit un SMS. Votre commission apparaît ici dans la foulée.",

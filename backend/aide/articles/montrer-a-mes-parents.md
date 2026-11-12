@@ -14,8 +14,8 @@ Il prépare un **message tout prêt** pour WhatsApp : ce que l'abonnement ouvre,
 
 ## Ce que ton parent doit savoir
 
-- Le paiement se fait par **Mobile Money** (MTN ou Orange), **une seule fois**, sans prélèvement automatique.
-- L'accès dure **jusqu'à l'examen**.
+- Le paiement se fait par **Mobile Money** (MTN ou Orange), en une fois, sans prélèvement automatique.
+- Le prix est **par mois** : on choisit le nombre de mois, de 1 mois jusqu'à l'examen, et le total est affiché avant de payer.
 - Il y a une page pour les questions de paiement : [Comment payer](/aide/comment-payer).
 - {{site}} est édité par **{{editeur}}**. Le contact est {{whatsapp}} sur WhatsApp ou {{email}}.
 

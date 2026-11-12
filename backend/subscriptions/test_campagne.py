@@ -180,17 +180,24 @@ class CatalogueApiTests(_Base):
         )
         self.assertEqual((ligne["effective_price"], ligne["prix_reference"], ligne["campagne"]), (15000, 15000, None))
 
+    def _plan_au_mois(self):
+        """Le bandeau et l'accueil lisent le prix du MOIS sur un plan au mois (la seule formule vendue)."""
+        return Plan.objects.create(name="Au mois", cursus=self.cursus, price=2000, duration_mode=DureeMode.MENSUEL)
+
     def test_le_nom_anglais_est_expose_avec_le_nom_francais(self):
+        self._plan_au_mois()
         _campagne(10, nom_en="Back-to-school offer")
         campagne = self.client.get(reverse("subscriptions:campagne-en-cours")).json()["campagne"]
         self.assertEqual((campagne["nom"], campagne["nom_en"]), ("Offre fondateurs", "Back-to-school offer"))
 
     def test_endpoint_de_la_campagne_en_cours(self):
+        self._plan_au_mois()
         self.assertIsNone(self.client.get(reverse("subscriptions:campagne-en-cours")).json()["campagne"])
         _campagne(20)
         campagne = self.client.get(reverse("subscriptions:campagne-en-cours")).json()["campagne"]
         self.assertEqual(campagne["nom"], "Offre fondateurs")
-        self.assertEqual((campagne["prix"], campagne["prix_reference"], campagne["prix_enfant_supplementaire"]), (12000, 15000, 9600))
+        # Prix d'UN mois : 2 000 - 20 % = 1 600 ; enfant supplémentaire 1 600 (remise famille) - 20 % = 1 280.
+        self.assertEqual((campagne["prix"], campagne["prix_reference"], campagne["prix_enfant_supplementaire"]), (1600, 2000, 1280))
 
 
 @override_settings(CAMPAY_ACTIVE=True)

@@ -728,7 +728,8 @@ export interface Progression {
   cours: ProgressionCours[]
 }
 
-export type DureeMode = "FIXE" | "JUSQUA_EXAMEN"
+/** MENSUEL : la formule vendue depuis le 2026-11-11, 30 jours par mois choisi à l'achat. JUSQUA_EXAMEN : l'ancienne formule, plus en vente. */
+export type DureeMode = "FIXE" | "JUSQUA_EXAMEN" | "MENSUEL"
 
 export type ProductType = "ABONNEMENT" | "ADDON_REPETITEUR"
 
@@ -771,6 +772,8 @@ export interface Plan {
   /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %, plus la campagne en cours le cas échéant). */
   prix_enfant_supplementaire: number
   inclut_inedit: boolean
+  /** Combien de mois s'achètent en une fois : ceux qui restent jusqu'à la fin de l'examen (1 pour un plan qui ne se vend pas au mois). */
+  mois_max: number
 }
 
 /** L'enfant pour qui un abonnement est payé - voir users.models.Profil. */
@@ -958,6 +961,8 @@ export interface ManualPayment {
   reviewed_at: string | null
   /** L'enfant pour qui le paiement a été fait (null pour d'anciennes lignes sans profil). */
   profil: { id: number; prenom: string } | null
+  /** Nombre de mois achetés (plan au mois) ; 1 pour tout autre plan. */
+  mois: number
 }
 
 export type ModeQuiz = "PRATIQUE" | "DIAGNOSTIC"

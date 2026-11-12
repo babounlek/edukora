@@ -64,7 +64,7 @@ class ManualPaymentSerializer(serializers.ModelSerializer):
             "id", "plan", "operator", "operator_display", "amount_expected", "amount_declared",
             "payer_phone_number", "transaction_reference", "paid_at", "status", "status_display",
             "rejection_reason", "rejection_reason_display", "created_at", "reviewed_at", "profil",
-            "paye_par_revendeur",
+            "paye_par_revendeur", "mois",
         ]
 
 
@@ -94,6 +94,8 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
     profil_id = serializers.IntegerField(required=False, allow_null=True)
     # Accompagnement : le revendeur du client a envoyé la somme depuis son numéro (voir revendeurs.services).
     paye_par_revendeur = serializers.BooleanField(required=False, default=False)
+    # Nombre de mois achetés (plan au mois) : borné par Plan.mois_max dans validate, jamais fait confiance.
+    mois = serializers.IntegerField(min_value=1, required=False, default=1)
 
     def validate(self, attrs):
         if not MobileMoneyAccount.objects.filter(operator=attrs["operator"], active=True).exists():
@@ -102,6 +104,15 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
             })
         plan = attrs["plan"]
         request = self.context["request"]
+        if not plan.mois_valide(attrs["mois"]):
+            maximum = plan.mois_max()
+            raise serializers.ValidationError({
+                "mois": (
+                    f"Choisis entre 1 et {maximum} mois : au-delà, ton examen serait déjà passé."
+                    if plan.est_au_mois and maximum > 1
+                    else "Ce plan s'achète en une seule fois."
+                ),
+            })
         if attrs.get("paye_par_revendeur"):
             # Sans revendeur rattaché, la case n'a pas de sens : ignorée plutôt que refusée.
             from revendeurs.models import AttributionRevendeur
@@ -118,7 +129,9 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
             attrs["profil"] = profil_actif(request)
         # Même campagne que ManualPayment.objects.declare (dont le délai de grâce après la date limite).
         campagne = Campagne.objects.pour_declaration(paid_at=attrs.get("paid_at"))
-        prix_attendu = plan.effective_price(user=request.user, profil=attrs.get("profil"), campagne=campagne)
+        prix_attendu = plan.effective_price(
+            user=request.user, profil=attrs.get("profil"), campagne=campagne, mois=attrs["mois"],
+        )
         attrs.setdefault("amount_declared", prix_attendu)
         if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({

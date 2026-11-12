@@ -11,8 +11,8 @@ It prepares a **ready-made message** for WhatsApp: what the subscription opens, 
 
 ## What your parent needs to know
 
-- Payment is made by **Mobile Money** (MTN or Orange), **once**, with no automatic debit.
-- Access lasts **until the exam**.
+- Payment is made by **Mobile Money** (MTN or Orange), in one go, with no automatic debit.
+- The price is **per month**: you choose the number of months, from 1 month up to the exam, and the total is shown before paying.
 - There is a page for payment questions: [How to pay](/aide/comment-payer).
 - {{site}} is published by **{{editeur}}**. The contact is {{whatsapp}} on WhatsApp or {{email}}.
 

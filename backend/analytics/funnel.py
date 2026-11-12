@@ -187,7 +187,8 @@ def _frequentation(debut):
     return {
         nom.value: evenements.filter(name=nom).count()
         for nom in (
-            EventName.TARIFS_VUS, EventName.ABONNEMENT_OUVERT, EventName.PAYMENT_INITIATED,
+            EventName.TARIFS_VUS, EventName.TARIFS_BOUTON_CLIC, EventName.ABONNEMENT_OUVERT,
+            EventName.TARIFS_DUREE_CHOISIE, EventName.PAYMENT_INITIATED,
             EventName.PAYMENT_SUCCEEDED, EventName.PAYMENT_FAILED, EventName.PAYMENT_TIMEOUT,
         )
     }

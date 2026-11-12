@@ -27,7 +27,7 @@ TEXTES = {
         "sujet_cta_titre": "Envie de vérifier tes réponses ?",
         "sujet_cta_corps": (
             "La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {site} : "
-            "15 000 FCFA par enfant jusqu'à l'examen, 12 000 FCFA pour chaque enfant supplémentaire de la même famille."
+            "2 000 FCFA par mois et par enfant, au nombre de mois de ton choix ; 1 600 FCFA par mois pour chaque enfant supplémentaire de la même famille."
         ),
         "sujet_cta_lien": "Voir la correction",
         "sujet_qr_alt": "QR code vers la correction",
@@ -88,7 +88,7 @@ TEXTES = {
         "sujet_cta_titre": "Want to check your answers?",
         "sujet_cta_corps": (
             "The full correction of this paper, with the method explained step by step, is available on {site}: "
-            "15,000 FCFA per child until the exam, 12,000 FCFA for each additional child in the same family."
+            "2,000 FCFA per month and per child, for as many months as you choose; 1,600 FCFA per month for each additional child in the same family."
         ),
         "sujet_cta_lien": "View the correction",
         "sujet_qr_alt": "QR code to the correction",

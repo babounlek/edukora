@@ -25,8 +25,8 @@ def lancer(*args, **kwargs):
 
 def creer_plan(cursus):
     return Plan.objects.create(
-        name="Jusqu'à l'examen", cursus=cursus, price=15000, duration_days=30,
-        duration_mode=DureeMode.JUSQUA_EXAMEN, product_type=ProductType.ABONNEMENT, inclut_inedit=True,
+        name="Au mois", cursus=cursus, price=2000, duration_days=30,
+        duration_mode=DureeMode.MENSUEL, product_type=ProductType.ABONNEMENT, inclut_inedit=True,
     )
 
 
@@ -124,7 +124,7 @@ class SeedDonneesTestTests(TestCase):
         with self.assertRaises(CommandError):
             lancer("--email-base", "moi+deja@gmail.com")
 
-    def test_sans_plan_jusqua_examen_message_clair(self):
+    def test_sans_plan_au_mois_message_clair(self):
         Plan.objects.all().delete()
         with self.assertRaises(CommandError):
             lancer("--email-base", BASE)

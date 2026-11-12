@@ -126,17 +126,18 @@ def bulk_read_ids(profil, *, field):
 
 def has_access_jusqua_examen(user, cursus, profil=None):
     """
-    Vrai si l'utilisateur a un abonnement actif de palier Jusqu'à l'Examen sur ce
-    cursus - distinct de has_access, qui accepte n'importe quel palier (y compris
-    Mensuel) pour le contenu de base. Réservé aux fonctionnalités pensées comme
-    argument de vente propre à ce palier (ex. classement des thèmes les plus fréquents
-    aux examens, voir catalog.views.ThemesFrequentsView) - ne jamais l'utiliser pour
-    gater l'accès au contenu de base, qui reste has_access.
+    Vrai si l'utilisateur a un abonnement actif de la formule complète sur ce cursus : l'abonnement
+    au mois (la seule formule vendue depuis le 2026-11-11, qui donne tout) ou l'ancien Jusqu'à
+    l'Examen. Reste distinct de has_access, qui accepte aussi l'ancien Mensuel à durée fixe
+    (contenu de base seulement). Réservé aux fonctionnalités de la formule complète (ex. classement
+    des thèmes les plus fréquents aux examens, voir catalog.views.ThemesFrequentsView) - ne
+    jamais l'utiliser pour gater l'accès au contenu de base, qui reste has_access.
     """
     if not user.is_authenticated:
         return False
     return Subscription.objects.filter(
-        user=user, cursus=cursus, expires_at__gt=timezone.now(), duration_mode=DureeMode.JUSQUA_EXAMEN,
+        user=user, cursus=cursus, expires_at__gt=timezone.now(),
+        duration_mode__in=(DureeMode.JUSQUA_EXAMEN, DureeMode.MENSUEL),
         **_du_profil(profil),
     ).exists()
 

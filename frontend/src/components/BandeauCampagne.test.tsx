@@ -39,15 +39,15 @@ describe("urgenceCampagne", () => {
 
 describe("BandeauCampagne", () => {
   it("annonce la remise, le prix avant/après et la date limite", () => {
-    render(<BandeauCampagne campagne={campagne(10 * JOUR)} prix={12000} prixReference={15000} />)
+    render(<BandeauCampagne campagne={campagne(10 * JOUR)} prix={1600} prixReference={2000} />)
 
     expect(screen.getByText("Offre fondateurs : −20 % sur l'abonnement")).toBeInTheDocument()
-    expect(screen.getByText(/Prix promotionnel : 12 000 FCFA au lieu de 15 000 FCFA, jusqu'au/)).toBeInTheDocument()
+    expect(screen.getByText(/Prix promotionnel : 1 600 FCFA par mois au lieu de 2 000 FCFA, jusqu'au/)).toBeInTheDocument()
     expect(screen.queryByText(/Plus que|Dernier jour/)).not.toBeInTheDocument()
   })
 
   it("ajoute l'urgence dans les derniers jours", () => {
-    render(<BandeauCampagne campagne={campagne(2 * JOUR - 1000)} prix={12000} prixReference={15000} />)
+    render(<BandeauCampagne campagne={campagne(2 * JOUR - 1000)} prix={1600} prixReference={2000} />)
 
     expect(screen.getByText("Plus que 2 jours")).toBeInTheDocument()
   })

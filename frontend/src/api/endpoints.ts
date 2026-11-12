@@ -528,7 +528,7 @@ export function getPlatformStats(langue?: string) {
 }
 
 /** `authentifie` : à vrai (page d'abonnement), le prix renvoyé tient compte de la famille
- * du compte connecté - 12 000 FCFA pour un enfant supplémentaire (`profilId`), voir
+ * du compte connecté - 1 600 FCFA le mois pour un enfant supplémentaire (`profilId`), voir
  * Plan.effective_price côté backend. Sinon : le tarif de référence. */
 export function listPlans(cursusId?: number, profilId?: number, authentifie = false) {
   const params = new URLSearchParams()
@@ -550,12 +550,14 @@ interface InitiatePaymentParams {
   // L'enfant pour qui cet achat est fait (voir "Ajouter un enfant", AccesPage.tsx) -
   // absent = le profil par défaut du compte (voir payments.views._resoudre_profil).
   profilId?: number
+  /** Nombre de mois achetés (plan au mois, 1 à `Plan.mois_max`) - le serveur le revérifie et recalcule le montant. */
+  mois?: number
 }
 
-export function initiatePayment({ planId, phoneNumber, profilId }: InitiatePaymentParams) {
+export function initiatePayment({ planId, phoneNumber, profilId, mois }: InitiatePaymentParams) {
   return apiRequest<PaymentInitiateResponse>("/payments/initiate/", {
     method: "POST",
-    body: { plan_id: planId, phone_number: phoneNumber, profil_id: profilId },
+    body: { plan_id: planId, phone_number: phoneNumber, profil_id: profilId, mois },
   })
 }
 
@@ -583,6 +585,8 @@ export interface DeclareManualPaymentParams {
   profilId?: number
   /** Le revendeur du client a avancé la somme depuis son propre numéro (accompagnement). */
   payeParRevendeur?: boolean
+  /** Nombre de mois achetés (plan au mois) - voir InitiatePaymentParams.mois. */
+  mois?: number
 }
 
 export function declareManualPayment(params: DeclareManualPaymentParams) {
@@ -596,6 +600,7 @@ export function declareManualPayment(params: DeclareManualPaymentParams) {
   if (params.proof) formData.append("proof", params.proof)
   if (params.profilId) formData.append("profil_id", String(params.profilId))
   if (params.payeParRevendeur) formData.append("paye_par_revendeur", "true")
+  if (params.mois) formData.append("mois", String(params.mois))
   return apiRequest<ManualPayment>("/payments/manual/declare/", { method: "POST", body: formData })
 }
 

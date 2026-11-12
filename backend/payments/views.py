@@ -37,6 +37,29 @@ def _resoudre_profil(request):
     return profil, None
 
 
+def _lire_mois(request, plan):
+    """
+    Le nombre de mois demandé (`mois`, 1 par défaut), vérifié contre ce que le plan autorise - voir
+    Plan.mois_max : jamais un nombre de mois accepté tel quel, qui permettrait d'acheter des mois après
+    l'examen, ou d'en demander pour un plan qui ne se vend pas au mois. Retourne (mois, erreur), `erreur` étant
+    une Response 400 prête à renvoyer.
+    """
+    brut = request.data.get("mois", 1)
+    try:
+        mois = int(brut)
+    except (TypeError, ValueError):
+        return None, Response({"error": "Nombre de mois invalide."}, status=400)
+    if not plan.mois_valide(mois):
+        maximum = plan.mois_max()
+        message = (
+            f"Choisis entre 1 et {maximum} mois : au-delà, ton examen serait déjà passé."
+            if plan.est_au_mois and maximum > 1
+            else "Ce plan s'achète en une seule fois."
+        )
+        return None, Response({"error": message, "mois_max": maximum}, status=400)
+    return mois, None
+
+
 def _report_provider_error(exc, transaction):
     """
     PaiementFournisseurError (CampayError, etc.) est déjà gérée gracieusement ici (réponse 502 propre, jamais un
@@ -88,7 +111,11 @@ def initiate_payment(request):
     if erreur is not None:
         return erreur
 
-    tarif = plan.tarif(user=request.user, profil=profil)
+    mois, erreur = _lire_mois(request, plan)
+    if erreur is not None:
+        return erreur
+
+    tarif = plan.tarif(user=request.user, profil=profil, mois=mois)
     prix = tarif.prix
     # Remise automatique par crédit parrainage disponible (voir
     # subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le
@@ -103,7 +130,7 @@ def initiate_payment(request):
     if montant_a_payer == 0:
         transaction = Transaction.objects.creer_couverte_par_credit(
             user=request.user, plan=plan, phone_number=phone_number, credit_applique=credit_applique,
-            profil=profil, campagne=tarif.campagne,
+            profil=profil, campagne=tarif.campagne, mois=mois,
         )
         return Response({
             "transaction_id": transaction.id, "status": transaction.status,
@@ -113,7 +140,7 @@ def initiate_payment(request):
     transaction = Transaction.objects.create(
         user=request.user, plan=plan, amount=montant_a_payer,
         phone_number=phone_number, credit_applique=credit_applique, profil=profil,
-        campagne=tarif.campagne,
+        campagne=tarif.campagne, mois=mois,
     )
 
     try:

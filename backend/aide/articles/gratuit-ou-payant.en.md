@@ -16,7 +16,7 @@ mots_cles: free, paid, subscription, without paying, trial, price, free lessons,
 - The **quiz that targets your revision** and your full **daily session**.
 - The **mock papers**.
 
-Details, current offers and the price are on the [Pricing](/tarifs) page. Payment is **one-off**, with no automatic renewal: see [How to pay](/aide/comment-payer).
+Details, current offers and the price are on the [Pricing](/tarifs) page. The price is **per month** (you choose the number of months), with no automatic renewal: see [How to pay](/aide/comment-payer).
 
 ## Something is greyed out?
 

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
@@ -6,6 +6,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 const listMyInscriptionsInedites = vi.hoisted(() => vi.fn())
 const getPaymentConfig = vi.hoisted(() => vi.fn())
 const listProfils = vi.hoisted(() => vi.fn())
+const listPlans = vi.hoisted(() => vi.fn())
+const initiatePayment = vi.hoisted(() => vi.fn())
+const listMySubscriptions = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
   isLoading: false,
@@ -14,10 +17,11 @@ const auth = vi.hoisted(() => ({
 
 vi.mock("@/api/endpoints", () => ({
   checkPaymentStatus: vi.fn(),
-  initiatePayment: vi.fn(),
+  initiatePayment,
   listCursus: vi.fn(() => Promise.resolve([])),
-  listPlans: vi.fn(() => Promise.resolve([])),
+  listPlans,
   listProfils,
+  listMySubscriptions,
   listMyInscriptionsInedites,
   getPaymentConfig,
 }))
@@ -58,6 +62,11 @@ beforeEach(() => {
   getPaymentConfig.mockResolvedValue({ campay_active: true })
   listProfils.mockReset()
   listProfils.mockResolvedValue([])
+  listPlans.mockReset()
+  listPlans.mockResolvedValue([])
+  initiatePayment.mockReset()
+  listMySubscriptions.mockReset()
+  listMySubscriptions.mockResolvedValue([])
   auth.isAuthenticated = true
   auth.isLoading = false
   auth.user = { phone_number: "677000000" }
@@ -177,5 +186,96 @@ describe("SubscribePage : interrupteur Campay (CAMPAY_ACTIVE)", () => {
     afficher("/abonnement?cursus=4&duree=examen")
 
     expect(await screen.findByText("Recommandé")).toBeInTheDocument()
+  })
+})
+
+function planAuMois(surcharges: Record<string, unknown> = {}) {
+  return {
+    id: 11, name: "BEPC - Au mois", cursus: { id: 4 }, product_type: "ABONNEMENT", price: 2000, duration_mode: "MENSUEL",
+    duration_days: 30, effective_duration_days: 30, effective_price: 2000, prix_reference: 2000, campagne: null,
+    prix_enfant_supplementaire: 1600, inclut_inedit: true, mois_max: 7, ...surcharges,
+  }
+}
+
+describe("SubscribePage : l'élève choisit le nombre de mois", () => {
+  beforeEach(() => {
+    listPlans.mockResolvedValue([planAuMois()])
+  })
+
+  it("propose un trimestre d'office et écrit le total en toutes lettres", async () => {
+    afficher("/abonnement?cursus=4")
+
+    expect(await screen.findByText("Pour combien de mois ?")).toBeInTheDocument()
+    expect(screen.getByRole("radio", { name: /^3/ })).toHaveAttribute("aria-checked", "true")
+    expect(screen.getByText("3 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 6 000 FCFA/ })).toBeInTheDocument()
+  })
+
+  it("reprend la durée choisie sur la page des tarifs (?mois=)", async () => {
+    afficher("/abonnement?cursus=4&mois=5")
+
+    expect(await screen.findByText("5 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 10 000 FCFA/ })).toBeInTheDocument()
+  })
+
+  it("un ancien lien duree=examen prend tous les mois qui restent", async () => {
+    afficher("/abonnement?cursus=4&duree=examen")
+
+    expect(await screen.findByText("7 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 14 000 FCFA/ })).toBeInTheDocument()
+  })
+
+  it("ne laisse jamais choisir plus de mois que ce qui reste avant l'examen", async () => {
+    listPlans.mockResolvedValue([planAuMois({ mois_max: 2 })])
+    afficher("/abonnement?cursus=4&mois=9")
+
+    expect(await screen.findByText("2 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(within(screen.getByRole("radiogroup")).getAllByRole("radio")).toHaveLength(2)
+  })
+
+  it("change le total quand l'élève touche un autre mois", async () => {
+    afficher("/abonnement?cursus=4")
+    await screen.findByText("Pour combien de mois ?")
+
+    fireEvent.click(screen.getByRole("radio", { name: /^6/ }))
+
+    expect(await screen.findByText("6 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 12 000 FCFA/ })).toBeInTheDocument()
+  })
+
+  it("envoie le nombre de mois au paiement", async () => {
+    initiatePayment.mockResolvedValue({ status: "FAILED" })
+    afficher("/abonnement?cursus=4&mois=4")
+    await screen.findByText("4 mois × 2 000 FCFA par mois")
+
+    fireEvent.change(await screen.findByLabelText(/Numéro Mobile Money/), { target: { value: "677123456" } })
+    fireEvent.click(screen.getByRole("button", { name: /Payer 8 000 FCFA/ }))
+
+    await waitFor(() => expect(initiatePayment).toHaveBeenCalledTimes(1))
+    expect(initiatePayment).toHaveBeenCalledWith(expect.objectContaining({ planId: 11, mois: 4 }))
+  })
+
+  it("annonce la date de fin à partir de l'accès en cours quand l'enfant prolonge", async () => {
+    const dans200Jours = new Date(Date.now() + 200 * 86_400_000).toISOString()
+    listMySubscriptions.mockResolvedValue([
+      { id: 1, is_active: true, cursus: { id: 4 }, profil: { id: 1 }, expires_at: dans200Jours },
+    ])
+    afficher("/abonnement?cursus=4&mois=3")
+
+    expect(await screen.findByText(/Ton accès actuel est prolongé jusqu'au/)).toBeInTheDocument()
+  })
+
+  it("annonce une date à partir d'aujourd'hui pour un premier achat", async () => {
+    afficher("/abonnement?cursus=4&mois=3")
+
+    expect(await screen.findByText(/^Accès jusqu'au/)).toBeInTheDocument()
+    expect(screen.queryByText(/Ton accès actuel est prolongé/)).not.toBeInTheDocument()
+  })
+
+  it("déduit le crédit parrainage du total, pas du prix d'un mois", async () => {
+    auth.user = { phone_number: "677000000", credit_parrainage_disponible: 1000 } as typeof auth.user
+    afficher("/abonnement?cursus=4&mois=3")
+
+    expect(await screen.findByRole("button", { name: /Payer 5 000 FCFA/ })).toBeInTheDocument()
   })
 })

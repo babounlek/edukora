@@ -236,7 +236,9 @@ export function EpreuveInediteDetailPage() {
   const validite = offre
     ? offre.duration_mode === "JUSQUA_EXAMEN"
       ? t("ine.validite_unique")
-      : t("ine.validite_jours", { n: offre.effective_duration_days })
+      : offre.duration_mode === "MENSUEL"
+        ? t("ine.validite_mois")
+        : t("ine.validite_jours", { n: offre.effective_duration_days })
     : null
   const mes = epreuve.mes_tentatives ?? null
   const dejaRendue =
@@ -544,6 +546,9 @@ export function EpreuveInediteDetailPage() {
             {!epreuve.has_access && !epreuve.est_vitrine && offre && (
               <span className="shrink-0 text-sm font-medium tabular-nums">
                 {formatAmount(offre.effective_price)} FCFA
+                {offre.duration_mode === "MENSUEL" && (
+                  <span className="block text-xs font-normal text-muted-foreground">{t("prix.par_mois_court")}</span>
+                )}
                 {offre.campagne && <span className="block text-xs font-normal text-gold-text">{t("camp.prix_promo_min")}</span>}
               </span>
             )}

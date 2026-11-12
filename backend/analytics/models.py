@@ -80,6 +80,11 @@ class EventName(models.TextChoices):
     AIDE_ARTICLE_VU = "aide_article_vu", "Article d'aide lu"
     AIDE_ARTICLE_UTILE = "aide_article_utile", "Article d'aide jugé utile ou non"
     AIDE_CONTACT_CLIC = "aide_contact_clic", "Contact WhatsApp ouvert depuis l'aide"
+    # Tarification au mois (2026-11-11) : où l'on clique sur la page des tarifs (`source` : bouton, barre mobile) et combien
+    # de mois l'élève garde au moment de payer (`mois`). Sans ces deux évènements, impossible de savoir si la nouvelle règle
+    # attire plus de familles que le prix unique, ni quelle durée elles choisissent. Jamais de texte, jamais d'identité.
+    TARIFS_BOUTON_CLIC = "tarifs_bouton_clic", "Bouton de la page des tarifs cliqué"
+    TARIFS_DUREE_CHOISIE = "tarifs_duree_choisie", "Durée choisie dans le tunnel d'abonnement"
 
 
 class AnalyticsEvent(models.Model):

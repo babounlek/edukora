@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { useCampagne } from "@/lib/campagne"
 import { lienAbonnement } from "@/lib/retourAchat"
-import { PRIX_ABONNEMENT_FCFA } from "@/lib/tarifs"
+import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -103,7 +103,7 @@ export function AccesRefuse({
           <p className="mt-3 text-sm text-muted-foreground">
             {campagne
               ? t("ar.prix_promo", { prix: formatAmount(campagne.prix) })
-              : t("ar.prix", { prix: formatAmount(PRIX_ABONNEMENT_FCFA) })}
+              : t("ar.prix", { prix: formatAmount(PRIX_MOIS_FCFA) })}
           </p>
 
           {/* Ce sont les parents qui paient : l'élève qui ne peut pas payer lui-même leur envoie le prix, ce que ça ouvre et le moyen de payer. */}

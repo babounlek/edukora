@@ -11,10 +11,14 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { dateLimiteCampagne } from "@/lib/campagne"
 import { chiffresNumeroLocal } from "@/lib/telephone"
-import { t, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 interface ManualPaymentPanelProps {
   plan: Plan
+  /** Nombre de mois achetés (plan au mois) ; 1 pour tout autre plan. */
+  mois: number
+  /** Le montant EXACT à envoyer, déjà multiplié par `mois` (voir `prixTotal`) : le serveur le recalcule et le compare. */
+  montant: number
   operator: MobileMoneyOperator
   onDeclared: (payment: ManualPayment) => void
   // L'enfant pour qui cet achat est fait - voir SubscribePage.tsx, même rôle que
@@ -42,20 +46,19 @@ const OPERATOR_STYLES: Record<MobileMoneyOperator, { initials: string; badgeClas
 
 /**
  * Instructions + formulaire de déclaration pour le paiement Mobile Money manuel.
- * `plan.effective_price` alimente l'affichage "montant à payer" ; le serveur recalcule toujours
- * amount_expected lui-même depuis plan.effective_price() au moment de la
- * déclaration (voir payments.serializers) - jamais depuis `plan.price` brut, qui
- * n'est qu'un plafond pour un Plan JUSQUA_EXAMEN (voir subscriptions.models.Plan).
+ * `montant` (prix du mois × `mois`) alimente l'affichage "montant à payer" ; le serveur recalcule toujours
+ * amount_expected lui-même depuis plan.effective_price(mois=...) au moment de la
+ * déclaration (voir payments.serializers) - jamais depuis une valeur du client.
  *
  * Ne demande que les deux informations qui identifient le versement (numéro payeur,
- * référence de transaction) : le montant est connu (plan.effective_price), le serveur le
+ * référence de transaction) : le montant est connu (`montant`), le serveur le
  * reprend de lui-même ; `paid_at` et `proof` restent acceptés par
  * l'API et affichés dans l'admin pour les déclarations passées, mais ne sont
  * volontairement plus saisis ici - un formulaire long est un formulaire abandonné,
  * et l'horodatage comme la capture ne faisaient que redire ce que la référence de
  * transaction permet déjà de vérifier auprès de l'opérateur.
  */
-export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defaultPayerPhone }: ManualPaymentPanelProps) {
+export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, profilId, defaultPayerPhone }: ManualPaymentPanelProps) {
   useI18n()
   const [accounts, setAccounts] = useState<MobileMoneyAccount[] | null>(null)
   const [showForm, setShowForm] = useState(false)
@@ -88,7 +91,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
   useEffect(() => {
     setShowForm(false)
     setError(null)
-  }, [operator, plan.id])
+  }, [operator, plan.id, mois])
 
   const account = accounts?.find((a) => a.operator === operator) ?? null
   const style = OPERATOR_STYLES[operator]
@@ -107,7 +110,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
   }
 
   function handleCopyAmount() {
-    copier(String(plan.effective_price), setCopiedAmount)
+    copier(String(montant), setCopiedAmount)
   }
 
   function handleCopyNumber() {
@@ -137,6 +140,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
         transactionReference,
         profilId,
         payeParRevendeur: revendeurNom !== null && payeParRevendeur,
+        mois,
       })
       onDeclared(payment)
     } catch (err) {
@@ -176,7 +180,7 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
         <p className="mt-4 text-xs uppercase tracking-wide text-muted-foreground">{t("mp.montant")}</p>
         <div className="flex items-center justify-between gap-3">
           <p className="font-display text-3xl font-semibold text-primary">
-            {formatAmount(plan.effective_price)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
+            {formatAmount(montant)} <span className="text-base font-normal text-muted-foreground">FCFA</span>
           </p>
           <Button type="button" variant="outline" size="sm" onClick={handleCopyAmount} className="shrink-0">
             {copiedAmount ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
@@ -188,8 +192,11 @@ export function ManualPaymentPanel({ plan, operator, onDeclared, profilId, defau
             {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(plan.campagne.fin) })}
           </p>
         )}
+        {plan.duration_mode === "MENSUEL" && (
+          <p className="mt-1 text-xs font-medium">{tn("mp.duree", mois)}</p>
+        )}
         <p className="mt-1 text-xs text-muted-foreground">
-          {t("mp.envoie", { prix: formatAmount(plan.effective_price) })}
+          {t("mp.envoie", { prix: formatAmount(montant) })}
         </p>
 
         <div className="mt-3.5 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/70 px-3.5 py-2.5">

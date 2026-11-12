@@ -448,12 +448,14 @@ export function AccesPage() {
     ...(subscriptions ?? []).map((sub) => ({
       key: `sub-${sub.id}`,
       titre: libelleCursus(sub.cursus),
-      // Le nom du plan vient du serveur, en français : hors français, la formule unique est traduite
-      // (même règle que SubscribePage.nomPlan).
+      // Le nom du plan vient du serveur, en français : l'abonnement au mois porte le même nom partout, et hors
+      // français l'ancienne formule « Jusqu'à l'Examen » est traduite (même règle que SubscribePage.nomPlan).
       sous_titre:
-        sub.duration_mode === "JUSQUA_EXAMEN" && langueCourante() !== "fr"
-          ? t("prix.formule")
-          : sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? t("prix.formule") : t("ac.mensuel")),
+        sub.duration_mode === "MENSUEL"
+          ? t("sb.formule_mois")
+          : sub.duration_mode === "JUSQUA_EXAMEN" && langueCourante() !== "fr"
+            ? t("prix.formule")
+            : sub.plan_name ?? (sub.duration_mode === "JUSQUA_EXAMEN" ? t("prix.formule") : t("ac.mensuel")),
       expiresAt: sub.expires_at,
       actif: sub.is_active,
       cursusId: sub.cursus.id,

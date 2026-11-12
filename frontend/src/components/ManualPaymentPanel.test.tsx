@@ -11,11 +11,11 @@ vi.mock("@/api/endpoints", () => ({ listManualPaymentMethods, declareManualPayme
 import type { Plan } from "@/api/types"
 import { ManualPaymentPanel } from "./ManualPaymentPanel"
 
-const plan = { id: 7, effective_price: 15000 } as Plan
+const plan = { id: 7, effective_price: 2000, duration_mode: "MENSUEL" } as Plan
 
 async function ouvrirLeFormulaire() {
   const user = userEvent.setup()
-  render(<ManualPaymentPanel plan={plan} operator="ORANGE" onDeclared={vi.fn()} />)
+  render(<ManualPaymentPanel plan={plan} mois={3} montant={6000} operator="ORANGE" onDeclared={vi.fn()} />)
   await user.click(await screen.findByRole("button", { name: /effectué le paiement/i }))
   return user
 }

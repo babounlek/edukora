@@ -25,7 +25,7 @@ class CampagneEnCoursView(APIView):
     """
     La campagne promotionnelle ouverte, ou `{"campagne": null}`. Public : sert aux pages qui
     affichent un prix sans avoir chargé de plan (bandeau, accueil, accès refusé). Les prix
-    sont ceux du premier enfant, lus sur un plan Jusqu'à l'Examen concerné - la grille est
+    sont ceux d'UN MOIS pour le premier enfant, lus sur un plan au mois concerné - la grille est
     unique (même tarif pour tous les cursus), le détail par plan reste dans /plans/.
     """
 
@@ -38,7 +38,7 @@ class CampagneEnCoursView(APIView):
         plan = next(
             (
                 p for p in Plan.objects.filter(
-                    is_active=True, product_type=ProductType.ABONNEMENT, duration_mode=DureeMode.JUSQUA_EXAMEN,
+                    is_active=True, product_type=ProductType.ABONNEMENT, duration_mode=DureeMode.MENSUEL,
                 ).select_related("cursus")
                 if campagne.concerne(p)
             ),

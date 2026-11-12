@@ -106,7 +106,7 @@ class Command(BaseCommand):
     @staticmethod
     def _plan(cursus_id):
         plans = Plan.objects.filter(
-            is_active=True, product_type=ProductType.ABONNEMENT, duration_mode=DureeMode.JUSQUA_EXAMEN,
+            is_active=True, product_type=ProductType.ABONNEMENT, duration_mode=DureeMode.MENSUEL,
         ).select_related("cursus")
         if cursus_id:
             plans = plans.filter(cursus_id=cursus_id)
@@ -115,7 +115,7 @@ class Command(BaseCommand):
         plan = plans.order_by("cursus_id", "price").first()
         if plan is None:
             raise CommandError(
-                "Aucun Plan « Jusqu'à l'examen » actif trouvé"
+                "Aucun Plan « Au mois » actif trouvé"
                 + (f" pour le cursus #{cursus_id}." if cursus_id else ".")
                 + " Le catalogue (migrations de seed) est-il en place ?"
             )

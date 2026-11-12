@@ -4,6 +4,8 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import {
   ArrowRight,
   ArrowRightLeft,
+  CalendarCheck,
+  CalendarClock,
   Check,
   Lock,
   ShieldCheck,
@@ -33,13 +35,12 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { LienAide } from "@/components/aide/LienAide"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
-import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
-import { PRIX_ABONNEMENT_FCFA, PRIX_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
-
-function formatDateDansNJours(jours: number): string {
-  const cible = new Date(Date.now() + jours * 24 * 60 * 60 * 1000)
-  return cible.toLocaleDateString(localeCourante(), { day: "numeric", month: "long" })
-}
+import { t, tn, useI18n } from "@/lib/i18n"
+import {
+  MOIS_PAR_DEFAUT, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA, PRIX_MOIS_FCFA, estAuMois, moisValides, prixTotal,
+  prixTotalReference,
+} from "@/lib/tarifs"
+import { SelecteurDuree } from "@/components/SelecteurDuree"
 
 function cursusLabel(cursus: Cursus): string {
   if (cursus.series?.code.startsWith("GCE_")) return `${cursus.examen_display} - ${codeSerieAffiche(cursus.series)}`
@@ -239,7 +240,10 @@ function TarifFamille({ plan }: { plan: Plan }) {
         {[1, 2, 3, 4].map((n) => (
           <div key={n} className="contents">
             <dt className="text-muted-foreground">{tn("prix.enfants", n)}</dt>
-            <dd className="text-right font-medium tabular-nums">{formatAmount(total(n))} FCFA</dd>
+            <dd className="text-right font-medium tabular-nums">
+              {formatAmount(total(n))} FCFA{" "}
+              <span className="text-xs font-normal text-muted-foreground">{t("prix.par_mois_court")}</span>
+            </dd>
           </div>
         ))}
       </dl>
@@ -270,12 +274,15 @@ function PastilleExclusif() {
 function BarreActionMobile({
   prix,
   prixBarre,
-  cursusChoisi,
+  sousTexte,
+  libelle,
   onClick,
 }: {
   prix: number
   prixBarre?: number
-  cursusChoisi: boolean
+  /** Ce que le prix couvre : « par mois et par enfant » ou « pour 5 mois ». */
+  sousTexte: string
+  libelle: string
   onClick: () => void
 }) {
   // Portail : le conteneur de la page porte `animate-fade-up` (transform), qui devient le repère des
@@ -294,12 +301,10 @@ function BarreActionMobile({
               <s className="ml-1.5 text-xs font-normal text-muted-foreground">{formatAmount(prixBarre)}</s>
             )}
           </p>
-          <p className="text-[11px] leading-tight text-muted-foreground">{t("prix.par_enfant")}</p>
+          <p className="text-[11px] leading-tight text-muted-foreground">{sousTexte}</p>
         </div>
         <Button onClick={onClick} className="min-w-0 flex-1">
-          <span className="truncate">
-            {cursusChoisi ? t("prix.sabonner") : t("prix.choisir_cursus_court")}
-          </span>
+          <span className="truncate">{libelle}</span>
         </Button>
       </div>
     </div>,
@@ -338,6 +343,8 @@ export function PricingPage() {
   // Incrémenté par « Réessayer » pour relancer l'effet de chargement.
   const [tentative, setTentative] = useState(0)
   const [selectedCursus, setSelectedCursus] = useState("")
+  // Le nombre de mois choisi par le visiteur (null : pas encore touché, voir `mois` plus bas).
+  const [moisChoisi, setMoisChoisi] = useState<number | null>(null)
   // Passe à true quand on tente de continuer sans avoir choisi de cursus : le
   // sélecteur se signale au lieu de laisser un bouton inerte sans explication.
   const [cursusManquant, setCursusManquant] = useState(false)
@@ -389,27 +396,17 @@ export function PricingPage() {
     setTentative((n) => n + 1)
   }
 
-  // Offre unique depuis le 2026-08-30 (voir migration subscriptions/0013_retire_
-  // mensuel) : Mensuel est désactivé, Jusqu'à l'Examen est la seule formule vendue aux
-  // élèves. Son prix et sa durée dépendent du cursus choisi, calculés depuis la
-  // session d'examen réelle - voir Plan.effective_price/effective_duration_days.
-  // Aucun filtre de fenêtre d'urgence ici - l'API ne renvoie plus ce plan hors fenêtre
-  // (voir Plan.est_achetable côté backend), qui est le seul endroit où cette règle vit.
-  const jusquaExamen = allPlans.find(
-    (p) =>
-      p.product_type === "ABONNEMENT" &&
-      p.duration_mode === "JUSQUA_EXAMEN" &&
-      String(p.cursus.id) === selectedCursus,
+  // Offre unique depuis le 2026-11-11 : l'abonnement au mois (2 000 FCFA par mois), dont l'élève choisit le
+  // nombre de mois. Le prix du mois est le même pour tous les cursus ; ce qui change d'un cursus à l'autre, c'est
+  // le nombre de mois qu'on peut acheter (`mois_max` : jusqu'à la fin de l'examen, calculé par le serveur).
+  const planCursus = allPlans.find(
+    (p) => p.product_type === "ABONNEMENT" && estAuMois(p) && String(p.cursus.id) === selectedCursus,
   )
 
-  // Plan servant à afficher le tarif de référence : celui du cursus choisi, sinon n'importe
-  // quel plan Jusqu'à l'Examen - depuis le tarif unique du 2026-10-02 (migration
-  // subscriptions/0018), le prix est le même pour tous les cursus.
+  // Plan servant à afficher le prix du mois : celui du cursus choisi, sinon n'importe quel plan au mois.
   const planTarif = useMemo(
-    () =>
-      jusquaExamen ??
-      allPlans.find((p) => p.product_type === "ABONNEMENT" && p.duration_mode === "JUSQUA_EXAMEN"),
-    [jusquaExamen, allPlans],
+    () => planCursus ?? allPlans.find((p) => p.product_type === "ABONNEMENT" && estAuMois(p)),
+    [planCursus, allPlans],
   )
 
   const cursusEleve = useMemo(() => cursusVendables(allPlans, "ABONNEMENT"), [allPlans])
@@ -418,24 +415,41 @@ export function PricingPage() {
     if (selectedCursus) setCursusManquant(false)
   }, [selectedCursus])
 
-  // Un seul paramètre `duree=examen` possible depuis le retrait de Mensuel (voir
-  // 0013_retire_mensuel) - plus besoin de le paramétrer par appelant.
-  function choisirFormule() {
+  // Le nombre de mois retenu : le choix du visiteur, sinon un trimestre - toujours ramené à ce que le plan autorise.
+  const mois = planCursus ? moisValides(planCursus, moisChoisi ?? MOIS_PAR_DEFAUT) : MOIS_PAR_DEFAUT
+  const totalChoisi = planCursus ? prixTotal(planCursus, mois) : 0
+
+  // La durée choisie ici arrive présélectionnée dans le tunnel (`?mois=`) : le choix n'est jamais perdu.
+  function choisirFormule(source: "bouton" | "barre") {
+    trackEvent("tarifs_bouton_clic", {
+      source,
+      cursus_id: selectedCursus ? Number(selectedCursus) : undefined,
+      mois: planCursus ? mois : undefined,
+    })
     if (!selectedCursus) {
       setCursusManquant(true)
       cursusRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
       return
     }
-    navigate(`/abonnement?cursus=${selectedCursus}&duree=examen${profilParam ? `&profil=${profilParam}` : ""}`)
+    navigate(`/abonnement?cursus=${selectedCursus}&mois=${mois}${profilParam ? `&profil=${profilParam}` : ""}`)
+  }
+
+  function choisirDuree(n: number) {
+    if (n === mois) return
+    setMoisChoisi(n)
+    trackEvent("tarifs_duree_choisie", {
+      mois: n,
+      mois_max: planCursus?.mois_max,
+      cursus_id: selectedCursus ? Number(selectedCursus) : undefined,
+    })
   }
 
   // Prix et sous-titre du hero : ceux de l'offre en cours (campagne comprise), pour que le haut de page ne
-  // dise pas « 15 000 FCFA » pendant que la carte et le bandeau affichent 13 500. Masqué le temps du
+  // dise pas « 2 000 FCFA » pendant que la carte et le bandeau affichent 1 800. Masqué le temps du
   // chargement des offres plutôt que de afficher les montants de référence puis de les corriger.
   const offresPretes = !chargement || allPlans.length > 0
-  const prixHero = planTarif?.effective_price ?? PRIX_ABONNEMENT_FCFA
-  const prixSupHero = planTarif?.prix_enfant_supplementaire ?? PRIX_ENFANT_SUPPLEMENTAIRE_FCFA
-  const libelleCursusChoisi = jusquaExamen ? cursusLabel(jusquaExamen.cursus) : ""
+  const prixHero = planTarif?.effective_price ?? PRIX_MOIS_FCFA
+  const prixSupHero = planTarif?.prix_enfant_supplementaire ?? PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA
   const afficherBarreMobile = !!planTarif && !ctaVisible
 
   return (
@@ -479,7 +493,11 @@ export function PricingPage() {
               mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
               travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
           <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
-            {t("prix.titre_debut")} <span className="text-primary">{t("prix.titre_accent")}</span>.
+            {t("prix.titre_debut")}{" "}
+            <span className={cn("whitespace-nowrap text-primary transition-opacity", !offresPretes && "opacity-0")}>
+              {t("prix.titre_accent", { prix: formatAmount(prixHero) })}
+            </span>
+            .
           </h1>
           <p className={cn("mt-2 text-muted-foreground transition-opacity", !offresPretes && "opacity-0")}>
             {t("prix.sous_titre", {
@@ -543,7 +561,7 @@ export function PricingPage() {
                 </p>
               </div>
 
-              <div className="border-t border-border pt-5 max-sm:order-4">
+              <div className="border-t border-border pt-5 max-sm:order-5">
                 <p className="font-display text-sm font-semibold">{t("prix.tout_besoin")}</p>
                 <ul role="list" className="mt-3 flex flex-col gap-2.5 text-sm">
                   {AVANTAGES.map((avantage) => (
@@ -577,9 +595,8 @@ export function PricingPage() {
                 />
               ) : (
                 <>
-                  {/* Tarif unique (2026-10-02) : le même prix quel que soit le cursus et le moment de
-                      l'année, donc affiché d'emblée, avant même le choix du cursus - `jusquaExamen`
-                      sert surtout à la durée et à la date d'examen. */}
+                  {/* Prix du mois : le même pour tous les cursus, donc affiché d'emblée, avant même le choix
+                      du cursus - `planCursus` sert à la durée maximale et au total. */}
                   <div className="max-sm:order-1">
                     <p className="font-display font-semibold">{t("prix.formule")}</p>
                     <p className="hidden text-sm text-muted-foreground sm:block">{t("prix.formule_texte")}</p>
@@ -589,7 +606,9 @@ export function PricingPage() {
                         <p className="flex flex-wrap items-baseline gap-x-2 font-display text-3xl font-semibold text-primary">
                           <span>
                             {formatAmount(planTarif.effective_price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">FCFA</span>
+                            <span className="ml-1 text-base font-normal text-muted-foreground">
+                              FCFA {t("prix.par_mois_court")}
+                            </span>
                           </span>
                           {planTarif.campagne && (
                             <>
@@ -608,23 +627,23 @@ export function PricingPage() {
                           {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
                         </p>
                       )}
-                      <p className="mt-0.5 text-xs text-muted-foreground">
-                        {t("prix.par_enfant")}
-                        {jusquaExamen && (
-                          <>
-                            {" - "}
-                            {t("prix.compte_a_rebours", {
-                              n: jusquaExamen.effective_duration_days,
-                              examen: jusquaExamen.cursus.examen_display,
-                              date: formatDateDansNJours(jusquaExamen.effective_duration_days),
-                            })}
-                          </>
-                        )}
-                      </p>
+                      <p className="mt-0.5 text-xs text-muted-foreground">{t("prix.par_enfant")}</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-3 max-sm:order-3">
+                  {/* La durée : seulement une fois le cursus connu, puisque le nombre de mois achetables en dépend
+                      (il s'arrête à la fin de l'examen). Avant, une phrase dit pourquoi elle n'est pas encore là. */}
+                  <div className="max-sm:order-3">
+                    {planCursus ? (
+                      <SelecteurDuree plan={planCursus} mois={mois} onChoisir={choisirDuree} />
+                    ) : (
+                      <p className="rounded-xl border border-dashed border-input px-4 py-3 text-sm text-muted-foreground">
+                        {t("prix.duree_apres_cursus")}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col gap-3 max-sm:order-4">
                     {/* Toujours le bouton principal, plein : « Choisir ton cursus » en contour discret
                         ressemblait à un lien secondaire alors que c'est l'action de la page. Cliquable,
                         jamais disabled - un bouton mort ne donne aucun feedback au clic et peut passer
@@ -632,9 +651,9 @@ export function PricingPage() {
                     {/* La barre mobile se retire quand CE bouton est à l'écran (et non tout le bloc : le
                         texte sous le bouton gardait la barre cachée alors que le bouton était déjà sorti). */}
                     <div ref={ctaRef}>
-                      <Button onClick={choisirFormule} size="lg" className="w-full">
-                        {jusquaExamen
-                          ? t("prix.sabonner_cursus", { cursus: libelleCursusChoisi })
+                      <Button onClick={() => choisirFormule("bouton")} size="lg" className="w-full">
+                        {planCursus
+                          ? tn("prix.continuer_mois", mois, { montant: formatAmount(totalChoisi) })
                           : t("prix.choisir_cursus")}
                       </Button>
                     </div>
@@ -658,7 +677,7 @@ export function PricingPage() {
                   </div>
 
                   {planTarif && (
-                    <div className="max-sm:order-5">
+                    <div className="max-sm:order-6">
                       <TarifFamille plan={planTarif} />
                     </div>
                   )}
@@ -666,7 +685,7 @@ export function PricingPage() {
                   {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se
                       lire ici, pas derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). */}
                   {!isAuthenticated && (
-                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm max-sm:order-6">
+                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm max-sm:order-7">
                       <p className="font-medium">{t("prix.etapes_titre")}</p>
                       <ol className="mt-1.5 list-decimal space-y-0.5 pl-5 text-muted-foreground">
                         <li>{t("prix.etape1")}</li>
@@ -765,10 +784,29 @@ export function PricingPage() {
               <p className="font-medium">{t("prix.faq3_q")}</p>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {t("prix.faq3_r", {
-                  prix: formatAmount(PRIX_ABONNEMENT_FCFA),
-                  prix_sup: formatAmount(PRIX_ENFANT_SUPPLEMENTAIRE_FCFA),
+                  prix: formatAmount(PRIX_MOIS_FCFA),
+                  prix3: formatAmount(PRIX_MOIS_FCFA * 3),
+                  prix_sup: formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA),
                 })}
               </p>
+            </div>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <CalendarClock className="size-4" />
+            </span>
+            <div>
+              <p className="font-medium">{t("prix.faq5_q")}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">{t("prix.faq5_r")}</p>
+            </div>
+          </li>
+          <li className="flex items-start gap-3">
+            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold-text">
+              <CalendarCheck className="size-4" />
+            </span>
+            <div>
+              <p className="font-medium">{t("prix.faq6_q")}</p>
+              <p className="mt-0.5 text-sm text-muted-foreground">{t("prix.faq6_r")}</p>
             </div>
           </li>
           <li className="flex items-start gap-3">
@@ -791,10 +829,15 @@ export function PricingPage() {
 
       {afficherBarreMobile && planTarif && (
         <BarreActionMobile
-          prix={planTarif.effective_price}
-          prixBarre={planTarif.campagne ? planTarif.prix_reference : undefined}
-          cursusChoisi={!!jusquaExamen}
-          onClick={choisirFormule}
+          prix={planCursus ? totalChoisi : planTarif.effective_price}
+          prixBarre={
+            planTarif.campagne
+              ? planCursus ? prixTotalReference(planCursus, mois) : planTarif.prix_reference
+              : undefined
+          }
+          sousTexte={planCursus ? tn("prix.sous_barre_mois", mois) : t("prix.par_enfant")}
+          libelle={planCursus ? t("prix.continuer") : t("prix.choisir_cursus_court")}
+          onClick={() => choisirFormule("barre")}
         />
       )}
     </div>

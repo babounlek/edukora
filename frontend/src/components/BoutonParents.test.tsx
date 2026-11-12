@@ -42,7 +42,7 @@ describe("BoutonParents", () => {
     const { text } = partager.mock.calls[0][0] as { text: string }
     expect(text).toContain("Bonjour, je prépare le BEPC")
     expect(text).toContain("lire le corrigé de « SVT BEPC 2025 »")
-    expect(text).toContain("15 000 FCFA")
+    expect(text).toContain("2 000 FCFA par mois")
     expect(text).toContain("Mobile Money")
     expect(text).toContain("WhatsApp +237 689 49 26 25")
     expect(text).toMatch(/\/tarifs\?ref=GUY123$/)

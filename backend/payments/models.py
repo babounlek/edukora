@@ -25,7 +25,7 @@ class StatutTransaction(models.TextChoices):
     FAILED = "FAILED", "Échouée"
 
 
-def _activer_acces(plan, user, profil=None):
+def _activer_acces(plan, user, profil=None, mois=1):
     """
     Point de bascule unique entre les types de produit (voir
     subscriptions.models.ProductType) - jamais dupliqué entre Transaction.sync_status et
@@ -44,8 +44,11 @@ def _activer_acces(plan, user, profil=None):
     `profil` : l'enfant pour qui cet achat est fait (voir Transaction.profil/
     ManualPayment.profil) - relayé tel quel aux trois `activate_or_extend`, qui
     retombent eux-mêmes sur `user.profils.first()` si None (voir leur docstring).
+
+    `mois` : nombre de mois achetés (plan au mois, voir Plan.mois_max) ; 30 jours par mois, sans effet
+    sur les autres plans.
     """
-    duration_days = plan.effective_duration_days()
+    duration_days = plan.effective_duration_days(mois)
     if plan.product_type == ProductType.ADDON_REPETITEUR:
         inscription_repetiteur = InscriptionRepetiteur.objects.activate_or_extend(
             user=user, cursus=plan.cursus, duration_days=duration_days, profil=profil,
@@ -62,8 +65,17 @@ def _activer_acces(plan, user, profil=None):
     return subscription, inscription_inedite, None
 
 
+def _libelle_achat(plan, mois):
+    """Ce que l'élève a acheté, pour les SMS : « BEPC - Au mois, 3 mois » pour un plan au mois, le nom du plan sinon."""
+    if plan.est_au_mois:
+        return f"{plan.name}, {mois} mois"
+    return plan.name
+
+
 class TransactionManager(models.Manager):
-    def creer_couverte_par_credit(self, *, user, plan, phone_number, credit_applique, profil=None, campagne=None):
+    def creer_couverte_par_credit(
+        self, *, user, plan, phone_number, credit_applique, profil=None, campagne=None, mois=1,
+    ):
         """
         Achat intégralement couvert par le crédit parrainage disponible de `user`
         (credit_applique == plan.effective_price()) - jamais envoyé à un agrégateur, activé
@@ -73,7 +85,7 @@ class TransactionManager(models.Manager):
         transaction = self.create(
             user=user, plan=plan, amount=0, phone_number=phone_number,
             credit_applique=credit_applique, status=StatutTransaction.SUCCESSFUL,
-            profil=profil or user.profils.first(), campagne=campagne,
+            profil=profil or user.profils.first(), campagne=campagne, mois=mois,
         )
         return transaction._confirmer_succes()
 
@@ -105,6 +117,10 @@ class Transaction(models.Model):
         help_text="Campagne promotionnelle qui a fait baisser le prix de cet achat (voir Plan.tarif), figée à l'initiation. Sert à mesurer ce qu'elle a rapporté.",
     )
 
+    mois = models.PositiveSmallIntegerField(
+        default=1,
+        help_text="Nombre de mois d'accès achetés (plan au mois, 30 jours chacun), figé à l'initiation. 1 pour tout autre plan.",
+    )
     amount = models.PositiveIntegerField(help_text="Montant en FCFA réellement envoyé à l'agrégateur (déjà net du crédit parrainage - voir credit_applique), capturé au moment du paiement (indépendant d'un changement de prix ultérieur).")
     credit_applique = models.PositiveIntegerField(
         default=0,
@@ -149,7 +165,7 @@ class Transaction(models.Model):
         resultat = get_provider(self.provider).initier(
             montant=self.amount,
             telephone=self.phone_number,
-            description=f"Abonnement {self.plan.name}",
+            description=f"Abonnement {self.plan.name}" + (f" - {self.mois} mois" if self.plan.est_au_mois else ""),
             reference_interne=self.external_reference,
         )
         self.provider_reference = resultat.reference_externe
@@ -209,7 +225,7 @@ class Transaction(models.Model):
                 return self
 
             subscription, inscription_inedite, inscription_repetiteur = _activer_acces(
-                self.plan, self.user, profil=locked.profil,
+                self.plan, self.user, profil=locked.profil, mois=locked.mois,
             )
             if self.credit_applique:
                 consommer_credit_parrainage(self.user, self.credit_applique)
@@ -304,7 +320,7 @@ def _notifier_utilisateur(phone_number, message):
 class ManualPaymentManager(models.Manager):
     def declare(self, *, user, plan, operator, amount_declared, payer_phone_number,
                 transaction_reference, paid_at=None, proof=None, ip=None, profil=None,
-                paye_par_revendeur=False):
+                paye_par_revendeur=False, mois=1):
         """
         Point d'entrée unique de la déclaration utilisateur. `amount_expected` est
         TOUJOURS recalculé depuis `plan.effective_price()` ici - jamais accepté depuis
@@ -319,17 +335,19 @@ class ManualPaymentManager(models.Manager):
         profil = profil or user.profils.first()
         # Campagne de la déclaration : celle en cours, ou celle qui vient de finir si le parent a payé
         # au prix affiché puis déclaré après la date limite (voir CampagneManager.pour_declaration).
-        tarif = plan.tarif(user=user, profil=profil, campagne=Campagne.objects.pour_declaration(paid_at=paid_at))
+        tarif = plan.tarif(
+            user=user, profil=profil, campagne=Campagne.objects.pour_declaration(paid_at=paid_at), mois=mois,
+        )
 
         payment = self.create(
-            user=user, plan=plan, operator=operator, profil=profil, campagne=tarif.campagne,
+            user=user, plan=plan, operator=operator, profil=profil, campagne=tarif.campagne, mois=mois,
             amount_expected=tarif.prix, amount_declared=amount_declared,
             payer_phone_number=payer_phone_number, transaction_reference=reference,
             paid_at=paid_at, proof=proof, declared_ip=ip, paye_par_revendeur=paye_par_revendeur,
         )
         _notifier_utilisateur(
             user.phone_number,
-            f"Edukora : ta déclaration de paiement de {payment.amount_declared} FCFA ({plan.name}) "
+            f"Edukora : ta déclaration de paiement de {payment.amount_declared} FCFA ({_libelle_achat(plan, mois)}) "
             "a bien été enregistrée. Elle est en cours de vérification par notre équipe.",
         )
         return payment
@@ -367,6 +385,10 @@ class ManualPayment(models.Model):
     )
 
     operator = models.CharField(max_length=10, choices=MobileMoneyOperator.choices)
+    mois = models.PositiveSmallIntegerField(
+        default=1,
+        help_text="Nombre de mois d'accès achetés (plan au mois, 30 jours chacun), figé à la déclaration. 1 pour tout autre plan.",
+    )
     amount_expected = models.PositiveIntegerField(
         help_text="Recalculé depuis plan.price au moment de la déclaration - jamais fourni par le client.",
     )
@@ -453,7 +475,7 @@ class ManualPayment(models.Model):
                 )
 
             subscription, inscription_inedite, inscription_repetiteur = _activer_acces(
-                locked.plan, locked.user, profil=locked.profil,
+                locked.plan, locked.user, profil=locked.profil, mois=locked.mois,
             )
             locked.status = ManualPaymentStatus.APPROVED
             locked.subscription = subscription
@@ -478,7 +500,7 @@ class ManualPayment(models.Model):
         _notifier_utilisateur(
             locked.user.phone_number,
             f"Edukora : ton paiement de {locked.amount_declared} FCFA est validé ! "
-            f"Ton accès « {locked.plan.name} » est actif.",
+            f"Ton accès « {_libelle_achat(locked.plan, locked.mois)} » est actif.",
         )
         return locked
 
@@ -504,7 +526,7 @@ class ManualPayment(models.Model):
 
         _notifier_utilisateur(
             locked.user.phone_number,
-            f"Edukora : ton paiement de {locked.amount_declared} FCFA ({locked.plan.name}) "
+            f"Edukora : ton paiement de {locked.amount_declared} FCFA ({_libelle_achat(locked.plan, locked.mois)}) "
             f"a été rejeté ({locked.get_rejection_reason_display()}). "
             "Tu peux déclarer un nouveau paiement.",
         )

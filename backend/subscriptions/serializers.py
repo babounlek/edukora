@@ -19,17 +19,23 @@ class PlanSerializer(serializers.ModelSerializer):
     prix_reference = serializers.SerializerMethodField()
     campagne = serializers.SerializerMethodField()
     prix_enfant_supplementaire = serializers.SerializerMethodField()
+    mois_max = serializers.SerializerMethodField()
 
     class Meta:
         model = Plan
         fields = [
             "id", "name", "cursus", "product_type", "price", "duration_mode", "duration_days",
             "effective_duration_days", "effective_price", "prix_reference", "campagne",
-            "prix_enfant_supplementaire", "inclut_inedit",
+            "prix_enfant_supplementaire", "inclut_inedit", "mois_max",
         ]
 
     def get_effective_duration_days(self, obj):
+        """Pour un plan au mois : la durée d'UN mois (30 jours), comme `effective_price` en est le prix."""
         return obj.effective_duration_days()
+
+    def get_mois_max(self, obj):
+        """Combien de mois s'achètent en une fois (1 pour un plan qui ne se vend pas au mois) - voir Plan.mois_max."""
+        return obj.mois_max()
 
     def _tarif(self, obj):
         """Tarif pour l'enfant `?profil=` du compte connecté si fourni (enfant

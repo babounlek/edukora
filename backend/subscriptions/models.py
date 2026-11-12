@@ -13,15 +13,33 @@ from catalog.models import Cursus, ExamSession
 class DureeMode(models.TextChoices):
     FIXE = "FIXE", "Durée fixe"
     JUSQUA_EXAMEN = "JUSQUA_EXAMEN", "Jusqu'à l'examen"
+    MENSUEL = "MENSUEL", "Au mois"
 
 
-# Tarification unique Jusqu'à l'Examen (décision utilisateur du 2026-10-02) : `price` du
-# Plan (15 000 F) par enfant, quel que soit le moment de l'année - remplace la grille
-# dégressive par tranches de 30 jours (plancher/plafond/incrément, migrations 0014/0015).
+# Tarification au mois (décision utilisateur du 2026-11-11) : `price` du Plan MENSUEL est le prix
+# d'UN mois (2 000 F) ; l'élève choisit le nombre de mois à l'achat (1 à `Plan.mois_max`) et
+# paie `mois × prix`. Remplace le prix unique Jusqu'à l'Examen (15 000 F, 2026-10-02), qui
+# faisait payer le même montant pour 7 mois en novembre et 2 mois en avril. Les plans
+# JUSQUA_EXAMEN restent en base, désactivés (Transaction/ManualPayment les référencent en
+# PROTECT) ; les accès déjà vendus gardent leur date de fin.
+#
 # Un enfant supplémentaire de la même famille (même compte payeur) bénéficie d'une
-# remise FIXE de 20 % sur ce tarif de référence (12 000 F), jamais cumulative : le 2e,
-# le 3e, le 4e enfant paient tous 12 000 F.
+# remise FIXE de 20 % sur le prix du mois (1 600 F), jamais cumulative : le 2e, le 3e,
+# le 4e enfant paient tous 1 600 F par mois.
 REMISE_ENFANT_SUPPLEMENTAIRE_PCT = 20
+
+# Un mois d'accès = 30 jours, comme l'ancien Mensuel.
+JOURS_PAR_MOIS = 30
+
+# Repli de `Plan.mois_max` quand aucune session d'examen n'est connue pour le cursus : une année
+# scolaire. Jamais bloquant, comme le repli de `effective_duration_days`.
+MOIS_MAX_SANS_SESSION = 10
+
+# Les formules dont le tarif reçoit la remise famille et les campagnes.
+MODES_REMISABLES = ("JUSQUA_EXAMEN", "MENSUEL")
+
+# Rang des paliers : un abonnement ne redescend jamais (voir Subscription.extend).
+RANG_DUREE_MODE = {"FIXE": 0, "MENSUEL": 1, "JUSQUA_EXAMEN": 2}
 
 # Remise maximale d'une campagne : garde-fou contre une faute de frappe dans l'admin
 # (50 saisi pour 5) qui vendrait l'abonnement à moitié prix sans que personne le voie.
@@ -128,8 +146,8 @@ class Campagne(models.Model):
                 )
 
     def concerne(self, plan):
-        """Seul l'abonnement Jusqu'à l'Examen est remisé (même périmètre que la remise famille)."""
-        if plan.product_type != ProductType.ABONNEMENT or plan.duration_mode != DureeMode.JUSQUA_EXAMEN:
+        """Seul l'abonnement de base (au mois, ou l'ancien Jusqu'à l'Examen) est remisé (même périmètre que la remise famille)."""
+        if plan.product_type != ProductType.ABONNEMENT or plan.duration_mode not in MODES_REMISABLES:
             return False
         if not self.pk:
             return True
@@ -181,7 +199,10 @@ class Plan(models.Model):
     duration_mode = models.CharField(max_length=20, choices=DureeMode.choices, default=DureeMode.FIXE)
     duration_days = models.PositiveSmallIntegerField(
         default=30,
-        help_text="Utilisé tel quel si duration_mode=FIXE. Ignoré (valeur de repli seulement, voir effective_duration_days) si duration_mode=JUSQUA_EXAMEN.",
+        help_text=(
+            "Utilisé tel quel si duration_mode=FIXE. Ignoré (valeur de repli seulement, voir effective_duration_days) "
+            "si duration_mode=JUSQUA_EXAMEN ; ignoré aussi si duration_mode=MENSUEL (30 jours par mois choisi à l'achat)."
+        ),
     )
     is_active = models.BooleanField(default=True, help_text="Décoche pour retirer une offre du catalogue sans la supprimer.")
     inclut_inedit = models.BooleanField(
@@ -209,18 +230,45 @@ class Plan(models.Model):
         return f"{self.name} ({self.price} FCFA / {self.duration_days}j)"
 
     def save(self, *args, **kwargs):
-        # Jusqu'à l'Examen inclut TOUJOURS les épreuves inédites, quel que soit le cursus : on ne dépend pas
-        # d'une case à cocher à la main dans l'admin ni d'un plan semé (c'est ainsi que le GCE l'avait perdu).
-        if self.product_type == ProductType.ABONNEMENT and self.duration_mode == DureeMode.JUSQUA_EXAMEN:
+        # L'abonnement au mois (comme l'ancien Jusqu'à l'Examen) inclut TOUJOURS les épreuves inédites, quel que
+        # soit le cursus : on ne dépend pas d'une case à cocher à la main dans l'admin ni d'un plan semé (c'est
+        # ainsi que le GCE l'avait perdu). Tout accès payé donne tout (décision du 2026-11-11).
+        if self.product_type == ProductType.ABONNEMENT and self.duration_mode in MODES_REMISABLES:
             self.inclut_inedit = True
             update_fields = kwargs.get("update_fields")
             if update_fields is not None and "inclut_inedit" not in update_fields:
                 kwargs["update_fields"] = [*update_fields, "inclut_inedit"]
         super().save(*args, **kwargs)
 
-    def effective_duration_days(self):
+    @property
+    def est_au_mois(self):
+        return self.duration_mode == DureeMode.MENSUEL
+
+    def mois_max(self):
         """
-        Durée réelle en jours à appliquer à l'activation/l'affichage. Pour
+        Nombre maximal de mois achetables en une fois. Un plan au mois : les mois qui restent jusqu'à la
+        fin de l'examen du cursus, arrondis au supérieur (le dernier mois est facturé en entier, décision
+        du 2026-11-11) - acheter au-delà de l'examen n'a aucun sens. Mêmes dates que le compte à rebours
+        affiché à l'élève (voir `_calculer_duree_jusqua_examen`). Tout autre plan : 1, il ne se choisit pas
+        en mois.
+        """
+        if not self.est_au_mois:
+            return 1
+        compte_a_rebours = ExamSession.compte_a_rebours_pour(self.cursus)
+        if compte_a_rebours is None:
+            return MOIS_MAX_SANS_SESSION
+        fin = compte_a_rebours["date_fin"] or compte_a_rebours["date_examen"]
+        jours = max((fin - timezone.now().date()).days, 1)
+        return max(-(-jours // JOURS_PAR_MOIS), 1)
+
+    def mois_valide(self, mois):
+        """Vrai si `mois` est un entier acceptable pour ce plan (1 à `mois_max`)."""
+        return isinstance(mois, int) and not isinstance(mois, bool) and 1 <= mois <= self.mois_max()
+
+    def effective_duration_days(self, mois=1):
+        """
+        Durée réelle en jours à appliquer à l'activation/l'affichage. Pour un plan au mois,
+        `mois` × 30 jours. Pour
         JUSQUA_EXAMEN, calculée dynamiquement depuis la prochaine ExamSession de
         l'examen du cursus - jamais figée dans duration_days, pour rester correcte
         d'une session d'examen sur l'autre sans avoir à rééditer le Plan chaque année.
@@ -230,6 +278,8 @@ class Plan(models.Model):
         l'utilise aussi), chaque appel coûtant sinon une requête ExamSession. Sans
         effet sur la fraîcheur - une instance ne vit que le temps d'une requête HTTP.
         """
+        if self.est_au_mois:
+            return JOURS_PAR_MOIS * mois
         if self.duration_mode != DureeMode.JUSQUA_EXAMEN:
             return self.duration_days
         if self._effective_days_cache is None:
@@ -263,67 +313,85 @@ class Plan(models.Model):
         return max((fin - timezone.now().date()).days, 1)
 
     def prix_enfant_supplementaire(self, campagne=None):
-        """Tarif d'un enfant supplémentaire de la même famille : le tarif de référence
-        moins la remise fixe (15 000 F -> 12 000 F). Identique à `price` hors
-        JUSQUA_EXAMEN, la remise famille ne s'appliquant qu'à cette formule. Avec une
-        `campagne` qui concerne ce plan, la campagne s'ajoute à la remise famille (voir `tarif`)."""
+        """Tarif (d'UN mois pour un plan au mois) d'un enfant supplémentaire de la même famille : le
+        tarif de référence moins la remise fixe (2 000 F -> 1 600 F). Identique à `price` pour tout autre
+        plan, la remise famille ne s'appliquant qu'à l'abonnement de base. Avec une `campagne` qui
+        concerne ce plan, la campagne s'ajoute à la remise famille (voir `tarif`)."""
         prix = self.price
-        if self.duration_mode == DureeMode.JUSQUA_EXAMEN:
+        if self.duration_mode in MODES_REMISABLES:
             prix = self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
         if campagne is not None and campagne.concerne(self):
             prix = campagne.appliquer(prix)
         return prix
 
-    def tarif(self, user=None, profil=None, campagne=AUTO):
+    def tarif(self, user=None, profil=None, campagne=AUTO, mois=1):
         """
-        Tarif complet pour `profil` (l'enfant) du compte `user` : voir `Tarif`. Pour
-        JUSQUA_EXAMEN : `price` pour le premier enfant de la famille,
-        `prix_enfant_supplementaire()` si un AUTRE enfant du même compte a déjà un
-        accès Jusqu'à l'Examen en cours (voir `est_enfant_supplementaire`). Sans `user`
-        (affichage du catalogue) : le tarif de référence.
+        Tarif complet pour `profil` (l'enfant) du compte `user`, pour `mois` mois : voir `Tarif`.
+        Abonnement de base : `price` (le prix d'UN mois) pour le premier enfant de la famille,
+        `prix_enfant_supplementaire()` si l'enfant est un enfant supplémentaire (voir
+        `est_enfant_supplementaire`). Sans `user` (affichage du catalogue) : le tarif de référence.
 
-        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite sur ce tarif,
-        donc elle se CUMULE avec la remise famille (décision du 2026-10-28) : −10 % de
-        campagne donnent 13 500 F au premier enfant et 10 800 F (12 000 × 0,9) aux suivants.
+        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite sur le prix du MOIS, puis
+        se multiplie : le total vaut toujours `mois × prix du mois affiché`, sans écart d'arrondi entre
+        le serveur et l'affichage. Elle se CUMULE avec la remise famille (décision du 2026-10-28) :
+        −10 % de campagne donnent 1 800 F le mois au premier enfant et 1 440 F (1 600 × 0,9) aux suivants.
         `campagne` : `AUTO` lit la campagne en cours ; `None` en impose l'absence ; une
         `Campagne` en impose une (paiement manuel déclaré juste après la fin de l'offre, voir
         `CampagneManager.pour_declaration`).
+
+        `mois` ne multiplie que le prix d'un plan au mois ; il n'a aucun effet sur les autres plans, vendus
+        à l'unité. Sa validité (1 à `mois_max`) se vérifie chez l'appelant, jamais ici.
         """
+        multiplicateur = mois if self.est_au_mois else 1
         reference = self.price
-        if self.duration_mode == DureeMode.JUSQUA_EXAMEN and est_enfant_supplementaire(user, profil):
+        if self.duration_mode in MODES_REMISABLES and est_enfant_supplementaire(user, profil):
             reference = self.prix_enfant_supplementaire()
         if campagne is AUTO:
             campagne = campagne_en_cours()
         if campagne is not None and campagne.concerne(self):
             prix_campagne = campagne.appliquer(reference)
             if prix_campagne < reference:
-                return Tarif(prix=prix_campagne, reference=reference, campagne=campagne)
-        return Tarif(prix=reference, reference=reference, campagne=None)
+                return Tarif(
+                    prix=prix_campagne * multiplicateur, reference=reference * multiplicateur, campagne=campagne,
+                )
+        return Tarif(prix=reference * multiplicateur, reference=reference * multiplicateur, campagne=None)
 
-    def effective_price(self, user=None, profil=None, campagne=AUTO):
+    def effective_price(self, user=None, profil=None, campagne=AUTO, mois=1):
         """Prix réel à facturer/afficher : voir `tarif`, dont c'est le seul montant."""
-        return self.tarif(user, profil, campagne).prix
+        return self.tarif(user, profil, campagne, mois).prix
+
+
+# Après l'expiration de son accès, un enfant continue de « compter » dans la famille pendant ce délai :
+# les mois se renouvellent un à un, deux frères ne tombent pas toujours en même temps, et le rabais du
+# second ne doit pas sauter parce que le premier a laissé passer quelques jours.
+FENETRE_FAMILLE_JOURS = 90
 
 
 def est_enfant_supplementaire(user, profil=None):
     """
-    Vrai si un autre enfant du compte `user` (la famille) a déjà un accès Jusqu'à
-    l'Examen non expiré. `profil` retombe sur `user.profils.first()` comme partout
-    (voir SubscriptionManager.activate_or_extend) ; renouveler l'accès d'un enfant
-    déjà payé reste au tarif de référence, jamais remisé.
+    Vrai si `profil` est un enfant supplémentaire de la famille du compte `user`, c'est-à-dire si un
+    AUTRE enfant du compte a obtenu avant lui un accès de base (au mois ou Jusqu'à l'Examen) encore actif,
+    ou expiré depuis moins de `FENETRE_FAMILLE_JOURS`. `profil` retombe sur `user.profils.first()` comme
+    partout (voir SubscriptionManager.activate_or_extend).
+
+    Le premier enfant payé garde toujours le tarif de référence, y compris à chaque renouvellement ;
+    chacun des suivants garde le sien, y compris à chaque renouvellement (au mois, il se renouvelle
+    souvent : le rabais ne doit pas disparaître au deuxième achat).
     """
     if user is None or not getattr(user, "pk", None):
         return False
     profil = profil or user.profils.first()
-    autres = Subscription.objects.filter(
-        user=user, duration_mode=DureeMode.JUSQUA_EXAMEN, expires_at__gt=timezone.now(),
-    )
-    if profil is not None:
-        # Renouveler l'accès d'un enfant déjà actif n'est jamais un "enfant supplémentaire".
-        if autres.filter(profil=profil).exists():
-            return False
-        autres = autres.exclude(profil=profil)
-    return autres.exists()
+    tous = Subscription.objects.filter(user=user, duration_mode__in=MODES_REMISABLES)
+    recents = tous.filter(expires_at__gt=timezone.now() - timedelta(days=FENETRE_FAMILLE_JOURS))
+    if profil is None:
+        return recents.exists()
+    autres = recents.exclude(profil=profil)
+    if not autres.exists():
+        return False
+    propre = tous.filter(profil=profil).order_by("created_at").first()
+    if propre is None:
+        return True
+    return autres.filter(created_at__lt=propre.created_at).exists()
 
 
 class SubscriptionManager(models.Manager):
@@ -439,13 +507,13 @@ class Subscription(models.Model):
         """
         Prolonge à partir de la date d'expiration existante si encore active, sinon à
         partir de maintenant. `duration_mode` ne peut que faire monter le palier
-        (FIXE -> JUSQUA_EXAMEN), jamais l'inverse - voir SubscriptionManager.activate_or_extend.
+        (FIXE -> MENSUEL -> JUSQUA_EXAMEN), jamais l'inverse - voir SubscriptionManager.activate_or_extend.
         """
         base = self.expires_at if self.is_active else timezone.now()
         self.expires_at = base + timezone.timedelta(days=duration_days)
         update_fields = ["expires_at", "updated_at"]
-        if duration_mode == DureeMode.JUSQUA_EXAMEN and self.duration_mode != DureeMode.JUSQUA_EXAMEN:
-            self.duration_mode = DureeMode.JUSQUA_EXAMEN
+        if duration_mode is not None and RANG_DUREE_MODE.get(duration_mode, 0) > RANG_DUREE_MODE.get(self.duration_mode, 0):
+            self.duration_mode = duration_mode
             update_fields.append("duration_mode")
         self.save(update_fields=update_fields)
 

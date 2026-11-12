@@ -1,9 +1,9 @@
 ---
 titre: How to pay for my subscription (Orange Money, MTN MoMo)
-resume: You pay once by Mobile Money, either automatically on your phone or by transferring the amount yourself.
+resume: You pay in one go by Mobile Money for the number of months you chose, either automatically on your phone or by transferring the amount yourself.
 mots_cles: pay, payment, mobile money, orange money, mtn momo, momo, campay, transfer, subscription, how to pay, buy, price
 ---
-Payment is by **Mobile Money** (Orange Money or MTN MoMo), **once**. There is no bank card, no automatic debit and no renewal: nothing is charged again unless you do it yourself.
+Payment is by **Mobile Money** (Orange Money or MTN MoMo), **in one go** for the number of months you chose. There is no bank card, no automatic debit and no renewal: nothing is charged again unless you do it yourself.
 
 ## Before you start
 

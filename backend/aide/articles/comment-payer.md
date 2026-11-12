@@ -4,10 +4,10 @@ ordre: 10
 populaire: oui
 pages: /tarifs,/abonnement
 titre: Comment payer mon abonnement (Orange Money, MTN MoMo)
-resume: Tu paies une seule fois par Mobile Money, automatiquement sur ton téléphone ou en transférant toi-même le montant.
+resume: Tu paies en une fois par Mobile Money le nombre de mois choisi, automatiquement sur ton téléphone ou en transférant toi-même le montant.
 mots_cles: payer, paiement, mobile money, orange money, mtn momo, momo, campay, transfert, abonnement, comment payer, acheter, prix
 ---
-Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **une seule fois**. Il n'y a ni carte bancaire, ni prélèvement automatique, ni renouvellement : rien ne se redéclenche sans que tu le fasses toi-même.
+Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **en une fois** pour le nombre de mois que tu as choisi. Il n'y a ni carte bancaire, ni prélèvement automatique, ni renouvellement : rien ne se redéclenche sans que tu le fasses toi-même.
 
 ## Avant de commencer
 
