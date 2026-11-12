@@ -52,3 +52,31 @@ describe("BandeauCursus - promesse selon l'état de connexion", () => {
     expect(screen.getByRole("region").textContent).toContain("séance du jour")
   })
 })
+
+describe("BandeauCursus - place réservée pendant le chargement (décalage de mise en page)", () => {
+  beforeEach(() => {
+    localStorage.clear()
+    sessionStorage.clear()
+    auth.isAuthenticated = false
+    auth.user = null
+  })
+
+  it("garde sa place tant que la liste des cursus n'est pas arrivée, puis montre le bandeau", async () => {
+    let repondre: (liste: unknown) => void = () => {}
+    listCursus.mockReturnValue(new Promise((resolve) => { repondre = resolve }))
+    afficher()
+    // Pas encore de bandeau, mais une réserve d'espace (invisible pour les lecteurs d'écran).
+    expect(screen.queryByRole("region")).toBeNull()
+    expect(screen.queryByTestId("bandeau-cursus-reserve")).not.toBeNull()
+    repondre(CURSUS)
+    await waitFor(() => expect(screen.getByRole("region")).toBeTruthy())
+    expect(screen.queryByTestId("bandeau-cursus-reserve")).toBeNull()
+  })
+
+  it("rend la place quand la liste est vide : pas de trou dans la page", async () => {
+    listCursus.mockResolvedValue([])
+    afficher()
+    await waitFor(() => expect(screen.queryByTestId("bandeau-cursus-reserve")).toBeNull())
+    expect(screen.queryByRole("region")).toBeNull()
+  })
+})

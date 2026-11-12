@@ -56,7 +56,7 @@ export function BandeauCursus() {
   const visible = !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && Boolean(country)
 
   // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
-  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
+  const { data: cursusList, tous: tousLesCursus, isPending } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
 
   // Connecté : écrit sur le compte. Visiteur : gardé dans le navigateur, avec une confirmation immédiate à l'endroit du
   // clic (le seul autre effet, la vedette « épreuve inédite », est hors champ) - voir lib/declarerCursus.
@@ -76,7 +76,12 @@ export function BandeauCursus() {
     setFerme(true)
   }
 
-  if (!visible || cursusList.length === 0) return null
+  if (!visible) return null
+  // Le bandeau n'apparaît qu'après la réponse de la liste des cursus : sans réserve, il poussait toute la page de ~87 px
+  // à son arrivée (décalage de mise en page ≈ 0,10 sur l'accueil et les épreuves, relevé à l'audit du 2026-11-12).
+  // On garde donc sa place pendant le chargement ; si la liste est vide ou en erreur, la place est rendue.
+  if (isPending) return <div aria-hidden="true" data-testid="bandeau-cursus-reserve" className="min-h-[5.4rem] border-b border-transparent sm:min-h-[4.5rem]" />
+  if (cursusList.length === 0) return null
 
   return (
     <div role="region" aria-label={t("bandeau.aria")} className="border-b border-primary/20 bg-primary/5">
