@@ -34,6 +34,8 @@ import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { CountryBadge } from "@/components/CountryBadge"
 import { EnTeteEpreuve, faitsEpreuve } from "@/components/EnTeteEpreuve"
 import { formatCursusGroups } from "@/lib/cursus"
+import { FilAriane } from "@/components/FilAriane"
+import { titreEpreuve } from "@/lib/titreEpreuve"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
@@ -42,7 +44,7 @@ import { useSeo } from "@/lib/seo"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
-import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath, examenPath } from "@/lib/countryPath"
+import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath, examenPath, catalogueHomePath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
   useI18n()
@@ -57,7 +59,7 @@ export function EpreuveDetailPage() {
 
   useDeclarerLangueContenu(epreuve?.subject.langue)
   useSeo({
-    title: epreuve?.title ?? t("ed.seo_corrige"),
+    title: epreuve ? titreEpreuve(epreuve.title, epreuve.lesson_type, epreuve.subject.langue ?? "fr") : t("ed.seo_corrige"),
     description: epreuve
       ? // Même texte que la page prérendue des moteurs (backend/catalog/apercu_partage.description_epreuve) :
         // le corrigé d'une épreuve vitrine est en accès libre, la phrase « par abonnement » y serait fausse.
@@ -206,6 +208,17 @@ export function EpreuveDetailPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-8">
+      {/* Fil d'Ariane Accueil > examen > épreuve : relie la fiche à la page de son examen (/cm/examens/bepc) et porte le
+          balisage BreadcrumbList du prérendu (catalog/prerendu.py). */}
+      <FilAriane
+        maillons={[
+          { libelle: t("ex.accueil"), to: catalogueHomePath(countryCode) },
+          ...(epreuve.cursus[0]?.slug
+            ? [{ libelle: formatCursusGroups(epreuve.cursus.slice(0, 1))[0]?.label ?? "", to: examenPath(countryCode, epreuve.cursus[0].slug) }]
+            : []),
+          { libelle: epreuve.title },
+        ]}
+      />
       <Link
         to={epreuvesListPath(countryCode)}
         className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
@@ -213,15 +226,6 @@ export function EpreuveDetailPage() {
         <ArrowLeft className="size-4" />
         {t("ed.retour_catalogue")}
       </Link>
-      {/* Vers la page de l'examen (/cm/examens/bepc) : toutes les annales, et un lien de plus pour les moteurs. */}
-      {epreuve.cursus[0]?.slug && (
-        <Link
-          to={examenPath(countryCode, epreuve.cursus[0].slug)}
-          className="mb-5 ml-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-        >
-          {t("ed.toutes_annales", { libelle: formatCursusGroups(epreuve.cursus.slice(0, 1))[0]?.label ?? "" })}
-        </Link>
-      )}
 
       <div className="flex animate-fade-up flex-col gap-6">
         <EnTeteEpreuve

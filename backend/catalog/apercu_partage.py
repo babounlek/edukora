@@ -26,7 +26,7 @@ from django.utils.html import escape
 from inedit.models import EpreuveInedite
 
 from .libelles import libelle_cursus
-from .models import Cours, Cursus, Lesson, StatutContenu, Subject, Tag
+from .models import Cours, Cursus, Lesson, LessonType, StatutContenu, Subject, Tag
 from .segments_url import chemin_anglais, chemin_interne
 
 LARGEUR, HAUTEUR = 1200, 630
@@ -96,6 +96,22 @@ def _image_url(genre, ident, langue="fr"):
     return f"{settings.FRONTEND_URL}/partage-image/{genre}/{ident}.png{suffixe}"
 
 
+SUFFIXES_TITRE = {"fr": " - corrigé", "en": " - solutions"}
+
+
+def titre_epreuve(lesson, langue):
+    """Le titre d'une annale corrigée, avec le mot que cherche l'élève : « Mathématiques BEPC 2026 - corrigé ». Les
+    autres types (fiche, sujet) et un titre qui le dit déjà restent tels quels. Même règle côté navigateur
+    (EpreuveDetailPage) : les moteurs et le visiteur lisent le même titre."""
+    titre = lesson.title
+    if lesson.lesson_type != LessonType.CORR:
+        return titre
+    bas = titre.casefold()
+    if "corrig" in bas or "solution" in bas:
+        return titre
+    return titre + SUFFIXES_TITRE[langue]
+
+
 def description_epreuve(lesson, textes, type_affiche, public, annee):
     """La meta description d'une épreuve (aperçu de partage ET page prérendue pour les moteurs) : elle dit la vérité
     sur l'accès - le corrigé d'une épreuve vitrine est libre, celui des autres est réservé aux abonnés."""
@@ -117,7 +133,7 @@ def _infos_epreuve(ident, langue="fr"):
     annee = f" ({lesson.year})" if lesson.year else ""
     type_affiche = textes["types"].get(lesson.lesson_type) or lesson.get_lesson_type_display()
     return {
-        "titre": lesson.title,
+        "titre": titre_epreuve(lesson, langue),
         "description": description_epreuve(lesson, textes, type_affiche, public, annee),
         "etiquette": f"{type_affiche} · {lesson.subject.label}" + (f" · {lesson.year}" if lesson.year else ""),
         "public": public,

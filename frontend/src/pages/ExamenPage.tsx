@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, ChevronRight, SearchX } from "lucide-react"
+import { ArrowRight, SearchX } from "lucide-react"
 
 import { getExamen } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -8,6 +8,7 @@ import type { ExamenPageData } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { FilAriane } from "@/components/FilAriane"
 import { catalogueHomePath, epreuveDetailPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, useI18n } from "@/lib/i18n"
@@ -90,15 +91,7 @@ function ExamenContenu({ examen }: { examen: ExamenPageData }) {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-      <nav aria-label={t("ex.fil_ariane")} className="mb-4 flex items-center gap-1 text-sm text-muted-foreground">
-        <Link to={catalogueHomePath(pays)} className="hover:text-primary">
-          {t("ex.accueil")}
-        </Link>
-        <ChevronRight className="size-3.5" aria-hidden="true" />
-        <span aria-current="page" className="text-foreground">
-          {examen.libelle}
-        </span>
-      </nav>
+      <FilAriane maillons={[{ libelle: t("ex.accueil"), to: catalogueHomePath(pays) }, { libelle: examen.libelle }]} />
 
       <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight">{examen.textes.titre}</h1>
       <p className="mt-3 text-muted-foreground">{examen.textes.intro}</p>

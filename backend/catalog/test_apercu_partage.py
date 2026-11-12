@@ -24,7 +24,7 @@ class ApercuPartageTests(TestCase):
 
     def test_page_d_epreuve_porte_titre_et_image_du_contenu(self):
         html = self.client.get(f"/partage-apercu/cm/epreuves/{self.lesson.slug}").content.decode()
-        self.assertIn('og:title" content="Maths BAC C 2023 |', html)
+        self.assertIn('og:title" content="Maths BAC C 2023 - corrigé |', html)
         self.assertIn(f"/partage-image/epreuves/{self.lesson.slug}.png", html)
         self.assertIn('twitter:card" content="summary_large_image"', html)
         self.assertIn(f"/cm/epreuves/{self.lesson.slug}", html)
@@ -87,7 +87,7 @@ class ApercuPartageAnglaisTests(TestCase):
         html = self.client.get(f"/partage-apercu/en/cm/past-papers/{self.lesson.slug}").content.decode()
         self.assertIn('<html lang="en">', html)
         self.assertIn('og:locale" content="en_GB"', html)
-        self.assertIn('og:title" content="Maths O Level 2023 |', html)
+        self.assertIn('og:title" content="Maths O Level 2023 - solutions |', html)
         self.assertIn("Past paper with correction - Mathematics (2023)", html)
         self.assertIn(f'<link rel="canonical" href="http://localhost/en/cm/past-papers/{self.lesson.slug}">'.replace("http://localhost", self._site()), html)
         self.assertIn(f"/partage-image/epreuves/{self.lesson.slug}.png?lang=en", html)

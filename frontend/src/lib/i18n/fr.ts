@@ -668,7 +668,6 @@ export const fr = {
   "inedite.faite": "Faite",
 
   "ed.retour_catalogue": "Retour au catalogue",
-  "ed.toutes_annales": "Toutes les annales du {libelle}",
   "ex.accueil": "Accueil",
   "ex.fil_ariane": "Fil d'Ariane",
   "ex.c_epreuves": "épreuves",

@@ -23,6 +23,7 @@ Une page, une adresse :
   d'une épreuve exige un compte, c'est donc la fiche `/<pays>/epreuves/x` qui est canonique - sauf pour une
   épreuve vitrine, dont le lecteur est ouvert à tous : c'est lui, la page canonique, comme un cours.
 """
+import json
 import re
 from html import escape as echapper_texte
 
@@ -36,7 +37,7 @@ from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
 from . import pages_examen
-from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, description_epreuve, langue_du_chemin
+from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, description_epreuve, langue_du_chemin, titre_epreuve
 from .libelles import libelle_cursus
 from .models import Cours, Langue, Lesson, StatutContenu
 from .segments_url import chemin_interne, chemin_public
@@ -97,6 +98,7 @@ def _page_cours(ident, langue_page, pays=None):
         "meta": [m for m in meta if m],
         # Ce que lit un visiteur anonyme (voir access.views.read_cours) : jamais les exercices d'application.
         "corps": cours.libre_markdown(),
+        "fil": [("accueil", f"/{code_pays}"), ("liste_cours", f"/{code_pays}/cours"), (cours.titre, f"/cours/{cours.slug}/lire")],
         "liens": [("liste_cours", f"/{code_pays}/cours")],
         "image": f"{settings.FRONTEND_URL}/partage-image/cours/{cours.slug}.png" + ("?lang=en" if langue_page == "en" else ""),
     }
@@ -116,8 +118,15 @@ def _page_epreuve(ident, langue_page, pays=None):
     annee = f" ({lesson.year})" if lesson.year else ""
     code_pays = lesson.subject.country.code.lower()
     meta = [type_affiche, lesson.subject.label, libelle_cursus(lesson.cursus.all()), str(lesson.year or "")]
+    premier_cursus = next(iter(lesson.cursus.all()), None)
+    fil = [("accueil", f"/{code_pays}")]
+    if premier_cursus is not None:
+        fil.append((pages_examen.libelle_examen(premier_cursus), f"/{code_pays}/examens/{pages_examen.slug_cursus(premier_cursus)}"))
     return {
         "titre": lesson.title,
+        # Le <title> porte « corrigé » pour une annale corrigée ; le h1 garde le titre de l'épreuve.
+        "titre_page": titre_epreuve(lesson, langue),
+        "fil": fil + [(lesson.title, f"/{code_pays}/epreuves/{lesson.slug}")],
         "description": description_epreuve(
             lesson, textes, type_affiche, libelle_cursus(lesson.cursus.all()), annee,
         ),
@@ -191,6 +200,7 @@ def _page_examen(ident, langue_page, pays=None):
         "interne": f"/{donnees['country']}/examens/{donnees['slug']}",
         "bilingue": langue == "en",
         "meta": [donnees["libelle"]],
+        "fil": [("accueil", f"/{donnees['country']}"), (donnees["libelle"], f"/{donnees['country']}/examens/{donnees['slug']}")],
         "corps": pages_examen.corps_markdown(
             donnees, langue, lambda slug: chemin_public(f"/{donnees['country']}/epreuves/{slug}", langue_page),
         ),
@@ -223,6 +233,27 @@ def adresses(page, langue_page):
     return (en if langue_page == "en" else fr), {"fr": fr, "en": en, "x-default": fr}
 
 
+def _fil_d_ariane_json_ld(fil, libelles, langue_page, canonical):
+    """Le balisage BreadcrumbList d'une page (Accueil > examen > épreuve), ou "" sans fil d'Ariane. `fil` : liste de
+    (libellé ou clé de LIBELLES, chemin interne) ; le dernier maillon est la page elle-même (son canonical). Le même
+    fil est visible sur la page (composant FilAriane) : un balisage doit refléter ce que lit le visiteur."""
+    if not fil:
+        return ""
+    base = settings.FRONTEND_URL
+    elements = []
+    for position, (nom, chemin) in enumerate(fil, start=1):
+        elements.append({
+            "@type": "ListItem",
+            "position": position,
+            "name": libelles.get(nom, nom),
+            "item": canonical if position == len(fil) else f"{base}{chemin_public(chemin, langue_page)}",
+        })
+    donnees = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": elements}
+    # « < » échappé : un titre ne doit jamais pouvoir fermer la balise <script>.
+    texte = json.dumps(donnees, ensure_ascii=False).replace("<", "\\u003c")
+    return f'<script type="application/ld+json">{texte}</script>'
+
+
 def _introuvable(langue_page):
     html = (
         f'<!doctype html><html lang="{langue_page}"><head><meta charset="utf-8">'
@@ -251,12 +282,13 @@ def prerendu(request, chemin=""):
     canonical, hreflang = adresses(page, langue_page)
     titre = _sans_gabarits(page["titre"])
     description = _sans_gabarits(page["description"])
-    titre_complet = f"{titre} | {site}"
+    titre_complet = f"{_sans_gabarits(page.get('titre_page', page['titre']))} | {site}"
     t, d, u, i = escape(titre_complet), escape(description), escape(canonical), escape(page["image"])
     alternates = "".join(
         f'<link rel="alternate" hreflang="{escape(lg)}" href="{escape(href)}">' for lg, href in hreflang.items()
     )
     libelles = LIBELLES[langue_page]
+    json_ld = _fil_d_ariane_json_ld(page.get("fil"), libelles, langue_page, canonical)
     meta = f"<p>{escape(' · '.join(page['meta']))}</p>" if page["meta"] else ""
     corps = _html(_sans_gabarits(page["corps"]) if page["corps"] else "", langue_page)
     liens = [(libelles["accueil"], chemin_public("/", langue_page))] + [
@@ -278,6 +310,7 @@ def prerendu(request, chemin=""):
         f'<meta property="og:description" content="{d}">'
         f'<meta property="og:image" content="{i}">'
         '<meta name="twitter:card" content="summary_large_image">'
+        f"{json_ld}"
         f"</head><body><header><a href=\"{escape(chemin_public('/', langue_page))}\">{escape(site)}</a></header>"
         f"<main><article><h1>{escape(titre)}</h1>{meta}{corps}</article></main>"
         f"<nav><ul>{nav}</ul></nav></body></html>"

@@ -662,7 +662,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "inedite.faite": "Done",
 
   "ed.retour_catalogue": "Back to the catalogue",
-  "ed.toutes_annales": "All {libelle} past papers",
   "ex.accueil": "Home",
   "ex.fil_ariane": "Breadcrumb",
   "ex.c_epreuves": "papers",

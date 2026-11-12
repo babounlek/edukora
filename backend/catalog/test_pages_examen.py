@@ -168,6 +168,11 @@ class PagesExamenTests(TestCase):
     def test_adresse_anglaise_traduite(self):
         self.assertEqual(chemin_public("/cm/examens/gce-o-level", "en"), "/en/cm/exams/gce-o-level")
 
+    def test_sitemap_liste_les_themes_qui_tombent_et_a_propos(self):
+        xml = "".join(self.client.get(f"/sitemap-{i}.xml").content.decode() for i in (1, 2))
+        for chemin in ("/cm/themes-frequents", "/en/cm/frequent-topics", "/a-propos", "/en/about"):
+            self.assertIn(f"<loc>{settings.FRONTEND_URL}{chemin}</loc>", xml, chemin)
+
     def test_sitemap_liste_les_pages_d_examen(self):
         xml = "".join(self.client.get(f"/sitemap-{i}.xml").content.decode() for i in (1, 2))
         self.assertIn(f"<loc>{settings.FRONTEND_URL}/cm/examens/bepc</loc>", xml)

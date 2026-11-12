@@ -134,6 +134,53 @@ class PrerenduTests(TestCase):
         self.assertIn("Cameroun", description(libre))
         self.assertIn("Cameroun", description(payant))
 
+    def _json_ld(self, html):
+        import json
+
+        brut = re.search(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)
+        return json.loads(brut.group(1)) if brut else None
+
+    def test_le_title_d_une_annale_corrigee_porte_le_mot_corrige_mais_pas_le_h1(self):
+        html = self.get(f"cm/epreuves/{self.epreuve.slug}").content.decode()
+        self.assertIn("<title>Maths BAC C 2023 - corrigé | ", html)
+        self.assertIn("<h1>Maths BAC C 2023</h1>", html)
+        self.assertIn('og:title" content="Maths BAC C 2023 - corrigé | ', html)
+
+    def test_le_suffixe_n_est_pas_repete_ni_ajoute_aux_autres_types(self):
+        from .apercu_partage import titre_epreuve
+
+        deja = Lesson(title="Maths BEPC 2020 - Corrigé détaillé", lesson_type=LessonType.CORR)
+        fiche = Lesson(title="Fiche de révision", lesson_type=LessonType.FICHE)
+        anglais = Lesson(title="Physics GCE O Level 2023", lesson_type=LessonType.CORR)
+        self.assertEqual(titre_epreuve(deja, "fr"), "Maths BEPC 2020 - Corrigé détaillé")
+        self.assertEqual(titre_epreuve(fiche, "fr"), "Fiche de révision")
+        self.assertEqual(titre_epreuve(anglais, "en"), "Physics GCE O Level 2023 - solutions")
+
+    def test_balisage_fil_d_ariane_d_une_epreuve(self):
+        donnees = self._json_ld(self.get(f"cm/epreuves/{self.epreuve.slug}").content.decode())
+        self.assertEqual(donnees["@type"], "BreadcrumbList")
+        noms = [e["name"] for e in donnees["itemListElement"]]
+        self.assertEqual(noms[0], "Accueil")
+        self.assertEqual(noms[-1], "Maths BAC C 2023")
+        self.assertEqual([e["position"] for e in donnees["itemListElement"]], list(range(1, len(noms) + 1)))
+        # Le dernier maillon est la page elle-même (son canonical), avec une adresse absolue.
+        self.assertEqual(donnees["itemListElement"][-1]["item"], f"{self.base}/cm/epreuves/{self.epreuve.slug}")
+        self.assertEqual(donnees["itemListElement"][0]["item"], f"{self.base}/cm")
+
+    def test_balisage_fil_d_ariane_d_un_cours(self):
+        donnees = self._json_ld(self.get(f"cours/{self.cours_fr.slug}").content.decode())
+        self.assertEqual([e["name"] for e in donnees["itemListElement"]], ["Accueil", "Tous les cours", "Dériver une fonction"])
+
+    def test_pas_de_balisage_sans_fil_d_ariane(self):
+        self.assertIsNone(self._json_ld(self.get("aide/comment-payer").content.decode()))
+
+    def test_un_titre_ne_peut_pas_fermer_la_balise_script(self):
+        self.epreuve.title = "Maths </script><b>x"
+        self.epreuve.save(update_fields=["title"])
+        html = self.get(f"cm/epreuves/{self.epreuve.slug}").content.decode()
+        self.assertEqual(html.count("</script>"), 1)
+        self.assertIn("\u003c/script>", html)
+
     def test_article_d_aide_non_traduit_une_seule_adresse(self):
         html = self.get("aide/comment-payer").content.decode()
         self.assertIn("Par mobile money.", html)

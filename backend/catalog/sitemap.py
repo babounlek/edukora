@@ -28,6 +28,7 @@ _STATIC_PAGES = [
     ("/aide", "0.6", "weekly"),
     ("/cgu", "0.3", "monthly"),
     ("/confidentialite", "0.3", "monthly"),
+    ("/a-propos", "0.4", "monthly"),
 ]
 
 # Catalogue, liste des épreuves et liste des cours existent une fois par pays (/cm, /cm/epreuves, /cm/cours, ...) -
@@ -38,6 +39,8 @@ _PER_COUNTRY_PAGES = [
     ("", "1.0", "daily"),
     ("/epreuves", "0.9", "daily"),
     ("/cours", "0.8", "daily"),
+    # « Les thèmes qui reviennent le plus » : l'argument central du produit, qui n'avait aucune entrée au sitemap.
+    ("/themes-frequents", "0.8", "weekly"),
 ]
 
 
