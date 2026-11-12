@@ -33,7 +33,7 @@ LARGEUR, HAUTEUR = 1200, 630
 
 # Le chemin INTERNE (français, sans le préfixe /en) : l'URL publique anglaise y est ramenée d'abord (voir infos_page).
 _CHEMIN_RE = re.compile(
-    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites|aide)/(?P<ident>[^/]+)(?:/lire)?$"
+    r"^(?:(?P<pays>[a-z]{2})/)?(?P<genre>epreuves|cours|epreuves-inedites|aide|examens)/(?P<ident>[^/]+)(?:/lire)?$"
 )
 
 # Textes de l'aperçu par langue. Les titres viennent du contenu lui-même (déjà dans sa langue) ;
@@ -215,6 +215,27 @@ def _infos_quiz_essai(cursus_id, subject_id, theme_id, langue="fr"):
     }
 
 
+def _infos_examen(pays, ident, langue="fr"):
+    """La page d'un examen (/cm/examens/bepc) : titre, description et carte générés depuis ses chiffres
+    (voir catalog.pages_examen). L'image est la carte générique : une carte par examen viendra après le lancement."""
+    from . import pages_examen
+
+    if not pays:
+        return None
+    donnees = pages_examen.donnees_examen(pays, ident)
+    if donnees is None:
+        return None
+    textes = pages_examen.textes_page(donnees, pages_examen.langue_du_contenu(donnees))
+    return {
+        "titre": textes["titre"],
+        "description": textes["description"],
+        "etiquette": donnees["libelle"],
+        "public": donnees["libelle"],
+        "chemin": f"{donnees['country']}/examens/{donnees['slug']}",
+        "image": f"{settings.FRONTEND_URL}/partage-image/defaut.png" + ("?lang=en" if langue == "en" else ""),
+    }
+
+
 _RESOLVEURS = {"epreuves": _infos_epreuve, "cours": _infos_cours, "epreuves-inedites": _infos_inedite, "aide": _infos_aide}
 # Le quiz gratuit n'a ni pays ni slug dans son adresse : trois identifiants numériques.
 _QUIZ_ESSAI_RE = re.compile(r"^quiz/essai/(\d+)/(\d+)/(\d+)$")
@@ -242,7 +263,10 @@ def infos_page(chemin):
     m = _CHEMIN_RE.match(interne)
     if not m:
         return None
-    infos = _RESOLVEURS[m.group("genre")](m.group("ident"), langue)
+    if m.group("genre") == "examens":
+        infos = _infos_examen(m.group("pays"), m.group("ident"), langue)
+    else:
+        infos = _RESOLVEURS[m.group("genre")](m.group("ident"), langue)
     if infos and m.group("pays") and m.group("genre") == "epreuves":
         infos["chemin"] = f"{m.group('pays')}/{infos['chemin']}"
     if infos and langue == "en":

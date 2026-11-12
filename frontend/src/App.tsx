@@ -39,6 +39,7 @@ const ThemeExerciceLecturePage = lazy(() => import("@/pages/ThemeExerciceLecture
 const EpreuveDetailPage = lazy(() => import("@/pages/EpreuveDetailPage").then((m) => ({ default: m.EpreuveDetailPage })))
 const EpreuveInediteDetailPage = lazy(() => import("@/pages/EpreuveInediteDetailPage").then((m) => ({ default: m.EpreuveInediteDetailPage })))
 const EpreuveReaderPage = lazy(() => import("@/pages/EpreuveReaderPage").then((m) => ({ default: m.EpreuveReaderPage })))
+const ExamenPage = lazy(() => import("@/pages/ExamenPage").then((m) => ({ default: m.ExamenPage })))
 const CoursListPage = lazy(() => import("@/pages/CoursListPage").then((m) => ({ default: m.CoursListPage })))
 const CoursDetailPage = lazy(() => import("@/pages/CoursDetailPage").then((m) => ({ default: m.CoursDetailPage })))
 const CoursReaderPage = lazy(() => import("@/pages/CoursReaderPage").then((m) => ({ default: m.CoursReaderPage })))
@@ -163,6 +164,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/:country" element={<CountryGuard />}>
                         <Route index element={<CataloguePage />} />
                         <Route path="epreuves" element={<EpreuvesListPage />} />
+                        <Route path="examens/:slug" element={<ExamenPage />} />
                         <Route path="recherche" element={<RecherchePage />} />
                         <Route path="themes-frequents" element={<ThemesFrequentsPage />} />
                         <Route path="themes-frequents/:tagId/exercices" element={<ThemeExercicesPage />} />

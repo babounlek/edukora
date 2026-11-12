@@ -133,10 +133,18 @@ class CursusSerializer(serializers.ModelSerializer):
     # fr | en, dérivée de l'examen (Cursus.langue) : le frontend s'en sert pour ne proposer que les examens de la
     # langue de l'interface (voir lib/cursusLangue.ts).
     langue = serializers.CharField(read_only=True)
+    # Le segment d'URL de la page de l'examen (/cm/examens/<slug>, voir catalog.pages_examen) : le frontend s'en sert
+    # pour relier une épreuve à « toutes les annales » de son examen.
+    slug = serializers.SerializerMethodField()
 
     class Meta:
         model = Cursus
-        fields = ["id", "country", "examen", "examen_display", "series", "langue"]
+        fields = ["id", "country", "examen", "examen_display", "series", "langue", "slug"]
+
+    def get_slug(self, obj):
+        from .pages_examen import slug_depuis
+
+        return slug_depuis(self.get_examen_display(obj), obj.series.code if obj.series_id else None)
 
     def get_examen_display(self, obj):
         # Mémoïsé par (pays, examen) sur le contexte de sérialisation (même patron que

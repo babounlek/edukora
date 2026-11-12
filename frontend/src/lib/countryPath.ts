@@ -48,6 +48,11 @@ export function themeExerciceLecturePath(country: string, tagId: number | string
   return `/${country}/themes-frequents/${tagId}/exercices/${exerciseId}`
 }
 
+/** La page d'atterrissage d'un examen : `/cm/examens/bepc` (voir catalog.pages_examen côté serveur). */
+export function examenPath(country: string, slug: string): string {
+  return `/${country}/examens/${slug}`
+}
+
 export function epreuveDetailPath(country: string, slug: string): string {
   return `/${country}/epreuves/${slug}`
 }

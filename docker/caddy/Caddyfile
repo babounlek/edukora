@@ -86,22 +86,24 @@
     redir @seg_en_31 /en/help/{re.seg31.1}{qs_en} 301
     @seg_en_32 path_regexp seg32 ^/en/([a-z]{2})/epreuves/?$
     redir @seg_en_32 /en/{re.seg32.1}/past-papers{qs_en} 301
-    @seg_en_33 path_regexp seg33 ^/en/([a-z]{2})/recherche/?$
-    redir @seg_en_33 /en/{re.seg33.1}/search{qs_en} 301
-    @seg_en_34 path_regexp seg34 ^/en/([a-z]{2})/themes-frequents/?$
-    redir @seg_en_34 /en/{re.seg34.1}/frequent-topics{qs_en} 301
-    @seg_en_35 path_regexp seg35 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/?$
-    redir @seg_en_35 /en/{re.seg35.1}/frequent-topics/{re.seg35.2}/exercises{qs_en} 301
-    @seg_en_36 path_regexp seg36 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/([^/]+)/?$
-    redir @seg_en_36 /en/{re.seg36.1}/frequent-topics/{re.seg36.2}/exercises/{re.seg36.3}{qs_en} 301
-    @seg_en_37 path_regexp seg37 ^/en/([a-z]{2})/cours/?$
-    redir @seg_en_37 /en/{re.seg37.1}/lessons{qs_en} 301
-    @seg_en_38 path_regexp seg38 ^/en/([a-z]{2})/epreuves/([^/]+)/?$
-    redir @seg_en_38 /en/{re.seg38.1}/past-papers/{re.seg38.2}{qs_en} 301
-    @seg_en_39 path_regexp seg39 ^/en/([a-z]{2})/epreuves/([^/]+)/lire/?$
-    redir @seg_en_39 /en/{re.seg39.1}/past-papers/{re.seg39.2}/read{qs_en} 301
-    @seg_en_40 path_regexp seg40 ^/en/([a-z]{2})/epreuves-inedites/([^/]+)/?$
-    redir @seg_en_40 /en/{re.seg40.1}/mock-papers/{re.seg40.2}{qs_en} 301
+    @seg_en_33 path_regexp seg33 ^/en/([a-z]{2})/examens/([^/]+)/?$
+    redir @seg_en_33 /en/{re.seg33.1}/exams/{re.seg33.2}{qs_en} 301
+    @seg_en_34 path_regexp seg34 ^/en/([a-z]{2})/recherche/?$
+    redir @seg_en_34 /en/{re.seg34.1}/search{qs_en} 301
+    @seg_en_35 path_regexp seg35 ^/en/([a-z]{2})/themes-frequents/?$
+    redir @seg_en_35 /en/{re.seg35.1}/frequent-topics{qs_en} 301
+    @seg_en_36 path_regexp seg36 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/?$
+    redir @seg_en_36 /en/{re.seg36.1}/frequent-topics/{re.seg36.2}/exercises{qs_en} 301
+    @seg_en_37 path_regexp seg37 ^/en/([a-z]{2})/themes-frequents/([^/]+)/exercices/([^/]+)/?$
+    redir @seg_en_37 /en/{re.seg37.1}/frequent-topics/{re.seg37.2}/exercises/{re.seg37.3}{qs_en} 301
+    @seg_en_38 path_regexp seg38 ^/en/([a-z]{2})/cours/?$
+    redir @seg_en_38 /en/{re.seg38.1}/lessons{qs_en} 301
+    @seg_en_39 path_regexp seg39 ^/en/([a-z]{2})/epreuves/([^/]+)/?$
+    redir @seg_en_39 /en/{re.seg39.1}/past-papers/{re.seg39.2}{qs_en} 301
+    @seg_en_40 path_regexp seg40 ^/en/([a-z]{2})/epreuves/([^/]+)/lire/?$
+    redir @seg_en_40 /en/{re.seg40.1}/past-papers/{re.seg40.2}/read{qs_en} 301
+    @seg_en_41 path_regexp seg41 ^/en/([a-z]{2})/epreuves-inedites/([^/]+)/?$
+    redir @seg_en_41 /en/{re.seg41.1}/mock-papers/{re.seg41.2}{qs_en} 301
     # <<< redirections-segments-en
 
     handle_path /static/* {
@@ -178,7 +180,7 @@
     # sont pas, et les visiteurs n'y passent jamais. Mêmes chemins que les aperçus de liens ci-dessous.
     @robots_moteurs {
         header_regexp User-Agent (?i)(googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/)
-        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers|aide|help)/[^/]+(/lire|/read)?/?$
+        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers|aide|help|examens|exams)/[^/]+(/lire|/read)?/?$
     }
     handle @robots_moteurs {
         rewrite * /prerendu{path}
@@ -193,7 +195,7 @@
     # frontend/src/lib/i18n/segments-url.json) ; un test vérifie qu'ils couvrent toutes les routes de détail.
     @robots_apercu {
         header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
-        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers|aide|help)/[^/]+(/lire|/read)?/?$
+        path_regexp ^/(en/)?([a-z]{2}/)?(epreuves|past-papers|cours|lessons|epreuves-inedites|mock-papers|aide|help|examens|exams)/[^/]+(/lire|/read)?/?$
     }
     # Le quiz gratuit partagé : /quiz/essai/<cursus>/<matière>/<thème> (identifiants numériques, pas de pays) et sa
     # forme anglaise /en/quiz/trial/... ; /quiz/essai tout court et /quiz/essai/resultat restent à la SPA.

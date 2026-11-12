@@ -35,6 +35,7 @@ from django.utils.html import escape
 from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
+from . import pages_examen
 from .apercu_partage import _CHEMIN_RE, LOCALES_OG, TEXTES, description_epreuve, langue_du_chemin
 from .libelles import libelle_cursus
 from .models import Cours, Langue, Lesson, StatutContenu
@@ -76,7 +77,7 @@ def _html(texte_markdown, langue_page):
     return html
 
 
-def _page_cours(ident, langue_page):
+def _page_cours(ident, langue_page, pays=None):
     cours = Cours.objects.visibles().par_slug_ou_id(ident).select_related("subject__country").first()
     if not cours:
         return None
@@ -101,7 +102,7 @@ def _page_cours(ident, langue_page):
     }
 
 
-def _page_epreuve(ident, langue_page):
+def _page_epreuve(ident, langue_page, pays=None):
     lesson = (
         Lesson.objects.visibles().par_slug_ou_id(ident)
         .select_related("subject__country").prefetch_related("cursus__series").first()
@@ -133,7 +134,7 @@ def _page_epreuve(ident, langue_page):
     }
 
 
-def _page_inedite(ident, langue_page):
+def _page_inedite(ident, langue_page, pays=None):
     qs = EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus__country__actif=True)
     qs = qs.filter(pk=ident) if ident.isdigit() else qs.filter(slug=ident)
     epreuve = qs.select_related("subject__country").prefetch_related("cursus__series").distinct().first()
@@ -156,7 +157,7 @@ def _page_inedite(ident, langue_page):
     }
 
 
-def _page_aide(ident, langue_page):
+def _page_aide(ident, langue_page, pays=None):
     article = ArticleAide.objects.filter(slug=ident, publie=True).first()
     if not article:
         return None
@@ -174,7 +175,34 @@ def _page_aide(ident, langue_page):
     }
 
 
-_PAGES = {"epreuves": _page_epreuve, "cours": _page_cours, "epreuves-inedites": _page_inedite, "aide": _page_aide}
+def _page_examen(ident, langue_page, pays=None):
+    """La page d'atterrissage d'un examen (voir catalog.pages_examen) : un texte d'introduction et la liste des
+    épreuves récentes, avec un lien vers chacune. Une adresse sans pays n'existe pas (404)."""
+    if not pays:
+        return None
+    donnees = pages_examen.donnees_examen(pays, ident)
+    if donnees is None:
+        return None
+    langue = pages_examen.langue_du_contenu(donnees)
+    textes = pages_examen.textes_page(donnees, langue)
+    return {
+        "titre": textes["titre"],
+        "description": textes["description"],
+        "interne": f"/{donnees['country']}/examens/{donnees['slug']}",
+        "bilingue": langue == "en",
+        "meta": [donnees["libelle"]],
+        "corps": pages_examen.corps_markdown(
+            donnees, langue, lambda slug: chemin_public(f"/{donnees['country']}/epreuves/{slug}", langue_page),
+        ),
+        "liens": [("liste_epreuves", f"/{donnees['country']}/epreuves")],
+        "image": f"{settings.FRONTEND_URL}/partage-image/defaut.png" + ("?lang=en" if langue_page == "en" else ""),
+    }
+
+
+_PAGES = {
+    "epreuves": _page_epreuve, "cours": _page_cours, "epreuves-inedites": _page_inedite, "aide": _page_aide,
+    "examens": _page_examen,
+}
 
 # Le gabarit `{{site}}` des articles d'aide (les autres ne se remplissent que dans le frontend, voir apercu_partage).
 _GABARIT_RE = re.compile(r"\{\{\s*(\w+)\s*\}\}")
@@ -213,7 +241,7 @@ def prerendu(request, chemin=""):
     brut = chemin.strip("/")
     interne = chemin_interne("/" + re.sub(r"^en(/|$)", "", brut)).strip("/") if langue_page == "en" else brut
     m = _CHEMIN_RE.match(interne)
-    page = _PAGES[m.group("genre")](m.group("ident"), langue_page) if m else None
+    page = _PAGES[m.group("genre")](m.group("ident"), langue_page, m.group("pays")) if m else None
     if not page:
         return _introuvable(langue_page)
 

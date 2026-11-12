@@ -13,6 +13,8 @@ urlpatterns = [
     path("cours/<slug:slug>/", views.CoursDetailView.as_view(), name="cours-detail"),
     path("subjects/", views.SubjectListView.as_view(), name="subject-list"),
     path("cursus/", views.CursusListView.as_view(), name="cursus-list"),
+    path("examens/<str:country>/", views.ExamenListeView.as_view(), name="examen-liste"),
+    path("examens/<str:country>/<slug:slug>/", views.ExamenPageView.as_view(), name="examen-page"),
     path("cursus/<int:cursus_id>/contenu/", views.CursusContenuView.as_view(), name="cursus-contenu"),
     path("cursus/<int:cursus_id>/themes-frequents/", views.ThemesFrequentsView.as_view(), name="themes-frequents"),
     path(

@@ -42,7 +42,7 @@ import { useSeo } from "@/lib/seo"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
-import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
+import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath, examenPath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
   useI18n()
@@ -213,6 +213,15 @@ export function EpreuveDetailPage() {
         <ArrowLeft className="size-4" />
         {t("ed.retour_catalogue")}
       </Link>
+      {/* Vers la page de l'examen (/cm/examens/bepc) : toutes les annales, et un lien de plus pour les moteurs. */}
+      {epreuve.cursus[0]?.slug && (
+        <Link
+          to={examenPath(countryCode, epreuve.cursus[0].slug)}
+          className="mb-5 ml-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        >
+          {t("ed.toutes_annales", { libelle: formatCursusGroups(epreuve.cursus.slice(0, 1))[0]?.label ?? "" })}
+        </Link>
+      )}
 
       <div className="flex animate-fade-up flex-col gap-6">
         <EnTeteEpreuve

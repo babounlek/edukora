@@ -6,6 +6,8 @@ import { messageLimiteAtteinte, signalerChangementQuota } from "@/lib/quotaPdf"
 import type {
   CampagneEnCours,
   Accueil,
+  ExamenLien,
+  ExamenPageData,
   CompletionRecherche,
   Cours,
   CoursContent,
@@ -330,6 +332,14 @@ export function listEpreuves(filters: EpreuveFilters = {}, signal?: AbortSignal)
     auth: "optional",
     signal,
   })
+}
+
+export function getExamen(country: string, slug: string) {
+  return apiRequest<ExamenPageData>(`/catalog/examens/${country}/${slug}/`, { auth: "optional" })
+}
+
+export function listExamens(country: string) {
+  return apiRequest<ExamenLien[]>(`/catalog/examens/${country}/`, { auth: "optional" })
 }
 
 export function getEpreuve(slug: string) {

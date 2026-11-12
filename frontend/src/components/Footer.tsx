@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ArrowUp, ChevronDown, Mail, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
 
-import { getPlatformStats } from "@/api/endpoints"
+import { getPlatformStats, listExamens } from "@/api/endpoints"
 import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { ouvrirCentre } from "@/lib/guides/etat"
 import { useAbonneActif } from "@/lib/abonneActif"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
-import { catalogueHomePath, coursListPath, epreuvesListPath, themesFrequentsPath } from "@/lib/countryPath"
+import { catalogueHomePath, coursListPath, epreuvesListPath, examenPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/Logo"
 import { PastilleOperateur } from "@/components/PastilleOperateur"
@@ -171,6 +171,19 @@ export function Footer() {
   // Examens de la langue de l'interface (voir lib/cursusLangue) : BEPC, Probatoire, BAC en français, GCE en anglais.
   const { data: cursusList } = useCursusListe(country, { langue: langueStats })
 
+  // Les examens qui ont une page d'atterrissage (/cm/examens/bepc) : le pied de page y mène, ce qui donne aux moteurs
+  // un lien depuis chaque page du site. Un examen qui n'en a pas (aucune épreuve publiée) garde le filtre de la liste.
+  const { data: pagesExamen } = useQuery({
+    queryKey: ["examens", country],
+    queryFn: () => listExamens(country as string),
+    enabled: Boolean(country),
+    staleTime: 10 * 60 * 1000,
+  })
+  function lienExamen(c: Cursus): string {
+    const page = pagesExamen?.find((e) => e.cursus_id === c.id)
+    return page ? examenPath(country as string, page.slug) : `${epreuvesListPath(country)}?cursus=${c.id}`
+  }
+
   const invitation = invitationPour(isAuthenticated ? user : null, country)
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
   // sur l'accueil) : un bouton qui ne mène nulle part affaiblit tous les autres.
@@ -286,14 +299,14 @@ export function Footer() {
             examens.map(({ examen, cursus }) => (
               <div key={examen} className="text-sm">
                 {cursus.length === 1 && !cursus[0].series ? (
-                  <Lien to={`${epreuvesListPath(country)}?cursus=${cursus[0].id}`}>{examen}</Lien>
+                  <Lien to={lienExamen(cursus[0])}>{examen}</Lien>
                 ) : (
                   <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                     <span className="text-foreground/80">{examen}</span>
                     {cursus.map((c) => (
                       <Link
                         key={c.id}
-                        to={`${epreuvesListPath(country)}?cursus=${c.id}`}
+                        to={lienExamen(c)}
                         className="rounded-md px-1 text-muted-foreground ring-1 ring-border transition-colors hover:text-primary hover:ring-primary/40"
                         aria-label={libelleCursus(c)}
                       >

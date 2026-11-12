@@ -4,6 +4,7 @@ from django.http import Http404, HttpResponse
 from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
+from . import pages_examen
 from .models import Cours, Country, Langue, Lesson, StatutContenu
 from .segments_url import chemin_public
 
@@ -80,6 +81,16 @@ def _all_entries():
         code = country_code.lower()
         for path, priority, changefreq in _PER_COUNTRY_PAGES:
             entries.extend(_entries(base, f"/{code}{path}", True, priority=priority, changefreq=changefreq))
+
+    # Une page d'atterrissage par examen qui porte au moins une épreuve publiée (voir catalog.pages_examen) : mêmes
+    # règles de langue que les épreuves (une version anglaise seulement pour les examens du GCE).
+    for country_code in Country.objects.filter(actif=True).values_list("code", flat=True):
+        code = country_code.lower()
+        for cursus, _n in pages_examen.cursus_avec_epreuves(code):
+            entries.extend(_entries(
+                base, f"/{code}/examens/{pages_examen.slug_cursus(cursus)}", cursus.langue == Langue.EN,
+                priority="0.9", changefreq="weekly",
+            ))
 
     lessons = Lesson.objects.visibles().select_related("subject__country").only(
         "slug", "updated_at", "subject__country__code", "subject__langue",

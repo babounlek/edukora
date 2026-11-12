@@ -2,6 +2,7 @@ import random
 
 from django.db.models import Case, Count, Exists, IntegerField, Min, OuterRef, Q, Subquery, When
 from django.db.models.functions import Coalesce
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions
 from rest_framework.response import Response
@@ -48,6 +49,7 @@ from .models import (
     langue_examen,
     q_cours_du_cursus,
 )
+from . import pages_examen
 from .recherche_titre import motif_sans_accent
 from .rendering import exercise_questions_breakdown
 from .serializers import (
@@ -883,6 +885,43 @@ class CursusContenuView(APIView):
             "epreuves_inedites": inedites.count(),
             "matieres": len(matieres),
         })
+
+
+class ExamenPageView(APIView):
+    """GET /catalog/examens/<pays>/<slug>/ : les chiffres et les épreuves récentes d'un examen, pour sa page
+    d'atterrissage (voir catalog.pages_examen). Public, comme la liste des épreuves ; 404 si l'examen n'existe pas
+    ou n'a aucune épreuve publiée."""
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, country, slug):
+        donnees = pages_examen.donnees_examen(country, slug)
+        if donnees is None:
+            raise Http404("Examen introuvable.")
+        donnees["textes"] = pages_examen.textes_page(donnees, pages_examen.langue_du_contenu(donnees))
+        return Response(donnees)
+
+
+class ExamenListeView(APIView):
+    """GET /catalog/examens/<pays>/ : les examens qui ont une page d'atterrissage (au moins une épreuve publiée), pour
+    les lier depuis le pied de page. Mis en cache une dizaine de minutes : la liste change à chaque nouvelle épreuve,
+    pas à chaque visite."""
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, country):
+        examens = [
+            {
+                "cursus_id": cursus.id,
+                "slug": pages_examen.slug_cursus(cursus),
+                "libelle": pages_examen.libelle_examen(cursus),
+                "nb_epreuves": n,
+            }
+            for cursus, n in pages_examen.cursus_avec_epreuves(country)
+        ]
+        reponse = Response(examens)
+        reponse["Cache-Control"] = "public, max-age=600"
+        return reponse
 
 
 class CursusListView(generics.ListAPIView):

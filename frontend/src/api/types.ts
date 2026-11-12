@@ -255,6 +255,35 @@ export interface Cursus {
   series: Series | null
   // Langue du contenu de l'examen (GCE : en, tout le reste : fr) - voir lib/cursusLangue.ts.
   langue: "fr" | "en"
+  // Le segment d'URL de la page de l'examen (/cm/examens/<slug>) ; présent quand l'API le fournit.
+  slug?: string
+}
+
+/** Un examen qui a sa page d'atterrissage (GET /catalog/examens/<pays>/). */
+export interface ExamenLien {
+  cursus_id: number
+  slug: string
+  libelle: string
+  nb_epreuves: number
+}
+
+/** La page d'un examen (GET /catalog/examens/<pays>/<slug>/) : des chiffres et des titres, jamais un corrigé. */
+export interface ExamenPageData {
+  slug: string
+  country: string
+  cursus_id: number
+  libelle: string
+  examen_display: string
+  langue: "fr" | "en"
+  nb_epreuves: number
+  nb_epreuves_libres: number
+  nb_cours: number
+  nb_matieres: number
+  annee_min: number | null
+  annee_max: number | null
+  matieres: { label: string; n: number }[]
+  epreuves: { slug: string; title: string; year: number | null; matiere: string; libre: boolean }[]
+  textes: { titre: string; description: string; intro: string }
 }
 
 export interface Tag {
