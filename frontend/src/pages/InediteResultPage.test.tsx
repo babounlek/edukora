@@ -13,6 +13,7 @@ vi.mock("@/api/endpoints", () => ({ completeTentative, completeSimulation, getTe
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
 import { definirLangue } from "@/lib/i18n"
+import { clearJetonInvite, setJetonInvite } from "@/lib/invite"
 import { InediteResultPage } from "./InediteResultPage"
 
 function resultat(extra: Partial<TentativeInediteResult> = {}): TentativeInediteResult {
@@ -51,6 +52,7 @@ function afficher(source: "inedit" | "officielle" = "inedit") {
 }
 
 beforeEach(() => {
+  clearJetonInvite()
   completeTentative.mockReset()
   completeSimulation.mockReset()
   // Par défaut la copie est déjà rendue : la page affiche son résultat.
@@ -59,6 +61,27 @@ beforeEach(() => {
   getSimulation.mockReset()
   getSimulation.mockResolvedValue({ id: 7, submitted_at: "2026-10-04T09:00:00Z" })
   auth.user = { a_un_abonnement_actif: true }
+})
+
+describe("InediteResultPage, après un essai sans compte", () => {
+  it("invite à créer un compte pour garder la copie, et revient sur le résultat après", async () => {
+    auth.user = null
+    setJetonInvite("jeton-invite")
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    expect(await screen.findByText("Garde ta copie et ta note.")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Créer mon compte gratuit" })).toHaveAttribute("href", "/connexion")
+  })
+
+  it("n'en parle pas à un élève connecté, ni à un visiteur sans essai", async () => {
+    auth.user = { a_un_abonnement_actif: true }
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByText("Garde ta copie et ta note.")).not.toBeInTheDocument()
+  })
 })
 
 describe("InediteResultPage, après l'épreuve offerte", () => {

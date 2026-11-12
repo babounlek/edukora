@@ -230,7 +230,9 @@ def contexte(request):
     cookie = None
 
     user = request.user
-    if user.is_authenticated:
+    # Un compte invité (essai d'une inédite gratuite sans inscription, voir users.invites) compte comme un VISITEUR :
+    # en faire un « connecté » donnerait le quota des inscrits à qui sait en créer un à chaque visite.
+    if user.is_authenticated and not getattr(user, "est_invite", False):
         from users.profils import profil_actif
 
         profil = profil_actif(request)

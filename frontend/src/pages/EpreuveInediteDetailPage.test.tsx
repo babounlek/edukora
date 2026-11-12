@@ -8,6 +8,7 @@ import type { Epreuve, TentativeEnCours } from "@/api/types"
 const getEpreuveInedite = vi.hoisted(() => vi.fn())
 const startTentativeInedite = vi.hoisted(() => vi.fn())
 const startExamMode = vi.hoisted(() => vi.fn())
+const creerCompteInvite = vi.hoisted(() => vi.fn())
 const listPlans = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({ isAuthenticated: false }))
 const cursusDeclare = vi.hoisted(() => ({ valeur: null as number | null }))
@@ -16,6 +17,7 @@ vi.mock("@/api/endpoints", () => ({
   getEpreuveInedite,
   startTentativeInedite,
   startExamMode,
+  creerCompteInvite,
   listPlans,
 }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
@@ -27,6 +29,7 @@ vi.mock("@/components/EpreuveMarkdown", () => ({ EpreuveMarkdown: ({ markdown }:
 vi.mock("@/components/ParrainageHint", () => ({ ParrainageHint: () => null }))
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 
+import { setJetonInvite } from "@/lib/invite"
 import { EpreuveInediteDetailPage } from "./EpreuveInediteDetailPage"
 
 function cursus(id: number, serie: string) {
@@ -73,6 +76,8 @@ beforeEach(() => {
   getEpreuveInedite.mockReset()
   startTentativeInedite.mockReset()
   startExamMode.mockReset()
+  creerCompteInvite.mockReset()
+  localStorage.clear()
   sessionStorage.clear()
   listPlans.mockReset()
   listPlans.mockResolvedValue([])
@@ -146,7 +151,7 @@ describe("fiche d'une épreuve inédite, pour un visiteur", () => {
 })
 
 describe("fiche d'une épreuve inédite offerte (vitrine)", () => {
-  it("invite un visiteur à l'essayer gratuitement, et le ramène sur la fiche après sa connexion", async () => {
+  it("laisse un visiteur l'essayer sans compte : un compte d'essai s'ouvre, puis la copie", async () => {
     getEpreuveInedite.mockResolvedValue(epreuve({ est_vitrine: true }))
     afficher()
 
@@ -155,8 +160,51 @@ describe("fiche d'une épreuve inédite offerte (vitrine)", () => {
     expect(screen.queryByRole("link", { name: "Débloquer l'accès" })).not.toBeInTheDocument()
     expect(screen.queryByText(/Incluse dans l'abonnement/)).not.toBeInTheDocument()
 
-    await userEvent.click(screen.getByRole("link", { name: "Essayer gratuitement" }))
+    creerCompteInvite.mockImplementation(async () => setJetonInvite("jeton-invite"))
+    startTentativeInedite.mockResolvedValue({ id: 71 })
+    await userEvent.click(screen.getByRole("button", { name: "Essayer gratuitement" }))
+
+    expect(await screen.findByText("Page de tentative")).toBeInTheDocument()
+    expect(creerCompteInvite).toHaveBeenCalledTimes(1)
+    expect(startTentativeInedite).toHaveBeenCalledWith(10)
+  })
+
+  it("ne rouvre pas un compte d'essai quand le navigateur en porte déjà un", async () => {
+    setJetonInvite("jeton-invite")
+    getEpreuveInedite.mockResolvedValue(epreuve({ est_vitrine: true }))
+    startTentativeInedite.mockResolvedValue({ id: 72 })
+    afficher()
+
+    await userEvent.click(await screen.findByRole("button", { name: "Essayer gratuitement" }))
+
+    expect(await screen.findByText("Page de tentative")).toBeInTheDocument()
+    expect(creerCompteInvite).not.toHaveBeenCalled()
+  })
+
+  it("dit que la copie se garde en créant un compte, et garde la connexion pour qui en a déjà un", async () => {
+    getEpreuveInedite.mockResolvedValue(epreuve({ est_vitrine: true }))
+    afficher()
+
+    expect(await screen.findByText(/Crée ton compte à la fin pour garder ta copie/)).toBeInTheDocument()
+    await userEvent.click(screen.getByRole("link", { name: "Te connecter" }))
     expect(await screen.findByText("Page de connexion")).toBeInTheDocument()
+  })
+
+  it("rappelle à un invité de créer son compte quand il revient sur la fiche", async () => {
+    setJetonInvite("jeton-invite")
+    getEpreuveInedite.mockResolvedValue(epreuve({ est_vitrine: true, has_access: true }))
+    afficher()
+
+    expect(await screen.findByText(/Tu essaies sans compte/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Créer mon compte" })).toBeInTheDocument()
+  })
+
+  it("n'affiche aucun rappel à quelqu'un qui n'a pas d'essai en cours", async () => {
+    getEpreuveInedite.mockResolvedValue(epreuve({ est_vitrine: true, has_access: true }))
+    afficher()
+
+    await screen.findByRole("heading", { level: 1, name: /Mathématiques BAC D et TI/ })
+    expect(screen.queryByText(/Tu essaies sans compte/)).not.toBeInTheDocument()
   })
 
   it("garde l'abonnement accessible à côté, sans le mettre en avant", async () => {

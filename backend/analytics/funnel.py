@@ -92,7 +92,7 @@ def entonnoir(jours=30, *, maintenant=None):
     maintenant = maintenant or timezone.now()
     debut = maintenant - timedelta(days=jours)
 
-    cohorte = User.objects.filter(date_joined__gte=debut, is_staff=False, is_superuser=False)
+    cohorte = User.objects.filter(date_joined__gte=debut, is_staff=False, is_superuser=False, est_invite=False)
     inscrits = set(cohorte.values_list("id", flat=True))
     total = len(inscrits)
 
@@ -201,7 +201,7 @@ def _mesure_fenetre(debut, fin):
     chiffre d'affaires. `taux_conversion` = comptes créés dans la période qui ont payé / comptes créés.
     """
     crees = set(
-        User.objects.filter(date_joined__gte=debut, date_joined__lt=fin, is_staff=False, is_superuser=False)
+        User.objects.filter(date_joined__gte=debut, date_joined__lt=fin, is_staff=False, is_superuser=False, est_invite=False)
         .values_list("id", flat=True),
     )
     payants = crees & _ids_avec_paiement_reussi()

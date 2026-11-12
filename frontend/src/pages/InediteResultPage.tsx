@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { ClipboardCheck, Info, Trophy } from "lucide-react"
 
 import { ApiError } from "@/api/client"
@@ -12,6 +12,7 @@ import { CartePertes, CartePosition, CarteTemps } from "@/components/inedit/Rapp
 import { formatDureeEcoulee } from "@/lib/duration"
 import { formatPoints } from "@/lib/notation"
 import { useAuth } from "@/context/AuthContext"
+import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { useSeo } from "@/lib/seo"
 import { apiPour, cheminEpreuve, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
@@ -64,6 +65,9 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { user } = useAuth()
+  const location = useLocation()
+  // Essai sans compte : la copie n'est gardée que sur cet appareil tant qu'il n'a pas créé son compte.
+  const essaiSansCompte = useEssaiSansCompte()
   useSeo({ title: source === "officielle" ? t("rp.seo_simulation") : t("rp.seo") })
   const [result, setResult] = useState<TentativeInediteResult | null>(null)
   const [error, setError] = useState("")
@@ -362,6 +366,22 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
             ? t("ct.bareme_estime_exercice")
             : t("rp.bareme_estime_question")}
         </p>
+      )}
+
+      {source === "inedit" && essaiSansCompte && (
+        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3.5">
+          <p className="text-sm">
+            <strong>{t("rp.invite_titre")}</strong> {t("rp.invite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg">
+            <Link
+              to="/connexion"
+              state={{ from: `${location.pathname}${location.search}`, intent: t("ine.invite_intent") }}
+            >
+              {t("rp.invite_cta")}
+            </Link>
+          </Button>
+        </div>
       )}
 
       {/* Une copie rendue sans abonnement est forcément celle de l'épreuve offerte : c'est le

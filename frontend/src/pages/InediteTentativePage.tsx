@@ -33,6 +33,8 @@ import { cn } from "@/lib/utils"
 import { apiPour, cheminResultat, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
 import { libellesUnite, tu, uniteDe } from "@/lib/vocabulaire"
 import { ReglesChoix } from "@/components/inedit/ReglesChoix"
+import { PastilleQuotaPdf, QuotaPdfComplement, useQuotaPdfBouton } from "@/components/QuotaPdfPastille"
+import { BandeauEssaiSansCompte } from "@/components/inedit/BandeauEssaiSansCompte"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
 
@@ -147,6 +149,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const [enAttente, setEnAttente] = useState(0)
   const [courante, setCourante] = useState<number | null>(null)
   const navigate = useNavigate()
+  // Compteur de téléchargements PDF du sujet : même clé que celle que le serveur compte (lesson:<id> pour une annale,
+  // inedit:<id> pour une inédite). Tant que la tentative n'est pas chargée, pas de document, donc pas de pastille.
+  const docSujet = tentative ? `${source === "officielle" ? "lesson" : "inedit"}:${tentative.epreuve}` : ""
+  const quotaSujet = useQuotaPdfBouton(docSujet)
 
   // Dernière requête d'écriture émise par question : deux clics rapprochés sur « + »
   // produisent deux requêtes, et une réponse tardive ne doit jamais écraser la plus récente.
@@ -666,6 +672,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
         {t("ct.quitter")}
       </Link>
 
+      {!enExamen && <BandeauEssaiSansCompte className="mb-4" />}
+
       {/* Le briefing porte déjà le titre (son h1) ; ensuite plus rien ne le disait : en plein examen, le site
           autour de l'épreuve a disparu et on ne savait plus laquelle on composait. */}
       {!briefingVisible && (
@@ -727,11 +735,12 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
                 variant="ghost"
                 disabled={downloadingSujet}
                 onClick={handleDownloadSujet}
-                title={t("ct.pdf_ouvrir")}
+                title={quotaSujet.phrase ? `${t("ct.pdf_ouvrir")} - ${quotaSujet.phrase}` : t("ct.pdf_ouvrir")}
                 aria-label={t("ct.pdf_ouvrir")}
               >
                 <FileDown className="size-3.5" />
                 <span className="hidden sm:inline">{downloadingSujet ? t("ct.ouverture") : t("ct.pdf")}</span>
+                <PastilleQuotaPdf etat={quotaSujet} />
               </Button>
             )}
             {tentative.correction_disponible && (
@@ -819,6 +828,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           )}
         </div>
 
+        {tentative.sujet_pdf_disponible && !(briefingVisible && source === "inedit") && (
+          <QuotaPdfComplement doc={docSujet} etat={quotaSujet} />
+        )}
+
         {enAttente > 0 && (
           <p role="status" className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
             <CloudOff className="size-3.5 shrink-0" aria-hidden="true" />
@@ -874,6 +887,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
             <Button className="mt-3" size="sm" disabled={downloadingSujet} onClick={handleDownloadSujet}>
               <FileDown />
               {downloadingSujet ? t("ct.ouverture") : t("ct.ouvrir_sujet")}
+              <PastilleQuotaPdf etat={quotaSujet} />
             </Button>
           )}
         </div>

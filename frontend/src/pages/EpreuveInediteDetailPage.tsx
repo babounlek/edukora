@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams, useSearchParams } from "reac
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { ArrowLeft, Check, Clock, Gift, GraduationCap, Lock, RotateCcw, Sparkles, Unlock } from "lucide-react"
 
-import { getEpreuveInedite, listPlans, startExamMode, startTentativeInedite } from "@/api/endpoints"
+import { creerCompteInvite, getEpreuveInedite, listPlans, startExamMode, startTentativeInedite } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Epreuve, Plan } from "@/api/types"
 import { Button } from "@/components/ui/button"
@@ -19,6 +19,8 @@ import { maintenantServeur } from "@/lib/horlogeServeur"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { CountryBadge } from "@/components/CountryBadge"
 import { ChoixModeEpreuve } from "@/components/inedit/ChoixModeEpreuve"
+import { BandeauEssaiSansCompte } from "@/components/inedit/BandeauEssaiSansCompte"
+import { aUnEssaiSansCompte } from "@/lib/invite"
 import { DialogueModeExamen } from "@/components/inedit/DialoguesEpreuve"
 import { useAuth } from "@/context/AuthContext"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -147,6 +149,21 @@ export function EpreuveInediteDetailPage() {
     }
   }
 
+  /** Essayer l'épreuve offerte sans s'inscrire : un compte d'essai (une fois par navigateur), puis la copie. */
+  async function essayerSansCompte() {
+    if (!epreuve || starting) return
+    setStarting(true)
+    setError("")
+    try {
+      if (!aUnEssaiSansCompte()) await creerCompteInvite()
+      const tentative = await startTentativeInedite(epreuve.id)
+      navigate(`/inedit/tentative/${tentative.id}`)
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : t("ine.demarrer_erreur"))
+      setStarting(false)
+    }
+  }
+
   /** Ouvre (ou reprend) la copie ET applique le mode choisi, d'un seul geste : le choix se fait
    * sur la fiche, plus sur une seconde page intermédiaire. Le chrono, lui, ne démarre qu'après
    * la confirmation (voir DialogueModeExamen). */
@@ -255,14 +272,12 @@ export function EpreuveInediteDetailPage() {
   function boutonPrincipal(classe?: string) {
     if (!epreuve) return null
     if (!epreuve.has_access && epreuve.est_vitrine) {
-      // Épreuve offerte, mais un compte est requis (la copie est rattachée à un profil) : le
-      // visiteur crée le sien et revient ICI, prêt à choisir son mode.
+      // Épreuve offerte : le visiteur l'essaie SANS compte (un compte d'essai s'ouvre en coulisse, voir lib/invite.ts)
+      // et en crée un à la fin, s'il veut garder sa copie. Le choix du mode se fait sur la page de la copie.
       return (
-        <Button asChild size="lg" className={classe}>
-          <Link to="/connexion" state={{ from: cheminFiche }}>
-            <Gift />
-            {t("qd.essayer_gratuit")}
-          </Link>
+        <Button size="lg" className={classe} disabled={starting} onClick={essayerSansCompte}>
+          <Gift />
+          {t("qd.essayer_gratuit")}
         </Button>
       )
     }
@@ -363,6 +378,7 @@ export function EpreuveInediteDetailPage() {
         <div ref={actionsRef} className="flex flex-wrap gap-2">
           {epreuve.has_access ? (
             <div className="flex w-full flex-col gap-3">
+              <BandeauEssaiSansCompte />
               {/* Un abonné ne savait pas si cette épreuve était comprise dans son accès (test élève Gogo) :
                   la gratuité a son badge, l'accès payé n'avait rien. */}
               {!epreuve.est_vitrine && (
@@ -423,6 +439,7 @@ export function EpreuveInediteDetailPage() {
                 <li>{t("ine.offerte1")}</li>
                 <li>{t("ine.offerte2")}</li>
               </ul>
+              <p className="text-xs text-muted-foreground">{t("ine.essai_note")}</p>
               <div className="flex flex-wrap items-center gap-3">
                 {boutonPrincipal("w-fit")}
                 <Link

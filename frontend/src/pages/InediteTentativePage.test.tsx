@@ -1,5 +1,6 @@
 import { render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -10,6 +11,7 @@ const api = vi.hoisted(() => ({
   answerTentativeQuestion: vi.fn(),
   completeTentative: vi.fn(),
   downloadSujetPdf: vi.fn(),
+  getQuotaPdf: vi.fn(),
   ouvrirSujetClassique: vi.fn(),
   getTentativeInedite: vi.fn(),
   noterTentativeQuestion: vi.fn(),
@@ -68,16 +70,20 @@ function tentative(extra: Partial<TentativeInedite> = {}): TentativeInedite {
 function afficher(source: "inedit" | "officielle" = "inedit") {
   const chemin = source === "officielle" ? "/simulation/7" : "/inedit/tentative/7"
   return render(
-    <MemoryRouter initialEntries={[chemin]}>
-      <Routes>
-        <Route path={source === "officielle" ? "/simulation/:id" : "/inedit/tentative/:id"} element={<InediteTentativePage source={source} />} />
-      </Routes>
-    </MemoryRouter>,
+    <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+      <MemoryRouter initialEntries={[chemin]}>
+        <Routes>
+          <Route path={source === "officielle" ? "/simulation/:id" : "/inedit/tentative/:id"} element={<InediteTentativePage source={source} />} />
+        </Routes>
+      </MemoryRouter>
+    </QueryClientProvider>,
   )
 }
 
 beforeEach(() => {
   Object.values(api).forEach((mock) => mock.mockReset())
+  // Pas de compteur par défaut : la pastille n'apparaît que si un test le demande.
+  api.getQuotaPdf.mockResolvedValue(null)
   toast.mockReset()
   sessionStorage.clear()
   toast.error.mockReset()
@@ -305,6 +311,20 @@ describe("InediteTentativePage", () => {
       expect(screen.queryByRole("heading", { name: "Comment veux-tu la passer ?" })).not.toBeInTheDocument()
     })
 
+    it("montre dans le bouton PDF le nombre de téléchargements restants, compté sur le document de l'inédite", async () => {
+      api.getQuotaPdf.mockResolvedValue({
+        actif: true, profil: "visiteur", limite: 3, utilise: 1, restant: 2, motif: "",
+        reinitialisation: "2099-10-25T00:00:00+01:00", fuseau: "Africa/Douala", gratuits: [],
+      })
+      api.getTentativeInedite.mockResolvedValue(tentative({ sujet_pdf_disponible: true, epreuve: 7 }))
+      afficher()
+
+      await userEvent.click(await screen.findByRole("button", { name: /Entraînement libre/ }))
+
+      expect(await screen.findByText("2 restants")).toBeInTheDocument()
+      expect(api.getQuotaPdf).toHaveBeenCalledWith(["inedit:7"], expect.anything())
+    })
+
     it("nomme l'épreuve une fois le briefing parti : titre de page, titre de l'onglet et rappel dans la barre", async () => {
       api.getTentativeInedite.mockResolvedValue(tentative({ epreuve_titre: "Programmation Terminale TI – Épreuve inédite n°1" }))
       afficher()
@@ -375,12 +395,14 @@ describe("InediteTentativePage", () => {
       }
       api.getTentativeInedite.mockResolvedValue(enExamen())
       const { unmount } = render(
-        <MemoryRouter initialEntries={["/inedit/tentative/7"]}>
-          <Sonde />
-          <Routes>
-            <Route path="/inedit/tentative/:id" element={<InediteTentativePage />} />
-          </Routes>
-        </MemoryRouter>,
+        <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
+          <MemoryRouter initialEntries={["/inedit/tentative/7"]}>
+            <Sonde />
+            <Routes>
+              <Route path="/inedit/tentative/:id" element={<InediteTentativePage />} />
+            </Routes>
+          </MemoryRouter>
+        </QueryClientProvider>,
       )
 
       await screen.findAllByRole("checkbox", { name: /J'ai traité cette question/ })

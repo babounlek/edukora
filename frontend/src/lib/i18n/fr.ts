@@ -835,7 +835,11 @@ export const fr = {
   "ine.recommencer_zero": "Recommencer à zéro",
   "ine.offerte": "Cette épreuve est offerte : passe-la en entier, gratuitement",
   "ine.offerte1": "Le chrono, la notation et le rapport de fin d'une vraie épreuve inédite",
-  "ine.offerte2": "Un compte suffit (une minute) : pas d'abonnement, pas de paiement",
+  "ine.offerte2": "Sans inscription ni paiement : tu commences tout de suite",
+  "ine.essai_note": "Crée ton compte à la fin pour garder ta copie et ta note.",
+  "ine.invite_bandeau": "Tu essaies sans compte : ta copie reste sur cet appareil pendant 30 jours.",
+  "ine.invite_creer": "Créer mon compte",
+  "ine.invite_intent": "Crée ton compte gratuit pour garder ta copie et ta note.",
   "ine.voir_abo_n": "Voir l'abonnement : les {n} épreuves inédites",
   "ine.voir_abo": "Voir l'abonnement",
   "ine.deja_compte": "Déjà un compte ?",
@@ -1121,6 +1125,9 @@ export const fr = {
   "rp.reverras_texte": "Ces thèmes reviennent dans ta séance du jour, pour qu'ils tiennent jusqu'à l'examen.",
   "rp.bareme_estime_question":
     "Barème estimé : les points de chaque exercice sont répartis à parts égales entre ses questions.",
+  "rp.invite_titre": "Garde ta copie et ta note.",
+  "rp.invite_texte": "Crée ton compte gratuit (une minute) : ta copie corrigée, ta note et ta progression te suivent sur tous tes appareils. Sans compte, elle ne reste que sur cet appareil, 30 jours.",
+  "rp.invite_cta": "Créer mon compte gratuit",
   "rp.offerte_titre": "Tu viens de passer l'épreuve offerte.",
   "rp.offerte_texte":
     "Les autres épreuves inédites de ton cursus ont le même chrono, la même notation et le même rapport de fin, avec les corrigés, les cours et la séance du jour.",

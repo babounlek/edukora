@@ -1,6 +1,7 @@
 import { toast } from "sonner"
 
-import { API_BASE_URL, apiRequest, getAccessToken } from "./client"
+import { API_BASE_URL, apiRequest, jetonPour } from "./client"
+import { setJetonInvite } from "@/lib/invite"
 import { t } from "@/lib/i18n"
 import { messageLimiteAtteinte, signalerChangementQuota } from "@/lib/quotaPdf"
 import type {
@@ -822,6 +823,15 @@ export function startTentativeInedite(epreuveId: number, options: { nouvelle?: b
   })
 }
 
+/**
+ * Ouvre un compte d'essai (voir users.invites) et en garde le jeton : de là, les appels `/inedit/` partent avec lui.
+ * Pour essayer une inédite gratuite sans s'inscrire ; la copie est transmise au compte si l'élève en crée un ensuite.
+ */
+export async function creerCompteInvite(): Promise<void> {
+  const { access } = await apiRequest<{ access: string }>("/auth/invite/", { method: "POST", auth: false })
+  setJetonInvite(access)
+}
+
 export function getTentativeInedite(id: number) {
   return apiRequest<TentativeInedite>(`/inedit/tentatives/${id}/`)
 }
@@ -939,7 +949,8 @@ export function listMyTentativesInedites() {
  */
 async function openPdfInNewTab(url: string, errorMessage: string) {
   const newTab = window.open("", "_blank")
-  const token = getAccessToken()
+  // Un invité (essai sans compte) ouvre aussi le PDF d'une inédite gratuite : son jeton part sur ces routes seulement.
+  const token = jetonPour(url.startsWith(API_BASE_URL) ? url.slice(API_BASE_URL.length) : url)
   const response = await fetch(url, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
     credentials: "include",

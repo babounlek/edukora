@@ -829,7 +829,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ine.recommencer_zero": "Start again from scratch",
   "ine.offerte": "This paper is on the house: sit the whole thing, for free",
   "ine.offerte1": "The timer, marking and end report of a real original paper",
-  "ine.offerte2": "An account is all you need (one minute): no subscription, no payment",
+  "ine.offerte2": "No sign-up and no payment: you start straight away",
+  "ine.essai_note": "Create your account at the end to keep your paper and your mark.",
+  "ine.invite_bandeau": "You are trying this without an account: your paper stays on this device for 30 days.",
+  "ine.invite_creer": "Create my account",
+  "ine.invite_intent": "Create your free account to keep your paper and your mark.",
   "ine.voir_abo_n": "See the subscription: all {n} original papers",
   "ine.voir_abo": "See the subscription",
   "ine.deja_compte": "Already have an account?",
@@ -1115,6 +1119,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "rp.reverras_texte": "These topics come back in your daily session, so that they last until the exam.",
   "rp.bareme_estime_question":
     "Estimated marking: the points of each exercise are shared equally between its questions.",
+  "rp.invite_titre": "Keep your paper and your mark.",
+  "rp.invite_texte": "Create your free account (one minute): your marked paper, your mark and your progress follow you on every device. Without an account, it only stays on this device, for 30 days.",
+  "rp.invite_cta": "Create my free account",
   "rp.offerte_titre": "You've just sat the free paper.",
   "rp.offerte_texte":
     "The other original papers for your exam have the same timer, the same marking and the same end report, with the solutions, the lessons and the daily session.",

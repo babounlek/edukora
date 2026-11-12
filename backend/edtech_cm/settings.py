@@ -140,7 +140,7 @@ OTP_DAILY_GLOBAL_CAP = config("OTP_DAILY_GLOBAL_CAP", default=1000, cast=int)
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "users.authentication.JWTAuthenticationAvecInvites",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
@@ -185,7 +185,7 @@ CORS_ALLOW_CREDENTIALS = True
 # En-tête du « mode parent » (voir users.parent), à autoriser en plus des défauts pour les
 # appels inter-origines (dev : localhost:5173 -> API).
 from corsheaders.defaults import default_headers
-CORS_ALLOW_HEADERS = (*default_headers, "x-parent-token")
+CORS_ALLOW_HEADERS = (*default_headers, "x-parent-token", "x-invite-token")
 
 # Nom et domaine de la plateforme - provisoires tant que le produit est en conception,
 # donc jamais codés en dur ailleurs que via ces deux réglages (voir aussi les

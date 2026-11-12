@@ -7,6 +7,7 @@ app_name = "users"
 urlpatterns = [
     path("otp/request/", views.otp_request_view, name="otp-request"),
     path("otp/verify/", views.otp_verify_view, name="otp-verify"),
+    path("invite/", views.invite_creer_view, name="invite-creer"),
     path("google/", views.google_signin_view, name="google-signin"),
     path("google/link/", views.google_link_view, name="google-link"),
     path("email/request/", views.email_code_request_view, name="email-request"),

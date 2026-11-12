@@ -2,6 +2,7 @@ import { enregistrerDateServeur } from "@/lib/horlogeServeur"
 import { effacerMarqueAnonyme } from "@/lib/sessionAnonyme"
 import { t } from "@/lib/i18n"
 import { messageEnvoiCode } from "@/lib/messagesEnvoiCode"
+import { clearJetonInvite, jetonInviteCourant } from "@/lib/invite"
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8001"
 
@@ -26,6 +27,22 @@ export function setAccessToken(token: string) {
   accessToken = token
   // Une session existe : ce navigateur n'est plus « constaté anonyme » (voir lib/sessionAnonyme.ts).
   effacerMarqueAnonyme()
+  // Et plus un invité : la copie d'un essai sans compte a été transmise au compte par le serveur (voir
+  // users.invites.rattacher) au moment de la connexion, dont la requête portait ce jeton.
+  clearJetonInvite()
+}
+
+/**
+ * Le jeton de l'essai sans compte (voir lib/invite.ts) ne sert qu'à ces routes : un invité n'a de droits que sur les
+ * épreuves inédites (users.authentication côté serveur), et reste un visiteur anonyme partout ailleurs.
+ */
+export function estCheminInvite(path: string): boolean {
+  return path.startsWith("/inedit/")
+}
+
+/** Le jeton à joindre à cet appel : celui de la session, sinon celui de l'essai sans compte sur les routes inédites. */
+export function jetonPour(path: string): string | null {
+  return getAccessToken() ?? (estCheminInvite(path) ? jetonInviteCourant() : null)
 }
 
 export function clearAccessToken() {
@@ -74,6 +91,9 @@ export function setParentModeHandler(handler: ParentModeHandler | null) {
 // bus léger laisse à AuthContext (voir son useEffect dédié) la responsabilité de
 // décider quoi faire d'une session expirée - déconnecter l'utilisateur ET l'en
 // informer sont deux préoccupations distinctes de "faire une requête API".
+// Les trois routes qui ouvrent une session : le jeton d'invité les accompagne (voir users.invites.rattacher_depuis_requete).
+const ROUTES_RATTACHEMENT = new Set(["/auth/otp/verify/", "/auth/email/verify/", "/auth/google/"])
+
 export const SESSION_EXPIRED_EVENT = "edukamer:session-expired"
 
 // Premier message lisible d'une réponse d'erreur : `error` (nos vues), `detail` (DRF),
@@ -253,6 +273,10 @@ interface RequestOptions {
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = "GET", body, auth = true, signal } = options
   const sendToken = auth === true || auth === "optional"
+  // Pas de session mais un essai sans compte, sur une route inédite : c'est le jeton d'invité qui part.
+  const viaInvite = sendToken && getAccessToken() === null && estCheminInvite(path) && jetonInviteCourant() !== null
+  // Connexion ou inscription : on joint le jeton d'invité, pour que le serveur transmette la copie au compte.
+  const jetonRattachement = ROUTES_RATTACHEMENT.has(path.split("?")[0]) ? jetonInviteCourant() : null
 
   const isFormData = body instanceof FormData
 
@@ -262,6 +286,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     // le boundary multipart lui-même, un header explicite ici le corromprait.
     if (!isFormData) headers["Content-Type"] = "application/json"
     if (sendToken && token) headers["Authorization"] = `Bearer ${token}`
+    if (jetonRattachement) headers["X-Invite-Token"] = jetonRattachement
     const parent = sendToken && token ? currentParentToken() : null
     if (parent) headers["X-Parent-Token"] = parent
 
@@ -281,9 +306,13 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     }, signal, isFormData ? DELAI_ENVOI_FICHIER_MS : DELAI_REQUETE_MS)
   }
 
-  let response = await doFetch(getAccessToken())
+  let response = await doFetch(jetonPour(path))
 
-  if (response.status === 401 && sendToken) {
+  if (response.status === 401 && viaInvite) {
+    // Jeton d'invité expiré ou compte purgé : on l'oublie, sans refresh (il n'en a pas) ni « session expirée ».
+    clearJetonInvite()
+    if (auth === "optional") response = await doFetch(null)
+  } else if (response.status === 401 && sendToken) {
     const refreshed = await refreshAccessToken()
     if (refreshed) {
       response = await doFetch(refreshed)

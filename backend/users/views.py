@@ -38,6 +38,7 @@ from .email_service import (
     request_email_code,
     verify_email_code,
 )
+from . import invites
 from . import pin as pin_module
 from .email_service import consume_email_code
 from .otp_service import (
@@ -201,6 +202,7 @@ def otp_verify_view(request):
     except OTPInvalid as exc:
         return Response({"error": str(exc)}, status=400)
 
+    invites.rattacher_depuis_requete(request, user)
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
@@ -208,6 +210,23 @@ def otp_verify_view(request):
     })
     _set_refresh_cookie(response, refresh)
     return response
+
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def invite_creer_view(request):
+    """
+    Ouvre un compte invité pour essayer une épreuve inédite gratuite sans s'inscrire (voir users.invites). Renvoie
+    seulement un jeton d'accès de 30 jours : ni cookie de session, ni refresh - ce visiteur n'est pas « connecté ».
+    """
+    try:
+        user = invites.creer_invite(ip=_client_ip(request))
+    except invites.InviteRefuse as exc:
+        return Response({"error": str(exc)}, status=429)
+    return Response(
+        {"access": invites.jeton_invite(user), "expires_in": int(invites.DUREE_JETON.total_seconds())},
+        status=201,
+    )
 
 
 @api_view(["POST"])
@@ -234,6 +253,7 @@ def google_signin_view(request):
     except GoogleAuthError as exc:
         return Response({"error": str(exc)}, status=401)
 
+    invites.rattacher_depuis_requete(request, user)
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
@@ -336,6 +356,7 @@ def email_code_verify_view(request):
     except EmailInvalid as exc:
         return Response({"error": str(exc)}, status=400)
 
+    invites.rattacher_depuis_requete(request, user)
     refresh = RefreshToken.for_user(user)
     response = Response({
         "access": str(refresh.access_token),
