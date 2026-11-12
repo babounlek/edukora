@@ -29,6 +29,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "nav.reviser": "Revise",
   "nav.progression": "My progress",
   "nav.prix": "Pricing",
+  "prix.seo_titre": "Pricing: monthly subscription by Mobile Money",
   "nav.epreuves": "Past papers",
   "nav.cours": "Lessons",
   "nav.quiz": "Quiz",
@@ -584,6 +585,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ep.retirer_filtre": "Remove the filter {label}",
   "ep.seo_inedites": "Original papers",
   "ep.seo_liste": "Past papers and solutions",
+  "ep.seo_liste_pays": "Past papers and solutions - {pays}",
   "ep.seo_desc_inedites":
     "original papers written by {site}, never taken from past papers, at the level and mark scheme of the real exam.",
   "ep.seo_desc_inedites_pays":
@@ -1342,6 +1344,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cs.synthese_long": "What to remember",
 
   "co.seo_liste": "Revision lessons",
+  "co.seo_liste_pays": "Revision lessons - {pays}",
   "co.seo_description_pays":
     "{pays}: structured lessons (method, worked example, common mistakes, exercises) for the BEPC, the Probatoire and the BAC.",
   "co.eyebrow": "Structured lessons",
@@ -1438,6 +1441,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "te.aussi_ailleurs": "This topic is also covered elsewhere: change your selection.",
   "te.objet": "the exercises for this topic",
   "te.aucun": "No exercise found for this topic in this selection.",
+  "te.choisir": "This link does not say which exam or subject to show this topic for. Open it from the ranking of the topics that come up most.",
+  "te.voir_themes": "See the topics that come up most",
   "te.verrou_tous": "All {n} solutions for this topic are waiting for you",
   "te.verrou_n_one": "{n} solution out of {total} reserved for subscribers",
   "te.verrou_n_other": "{n} solutions out of {total} reserved for subscribers",
@@ -2060,6 +2065,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "tf.methode_jour_texte": "The ranking is recalculated every time a new paper is added.",
   "tf.methode_titre": "How we build this ranking",
   "tf.seo_titre": "The topics that come up most",
+  "tf.seo_titre_pays": "The topics that come up most - {pays}",
   "tf.seo_description": "{pays}: the ranking of the topics that come up most in official papers, subject by subject and exam by exam.",
   "tf.eyebrow": "Statistics",
   "tf.h1_avant": "The topics that ",

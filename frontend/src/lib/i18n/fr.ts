@@ -34,6 +34,7 @@ export const fr = {
   "nav.reviser": "Réviser",
   "nav.progression": "Ma progression",
   "nav.prix": "Prix",
+  "prix.seo_titre": "Tarifs : abonnement au mois par Mobile Money",
   "nav.epreuves": "Épreuves",
   "nav.cours": "Cours",
   "nav.quiz": "Quiz",
@@ -590,6 +591,7 @@ export const fr = {
   "ep.retirer_filtre": "Retirer le filtre {label}",
   "ep.seo_inedites": "Épreuves inédites",
   "ep.seo_liste": "Épreuves et corrigés",
+  "ep.seo_liste_pays": "Épreuves et corrigés - {pays}",
   "ep.seo_desc_inedites":
     "épreuves originales conçues par {site}, jamais tirées des annales, au niveau et au barème de l'examen réel.",
   "ep.seo_desc_inedites_pays":
@@ -1350,6 +1352,7 @@ export const fr = {
   "cs.synthese_long": "Ce qu'il faut retenir",
 
   "co.seo_liste": "Cours de révision",
+  "co.seo_liste_pays": "Cours de révision - {pays}",
   "co.seo_description_pays":
     "{pays} : cours structurés (méthode, exemple résolu, erreurs classiques, exercices) pour le BEPC, le Probatoire et le BAC.",
   "co.eyebrow": "Cours structurés",
@@ -1446,6 +1449,8 @@ export const fr = {
   "te.aussi_ailleurs": "Ce thème est aussi traité ailleurs : change de sélection.",
   "te.objet": "les exercices de ce thème",
   "te.aucun": "Aucun exercice trouvé pour ce thème dans cette sélection.",
+  "te.choisir": "Ce lien ne dit pas pour quel examen ni quelle matière afficher ce thème. Ouvre-le depuis le classement des thèmes qui tombent.",
+  "te.voir_themes": "Voir les thèmes qui tombent",
   "te.verrou_tous": "Les {n} corrigés de ce thème t'attendent",
   "te.verrou_n_one": "{n} corrigé sur {total} réservé aux abonnés",
   "te.verrou_n_other": "{n} corrigés sur {total} réservés aux abonnés",
@@ -2070,6 +2075,7 @@ export const fr = {
   "tf.methode_jour_texte": "Le classement est recalculé à chaque nouvelle épreuve ajoutée.",
   "tf.methode_titre": "Comment on établit ce classement",
   "tf.seo_titre": "Les thèmes qui reviennent le plus",
+  "tf.seo_titre_pays": "Les thèmes qui reviennent le plus - {pays}",
   "tf.seo_description": "{pays} : le classement des thèmes les plus fréquents aux épreuves officielles, matière par matière et cursus par cursus.",
   "tf.eyebrow": "Statistiques",
   "tf.h1_avant": "Les thèmes qui ",

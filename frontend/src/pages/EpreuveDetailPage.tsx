@@ -221,7 +221,7 @@ export function EpreuveDetailPage() {
       />
       <Link
         to={epreuvesListPath(countryCode)}
-        className="mb-5 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
+        className="mb-5 inline-flex min-h-8 items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
       >
         <ArrowLeft className="size-4" />
         {t("ed.retour_catalogue")}

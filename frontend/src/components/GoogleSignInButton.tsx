@@ -33,7 +33,7 @@ declare global {
  */
 let scriptPromise: Promise<void> | null = null
 
-function loadGoogleScript(): Promise<void> {
+function loadGoogleScript(langue: string): Promise<void> {
   if (scriptPromise) return scriptPromise
   scriptPromise = new Promise((resolve, reject) => {
     if (window.google?.accounts?.id) {
@@ -41,7 +41,9 @@ function loadGoogleScript(): Promise<void> {
       return
     }
     const script = document.createElement("script")
-    script.src = GSI_SCRIPT_SRC
+    // `hl` : la langue de l'interface, pas celle du navigateur - sans lui, le bouton d'un élève GCE sur /en/login
+    // pouvait s'afficher « Continuer avec Google » (audit du 2026-11-12, UX-14). `locale` ci-dessous la redit à chaque rendu.
+    script.src = `${GSI_SCRIPT_SRC}?hl=${encodeURIComponent(langue)}`
     script.async = true
     script.defer = true
     script.onload = () => resolve()
@@ -95,7 +97,7 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
     }
     let annule = false
 
-    loadGoogleScript()
+    loadGoogleScript(langue)
       .then(() => {
         if (annule || !containerRef.current || !window.google) return
         window.google.accounts.id.initialize({

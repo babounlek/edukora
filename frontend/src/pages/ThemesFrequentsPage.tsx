@@ -385,7 +385,7 @@ export function ThemesFrequentsPage() {
   const cursusId = cursusFilter ? Number(cursusFilter) : undefined
 
   useSeo({
-    title: t("tf.seo_titre"),
+    title: countryLabel ? t("tf.seo_titre_pays", { pays: countryLabel }) : t("tf.seo_titre"),
     description: countryLabel ? t("tf.seo_description", { pays: countryLabel }) : undefined,
   })
 

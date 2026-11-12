@@ -203,7 +203,8 @@ export function EpreuvesListPage() {
   const pageInedites = origineFilter === "INEDITE"
 
   useSeo({
-    title: pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste"),
+    // Avec le pays, comme le titre servi aux moteurs (backend/catalog/pages_statiques) : le même texte des deux côtés.
+    title: pageInedites ? t("ep.seo_inedites") : countryLabel ? t("ep.seo_liste_pays", { pays: countryLabel }) : t("ep.seo_liste"),
     description: pageInedites
       ? countryLabel
         ? t("ep.seo_desc_inedites_pays", { pays: countryLabel, site: SITE_NAME })

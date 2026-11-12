@@ -140,7 +140,7 @@ export function CoursListPage() {
   const savoirLabel = searchParams.get("savoir_label") ?? ""
 
   useSeo({
-    title: t("co.seo_liste"),
+    title: countryLabel ? t("co.seo_liste_pays", { pays: countryLabel }) : t("co.seo_liste"),
     description: countryLabel ? t("co.seo_description_pays", { pays: countryLabel }) : undefined,
   })
 

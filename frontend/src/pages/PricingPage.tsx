@@ -36,7 +36,7 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { LienAide } from "@/components/aide/LienAide"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import {
   MOIS_PAR_DEFAUT, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA, PRIX_MOIS_FCFA, estAuMois, moisValides, prixTotal,
   prixTotalReference,
@@ -50,10 +50,18 @@ function cursusLabel(cursus: Cursus): string {
 
 // Ordre de lecture attendu par un élève (du plus jeune au plus avancé), et non
 // l'ordre de création en base (qui entrelace Probatoire et BAC série par série).
-const ORDRE_EXAMENS = ["BEPC", "PROBATOIRE", "BAC", "GCE_OL", "GCE_AL", "AUTRE"]
+const ORDRE_EXAMENS_FR = ["BEPC", "PROBATOIRE", "BAC", "GCE_OL", "GCE_AL", "AUTRE"]
+// Interface anglaise : le GCE d'abord. Un élève anglophone cherchait « GCE O Level » tout au bout d'une liste de
+// cursus francophones (audit du 2026-11-12, UX-13).
+const ORDRE_EXAMENS_EN = ["GCE_OL", "GCE_AL", "BEPC", "PROBATOIRE", "BAC", "AUTRE"]
+
+function ordreExamens(): string[] {
+  return langueCourante() === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS_FR
+}
 
 function trierCursus(a: Cursus, b: Cursus): number {
-  const rang = ORDRE_EXAMENS.indexOf(a.examen) - ORDRE_EXAMENS.indexOf(b.examen)
+  const ordre = ordreExamens()
+  const rang = ordre.indexOf(a.examen) - ordre.indexOf(b.examen)
   if (rang !== 0) return rang
   return (a.series?.code ?? "").localeCompare(b.series?.code ?? "")
 }
@@ -69,9 +77,8 @@ function grouperParExamen(liste: Cursus[]): GroupeCursus[] {
     if (!groupes.has(c.examen)) groupes.set(c.examen, { examen: c.examen, examenLabel: c.examen_display, cursus: [] })
     groupes.get(c.examen)!.cursus.push(c)
   })
-  return Array.from(groupes.values()).sort(
-    (a, b) => ORDRE_EXAMENS.indexOf(a.examen) - ORDRE_EXAMENS.indexOf(b.examen),
-  )
+  const ordre = ordreExamens()
+  return Array.from(groupes.values()).sort((a, b) => ordre.indexOf(a.examen) - ordre.indexOf(b.examen))
 }
 
 function ChipCursus({ texte, selected, onClick }: { texte: string; selected: boolean; onClick: () => void }) {
@@ -332,7 +339,8 @@ export function PricingPage() {
   // S'abonne au changement de langue : les `t(...)` de la page se relisent à chaque bascule.
   useI18n()
   useSeo({
-    title: t("nav.prix"),
+    // « Prix » seul disait trop peu dans un onglet ou un résultat de recherche (audit du 2026-11-12, SEO-06).
+    title: t("prix.seo_titre"),
     description: t("prix.seo_description", { site: SITE_NAME }),
   })
 

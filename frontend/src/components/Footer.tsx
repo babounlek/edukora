@@ -124,7 +124,8 @@ function Lien({ to, children, vedette }: { to: string; children: ReactNode; vede
     <Link
       to={to}
       className={cn(
-        "inline-flex w-fit items-center gap-1.5 text-sm transition-colors hover:text-primary",
+        // min-h-8 : une cible tactile de 32 px au moins (les liens du pied de page en faisaient ~20, audit UX-08).
+        "inline-flex min-h-8 w-fit items-center gap-1.5 text-sm transition-colors hover:text-primary",
         vedette ? "font-medium text-foreground" : "text-muted-foreground",
       )}
     >

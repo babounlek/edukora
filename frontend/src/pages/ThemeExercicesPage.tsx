@@ -276,6 +276,18 @@ export function ThemeExercicesPage() {
       ) : isError && !data ? (
         // Une panne n'est pas « aucun exercice » : sans ce cas, l'élève croyait son thème vide.
         <ErreurChargement objet={t("te.objet")} onRetry={() => refetch()} />
+      ) : !cursusId || !subjectCode ? (
+        // Un lien sans examen ni matière (lien partagé ou mis en favori à la main) : « aucun exercice » serait faux,
+        // il y en a - on ne sait simplement pas pour quel examen (audit du 2026-11-12, UX-11).
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border px-6 py-14 text-center">
+          <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
+            <FileText className="size-5" />
+          </span>
+          <p className="max-w-md text-muted-foreground">{t("te.choisir")}</p>
+          <Link to={themesFrequentsPath(country)} className="text-sm font-medium text-primary hover:underline">
+            {t("te.voir_themes")}
+          </Link>
+        </div>
       ) : !data || data.exercices.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border px-6 py-14 text-center">
           <span className="flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground">
