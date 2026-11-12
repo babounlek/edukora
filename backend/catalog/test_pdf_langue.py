@@ -97,7 +97,7 @@ class SujetPdfLangueTests(_Base):
     def test_sujet_du_gce_en_anglais(self):
         html = _render_html(self._lesson(self.matiere_gce, self.cursus_al, "Physics GCE A Level - Paper 2"))
         self.assertIn('<html lang="en">', html)
-        for attendu in ("Free paper", "Want to check your answers?", "2,000 FCFA per month and per child", "View the correction",
+        for attendu in ("Free paper", "Want to check your answers?", "the price is shown before you pay", "View the correction",
                         "QR code to the correction", "Scan me", "Free-access paper", "Duration: 2 hours",
                         "Session 2023", "Cameroon", "Exercise 1 (6 marks)"):
             self.assertIn(attendu, html)
@@ -106,9 +106,19 @@ class SujetPdfLangueTests(_Base):
     def test_sujet_francophone_inchange(self):
         html = _render_html(self._lesson(self.matiere_fr, self.cursus_bac, "Mathématiques BAC C 2023"))
         self.assertIn('<html lang="fr">', html)
-        for attendu in ("Sujet gratuit", "Envie de vérifier tes réponses ?", "2 000 FCFA par mois et par enfant", "Scanne-moi",
+        for attendu in ("Sujet gratuit", "Envie de vérifier tes réponses ?", "le prix est affiché avant de payer", "Scanne-moi",
                         "Durée : 2 hours"):
             self.assertIn(attendu, html)
+
+    def test_le_bas_du_pdf_ne_contient_aucun_montant(self):
+        # Un montant écrit dans un fichier généré devient faux au premier changement de tarif.
+        for matiere, cursus, titre in (
+            (self.matiere_fr, self.cursus_bac, "Mathématiques BAC C 2023"),
+            (self.matiere_gce, self.cursus_al, "Physics GCE A Level - Paper 2"),
+        ):
+            html = _render_html(self._lesson(matiere, cursus, titre))
+            self.assertNotRegex(html, r"\d[\d\s.,  ]*FCFA", titre)
+            self.assertNotRegex(html, r"FCFA\s*\d", titre)
 
     def test_origine_non_officielle_traduite(self):
         lesson = self._lesson(self.matiere_gce, self.cursus_al, "Physics mock")

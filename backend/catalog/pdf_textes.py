@@ -26,8 +26,11 @@ TEXTES = {
         "sujet_gratuit": "Sujet gratuit",
         "sujet_cta_titre": "Envie de vérifier tes réponses ?",
         "sujet_cta_corps": (
-            "La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {site} : "
-            "2 000 FCFA par mois et par enfant, au nombre de mois de ton choix ; 1 600 FCFA par mois pour chaque enfant supplémentaire de la même famille."
+            # AUCUN montant : un PDF est un fichier généré, un prix écrit dedans devient faux au premier changement de
+            # tarif (il affichait encore « 15 000 FCFA » après le passage à l'abonnement au mois). Les prix vivent sur
+            # /tarifs, que le lien et le QR code ouvrent.
+            "La correction complète de cette épreuve, avec la méthode expliquée pas à pas, est disponible sur {site}. "
+            "Tu choisis le nombre de mois et le prix est affiché avant de payer, par Mobile Money."
         ),
         "sujet_cta_lien": "Voir la correction",
         "sujet_qr_alt": "QR code vers la correction",
@@ -87,8 +90,8 @@ TEXTES = {
         "sujet_gratuit": "Free paper",
         "sujet_cta_titre": "Want to check your answers?",
         "sujet_cta_corps": (
-            "The full correction of this paper, with the method explained step by step, is available on {site}: "
-            "2,000 FCFA per month and per child, for as many months as you choose; 1,600 FCFA per month for each additional child in the same family."
+            "The full correction of this paper, with the method explained step by step, is available on {site}. "
+            "You choose the number of months and the price is shown before you pay, by Mobile Money."
         ),
         "sujet_cta_lien": "View the correction",
         "sujet_qr_alt": "QR code to the correction",
