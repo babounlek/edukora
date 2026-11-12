@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>EduKora - vidéo Facebook 1080x1080</title>
+<style>
+@font-face{font-family:"Fraunces";font-weight:600;src:url("../../sources/polices/fraunces-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Fraunces";font-weight:700;src:url("../../sources/polices/fraunces-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:500;src:url("../../sources/polices/work-sans-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:600;src:url("../../sources/polices/work-sans-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:700;src:url("../../sources/polices/work-sans-latin-700-normal.woff2") format("woff2")}
+:root{
+  --vert:#006837; --vert-fonce:#073f2a; --vert-nuit:#052c1e; --vif:#39B54A; --menthe:#E3F2E8;
+  --creme:#FBF8F1; --ambre:#F2B134; --encre:#12211a; --gris:#5b6b62;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1080px;overflow:hidden;background:#000}
+body{font-family:"Work Sans",system-ui,sans-serif;color:var(--encre);-webkit-font-smoothing:antialiased}
+#scene-racine{position:relative;width:1080px;height:1080px;overflow:hidden}
+.scene{position:absolute;inset:0;overflow:hidden}
+.abs{position:absolute}
+.titre{font-family:"Fraunces",Georgia,serif;font-weight:700;color:var(--vert);letter-spacing:-.01em}
+
+/* ---------- scène 1 : accroche ---------- */
+#s1{background:radial-gradient(120% 90% at 50% 38%,#0b5a3a 0%,var(--vert-fonce) 55%,var(--vert-nuit) 100%)}
+#s1 .masque-q{left:560px;top:20px;font:700 980px/1 "Fraunces";color:rgba(255,255,255,.045)}
+#s1 .bloc{left:80px;right:80px;top:150px;bottom:150px;display:flex;flex-direction:column;justify-content:center;
+  font:700 98px/1.14 "Fraunces";color:#fff;text-align:left}
+#s1 .mot{display:inline-block;opacity:.16;white-space:pre}
+#s1 .mot.accent{color:var(--ambre)}
+#s1 .ligne{display:block;white-space:nowrap}
+#s1 .marque{left:80px;top:80px;width:78px;height:78px}
+#s1 .barre{left:80px;bottom:92px;height:8px;border-radius:4px;background:var(--ambre);width:0}
+
+/* ---------- scènes claires ---------- */
+.clair{background:var(--creme)}
+.menthe{background:var(--menthe)}
+.carte{position:absolute;background:#fff;border-radius:30px;overflow:hidden;box-shadow:0 18px 50px rgba(5,44,30,.22),0 2px 6px rgba(5,44,30,.12)}
+.carte img{position:absolute;transform-origin:0 0;display:block}
+.cadre-nav{position:absolute;left:0;right:0;top:0;height:0}
+
+#s2 .titre,#s3 .titre{position:absolute;left:80px;right:80px}
+#s2 .t{top:72px;font-size:76px;line-height:1.04}
+#s2 .t em{font-style:normal;color:var(--vif)}
+
+#s3 .legende{top:92px;left:80px;right:80px;height:120px;display:flex;align-items:center;gap:26px}
+#s3 .num{flex:none;width:84px;height:84px;border-radius:50%;background:var(--vert);color:#fff;
+  font:700 48px/84px "Work Sans";text-align:center}
+#s3 .txt{font:700 58px/1.05 "Fraunces";color:var(--vert);letter-spacing:-.01em}
+#s3 .points{position:absolute;right:80px;top:226px;display:flex;gap:12px}
+#s3 .points i{display:block;width:60px;height:8px;border-radius:4px;background:#cfdcd3}
+#s3 .points i.on{background:var(--vert)}
+.surlign{position:absolute;border:5px solid var(--ambre);border-radius:12px;box-shadow:0 0 0 9999px rgba(18,33,26,.0);pointer-events:none}
+
+/* ---------- scène 4 : cursus ---------- */
+#s4 .pile{position:absolute;left:80px;right:80px;top:80px;display:flex;flex-direction:column;gap:30px}
+#s4 .bandeau{width:920px;border-radius:22px;overflow:hidden;box-shadow:0 12px 36px rgba(5,44,30,.18);background:#fff}
+#s4 .bandeau img{display:block;width:920px;height:auto}
+#s4 .rang{display:flex;align-items:center;gap:16px;height:96px}
+.puce{display:inline-flex;align-items:center;justify-content:center;height:84px;padding:0 28px;border-radius:999px;
+  background:#fff;border:3px solid var(--vert);color:var(--vert);font:700 44px "Work Sans"}
+.puce.grande{background:var(--vert);color:#fff;font-size:48px;padding:0 34px;height:92px;min-width:170px}
+.petit{font:600 36px "Work Sans";color:var(--gris);margin-left:6px}
+#s4 .compteur{align-self:flex-start;height:96px;border-radius:24px;background:var(--vert);color:#fff;display:flex;align-items:center;gap:18px;padding:0 34px;
+  font:700 44px "Work Sans"}
+#s4 .compteur b{font:700 58px "Fraunces";color:var(--ambre)}
+
+/* ---------- scène 5 : bénéfices ---------- */
+#s5 .cartebene{position:absolute;left:80px;right:80px;height:300px;border-radius:34px;background:#fff;display:flex;align-items:center;gap:34px;padding:0 44px;
+  box-shadow:0 14px 40px rgba(5,44,30,.16)}
+#s5 .disque{flex:none;width:156px;height:156px;border-radius:50%;background:var(--vert);display:flex;align-items:center;justify-content:center}
+#s5 .disque svg{width:96px;height:96px;fill:none;stroke:#fff;stroke-width:3.2;stroke-linecap:round;stroke-linejoin:round}
+#s5 .kicker{font:700 30px "Work Sans";letter-spacing:.14em;text-transform:uppercase;color:#1f7d37}
+#s5 .grand{font:700 58px/1.08 "Fraunces";color:var(--vert);margin-top:6px}
+
+/* ---------- scène 6 : appel à l'action ---------- */
+#s6 .logo{position:absolute;left:260px;top:90px;width:560px;height:364px}
+#s6 .bouton{position:absolute;left:150px;right:150px;top:560px;height:128px;border-radius:64px;background:var(--vert);color:#fff;
+  display:flex;align-items:center;justify-content:center;gap:22px;font:700 62px "Work Sans";box-shadow:0 16px 40px rgba(0,104,55,.35)}
+#s6 .bouton svg{width:54px;height:54px;fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+#s6 .lien{position:absolute;left:80px;right:80px;top:716px;text-align:center;font:700 60px "Work Sans";color:var(--vert);letter-spacing:.01em}
+#s6 .lien span{border-bottom:6px solid var(--vif);padding-bottom:4px}
+
+/* ---------- sous-titres ---------- */
+#sous-titre{z-index:100;position:absolute;left:80px;right:80px;bottom:80px;display:flex;justify-content:center;pointer-events:none}
+#sous-titre span{display:block;max-width:920px;padding:16px 30px 18px;border-radius:24px;background:rgba(5,44,30,.92);color:#fff;
+  font:700 54px/1.14 "Work Sans";text-align:center;white-space:pre-line}
+</style>
+</head>
+<body>
+<div id="scene-racine">
+
+  <!-- 1 -->
+  <section class="scene" id="s1">
+    <div class="abs masque-q">?</div>
+    <img class="abs marque" src="" id="s1-marque" alt="">
+    <div class="abs bloc" id="s1-bloc"></div>
+  </section>
+
+  <!-- 2 -->
+  <section class="scene clair" id="s2">
+    <div class="titre t" id="s2-t">Chaque étape,<br><em>expliquée.</em></div>
+    <div class="carte" id="s2-carte" style="left:80px;top:272px;width:920px;height:540px">
+      <img id="s2-img" alt="">
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="scene clair" id="s3">
+    <div class="abs legende" id="s3-leg"><div class="num" id="s3-num">1</div><div class="txt" id="s3-txt"></div></div>
+    <div class="points" id="s3-pts"><i></i><i></i><i></i></div>
+    <div class="carte" id="s3-carte" style="left:80px;top:262px;width:920px;height:550px;background:#e4ece6">
+      <img id="s3-img" alt="">
+      <div id="s3-hl" class="surlign" style="opacity:0"></div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="scene clair" id="s4">
+    <div class="pile">
+      <div class="bandeau" id="s4-bandeau"><img id="s4-img" alt=""></div>
+      <div class="rang" id="r-bepc"><span class="puce grande">BEPC</span></div>
+      <div class="rang" id="r-prob"><span class="puce grande">Probatoire</span><span class="puce">A</span><span class="puce">C</span><span class="puce">D</span><span class="puce">E</span><span class="puce">TI</span></div>
+      <div class="rang" id="r-bac"><span class="puce grande">BAC</span><span class="puce">A</span><span class="puce">C</span><span class="puce">D</span><span class="puce">E</span><span class="puce">TI</span></div>
+      <div class="rang" id="r-gce"><span class="puce grande">GCE</span><span class="puce">O Level</span><span class="puce">A Level</span><span class="petit">en anglais</span></div>
+      <div class="compteur" id="s4-compteur">Plus de <b>1 500</b> épreuves corrigées</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="scene menthe" id="s5">
+    <div class="cartebene" id="b-eleve" style="top:96px">
+      <div class="disque"><svg viewBox="0 0 64 64"><path d="M6 16c9-3.5 18-3.5 26 1v31c-8-4.5-17-4.5-26-1z"/><path d="M58 16c-9-3.5-18-3.5-26 1v31c8-4.5 17-4.5 26-1z"/><path d="M44 8l8 8"/></svg></div>
+      <div><div class="kicker">L'élève</div><div class="grand">Révise seul,<br>à son rythme</div></div>
+    </div>
+    <div class="cartebene" id="b-parent" style="top:432px">
+      <div class="disque"><svg viewBox="0 0 64 64"><path d="M32 5l23 8v16c0 14-10 24-23 30C19 53 9 43 9 29V13z"/><path d="M21 31l8 8 15-17"/></svg></div>
+      <div><div class="kicker">Les parents</div><div class="grand">Chaque réponse<br>est expliquée</div></div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="scene clair" id="s6">
+    <img class="logo" id="s6-logo" alt="EduKora">
+    <div class="bouton" id="s6-bouton"><span>Inscrivez-vous</span><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+    <div class="lien" id="s6-lien"><span></span></div>
+  </section>
+
+  <div id="sous-titre"><span id="sous-titre-t" style="display:none"></span></div>
+</div>
+
+<script>
+const D = window.DATA;                 // injecté par rendu.py
+const $ = s => document.querySelector(s);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const eo  = x => 1 - Math.pow(1 - clamp(x), 3);
+const eio = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const prog = (t, a, d) => clamp((t - a) / d);
+const lerp = (a, b, k) => a + (b - a) * k;
+
+const S = {};  D.scenes.forEach(s => S[s.id] = s);
+const sec = id => $('#' + id);
+const tMot = (scene, re) => { const m = scene.mots.find(w => re.test(w.texte)); return m ? m.t0 : null; };
+
+/* ---------- construction ---------- */
+$('#s1-marque').src = D.fichiers.icone;
+$('#s2-img').src = D.fichiers.pageHaut;
+$('#s3-img').src = D.fichiers.exercice;
+$('#s4-img').src = D.fichiers.bandeau;
+$('#s6-logo').src = D.fichiers.logo;
+$('#s6-lien span').textContent = D.lien;
+
+// scène 1 : mots minutés, allumés quand la voix les prononce
+(() => {
+  const lignes = [[0,1,2,3],[4],[5,6],[7],[8]];     // 'Il a eu la' / 'correction…' / 'mais l'a-t-il' / 'vraiment' / 'comprise ?'
+  const mots = S.s1.mots;
+  const bloc = $('#s1-bloc');
+  lignes.forEach(ids => {
+    const l = document.createElement('span'); l.className = 'ligne';
+    ids.forEach((i, k) => {
+      const w = document.createElement('span'); w.className = 'mot' + (i === 8 ? ' accent' : '');
+      w.textContent = mots[i].texte + (k < ids.length - 1 ? ' ' : ''); w.dataset.i = i; l.appendChild(w);
+    });
+    bloc.appendChild(l);
+  });
+})();
+
+// scène 3 : géométrie de la capture de l'exercice
+const G = D.exercice;           // {racine:{w,h}, q1_rappel:{x,y,w,h}, ...}
+const W0 = G.racine.w, H0 = G.racine.h;
+const img3 = $('#s3-img');
+img3.style.width = W0 + 'px'; img3.style.height = H0 + 'px';
+const CW = 920, CH = 550;
+const union = (...cles) => {
+  const bs = cles.map(c => G[c]).filter(Boolean);
+  const x0 = Math.min(...bs.map(b => b.x)), y0 = Math.min(...bs.map(b => b.y));
+  const x1 = Math.max(...bs.map(b => b.x + b.w)), y1 = Math.max(...bs.map(b => b.y + b.h));
+  return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+};
+const BEATS = D.beats3;   // {cadre:{x,y,w,h}, mise:{x,y,w,h}, legende}
+const camera = box => {
+  const marge = 28;
+  let s = Math.min((CW - 2 * marge) / box.w, (CH - 2 * marge) / box.h);
+  s = clamp(s, 1.6, 2.4);
+  let tx = CW / 2 - s * (box.x + box.w / 2), ty = CH / 2 - s * (box.y + box.h / 2);
+  tx = clamp(tx, CW - s * W0, 0); ty = clamp(ty, CH - s * H0, 0);
+  return { s, tx, ty };
+};
+const CAMS = BEATS.map(b => camera(b.cadre));
+const S0 = 1.2;   // plan large de départ : la page en entier en largeur, puis zoom
+const CAM0 = { s: S0, tx: (CW - S0 * W0) / 2, ty: -S0 * (BEATS[0].cadre.y - 90) };
+
+/* ---------- rendu d'une image ---------- */
+function setScene(i, t) {
+  const sc = D.scenes[i];
+  const el = sec(sc.id);
+  const visible = t >= sc.debut && (i === D.scenes.length - 1 || t < D.scenes[i + 1].debut + 0.35);
+  el.style.display = visible ? 'block' : 'none';
+  el.style.zIndex = i + 1;
+  el.style.opacity = i === 0 ? 1 : eo(prog(t, sc.debut, 0.28));
+  return visible;
+}
+
+function sceneUn(lt, t) {
+  const sc = S.s1;
+  $('#s1-bloc').style.transform = `scale(${1 + 0.035 * clamp(lt / sc.duree)})`;
+  $('#s1-bloc').style.transformOrigin = '30% 50%';
+  document.querySelectorAll('#s1 .mot').forEach(w => {
+    const m = sc.mots[+w.dataset.i];
+    const k = eo(prog(t, m.t0 - 0.04, 0.22));
+    w.style.opacity = lerp(.16, 1, k);
+    w.style.transform = `translateY(${lerp(14, 0, k)}px)`;
+  });
+}
+
+function sceneDeux(lt) {
+  const k = eo(prog(lt, 0.15, 0.6));
+  $('#s2-t').style.opacity = k; $('#s2-t').style.transform = `translateY(${lerp(22, 0, k)}px)`;
+  const c = $('#s2-carte');
+  const kc = eo(prog(lt, 0.25, 0.7));
+  c.style.opacity = kc; c.style.transform = `translateY(${lerp(50, 0, kc)}px)`;
+  const img = $('#s2-img');
+  const sc = 920 / 900;
+  img.style.width = '900px'; img.style.left = '0px';
+  img.style.transform = `scale(${sc}) translateY(${-D.defil2 * eio(prog(lt, 0.9, S.s2.duree - 1.3))}px)`;
+}
+
+function sceneTrois(lt, t) {
+  const sc = S.s3;
+  const marks = D.marks3.map(m => m - sc.debut);               // débuts des 3 temps, en secondes locales
+  let b = 0; marks.forEach((m, i) => { if (lt >= m) b = i; });
+  const debutB = marks[b];
+  // caméra : plan large -> temps 1 -> 2 -> 3
+  const de = b === 0 ? CAM0 : CAMS[b - 1];
+  const a = CAMS[b];
+  const k = b === 0 ? eio(prog(lt, 0.3, 1.1)) : eio(prog(lt, debutB - 0.15, 0.85));
+  const cam = { s: lerp(de.s, a.s, k), tx: lerp(de.tx, a.tx, k), ty: lerp(de.ty, a.ty, k) };
+  img3.style.transform = `translate(${cam.tx}px,${cam.ty}px) scale(${cam.s})`;
+  // surlignage
+  const hl = $('#s3-hl'), m = BEATS[b].mise;
+  hl.style.left = '0px'; hl.style.top = '0px'; hl.style.width = (m.w + 12) + 'px'; hl.style.height = (m.h + 12) + 'px';
+  hl.style.transformOrigin = '0 0';
+  hl.style.transform = `translate(${cam.tx + cam.s * (m.x - 6)}px,${cam.ty + cam.s * (m.y - 6)}px) scale(${cam.s})`;
+  hl.style.borderWidth = (5 / cam.s) + 'px'; hl.style.borderRadius = (12 / cam.s) + 'px';
+  hl.style.opacity = eo(prog(lt, debutB + (b === 0 ? 1.2 : 0.6), 0.3));
+  // légende
+  const leg = $('#s3-leg');
+  const kk = eo(prog(lt, debutB, 0.35));
+  leg.style.opacity = kk; leg.style.transform = `translateY(${lerp(16, 0, kk)}px)`;
+  $('#s3-num').textContent = String(b + 1);
+  $('#s3-txt').textContent = BEATS[b].legende;
+  document.querySelectorAll('#s3-pts i').forEach((p, i) => p.className = i <= b ? 'on' : '');
+  const c = $('#s3-carte'), kc = eo(prog(lt, 0.05, 0.5));
+  c.style.opacity = kc;
+}
+
+function sceneQuatre(lt, t) {
+  const sc = S.s4;
+  const pop = (id, tt, y0 = 26) => {
+    const k = eo(prog(t, tt - 0.05, 0.4));
+    const e = $(id); e.style.opacity = k; e.style.transform = `translateY(${lerp(y0, 0, k)}px)`;
+  };
+  const kb = eo(prog(lt, 0.1, 0.6));
+  $('#s4-bandeau').style.opacity = kb; $('#s4-bandeau').style.transform = `translateY(${lerp(-26, 0, kb)}px)`;
+  pop('#r-bepc', tMot(sc, /^BEPC/) ?? sc.debut + 1);
+  pop('#r-bac', tMot(sc, /^BAC/) ?? sc.debut + 2);
+  pop('#r-prob', tMot(sc, /^Probatoire/) ?? sc.debut + 3);
+  pop('#r-gce', tMot(sc, /^GCE/) ?? sc.debut + 4);
+  const tfin = sc.mots[sc.mots.length - 1].t0;
+  pop('#s4-compteur', tfin + 0.1, 20);
+}
+
+function sceneCinq(lt, t) {
+  const sc = S.s5;
+  const pop = (id, tt) => {
+    const k = eo(prog(t, tt - 0.05, 0.5));
+    const e = $(id); e.style.opacity = k; e.style.transform = `translateX(${lerp(-60, 0, k)}px)`;
+  };
+  pop('#b-eleve', tMot(sc, /^L'élève/) ?? sc.debut + .4);
+  pop('#b-parent', tMot(sc, /^parents/) ?? sc.debut + 3);
+}
+
+function sceneSix(lt, t) {
+  const sc = S.s6;
+  const kl = eo(prog(lt, 0.1, 0.7));
+  $('#s6-logo').style.opacity = kl; $('#s6-logo').style.transform = `scale(${lerp(.9, 1, kl)})`;
+  const tIns = tMot(sc, /^Inscrivez/) ?? sc.debut + 1.3;
+  const kb = eo(prog(t, tIns - 0.1, 0.45));
+  const pulse = 1 + 0.025 * Math.sin(Math.max(0, t - tIns) * 5.2) * kb;
+  $('#s6-bouton').style.opacity = kb; $('#s6-bouton').style.transform = `translateY(${lerp(30, 0, kb)}px) scale(${pulse})`;
+  const kk = eo(prog(t, tIns + 0.5, 0.5));
+  $('#s6-lien').style.opacity = kk; $('#s6-lien').style.transform = `translateY(${lerp(20, 0, kk)}px)`;
+}
+
+window.render = function (t) {
+  const fns = [sceneUn, sceneDeux, sceneTrois, sceneQuatre, sceneCinq, sceneSix];
+  D.scenes.forEach((sc, i) => {
+    if (setScene(i, t)) fns[i](t - sc.debut, t);
+  });
+  // sous-titres : la scène 1 porte déjà le texte en grand, synchronisé mot à mot
+  const el = $('#sous-titre-t');
+  const s = D.subs.find(x => t >= x.t0 && t < x.t1);
+  if (!s || t < S.s2.debut) el.style.display = 'none'; else { el.style.display = 'block'; el.textContent = s.affiche; }
+  return true;
+};
+window.pret = Promise.all([...document.images].map(i => i.decode ? i.decode().catch(() => {}) : 0)).then(() => document.fonts.ready).then(() => true);
+</script>
+</body>
+</html>
