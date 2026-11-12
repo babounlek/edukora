@@ -328,6 +328,10 @@ export const fr = {
     "par mois et par enfant",
   "prix.par_mois_court":
     "par mois",
+  "prix.par_enfant_court": "par enfant",
+  "prix.recap_titre": "Ton récapitulatif",
+  "prix.recap_vide": "Ton total s'affichera ici dès que tu auras choisi ton cursus.",
+  "prix.famille_resume": "Plusieurs enfants ? {prix} FCFA par mois dès le 2e enfant",
   "prix.duree_apres_cursus":
     "Choisis ton cursus : tu verras combien de mois tu peux prendre, et le total à payer.",
   "prix.continuer":

@@ -7,6 +7,7 @@ import {
   CalendarCheck,
   CalendarClock,
   Check,
+  ChevronDown,
   Lock,
   ShieldCheck,
   Smartphone,
@@ -40,7 +41,7 @@ import {
   MOIS_PAR_DEFAUT, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA, PRIX_MOIS_FCFA, estAuMois, moisValides, prixTotal,
   prixTotalReference,
 } from "@/lib/tarifs"
-import { SelecteurDuree } from "@/components/SelecteurDuree"
+import { ChoixDuree, RecapDuree } from "@/components/SelecteurDuree"
 
 function cursusLabel(cursus: Cursus): string {
   if (cursus.series?.code.startsWith("GCE_")) return `${cursus.examen_display} - ${codeSerieAffiche(cursus.series)}`
@@ -214,6 +215,18 @@ function ChipReassurance({ icon, children }: { icon: ReactNode; children: ReactN
   )
 }
 
+/** Titre d'une étape du calculateur : un numéro et son intitulé, pour que l'ordre des choix se lise d'un coup d'œil. */
+function EtapeTitre({ n, children }: { n: number; children: ReactNode }) {
+  return (
+    <p className="mb-2.5 flex items-center gap-2 font-display font-semibold">
+      <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+        {n}
+      </span>
+      {children}
+    </p>
+  )
+}
+
 /**
  * Tarif famille, rendu concret par un petit tableau plutôt qu'une phrase. Le tarif de
  * référence vient du serveur (`plan.price`) ; l'enfant supplémentaire en est déduit
@@ -229,14 +242,17 @@ function TarifFamille({ plan }: { plan: Plan }) {
   const supplementaire = plan.prix_enfant_supplementaire
   const total = (nbEnfants: number) => reference + (nbEnfants - 1) * supplementaire
 
+  // Replié : une ligne suffit à la plupart des visiteurs, et le tableau ne doit pas allonger la colonne du bouton.
   return (
-    <div className="rounded-xl border border-primary/15 bg-primary/[0.03] p-4">
-      <p className="text-xs font-medium text-muted-foreground">
-        {plan.campagne
-          ? t("prix.famille_intro_campagne", { prix: formatAmount(supplementaire), nom: nomCampagne(plan.campagne) })
-          : t("prix.famille_intro", { prix: formatAmount(supplementaire) })}
-      </p>
-      <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
+    <details className="group rounded-xl border border-primary/15 bg-primary/[0.03] px-4 py-2">
+      <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium [&::-webkit-details-marker]:hidden">
+        <span>{t("prix.famille_resume", { prix: formatAmount(supplementaire) })}</span>
+        <ChevronDown
+          className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+          aria-hidden
+        />
+      </summary>
+      <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 pb-1 text-sm">
         {[1, 2, 3, 4].map((n) => (
           <div key={n} className="contents">
             <dt className="text-muted-foreground">{tn("prix.enfants", n)}</dt>
@@ -248,11 +264,11 @@ function TarifFamille({ plan }: { plan: Plan }) {
         ))}
       </dl>
       {plan.campagne && (
-        <p className="mt-3 text-xs text-muted-foreground">
+        <p className="mt-2 pb-1 text-xs text-muted-foreground">
           {t("prix.famille_note_campagne", { nom: nomCampagne(plan.campagne) })}
         </p>
       )}
-    </div>
+    </details>
   )
 }
 
@@ -452,6 +468,56 @@ export function PricingPage() {
   const prixSupHero = planTarif?.prix_enfant_supplementaire ?? PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA
   const afficherBarreMobile = !!planTarif && !ctaVisible
 
+  // Les questions fréquentes, les plus bloquantes d'abord : le paiement, le prix exact, le prélèvement.
+  const faq = [
+    {
+      cle: "paiement",
+      icone: <Smartphone className="size-4" />,
+      teinte: "bg-primary/10 text-primary",
+      q: t("prix.faq1_q"),
+      r: campayActif ? t("prix.faq1_r_campay") : t("prix.faq1_r_manuel"),
+    },
+    {
+      cle: "prix",
+      icone: <Lock className="size-4" />,
+      teinte: "bg-gold/10 text-gold-text",
+      q: t("prix.faq3_q"),
+      r: t("prix.faq3_r", {
+        prix: formatAmount(PRIX_MOIS_FCFA),
+        prix3: formatAmount(PRIX_MOIS_FCFA * 3),
+        prix_sup: formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA),
+      }),
+    },
+    {
+      cle: "prelevement",
+      icone: <ShieldCheck className="size-4" />,
+      teinte: "bg-success/10 text-success",
+      q: t("prix.faq2_q"),
+      r: t("prix.faq2_r"),
+    },
+    {
+      cle: "fin",
+      icone: <CalendarClock className="size-4" />,
+      teinte: "bg-primary/10 text-primary",
+      q: t("prix.faq5_q"),
+      r: t("prix.faq5_r"),
+    },
+    {
+      cle: "maximum",
+      icone: <CalendarCheck className="size-4" />,
+      teinte: "bg-gold/10 text-gold-text",
+      q: t("prix.faq6_q"),
+      r: t("prix.faq6_r"),
+    },
+    {
+      cle: "echec",
+      icone: <ArrowRightLeft className="size-4" />,
+      teinte: "bg-primary/10 text-primary",
+      q: campayActif ? t("prix.faq4_q_campay") : t("prix.faq4_q_manuel"),
+      r: campayActif ? t("prix.faq4_r_campay") : t("prix.faq4_r_manuel", { delai: delaiVerificationPaiementAffiche() }),
+    },
+  ]
+
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       <BandeauEnfantVise profilId={profilParam} />
@@ -465,12 +531,10 @@ export function PricingPage() {
           compact
         />
       )}
-      {/* Même gabarit de hero que /quiz, /fiches et /cours. Un seul titre, là où la
-          page en empilait deux ("Choisis ton profil." puis "Un seul prix...") avant
-          d'avoir rien dit du prix ni de la façon de payer. Les trois puces répondent
-          d'entrée aux objections qui bloquent un achat Mobile Money : combien, avec
-          quoi, et est-ce que ça va me prélever tous les mois. */}
-      <div className="relative mb-5 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-5 sm:mb-8 sm:p-10">
+      {/* Hero compact : le prix se lit tout de suite, mais il ne prend plus un écran entier - le calculateur
+          (cursus, durée, total) doit tenir dans le premier écran sur ordinateur. Les trois puces répondent aux
+          objections qui bloquent un achat Mobile Money : combien, avec quoi, et est-ce que ça va me prélever. */}
+      <div className="relative mb-5 overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/[0.08] via-transparent to-transparent p-5 sm:mb-6 sm:p-7">
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -478,35 +542,27 @@ export function PricingPage() {
             backgroundSize: "24px 24px",
           }}
         />
-        {/* Halo doré, décentré - profondeur discrète derrière le titre plutôt qu'un
-            fond plat, sans concurrencer la grille de prix qui doit rester l'élément
-            le plus lu de la page. */}
         <div
           className="pointer-events-none absolute -right-24 -top-24 size-72 rounded-full bg-gold/10 blur-3xl"
           aria-hidden
         />
-        <div className="relative max-w-2xl">
-          <p className="mb-1 font-display text-sm italic text-primary">{t("nav.prix")}</p>
-          {/* Tutoiement de bout en bout (décision du 2026-09-05) : un brouillon non
-              commité vouvoyait cette page ("acheteur adulte" payeur), rompant avec le
-              reste du site (accueil, quiz, corrigés) qui tutoie l'élève partout - jamais
-              mergé, donc sans effet sur la version publiée, mais présent dans l'arbre de
-              travail. Écarté au profit de la cohérence de ton déjà en place ailleurs. */}
-          <h1 className="font-display text-3xl font-semibold leading-[1.15] sm:text-4xl">
+        <div className="relative max-w-3xl">
+          {/* Tutoiement de bout en bout (décision du 2026-09-05), comme le reste du site. */}
+          <h1 className="font-display text-2xl font-semibold leading-[1.15] sm:text-3xl">
             {t("prix.titre_debut")}{" "}
             <span className={cn("whitespace-nowrap text-primary transition-opacity", !offresPretes && "opacity-0")}>
               {t("prix.titre_accent", { prix: formatAmount(prixHero) })}
             </span>
             .
           </h1>
-          <p className={cn("mt-2 text-muted-foreground transition-opacity", !offresPretes && "opacity-0")}>
+          <p className={cn("mt-1.5 text-sm text-muted-foreground transition-opacity sm:text-base", !offresPretes && "opacity-0")}>
             {t("prix.sous_titre", {
               prix: formatAmount(prixHero),
               prix_sup: formatAmount(prixSupHero),
             })}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+          <div className="mt-3.5 flex flex-wrap gap-2">
             <ChipReassurance icon={<Smartphone className="size-3.5 text-primary" />}>
               Mobile Money (MTN, Orange)
             </ChipReassurance>
@@ -523,308 +579,246 @@ export function PricingPage() {
         </div>
       </div>
 
-      {/* Deux offres commerciales cohabitaient ici via des onglets (abonnement élève
-          classique, add-on Fiches pour répétiteurs/enseignants) - l'add-on Fiches et le
-          public répétiteur/enseignant sont mis en veilleuse (2026-09-15), l'onglet est
-          donc retiré et seule l'offre élève reste affichée. */}
-      <div className="mt-5 sm:mt-8">
-        {/* Une seule carte, deux colonnes à partir de sm (cursus + avantages à gauche, prix + bouton +
-            famille à droite). Sur mobile, les deux colonnes passent en `contents` et leurs blocs
-            s'ordonnent d'eux-mêmes (max-sm:order-N) : prix → cursus → bouton → avantages → famille →
-            étapes. Avant, la colonne du cursus et ses cinq avantages précédaient le prix, qui
-            n'apparaissait qu'après deux écrans de défilement, et le bouton arrivait en dernier. */}
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-          <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
-          <div className="flex flex-col gap-6 p-5 sm:grid sm:grid-cols-2 sm:gap-0 sm:p-0">
-            <div className="max-sm:contents sm:flex sm:flex-col sm:gap-6 sm:p-6">
-              <div
-                ref={cursusRef}
-                className={cn(
-                  "scroll-mt-24 rounded-lg max-sm:order-2",
-                  cursusManquant && "outline outline-2 outline-offset-8 outline-primary/40",
-                )}
+      {/* Le calculateur : à gauche les deux choix, dans l'ordre où l'on les fait (1 cursus, 2 durée) ; à droite le
+          récapitulatif, collé en haut pendant qu'on choisit, avec le total et le bouton. Avant, le cursus et la durée
+          étaient dans deux colonnes différentes et le regard faisait des allers-retours. Sur mobile, les deux blocs
+          s'empilent : choix, puis récapitulatif et bouton (le prix est déjà dans le titre, et la barre collée en
+          bas garde le bouton à portée de pouce). */}
+      {chargement && allPlans.length === 0 ? (
+        <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_21rem] lg:grid-cols-[minmax(0,1fr)_23rem]" aria-hidden>
+          <div className="h-72 animate-pulse rounded-2xl bg-muted" />
+          <div className="h-72 animate-pulse rounded-2xl bg-muted" />
+        </div>
+      ) : erreurPlans && allPlans.length === 0 ? (
+        <ErreurChargement objet={t("prix.objet_tarifs")} onRetry={reessayerPlans} />
+      ) : (
+        <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_21rem] md:items-start lg:grid-cols-[minmax(0,1fr)_23rem]">
+          <div className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-5 shadow-sm sm:p-6">
+            <div
+              ref={cursusRef}
+              className={cn(
+                "scroll-mt-24 rounded-lg",
+                cursusManquant && "outline outline-2 outline-offset-8 outline-primary/40",
+              )}
+            >
+              <EtapeTitre n={1}>{t("prix.ton_cursus")}</EtapeTitre>
+              <CursusChips
+                liste={cursusEleve}
+                selected={selectedCursus}
+                onSelect={setSelectedCursus}
+                label={t("prix.ton_cursus")}
+                describedBy="cursus-eleve-aide"
+              />
+              <p
+                id="cursus-eleve-aide"
+                role={cursusManquant ? "alert" : undefined}
+                className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
               >
-                <p className="mb-2.5 font-display font-semibold">{t("prix.ton_cursus")}</p>
-                <CursusChips
-                  liste={cursusEleve}
-                  selected={selectedCursus}
-                  onSelect={setSelectedCursus}
-                  label={t("prix.ton_cursus")}
-                  describedBy="cursus-eleve-aide"
-                />
-                <p
-                  id="cursus-eleve-aide"
-                  role={cursusManquant ? "alert" : undefined}
-                  className={cn("mt-2 text-xs", cursusManquant ? "text-primary" : "text-muted-foreground")}
-                >
-                  {cursusManquant ? t("prix.cursus_manquant") : t("prix.cursus_aide")}
-                </p>
-              </div>
-
-              <div className="border-t border-border pt-5 max-sm:order-5">
-                <p className="font-display text-sm font-semibold">{t("prix.tout_besoin")}</p>
-                <ul role="list" className="mt-3 flex flex-col gap-2.5 text-sm">
-                  {AVANTAGES.map((avantage) => (
-                    <li key={avantage.titre} className="flex items-start gap-2">
-                      <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
-                      <span>
-                        {t(avantage.titre, { site: SITE_NAME })}
-                        {avantage.exclusif && <PastilleExclusif />}
-                        <span className="block text-xs text-muted-foreground">{t(avantage.texte)}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                {cursusManquant ? t("prix.cursus_manquant") : t("prix.cursus_aide")}
+              </p>
             </div>
 
-            <div className="max-sm:contents sm:flex sm:flex-col sm:gap-5 sm:border-l sm:border-border sm:p-6">
-              {chargement && allPlans.length === 0 ? (
-                <div className="flex flex-col gap-4 max-sm:order-1" aria-hidden>
-                  <div className="h-4 w-28 animate-pulse rounded bg-muted" />
-                  <div className="h-16 w-full animate-pulse rounded-lg bg-muted" />
-                  <div className="h-9 w-32 animate-pulse rounded bg-muted" />
-                  <div className="h-28 w-full animate-pulse rounded bg-muted" />
-                </div>
-              ) : erreurPlans && allPlans.length === 0 ? (
-                <ErreurChargement
-                  compact
-                  objet={t("prix.objet_tarifs")}
-                  onRetry={reessayerPlans}
-                  className="h-full justify-center max-sm:order-1"
-                />
+            <div className="border-t border-border pt-5">
+              <EtapeTitre n={2}>{t("sb.duree_titre")}</EtapeTitre>
+              {/* La durée : seulement une fois le cursus connu, puisque le nombre de mois achetables en dépend (il
+                  s'arrête à la fin de l'examen). Avant, une phrase dit pourquoi elle n'est pas encore là. */}
+              {planCursus ? (
+                <ChoixDuree plan={planCursus} mois={mois} onChoisir={choisirDuree} afficherTitre={false} />
               ) : (
-                <>
-                  {/* Prix du mois : le même pour tous les cursus, donc affiché d'emblée, avant même le choix
-                      du cursus - `planCursus` sert à la durée maximale et au total. */}
-                  <div className="max-sm:order-1">
-                    <p className="font-display font-semibold">{t("prix.formule")}</p>
-                    <p className="hidden text-sm text-muted-foreground sm:block">{t("prix.formule_texte")}</p>
-                    <div className="mt-2 sm:mt-4">
-                      {/* Jamais de repli sur 0 : sans plan chargé, on n'affiche pas de prix du tout. */}
-                      {planTarif && (
-                        <p className="flex flex-wrap items-baseline gap-x-2 font-display text-3xl font-semibold text-primary">
-                          <span>
-                            {formatAmount(planTarif.effective_price)}
-                            <span className="ml-1 text-base font-normal text-muted-foreground">
-                              FCFA {t("prix.par_mois_court")}
-                            </span>
-                          </span>
-                          {planTarif.campagne && (
-                            <>
-                              <s className="text-lg font-normal text-muted-foreground">
-                                {formatAmount(planTarif.prix_reference)}
-                              </s>
-                              <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-gold-text">
-                                {t("camp.etiquette", { pct: planTarif.campagne.pourcentage })}
-                              </span>
-                            </>
-                          )}
-                        </p>
-                      )}
-                      {planTarif?.campagne && (
-                        <p className="mt-0.5 text-xs font-semibold text-gold-text">
-                          {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
-                        </p>
-                      )}
-                      <p className="mt-0.5 text-xs text-muted-foreground">{t("prix.par_enfant")}</p>
-                    </div>
-                  </div>
-
-                  {/* La durée : seulement une fois le cursus connu, puisque le nombre de mois achetables en dépend
-                      (il s'arrête à la fin de l'examen). Avant, une phrase dit pourquoi elle n'est pas encore là. */}
-                  <div className="max-sm:order-3">
-                    {planCursus ? (
-                      <SelecteurDuree plan={planCursus} mois={mois} onChoisir={choisirDuree} />
-                    ) : (
-                      <p className="rounded-xl border border-dashed border-input px-4 py-3 text-sm text-muted-foreground">
-                        {t("prix.duree_apres_cursus")}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col gap-3 max-sm:order-4">
-                    {/* Toujours le bouton principal, plein : « Choisir ton cursus » en contour discret
-                        ressemblait à un lien secondaire alors que c'est l'action de la page. Cliquable,
-                        jamais disabled - un bouton mort ne donne aucun feedback au clic et peut passer
-                        pour une page cassée ; sans cursus, il remonte au sélecteur et le signale. */}
-                    {/* La barre mobile se retire quand CE bouton est à l'écran (et non tout le bloc : le
-                        texte sous le bouton gardait la barre cachée alors que le bouton était déjà sorti). */}
-                    <div ref={ctaRef}>
-                      <Button onClick={() => choisirFormule("bouton")} size="lg" className="w-full">
-                        {planCursus
-                          ? tn("prix.continuer_mois", mois, { montant: formatAmount(totalChoisi) })
-                          : t("prix.choisir_cursus")}
-                      </Button>
-                    </div>
-                    {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
-                    {!isAuthenticated && (
-                      <p className="text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
-                    )}
-                    {/* L'essai gratuit se lit ici, à côté du bouton, et non plus tout en bas après la FAQ. */}
-                    <p className="text-center text-sm text-muted-foreground">
-                      {t("prix.essayer_avant")}{" "}
-                      {/* Jamais "/cm/cours" en dur : /tarifs n'est pas une route préfixée par pays, le pays
-                          courant vient du contexte (voir CountryContext et coursListPath). */}
-                      <Link
-                        to={coursListPath(country)}
-                        className="group inline-flex min-h-11 items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
-                      >
-                        {t("prix.decouvrir_cours")}
-                        <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-                      </Link>
-                    </p>
-                  </div>
-
-                  {planTarif && (
-                    <div className="max-sm:order-6">
-                      <TarifFamille plan={planTarif} />
-                    </div>
-                  )}
-
-                  {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se
-                      lire ici, pas derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). */}
-                  {!isAuthenticated && (
-                    <div className="rounded-xl border border-border/70 bg-muted/40 px-4 py-3 text-left text-sm max-sm:order-7">
-                      <p className="font-medium">{t("prix.etapes_titre")}</p>
-                      <ol className="mt-1.5 list-decimal space-y-0.5 pl-5 text-muted-foreground">
-                        <li>{t("prix.etape1")}</li>
-                        <li>{t("prix.etape2")}</li>
-                        <li>
-                          {campayActif
-                            ? t("prix.etape3_immediat")
-                            : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() })}
-                        </li>
-                      </ol>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        {t("prix.contact_paiement")}{" "}
-                        <a
-                          href={CONTACT_WHATSAPP_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-primary underline-offset-2 hover:underline"
-                        >
-                          {CONTACT_WHATSAPP_AFFICHAGE}
-                        </a>
-                        {" · "}
-                        {EDITEUR_NOM}
-                      </p>
-                      <LienAide slug="comment-payer" className="mt-1">{t("aide.lien.comment_payer")}</LienAide>
-                    </div>
-                  )}
-                </>
+                <p className="rounded-xl border border-dashed border-input px-4 py-3 text-sm text-muted-foreground">
+                  {t("prix.duree_apres_cursus")}
+                </p>
               )}
             </div>
           </div>
+
+          <aside
+            aria-label={t("prix.recap_titre")}
+            className="relative overflow-hidden rounded-2xl border border-border bg-card shadow-sm md:sticky md:top-24"
+          >
+            <div className="h-1 bg-gradient-to-r from-gold via-primary to-gold" aria-hidden />
+            <div className="flex flex-col gap-4 p-5">
+              <div>
+                <p className="font-display font-semibold">{t("prix.recap_titre")}</p>
+                {/* Prix du mois : le même pour tous les cursus, donc affiché d'emblée. Jamais de repli sur 0 : sans
+                    plan chargé, on n'affiche pas de prix du tout. */}
+                {planTarif && (
+                  <>
+                    <p className="mt-1.5 flex flex-wrap items-baseline gap-x-2 font-display text-2xl font-semibold text-primary">
+                      <span>
+                        {formatAmount(planTarif.effective_price)}
+                        <span className="ml-1 text-sm font-normal text-muted-foreground">
+                          FCFA {t("prix.par_mois_court")}
+                        </span>
+                      </span>
+                      {planTarif.campagne && (
+                        <>
+                          <s className="text-base font-normal text-muted-foreground">
+                            {formatAmount(planTarif.prix_reference)}
+                          </s>
+                          <span className="rounded-full bg-gold/15 px-2 py-0.5 text-xs font-semibold text-gold-text">
+                            {t("camp.etiquette", { pct: planTarif.campagne.pourcentage })}
+                          </span>
+                        </>
+                      )}
+                    </p>
+                    {planTarif.campagne && (
+                      <p className="mt-0.5 text-xs font-semibold text-gold-text">
+                        {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(planTarif.campagne.fin) })}
+                      </p>
+                    )}
+                    <p className="mt-0.5 text-xs text-muted-foreground">{t("prix.par_enfant_court")}</p>
+                  </>
+                )}
+              </div>
+
+              {planCursus ? (
+                <div className="flex flex-col gap-3 border-t border-border pt-4">
+                  <p className="text-sm font-medium">{cursusLabel(planCursus.cursus)}</p>
+                  <RecapDuree plan={planCursus} mois={mois} />
+                </div>
+              ) : (
+                <p className="rounded-xl border border-dashed border-input px-4 py-3 text-sm text-muted-foreground">
+                  {t("prix.recap_vide")}
+                </p>
+              )}
+
+              <div className="flex flex-col gap-3">
+                {/* Toujours le bouton principal, plein : « Choisir ton cursus » en contour discret ressemblait à un
+                    lien secondaire alors que c'est l'action de la page. Cliquable, jamais disabled - un bouton mort
+                    ne donne aucun feedback au clic et peut passer pour une page cassée ; sans cursus, il remonte au
+                    choix du cursus et le signale. La barre mobile se retire quand CE bouton est à l'écran. */}
+                <div ref={ctaRef}>
+                  <Button onClick={() => choisirFormule("bouton")} size="lg" className="w-full">
+                    {planCursus
+                      ? tn("prix.continuer_mois", mois, { montant: formatAmount(totalChoisi) })
+                      : t("prix.choisir_cursus")}
+                  </Button>
+                </div>
+                {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
+                {!isAuthenticated && (
+                  <p className="text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                )}
+                {/* L'essai gratuit se lit ici, à côté du bouton. Jamais "/cm/cours" en dur : /tarifs n'est pas une
+                    route préfixée par pays, le pays courant vient du contexte (voir CountryContext et coursListPath). */}
+                <p className="text-center text-sm text-muted-foreground">
+                  {t("prix.essayer_avant")}{" "}
+                  <Link
+                    to={coursListPath(country)}
+                    className="group inline-flex min-h-11 items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+                  >
+                    {t("prix.decouvrir_cours")}
+                    <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </p>
+              </div>
+
+              {planTarif && <TarifFamille plan={planTarif} />}
+            </div>
+          </aside>
         </div>
-      </div>
+      )}
+
+      {/* Ce que contient l'abonnement, en bandeau : sous le calculateur, pas dans une colonne qui laissait un grand vide
+          à côté du récapitulatif. Les deux avantages introuvables ailleurs sont plus larges et dorés. */}
+      <section className="mt-10 sm:mt-12">
+        <h2 className="font-display text-xl font-semibold">{t("prix.tout_besoin")}</h2>
+        <ul role="list" className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+          {AVANTAGES.map((avantage, index) => (
+            <li
+              key={avantage.titre}
+              className={cn(
+                "flex items-start gap-3 rounded-xl border p-4",
+                avantage.exclusif ? "border-gold/30 bg-gold/[0.05] lg:col-span-3" : "border-border bg-card lg:col-span-2",
+                index === 2 && "sm:col-span-2",
+              )}
+            >
+              <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+              <span className="text-sm">
+                <span className="font-medium">{t(avantage.titre, { site: SITE_NAME })}</span>
+                {avantage.exclusif && <PastilleExclusif />}
+                <span className="mt-0.5 block text-xs text-muted-foreground">{t(avantage.texte)}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* Un parent décide avant de se connecter : le déroulé du paiement et un contact doivent se lire ici, pas
+          derrière la connexion (test élève 2026-11-07, « Q6 : peut-être »). En trois étapes côte à côte plutôt
+          qu'un encart dans la colonne du bouton. */}
+      {!isAuthenticated && (
+        <section className="mt-10 sm:mt-12">
+          <h2 className="font-display text-xl font-semibold">{t("prix.etapes_titre")}</h2>
+          <ol role="list" className="mt-4 grid gap-3 sm:grid-cols-3">
+            {(
+              [
+                t("prix.etape1"),
+                t("prix.etape2"),
+                campayActif
+                  ? t("prix.etape3_immediat")
+                  : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() }),
+              ] as string[]
+            ).map((texte, i) => (
+              <li key={i} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 text-sm">
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+                  {i + 1}
+                </span>
+                <span>{texte}</span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-3 text-sm text-muted-foreground">
+            {t("prix.contact_paiement")}{" "}
+            <a
+              href={CONTACT_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline-offset-2 hover:underline"
+            >
+              {CONTACT_WHATSAPP_AFFICHAGE}
+            </a>
+            {" · "}
+            {EDITEUR_NOM}
+          </p>
+          <LienAide slug="comment-payer" className="mt-1">{t("aide.lien.comment_payer")}</LienAide>
+        </section>
+      )}
 
       <ComparatifFascicule />
 
-      {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant
-          la FAQ qui traite les dernières objections - de vrais témoignages publiés
-          depuis l'admin (jamais générés), déjà utilisés sur /epreuves. Disparaît
-          silencieusement tant qu'aucun n'est publié (voir SocialProofSection), donc
-          jamais un bloc vide sur cette page.
-          -mx-4 sm:-mx-6 annule le padding horizontal du conteneur racine de cette
-          page : SocialProofSection porte déjà son propre mx-auto max-w-5xl px-4, pensé
-          pour un parent sans contrainte de largeur (voir son usage sur CataloguePage) -
-          sans ça le padding se cumule et le bloc paraît plus étroit que le reste de la
-          page. */}
+      {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant la FAQ qui traite les
+          dernières objections - de vrais témoignages publiés depuis l'admin (jamais générés). Disparaît
+          silencieusement tant qu'aucun n'est publié (voir SocialProofSection), donc jamais un bloc vide.
+          -mx-4 sm:-mx-6 annule le padding horizontal du conteneur racine : SocialProofSection porte déjà son
+          propre mx-auto max-w-5xl px-4. */}
       <div className="-mx-4 sm:-mx-6">
         <SocialProofSection />
       </div>
 
-      {/* Une page de
-          tarifs sans réponse aux objections laisse l'acheteur seul avec ses doutes au
-          moment précis où il doit sortir son téléphone - c'était le trou le plus large
-          de cette page. Revue le 2026-08-30 pour l'offre unique Jusqu'à l'Examen : les
-          deux anciennes entrées ("prélevé chaque mois", "je reprends avant la fin")
-          présupposaient encore un rythme mensuel hérité du palier Mensuel retiré (voir
-          0013_retire_mensuel) - remplacées par des objections qui tiennent pour un
-          paiement unique valable jusqu'à l'examen.
-          Chaque affirmation est vérifiable dans le code, aucune n'est du copywriting :
-          les deux modes de paiement (Campay automatique vs paiement manuel + déclaration
-          admin, voir payments/models.py Transaction/ManualPayment et campay_client.py),
-          l'absence de tout prélèvement récurrent (aucun cron/webhook de reconduction),
-          et le prix figé au jour de l'achat (Plan.effective_price/effective_duration_days
-          n'est lu qu'une fois, à l'activation - voir subscriptions/models.py). */}
+      {/* Les objections, en accordéon : six réponses courtes qui tenaient sur deux écrans, ouvertes à la demande.
+          Les questions de paiement d'abord, c'est là que les parents bloquent. Chaque affirmation est vérifiable
+          dans le code (deux modes de paiement Campay et manuel, aucun prélèvement récurrent, durée choisie et
+          bornée par la fin de l'examen). */}
       <section className="mt-12 border-t border-border pt-10">
         <h2 className="font-display text-xl font-semibold">{t("prix.avant_payer")}</h2>
-        <ul role="list" className="mt-5 grid gap-5 sm:grid-cols-2">
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <Smartphone className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">{t("prix.faq1_q")}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                {campayActif
-                  ? t("prix.faq1_r_campay")
-                  : t("prix.faq1_r_manuel")}
-              </p>
-            </div>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">
-              <ShieldCheck className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">{t("prix.faq2_q")}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                {t("prix.faq2_r")}
-              </p>
-            </div>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold-text">
-              <Lock className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">{t("prix.faq3_q")}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                {t("prix.faq3_r", {
-                  prix: formatAmount(PRIX_MOIS_FCFA),
-                  prix3: formatAmount(PRIX_MOIS_FCFA * 3),
-                  prix_sup: formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA),
-                })}
-              </p>
-            </div>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <CalendarClock className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">{t("prix.faq5_q")}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">{t("prix.faq5_r")}</p>
-            </div>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold-text">
-              <CalendarCheck className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">{t("prix.faq6_q")}</p>
-              <p className="mt-0.5 text-sm text-muted-foreground">{t("prix.faq6_r")}</p>
-            </div>
-          </li>
-          <li className="flex items-start gap-3">
-            <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-              <ArrowRightLeft className="size-4" />
-            </span>
-            <div>
-              <p className="font-medium">
-                {campayActif ? t("prix.faq4_q_campay") : t("prix.faq4_q_manuel")}
-              </p>
-              <p className="mt-0.5 text-sm text-muted-foreground">
-                {campayActif
-                  ? t("prix.faq4_r_campay")
-                  : t("prix.faq4_r_manuel", { delai: delaiVerificationPaiementAffiche() })}
-              </p>
-            </div>
-          </li>
-        </ul>
+        <div className="mt-5 flex max-w-3xl flex-col divide-y divide-border rounded-xl border border-border bg-card">
+          {faq.map((question) => (
+            <details key={question.cle} className="group px-4">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 py-2 font-medium [&::-webkit-details-marker]:hidden">
+                <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", question.teinte)}>
+                  {question.icone}
+                </span>
+                <span className="min-w-0 flex-1">{question.q}</span>
+                <ChevronDown
+                  className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+                  aria-hidden
+                />
+              </summary>
+              <p className="pb-4 pl-11 text-sm text-muted-foreground">{question.r}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       {afficherBarreMobile && planTarif && (

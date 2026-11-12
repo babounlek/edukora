@@ -322,6 +322,10 @@ export const en: Partial<Record<CleI18n, string>> = {
     "per month and per child",
   "prix.par_mois_court":
     "per month",
+  "prix.par_enfant_court": "per child",
+  "prix.recap_titre": "Your summary",
+  "prix.recap_vide": "Your total will appear here as soon as you choose your exam.",
+  "prix.famille_resume": "Several children? {prix} FCFA a month from the 2nd child",
   "prix.duree_apres_cursus":
     "Choose your exam: you will see how many months you can take, and the total to pay.",
   "prix.continuer":
