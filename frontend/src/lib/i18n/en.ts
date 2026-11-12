@@ -1497,6 +1497,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "mp.duree_one": "{n} month of access",
   "mp.duree_other": "{n} months of access",
   "sb.paiement_pour": "You are paying for: {prenom}",
+  "sb.choisir_enfant": "Which child is this subscription for?",
   "pm.pour_enfant": "For {prenom}",
   "sb.abonnement_pour": "Subscription for {prenom}",
   "sb.sous_titre_fiches":

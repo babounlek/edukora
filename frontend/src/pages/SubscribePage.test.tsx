@@ -81,6 +81,33 @@ describe("SubscribePage : pour quel enfant le parent paie", () => {
     expect(await screen.findByText(/Abonnement pour Junior/)).toBeInTheDocument()
   })
 
+  it("laisse le parent choisir l'enfant à abonner quand le compte en a plusieurs", async () => {
+    auth.user = { phone_number: "677000000", profil_actif: { id: 2, prenom: "Junior" } }
+    listProfils.mockResolvedValue([{ id: 1, prenom: "Awa" }, { id: 2, prenom: "Junior" }])
+    afficher("/abonnement?cursus=4&mois=3")
+
+    const awa = await screen.findByRole("radio", { name: "Awa" })
+    const junior = screen.getByRole("radio", { name: "Junior" })
+    // Le profil actif est présélectionné, comme avant.
+    expect(junior).toHaveAttribute("aria-checked", "true")
+    expect(awa).toHaveAttribute("aria-checked", "false")
+
+    fireEvent.click(awa)
+
+    expect(await screen.findByText(/Abonnement pour Awa/)).toBeInTheDocument()
+    expect(screen.getByRole("radio", { name: "Awa" })).toHaveAttribute("aria-checked", "true")
+  })
+
+  it("n'affiche pas de sélecteur sur un compte à un seul profil", async () => {
+    auth.user = { phone_number: "677000000", profil_actif: { id: 1, prenom: "Awa" } }
+    listProfils.mockResolvedValue([{ id: 1, prenom: "Awa" }])
+    afficher("/abonnement?cursus=4&mois=3")
+
+    await waitFor(() => expect(listProfils).toHaveBeenCalled())
+    await screen.findByText(/Paiement sécurisé/)
+    expect(screen.queryByRole("radio", { name: "Awa" })).not.toBeInTheDocument()
+  })
+
   it("ne nomme personne sur un compte à un seul profil", async () => {
     auth.user = { phone_number: "677000000", profil_actif: { id: 1, prenom: "Awa" } }
     listProfils.mockResolvedValue([{ id: 1, prenom: "Awa" }])

@@ -140,11 +140,15 @@ export function SubscribePage() {
   const { isAuthenticated, isLoading, user } = useAuth()
   // Sans `profil=`, le serveur retombe sur le PREMIER profil du compte : un parent qui paie depuis le profil du
   // cadet abonnait l'aîné. Le profil actif est donc relayé par défaut (test élève 10-24, parent à deux enfants).
-  const profilId = profilParam ? Number(profilParam) : (user?.profil_actif?.id ?? undefined)
+  // Un parent à plusieurs enfants peut changer ici l'enfant pour qui il paie (sélecteur ci-dessous) : sans lui, le
+  // bouton « Continuer » de /tarifs abonnait le profil actif, souvent celui qui l'est déjà (audit du 2026-11-12).
+  const [profilChoisi, setProfilChoisi] = useState<number | null>(null)
+  const profilId = profilChoisi ?? (profilParam ? Number(profilParam) : (user?.profil_actif?.id ?? undefined))
   const { country } = useCountry()
 
   const [cursus, setCursus] = useState<Cursus | null>(null)
   const [profilPrenom, setProfilPrenom] = useState<string | null>(null)
+  const [profils, setProfils] = useState<{ id: number; prenom: string }[]>([])
   const [plans, setPlans] = useState<Plan[]>([])
   // `plans` vide veut dire trois choses différentes : pas encore chargé, chargement en échec,
   // ou vraiment aucune offre. Sans ces deux états on affichait « Aucune offre disponible »
@@ -309,10 +313,11 @@ export function SubscribePage() {
   useEffect(() => {
     if (!profilId) return
     listProfils()
-      .then((profils) => {
+      .then((liste) => {
+        setProfils(liste.map((p) => ({ id: p.id, prenom: p.prenom })))
         // Compte à un seul profil : pas de « pour <prénom> », l'achat ne peut viser personne d'autre.
-        const nomme = profilParam || profils.length > 1
-        setProfilPrenom(nomme ? (profils.find((p) => p.id === profilId)?.prenom ?? null) : null)
+        const nomme = profilParam || liste.length > 1
+        setProfilPrenom(nomme ? (liste.find((p) => p.id === profilId)?.prenom ?? null) : null)
       })
       .catch(() => {
         // Simple confirmation visuelle (« pour Awa ») : l'achat reste possible sans elle.
@@ -651,11 +656,39 @@ export function SubscribePage() {
             <div className="flex flex-col gap-6">
               {/* Pour qui l'argent part : rappelé AU-DESSUS du formulaire de paiement, là où l'on décide de payer, et pas
                   seulement dans l'en-tête de la page (test élève 2026-10-24, parent de deux enfants). */}
-              {profilPrenom && (
-                <p className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3.5 py-2.5 text-sm font-medium">
-                  <User className="size-4 shrink-0 text-primary" aria-hidden="true" />
-                  {t("sb.paiement_pour", { prenom: profilPrenom })}
-                </p>
+              {profils.length > 1 ? (
+                <div role="radiogroup" aria-label={t("sb.choisir_enfant")} className="flex flex-col gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3.5 py-2.5">
+                  <p className="flex items-center gap-2 text-sm font-medium">
+                    <User className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t("sb.choisir_enfant")}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {profils.map((p) => (
+                      <button
+                        key={p.id}
+                        type="button"
+                        role="radio"
+                        aria-checked={p.id === profilId}
+                        onClick={() => setProfilChoisi(p.id)}
+                        className={cn(
+                          "min-h-10 rounded-full border px-4 text-sm font-medium transition-colors",
+                          p.id === profilId
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-background hover:border-primary/50",
+                        )}
+                      >
+                        {p.prenom}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                profilPrenom && (
+                  <p className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 px-3.5 py-2.5 text-sm font-medium">
+                    <User className="size-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t("sb.paiement_pour", { prenom: profilPrenom })}
+                  </p>
+                )
               )}
               {campayActif && creditDisponible > 0 && (
                 <div className="flex items-center gap-2.5 rounded-lg border border-gold/30 bg-gold/[0.06] px-3.5 py-2.5 text-sm">

@@ -1505,6 +1505,7 @@ export const fr = {
   "mp.duree_one": "{n} mois d'accès",
   "mp.duree_other": "{n} mois d'accès",
   "sb.paiement_pour": "Tu paies pour : {prenom}",
+  "sb.choisir_enfant": "Pour quel enfant est cet abonnement ?",
   "pm.pour_enfant": "Pour {prenom}",
   "sb.abonnement_pour": "Abonnement pour {prenom}",
   "sb.sous_titre_fiches":
