@@ -132,6 +132,16 @@ export function cheminEssai(session: QuizSession): string | null {
   return `/quiz/essai/${session.cursus}/${session.subject}/${theme}`
 }
 
+/**
+ * Le lien qui relance ce quiz gratuit chez un ami, pour une séance réelle (jouée avec un compte invité, voir lib/invite) :
+ * le même lien que l'essai (`cheminEssai`), qui ouvre ce thème précis. Il faut la matière et le thème de la séance.
+ */
+export function cheminPartageGratuit(session: QuizSession): string | null {
+  const theme = session.questions[0]?.theme_id
+  if (session.subject == null || theme == null) return null
+  return `/quiz/essai/${session.cursus}/${session.subject}/${theme}`
+}
+
 /** L'accroche du message de partage, sans le lien. */
 export function texteDePartageEssai(session: QuizSession): string {
   const q = session.questions[0]

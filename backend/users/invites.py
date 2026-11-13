@@ -1,10 +1,11 @@
 """
-Le visiteur qui essaie une épreuve inédite gratuite SANS s'inscrire.
+Le visiteur qui essaie une épreuve inédite gratuite ou un quiz gratuit SANS s'inscrire.
 
-Une copie d'inédite est rattachée à un profil (réponses, chrono, notation, XP) : plutôt que de réécrire tout cela pour
-un visiteur sans compte, on lui ouvre un compte INVITÉ (`User.est_invite`), sans aucune identité, avec son profil. Le
-reste de la plateforme ne le sait pas : il n'a de droits que sur `/inedit/` (voir users.authentication) et le frontend
-ne lui attache son jeton que sur ces routes (voir api/client.ts) - pour tout le reste du site, il reste un visiteur.
+Une copie d'inédite ou une séance de quiz est rattachée à un profil (réponses, chrono, notation, XP) : plutôt que de
+réécrire tout cela pour un visiteur sans compte, on lui ouvre un compte INVITÉ (`User.est_invite`), sans aucune identité,
+avec son profil. Le reste de la plateforme ne le sait pas : il n'a de droits que sur `/inedit/` et sur les routes d'une
+séance de quiz (voir users.authentication) et le frontend ne lui attache son jeton que sur ces routes (voir
+api/client.ts) - pour tout le reste du site, il reste un visiteur.
 
 Quand il crée un vrai compte (OTP, e-mail, Google), la copie ne se perd pas : `rattacher` la lui transmet.
 
@@ -94,14 +95,41 @@ def _profil_vierge(profil):
     return True
 
 
+def _transferer_activite_quiz(profil_invite, cible):
+    """
+    Les séances de quiz, l'XP et les révisions de l'invité passent au profil `cible` d'un compte déjà utilisé. Les séances
+    et le registre d'XP n'ont aucune unicité par profil : ils changent de profil tels quels. Les deux tables qui en ont une
+    se fusionnent à la main : le total d'un JOUR s'additionne (l'objectif de ce jour-là reste celui de la cible), et une
+    révision programmée déjà présente sur le compte garde sa version (le compte connaît mieux ce thème que l'invité).
+    """
+    from quiz.models import GainXP, JourXP, QuizSession, RevisionSchedule
+
+    QuizSession.objects.filter(profil=profil_invite).update(profil=cible)
+    GainXP.objects.filter(profil=profil_invite).update(profil=cible)
+    for jour in JourXP.objects.filter(profil=profil_invite):
+        existant = JourXP.objects.filter(profil=cible, jour=jour.jour).first()
+        if existant is None:
+            jour.profil = cible
+            jour.save(update_fields=["profil"])
+        else:
+            existant.xp += jour.xp
+            existant.atteint = existant.atteint or existant.xp >= existant.objectif
+            existant.save(update_fields=["xp", "atteint"])
+    deja = set(RevisionSchedule.objects.filter(profil=cible).values_list("cursus_id", "theme_id"))
+    for revision in RevisionSchedule.objects.filter(profil=profil_invite):
+        if (revision.cursus_id, revision.theme_id) not in deja:
+            revision.profil = cible
+            revision.save(update_fields=["profil"])
+
+
 def rattacher(invite, user):
     """
     Transmet la copie de l'invité au compte réel `user`, puis supprime l'invité.
 
     - compte neuf (un seul profil, sans aucune activité) : le profil de l'invité DEVIENT le sien, avec tout ce qu'il
-      porte (copie, XP, révisions). Rien à fusionner, donc rien à perdre ;
-    - compte déjà utilisé : seules les copies d'inédites passent sur son profil actif. Le reste (XP, révisions de
-      l'invité, très peu de chose) est abandonné plutôt que fusionné au risque de heurter des contraintes d'unicité.
+      porte (copies, séances de quiz, XP, révisions). Rien à fusionner, donc rien à perdre ;
+    - compte déjà utilisé : les copies d'inédites, les séances de quiz et l'XP passent sur son profil actif (voir
+      _transferer_activite_quiz). Seul le reste du profil de l'invité est abandonné.
     """
     from inedit.models import TentativeInedite
 
@@ -125,6 +153,7 @@ def rattacher(invite, user):
                 profil_invite.save()
             elif profils:
                 TentativeInedite.objects.filter(profil=profil_invite).update(profil=profils[0])
+                _transferer_activite_quiz(profil_invite, profils[0])
         invite.delete()
 
 

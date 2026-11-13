@@ -11,6 +11,7 @@ vi.mock("@/api/endpoints", () => ({ listQuizEnCours }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
 import { ReprendreQuiz } from "./ReprendreQuiz"
+import { clearJetonInvite, setJetonInvite } from "@/lib/invite"
 import { lireQuizIgnores } from "@/lib/quizEnCours"
 
 const CLE = "edukora:quiz-ignores:3:8"
@@ -99,6 +100,28 @@ describe("ReprendreQuiz", () => {
     afficher()
 
     expect(await screen.findByRole("link", { name: /Quiz en cours/ })).toBeInTheDocument()
+  })
+
+  it("propose aussi la reprise à un visiteur qui joue avec un compte invité, sous sa propre clé", async () => {
+    auth.user = null
+    setJetonInvite("jeton-invite")
+    listQuizEnCours.mockResolvedValue([ligne()])
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: /Quiz en cours/ })
+    expect(lien).toHaveAttribute("href", "/quiz/session/41")
+    await userEvent.click(screen.getByRole("button", { name: /Ne plus proposer/ }))
+    expect(lireQuizIgnores("edukora:quiz-ignores:invite")).toEqual([41])
+    clearJetonInvite()
+  })
+
+  it("ne demande rien au serveur à un visiteur sans compte ni invité", async () => {
+    auth.user = null
+    clearJetonInvite()
+    const { container } = afficher()
+
+    expect(container).toBeEmptyDOMElement()
+    expect(listQuizEnCours).not.toHaveBeenCalled()
   })
 
   it("garde la page silencieuse quand le serveur est injoignable", async () => {

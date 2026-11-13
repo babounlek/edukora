@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react"
-import { Download, Loader2 } from "lucide-react"
+import { Link } from "react-router-dom"
+import { Download, Loader2, Lock } from "lucide-react"
 
 import { downloadQuizCorrigePdf, downloadQuizSujetPdf, getQuizFichePdfStatus, requestQuizFichePdf } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizFichePdfStatus } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { PastilleQuotaPdf, QuotaPdfComplement, useQuotaPdfBouton } from "@/components/QuotaPdfPastille"
+import { useCursusAbonne } from "@/lib/abonneActif"
 import { t, useI18n } from "@/lib/i18n"
 
 // Même intervalle que FichesPage.tsx (POLL_INTERVAL_MS), même raison : la génération
@@ -60,8 +62,30 @@ function BoutonsPdfPrets({ sessionId, onSujet, onCorrige }: { sessionId: number;
   )
 }
 
-export function QuizFichePdfButtons({ sessionId }: { sessionId: number }) {
+/**
+ * Les PDF d'une séance sont réservés aux abonnés de son cursus (le serveur répond 403 sinon, voir quiz.views.quiz_fiche_pdf).
+ * Un connecté sans abonnement voyait pourtant « Télécharger la fiche PDF », qui échouait au clic : le bouton annonçait
+ * un gratuit qui n'existe pas. On affiche donc ce qu'il en est, avec le chemin vers les offres.
+ */
+export function QuizFichePdfButtons({ sessionId, cursus }: { sessionId: number; cursus: number }) {
   useI18n()
+  const cursusAbonne = useCursusAbonne()
+  if (cursusAbonne !== cursus) {
+    return (
+      <div className="flex justify-center">
+        <Button asChild variant="outline" size="sm">
+          <Link to="/tarifs">
+            <Lock className="mr-2 size-4" />
+            {t("gl.qpdf_reserve")}
+          </Link>
+        </Button>
+      </div>
+    )
+  }
+  return <FichesPdfAbonne sessionId={sessionId} />
+}
+
+function FichesPdfAbonne({ sessionId }: { sessionId: number }) {
   const [statut, setStatut] = useState<QuizFichePdfStatus["statut"] | null>(null)
   const [error, setError] = useState("")
   const pollRef = useRef<number | null>(null)

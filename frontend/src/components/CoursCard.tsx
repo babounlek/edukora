@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, BookOpenCheck, CheckCircle2, Clock, Eye, ListChecks, Sparkles, Unlock } from "lucide-react"
+import { ArrowRight, BookOpenCheck, CheckCircle2, Clock, Eye, ListChecks, Unlock } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -11,7 +11,6 @@ import { capitaliserTheme, cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
 import { Card, CardContent } from "@/components/ui/card"
-import { useAbonneActif } from "@/lib/abonneActif"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 interface CoursCardProps {
@@ -26,7 +25,6 @@ interface CoursCardProps {
 
 export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCardProps) {
   useI18n()
-  const abonne = useAbonneActif()
   const Titre = niveauTitre === 2 ? "h2" : "h3"
   const SubjectIcon = subjectIcon(cours.subject.code)
   const couleur = couleurMatiere(cours.subject.code)
@@ -66,12 +64,8 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
 
           <div className="flex flex-wrap items-center gap-1.5">
             {cours.tombe_souvent && <BadgeTombeSouvent tombeSouvent={cours.tombe_souvent} />}
-            {cours.est_vitrine && !abonne && (
-              <Badge variant="success" className="gap-1">
-                <Sparkles className="size-3" />
-                {t("ep.gratuit")}
-              </Badge>
-            )}
+            {/* Pas de badge « Gratuit » ici : tous les cours se lisent librement (seuls les exercices d'application sont payants),
+                et le poser sur ceux que cite une épreuve vitrine laissait croire que les autres étaient payants. */}
             {cours.cursus.length > 0 ? (
               formatCursusGroups(cours.cursus).map((group) => (
                 <Badge key={group.key} variant="secondary">

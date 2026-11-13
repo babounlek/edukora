@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 const { listQuizEssais } = vi.hoisted(() => ({ listQuizEssais: vi.fn() }))
 vi.mock("@/api/endpoints", () => ({ listQuizEssais, startQuizEssai: vi.fn() }))
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
+vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ isAuthenticated: false, user: null }) }))
 
 import { definirLangue } from "@/lib/i18n"
 import { EssaisGratuitsQuiz } from "./EssaisGratuitsQuiz"

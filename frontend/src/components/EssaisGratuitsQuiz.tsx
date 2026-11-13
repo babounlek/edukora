@@ -3,17 +3,17 @@ import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Gift } from "lucide-react"
 
-import { listQuizEssais, startQuizEssai } from "@/api/endpoints"
+import { listQuizEssais } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizEssai } from "@/api/types"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/context/AuthContext"
 import { estDeLangue } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { couleurMatiere } from "@/lib/matiereCouleur"
-import { memoriserEssai } from "@/lib/quizEssai"
+import { lancerQuizGratuit } from "@/lib/quizGratuit"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { trackEvent } from "@/lib/analytics"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
@@ -27,6 +27,7 @@ import { traduireLibelleSerie } from "@/lib/cursus"
 export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number | null }) {
   useI18n()
   const navigate = useNavigate()
+  const { isAuthenticated } = useAuth()
   const { data: essais } = useQuery({
     queryKey: ["quiz", "essais"],
     queryFn: ({ signal }) => listQuizEssais(signal),
@@ -65,10 +66,10 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
     setEnCours(cle)
     setErreur("")
     try {
-      const session = await startQuizEssai({ cursus: essai.cursus, subject: essai.subject, theme: essai.theme, n: 10 })
-      memoriserEssai(session)
-      trackEvent("quiz_started", { cursus_id: essai.cursus, mode: "PRATIQUE", source: "essai_anonyme" })
-      navigate("/quiz/essai")
+      // Une vraie séance (compte invité pour un visiteur, voir lib/quizGratuit), l'essai sans enregistrement en repli.
+      navigate(await lancerQuizGratuit({
+        cursus: essai.cursus, subject: essai.subject, theme: essai.theme, connecte: isAuthenticated, source: "essai_anonyme",
+      }))
     } catch (err) {
       setErreur(err instanceof ApiError ? err.message : t("essais.erreur"))
       setEnCours(null)

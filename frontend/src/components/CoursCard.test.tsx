@@ -1,11 +1,8 @@
 import { render, screen } from "@testing-library/react"
 import { MemoryRouter } from "react-router-dom"
-import { describe, expect, it, vi } from "vitest"
+import { describe, expect, it } from "vitest"
 
 import type { Cours } from "@/api/types"
-
-// « Gratuit » ne s'affiche pas à un abonné (voir useAbonneActif) : le hook lit le contexte d'authentification, absent ici.
-vi.mock("@/lib/abonneActif", () => ({ useAbonneActif: () => false }))
 
 import { CoursCard } from "./CoursCard"
 import { CoursListRow } from "./CoursListRow"
@@ -36,6 +33,15 @@ describe("CoursCard, repère « tombe souvent »", () => {
     render(<MemoryRouter><CoursCard cours={cours()} /></MemoryRouter>)
 
     expect(screen.queryByText(/Tombé dans/)).not.toBeInTheDocument()
+  })
+})
+
+describe("CoursCard, accès", () => {
+  it("ne pose pas de badge « Gratuit » sur un cours cité par une épreuve vitrine : tous les cours se lisent librement", () => {
+    render(<MemoryRouter><CoursCard cours={cours({ est_vitrine: true })} /></MemoryRouter>)
+    render(<MemoryRouter><CoursCard cours={cours({ est_vitrine: false })} /></MemoryRouter>)
+
+    expect(screen.queryByText("Gratuit")).not.toBeInTheDocument()
   })
 })
 

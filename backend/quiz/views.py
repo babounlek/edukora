@@ -1484,14 +1484,19 @@ def refaire_ratees_view(request, session_id):
     Nouvelle session limitée aux questions ratées de celle-ci (voir
     quiz.services.session_des_ratees) - le bouton "Refaire celles que j'ai ratées" de la
     page de résultat. Même règle d'accès que start_session : abonnement actif sur le
-    cursus, revérifié à chaque appel.
+    cursus, revérifié à chaque appel, SAUF si les questions à refaire sont toutes du quiz
+    gratuit (est_vitrine) - le bouton est affiché après un quiz gratuit, il ne doit pas
+    se heurter à un 403 (même exception que le rejeu, voir quiz.historique).
     """
-    from .services import session_des_ratees
+    from .services import items_rates, session_des_ratees
 
     profil = profil_actif(request)
     session = get_object_or_404(QuizSession.objects.select_related("cursus"), pk=session_id, profil=profil)
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        ratees = items_rates(session)
+        # Rien de raté : on laisse session_des_ratees répondre « rien à refaire » (400), plutôt qu'un faux « abonnement requis ».
+        if ratees and not all(item.est_vitrine for item in ratees):
+            return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
     try:
         refaite = session_des_ratees(profil, session)
     except ValueError as exc:

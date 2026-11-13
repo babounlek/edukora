@@ -753,6 +753,7 @@ export const fr = {
   "ed.exercice_valide": "Exercice validé",
   "ed.tu_as_traite": "Tu as traité cet exercice ?",
   "ed.je_lai_fait": "Je l'ai fait",
+  "ed.connecte_toi_suivi": "Connecte-toi pour garder la trace des exercices que tu as traités.",
   "ed.compris": "Compris",
   "ed.jai_compris": "J'ai compris",
   "ed.garde": "Gardé pour plus tard",
@@ -1712,6 +1713,8 @@ export const fr = {
   "essai.points_titre": "Ce quiz t'aurait rapporté",
   "essai.points_compte":
     "Avec un compte, les points s'ajoutent à ton objectif du jour. Ceux-ci ne sont pas gardés : crée ton compte avant ton prochain quiz.",
+  "essai.points_non_credites":
+    "Cet essai gratuit n'est pas enregistré : ces points ne sont pas ajoutés à ton objectif du jour.",
   "essai.record": "Ton record sur ce thème : {a} / {b}. Refais l'essai pour le battre.",
   "essai.record_battu": "Nouveau record ! Ton précédent : {a} / {b}.",
   "defi.en_cours": "Défi : un camarade a fait {a}/{b} sur ce quiz. À toi de faire mieux !",
@@ -2657,6 +2660,7 @@ export const fr = {
   "gl.qpdf_correction": "2. Correction",
   "gl.qpdf_preparation": "Préparation des fiches...",
   "gl.qpdf_telecharger": "Télécharger la fiche PDF",
+  "gl.qpdf_reserve": "Fiche et correction en PDF : voir les offres",
   "gl.seo_defaut": "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC, avec des corrigés d'annales et des quiz rédigés par des enseignants.",
   "pe.point_depart": "Ton point de départ",
   "pe.titre_exam": "Tes priorités pour le {examen}",
@@ -2733,6 +2737,10 @@ export const fr = {
   "qr.refaire_quiz": "Refaire un quiz",
   "qr.retour_parcours": "Retour au parcours",
   "qr.mon_compte": "Mon compte",
+  "qr.invite_titre": "Garde ton quiz et tes points.",
+  "qr.invite_texte": "Crée ton compte gratuit (une minute) : tes quiz, tes points et ta série te suivent sur tous tes appareils. Sans compte, ils ne restent que sur cet appareil, 30 jours.",
+  "qr.invite_cta": "Créer mon compte gratuit",
+  "qr.invite_intent": "Crée ton compte gratuit pour garder tes quiz et tes points.",
   "gl.aller_contenu": "Aller au contenu",
   // Guides et centre d'aide (lib/guides, components/guides). Un texte de guide n'existe qu'ici :
   // le tutoriel, l'aide dans la page et le centre d'aide lisent les mêmes clés.

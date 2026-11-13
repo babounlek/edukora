@@ -33,7 +33,8 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { libellePoints } from "@/lib/notation"
 import { nomAccessibleDuChoix } from "@/lib/markdown"
-import { avecQuestionCorrigee, cheminEssai, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
+import { avecQuestionCorrigee, cheminEssai, cheminPartageGratuit, lireEssai, memoriserEssai, texteDePartageEssai } from "@/lib/quizEssai"
+import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { cheminDansLangue, langueCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { traduireLibelleSerie } from "@/lib/cursus"
@@ -88,8 +89,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const { country } = useCountry()
 
   const [session, setSession] = useState<QuizSession | null>(null)
-  // Le score à battre d'un défi reçu par lien (essai gratuit seulement, voir lib/defiEssai).
-  const [defi] = useState(() => (essai ? lireDefiMemorise() : null))
+  // Un visiteur qui joue un quiz gratuit avec un compte invité (voir lib/invite et lib/quizGratuit) : une vraie séance, mais
+  // sans compte - ni parcours à retrouver ni fiche PDF, un lien à partager à la place.
+  const invite = useEssaiSansCompte()
+  // Le score à battre d'un défi reçu par lien, mémorisé pour CETTE séance (voir lib/defiEssai).
+  const [defi] = useState(() => lireDefiMemorise(essai ? 0 : Number(id)))
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
   // (réponse, correction, fin du quiz) ne doit jamais effacer un quiz en cours - l'élève
   // garde ses réponses sous les yeux et peut simplement réessayer.
@@ -364,7 +368,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
-          to={session.subject && !essai ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
+          to={session.subject && !essai && !invite ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
           onClick={() => {
             // Quitter avant la dernière réponse : le contre-indicateur de la boucle de séance.
             if (answeredCount < total) trackEvent("quiz_abandonne", { cursus_id: session.cursus, mode: session.mode, repondues: answeredCount, total, ...(essai && { source: "essai_anonyme" }) })
@@ -376,13 +380,16 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         </Link>
         <div className="flex items-center gap-2">
           <BoutonSon />
-          {essai ? (
+          {essai || invite ? (
             // Le quiz gratuit se partage : le lien relance CE quiz chez l'ami, sans compte ni liste à parcourir.
-            cheminEssai(session) && (
-              <BoutonPartager chemin={cheminEssai(session)!} texte={texteDePartageEssai(session)} type="quiz" libelle={t("qs.partager")} />
+            (essai ? cheminEssai(session) : cheminPartageGratuit(session)) && (
+              <BoutonPartager
+                chemin={(essai ? cheminEssai(session) : cheminPartageGratuit(session))!}
+                texte={texteDePartageEssai(session)} type="quiz" libelle={t("qs.partager")}
+              />
             )
           ) : (
-            <QuizFichePdfButtons sessionId={session.id} />
+            <QuizFichePdfButtons sessionId={session.id} cursus={session.cursus} />
           )}
         </div>
       </div>

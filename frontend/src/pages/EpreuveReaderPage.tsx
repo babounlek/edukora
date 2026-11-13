@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 import { ArrowLeft, Check, CheckCheck, NotebookPen, Sparkles } from "lucide-react"
@@ -385,14 +385,32 @@ export function EpreuveReaderPage() {
  * réponse doit être immédiate. En cas d'échec réseau, l'état revient à sa valeur
  * précédente plutôt que de laisser croire à un enregistrement.
  */
-function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
+export function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
   useI18n()
+  const { isAuthenticated } = useAuth()
+  const location = useLocation()
   const [fait, setFait] = useState(exercise.fait)
   const [enCours, setEnCours] = useState(false)
   const queryClient = useQueryClient()
 
   // Pas d'identifiant : épreuve inédite ou contenu non sectionné, rien à valider.
   if (!exercise.id) return null
+
+  // Un visiteur lit les épreuves vitrine sans compte, mais le suivi s'enregistre sur un profil : le bouton
+  // échouait (401) avec un message d'erreur trompeur. Même invitation que la fin d'un exercice par thème
+  // (ThemeExerciceLecturePage), qui revient ici une fois connecté.
+  if (!isAuthenticated) {
+    return (
+      <div className="not-prose my-6 flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+        <span className="text-sm text-muted-foreground">{t("ed.connecte_toi_suivi")}</span>
+        <Button asChild size="sm" variant="outline">
+          <Link to="/connexion" state={{ from: location.pathname }}>
+            {t("nav.connexion")}
+          </Link>
+        </Button>
+      </div>
+    )
+  }
 
   async function basculer() {
     const cible = !fait

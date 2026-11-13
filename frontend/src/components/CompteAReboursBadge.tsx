@@ -1,5 +1,10 @@
+import { useQuery } from "@tanstack/react-query"
+
+import { getCompteAReboursCursus } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
 import type { CompteARebours, Cursus } from "@/api/types"
+import { useCursusPrepareDeclare } from "@/lib/cursusAccueil"
 import { cn } from "@/lib/utils"
 import { localeCourante, t, useI18n } from "@/lib/i18n"
 
@@ -22,12 +27,12 @@ export function CompteAReboursBadge({
   className?: string
   variant?: "texte" | "pilule"
 }) {
-  const { user } = useAuth()
   // Abonne le badge au changement de langue : formatCompteARebours lit la langue courante.
   useI18n()
-  if (!user?.compte_a_rebours || !user.cursus_prepare) return null
+  const decompte = useCompteARebours()
+  if (!decompte) return null
 
-  const texte = formatCompteARebours(user.compte_a_rebours)
+  const texte = formatCompteARebours(decompte.compte)
   if (!texte) return null
 
   return (
@@ -41,11 +46,38 @@ export function CompteAReboursBadge({
           : "text-xs text-muted-foreground",
         className,
       )}
-      title={titreDetaille(user.cursus_prepare, user.compte_a_rebours)}
+      title={titreDetaille(decompte.cursus, decompte.compte)}
     >
-      {formatCursus(user.cursus_prepare)} · {texte}
+      {/* Un visiteur a déjà son examen dans la pastille juste à côté (PastilleExamen) : on ne le répète pas. */}
+      {decompte.visiteur ? texte : `${formatCursus(decompte.cursus)} · ${texte}`}
     </span>
   )
+}
+
+/**
+ * Le décompte à afficher pour qui regarde le site, avec l'examen auquel il se rapporte : celui du compte pour un élève connecté
+ * (reçu avec `getMe`), sinon celui du visiteur qui a choisi son examen sans compte (demandé au serveur : la même date, estimée ou
+ * non). Null tant qu'aucun examen n'est déclaré, qu'aucune session n'est saisie, ou que la réponse n'est pas là : un repère offert,
+ * jamais un manque.
+ */
+export function useCompteARebours(): { cursus: Cursus; compte: CompteARebours; visiteur: boolean } | null {
+  const { isAuthenticated, user } = useAuth()
+  const { country } = useCountry()
+  // Toujours appelés, jamais selon la connexion : un Hook ne s'appelle pas sous condition. Pour un compte, la liste des
+  // examens n'est pas demandée (voir useCursusPrepareDeclare) et la requête ci-dessous reste coupée.
+  const declare = useCursusPrepareDeclare(country)
+  const { data } = useQuery({
+    queryKey: ["compte-a-rebours", declare?.id ?? null],
+    queryFn: ({ signal }) => getCompteAReboursCursus(declare!.id, signal),
+    enabled: !isAuthenticated && declare !== null,
+    staleTime: 60 * 60_000,
+  })
+  if (isAuthenticated) {
+    return user?.compte_a_rebours && user.cursus_prepare
+      ? { cursus: user.cursus_prepare, compte: user.compte_a_rebours, visiteur: false }
+      : null
+  }
+  return declare && data ? { cursus: declare, compte: data, visiteur: true } : null
 }
 
 /** "BAC D", "BEPC" - le diplôme, et la série seulement quand il y en a une. */

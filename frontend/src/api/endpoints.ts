@@ -64,6 +64,7 @@ import type {
   ReglageChrono,
   QuizEssai,
   QuizSession,
+  CompteARebours,
   CursusContenu,
   PlatformStats,
   QuestionExemple,
@@ -527,6 +528,12 @@ export function listCountries() {
 
 export function listTemoignages() {
   return apiRequest<Temoignage[]>("/catalog/temoignages/", { auth: false })
+}
+
+/** Le décompte jusqu'à l'examen d'un cursus, pour un visiteur qui a choisi son examen sans compte (un compte le reçoit
+ * dans `getMe`). `null` quand aucune session d'examen n'est saisie. */
+export function getCompteAReboursCursus(cursusId: number, signal?: AbortSignal) {
+  return apiRequest<CompteARebours | null>(`/catalog/cursus/${cursusId}/compte-a-rebours/`, { auth: false, signal })
 }
 
 export function getCursusContenu(cursusId: number, signal?: AbortSignal) {

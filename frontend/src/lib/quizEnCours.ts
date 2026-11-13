@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 
 import { listQuizEnCours } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
+import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 
 // Les quiz commencés et pas terminés viennent du SERVEUR (voir quiz.historique.en_cours côté backend) :
 // la progression y est enregistrée à chaque réponse, donc la reprise marche depuis n'importe quel
@@ -9,20 +10,23 @@ import { useAuth } from "@/context/AuthContext"
 // appareil qu'une chose : les quiz que l'élève a demandé à ne plus se voir proposer.
 const PREFIXE = "edukora:quiz-ignores:"
 
-/** Clé propre à l'élève actif : un appareil partagé entre frères et sœurs ne doit pas mélanger. */
+/** Clé propre à l'élève actif : un appareil partagé entre frères et sœurs ne doit pas mélanger. Un visiteur qui joue avec un
+ * compte invité (voir lib/invite.ts) a la sienne : ses quiz se reprennent aussi. */
 export function useCleQuizEnCours(): string | null {
   const { user } = useAuth()
-  if (!user) return null
+  const invite = useEssaiSansCompte()
+  if (!user) return invite ? `${PREFIXE}invite` : null
   return `${PREFIXE}${user.id}:${user.profil_actif?.id ?? 0}`
 }
 
-/** Les tentatives interrompues du profil actif, la dernière réponse en tête. */
+/** Les tentatives interrompues du profil actif (ou de l'invité), la dernière réponse en tête. */
 export function useQuizEnCours() {
   const { user } = useAuth()
+  const invite = useEssaiSansCompte()
   return useQuery({
-    queryKey: ["quiz-en-cours", user?.profil_actif?.id ?? null],
+    queryKey: ["quiz-en-cours", user?.profil_actif?.id ?? (invite ? "invite" : null)],
     queryFn: ({ signal }) => listQuizEnCours(signal),
-    enabled: Boolean(user),
+    enabled: Boolean(user) || invite,
     // Une séance finie dans un autre onglet ne doit plus être proposée.
     staleTime: 0,
     retry: false,

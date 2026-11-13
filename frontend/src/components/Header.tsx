@@ -310,8 +310,9 @@ export function CountrySwitcher({ onNavigate, dansLeMenu = false }: { onNavigate
 
 export function Header() {
   const { isAuthenticated, isLoading: authLoading, user } = useAuth()
-  // Même condition que CompteAReboursBadge, qui décide seul de s'afficher ou non - ici
-  // uniquement pour savoir si la baseline doit lui laisser la place (voir plus bas).
+  // La condition d'un COMPTE pour CompteAReboursBadge, qui décide seul de s'afficher ou non - ici uniquement pour savoir si
+  // le logo doit lui laisser la place (voir plus bas). Le visiteur n'y entre pas : son décompte est réduit aux jours
+  // (« J-244 »), assez court pour tenir à côté du logo complet.
   const aUnCompteARebours = Boolean(user?.compte_a_rebours && user.cursus_prepare)
   const { country } = useCountry()
   const { t } = useI18n()

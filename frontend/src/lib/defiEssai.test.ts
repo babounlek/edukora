@@ -25,6 +25,19 @@ describe("defiEssai", () => {
     expect(lireDefiMemorise()).toBeNull()
   })
 
+  it("lie le défi à une séance : il ne colle pas aux quiz suivants de l'onglet", () => {
+    memoriserDefi({ reussies: 3, total: 5 }, 42)
+    expect(lireDefiMemorise(42)).toEqual({ reussies: 3, total: 5 })
+    expect(lireDefiMemorise(43)).toBeNull()
+    expect(lireDefiMemorise()).toBeNull() // l'essai (séance 0) ne le voit pas non plus
+  })
+
+  it("un défi mémorisé sans séance (ancien format) reste celui de l'essai", () => {
+    sessionStorage.setItem("edukora:defi-essai", JSON.stringify({ reussies: 2, total: 5 }))
+    expect(lireDefiMemorise()).toEqual({ reussies: 2, total: 5 })
+    expect(lireDefiMemorise(7)).toBeNull()
+  })
+
   it("compare en proportion, pas en nombre brut", () => {
     expect(comparerDefi({ reussies: 3, total: 5 }, 4, 5)).toBe("gagne")
     expect(comparerDefi({ reussies: 3, total: 5 }, 3, 5)).toBe("egalite")

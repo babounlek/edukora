@@ -59,6 +59,26 @@ class RefaireRateesTests(TestCase):
         response = self.client.post(f"/quiz/sessions/{self.session.id}/refaire-ratees/")
         self.assertEqual(response.status_code, 403)
 
+    def test_api_lets_a_non_subscriber_redo_the_missed_questions_of_a_free_quiz(self):
+        # Le bouton s'affiche après un quiz gratuit (thème vitrine) : il ne doit pas répondre 403.
+        for item in self.items:
+            item.est_vitrine = True
+            item.save(update_fields=["est_vitrine"])
+        response = self.client.post(f"/quiz/sessions/{self.session.id}/refaire-ratees/")
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data["total_questions"], 2)
+
+    def test_api_still_refuses_a_non_subscriber_when_one_missed_question_is_paid(self):
+        self.items[1].est_vitrine = True
+        self.items[1].save(update_fields=["est_vitrine"])  # items[2] reste payant
+        response = self.client.post(f"/quiz/sessions/{self.session.id}/refaire-ratees/")
+        self.assertEqual(response.status_code, 403)
+
+    def test_api_tells_a_non_subscriber_there_is_nothing_to_redo_rather_than_asking_for_a_subscription(self):
+        propre = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        response = self.client.post(f"/quiz/sessions/{propre.id}/refaire-ratees/")
+        self.assertEqual(response.status_code, 400)
+
     def test_api_creates_the_session(self):
         self._abonner()
         response = self.client.post(f"/quiz/sessions/{self.session.id}/refaire-ratees/")

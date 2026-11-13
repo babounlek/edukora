@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Timer, Trophy, Zap } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Swords, Timer, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -26,7 +26,8 @@ import { formatDureeEcoulee } from "@/lib/duration"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
 import { aChangeDeNiveau, nomNiveau } from "@/lib/niveau"
-import { parametresDefi } from "@/lib/defiEssai"
+import { comparerDefi, lireDefiMemorise, parametresDefi } from "@/lib/defiEssai"
+import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 import { libelleRythme } from "@/lib/rythme"
 import { SITE_NAME } from "@/lib/site"
 import { useCompteur } from "@/lib/useCompteur"
@@ -136,10 +137,13 @@ function BilanXp({
       </div>
       <div>
         <ObjectifXp etat={jour} />
-        {/* Le rythme se règle ici, là où l'élève vient de voir ce que son quiz a rapporté. */}
-        <RythmeRapide etat={jour} onChange={setJour} className="mt-1.5 text-xs font-medium text-primary underline-offset-2 hover:underline">
-          {t("rythme.changer")} · {libelleRythme(jour.objectif)}
-        </RythmeRapide>
+        {/* Le rythme se règle ici, là où l'élève vient de voir ce que son quiz a rapporté. Pas pour un invité : le réglage
+            appartient à un compte (le serveur le refuserait). */}
+        {user && (
+          <RythmeRapide etat={jour} onChange={setJour} className="mt-1.5 text-xs font-medium text-primary underline-offset-2 hover:underline">
+            {t("rythme.changer")} · {libelleRythme(jour.objectif)}
+          </RythmeRapide>
+        )}
       </div>
       {serie && <SemaineDeSerie serie={serie} />}
       {jour.niveau && (
@@ -165,12 +169,15 @@ function BilanXp({
             : t("qr.classement_moitie")}
         </p>
       )}
-      <div className="sm:col-span-3">
-        <Button variant="outline" size="sm" onClick={partager} disabled={partage || !user} className="rounded-full">
-          <Share2 />
-          {t("qr.partager")}
-        </Button>
-      </div>
+      {/* Le lien de parrainage est celui d'un compte : un invité n'en a pas encore. */}
+      {user && (
+        <div className="sm:col-span-3">
+          <Button variant="outline" size="sm" onClick={partager} disabled={partage} className="rounded-full">
+            <Share2 />
+            {t("qr.partager")}
+          </Button>
+        </div>
+      )}
     </section>
   )
 }
@@ -286,6 +293,8 @@ export function QuizResultPage() {
   useI18n()
   const queryClient = useQueryClient()
   useSeo({ title: t("qr.seo") })
+  // Un visiteur qui a joué avec un compte invité (voir lib/invite) : une vraie séance, mais pas de compte à montrer.
+  const invite = useEssaiSansCompte()
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -405,6 +414,9 @@ export function QuizResultPage() {
     .filter((theme) => theme.cours && 100 * theme.reussies / theme.total < 70)
     .sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
   const message = messageDeFin(pourcentage, diagnostic, Boolean(result.chrono_actif))
+  // Le score à battre d'un lien de défi, s'il accompagnait CETTE séance (voir lib/defiEssai) : même verdict que celui d'un essai.
+  const defi = lireDefiMemorise(Number(id))
+  const issueDefi = defi && result.questions_repondues > 0 ? comparerDefi(defi, result.score, result.questions_repondues) : null
   // Par le code de la matière du premier thème : `result.subject` est vide quand le quiz a été lancé par thème (« encore 5 questions »).
   const codeMatiere = result.par_theme[0]?.subject_code
   const essaiDuDefi = codeMatiere ? (essais ?? []).find((e) => e.cursus === result.cursus && e.subject_code === codeMatiere) : undefined
@@ -469,7 +481,35 @@ export function QuizResultPage() {
           score={result.score} total={result.questions_repondues}
         />
       )}
-      {result.xp && !result.chrono_actif && <InvitePush className="mb-6" />}
+      {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
+
+      {/* Un quiz joué sans compte (voir lib/invite) : ses points et sa séance ne sont gardés que sur cet appareil, le temps
+          d'un mois. Le compte les reprend, comme la copie d'une épreuve inédite. */}
+      {invite && (
+        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3.5">
+          <p className="text-sm">
+            <strong>{t("qr.invite_titre")}</strong> {t("qr.invite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg">
+            <Link to="/connexion" state={{ from: "/quiz", intent: t("qr.invite_intent") }}>
+              {t("qr.invite_cta")}
+            </Link>
+          </Button>
+        </div>
+      )}
+
+      {defi && issueDefi && (
+        <p
+          role="status"
+          className={cn(
+            "mb-6 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium",
+            issueDefi === "gagne" ? "bg-success/15" : "bg-muted/60",
+          )}
+        >
+          <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+          {t(`defi.${issueDefi}`, { a: result.score, b: result.questions_repondues, c: defi.reussies, d: defi.total })}
+        </p>
+      )}
 
       {/* Le geste le plus court pour continuer, avant tout menu : un quiz de plus, ou le même pour faire mieux. */}
       {!diagnostic && result.par_theme.length > 0 && (
@@ -570,7 +610,7 @@ export function QuizResultPage() {
       )}
 
       <div className="mb-6">
-        <QuizFichePdfButtons sessionId={Number(id)} />
+        <QuizFichePdfButtons sessionId={Number(id)} cursus={result.cursus} />
       </div>
 
       {/* La suite, dans l'ordre où elle sert : comprendre ce qui a été raté, PUIS le refaire.
@@ -631,14 +671,17 @@ export function QuizResultPage() {
         >
           {!diagnostic && (aRevoir || result.nb_ratees > 0) ? t("qr.autre_quiz") : t("qr.refaire_quiz")}
         </Button>
-        {result.subject && (
+        {/* Parcours et compte n'existent pas pour un invité : ses deux liens menaient à la page de connexion. */}
+        {result.subject && !invite && (
           <Button asChild variant="outline" className="flex-1" size="lg">
             <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>{t("qr.retour_parcours")}</Link>
           </Button>
         )}
-        <Button asChild variant="outline" className="flex-1" size="lg">
-          <Link to="/compte">{t("qr.mon_compte")}</Link>
-        </Button>
+        {!invite && (
+          <Button asChild variant="outline" className="flex-1" size="lg">
+            <Link to="/compte">{t("qr.mon_compte")}</Link>
+          </Button>
+        )}
       </div>
       {id && (
         <p className="mt-3 text-center text-sm">

@@ -16,6 +16,10 @@ urlpatterns = [
     path("examens/<str:country>/", views.ExamenListeView.as_view(), name="examen-liste"),
     path("examens/<str:country>/<slug:slug>/", views.ExamenPageView.as_view(), name="examen-page"),
     path("cursus/<int:cursus_id>/contenu/", views.CursusContenuView.as_view(), name="cursus-contenu"),
+    path(
+        "cursus/<int:cursus_id>/compte-a-rebours/",
+        views.CursusCompteAReboursView.as_view(), name="cursus-compte-a-rebours",
+    ),
     path("cursus/<int:cursus_id>/themes-frequents/", views.ThemesFrequentsView.as_view(), name="themes-frequents"),
     path(
         "cursus/<int:cursus_id>/themes-frequents/matieres/",

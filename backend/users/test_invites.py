@@ -94,7 +94,8 @@ class DroitsInviteTests(_Base):
     def test_le_jeton_n_ouvre_rien_hors_inedit(self):
         jeton = _jeton(self.client)
         self.assertEqual(self.client.get("/auth/me/", **self.auth(jeton)).status_code, 403)
-        self.assertEqual(self.client.get("/quiz/sessions/", **self.auth(jeton)).status_code, 403)
+        # Du quiz, seules les routes d'une séance sont ouvertes (voir test_invites_quiz) : pas le parcours.
+        self.assertEqual(self.client.get("/quiz/parcours/", **self.auth(jeton)).status_code, 403)
 
     def test_un_jeton_falsifie_ou_d_un_compte_reel_n_est_pas_un_invite(self):
         self.assertIsNone(invites.invite_du_jeton("n-importe-quoi"))

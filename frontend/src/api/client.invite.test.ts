@@ -47,6 +47,25 @@ describe("apiRequest - jeton d'invité (essai sans compte)", () => {
     expect(entetes(fetchMock, 1).Authorization).toBeUndefined()
   })
 
+  it("le joint aux routes d'une séance de quiz, et à elles seules : parcours, plan et bilan restent anonymes", async () => {
+    setJetonInvite("jeton-invite")
+    fetchMock.mockImplementation(async () => jsonResponse(200, {}))
+    const ouvertes = [
+      "/quiz/sessions/", "/quiz/sessions/12/", "/quiz/sessions/12/questions/34/answer/",
+      "/quiz/sessions/12/questions/34/corrige/", "/quiz/sessions/12/completer/", "/quiz/sessions/12/refaire-ratees/",
+      "/quiz/en-cours/", "/quiz/historique/12/", "/quiz/historique/12/rejouer/",
+    ]
+    const fermees = [
+      "/quiz/parcours/", "/quiz/plan-du-jour/", "/quiz/accueil/", "/quiz/historique/", "/quiz/sessions/12/fiche-pdf/",
+      "/quiz/essais/", "/auth/me/",
+    ]
+
+    for (const chemin of [...ouvertes, ...fermees]) await apiRequest(chemin, { auth: "optional" })
+
+    ouvertes.forEach((_, i) => expect(entetes(fetchMock, i).Authorization).toBe("Bearer jeton-invite"))
+    fermees.forEach((_, i) => expect(entetes(fetchMock, ouvertes.length + i).Authorization).toBeUndefined())
+  })
+
   it("préfère la vraie session au jeton d'invité", async () => {
     setJetonInvite("jeton-invite")
     setAccessToken("vrai-jeton") // ouvre une session : l'essai sans compte est terminé

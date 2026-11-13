@@ -8,11 +8,15 @@ const getQuizHistoriqueDetail = vi.hoisted(() => vi.fn())
 const rejouerQuiz = vi.hoisted(() => vi.fn())
 
 vi.mock("@/api/endpoints", () => ({ getQuizHistoriqueDetail, rejouerQuiz }))
-vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ isAuthenticated: true, isLoading: false, user: { id: 1 } }) }))
+const auth = vi.hoisted(() => ({ isAuthenticated: true }))
+vi.mock("@/context/AuthContext", () => ({
+  useAuth: () => ({ isAuthenticated: auth.isAuthenticated, isLoading: false, user: auth.isAuthenticated ? { id: 1 } : null }),
+}))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 vi.mock("@/components/EpreuveMarkdown", () => ({ EpreuveMarkdown: ({ markdown }: { markdown: string }) => <span>{markdown}</span> }))
 
 import { ApiError } from "@/api/client"
+import { clearJetonInvite, setJetonInvite } from "@/lib/invite"
 import { QuizHistoriquePage } from "./QuizHistoriquePage"
 
 const question = (surcharges = {}) => ({
@@ -90,6 +94,21 @@ describe("QuizHistoriquePage", () => {
     expect(screen.getByLabelText("Bonne réponse", { selector: "svg" })).toBeInTheDocument()
     expect(screen.getByLabelText("Ta réponse", { selector: "svg" })).toBeInTheDocument()
     expect(screen.getByText("On dérive terme à terme.")).toBeInTheDocument()
+  })
+
+  it("laisse un visiteur relire sa séance de quiz gratuit (compte invité), sans l'envoyer vers l'historique d'un compte", async () => {
+    auth.isAuthenticated = false
+    setJetonInvite("jeton-invite")
+    try {
+      afficher()
+
+      expect(await screen.findByText("Quelle est la dérivée de x² ?")).toBeInTheDocument()
+      expect(screen.getByRole("link", { name: "Retour au quiz" })).toHaveAttribute("href", "/quiz")
+      expect(screen.queryByRole("link", { name: "Historique des quiz" })).not.toBeInTheDocument()
+    } finally {
+      auth.isAuthenticated = true
+      clearJetonInvite()
+    }
   })
 
   it("signale une clé corrigée depuis et un contenu retiré, sans toucher à la note", async () => {

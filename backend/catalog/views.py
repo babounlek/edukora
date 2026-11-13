@@ -33,6 +33,7 @@ from .models import (
     Country,
     Cursus,
     Examen,
+    ExamSession,
     Exercise,
     FrequenceCours,
     Langue,
@@ -885,6 +886,25 @@ class CursusContenuView(APIView):
             "epreuves_inedites": inedites.count(),
             "matieres": len(matieres),
         })
+
+
+class CursusCompteAReboursView(APIView):
+    """
+    GET /catalog/cursus/<id>/compte-a-rebours/ : le compte à rebours jusqu'à l'examen de ce cursus, pour un visiteur qui a
+    choisi son examen sans compte (un compte, lui, le reçoit dans /auth/me/). Même calcul que celui du compte
+    (ExamSession.compte_a_rebours_pour) : la même date, estimée ou non. `null` quand aucune session n'est saisie pour ce
+    (pays, examen) - il n'y a alors rien d'honnête à afficher. Public : c'est une date d'examen, pas une donnée de compte.
+    Sans `date_fin`, qui ne sert qu'à la facturation.
+    """
+
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, cursus_id):
+        cursus = get_object_or_404(Cursus.objects.select_related("country"), pk=cursus_id, country__actif=True)
+        compte = ExamSession.compte_a_rebours_pour(cursus)
+        if compte is None:
+            return Response(None)
+        return Response({k: compte[k] for k in ("date_examen", "jours_restants", "session_label", "estimee")})
 
 
 class ExamenPageView(APIView):

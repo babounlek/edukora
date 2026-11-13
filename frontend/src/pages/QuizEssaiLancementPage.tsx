@@ -1,19 +1,21 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 
-import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { Skeleton } from "@/components/ui/skeleton"
-import { lireDefiDepuis, memoriserDefi } from "@/lib/defiEssai"
-import { memoriserEssai } from "@/lib/quizEssai"
-import { trackEvent } from "@/lib/analytics"
+import { useAuth } from "@/context/AuthContext"
+import { lireDefiDepuis } from "@/lib/defiEssai"
+import { lancerQuizGratuit } from "@/lib/quizGratuit"
 import { useSeo } from "@/lib/seo"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
- * Le lien d'un quiz gratuit partagé (/quiz/essai/<cursus>/<matière>/<thème>) : lance cet essai-là et
+ * Le lien d'un quiz gratuit partagé (/quiz/essai/<cursus>/<matière>/<thème>) : lance ce quiz-là et
  * ouvre le lecteur, sans passer par la liste. Un lien périmé (le thème n'est plus gratuit, un
  * identifiant inventé) ramène à la liste avec une phrase, jamais à une page blanche.
+ *
+ * Une vraie séance pour tous (voir lib/quizGratuit) : un visiteur reçoit un compte invité, un connecté joue sur son profil
+ * (ses points comptent), l'essai sans enregistrement ne sert plus que de repli.
  */
 export function QuizEssaiLancementPage() {
   useI18n()
@@ -21,37 +23,48 @@ export function QuizEssaiLancementPage() {
   const { cursus, subject, theme } = useParams<{ cursus: string; subject: string; theme: string }>()
   const navigate = useNavigate()
   const [recherche] = useSearchParams()
+  const { isAuthenticated, isLoading } = useAuth()
   const defi = lireDefiDepuis(recherche.toString())
   const [erreur, setErreur] = useState("")
+  // Ce lien ne lance qu'UNE séance : le double passage des effets (mode strict) créerait sinon deux comptes invités et
+  // deux séances. `monte` dit si la page est encore là quand la réponse arrive.
+  const lance = useRef<string | null>(null)
+  const monte = useRef(true)
+  useEffect(() => {
+    monte.current = true
+    return () => {
+      monte.current = false
+    }
+  }, [])
 
   useEffect(() => {
+    // On attend de savoir si la personne est connectée : un connecté ne doit pas recevoir de compte invité.
+    if (isLoading) return
     const ids = [cursus, subject, theme].map(Number)
     if (ids.some((n) => !Number.isInteger(n) || n <= 0)) {
       setErreur(t("essai.lien_invalide"))
       return
     }
-    let annule = false
-    // Le lien d'un défi (« ?defi=4-5 ») : le score à battre suit le visiteur jusqu'à son résultat ; un lien sans défi efface un défi d'avant.
-    memoriserDefi(defi)
-    startQuizEssai({ cursus: ids[0], subject: ids[1], theme: ids[2], n: 10 })
-      .then((session) => {
-        if (annule) return
-        memoriserEssai(session)
-        trackEvent("quiz_started", { cursus_id: ids[0], mode: "PRATIQUE", source: "essai_partage" })
-        navigate("/quiz/essai", { replace: true })
+    const cle = `${ids.join("-")}:${defi?.reussies ?? ""}-${defi?.total ?? ""}:${isAuthenticated}`
+    if (lance.current === cle) return
+    lance.current = cle
+    // Le lien d'un défi (« ?defi=4-5 ») : le score à battre suit la séance jusqu'à son résultat ; un lien sans défi efface un défi d'avant.
+    lancerQuizGratuit({
+      cursus: ids[0], subject: ids[1], theme: ids[2], connecte: isAuthenticated, source: "essai_partage", defi,
+    })
+      .then((chemin) => {
+        if (monte.current) navigate(chemin, { replace: true })
       })
       .catch((err) => {
-        if (annule) return
+        if (!monte.current) return
         setErreur(
           err instanceof ApiError && (err.status === 403 || err.status === 404)
             ? t("essai.plus_gratuit")
             : t("essai.lancement_erreur"),
         )
       })
-    return () => {
-      annule = true
-    }
-  }, [cursus, subject, theme, navigate, defi?.reussies, defi?.total])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cursus, subject, theme, navigate, isLoading, isAuthenticated, defi?.reussies, defi?.total])
 
   if (erreur) {
     return (

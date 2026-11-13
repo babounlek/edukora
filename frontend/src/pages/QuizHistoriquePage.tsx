@@ -18,6 +18,7 @@ import { formatDureeEcoulee } from "@/lib/duration"
 import { localeCourante, t, useI18n } from "@/lib/i18n"
 import { nomAccessibleDuChoix } from "@/lib/markdown"
 import { useSeo } from "@/lib/seo"
+import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
 const SEUIL_REUSSITE = 70
@@ -113,7 +114,11 @@ export function QuizHistoriquePage() {
   const { id } = useParams()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated: connecte, isLoading } = useAuth()
+  // Un visiteur qui a joué un quiz gratuit avec un compte invité (voir lib/invite) relit sa séance comme un compte : le
+  // serveur lui ouvre cette seule page. Son historique complet, lui, reste celui d'un compte.
+  const invite = useEssaiSansCompte()
+  const isAuthenticated = connecte || invite
   const [rejeu, setRejeu] = useState(false)
   const [erreurRejeu, setErreurRejeu] = useState("")
 
@@ -148,9 +153,12 @@ export function QuizHistoriquePage() {
   if (isLoading) return null
 
   const retour = (
-    <Link to="/historique" className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline">
+    <Link
+      to={connecte ? "/historique" : "/quiz"}
+      className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
+    >
       <ArrowLeft className="size-4" aria-hidden="true" />
-      {t("hq.retour")}
+      {t(connecte ? "hq.retour" : "qs.retour")}
     </Link>
   )
 

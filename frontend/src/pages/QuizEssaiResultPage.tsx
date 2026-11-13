@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { ArrowRight, BookOpen, FileText, Lock, RotateCcw, Sparkles, Swords, Trophy, Zap } from "lucide-react"
 
-import { startQuizEssai } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
@@ -13,10 +12,10 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { coursListPath, themeExercicesPath } from "@/lib/countryPath"
 import {
-  bat, cheminEssai, lireEssai, lireRecord, memoriserEssai, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
+  bat, cheminEssai, lireEssai, lireRecord, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
   texteDeDefiEssai,
 } from "@/lib/quizEssai"
-import { trackEvent } from "@/lib/analytics"
+import { lancerQuizGratuit } from "@/lib/quizGratuit"
 import { jouerRetour } from "@/lib/retours"
 import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
@@ -89,10 +88,10 @@ export function QuizEssaiResultPage() {
     setRelance(true)
     setErreur("")
     try {
-      const nouvelle = await startQuizEssai({ cursus: session!.cursus, subject: subjectId, theme: themeId })
-      memoriserEssai(nouvelle)
-      trackEvent("quiz_started", { cursus_id: session!.cursus, mode: "PRATIQUE", source: "essai_anonyme" })
-      navigate("/quiz/essai")
+      // On n'est ici que si l'essai sans enregistrement a servi de repli : on retente une vraie séance (voir lib/quizGratuit).
+      navigate(await lancerQuizGratuit({
+        cursus: session!.cursus, subject: subjectId, theme: themeId, connecte: isAuthenticated, source: "essai_anonyme",
+      }))
     } catch (err) {
       setErreur(err instanceof ApiError ? err.message : t("essai.relance_erreur"))
       setRelance(false)
@@ -130,7 +129,11 @@ export function QuizEssaiResultPage() {
         {points === 0 ? (
           <p className="mt-1 text-xs text-muted-foreground">{t("qr.points_bonnes")}</p>
         ) : (
-          !isAuthenticated && <p className="mt-1 text-xs text-muted-foreground">{t("essai.points_compte")}</p>
+          // Un connecté peut arriver ici (essai gratuit sans examen déclaré) : lui dire de « créer un compte » serait absurde,
+          // mais se taire laissait croire que ces points étaient les siens.
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t(isAuthenticated ? "essai.points_non_credites" : "essai.points_compte")}
+          </p>
         )}
         {recordBattu && recordAvant && (
           <p className="mt-3 flex items-center gap-2 rounded-xl bg-success/15 px-3 py-2 text-sm font-medium">

@@ -24,21 +24,28 @@ export function lireDefiDepuis(recherche: string): Defi | null {
   return total >= 1 && total <= 30 && reussies <= total ? { reussies, total } : null
 }
 
-export function memoriserDefi(defi: Defi | null) {
+/**
+ * `session` : la séance que ce défi accompagne. 0 pour un essai sans séance enregistrée (voir lib/quizEssai), l'identifiant
+ * de la séance pour un quiz gratuit joué avec un compte invité : sans cela, le défi d'un lien resterait collé à tous les
+ * quiz suivants de l'onglet.
+ */
+export function memoriserDefi(defi: Defi | null, session = 0) {
   try {
-    if (defi) sessionStorage.setItem(CLE, JSON.stringify(defi))
+    if (defi) sessionStorage.setItem(CLE, JSON.stringify({ ...defi, session }))
     else sessionStorage.removeItem(CLE)
   } catch {
     // Stockage indisponible : le défi ne vit alors que le temps de la page, sans gravité.
   }
 }
 
-export function lireDefiMemorise(): Defi | null {
+/** Le défi mémorisé POUR CETTE SÉANCE (0 : l'essai), ou null. */
+export function lireDefiMemorise(session = 0): Defi | null {
   try {
     const brut = sessionStorage.getItem(CLE)
     if (!brut) return null
     // Relu par la même validation que celle d'un lien : un stockage altéré ne passe pas.
-    const { reussies, total } = JSON.parse(brut) as Defi
+    const { reussies, total, session: memorisee } = JSON.parse(brut) as Defi & { session?: number }
+    if ((memorisee ?? 0) !== session) return null
     return lireDefiDepuis(`defi=${reussies}-${total}`)
   } catch {
     return null

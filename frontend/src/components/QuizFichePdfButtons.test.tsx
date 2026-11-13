@@ -14,6 +14,10 @@ const api = vi.hoisted(() => ({
 }))
 vi.mock("@/api/endpoints", () => api)
 
+// Le composant lit l'examen auquel le profil actif est abonné (null : pas d'abonnement) ; ici, ce qu'il en est se règle par test.
+const abonnement = vi.hoisted(() => ({ cursus: 7 as number | null }))
+vi.mock("@/lib/abonneActif", () => ({ useCursusAbonne: () => abonnement.cursus }))
+
 import { QuizFichePdfButtons } from "./QuizFichePdfButtons"
 
 function quota(surcharge: Partial<QuotaPdf> = {}): QuotaPdf {
@@ -28,18 +32,31 @@ function afficher() {
   return render(
     <QueryClientProvider client={client}>
       <MemoryRouter>
-        <QuizFichePdfButtons sessionId={5} />
+        <QuizFichePdfButtons sessionId={5} cursus={7} />
       </MemoryRouter>
     </QueryClientProvider>,
   )
 }
 
 beforeEach(() => {
+  abonnement.cursus = 7
   api.getQuotaPdf.mockReset()
   api.getQuizFichePdfStatus.mockReset().mockResolvedValue({ statut: "PRETE", sujet_pdf_disponible: true, corrige_pdf_disponible: true })
 })
 
 describe("QuizFichePdfButtons", () => {
+  it("ne promet pas de PDF à qui n'est pas abonné à l'examen de la séance : un lien vers les offres, aucun appel au serveur", () => {
+    for (const cursus of [null, 99]) {
+      abonnement.cursus = cursus
+      const { unmount } = afficher()
+      expect(screen.getByRole("link", { name: /voir les offres/ })).toHaveAttribute("href", "/tarifs")
+      expect(screen.queryByRole("button")).not.toBeInTheDocument()
+      unmount()
+    }
+    expect(api.getQuizFichePdfStatus).not.toHaveBeenCalled()
+    expect(api.requestQuizFichePdf).not.toHaveBeenCalled()
+  })
+
   it("met le compteur dans chaque bouton, sans note dessous qui décale la barre du bas", async () => {
     api.getQuotaPdf.mockResolvedValue(quota())
     afficher()

@@ -32,12 +32,18 @@ export function setAccessToken(token: string) {
   clearJetonInvite()
 }
 
+// Les routes d'une séance de quiz (le miroir de users.authentication.CHEMINS_INVITE_QUIZ côté serveur) : démarrer, lire,
+// répondre, relire le corrigé, terminer, refaire les ratées, reprendre, relire et rejouer une séance passée.
+const CHEMIN_QUIZ_INVITE =
+  /^\/quiz\/(?:sessions\/|sessions\/\d+\/|sessions\/\d+\/questions\/\d+\/(?:corrige|answer)\/|sessions\/\d+\/(?:refaire-ratees|completer)\/|en-cours\/|historique\/\d+\/(?:rejouer\/)?)$/
+
 /**
  * Le jeton de l'essai sans compte (voir lib/invite.ts) ne sert qu'à ces routes : un invité n'a de droits que sur les
- * épreuves inédites (users.authentication côté serveur), et reste un visiteur anonyme partout ailleurs.
+ * épreuves inédites et sur la séance d'un quiz gratuit (users.authentication côté serveur), et reste un visiteur anonyme
+ * partout ailleurs.
  */
 export function estCheminInvite(path: string): boolean {
-  return path.startsWith("/inedit/")
+  return path.startsWith("/inedit/") || CHEMIN_QUIZ_INVITE.test(path.split("?")[0])
 }
 
 /** Le jeton à joindre à cet appel : celui de la session, sinon celui de l'essai sans compte sur les routes inédites. */
