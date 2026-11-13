@@ -4,7 +4,7 @@ import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuel
 import { toast } from "sonner"
 import {
   BookOpen, Check, Copy, Crown, GraduationCap,
-  MessageCircle, NotebookPen, Pencil, RefreshCw, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
+  MessageCircle, NotebookPen, Pencil, RefreshCw, RotateCcw, Settings2, Share2, Sparkles, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
 import { getWhatsAppStatus, optInWhatsApp, optOutWhatsApp, updateMe } from "@/api/endpoints"

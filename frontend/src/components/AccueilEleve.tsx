@@ -134,7 +134,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {lectureAReprendre && <LigneLecture lecture={lectureAReprendre} />}
       {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
       {/* Les questions ratées et pas encore réussies : un geste pour en refaire un paquet (voir quiz.erreurs). */}
-      <LigneErreurs total={data.erreurs_total ?? 0} cursusId={cursusAccueil} />
+      {cursusAccueil != null && <LigneErreurs total={data.erreurs_total ?? 0} cursusId={cursusAccueil} />}
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
