@@ -234,39 +234,6 @@ function EtapeTitre({ n, children }: { n: number; children: ReactNode }) {
   )
 }
 
-/**
- * Le prix pour une famille, rendu concret par un petit tableau plutôt qu'une phrase. Aucune remise
- * famille (décision du 2026-11-13) : chaque enfant paie le prix du mois (`plan.effective_price`, campagne
- * comprise), le tableau n'est donc qu'une multiplication.
- */
-function TarifFamille({ plan }: { plan: Plan }) {
-  const total = (nbEnfants: number) => nbEnfants * plan.effective_price
-
-  // Replié : une ligne suffit à la plupart des visiteurs, et le tableau ne doit pas allonger la colonne du bouton.
-  return (
-    <details className="group rounded-xl border border-primary/15 bg-primary/[0.03] px-4 py-2">
-      <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium [&::-webkit-details-marker]:hidden">
-        <span>{t("prix.famille_resume")}</span>
-        <ChevronDown
-          className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
-          aria-hidden
-        />
-      </summary>
-      <dl className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 pb-1 text-sm">
-        {[1, 2, 3, 4].map((n) => (
-          <div key={n} className="contents">
-            <dt className="text-muted-foreground">{tn("prix.enfants", n)}</dt>
-            <dd className="text-right font-medium tabular-nums">
-              {formatAmount(total(n))} FCFA{" "}
-              <span className="text-xs font-normal text-muted-foreground">{t("prix.par_mois_court")}</span>
-            </dd>
-          </div>
-        ))}
-      </dl>
-    </details>
-  )
-}
-
 /** Pastille « Exclusif » des deux avantages introuvables ailleurs : les annales seules sont
  * gratuites ailleurs, ce qui justifie le prix d'Edukora ce sont les épreuves inédites et le
  * classement des thèmes fréquents. Elle remplace l'encart doré qui répétait ces deux lignes
@@ -710,8 +677,6 @@ export function PricingPage() {
                   </Link>
                 </p>
               </div>
-
-              {planTarif && <TarifFamille plan={planTarif} />}
             </div>
           </aside>
         </div>

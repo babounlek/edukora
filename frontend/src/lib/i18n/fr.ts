@@ -64,6 +64,9 @@ export const fr = {
   "matieres.titre": "Mes matières",
   "matieres.aide":
     "Coche les matières que tu passes : ta séance du jour, tes priorités, ta progression et tes listes (épreuves, cours, quiz) se limitent à elles. Tu peux tout revoir à tout moment, sans changer ton inscription.",
+  "matieres.aide_serie":
+    "Ta série fixe l'essentiel. Décoche les matières que tu ne passes pas (une langue, une option) : ta séance du jour, ta progression et tes listes ne compteront plus que les tiennes.",
+  "matieres.invite_progression": "Tu ne passes pas toutes ces matières ?",
   "matieres.affichage_titre": "Voir seulement mes matières",
   "matieres.affichage_texte":
     "Activé, les listes se limitent aux matières ci-dessus. Désactivé, tu vois toutes les matières, sans changer ton inscription.",
@@ -272,8 +275,6 @@ export const fr = {
   "prix.seo_description":
     "Abonnement {site} au mois par Mobile Money : tu choisis le nombre de mois, pour accéder à tous les corrigés et cours de ton cursus.",
   "prix.serie": "Série {code}",
-  "prix.enfants_one": "{n} enfant",
-  "prix.enfants_other": "{n} enfants",
   "prix.exclusif": "Exclusif {site}",
   "prix.exclusif_inedites":
     "Épreuves inédites incluses - des sujets originaux conçus pour ton programme et le format de ton examen.",
@@ -338,7 +339,6 @@ export const fr = {
   "prix.par_enfant_court": "par enfant",
   "prix.recap_titre": "Ton récapitulatif",
   "prix.recap_vide": "Ton total s'affichera ici dès que tu auras choisi ton cursus.",
-  "prix.famille_resume": "Plusieurs enfants ? Le même prix pour chacun",
   "prix.duree_apres_cursus":
     "Choisis ton cursus : tu verras combien de mois tu peux prendre, et le total à payer.",
   "prix.continuer":

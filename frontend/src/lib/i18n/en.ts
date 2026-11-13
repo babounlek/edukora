@@ -59,6 +59,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "matieres.titre": "My subjects",
   "matieres.aide":
     "Tick the subjects you are sitting: your daily session, priorities, progress and lists (papers, courses, quizzes) will focus on them. You can see everything again at any time, without changing your registration.",
+  "matieres.aide_serie":
+    "Your stream sets most of it. Untick the subjects you do not take (a language, an option): your daily session, your progress and your lists will only count yours.",
+  "matieres.invite_progression": "Not taking all of these subjects?",
   "matieres.affichage_titre": "Show only my subjects",
   "matieres.affichage_texte":
     "On, lists are limited to the subjects above. Off, you see every subject, without changing your registration.",
@@ -266,8 +269,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.seo_description":
     "{site} monthly subscription by Mobile Money: you choose the number of months, with access to all the solutions and lessons for your exam.",
   "prix.serie": "Series {code}",
-  "prix.enfants_one": "{n} child",
-  "prix.enfants_other": "{n} children",
   "prix.exclusif": "{site} exclusive",
   "prix.exclusif_inedites":
     "Original papers included - original questions written for your syllabus and the format of your exam.",
@@ -332,7 +333,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.par_enfant_court": "per child",
   "prix.recap_titre": "Your summary",
   "prix.recap_vide": "Your total will appear here as soon as you choose your exam.",
-  "prix.famille_resume": "Several children? The same price for each",
   "prix.duree_apres_cursus":
     "Choose your exam: you will see how many months you can take, and the total to pay.",
   "prix.continuer":
