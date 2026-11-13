@@ -52,6 +52,7 @@ export const fr = {
   "compte.enfant_a_payer": "À payer",
   "compte.payer_pour_enfant": "Payer l'abonnement de {prenom}",
   "compte.examen_prepare": "Examen préparé",
+  "compte.changer_examen_seance": "Changer d'examen quitte la séance en cours. Continuer ?",
   "compte.profil_sans_nom": "Profil sans nom",
   "compte.mon_compte": "Mon compte",
   "compte.mes_acces": "Mes accès",

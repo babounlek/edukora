@@ -1,9 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useLocation, useNavigate } from "react-router-dom"
 
 import { activerProfil, listProfils } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
-import { cheminDansLangue, langueDuChemin } from "@/lib/i18n"
+import { cheminDansLangue, langueDuChemin, t } from "@/lib/i18n"
+import { cibleApresChangementCursus } from "@/lib/pageApresChangementCursus"
 import { demanderPinProfil, PinAnnule } from "@/lib/pinPrompts"
 
 /**
@@ -69,13 +71,34 @@ export function rechargerSurAccueil() {
  * `prenom` (optionnel) : affiché dans la saisie du code PIN du profil, s'il en a un.
  */
 export function useChangerProfilActif() {
-  const { login } = useAuth()
+  const { user, login } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const queryClient = useQueryClient()
+  // Même enfant, autre examen : pas de rechargement, l'élève reste sur sa page (voir pageApresChangementCursus).
+  const memeProfil = (profilId: number) => user?.profil_actif?.id === profilId
   return useMutation({
-    mutationFn: ({ profilId, cursusId, prenom }: { profilId: number; cursusId?: number; prenom?: string }) =>
-      activerProfilProtege(profilId, prenom ?? "ce profil", cursusId),
-    onSuccess: (response) => {
+    mutationFn: ({ profilId, cursusId, prenom }: { profilId: number; cursusId?: number; prenom?: string }) => {
+      if (memeProfil(profilId) && cibleApresChangementCursus(location.pathname, location.search, null).seanceEnCours) {
+        // Avant l'appel : le serveur renouvelle le jeton, il serait trop tard pour renoncer.
+        if (!window.confirm(t("compte.changer_examen_seance"))) throw new PinAnnule()
+      }
+      return activerProfilProtege(profilId, prenom ?? "ce profil", cursusId)
+    },
+    onSuccess: (response, { profilId }) => {
       login(response.access, response.user)
-      rechargerSurAccueil()
+      if (!memeProfil(profilId)) {
+        rechargerSurAccueil()
+        return
+      }
+      const cible = cibleApresChangementCursus(
+        location.pathname,
+        location.search,
+        response.user.cursus_prepare?.country?.code ?? null,
+      )
+      // Tout ce qui est en cache vient de l'ancien examen : même choix que useChangerCursusPrepare.
+      void queryClient.invalidateQueries()
+      if (cible.chemin) navigate(cible.chemin, { replace: true })
     },
     onError: (err) => {
       // Annuler la saisie du code n'est pas une erreur à signaler.

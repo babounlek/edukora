@@ -47,6 +47,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "compte.enfant_a_payer": "To pay",
   "compte.payer_pour_enfant": "Pay for {prenom}'s subscription",
   "compte.examen_prepare": "Exam being prepared",
+  "compte.changer_examen_seance": "Switching exam will leave your current session. Continue?",
   "compte.profil_sans_nom": "Unnamed profile",
   "compte.mon_compte": "My account",
   "compte.mes_acces": "My access",
