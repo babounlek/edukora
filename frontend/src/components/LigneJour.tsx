@@ -23,6 +23,14 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
   // Le rappel de la mascotte : vide tant que l'élève ne l'a pas touchée, pour ne pas repousser « Commencer » sous le pli.
   const [rappel, setRappel] = useState<string | null>(null)
   const part = etat.objectif > 0 ? Math.min(100, Math.round((100 * etat.xp) / etat.objectif)) : 0
+  const libelleSerie = serie.jours === 1 ? t("serie.premier_jour") : t("serie.jours_de_suite", { n: serie.jours })
+  // Ce que la flamme a à dire de plus : le repos pardonné de la semaine, et le record (à partir de 2 jours : « record : 1 jour » ne dit rien).
+  const detailSerie = [
+    serie.repos_pris ? t("ligne.repos_pardonne") : null,
+    serie.record >= 2 ? t("ligne.record", { n: serie.record }) : null,
+  ].filter(Boolean).join(" · ")
+  // Un second appui sur la même pastille referme la ligne.
+  const basculer = (phrase: string) => setRappel((actuel) => (actuel === phrase ? null : phrase))
 
   return (
     <div className="mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2.5 rounded-2xl border border-border/70 bg-muted/30 px-4 py-2.5">
@@ -57,19 +65,29 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
 
       <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
         {/* Le niveau, sur la ligne que l'élève voit à chaque visite : de quoi se situer et viser le suivant. */}
-        {etat.niveau && <NiveauXp niveau={etat.niveau} compact />}
+        {/* Toucher la pastille dit ce qui reste jusqu'au niveau suivant, sur la ligne du rappel : la phrase n'existait qu'en
+            infobulle, invisible sur un téléphone. */}
+        {etat.niveau && <NiveauXp niveau={etat.niveau} compact onDetail={basculer} />}
         {/* La série se voit dès le premier jour (« Jour 1 : bien parti ! ») : attendre le deuxième la cachait à qui venait de
             commencer, alors que c'est le premier jour qu'elle donne envie de revenir (test élève Guyguy). Elle ne culpabilise
-            jamais ; un repos pardonné reste signalé en infobulle. */}
-        {serie.jours >= 1 && (
-          <span
-            className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold"
-            title={serie.repos_pris ? t("ligne.repos_pardonne") : undefined}
-          >
-            <Flame className="size-4 text-warning" aria-hidden="true" />
-            {serie.jours === 1 ? t("serie.premier_jour") : t("serie.jours_de_suite", { n: serie.jours })}
-          </span>
-        )}
+            jamais ; le repos pardonné et le record se lisent en la touchant (même raison que le niveau). */}
+        {serie.jours >= 1 &&
+          (detailSerie ? (
+            <button
+              type="button"
+              onClick={() => basculer(detailSerie)}
+              title={detailSerie}
+              className="-my-1.5 flex min-h-9 items-center gap-1 whitespace-nowrap py-1.5 text-sm font-semibold"
+            >
+              <Flame className="size-4 text-warning" aria-hidden="true" />
+              {libelleSerie}
+            </button>
+          ) : (
+            <span className="flex items-center gap-1 whitespace-nowrap text-sm font-semibold">
+              <Flame className="size-4 text-warning" aria-hidden="true" />
+              {libelleSerie}
+            </span>
+          ))}
         {semaine && semaine.length === 7 && (
           <ol className="flex gap-1" aria-label={t("ligne.semaine_aria")}>
             {semaine.map((jour, i) => (

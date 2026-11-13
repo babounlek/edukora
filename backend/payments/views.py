@@ -115,7 +115,7 @@ def initiate_payment(request):
     if erreur is not None:
         return erreur
 
-    tarif = plan.tarif(user=request.user, profil=profil, mois=mois)
+    tarif = plan.tarif(mois=mois)
     prix = tarif.prix
     # Remise automatique par crédit parrainage disponible (voir
     # subscriptions.models.solde_credit_parrainage) - mécanisme gelé depuis le

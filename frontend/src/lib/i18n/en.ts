@@ -177,7 +177,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "parents.titre": "Are you a parent?",
   "parents.sous_titre": "Here is what your child gets, how payment works, and what you keep control of.",
   "parents.c1_titre": "One account, several children",
-  "parents.c1_texte": "Each child has their own profile, progress and subscription. From the second child: {prix_sup} FCFA a month.",
+  "parents.c1_texte": "Each child has their own profile, progress and subscription, at the same price.",
   "parents.c2_titre": "Mobile Money payment, no surprises",
   "parents.c2_texte": "{prix} FCFA a month, you choose the number of months. Orange Money or MTN MoMo, no bank card and no automatic charges: the total is shown before you pay.",
   "parents.c3_titre": "You stay in control",
@@ -185,7 +185,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "parents.voir_prix": "See pricing",
   "parents.comment_payer": "How to pay?",
   "accueil.pret_texte":
-    "A monthly subscription: {prix} FCFA per month and per child, and you choose how many months up to your exam ({prix_sup} FCFA per month for each additional child in the same family). Pay by Mobile Money, no commitment.",
+    "A monthly subscription: {prix} FCFA per month and per child, and you choose how many months up to your exam. Pay by Mobile Money, no commitment.",
   "accueil.voir_prix": "See pricing",
   "camp.etiquette": "−{pct}%",
   "camp.fin_titre": "{nom}: −{pct}%",
@@ -265,11 +265,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.seo_description":
     "{site} monthly subscription by Mobile Money: you choose the number of months, with access to all the solutions and lessons for your exam.",
   "prix.serie": "Series {code}",
-  "prix.famille_intro":
-    "More than one child? {prix} FCFA per month for each additional child in the same family (20% off)",
-  "prix.famille_intro_campagne":
-    "Several children? {prix} FCFA per month for each additional child in the same family",
-  "prix.famille_note_campagne": "Promotional price: the family discount and {nom} combine.",
   "prix.enfants_one": "{n} child",
   "prix.enfants_other": "{n} children",
   "prix.exclusif": "{site} exclusive",
@@ -285,7 +280,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.pour_enfant_texte": "Choose their exam, then pay: access will open on {prenom}'s profile.",
   "prix.pour_enfant_autre": "Not the right child? My access",
   "prix.sous_titre":
-    "You choose the number of months, from 1 month up to your exam. Each additional child in the same family: {prix_sup} FCFA per month.",
+    "You choose the number of months, from 1 month up to your exam.",
   "prix.puce_aucun_prelevement": "No automatic charges",
   "prix.puce_acces_immediat": "Access activated as soon as you pay",
   "prix.puce_acces_verifie": "Activated after verification (≈ {delai})",
@@ -336,7 +331,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.par_enfant_court": "per child",
   "prix.recap_titre": "Your summary",
   "prix.recap_vide": "Your total will appear here as soon as you choose your exam.",
-  "prix.famille_resume": "Several children? {prix} FCFA a month from the 2nd child",
+  "prix.famille_resume": "Several children? The same price for each",
   "prix.duree_apres_cursus":
     "Choose your exam: you will see how many months you can take, and the total to pay.",
   "prix.continuer":
@@ -384,7 +379,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.faq3_q":
     "How much exactly do I pay?",
   "prix.faq3_r":
-    "{prix} FCFA per month and per child, for the number of months you choose: 3 months is {prix3} FCFA. The last month you can choose covers the end of your exam. Each additional child in the same family pays {prix_sup} FCFA per month. During an offer (such as the back-to-school one), the reduced price is shown at the top of the page with its end date: that is the one you pay.",
+    "{prix} FCFA per month and per child, for the number of months you choose: 3 months is {prix3} FCFA. The last month you can choose covers the end of your exam. Every child in the same family pays the same price. During an offer (such as the back-to-school one), the reduced price is shown at the top of the page with its end date: that is the one you pay.",
   "prix.faq4_q_campay": "What if the Mobile Money payment fails?",
   "prix.faq4_q_manuel": "When is my access activated?",
   "prix.faq4_r_campay":
@@ -542,6 +537,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ligne.points": "{xp} / {objectif} points",
   "ligne.objectif_aria": "Daily points goal",
   "ligne.repos_pardonne": "A rest day was forgiven this week",
+  "ligne.record": "Your best streak: {n} days in a row",
   "ligne.semaine_aria": "Days studied this week",
   "ligne.travaille": "Studied",
   "ligne.aujourdhui_pas_encore": "Today, not yet",
@@ -549,6 +545,7 @@ export const en: Partial<Record<CleI18n, string>> = {
 
   "simulation.erreur": "Could not start the simulation. Try again.",
   "simulation.bouton": "Take it in exam conditions",
+  "simulation.derniere_note": "Last mark: {note}",
 
   "rappels.erreur": "Could not save this setting. Try again.",
   "rappels.seance_titre": "Your daily session by email",
@@ -1515,7 +1512,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.plan_pour": "{plan} for {prenom}",
   "sb.acces_jusqua_one": "Access until the end of the exam - {n} day",
   "sb.acces_jusqua_other": "Access until the end of the exam - {n} days",
-  "sb.prix_enfant": "Additional child price (−20%): {a} → {b} FCFA",
   "sb.formule_mois": "Monthly subscription",
   "sb.tout_inclus": "Everything included: solutions, lessons, quizzes and original exams",
   "sb.duree_titre": "For how many months?",
@@ -1531,7 +1527,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.acces_jusqu_au": "Access until {date}",
   "sb.acces_prolonge_jusqu_au": "Your current access is extended until {date}",
   "sb.couvre_examen": "You cover all the time left before the end of your exam.",
-  "sb.prix_mois_enfant": "Additional child (−20%): {a} → {b} FCFA per month",
   "sb.camp_ligne_mois": "{nom} (−{pct}%): {a} → {b} FCFA per month, until {date}",
   "sb.sans_renouvellement": "One payment, nothing to renew: at the end, you decide whether to extend.",
   "mp.duree_one": "{n} month of access",
@@ -1580,7 +1575,6 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.payer_manuel": "Pay manually via Orange Money or MTN MoMo",
   "sb.fiches_active": "Study sheets add-on activated!",
   "sb.abonnement_active": "Subscription activated!",
-  "sb.generer_fiche": "Generate a sheet",
   "sb.echec": "The payment failed",
   "sb.securise": "Secure payment - your subscription activates as soon as the payment is confirmed.",
 
@@ -2113,6 +2107,10 @@ export const en: Partial<Record<CleI18n, string>> = {
   "pc.maitrises_sur_one": "{n}/{total} skills mastered",
   "pc.maitrises_sur_other": "{n}/{total} skills mastered",
   "pc.a_reviser": "{n} to review",
+  "pc.savoirs_a_decouvrir_one": "{n} skill to discover",
+  "pc.savoirs_a_decouvrir_other": "{n} skills to discover",
+  "pc.savoirs_travailles_one": "{n} of {total} skills practised",
+  "pc.savoirs_travailles_other": "{n} of {total} skills practised",
   "pc.a_reviser_court": "To review",
   "pc.maitrises": "Mastered",
   "pc.abos_erreur": "Unable to load your subscriptions.",
@@ -2210,7 +2208,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "cgu.abo_prix1":
     "**2,000 FCFA** per month and per child (reference price). The total, equal to the monthly price times the number of months chosen, is shown before payment. A promotional offer shown on the site may reduce the monthly price for a limited time.",
   "cgu.abo_prix2":
-    "**1,600 FCFA** per month for each additional child in the same family (a fixed 20% discount on the reference price, the same for the 2nd, 3rd, 4th child and so on). Example: 2 children for 3 months, 10,800 FCFA (6,000 + 4,800).",
+    "The price is **the same for every child** in a family: no discount is given according to the child’s rank. Example: 2 children for 3 months, 12,000 FCFA (2 × 6,000).",
   "cgu.abo3": "The subscription is **not renewed automatically**: when it ends, subscriber-only access is withdrawn until a new payment is made. No charge is ever made without your request.",
   "cgu.paiement_titre": "Payment and refunds",
   "cgu.paiement1": "Payment is made by Mobile Money (MTN MoMo, Orange Money). Two methods are offered: automatic payment through our provider CamPay, which activates access within seconds, or manual payment - you transfer the amount yourself to the number shown, then declare your transaction, which our team checks, usually within {delai}, before activating access. You can follow the status of your declarations in “My payments”.",

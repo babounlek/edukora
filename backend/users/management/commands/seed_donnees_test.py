@@ -179,8 +179,8 @@ class Command(BaseCommand):
                     # create() et pas declare() : declare() envoie un SMS au titulaire.
                     ManualPayment.objects.create(
                         user=user, profil=profil, plan=plan, operator=MobileMoneyOperator.MTN,
-                        amount_expected=plan.effective_price(user=user, profil=profil),
-                        amount_declared=plan.effective_price(user=user, profil=profil),
+                        amount_expected=plan.effective_price(),
+                        amount_declared=plan.effective_price(),
                         payer_phone_number="600000000",
                         transaction_reference=f"TEST-{user.pk:06d}",
                         status=ManualPaymentStatus.PENDING,

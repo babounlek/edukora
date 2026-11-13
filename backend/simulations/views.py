@@ -427,8 +427,42 @@ def start_simulation(request):
         return Response({"error": "Abonnement requis pour simuler cette épreuve."}, status=403)
     if not charger_exercices(lesson):
         return Response({"error": "Cette épreuve n'est pas découpée en exercices : simulation impossible."}, status=400)
+    en_cours = _simulation_a_reprendre(profil_actif(request), lesson)
+    if en_cours is not None:
+        return Response(_payload(en_cours))
     simulation = SimulationEpreuve.objects.create(profil=profil_actif(request), lesson=lesson)
     return Response(_payload(simulation), status=201)
+
+
+def _simulation_a_reprendre(profil, lesson):
+    """
+    La copie déjà ouverte sur cette épreuve qu'un nouveau clic doit rouvrir, ou None.
+
+    Chaque clic sur « Passer en conditions d'examen » créait une copie de plus : celle dont le
+    chrono tournait encore devenait introuvable (aucun écran ne liste les simulations), et les
+    copies vierges s'empilaient. On rend donc :
+    - d'abord la copie dont le chrono est EN COURS (une copie au chrono écoulé est rendue ici
+      même, voir _auto_complete_if_expired) ;
+    - à défaut une copie encore VIERGE (ni chrono, ni réponse) : c'est son briefing qui se rouvre.
+
+    Une copie d'entraînement libre déjà entamée n'est pas reprise : le mode examen ne peut plus
+    y être lancé (voir start_exam_mode), et celui qui clique veut pouvoir le choisir.
+    """
+    ouvertes = list(
+        SimulationEpreuve.objects.filter(profil=profil, lesson=lesson, submitted_at__isnull=True)
+        .select_related("lesson__subject__country")
+        .order_by("-started_at")
+    )
+    vierge = None
+    for simulation in ouvertes:
+        _auto_complete_if_expired(simulation)
+        if simulation.submitted_at is not None:
+            continue
+        if simulation.exam_mode_started_at is not None:
+            return simulation
+        if vierge is None and not simulation.reponses.exists():
+            vierge = simulation
+    return vierge
 
 
 @api_view(["GET"])

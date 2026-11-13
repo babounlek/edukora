@@ -65,9 +65,10 @@ describe("SelecteurDuree", () => {
     expect(screen.getByText(/Offre fondateurs \(−10 %\)/)).toBeInTheDocument()
   })
 
-  it("annonce le rabais du second enfant", () => {
-    render(<SelecteurDuree plan={plan({ effective_price: 1600 })} mois={2} onChoisir={vi.fn()} />)
-    expect(screen.getByText(/Enfant supplémentaire \(−20 %\)/)).toBeInTheDocument()
-    expect(screen.getByText(/3\s200 FCFA/)).toBeInTheDocument()
+  it("n'annonce aucun rabais famille : hors campagne, le prix du mois est celui du plan", () => {
+    render(<SelecteurDuree plan={plan()} mois={2} onChoisir={vi.fn()} />)
+    expect(screen.queryByText(/Enfant supplémentaire/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/au lieu de/)).not.toBeInTheDocument()
+    expect(screen.getByText(/4\s000 FCFA/)).toBeInTheDocument()
   })
 })

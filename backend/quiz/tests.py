@@ -46,7 +46,7 @@ from .models import (
     SeanceJournaliere, StatutFichePdf, StatutSeance,
 )
 from .services import (
-    BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX,
+    BUDGET_SEANCE_MINUTES, LEITNER_INTERVALS_JOURS, PARCOURS_COURS_PAR_SAVOIR_MAX, REPONSES_MIN_THEME_CONSOLIDE,
     PARCOURS_FREQUENCE_OCCURRENCES_MIN, SEUIL_MINIMUM_THEMES_PARCOURS, SUBJECTS_PARCOURS_PAR_FREQUENCE,
     SUBJECTS_PARCOURS_PAR_FREQUENCE_EXAMENS, SUBJECTS_PARCOURS_PAR_THEME_EXAMENS, TAGS_ALIAS_PARCOURS_FREQUENCE, TAGS_BLOCKLIST_PAR_MATIERE, TAGS_BLOCKLIST_PARCOURS_FREQUENCE, _poids_par_theme, construire_parcours,
     construire_parcours_par_frequence, enregistrer_resultat_pour_revision, generer_session, maitrise_par_savoir, parcours_par_theme,
@@ -1935,6 +1935,10 @@ class EnregistrerResultatPourRevisionTests(TestCase):
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.theme = Tag.objects.create(name="dérivation")
 
+    def _echeance_atteinte(self):
+        """Avance le temps jusqu'à l'échéance : une réussite ne compte qu'à partir de due_at."""
+        RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).update(due_at=timezone.localdate())
+
     def test_failure_opens_a_schedule_at_the_first_palier(self):
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
 
@@ -1947,8 +1951,31 @@ class EnregistrerResultatPourRevisionTests(TestCase):
 
         self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=self.theme).exists())
 
+    def test_success_before_the_due_date_changes_nothing(self):
+        """Trois bonnes réponses dans le quiz où le thème vient d'être raté ne le font pas avancer :
+        il sortait de la file le jour même, sans jamais avoir été revu à J+1."""
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
+
+        for _ in range(len(LEITNER_INTERVALS_JOURS) + 1):
+            enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
+
+        schedule = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus, theme=self.theme)
+        self.assertEqual(schedule.palier, 0)
+        self.assertEqual(schedule.due_at, timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]))
+
+    def test_only_one_palier_per_day(self):
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
+        self._echeance_atteinte()
+
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
+        enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
+
+        schedule = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus, theme=self.theme)
+        self.assertEqual(schedule.palier, 1)
+
     def test_success_advances_an_existing_schedule_to_the_next_palier(self):
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
+        self._echeance_atteinte()
 
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
@@ -1959,7 +1986,9 @@ class EnregistrerResultatPourRevisionTests(TestCase):
     def test_success_at_the_last_palier_graduates_the_theme_out_of_the_queue(self):
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
         for _ in range(len(LEITNER_INTERVALS_JOURS) - 1):
+            self._echeance_atteinte()
             enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
+        self._echeance_atteinte()
 
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
@@ -1967,6 +1996,7 @@ class EnregistrerResultatPourRevisionTests(TestCase):
 
     def test_a_relapse_resets_an_advanced_schedule_back_to_the_first_palier(self):
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
+        self._echeance_atteinte()
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=True)
 
         enregistrer_resultat_pour_revision(self.profil, self.cursus, self.subject, self.theme, correcte=False)
@@ -3126,6 +3156,24 @@ class ResumeParcoursTests(TestCase):
         self.assertEqual(entry["en_revision"], 0)
         self.assertEqual(entry["a_decouvrir"], 0)
 
+    def test_une_seule_bonne_reponse_ne_fait_pas_un_savoir_maitrise(self):
+        """1 sur 1 fait 100 % : le savoir est « en cours », pas « maîtrisé » (il comptait dans l'anneau)."""
+        savoir = self._module_savoir(self.maths, numero="1", intitule="Une seule réponse")
+        theme = Tag.objects.create(name="theme-une-reponse", savoir_officiel=savoir)
+        item = _make_competence_item(self.maths, self.cursus, theme=theme, numero="1")
+        session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
+        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=1)
+        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+
+        entry = resume_parcours(self.profil, self.cursus)[0]
+
+        self.assertEqual(entry["maitrises"], 0)
+        self.assertEqual(entry["en_cours"], 1)
+        savoir_payload = construire_parcours(self.profil, self.cursus, self.maths)[0]["savoirs"][0]
+        self.assertEqual(savoir_payload["taux"], 100)
+        self.assertEqual(savoir_payload["nb_reponses"], 1)
+        self.assertFalse(savoir_payload["maitrise"])
+
     def test_each_savoir_counts_in_exactly_one_bucket(self):
         savoir_maitrise = self._module_savoir(self.maths, numero="1", intitule="Maitrise")
         savoir_en_revision = self._module_savoir(self.maths, numero="2", intitule="En revision")
@@ -3136,8 +3184,10 @@ class ResumeParcoursTests(TestCase):
         theme_maitrise = Tag.objects.create(name="theme-maitrise", savoir_officiel=savoir_maitrise)
         item_maitrise = _make_competence_item(self.maths, self.cursus, theme=theme_maitrise, numero="1")
         session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
-        quiz_question = QuizQuestion.objects.create(session=session, competence_item=item_maitrise, ordre=1)
-        QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
+        # Trois réussites : le minimum pour qu'un taux vaille « maîtrisé » (voir est_maitrise).
+        for ordre in range(1, REPONSES_MIN_THEME_CONSOLIDE + 1):
+            quiz_question = QuizQuestion.objects.create(session=session, competence_item=item_maitrise, ordre=ordre)
+            QuizAnswer.objects.create(quiz_question=quiz_question, resultat_declare=ResultatDeclare.REUSSI)
 
         theme_en_revision = Tag.objects.create(name="theme-en-revision", savoir_officiel=savoir_en_revision)
         _make_competence_item(self.maths, self.cursus, theme=theme_en_revision, numero="2")
@@ -3185,6 +3235,8 @@ class ResumeParcoursTests(TestCase):
                 quiz_question=quiz_question,
                 resultat_declare=ResultatDeclare.REUSSI if resultat else ResultatDeclare.ECHEC,
             )
+            # Chaque réussite arrive à l'échéance (une réussite avant due_at ne fait rien avancer).
+            RevisionSchedule.objects.filter(profil=self.profil, theme=theme).update(due_at=timezone.localdate())
             enregistrer_resultat_pour_revision(self.profil, self.cursus, self.maths, theme, resultat)
 
         self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil, theme=theme).exists())

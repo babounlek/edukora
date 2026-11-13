@@ -13,16 +13,15 @@ from django.utils import timezone
 from subscriptions.models import Subscription
 
 from .models import QuizAnswer, SeanceJournaliere, StatutSeance
-from .services import SEUIL_MAITRISE
+from .services import REPONSES_MIN_THEME_CONSOLIDE, SEUIL_MAITRISE
 
 # Longueur de la période affichée. Un abonnement Mensuel dure 30 jours ; un abonnement
 # "Jusqu'à l'Examen" est plus long, mais 30 jours reste la maille à laquelle un élève
 # se souvient de ce qu'il a fait.
 PERIODE_JOURS = 30
 
-# Sous ce nombre de réponses cumulées, un thème n'est pas "consolidé" : 1 réponse juste
-# sur 1 fait 100 %, ce qui ne prouve rien.
-REPONSES_MIN_THEME_CONSOLIDE = 3
+# REPONSES_MIN_THEME_CONSOLIDE (le minimum de réponses pour qu'un thème soit "consolidé") vient
+# de quiz.services : même définition que le "maîtrisé" de l'anneau de progression.
 
 THEMES_CITES_MAX = 5
 MATIERES_CITEES_MAX = 4

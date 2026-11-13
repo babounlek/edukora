@@ -1,6 +1,6 @@
 """
 Campagne promotionnelle (« Offre fondateurs » -20 %, etc.) : le prix doit baisser partout où il est
-lu (catalogue, paiement Campay, déclaration manuelle), jamais se cumuler avec la remise famille,
+lu (catalogue, paiement Campay, déclaration manuelle), le même pour tous les enfants d'une famille,
 et chaque paiement doit garder sa campagne pour qu'on puisse mesurer ce qu'elle a rapporté.
 """
 
@@ -71,24 +71,6 @@ class TarifTests(_Base):
         _campagne(debut=maintenant + timedelta(days=2), fin=maintenant + timedelta(days=9))
         _campagne(debut=maintenant - timedelta(days=9), fin=maintenant - timedelta(days=2))
         self.assertEqual(self.plan.effective_price(), 15000)
-
-    def test_la_campagne_se_cumule_avec_la_remise_famille(self):
-        cadet = self._deuxieme_enfant()
-        campagne = _campagne(10)
-        # 10 % sur le tarif déjà remisé du 2e enfant (12 000), pas sur le tarif de référence.
-        tarif = self.plan.tarif(user=self.user, profil=cadet)
-        self.assertEqual((tarif.prix, tarif.reference, tarif.campagne), (10800, 12000, campagne))
-
-    def test_remise_de_20_pour_cent_sur_le_deuxieme_enfant(self):
-        cadet = self._deuxieme_enfant()
-        _campagne(20)
-        self.assertEqual(self.plan.effective_price(user=self.user, profil=cadet), 9600)
-        # Le premier enfant (déjà abonné, qui renouvelle) reste au tarif de référence remisé par la campagne.
-        self.assertEqual(self.plan.effective_price(user=self.user, profil=self.user.profils.first()), 12000)
-
-    def test_prix_enfant_supplementaire_avec_et_sans_campagne(self):
-        self.assertEqual(self.plan.prix_enfant_supplementaire(), 12000)
-        self.assertEqual(self.plan.prix_enfant_supplementaire(campagne=_campagne(10)), 10800)
 
     def test_un_plan_hors_jusqua_examen_n_est_pas_remise(self):
         _campagne(20)
@@ -165,13 +147,14 @@ class CatalogueApiTests(_Base):
         self.assertEqual(ligne["campagne"]["id"], campagne.id)
         self.assertEqual(ligne["campagne"]["pourcentage"], 20)
 
-    def test_le_catalogue_donne_le_prix_du_deuxieme_enfant_campagne_comprise(self):
+    def test_le_catalogue_n_expose_pas_de_prix_pour_un_enfant_supplementaire(self):
         _campagne(10)
         ligne = next(
             p for p in self.client.get(reverse("subscriptions:plan-list"), {"cursus": self.cursus.id}).json()
             if p["id"] == self.plan.id
         )
-        self.assertEqual((ligne["effective_price"], ligne["prix_enfant_supplementaire"]), (13500, 10800))
+        self.assertEqual(ligne["effective_price"], 13500)
+        self.assertNotIn("prix_enfant_supplementaire", ligne)
 
     def test_sans_campagne_pas_de_prix_barre(self):
         ligne = next(
@@ -196,8 +179,9 @@ class CatalogueApiTests(_Base):
         _campagne(20)
         campagne = self.client.get(reverse("subscriptions:campagne-en-cours")).json()["campagne"]
         self.assertEqual(campagne["nom"], "Offre fondateurs")
-        # Prix d'UN mois : 2 000 - 20 % = 1 600 ; enfant supplémentaire 1 600 (remise famille) - 20 % = 1 280.
-        self.assertEqual((campagne["prix"], campagne["prix_reference"], campagne["prix_enfant_supplementaire"]), (1600, 2000, 1280))
+        # Prix d'UN mois : 2 000 - 20 % = 1 600, pour tous les enfants.
+        self.assertEqual((campagne["prix"], campagne["prix_reference"]), (1600, 2000))
+        self.assertNotIn("prix_enfant_supplementaire", campagne)
 
 
 @override_settings(CAMPAY_ACTIVE=True)
@@ -234,7 +218,7 @@ class PaiementTests(_Base):
         self.assertEqual((transaction.amount, transaction.campagne), (15000, None))
 
     @patch("payments.campay_client.init_collect")
-    def test_le_paiement_campay_d_un_deuxieme_enfant_cumule_famille_et_campagne(self, mock_init):
+    def test_le_paiement_campay_d_un_deuxieme_enfant_a_le_meme_prix_de_campagne(self, mock_init):
         mock_init.return_value = {"reference": "campay-ref-cadet", "status": "PENDING"}
         campagne = _campagne(10)
         cadet = self._deuxieme_enfant()
@@ -244,7 +228,8 @@ class PaiementTests(_Base):
         )
         self.assertEqual(reponse.status_code, 200, reponse.content)
         transaction = Transaction.objects.get(pk=reponse.data["transaction_id"])
-        self.assertEqual((transaction.amount, transaction.campagne), (10800, campagne))
+        # Aucune remise famille : 15 000 - 10 % de campagne, comme pour l'aîné.
+        self.assertEqual((transaction.amount, transaction.campagne), (13500, campagne))
 
     def test_declaration_manuelle_attend_le_prix_de_campagne(self):
         campagne = _campagne(20)

@@ -51,7 +51,6 @@ class CampagneEnCoursView(APIView):
             **CampagneSerializer(campagne).data,
             "prix": tarif.prix,
             "prix_reference": tarif.reference,
-            "prix_enfant_supplementaire": plan.prix_enfant_supplementaire(campagne=campagne),
             "cursus": list(campagne.cursus.values_list("pk", flat=True)),
         }})
 

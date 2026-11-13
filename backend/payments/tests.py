@@ -333,8 +333,7 @@ class PaymentFlowAPITests(TestCase):
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_charges_the_effective_price_for_a_jusqua_examen_plan(self, mock_init):
         # Tarif unique (2026-10-02) : le montant encaissé est Plan.effective_price() -
-        # 15 000 F pour le premier enfant, 12 000 F pour un enfant supplémentaire de la
-        # même famille, quelle que soit la date de l'examen.
+        # 15 000 F pour chaque enfant, quelle que soit la date de l'examen.
         mock_init.return_value = {"reference": "campay-ref-jusqua", "status": "PENDING"}
         # Le référentiel seedé (migration catalog 0056) porte désormais une vraie
         # ExamSession pour ce cursus - à effacer pour tester un état propre.
@@ -357,7 +356,8 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(transaction.amount, 15000)
 
     @patch("payments.campay_client.init_collect")
-    def test_initiate_payment_charges_12000_for_an_additional_child(self, mock_init):
+    def test_initiate_payment_charges_the_same_price_for_an_additional_child(self, mock_init):
+        # Aucune remise famille (décision du 2026-11-13) : le cadet paie comme l'aîné.
         mock_init.return_value = {"reference": "campay-ref-fratrie", "status": "PENDING"}
         plan = Plan.objects.create(
             name="Jusqu'à l'Examen", cursus=self.cursus, price=15000,
@@ -376,7 +376,7 @@ class PaymentFlowAPITests(TestCase):
         )
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(Transaction.objects.get(pk=response.data["transaction_id"]).amount, 12000)
+        self.assertEqual(Transaction.objects.get(pk=response.data["transaction_id"]).amount, 15000)
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_applies_available_credit_as_a_discount(self, mock_init):

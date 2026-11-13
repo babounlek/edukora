@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { ArrowRight, ShieldCheck, Smartphone, Users } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import { PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA, PRIX_MOIS_FCFA } from "@/lib/tarifs"
+import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -15,10 +15,9 @@ import { t, useI18n } from "@/lib/i18n"
 export function SectionParents() {
   useI18n()
   const prix = formatAmount(PRIX_MOIS_FCFA)
-  const prixSup = formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA)
 
   const cartes = [
-    { Icone: Users, titre: t("parents.c1_titre"), texte: t("parents.c1_texte", { prix_sup: prixSup }) },
+    { Icone: Users, titre: t("parents.c1_titre"), texte: t("parents.c1_texte") },
     { Icone: Smartphone, titre: t("parents.c2_titre"), texte: t("parents.c2_texte", { prix }) },
     { Icone: ShieldCheck, titre: t("parents.c3_titre"), texte: t("parents.c3_texte") },
   ]

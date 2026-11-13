@@ -9,8 +9,6 @@ import { localeCourante } from "@/lib/i18n"
  * pas dupliquer le nombre d'un fichier à l'autre.
  */
 export const PRIX_MOIS_FCFA = 2000
-/** Enfant supplémentaire de la même famille (−20 %, voir Plan.prix_enfant_supplementaire), par mois. */
-export const PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA = 1600
 /** Un mois d'accès = 30 jours, comme côté serveur (subscriptions.models.JOURS_PAR_MOIS). */
 export const JOURS_PAR_MOIS = 30
 /** Durée proposée d'office quand l'élève n'en a pas encore choisi : un trimestre, ou tout ce qui reste avant l'examen. */
@@ -32,8 +30,8 @@ export function moisValides(plan: Pick<Plan, "duration_mode" | "mois_max">, mois
 }
 
 /**
- * Le montant TOTAL pour `mois` mois : `mois × prix du mois`. Le serveur applique la remise famille et la
- * campagne au prix du mois, puis multiplie (voir Plan.tarif) : ce produit est donc exactement ce qu'il facture.
+ * Le montant TOTAL pour `mois` mois : `mois × prix du mois`. Le serveur applique la campagne
+ * au prix du mois, puis multiplie (voir Plan.tarif) : ce produit est donc exactement ce qu'il facture.
  */
 export function prixTotal(plan: Pick<Plan, "duration_mode" | "effective_price">, mois: number): number {
   return plan.effective_price * (estAuMois(plan) ? mois : 1)

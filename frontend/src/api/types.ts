@@ -778,8 +778,6 @@ export interface Campagne {
 export interface CampagneEnCours extends Campagne {
   prix: number
   prix_reference: number
-  /** Enfant supplémentaire de la même famille : remise famille puis campagne, cumulées. */
-  prix_enfant_supplementaire: number
   /** Vide = tous les cursus. */
   cursus: number[]
 }
@@ -798,8 +796,6 @@ export interface Plan {
   prix_reference: number
   /** La campagne qui fait réellement baisser CE prix, sinon null. */
   campagne: Campagne | null
-  /** Tarif d'un enfant supplémentaire de la même famille (remise fixe de 20 %, plus la campagne en cours le cas échéant). */
-  prix_enfant_supplementaire: number
   inclut_inedit: boolean
   /** Combien de mois s'achètent en une fois : ceux qui restent jusqu'à la fin de l'examen (1 pour un plan qui ne se vend pas au mois). */
   mois_max: number
@@ -1184,6 +1180,11 @@ export interface ParcoursSavoir {
   // null = jamais tenté, distinct de 0 (tenté, en échec) - voir
   // quiz.services.construire_parcours côté backend.
   taux: number | null
+  // Nombre de réponses derrière ce taux, et le verdict du serveur : maîtrisé seulement au-dessus du
+  // seuil ET avec assez de réponses (voir quiz.services.est_maitrise). Facultatifs : absents d'une
+  // réponse gardée en cache d'avant ces champs.
+  nb_reponses?: number
+  maitrise?: boolean
   en_revision: boolean
   a_lu_le_cours: boolean
   has_quiz: boolean

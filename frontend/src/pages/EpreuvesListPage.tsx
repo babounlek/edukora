@@ -499,7 +499,15 @@ export function EpreuvesListPage() {
       </div>
       {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
           ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
-          chercher avant même d'avoir cherché. */}
+          chercher avant même d'avoir cherché. Pas pour un abonné : il n'a plus à être convaincu, et
+          la liste ne commençait qu'après 700 px sur un téléphone (audit du 2026-11-13). Il garde un
+          titre : discret sur la page des inédites (qui doit dire de quoi elle parle), réservé aux
+          lecteurs d'écran sur la liste générale, que l'onglet « Épreuves » nomme déjà. */}
+      {abonne ? (
+        <h1 className={pageInedites ? "mb-4 font-display text-xl font-semibold tracking-tight" : "sr-only"}>
+          {pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste")}
+        </h1>
+      ) : (
       <div
         className={cn(
           "relative mb-6 overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06]",
@@ -566,6 +574,7 @@ export function EpreuvesListPage() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
           de la page, comme sur /cours. */}

@@ -70,8 +70,15 @@ function prochainesEtapes(savoirs: SavoirEnrichi[]): SavoirEnrichi[] | "diagnost
   if (!aUnHistorique) return "diagnostic"
   const actionnables = savoirs.filter((s) => s.has_quiz || s.cours.length > 0)
   const enRevision = actionnables.filter((s) => s.en_revision)
-  const nonMaitrises = actionnables.filter((s) => !s.en_revision && (s.taux ?? 0) < SEUIL_MAITRISE)
+  const nonMaitrises = actionnables.filter((s) => !s.en_revision && !estMaitrise(s))
   return [...enRevision, ...nonMaitrises].slice(0, PROCHAINES_ETAPES_MAX)
+}
+
+/** « Maîtrisé » est dit par le serveur (quiz.services.est_maitrise : le taux ET un nombre minimal de
+ * réponses, pour qu'une seule bonne réponse ne suffise pas). Repli sur le taux seul pour une réponse
+ * gardée en cache d'avant ce champ. */
+function estMaitrise(s: ParcoursSavoir): boolean {
+  return s.maitrise ?? (s.taux !== null && s.taux >= SEUIL_MAITRISE)
 }
 
 type BucketSavoir = "maitrise" | "en_revision" | "en_cours" | "a_decouvrir" | "sans_contenu"
@@ -91,7 +98,7 @@ type BucketSavoir = "maitrise" | "en_revision" | "en_cours" | "a_decouvrir" | "s
  * file de révision. */
 function bucketDeSavoir(s: ParcoursSavoir): BucketSavoir {
   if (!s.has_quiz && s.cours.length === 0) return "sans_contenu"
-  if (s.taux !== null && s.taux >= SEUIL_MAITRISE) return "maitrise"
+  if (estMaitrise(s)) return "maitrise"
   if (s.en_revision) return "en_revision"
   if (s.taux !== null) return "en_cours"
   return "a_decouvrir"
@@ -744,7 +751,10 @@ export function ParcoursSubjectPage() {
                   )}
                 </div>
               ) : (
-                <div className={cn("mt-4 grid gap-3", etapes.length > 1 && "md:grid-cols-2", etapes.length > 2 && "lg:grid-cols-3")}>
+                // grid-cols-1 : une colonne en minmax(0, 1fr). Sans elle la colonne implicite prend la largeur
+                // de son contenu le plus long (le titre de cours de la puce, en `truncate`, ne se coupe alors
+                // jamais) et la page entière débordait sur un téléphone de 375 px.
+                <div className={cn("mt-4 grid grid-cols-1 gap-3", etapes.length > 1 && "md:grid-cols-2", etapes.length > 2 && "lg:grid-cols-3")}>
                   {etapes.map((etape, index) => (
                     <div
                       key={etape.id}

@@ -326,18 +326,15 @@ class ManualPaymentManager(models.Manager):
         TOUJOURS recalculé depuis `plan.effective_price()` ici - jamais accepté depuis
         le client, qui pourrait sinon déclarer n'importe quel montant pour un cursus à
         5000 FCFA (voir mission, section 8). `effective_price()` plutôt que `price` brut :
-        pour un Plan JUSQUA_EXAMEN, le prix réel dépend de la famille (enfant supplémentaire à 12 000 F, voir
-        subscriptions.models.Plan.effective_price), le prix attendu doit refléter la
-        même règle que celle appliquée au paiement Campay. La référence est normalisée
+        le prix réel tient compte de la campagne en cours (voir subscriptions.models.Plan.effective_price),
+        le prix attendu doit refléter la même règle que celle appliquée au paiement Campay. La référence est normalisée
         (espace/casse) pour empêcher un contournement trivial de la contrainte d'unicité.
         """
         reference = (transaction_reference or "").strip().upper()
         profil = profil or user.profils.first()
         # Campagne de la déclaration : celle en cours, ou celle qui vient de finir si le parent a payé
         # au prix affiché puis déclaré après la date limite (voir CampagneManager.pour_declaration).
-        tarif = plan.tarif(
-            user=user, profil=profil, campagne=Campagne.objects.pour_declaration(paid_at=paid_at), mois=mois,
-        )
+        tarif = plan.tarif(campagne=Campagne.objects.pour_declaration(paid_at=paid_at), mois=mois)
 
         payment = self.create(
             user=user, plan=plan, operator=operator, profil=profil, campagne=tarif.campagne, mois=mois,

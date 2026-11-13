@@ -545,15 +545,10 @@ export function getPlatformStats(langue?: string) {
   return apiRequest<PlatformStats>(`/catalog/stats/${langue ? `?langue=${langue}` : ""}`, { auth: false })
 }
 
-/** `authentifie` : à vrai (page d'abonnement), le prix renvoyé tient compte de la famille
- * du compte connecté - 1 600 FCFA le mois pour un enfant supplémentaire (`profilId`), voir
- * Plan.effective_price côté backend. Sinon : le tarif de référence. */
-export function listPlans(cursusId?: number, profilId?: number, authentifie = false) {
-  const params = new URLSearchParams()
-  if (cursusId) params.set("cursus", String(cursusId))
-  if (profilId) params.set("profil", String(profilId))
-  const query = params.toString() ? `?${params.toString()}` : ""
-  return apiRequest<Plan[]>(`/subscriptions/plans/${query}`, { auth: authentifie ? "optional" : false })
+/** Les offres, au même prix pour tous les enfants d'une famille (aucune remise famille depuis le 2026-11-13). */
+export function listPlans(cursusId?: number) {
+  const query = cursusId ? `?cursus=${cursusId}` : ""
+  return apiRequest<Plan[]>(`/subscriptions/plans/${query}`, { auth: false })
 }
 
 /** La campagne promotionnelle ouverte (ou null), pour les écrans qui affichent un prix sans avoir chargé de plan. */

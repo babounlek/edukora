@@ -23,7 +23,7 @@ import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
 import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
-import { PRIX_MOIS_FCFA, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA } from "@/lib/tarifs"
+import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { SectionParents } from "@/components/SectionParents"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
@@ -707,10 +707,7 @@ function CatalogueVitrine() {
           <div className="relative">
             <h2 className="font-display text-2xl font-semibold">{t("accueil.pret_titre")}</h2>
             <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-              {t("accueil.pret_texte", {
-                prix: formatAmount(PRIX_MOIS_FCFA),
-                prix_sup: formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA),
-              })}
+              {t("accueil.pret_texte", { prix: formatAmount(PRIX_MOIS_FCFA) })}
             </p>
             {campagne && (
               <BandeauCampagne

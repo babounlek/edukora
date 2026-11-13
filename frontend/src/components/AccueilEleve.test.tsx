@@ -37,6 +37,7 @@ vi.mock("@/api/endpoints", () => ({
   retirerObjectifMatiere: vi.fn(),
   marquerEtapeOuverte: vi.fn(() => Promise.resolve()),
   startSimulation: vi.fn(),
+  listMySimulations: vi.fn(() => Promise.resolve([])),
   listEpreuvesInedites: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listEpreuves: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listCursus: vi.fn(() => Promise.resolve([])),

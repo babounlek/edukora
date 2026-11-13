@@ -114,6 +114,68 @@ class DemarrageTests(SimulationTestCase):
         self.assertEqual(self.client.get(self.url()).status_code, 404)
 
 
+class RepriseTests(SimulationTestCase):
+    """Un nouveau clic sur « Passer en conditions d'examen » rouvre la copie déjà ouverte au lieu d'en
+    créer une de plus (la copie au chrono en cours devenait introuvable)."""
+
+    def relancer(self):
+        return self.client.post("/simulations/", {"epreuve": self.lesson.pk}, format="json")
+
+    def test_une_copie_vierge_est_rouverte(self):
+        self.demarrer()
+
+        reponse = self.relancer()
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["id"], self.simulation.pk)
+        self.assertEqual(SimulationEpreuve.objects.count(), 1)
+
+    def test_le_chrono_en_cours_est_repris(self):
+        self.demarrer()
+        self.client.post(self.url("mode-examen"))
+
+        reponse = self.relancer()
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["id"], self.simulation.pk)
+        self.assertIsNotNone(reponse.data["exam_mode_started_at"])
+
+    def test_un_chrono_ecoule_est_rendu_et_une_nouvelle_copie_s_ouvre(self):
+        self.demarrer()
+        self.client.post(self.url("mode-examen"))
+        SimulationEpreuve.objects.filter(pk=self.simulation.pk).update(
+            exam_mode_started_at=timezone.now() - timezone.timedelta(days=1),
+        )
+
+        reponse = self.relancer()
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertNotEqual(reponse.data["id"], self.simulation.pk)
+        self.simulation.refresh_from_db()
+        self.assertIsNotNone(self.simulation.submitted_at)
+
+    def test_une_copie_rendue_laisse_place_a_une_nouvelle(self):
+        self.demarrer()
+        self.client.post(self.url("completer"))
+
+        reponse = self.relancer()
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertNotEqual(reponse.data["id"], self.simulation.pk)
+
+    def test_un_entrainement_libre_entame_n_est_pas_repris(self):
+        """Le mode examen ne peut plus y être lancé : celui qui clique doit pouvoir le choisir."""
+        self.demarrer()
+        exercice = self.lesson.exercises.first()
+        self.client.post(self.url("noter", exercice), {"traitee": True}, format="json")
+        self.assertTrue(self.simulation.reponses.exists())
+
+        reponse = self.relancer()
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertNotEqual(reponse.data["id"], self.simulation.pk)
+
+
 class BaremeTests(SimulationTestCase):
     def test_un_exercice_sans_points_lisibles_rend_le_bareme_estime_pour_toute_l_epreuve(self):
         Exercise.objects.filter(pk=self.ex2.pk).update(points="")

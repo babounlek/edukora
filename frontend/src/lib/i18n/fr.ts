@@ -183,7 +183,7 @@ export const fr = {
   "parents.titre": "Tu es parent ?",
   "parents.sous_titre": "Voici ce que ton enfant obtient, comment on paie, et ce que tu gardes sous ton contrôle.",
   "parents.c1_titre": "Un compte, plusieurs enfants",
-  "parents.c1_texte": "Chaque enfant a son profil, sa progression et son abonnement. À partir du deuxième enfant : {prix_sup} FCFA par mois.",
+  "parents.c1_texte": "Chaque enfant a son profil, sa progression et son abonnement, au même prix.",
   "parents.c2_titre": "Paiement Mobile Money, sans surprise",
   "parents.c2_texte": "{prix} FCFA par mois, tu choisis le nombre de mois. Orange Money ou MTN MoMo, sans carte bancaire et sans prélèvement automatique : le total est affiché avant de payer.",
   "parents.c3_titre": "Tu gardes la main",
@@ -191,7 +191,7 @@ export const fr = {
   "parents.voir_prix": "Voir les prix",
   "parents.comment_payer": "Comment payer ?",
   "accueil.pret_texte":
-    "Un abonnement au mois : {prix} FCFA par mois et par enfant, tu choisis le nombre de mois jusqu'à ton examen ({prix_sup} FCFA par mois pour chaque enfant supplémentaire de la même famille). Paiement par Mobile Money, sans engagement.",
+    "Un abonnement au mois : {prix} FCFA par mois et par enfant, tu choisis le nombre de mois jusqu'à ton examen. Paiement par Mobile Money, sans engagement.",
   "accueil.voir_prix": "Voir les prix",
   "camp.etiquette": "−{pct} %",
   "camp.fin_titre": "{nom} : −{pct} %",
@@ -271,11 +271,6 @@ export const fr = {
   "prix.seo_description":
     "Abonnement {site} au mois par Mobile Money : tu choisis le nombre de mois, pour accéder à tous les corrigés et cours de ton cursus.",
   "prix.serie": "Série {code}",
-  "prix.famille_intro":
-    "Plusieurs enfants ? {prix} FCFA par mois pour chaque enfant supplémentaire de la même famille (20 % de réduction)",
-  "prix.famille_intro_campagne":
-    "Plusieurs enfants ? {prix} FCFA par mois pour chaque enfant supplémentaire de la même famille",
-  "prix.famille_note_campagne": "Prix promotionnel : la réduction famille et {nom} se cumulent.",
   "prix.enfants_one": "{n} enfant",
   "prix.enfants_other": "{n} enfants",
   "prix.exclusif": "Exclusif {site}",
@@ -291,7 +286,7 @@ export const fr = {
   "prix.pour_enfant_texte": "Choisis son examen, puis paie : l'accès s'ouvrira sur le profil de {prenom}.",
   "prix.pour_enfant_autre": "Ce n'est pas le bon enfant ? Mes accès",
   "prix.sous_titre":
-    "Tu choisis le nombre de mois, de 1 mois jusqu'à ton examen. Enfant supplémentaire de la même famille : {prix_sup} FCFA par mois.",
+    "Tu choisis le nombre de mois, de 1 mois jusqu'à ton examen.",
   "prix.puce_aucun_prelevement": "Aucun prélèvement automatique",
   "prix.puce_acces_immediat": "Accès activé dès le paiement",
   "prix.puce_acces_verifie": "Activé après vérification (≈ {delai})",
@@ -342,7 +337,7 @@ export const fr = {
   "prix.par_enfant_court": "par enfant",
   "prix.recap_titre": "Ton récapitulatif",
   "prix.recap_vide": "Ton total s'affichera ici dès que tu auras choisi ton cursus.",
-  "prix.famille_resume": "Plusieurs enfants ? {prix} FCFA par mois dès le 2e enfant",
+  "prix.famille_resume": "Plusieurs enfants ? Le même prix pour chacun",
   "prix.duree_apres_cursus":
     "Choisis ton cursus : tu verras combien de mois tu peux prendre, et le total à payer.",
   "prix.continuer":
@@ -390,7 +385,7 @@ export const fr = {
   "prix.faq3_q":
     "Combien je paie exactement ?",
   "prix.faq3_r":
-    "{prix} FCFA par mois et par enfant, pour le nombre de mois que tu choisis : 3 mois, c'est {prix3} FCFA. Le dernier mois que tu peux choisir couvre la fin de ton examen. Chaque enfant supplémentaire de la même famille paie {prix_sup} FCFA par mois. Pendant une offre (comme celle de la rentrée), le prix réduit s'affiche en haut de la page, avec sa date de fin : c'est celui que tu paies.",
+    "{prix} FCFA par mois et par enfant, pour le nombre de mois que tu choisis : 3 mois, c'est {prix3} FCFA. Le dernier mois que tu peux choisir couvre la fin de ton examen. Chaque enfant d'une même famille paie le même prix. Pendant une offre (comme celle de la rentrée), le prix réduit s'affiche en haut de la page, avec sa date de fin : c'est celui que tu paies.",
   "prix.faq4_q_campay": "Et si le paiement Mobile Money échoue ?",
   "prix.faq4_q_manuel": "Quand mon accès est-il activé ?",
   "prix.faq4_r_campay":
@@ -548,6 +543,7 @@ export const fr = {
   "ligne.points": "{xp} / {objectif} points",
   "ligne.objectif_aria": "Objectif de points du jour",
   "ligne.repos_pardonne": "Un jour de repos a été pardonné cette semaine",
+  "ligne.record": "Ton record : {n} jours de suite",
   "ligne.semaine_aria": "Jours travaillés cette semaine",
   "ligne.travaille": "Travaillé",
   "ligne.aujourdhui_pas_encore": "Aujourd'hui, pas encore",
@@ -555,6 +551,7 @@ export const fr = {
 
   "simulation.erreur": "Impossible de lancer la simulation. Réessaie.",
   "simulation.bouton": "Passer en conditions d'examen",
+  "simulation.derniere_note": "Dernière note : {note}",
 
   "rappels.erreur": "Impossible d'enregistrer ce réglage. Réessaie.",
   "rappels.seance_titre": "Ta séance du jour par e-mail",
@@ -1523,7 +1520,6 @@ export const fr = {
   "sb.plan_pour": "{plan} pour {prenom}",
   "sb.acces_jusqua_one": "Accès jusqu'à la fin de son examen - {n} jour",
   "sb.acces_jusqua_other": "Accès jusqu'à la fin de son examen - {n} jours",
-  "sb.prix_enfant": "Prix enfant supplémentaire (−20 %) : {a} → {b} FCFA",
   "sb.formule_mois": "Abonnement au mois",
   "sb.tout_inclus": "Tout est inclus : corrigés, cours, quiz et épreuves inédites",
   "sb.duree_titre": "Pour combien de mois ?",
@@ -1539,7 +1535,6 @@ export const fr = {
   "sb.acces_jusqu_au": "Accès jusqu'au {date}",
   "sb.acces_prolonge_jusqu_au": "Ton accès actuel est prolongé jusqu'au {date}",
   "sb.couvre_examen": "Tu couvres tout le temps qui reste avant la fin de ton examen.",
-  "sb.prix_mois_enfant": "Enfant supplémentaire (−20 %) : {a} → {b} FCFA par mois",
   "sb.camp_ligne_mois": "{nom} (−{pct} %) : {a} → {b} FCFA par mois, jusqu'au {date}",
   "sb.sans_renouvellement": "Un seul paiement, rien à renouveler : à la fin, c'est toi qui décides de prolonger.",
   "mp.duree_one": "{n} mois d'accès",
@@ -1588,7 +1583,6 @@ export const fr = {
   "sb.payer_manuel": "Payer manuellement via Orange Money ou MTN MoMo",
   "sb.fiches_active": "Add-on Fiches activé !",
   "sb.abonnement_active": "Abonnement activé !",
-  "sb.generer_fiche": "Générer une fiche",
   "sb.echec": "Le paiement a échoué",
   "sb.securise": "Paiement sécurisé - ton abonnement s'active dès la confirmation du paiement.",
 
@@ -2123,6 +2117,10 @@ export const fr = {
   "pc.maitrises_sur_one": "{n}/{total} savoir maîtrisé",
   "pc.maitrises_sur_other": "{n}/{total} savoirs maîtrisés",
   "pc.a_reviser": "{n} à réviser",
+  "pc.savoirs_a_decouvrir_one": "{n} savoir à découvrir",
+  "pc.savoirs_a_decouvrir_other": "{n} savoirs à découvrir",
+  "pc.savoirs_travailles_one": "{n} savoir travaillé sur {total}",
+  "pc.savoirs_travailles_other": "{n} savoirs travaillés sur {total}",
   "pc.a_reviser_court": "À réviser",
   "pc.maitrises": "Maîtrisés",
   "pc.abos_erreur": "Impossible de charger tes abonnements.",
@@ -2220,7 +2218,7 @@ export const fr = {
   "cgu.abo_prix1":
     "**2 000 FCFA** par mois et par enfant (prix de référence). Le total, égal au prix du mois multiplié par le nombre de mois choisi, est affiché avant le paiement. Une offre promotionnelle affichée sur le site peut réduire le prix du mois pour une durée limitée.",
   "cgu.abo_prix2":
-    "**1 600 FCFA** par mois pour chaque enfant supplémentaire de la même famille (réduction fixe de 20 % sur le prix de référence, identique pour le 2^e^, le 3^e^, le 4^e^ enfant, et ainsi de suite). Exemple : 2 enfants pendant 3 mois, 10 800 FCFA (6 000 + 4 800).",
+    "Le prix est **le même pour chaque enfant** d'une même famille : aucune réduction n'est accordée selon le rang de l'enfant. Exemple : 2 enfants pendant 3 mois, 12 000 FCFA (2 × 6 000).",
   "cgu.abo3": "L'abonnement n'est **pas reconduit automatiquement** : à son terme, l'accès réservé aux abonnés est retiré jusqu'à un nouveau paiement. Aucun prélèvement n'est effectué sans ta demande.",
   "cgu.paiement_titre": "Paiement et remboursement",
   "cgu.paiement1": "Le paiement se fait par Mobile Money (MTN MoMo, Orange Money). Deux modes sont proposés : le paiement automatique via notre prestataire CamPay, qui active l'accès en quelques secondes, ou le paiement manuel - tu transfères toi-même le montant au numéro indiqué puis tu déclares ta transaction, que notre équipe vérifie, généralement sous {delai}, avant d'activer l'accès. Tu suis l'état de tes déclarations dans « Mes paiements ».",

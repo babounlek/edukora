@@ -36,6 +36,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
+import { EtapeSuivante, usePositionDansLaSeance } from "@/components/BarreSeance"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
@@ -565,6 +566,10 @@ function FinExercice({
   const queryClient = useQueryClient()
   const [fait, setFait] = useState(faitInitial)
   const [enCours, setEnCours] = useState(false)
+  // Exercice ouvert depuis la séance du jour : la suite, c'est l'étape d'après (le plus souvent le quiz
+  // qui valide la séance), pas l'exercice suivant du thème. Sans cela l'élève devait revenir à l'accueil
+  // pour deviner qu'il lui restait un quiz. L'exercice suivant du thème reste offert, en second.
+  const dansLaSeance = Boolean(usePositionDansLaSeance()?.suivante)
 
   async function basculer() {
     const cible = !fait
@@ -591,6 +596,7 @@ function FinExercice({
   }
 
   return (
+    <>
     <div className="mt-6 rounded-2xl border border-border bg-card p-5 shadow-lg shadow-primary/5 sm:p-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         {isAuthenticated ? (
@@ -625,14 +631,14 @@ function FinExercice({
         )}
 
         {lienSuivant && suivant ? (
-          <Button asChild size="lg" variant={fait ? "default" : "outline"} className="shrink-0">
+          <Button asChild size="lg" variant={fait && !dansLaSeance ? "default" : "outline"} className="shrink-0">
             <Link to={lienSuivant}>
               {t("tl.suivant_theme")}
               <ArrowRight className="size-4" />
             </Link>
           </Button>
         ) : dernier ? (
-          <Button asChild size="lg" className="shrink-0">
+          <Button asChild size="lg" variant={dansLaSeance ? "outline" : "default"} className="shrink-0">
             <Link to={retourListe}>
               <PartyPopper className="size-4" />
               {t("tl.fin")}
@@ -641,5 +647,8 @@ function FinExercice({
         ) : null}
       </div>
     </div>
+    {/* Rien hors séance (voir usePositionDansLaSeance). */}
+    <EtapeSuivante />
+    </>
   )
 }

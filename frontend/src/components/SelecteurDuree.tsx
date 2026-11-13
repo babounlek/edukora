@@ -13,8 +13,8 @@ import { cn, formatAmount } from "@/lib/utils"
  *   fin. Rien ne se calcule dans la tête de l'élève, rien ne se renouvelle tout seul.
  *
  * Le dernier mois proposé (`mois_max`) couvre la fin de l'examen. Le total est `mois × prix du mois` : le serveur applique
- * la remise famille et la campagne au prix du mois, puis multiplie (voir Plan.tarif) - le montant affiché est donc celui
- * qu'il facture, à l'unité près.
+ * la campagne au prix du mois, puis multiplie (voir Plan.tarif) - le montant affiché est donc celui qu'il facture, à
+ * l'unité près. Le prix est le même pour tous les enfants d'une famille.
  */
 
 interface ChoixDureeProps {
@@ -117,7 +117,7 @@ export function RecapDuree({ plan, mois, accesActuelJusqua, className }: RecapDu
         {mois === maximum && maximum > 1 && (
           <p className="mt-0.5 text-xs font-medium text-success">{t("sb.couvre_examen")}</p>
         )}
-        {plan.campagne ? (
+        {plan.campagne && (
           <p className="mt-1.5 text-xs font-medium text-success">
             {t("sb.camp_ligne_mois", {
               nom: nomCampagne(plan.campagne),
@@ -127,12 +127,6 @@ export function RecapDuree({ plan, mois, accesActuelJusqua, className }: RecapDu
               date: dateLimiteCampagne(plan.campagne.fin),
             })}
           </p>
-        ) : (
-          plan.effective_price < plan.price && (
-            <p className="mt-1.5 text-xs font-medium text-success">
-              {t("sb.prix_mois_enfant", { a: formatAmount(plan.price), b: formatAmount(plan.effective_price) })}
-            </p>
-          )
         )}
       </div>
       <p className="text-xs text-muted-foreground">{t("sb.sans_renouvellement")}</p>

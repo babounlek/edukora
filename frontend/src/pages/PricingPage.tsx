@@ -38,7 +38,7 @@ import { LienAide } from "@/components/aide/LienAide"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import {
-  MOIS_PAR_DEFAUT, PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA, PRIX_MOIS_FCFA, estAuMois, moisValides, prixTotal,
+  MOIS_PAR_DEFAUT, PRIX_MOIS_FCFA, estAuMois, moisValides, prixTotal,
   prixTotalReference,
 } from "@/lib/tarifs"
 import { ChoixDuree, RecapDuree } from "@/components/SelecteurDuree"
@@ -235,25 +235,18 @@ function EtapeTitre({ n, children }: { n: number; children: ReactNode }) {
 }
 
 /**
- * Tarif famille, rendu concret par un petit tableau plutôt qu'une phrase. Le tarif de
- * référence vient du serveur (`plan.price`) ; l'enfant supplémentaire en est déduit
- * par la même remise fixe de 20 % que subscriptions.models.REMISE_ENFANT_SUPPLEMENTAIRE_PCT
- * (voir Plan.prix_enfant_supplementaire) - jamais cumulative : le 2e, le 3e, le 4e
- * enfant paient tous le même prix.
+ * Le prix pour une famille, rendu concret par un petit tableau plutôt qu'une phrase. Aucune remise
+ * famille (décision du 2026-11-13) : chaque enfant paie le prix du mois (`plan.effective_price`, campagne
+ * comprise), le tableau n'est donc qu'une multiplication.
  */
 function TarifFamille({ plan }: { plan: Plan }) {
-  // Pendant une campagne, le premier enfant paie `effective_price` (calculé pour un visiteur sans famille) et
-  // les suivants `prix_enfant_supplementaire`, que le serveur donne campagne comprise : la campagne se cumule
-  // avec la remise famille (voir Plan.tarif).
-  const reference = plan.effective_price
-  const supplementaire = plan.prix_enfant_supplementaire
-  const total = (nbEnfants: number) => reference + (nbEnfants - 1) * supplementaire
+  const total = (nbEnfants: number) => nbEnfants * plan.effective_price
 
   // Replié : une ligne suffit à la plupart des visiteurs, et le tableau ne doit pas allonger la colonne du bouton.
   return (
     <details className="group rounded-xl border border-primary/15 bg-primary/[0.03] px-4 py-2">
       <summary className="flex min-h-9 cursor-pointer list-none items-center justify-between gap-2 text-sm font-medium [&::-webkit-details-marker]:hidden">
-        <span>{t("prix.famille_resume", { prix: formatAmount(supplementaire) })}</span>
+        <span>{t("prix.famille_resume")}</span>
         <ChevronDown
           className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
           aria-hidden
@@ -270,11 +263,6 @@ function TarifFamille({ plan }: { plan: Plan }) {
           </div>
         ))}
       </dl>
-      {plan.campagne && (
-        <p className="mt-2 pb-1 text-xs text-muted-foreground">
-          {t("prix.famille_note_campagne", { nom: nomCampagne(plan.campagne) })}
-        </p>
-      )}
     </details>
   )
 }
@@ -480,7 +468,6 @@ export function PricingPage() {
   // chargement des offres plutôt que de afficher les montants de référence puis de les corriger.
   const offresPretes = !chargement || allPlans.length > 0
   const prixHero = planTarif?.effective_price ?? PRIX_MOIS_FCFA
-  const prixSupHero = planTarif?.prix_enfant_supplementaire ?? PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA
   const afficherBarreMobile = !!planTarif && !ctaVisible
 
   // Les questions fréquentes, les plus bloquantes d'abord : le paiement, le prix exact, le prélèvement.
@@ -500,7 +487,6 @@ export function PricingPage() {
       r: t("prix.faq3_r", {
         prix: formatAmount(PRIX_MOIS_FCFA),
         prix3: formatAmount(PRIX_MOIS_FCFA * 3),
-        prix_sup: formatAmount(PRIX_MOIS_ENFANT_SUPPLEMENTAIRE_FCFA),
       }),
     },
     {
@@ -571,10 +557,7 @@ export function PricingPage() {
             .
           </h1>
           <p className={cn("mt-1.5 text-sm text-muted-foreground transition-opacity sm:text-base", !offresPretes && "opacity-0")}>
-            {t("prix.sous_titre", {
-              prix: formatAmount(prixHero),
-              prix_sup: formatAmount(prixSupHero),
-            })}
+            {t("prix.sous_titre", { prix: formatAmount(prixHero) })}
           </p>
 
           <div className="mt-3.5 flex flex-wrap gap-2">

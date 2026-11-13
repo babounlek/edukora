@@ -86,7 +86,11 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
   // tait, la phrase du coach est dans la carte) et à droite le nombre de jours. Deux petits textes
   // aux deux bouts d'une bande haute de 170 px : on la resserre, la salutation devient le titre et
   // le compte à rebours tient sur une ligne. Séance, série et points restent dans la carte.
-  const salutationSeule = phraseSousLeTitre && accueil.premiers_pas && joursExacts
+  // Étendu le 2026-11-13 à tout élève dont l'anneau n'est pas encore affiché (pas seulement au
+  // premier passage) : la bande haute, avec le nombre de jours en très grand et la date, prenait
+  // 180 px et repoussait « Commencer » sous le pli d'un petit téléphone. Dès que l'anneau a de quoi
+  // dire, la bande reprend sa hauteur : elle porte alors une mesure, pas seulement une date.
+  const salutationSeule = phraseSousLeTitre && joursExacts && !anneauVisible
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6" aria-label={t("seance.aujourdhui")}>
@@ -122,7 +126,8 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 </span>
                 <BadgePhase phase={accueil.phase} />
               </p>
-              <Decompte compte={compte} premiersPas={accueil.premiers_pas} />
+              {/* Bande resserrée : le nombre de jours est à droite (RepereJoursRestants), pas ici en plus. */}
+              <Decompte compte={compte} premiersPas={accueil.premiers_pas || salutationSeule} />
               {/* Avec une séance à faire, la phrase du coach vit dans la carte, SOUS le titre
                   du thème (voir SeanceCorps) : dans la bande, elle parlait d'un « ce thème »
                   qu'on ne voyait pas, et la date d'examen, plus grosse, passait avant elle.
@@ -153,7 +158,7 @@ export function TeteAccueil({ accueil, country }: { accueil: Accueil; country: s
                 attend d'avoir de quoi dire (« Où j'en suis », plus bas, montre le compte brut). */}
             {accueil.preparation && !accueil.premiers_pas && accueil.preparation.ponderee >= SEUIL_ANNEAU_VISIBLE ? (
               <AnneauPreparation part={accueil.preparation.ponderee} />
-            ) : accueil.premiers_pas && compte && !compte.estimee && compte.jours_restants > 0 ? (
+            ) : (accueil.premiers_pas || salutationSeule) && compte && !compte.estimee && compte.jours_restants > 0 ? (
               <RepereJoursRestants compte={compte} compact={salutationSeule} />
             ) : accueil.premiers_pas ? (
               <IllustrationAujourdhui />

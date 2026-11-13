@@ -3,8 +3,8 @@ Tarification au mois (décision du 2026-11-11) : 2 000 FCFA par mois, l'élève 
 `Plan.mois_max`, c'est-à-dire jusqu'à la fin de l'examen) et paie `mois × prix du mois`. Tout accès payé donne tout.
 
 Ce qui doit rester vrai : le serveur recalcule TOUJOURS le montant (jamais celui du client), le nombre de mois est
-borné par la fin de l'examen, le rabais du second enfant survit aux renouvellements mensuels, et la campagne s'applique
-au prix du mois (donc le total vaut toujours `mois × prix du mois affiché`).
+borné par la fin de l'examen, tous les enfants d'une famille paient le même prix (aucune remise famille), et la
+campagne s'applique au prix du mois (donc le total vaut toujours `mois × prix du mois affiché`).
 """
 
 import importlib
@@ -25,7 +25,6 @@ from users.models import Profil, User
 
 from .models import (
     JOURS_PAR_MOIS, MOIS_MAX_SANS_SESSION, Campagne, DureeMode, InscriptionInedite, Plan, ProductType, Subscription,
-    est_enfant_supplementaire,
 )
 
 
@@ -96,50 +95,35 @@ class PrixDuMoisTests(_Base):
         # 3 × 1 800 : exactement le prix du mois affiché, multiplié - aucun écart d'arrondi.
         self.assertEqual((trois_mois.prix, trois_mois.reference), (5400, 6000))
 
-    def test_l_enfant_supplementaire_paie_1600_le_mois(self):
+    def test_tous_les_enfants_d_une_famille_paient_le_meme_prix(self):
+        """Aucune remise famille (décision du 2026-11-13) : le cadet paie comme l'aîné, déjà abonné ou non."""
+        self._abonner(self.premier)
+        self._cadet()
+        self.assertEqual(self.plan.effective_price(mois=3), 6000)
+        self.assertFalse(hasattr(self.plan, "prix_enfant_supplementaire"))
+
+    def test_le_catalogue_n_expose_plus_de_prix_enfant_supplementaire(self):
+        ligne = next(
+            p for p in self.client.get("/subscriptions/plans/", {"cursus": self.cursus.id}).json()
+            if p["id"] == self.plan.id
+        )
+        self.assertNotIn("prix_enfant_supplementaire", ligne)
+        self.assertEqual(ligne["effective_price"], 2000)
+
+    def test_le_paiement_du_cadet_est_facture_au_meme_prix_que_l_aine(self):
         self._abonner(self.premier)
         cadet = self._cadet()
-        self.assertEqual(self.plan.prix_enfant_supplementaire(), 1600)
-        self.assertEqual(self.plan.effective_price(self.user, cadet, mois=3), 4800)
-        # Le premier enfant, lui, garde le tarif de référence à chaque renouvellement.
-        self.assertEqual(self.plan.effective_price(self.user, self.premier, mois=3), 6000)
-
-    def test_remise_famille_et_campagne_se_cumulent_au_mois(self):
-        self._abonner(self.premier)
-        cadet = self._cadet()
-        _campagne(10)
-        self.assertEqual(self.plan.effective_price(self.user, cadet), 1440)  # 1 600 × 0,9
-        self.assertEqual(self.plan.effective_price(self.user, cadet, mois=2), 2880)
-
-
-class EnfantSupplementaireTests(_Base):
-    def test_le_rabais_du_second_enfant_survit_a_son_renouvellement(self):
-        """Au mois, on renouvelle souvent : le second ne doit pas retomber à 2 000 dès son deuxième achat."""
-        self._abonner(self.premier, cree_il_y_a=40)
-        cadet = self._cadet()
-        self._abonner(cadet, cree_il_y_a=10)
-        self.assertTrue(est_enfant_supplementaire(self.user, cadet))
-        self.assertFalse(est_enfant_supplementaire(self.user, self.premier))
-
-    def test_le_premier_enfant_n_est_jamais_supplementaire_meme_quand_le_cadet_est_actif(self):
-        cadet = self._cadet()
-        self._abonner(cadet, cree_il_y_a=5)
-        self._abonner(self.premier, cree_il_y_a=50)
-        self.assertFalse(est_enfant_supplementaire(self.user, self.premier))
-
-    def test_l_ancien_accès_expire_depuis_longtemps_ne_compte_plus(self):
-        self._abonner(self.premier, expire_dans=-120, cree_il_y_a=300)
-        cadet = self._cadet()
-        self.assertFalse(est_enfant_supplementaire(self.user, cadet))
-
-    def test_un_accès_expire_depuis_peu_compte_encore(self):
-        self._abonner(self.premier, expire_dans=-20, cree_il_y_a=100)
-        cadet = self._cadet()
-        self.assertTrue(est_enfant_supplementaire(self.user, cadet))
-
-    def test_un_visiteur_ou_une_famille_sans_acces_paie_le_tarif_de_reference(self):
-        self.assertFalse(est_enfant_supplementaire(None))
-        self.assertFalse(est_enfant_supplementaire(self.user, self.premier))
+        api = APIClient()
+        api.force_authenticate(user=self.user)
+        with patch("subscriptions.models.ExamSession.compte_a_rebours_pour", return_value=_session_dans(100)), \
+                override_settings(CAMPAY_ACTIVE=True), \
+                patch("payments.campay_client.init_collect", return_value={"reference": "ref-c", "status": "PENDING"}):
+            reponse = api.post(
+                "/payments/initiate/",
+                {"plan_id": self.plan.id, "phone_number": self.user.phone_number, "profil_id": cadet.id, "mois": 2},
+            )
+        self.assertEqual(reponse.status_code, 200, reponse.data)
+        self.assertEqual(Transaction.objects.get(pk=reponse.data["transaction_id"]).amount, 4000)
 
 
 class MoisMaxTests(_Base):

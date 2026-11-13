@@ -365,7 +365,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
+    <div className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
+      {/* L'animation d'entrée porte sur le contenu seul, jamais sur le conteneur de la barre fixe du bas :
+          `animate-fade-up` laisse un `transform` sur son élément, qui devient alors le repère de tout
+          descendant `fixed` (la barre partait au bas de la page, pas de l'écran). */}
+      <div className="animate-fade-up">
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <Link
           to={session.subject && !essai && !invite ? `/parcours/${session.subject}?cursus=${session.cursus}` : "/quiz"}
@@ -696,10 +700,13 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           </p>
         )}
       </div>
+      </div>
 
-      {/* Sur téléphone, "Question suivante" reste sous le pouce, sans remonter. */}
+      {/* Sur téléphone, "Question suivante" reste sous le pouce, sans remonter : au-dessus de la barre
+          d'onglets (BottomTabBar, z-40), dont la hauteur est publiée dans --bottom-tab-bar (0 quand elle
+          n'existe pas). Posée à `bottom-0`, elle passait dessous et le bouton n'était plus atteignable. */}
       {answered && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:static sm:mt-5 sm:flex sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
+        <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur sm:static sm:mt-5 sm:flex sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
           <Button onClick={handleNext} disabled={submitting} className="animate-fade-up w-full sm:w-auto" size="lg">
             {isLast ? t("qs.voir_resultat") : t("qs.suivante")}
             <ArrowRight />

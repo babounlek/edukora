@@ -50,7 +50,7 @@ class PlanGceOLevelTests(TestCase):
         self.assertEqual(ligne["effective_price"], 15000)
         # Durée jusqu'à la fin de la session GCE (estimée sur 2027 depuis le calendrier 2026), toujours positive.
         self.assertGreaterEqual(ligne["effective_duration_days"], 1)
-        self.assertEqual(ligne["prix_enfant_supplementaire"], 12000)
+        self.assertNotIn("prix_enfant_supplementaire", ligne)
         self.assertEqual(ligne["cursus"]["examen"], "GCE_OL")
         self.assertTrue(ligne["inclut_inedit"])
 

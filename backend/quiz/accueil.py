@@ -31,7 +31,8 @@ from catalog.models import Cours, Lesson, LessonType, Origine, StatutContenu, q_
 from . import textes
 from .models import OrigineSeance, QuizAnswer, SeanceJournaliere, StatutSeance, VisiteAccueil
 from .services import (
-    DERNIERE_LIGNE_DROITE_JOURS, SEUIL_MAITRISE, _coefficient_par_subject, score_de_la_seance,
+    DERNIERE_LIGNE_DROITE_JOURS, REPONSES_MIN_THEME_CONSOLIDE, SEUIL_MAITRISE, _coefficient_par_subject,
+    score_de_la_seance,
 )
 
 # Deux appels séparés de plus de quatre heures sont deux visites : ouvrir l'appli le
@@ -49,9 +50,8 @@ BUDGET_RETOUR_MINUTES = 10
 # du bruit : deux bonnes réponses après une mauvaise font +50 points.
 REPONSES_MIN_HAUSSE_MATIERE = 5
 
-# Même définition qu'un thème "consolidé" dans le bilan (voir quiz.bilan) : pas de
-# seconde notion de maîtrise.
-REPONSES_MIN_THEME_CONSOLIDE = 3
+# REPONSES_MIN_THEME_CONSOLIDE vient de quiz.services : même définition qu'un thème "consolidé"
+# dans le bilan (voir quiz.bilan) et que le "maîtrisé" de l'anneau - pas de seconde notion de maîtrise.
 THEMES_CITES_MAX = 3
 
 # Le rythme se lit sur trois semaines : assez pour lisser une semaine de devoirs ou de

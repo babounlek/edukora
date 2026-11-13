@@ -6,22 +6,12 @@ import { phraseTrajectoire } from "@/lib/trajectoire"
 import { Button } from "@/components/ui/button"
 import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
 import { themesFrequentsPath } from "@/lib/countryPath"
-import { pourcent } from "@/lib/maitrise"
+import { SEUIL_DEBUT_PCT, pourcent, prochainPalier } from "@/lib/maitrise"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
-/**
- * Sous ce pourcentage de préparation, l'élève démarre : on lui montre ce qu'il a gagné et le prochain palier, pas « 1 % ».
- * Un chiffre minuscule le jour 1 se lit comme un échec (passe Guyguy 2026-11-07 : « 1 % », « Anglais 0 % »).
- */
-const SEUIL_DEBUT_PCT = 10
-const PALIERS_SAVOIRS = [5, 10, 25, 50, 100, 200, 400, 800, 1600]
-
-function prochainPalier(maitrises: number): number {
-  return PALIERS_SAVOIRS.find((p) => p > maitrises) ?? maitrises + 100
-}
 
 /** Les matières où il y a le plus à faire, montrées sous l'anneau : les autres sont à « Ma progression ». */
 const NB_MATIERES_AFFICHEES = 2

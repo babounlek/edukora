@@ -10,6 +10,9 @@ import { lienEtape, ouvrirEtapeDeSeance } from "@/lib/seance"
 import { Button } from "@/components/ui/button"
 import { t, useI18n } from "@/lib/i18n"
 
+/** L'adresse de ThemeExerciceLecturePage (voir lib/countryPath themeExerciceLecturePath). */
+const EXERCICE_PAR_THEME = /\/themes-frequents\/[^/]+\/exercices\/(\d+)$/
+
 interface PositionDansLaSeance {
   numero: number
   total: number
@@ -32,7 +35,12 @@ export function usePositionDansLaSeance(): PositionDansLaSeance | null {
   const { isAuthenticated } = useAuth()
   const { country } = useCountry()
   const queryClient = useQueryClient()
-  const lecteur = pathname.endsWith("/lire")
+  // L'exercice d'une séance s'ouvre le plus souvent seul, centré sur son thème (voir lienEtape) :
+  // `/cm/themes-frequents/12/exercices/345`, et non plus `/…/lire`. Sans reconnaître cette adresse,
+  // la séance perdait son fil à cette étape : ni barre, ni bouton vers le quiz qui la valide.
+  const exerciceParTheme = EXERCICE_PAR_THEME.exec(pathname)
+  const exerciceId = exerciceParTheme ? Number(exerciceParTheme[1]) : null
+  const lecteur = pathname.endsWith("/lire") || exerciceId !== null
 
   const { data: plan } = useQuery({
     queryKey: ["plan-du-jour"],
@@ -48,7 +56,8 @@ export function usePositionDansLaSeance(): PositionDansLaSeance | null {
   const index = etapes.findIndex((e) =>
     e.type === "cours"
       ? pathname === `/cours/${e.slug}/lire`
-      : e.type === "exercice" && pathname.endsWith(`/epreuves/${e.lesson_slug}/lire`),
+      : e.type === "exercice" &&
+        (exerciceId !== null ? e.exercise_id === exerciceId : pathname.endsWith(`/epreuves/${e.lesson_slug}/lire`)),
   )
   if (index < 0) return null
 

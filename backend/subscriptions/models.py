@@ -23,10 +23,9 @@ class DureeMode(models.TextChoices):
 # JUSQUA_EXAMEN restent en base, désactivés (Transaction/ManualPayment les référencent en
 # PROTECT) ; les accès déjà vendus gardent leur date de fin.
 #
-# Un enfant supplémentaire de la même famille (même compte payeur) bénéficie d'une
-# remise FIXE de 20 % sur le prix du mois (1 600 F), jamais cumulative : le 2e, le 3e,
-# le 4e enfant paient tous 1 600 F par mois.
-REMISE_ENFANT_SUPPLEMENTAIRE_PCT = 20
+# Pas de remise famille (décision utilisateur du 2026-11-13, avant le lancement) : chaque enfant
+# paie le même prix, 2 000 F par mois. À 400 F d'écart par mois, la remise de 20 % ne justifiait
+# plus sa complexité (calcul du rang de l'enfant, CGU, aide, affichage).
 
 # Un mois d'accès = 30 jours, comme l'ancien Mensuel.
 JOURS_PAR_MOIS = 30
@@ -35,7 +34,7 @@ JOURS_PAR_MOIS = 30
 # scolaire. Jamais bloquant, comme le repli de `effective_duration_days`.
 MOIS_MAX_SANS_SESSION = 10
 
-# Les formules dont le tarif reçoit la remise famille et les campagnes.
+# Les formules dont le tarif reçoit les campagnes.
 MODES_REMISABLES = ("JUSQUA_EXAMEN", "MENSUEL")
 
 # Rang des paliers : un abonnement ne redescend jamais (voir Subscription.extend).
@@ -52,9 +51,8 @@ AUTO = object()
 
 class Tarif(namedtuple("Tarif", ["prix", "reference", "campagne"])):
     """
-    Prix à payer, prix qu'il aurait été sans la campagne (`reference`, déjà net de la
-    remise famille) et campagne réellement appliquée (None si elle ne fait rien baisser :
-    pas de campagne, ou plan non concerné).
+    Prix à payer, prix qu'il aurait été sans la campagne (`reference`) et campagne réellement
+    appliquée (None si elle ne fait rien baisser : pas de campagne, ou plan non concerné).
     """
 
     __slots__ = ()
@@ -146,7 +144,7 @@ class Campagne(models.Model):
                 )
 
     def concerne(self, plan):
-        """Seul l'abonnement de base (au mois, ou l'ancien Jusqu'à l'Examen) est remisé (même périmètre que la remise famille)."""
+        """Seul l'abonnement de base (au mois, ou l'ancien Jusqu'à l'Examen) est remisé."""
         if plan.product_type != ProductType.ABONNEMENT or plan.duration_mode not in MODES_REMISABLES:
             return False
         if not self.pk:
@@ -312,29 +310,14 @@ class Plan(models.Model):
         fin = compte_a_rebours["date_fin"] or compte_a_rebours["date_examen"]
         return max((fin - timezone.now().date()).days, 1)
 
-    def prix_enfant_supplementaire(self, campagne=None):
-        """Tarif (d'UN mois pour un plan au mois) d'un enfant supplémentaire de la même famille : le
-        tarif de référence moins la remise fixe (2 000 F -> 1 600 F). Identique à `price` pour tout autre
-        plan, la remise famille ne s'appliquant qu'à l'abonnement de base. Avec une `campagne` qui
-        concerne ce plan, la campagne s'ajoute à la remise famille (voir `tarif`)."""
-        prix = self.price
-        if self.duration_mode in MODES_REMISABLES:
-            prix = self.price * (100 - REMISE_ENFANT_SUPPLEMENTAIRE_PCT) // 100
-        if campagne is not None and campagne.concerne(self):
-            prix = campagne.appliquer(prix)
-        return prix
-
-    def tarif(self, user=None, profil=None, campagne=AUTO, mois=1):
+    def tarif(self, campagne=AUTO, mois=1):
         """
-        Tarif complet pour `profil` (l'enfant) du compte `user`, pour `mois` mois : voir `Tarif`.
-        Abonnement de base : `price` (le prix d'UN mois) pour le premier enfant de la famille,
-        `prix_enfant_supplementaire()` si l'enfant est un enfant supplémentaire (voir
-        `est_enfant_supplementaire`). Sans `user` (affichage du catalogue) : le tarif de référence.
+        Tarif complet pour `mois` mois : voir `Tarif`. Le même pour tous les enfants d'une famille
+        (aucune remise famille, décision du 2026-11-13) : `price`, le prix d'UN mois pour un plan au mois.
 
-        La campagne promotionnelle en cours (voir `Campagne`) s'applique ensuite sur le prix du MOIS, puis
+        La campagne promotionnelle en cours (voir `Campagne`) s'applique sur le prix du MOIS, puis
         se multiplie : le total vaut toujours `mois × prix du mois affiché`, sans écart d'arrondi entre
-        le serveur et l'affichage. Elle se CUMULE avec la remise famille (décision du 2026-10-28) :
-        −10 % de campagne donnent 1 800 F le mois au premier enfant et 1 440 F (1 600 × 0,9) aux suivants.
+        le serveur et l'affichage. −10 % de campagne donnent 1 800 F le mois.
         `campagne` : `AUTO` lit la campagne en cours ; `None` en impose l'absence ; une
         `Campagne` en impose une (paiement manuel déclaré juste après la fin de l'offre, voir
         `CampagneManager.pour_declaration`).
@@ -344,8 +327,6 @@ class Plan(models.Model):
         """
         multiplicateur = mois if self.est_au_mois else 1
         reference = self.price
-        if self.duration_mode in MODES_REMISABLES and est_enfant_supplementaire(user, profil):
-            reference = self.prix_enfant_supplementaire()
         if campagne is AUTO:
             campagne = campagne_en_cours()
         if campagne is not None and campagne.concerne(self):
@@ -356,42 +337,9 @@ class Plan(models.Model):
                 )
         return Tarif(prix=reference * multiplicateur, reference=reference * multiplicateur, campagne=None)
 
-    def effective_price(self, user=None, profil=None, campagne=AUTO, mois=1):
+    def effective_price(self, campagne=AUTO, mois=1):
         """Prix réel à facturer/afficher : voir `tarif`, dont c'est le seul montant."""
-        return self.tarif(user, profil, campagne, mois).prix
-
-
-# Après l'expiration de son accès, un enfant continue de « compter » dans la famille pendant ce délai :
-# les mois se renouvellent un à un, deux frères ne tombent pas toujours en même temps, et le rabais du
-# second ne doit pas sauter parce que le premier a laissé passer quelques jours.
-FENETRE_FAMILLE_JOURS = 90
-
-
-def est_enfant_supplementaire(user, profil=None):
-    """
-    Vrai si `profil` est un enfant supplémentaire de la famille du compte `user`, c'est-à-dire si un
-    AUTRE enfant du compte a obtenu avant lui un accès de base (au mois ou Jusqu'à l'Examen) encore actif,
-    ou expiré depuis moins de `FENETRE_FAMILLE_JOURS`. `profil` retombe sur `user.profils.first()` comme
-    partout (voir SubscriptionManager.activate_or_extend).
-
-    Le premier enfant payé garde toujours le tarif de référence, y compris à chaque renouvellement ;
-    chacun des suivants garde le sien, y compris à chaque renouvellement (au mois, il se renouvelle
-    souvent : le rabais ne doit pas disparaître au deuxième achat).
-    """
-    if user is None or not getattr(user, "pk", None):
-        return False
-    profil = profil or user.profils.first()
-    tous = Subscription.objects.filter(user=user, duration_mode__in=MODES_REMISABLES)
-    recents = tous.filter(expires_at__gt=timezone.now() - timedelta(days=FENETRE_FAMILLE_JOURS))
-    if profil is None:
-        return recents.exists()
-    autres = recents.exclude(profil=profil)
-    if not autres.exists():
-        return False
-    propre = tous.filter(profil=profil).order_by("created_at").first()
-    if propre is None:
-        return True
-    return autres.filter(created_at__lt=propre.created_at).exists()
+        return self.tarif(campagne, mois).prix
 
 
 class SubscriptionManager(models.Manager):

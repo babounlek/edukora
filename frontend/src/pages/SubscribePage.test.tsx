@@ -220,7 +220,7 @@ function planAuMois(surcharges: Record<string, unknown> = {}) {
   return {
     id: 11, name: "BEPC - Au mois", cursus: { id: 4 }, product_type: "ABONNEMENT", price: 2000, duration_mode: "MENSUEL",
     duration_days: 30, effective_duration_days: 30, effective_price: 2000, prix_reference: 2000, campagne: null,
-    prix_enfant_supplementaire: 1600, inclut_inedit: true, mois_max: 7, ...surcharges,
+    inclut_inedit: true, mois_max: 7, ...surcharges,
   }
 }
 

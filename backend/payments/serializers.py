@@ -129,9 +129,7 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
             attrs["profil"] = profil_actif(request)
         # Même campagne que ManualPayment.objects.declare (dont le délai de grâce après la date limite).
         campagne = Campagne.objects.pour_declaration(paid_at=attrs.get("paid_at"))
-        prix_attendu = plan.effective_price(
-            user=request.user, profil=attrs.get("profil"), campagne=campagne, mois=attrs["mois"],
-        )
+        prix_attendu = plan.effective_price(campagne=campagne, mois=attrs["mois"])
         attrs.setdefault("amount_declared", prix_attendu)
         if attrs["amount_declared"] < prix_attendu:
             raise serializers.ValidationError({

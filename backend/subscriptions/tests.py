@@ -96,8 +96,8 @@ class PlanEffectiveDurationDaysTests(TestCase):
 class PlanEffectivePriceTests(TestCase):
     """
     Tarification unique du 2026-10-02 : Jusqu'à l'Examen = `price` (15 000 F) par enfant,
-    quelle que soit la date d'achat ; chaque enfant supplémentaire de la même famille
-    paie 12 000 F (remise fixe de 20 %, jamais cumulative).
+    quelle que soit la date d'achat. Aucune remise famille (décision du 2026-11-13) : chaque
+    enfant de la même famille paie le même prix.
     """
 
     def _plan(self, cursus=None):
@@ -106,19 +106,12 @@ class PlanEffectivePriceTests(TestCase):
             duration_mode=DureeMode.JUSQUA_EXAMEN, duration_days=30,
         )
 
-    def _payer(self, user, profil, cursus, jours=200):
-        Subscription.objects.create(
-            user=user, profil=profil, cursus=cursus,
-            expires_at=timezone.now() + timedelta(days=jours), duration_mode=DureeMode.JUSQUA_EXAMEN,
-        )
-
     def test_fixe_mode_returns_price_as_is(self):
         plan = Plan.objects.create(
             name="Mensuel", cursus=_cursus(), price=2000,
             duration_mode=DureeMode.FIXE, duration_days=30,
         )
         self.assertEqual(plan.effective_price(), 2000)
-        self.assertEqual(plan.prix_enfant_supplementaire(), 2000)
 
     def test_jusqua_examen_price_does_not_depend_on_the_date(self):
         cursus = _cursus()
@@ -129,45 +122,10 @@ class PlanEffectivePriceTests(TestCase):
         )
         self.assertEqual(self._plan(cursus).effective_price(), 15000)
 
-    def test_additional_child_price_is_a_fixed_20_percent_discount(self):
-        self.assertEqual(self._plan().prix_enfant_supplementaire(), 12000)
-
-    def test_first_child_pays_full_price_then_each_other_child_pays_12000(self):
-        user = User.objects.create_user(phone_number="677000091", password="x")
-        cursus = _cursus()
-        plan = self._plan(cursus)
-        enfants = [user.profils.first()]
-        enfants += [Profil.objects.create(compte=user, prenom=f"Enfant{i}", ordre=i + 1) for i in range(3)]
-
-        totaux = []
-        for profil in enfants:
-            totaux.append(plan.effective_price(user=user, profil=profil))
-            self._payer(user, profil, cursus)
-
-        self.assertEqual(totaux, [15000, 12000, 12000, 12000])
-        self.assertEqual(sum(totaux[:2]), 27000)
-        self.assertEqual(sum(totaux[:3]), 39000)
-        self.assertEqual(sum(totaux), 51000)
-
-    def test_renewing_an_already_active_child_is_not_discounted(self):
-        user = User.objects.create_user(phone_number="677000092", password="x")
-        cursus = _cursus()
-        plan = self._plan(cursus)
-        premier = user.profils.first()
-        second = Profil.objects.create(compte=user, prenom="Second", ordre=1)
-        self._payer(user, premier, cursus)
-        self._payer(user, second, cursus)
-
-        self.assertEqual(plan.effective_price(user=user, profil=premier), 15000)
-
-    def test_another_family_does_not_get_the_discount(self):
-        cursus = _cursus()
-        plan = self._plan(cursus)
-        autre = User.objects.create_user(phone_number="677000093", password="x")
-        self._payer(autre, autre.profils.first(), cursus)
-        user = User.objects.create_user(phone_number="677000094", password="x")
-
-        self.assertEqual(plan.effective_price(user=user, profil=user.profils.first()), 15000)
+    def test_there_is_no_family_discount(self):
+        plan = self._plan()
+        self.assertFalse(hasattr(plan, "prix_enfant_supplementaire"))
+        self.assertEqual(plan.effective_price(), 15000)
 
 
 class SubscriptionExtendTests(TestCase):

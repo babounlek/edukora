@@ -400,7 +400,6 @@ function SeanceAFaire({
           {/* Pas pour la séance verrouillée : ses étapes ne s'ouvrent pas, l'aide parlerait d'un bouton absent. */}
           {!seance.verrouillee && <BoutonAide guide="seance-du-jour" className="-ml-1" />}
         </div>
-        {!seance.verrouillee && <AideContextuelle guide="seance-du-jour" />}
         {/* Les années concernées, sous les pastilles quand on les demande : sans elles, le
             chiffre de la pastille est à croire sur parole, mais elles n'ont pas à peser sur
             l'écran de qui lui fait confiance. Le "…" dit qu'il y en a d'autres plutôt que
@@ -411,10 +410,12 @@ function SeanceAFaire({
             {frequence.occurrences > frequence.annees.length ? " …" : ""}
           </p>
         )}
-        {/* Les autres raisons (coefficient, jamais travaillé, thème déjà raté) - le fait
-            qui justifie l'action précède l'action, dans l'ordre où on convaincrait
-            quelqu'un à voix haute. */}
-        <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />
+        {/* Les autres raisons (coefficient, jamais travaillé, thème déjà raté). Séance verrouillée :
+            elles restent AVANT le bouton, elles font partie de ce qui convainc de débloquer. Séance
+            ouverte : elles passent SOUS les boutons (voir plus bas) - le mot du coach et la pastille
+            de fréquence ont déjà dit pourquoi ce thème, et ces deux lignes de plus repoussaient
+            « Commencer » sous le pli d'un petit téléphone (audit du 2026-11-13 : bouton à 662 px). */}
+        {seance.verrouillee && <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />}
 
         {seance.verrouillee && <BandeauAccesTermine />}
 
@@ -524,6 +525,12 @@ function SeanceAFaire({
             )}
           </div>
         )}
+
+        {/* Sous les boutons, pour la même raison que le réglage de durée : les raisons secondaires,
+            puis l'aide « Comment marche ta séance ? ». Ouverte d'elle-même à la première visite,
+            l'aide occupait à elle seule 250 px AVANT le bouton dont elle parle. */}
+        {!seance.verrouillee && <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />}
+        {!seance.verrouillee && <AideContextuelle guide="seance-du-jour" />}
 
         {/* Le réglage de durée vient APRÈS le bouton : sur téléphone, il repoussait
             "Commencer" sous le pli, et une page dont l'action principale n'est pas
@@ -871,9 +878,9 @@ const rangRaison = (code: string) => {
 }
 
 /** Les raisons autres que la fréquence - coefficient, ratage précédent, thème jamais
- * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance), affichée
- * juste avant le bouton : le fait qui justifie l'action précède l'action, comme dans
- * un argumentaire dit à voix haute. */
+ * travaillé. Chacune est un fait déjà en base (voir raisons_de_la_seance). Avant le bouton
+ * sur une séance verrouillée (l'argumentaire précède l'action), sous les boutons sinon :
+ * voir SeanceCorps. */
 function RaisonsSeance({ seance, sansRaisonsDites }: { seance: Seance; sansRaisonsDites: boolean }) {
   // Le ratage et la lecture en cours sont déjà nommés par la phrase du coach quand elle
   // est affichée (voir phrase_coach) : les redire ferait la même raison deux fois.

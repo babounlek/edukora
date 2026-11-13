@@ -24,6 +24,13 @@ from .matieres import restreindre_items, restreindre_matieres
 # entre les deux bases de code : si l'une change, l'autre doit suivre à la main.
 SEUIL_MAITRISE = 70
 
+# Sous ce nombre de réponses cumulées, un thème n'est ni "consolidé" ni "maîtrisé" : 1 réponse
+# juste sur 1 fait 100 %, ce qui ne prouve rien. UNE seule définition pour l'anneau et les
+# compteurs de progression (est_maitrise), le bilan de période et la trajectoire (quiz.bilan,
+# quiz.accueil) : sans cela un thème pouvait être "maîtrisé" dans l'anneau sans être "consolidé"
+# dans le bilan, ou l'inverse.
+REPONSES_MIN_THEME_CONSOLIDE = 3
+
 # construire_parcours : un Savoir peut être couvert par plusieurs Cours distincts (un
 # Tag est partagé par plusieurs Cours, un Savoir porte plusieurs Tags) - jusqu'à
 # plusieurs dizaines en pratique quand un tag est trop générique. Plafond d'affichage,
@@ -636,6 +643,12 @@ def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte)
     à corriger) ; fait avancer d'un palier un thème déjà suivi - au dernier palier, une
     réussite de plus gradue le thème hors de la file plutôt que de le boucler
     indéfiniment.
+
+    Une réussite ne compte qu'À L'ÉCHÉANCE (due_at atteinte) : c'est l'intervalle qui fait
+    la révision espacée. Sans cette garde, chaque bonne réponse faisait avancer d'un palier
+    - trois bonnes réponses dans le même quiz, juste après l'échec, sortaient le thème de la
+    file le jour même, sans qu'il ait jamais été revu à J+1, J+3 ni J+7. Comme une avancée
+    repousse l'échéance, un thème ne franchit aussi qu'un palier par jour.
     """
     if not correcte:
         RevisionSchedule.objects.update_or_create(
@@ -650,6 +663,9 @@ def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte)
 
     schedule = RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme=theme).first()
     if not schedule:
+        return
+    if schedule.due_at > timezone.localdate():
+        # Pas encore due : une réussite avant l'échéance ne prouve pas que le thème a tenu.
         return
 
     if schedule.palier >= len(LEITNER_INTERVALS_JOURS) - 1:
@@ -729,7 +745,7 @@ def maitrise_par_theme(profil, cursus=None):
     return sorted(stats.values(), key=lambda s: s["taux"])
 
 
-def maitrise_par_savoir(profil, cursus=None):
+def _stats_par_savoir(profil, cursus=None):
     """
     Comme maitrise_par_theme, mais agrégée par programme.Savoir plutôt que par Tag -
     seule alimentation interne de construire_parcours (jamais exposée telle quelle en
@@ -742,7 +758,7 @@ def maitrise_par_savoir(profil, cursus=None):
     _poids_par_theme/maitrise_par_theme pour l'historique catalog.Question, exclu pour
     la même raison de granularité fiable).
 
-    Renvoie {savoir_id: taux} plutôt qu'une liste triée : construire_parcours doit
+    Renvoie {savoir_id: {"total", "reussies"}} plutôt qu'une liste triée : construire_parcours doit
     pouvoir chercher le taux d'un savoir précis pendant qu'il parcourt le programme
     dans SON propre ordre (Module.ordre/Savoir.ordre), pas dans un ordre de tri par
     faiblesse qui n'a de sens que pour maitrise_par_theme.
@@ -767,8 +783,30 @@ def maitrise_par_savoir(profil, cursus=None):
         s["total"] += 1
         if reponse.est_correcte:
             s["reussies"] += 1
+    return stats
 
-    return {savoir_id: round(100 * s["reussies"] / s["total"]) for savoir_id, s in stats.items()}
+
+def maitrise_par_savoir(profil, cursus=None):
+    """{savoir_id: taux} - voir _stats_par_savoir pour le périmètre des réponses comptées."""
+    return {
+        savoir_id: round(100 * s["reussies"] / s["total"])
+        for savoir_id, s in _stats_par_savoir(profil, cursus=cursus).items()
+    }
+
+
+def est_maitrise(taux, nb_reponses):
+    """
+    Un thème (ou un savoir) est-il « maîtrisé » ? Le taux seul ne suffit pas : une unique
+    bonne réponse donne 100 %, et le thème passait « maîtrisé » dans l'anneau et les
+    compteurs de progression sur cette seule réponse. Même échantillon minimal que le
+    « consolidé » du bilan et de la trajectoire (REPONSES_MIN_THEME_CONSOLIDE), pour que
+    ces écrans comptent la même chose. En dessous, le thème reste « en cours » : le
+    travail est compté, pas encore prouvé.
+
+    Seule source de vérité : le frontend lit le champ `maitrise` que cette fonction
+    alimente (voir construire_parcours), au lieu de refaire la comparaison au seuil.
+    """
+    return taux is not None and nb_reponses >= REPONSES_MIN_THEME_CONSOLIDE and taux >= SEUIL_MAITRISE
 
 
 @lru_cache(maxsize=20000)
@@ -1032,6 +1070,8 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
             "nb_epreuves": groupe["nb_epreuves"],
             "frequence_pct": round(100 * groupe["nb_epreuves"] / nb_sessions),
             "taux": round(100 * reussies / total) if total else None,
+            "nb_reponses": total,
+            "maitrise": est_maitrise(round(100 * reussies / total) if total else None, total),
             "en_revision": bool(tag_ids & tags_en_revision),
             "a_lu_le_cours": bool(tag_ids & tags_lus),
             "has_quiz": bool(tag_ids & tags_avec_quiz),
@@ -1095,7 +1135,8 @@ def construire_parcours(profil, cursus, subject):
             "savoirs": themes,
         }]
 
-    taux_par_savoir = maitrise_par_savoir(profil, cursus=cursus)
+    stats_par_savoir = _stats_par_savoir(profil, cursus=cursus)
+    taux_par_savoir = {sid: round(100 * st["reussies"] / st["total"]) for sid, st in stats_par_savoir.items()}
     savoir_ids_en_revision = set(
         RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme__savoir_officiel__isnull=False)
         .values_list("theme__savoir_officiel_id", flat=True)
@@ -1174,6 +1215,11 @@ def construire_parcours(profil, cursus, subject):
                 # None (jamais tenté) distingué de 0% (tenté, en échec) - la vue
                 # d'ensemble doit savoir laquelle des deux situations elle affiche.
                 "taux": taux_par_savoir.get(savoir.id),
+                # Combien de réponses portent ce taux, et s'il vaut « maîtrisé » (voir est_maitrise).
+                "nb_reponses": stats_par_savoir.get(savoir.id, {}).get("total", 0),
+                "maitrise": est_maitrise(
+                    taux_par_savoir.get(savoir.id), stats_par_savoir.get(savoir.id, {}).get("total", 0),
+                ),
                 "en_revision": savoir.id in savoir_ids_en_revision,
                 "a_lu_le_cours": savoir.id in savoir_ids_lus,
                 "has_quiz": savoir.id in savoir_ids_avec_quiz,
@@ -1257,7 +1303,7 @@ def resume_parcours(profil, cursus):
                 continue
             poids = poids_savoir(s, coefficient)
             poids_total += poids
-            if s["taux"] is not None and s["taux"] >= SEUIL_MAITRISE:
+            if est_maitrise(s["taux"], s.get("nb_reponses", 0)):
                 compteurs["maitrises"] += 1
                 poids_maitrise += poids
             elif s["en_revision"]:
@@ -2468,9 +2514,13 @@ def raisons_de_la_seance(seance):
         # cours ressemble à un contenu qui manque plutôt qu'à une reconnaissance.
         raisons.append({"code": "maitrise", "texte": textes.texte("raison.maitrise", langue)})
 
-    elif seance.theme_id:
+    elif seance.theme_id and seance.origine != OrigineSeance.REVISION_DUE:
         # Jamais répondu sur ce thème : c'est là qu'il y a le plus à gagner, et c'est
         # exactement ce que le parcours cherche en premier (voir _seance_depuis_parcours).
+        # Jamais pour un thème dû en révision : il n'entre dans la file que sur un échec,
+        # qui peut venir d'une épreuve inédite ou d'une simulation (voir inedit.views et
+        # simulations.views), donc sans aucune réponse de QUIZ. La carte disait alors « Ce
+        # thème t'a déjà posé problème » et, juste dessous, « Tu ne l'as encore jamais travaillé ».
         deja_repondu = QuizAnswer.objects.filter(
             quiz_question__session__profil=seance.profil,
             quiz_question__competence_item__theme_id=seance.theme_id,

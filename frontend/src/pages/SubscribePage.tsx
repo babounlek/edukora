@@ -234,7 +234,7 @@ export function SubscribePage() {
   useEffect(() => {
     // Les réponses d'une page déjà quittée (changement de cursus, retour) ne doivent pas écraser la courante.
     let annule = false
-    listPlans(cursusId ? Number(cursusId) : undefined, profilId, true).then((data) => {
+    listPlans(cursusId ? Number(cursusId) : undefined).then((data) => {
       if (annule) return
       // require=repetiteur : ne garder que l'add-on Fiches, seul point d'entrée qui
       // le propose encore (voir FichesPage.tsx). Par défaut, l'abonnement de base
@@ -280,7 +280,7 @@ export function SubscribePage() {
     return () => {
       annule = true
     }
-  }, [cursusId, requireRepetiteur, dureeParam, profilId, tentativePlans])
+  }, [cursusId, requireRepetiteur, dureeParam, tentativePlans])
 
   // Seulement un confort d'affichage (la date de fin annoncée) : sans réponse, on part d'aujourd'hui.
   useEffect(() => {
@@ -483,7 +483,7 @@ export function SubscribePage() {
               {t("ac.inedites_incluses")}
             </span>
           )}
-          {plan.campagne ? (
+          {plan.campagne && (
             <span className="text-xs font-medium text-success">
               {t("camp.prix_ligne", {
                 nom: nomCampagne(plan.campagne),
@@ -493,12 +493,6 @@ export function SubscribePage() {
                 date: dateLimiteCampagne(plan.campagne.fin),
               })}
             </span>
-          ) : (
-            plan.duration_mode === "JUSQUA_EXAMEN" && plan.effective_price < plan.price && (
-              <span className="text-xs font-medium text-success">
-                {t("sb.prix_enfant", { a: formatAmount(plan.price), b: formatAmount(plan.effective_price) })}
-              </span>
-            )
           )}
         </span>
         <span className="shrink-0 font-display text-base font-semibold text-primary">
@@ -936,12 +930,10 @@ export function SubscribePage() {
               <p className="font-display font-medium">
                 {requireRepetiteur ? t("sb.fiches_active") : t("sb.abonnement_active")}
               </p>
+              {/* Plus de lien vers /fiches : la page des fiches est en veille (la route redirige vers l'accueil,
+                  voir App.tsx), le bouton « Générer une fiche » menait donc nulle part. */}
               <Button asChild>
-                {requireRepetiteur ? (
-                  <Link to="/fiches">{t("sb.generer_fiche")}</Link>
-                ) : (
-                  <Link to={epreuvesListPath(country)}>{t("ed.retour_catalogue")}</Link>
-                )}
+                <Link to={epreuvesListPath(country)}>{t("ed.retour_catalogue")}</Link>
               </Button>
             </div>
           )}

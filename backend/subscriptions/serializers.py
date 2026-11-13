@@ -18,7 +18,6 @@ class PlanSerializer(serializers.ModelSerializer):
     effective_price = serializers.SerializerMethodField()
     prix_reference = serializers.SerializerMethodField()
     campagne = serializers.SerializerMethodField()
-    prix_enfant_supplementaire = serializers.SerializerMethodField()
     mois_max = serializers.SerializerMethodField()
 
     class Meta:
@@ -26,7 +25,7 @@ class PlanSerializer(serializers.ModelSerializer):
         fields = [
             "id", "name", "cursus", "product_type", "price", "duration_mode", "duration_days",
             "effective_duration_days", "effective_price", "prix_reference", "campagne",
-            "prix_enfant_supplementaire", "inclut_inedit", "mois_max",
+            "inclut_inedit", "mois_max",
         ]
 
     def get_effective_duration_days(self, obj):
@@ -38,24 +37,13 @@ class PlanSerializer(serializers.ModelSerializer):
         return obj.mois_max()
 
     def _tarif(self, obj):
-        """Tarif pour l'enfant `?profil=` du compte connecté si fourni (enfant
-        supplémentaire de la famille = tarif remisé), sinon pour le premier profil du
-        compte connecté ; tarif de référence pour un visiteur anonyme. Calculé une fois
+        """Tarif du plan, le même pour tous les enfants et les visiteurs. Calculé une fois
         par plan et par requête (trois champs en dépendent), campagne lue une seule fois."""
         memo = self.context.setdefault("_tarifs", {})
         if obj.pk not in memo:
             if "_campagne" not in self.context:
                 self.context["_campagne"] = campagne_en_cours()
-            campagne = self.context["_campagne"]
-            request = self.context.get("request")
-            user = getattr(request, "user", None)
-            if user is None or not user.is_authenticated:
-                memo[obj.pk] = obj.tarif(campagne=campagne)
-            else:
-                profil = None
-                if profil_id := request.query_params.get("profil"):
-                    profil = user.profils.filter(pk=profil_id).first() if str(profil_id).isdigit() else None
-                memo[obj.pk] = obj.tarif(user=user, profil=profil, campagne=campagne)
+            memo[obj.pk] = obj.tarif(campagne=self.context["_campagne"])
         return memo[obj.pk]
 
     def get_effective_price(self, obj):
@@ -69,11 +57,6 @@ class PlanSerializer(serializers.ModelSerializer):
         """La campagne qui fait réellement baisser CE prix, ou None."""
         campagne = self._tarif(obj).campagne
         return CampagneSerializer(campagne).data if campagne else None
-
-    def get_prix_enfant_supplementaire(self, obj):
-        """Enfant supplémentaire de la famille, campagne en cours comprise (elle se cumule avec la remise famille)."""
-        self._tarif(obj)  # charge la campagne du contexte
-        return obj.prix_enfant_supplementaire(campagne=self.context["_campagne"])
 
 
 class SubscriptionSerializer(serializers.ModelSerializer):

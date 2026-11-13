@@ -15,11 +15,12 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { STATUTS } from "@/lib/statutsProgression"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { pourcent } from "@/lib/maitrise"
+import { SEUIL_DEBUT_PCT, pourcent, prochainPalier } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { BandeauMatieres } from "@/components/ChoixMatieres"
+import { BilanDePeriode } from "@/components/BilanDePeriode"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
  * sans contenu n'est pas un échec de l'élève - l'inclure ferait mentir la barre, et
@@ -45,6 +46,14 @@ function CarteMatiere({
   useI18n()
   const utiles = exploitables(matiere)
   const sansContenu = utiles === 0
+  // Une matière pas encore ouverte : « À découvrir » plutôt que « 0 % » et « 0/115 maîtrisés », qui se
+  // lisent comme un échec. Même règle que la carte de l'accueil (OuJenSuis.BarreMatiere) : les deux
+  // écrans disaient le contraire l'un de l'autre pour la même matière.
+  const travailles = matiere.en_revision + matiere.en_cours
+  const intacte = matiere.maitrises === 0 && travailles === 0
+  // Travaillée, rien encore de maîtrisé : « En cours » et le nombre de savoirs travaillés. « 0 % » et
+  // « 0/111 maîtrisés » sous une matière où l'élève a déjà répondu à vingt questions niaient son travail.
+  const enRoute = matiere.maitrises === 0 && travailles > 0
   const SubjectIcon = subjectIcon(matiere.subject_code)
 
   return (
@@ -79,6 +88,14 @@ function CarteMatiere({
           <span className="rounded-full border border-border px-2.5 py-0.5 text-xs font-medium text-muted-foreground">
             {t("pc.contenu_a_venir")}
           </span>
+        ) : intacte ? (
+          <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+            {t("oujensuis.a_decouvrir")}
+          </span>
+        ) : enRoute ? (
+          <span className={cn("rounded-full px-2.5 py-1 text-xs font-medium", STATUTS.en_cours.puce)}>
+            {STATUTS.en_cours.libelle}
+          </span>
         ) : (
           <span className="font-display text-2xl font-semibold leading-none tabular-nums">
             {pourcent(matiere.maitrises / utiles)}
@@ -108,7 +125,11 @@ function CarteMatiere({
             />
             <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
               <span className="tabular-nums">
-                {tn("pc.maitrises_sur", matiere.maitrises, { total: utiles })}
+                {intacte
+                  ? tn("pc.savoirs_a_decouvrir", utiles)
+                  : enRoute
+                    ? tn("pc.savoirs_travailles", travailles, { total: utiles })
+                    : tn("pc.maitrises_sur", matiere.maitrises, { total: utiles })}
               </span>
               <span className="flex items-center gap-1.5">
                 {matiere.en_revision > 0 && (
@@ -244,6 +265,10 @@ export function ParcoursPage() {
   const totalEnCours = matieres?.reduce((somme, m) => somme + m.en_cours, 0) ?? 0
   const totalTravailles = totalMaitrises + totalARevoir + totalEnCours
   const totalADecouvrir = Math.max(0, totalExploitables - totalMaitrises - totalARevoir - totalEnCours)
+  // L'élève qui démarre : le nombre de savoirs gagnés et le prochain palier, pas « 1 % » ni « 5 sur 977 »
+  // (même garde-fou que « Où j'en suis » sur l'accueil).
+  const debut = totalExploitables > 0 && pourcent(totalMaitrises / totalExploitables) < SEUIL_DEBUT_PCT
+  const centreAnneau = debut ? <span className="tabular-nums">{totalMaitrises}</span> : undefined
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -270,6 +295,7 @@ export function ParcoursPage() {
             <AnneauProgression
               part={totalMaitrises / totalExploitables}
               partTravaillee={totalTravailles / totalExploitables}
+              centre={centreAnneau}
               className="hidden sm:block sm:size-32 [&>span]:text-3xl"
             />
           )}
@@ -322,13 +348,29 @@ export function ParcoursPage() {
         {matieres && totalExploitables > 0 && (
           <>
             <div className="mt-6 flex items-center gap-4 sm:hidden">
-              <AnneauProgression part={totalMaitrises / totalExploitables} partTravaillee={totalTravailles / totalExploitables} />
-              <p className="text-sm text-muted-foreground">
-                <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span>
-                {tn("pc.maitrises_mobile", totalMaitrises)}
-                <span className="tabular-nums">{totalExploitables}</span>
-              </p>
+              <AnneauProgression
+                part={totalMaitrises / totalExploitables}
+                partTravaillee={totalTravailles / totalExploitables}
+                centre={centreAnneau}
+              />
+              {debut ? (
+                <p className="text-sm text-muted-foreground">
+                  {t("oujensuis.debut", { m: totalMaitrises, p: prochainPalier(totalMaitrises) })}
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span>
+                  {tn("pc.maitrises_mobile", totalMaitrises)}
+                  <span className="tabular-nums">{totalExploitables}</span>
+                </p>
+              )}
             </div>
+            {/* Sur grand écran l'anneau est en haut à droite, sans phrase : le palier s'écrit ici. */}
+            {debut && (
+              <p className="mt-6 hidden text-sm text-muted-foreground sm:block">
+                {t("oujensuis.debut", { m: totalMaitrises, p: prochainPalier(totalMaitrises) })}
+              </p>
+            )}
             {totalTravailles > 0 && (
               <p className="mt-4 text-sm font-medium text-primary">
                 {tn("pc.abordes", totalTravailles, { total: totalExploitables })}
@@ -350,6 +392,11 @@ export function ParcoursPage() {
           </>
         )}
       </Ecrin>
+
+      {/* Ce que l'élève a fait et réussi sur 30 jours, matière par matière : des faits lisibles dès la
+          première semaine (« Mathématiques : 47 % de réussite »), là où les savoirs maîtrisés restent
+          longtemps près de zéro. Le bloc n'existait que dans « Mon compte » ; il se tait sans activité. */}
+      {abonneAuCursus && <BilanDePeriode cursusId={Number(cursusId)} className="mt-6" />}
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-3">
         <div>

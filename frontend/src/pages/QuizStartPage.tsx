@@ -426,6 +426,8 @@ export function QuizStartPage() {
   }, [selectedCursus, subscriptions, essaiMatieres])
 
   const subjectChoisi = subjects.find((s) => String(s.id) === selectedSubject)
+  // « 19 questions vues sur 1241 » : absent tant que la matière choisie n'a jamais été travaillée.
+  const avancementMatiere = subjectChoisi ? compteurQuestions(subjectChoisi).titre : undefined
 
   // Thèmes les plus fréquents de la matière choisie, à lancer en un clic - le quiz et le
   // classement des thèmes parlent enfin la même langue. Même clé de cache que
@@ -526,7 +528,13 @@ export function QuizStartPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauMatieres />
-      {/* Hero : même gabarit que /epreuves et /themes-frequents. */}
+      {/* Hero : même gabarit que /epreuves et /themes-frequents. Pas pour un abonné : il n'a plus à
+          être convaincu, et ce bandeau occupait tout le premier écran d'un téléphone avant « Lancer
+          mon quiz » (audit du 2026-11-13). Il garde un titre, pour les lecteurs d'écran et le plan
+          de la page ; la carte « Ta séance » fait office de titre visible. */}
+      {abonne ? (
+        <h1 className="sr-only">{t("qd.onglet_quiz")}</h1>
+      ) : (
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
           aria-hidden
@@ -559,6 +567,7 @@ export function QuizStartPage() {
           )}
         </div>
       </div>
+      )}
 
       <div className="mb-4">
         <BoutonAide guide="quiz-depart" className="-ml-2.5" />
@@ -635,6 +644,9 @@ export function QuizStartPage() {
                 })
               )}
             </FiltreLigne>
+            {/* Ce que veut dire le « 19/1241 » de la matière choisie, en clair : l'explication n'existait
+                qu'en infobulle, donc jamais sur un téléphone. */}
+            {avancementMatiere && <p className="mt-1.5 text-xs text-muted-foreground">{avancementMatiere}</p>}
 
             <div className="mt-4">
               <p className="mb-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{t("qd.mode")}</p>
@@ -677,10 +689,22 @@ export function QuizStartPage() {
               />
             )}
 
-            {/* Pied de carte : le récapitulatif en une ligne, et l'unique action. */}
-            <div className="mt-6 flex flex-col gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+            {/* Pied de carte : le récapitulatif en une ligne, et l'unique action.
+                Sur téléphone il reste collé au bas de l'écran tant que la carte est à l'écran (`sticky`,
+                au-dessus de la barre d'onglets dont la hauteur est publiée dans --bottom-tab-bar) : le
+                formulaire fait environ 900 px, et « Lancer mon quiz » n'apparaissait qu'après deux écrans
+                de défilement (audit du 2026-11-13). `sticky` et non `fixed` : la page porte un
+                `animate-fade-up`, dont le `transform` détourne tout descendant `fixed` (voir
+                QuizSessionPage), et le pied reprend sa place en fin de carte au lieu de flotter sur la
+                suite de la page. Les marges négatives annulent le padding de la carte : le fond couvre
+                toute sa largeur. À partir de 640 px, rien ne change. */}
+            <div
+              className="sticky bottom-[var(--bottom-tab-bar,0px)] z-20 -mx-4 -mb-4 mt-6 flex flex-col gap-2 rounded-b-2xl border-t border-border bg-card px-4 pb-4 pt-3 shadow-[0_-8px_12px_-10px_rgb(0_0_0/0.25)] sm:static sm:z-auto sm:mx-0 sm:mb-0 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3 sm:rounded-none sm:px-0 sm:pb-0 sm:pt-5 sm:shadow-none"
+            >
+              {/* Dans le pied, pas sous lui : collé en bas, il masquerait une erreur écrite en fin de carte. */}
+              {error && <p role="alert" className="text-sm text-destructive sm:order-last sm:basis-full">{error}</p>}
               <div className="flex min-w-0 items-center gap-3">
-                <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-xl", couleurMatiere(subjectChoisi?.code).puce)}>
+                <span className={cn("hidden size-10 shrink-0 items-center justify-center rounded-xl sm:flex", couleurMatiere(subjectChoisi?.code).puce)}>
                   <SubjectIcon className="size-5" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
@@ -712,7 +736,6 @@ export function QuizStartPage() {
                 )}
               </Button>
             </div>
-            {error && <p className="mt-3 text-sm text-destructive">{error}</p>}
           </div>
 
           {/* Le pont avec /themes-frequents : viser directement ce qui tombe le plus. */}

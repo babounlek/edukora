@@ -234,7 +234,7 @@ class CommissionCalculTests(_Base):
         commission = Commission.objects.get(transaction=paiement)
         self.assertEqual(commission.montant_fcfa, 2100)
 
-    def test_enfant_supplementaire_a_12000_donne_1680(self):
+    def test_paiement_de_12000_donne_1680(self):
         client = self._client()
         plan = Plan.objects.create(name="Autre", cursus=self.cursus, price=12000, duration_days=365)
         paiement = self._manuel(client, "REF-12K", plan=plan)

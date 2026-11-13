@@ -25,6 +25,14 @@ export function pointsRestants(niveau: NiveauXp): number | null {
   return niveau.seuil_suivant === null ? null : Math.max(0, niveau.seuil_suivant - niveau.xp_total)
 }
 
+/** « Encore 140 points pour devenir Costaud », ou la phrase du sommet au dernier rang. */
+export function phraseNiveau(niveau: NiveauXp): string {
+  const restants = pointsRestants(niveau)
+  return restants === null
+    ? t("niveau.sommet", { nom: nomNiveau(niveau.rang) })
+    : t("niveau.reste", { n: restants, nom: nomNiveau(niveau.rang + 1) })
+}
+
 /**
  * Le niveau qu’avait le profil AVANT un gain de `gagne` points, comparé à maintenant : vrai quand ce gain lui a fait franchir
  * un palier (sert à fêter « Nouveau niveau ! » sur l'écran de fin de quiz). Il suffit de savoir si l'XP d'avant était sous le seuil.

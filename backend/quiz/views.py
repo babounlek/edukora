@@ -1060,6 +1060,7 @@ def accueil_view(request):
             "phase": "normal", "absence_jours": 0, "premiers_pas": True, "nouvelle_visite": False,
             "phrase_coach": "", "depuis": None, "trajectoire": None, "resume": [], "preparation": None,
             "revisions": [], "lecture": None, "simulation_suggeree": None, "bilan_semaine": None,
+            "erreurs_total": 0,
         })
 
     profil = profil_actif(request)
@@ -1102,6 +1103,7 @@ def accueil_view(request):
         for schedule in revisions_dues(profil, cursus)[: accueil.REVISIONS_ACCUEIL_MAX]
     ]
     from .bilan import bilan_de_periode
+    from .erreurs import compter_erreurs
 
     return Response({
         "plan": plan,
@@ -1120,6 +1122,9 @@ def accueil_view(request):
         "lecture": accueil.lecture_a_reprendre(profil, cursus),
         "simulation_suggeree": accueil.simulation_suggeree(profil, cursus, phase),
         "bilan_semaine": bilan_de_periode(profil, cursus, jours=7),
+        # Les questions ratées et pas encore réussies (voir quiz.erreurs) : l'accueil en fait une ligne
+        # « Refaire mes N erreurs », sans requête de plus.
+        "erreurs_total": compter_erreurs(profil, cursus),
     })
 
 
