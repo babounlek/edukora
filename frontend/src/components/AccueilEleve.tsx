@@ -13,6 +13,7 @@ import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
 import { InviteRappels } from "@/components/RappelsEmail"
 import { InvitationMatieres } from "@/components/ChoixMatieres"
+import { LigneErreurs } from "@/components/MesErreurs"
 import { TeteAccueil } from "@/components/TeteAccueil"
 import { ecrireAccueilEnCache, lireAccueilEnCache } from "@/lib/accueilCache"
 import { marquerAffichageAccueil } from "@/lib/accueilChrono"
@@ -132,6 +133,8 @@ export function AccueilEleve({ country }: { country: string }) {
       {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
       {lectureAReprendre && <LigneLecture lecture={lectureAReprendre} />}
       {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
+      {/* Les questions ratées et pas encore réussies : un geste pour en refaire un paquet (voir quiz.erreurs). */}
+      <LigneErreurs total={data.erreurs_total ?? 0} cursusId={cursusAccueil} />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />

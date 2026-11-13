@@ -53,6 +53,7 @@ const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ defa
 const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default: m.AccesPage })))
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
+const MesErreursPage = lazy(() => import("@/pages/MesErreursPage").then((m) => ({ default: m.MesErreursPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
 const DevenirRevendeurPage = lazy(() => import("@/pages/DevenirRevendeurPage").then((m) => ({ default: m.DevenirRevendeurPage })))
 const EspaceRevendeurPage = lazy(() => import("@/pages/EspaceRevendeurPage").then((m) => ({ default: m.EspaceRevendeurPage })))
@@ -190,6 +191,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/mes-acces" element={<AccesPage />} />
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
+                      <Route path="/erreurs" element={<MesErreursPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
                       <Route path="/espace-revendeur" element={<EspaceRevendeurPage />} />
                       <Route path="/devenir-revendeur" element={<DevenirRevendeurPage />} />

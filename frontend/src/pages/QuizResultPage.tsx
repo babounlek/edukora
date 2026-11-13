@@ -373,7 +373,7 @@ export function QuizResultPage() {
         // donc rien ne déclenchait de rafraîchissement. Le travail était bien
         // enregistré côté serveur - il ne se voyait simplement pas, ce qui est pire
         // qu'une erreur : l'élève croit que son quiz n'a servi à rien.
-        for (const cle of ["accueil", "parcours", "parcours-resume", "maitrise", "revisions-dues", "plan-du-jour", "priorites", "bilan-periode", "quiz-historique", "quiz-en-cours"]) {
+        for (const cle of ["accueil", "parcours", "parcours-resume", "maitrise", "revisions-dues", "erreurs", "plan-du-jour", "priorites", "bilan-periode", "quiz-historique", "quiz-en-cours"]) {
           queryClient.invalidateQueries({ queryKey: [cle] })
         }
         // L'accueil garde sa dernière version dans le navigateur pour s'afficher avant la réponse du serveur (voir

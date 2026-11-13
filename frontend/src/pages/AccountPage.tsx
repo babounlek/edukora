@@ -219,6 +219,7 @@ export function AccountPage() {
         <nav aria-label={t("cpt.raccourcis")} className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
           <Raccourci to="/mes-acces" icone={Sparkles} libelle={t("compte.mes_acces")} />
           <Raccourci to="/carnet" icone={NotebookPen} libelle={t("cpt.carnet")} />
+          <Raccourci to="/erreurs" icone={RotateCcw} libelle={t("erreurs.titre")} />
           <Raccourci to="/parcours" icone={TrendingUp} libelle={t("nav.progression")} />
           <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle={t("cpt.inedites")} />
         </nav>

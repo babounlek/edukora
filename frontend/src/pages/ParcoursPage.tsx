@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { BandeauMatieres } from "@/components/ChoixMatieres"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
+import { CarteErreurs } from "@/components/MesErreurs"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
  * sans contenu n'est pas un échec de l'élève - l'inclure ferait mentir la barre, et
@@ -396,6 +397,8 @@ export function ParcoursPage() {
       {/* Ce que l'élève a fait et réussi sur 30 jours, matière par matière : des faits lisibles dès la
           première semaine (« Mathématiques : 47 % de réussite »), là où les savoirs maîtrisés restent
           longtemps près de zéro. Le bloc n'existait que dans « Mon compte » ; il se tait sans activité. */}
+      {/* Avant le bilan : c'est la seule chose de cette page qui se fait tout de suite. */}
+      {abonneAuCursus && <CarteErreurs cursusId={Number(cursusId)} className="mt-6" />}
       {abonneAuCursus && <BilanDePeriode cursusId={Number(cursusId)} className="mt-6" />}
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-3">

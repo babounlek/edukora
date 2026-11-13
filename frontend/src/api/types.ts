@@ -1321,6 +1321,29 @@ export interface Accueil {
   lecture: { slug: string; title: string; country: string; type?: "epreuve" | "cours" } | null
   simulation_suggeree: { id: number; slug: string; title: string; subject_label: string; year: number | null } | null
   bilan_semaine: BilanPeriode | null
+  // Questions de quiz ratées et pas encore réussies (voir quiz.erreurs côté serveur). Facultatif :
+  // absent d'un accueil gardé en cache d'avant ce champ.
+  erreurs_total?: number
+}
+
+/** Une matière de la banque d'erreurs : combien de questions, et les thèmes où elles se concentrent. */
+export interface ErreursMatiere {
+  subject_id: number
+  subject_code: string
+  subject_label: string
+  nb: number
+  themes: { theme_id: number; theme: string; nb: number }[]
+  /** Nombre total de thèmes touchés (`themes` n'en cite que les premiers). */
+  themes_total: number
+}
+
+/** « Mes erreurs » (GET /quiz/erreurs/) : les questions dont la dernière réponse de l'élève est fausse. */
+export interface BanqueErreurs {
+  total: number
+  /** Taille du paquet que « Refaire » ouvrira (les plus anciennes d'abord). */
+  paquet: number
+  plus_ancienne: string | null
+  matieres: ErreursMatiere[]
 }
 
 export interface InscriptionInedite {

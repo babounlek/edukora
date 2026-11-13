@@ -13,6 +13,7 @@ import type {
   Cours,
   CoursContent,
   CoursPreview,
+  BanqueErreurs,
   BilanPeriode,
   CarnetEntree,
   CibleEtude,
@@ -1186,6 +1187,16 @@ export function getCarnet(signal?: AbortSignal) {
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */
 export function refaireLesRatees(sessionId: number) {
   return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
+}
+
+/** « Mes erreurs » : les questions ratées et pas encore réussies de ce cursus, par matière. */
+export function getErreurs(cursus: number, signal?: AbortSignal) {
+  return apiRequest<BanqueErreurs>(`/quiz/erreurs/?cursus=${cursus}`, { signal })
+}
+
+/** Ouvre un quiz fait des erreurs les plus anciennes (d'une matière si `subject` est donné). */
+export function refaireErreurs(params: { cursus: number; subject?: number; n?: number }) {
+  return apiRequest<QuizSession>("/quiz/erreurs/refaire/", { method: "POST", body: params })
 }
 
 /** Où en est le profil actif aujourd'hui : XP gagnée, objectif en vigueur (voir quiz.xp). */
