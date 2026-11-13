@@ -32,6 +32,10 @@ describe("cibleApresChangementCursus", () => {
     expect(cibleApresChangementCursus("/quiz/session/8/resultat", "", "cm")).toEqual({ chemin: null, seanceEnCours: false })
   })
 
+  it("accepte un code pays en majuscules", () => {
+    expect(cibleApresChangementCursus("/cm/epreuves/x", "", "CM").chemin).toBe("/cm/epreuves")
+  })
+
   it("suit le pays du nouvel examen", () => {
     expect(cibleApresChangementCursus("/cm/cours", "", "sn").chemin).toBe("/sn/cours")
     expect(cibleApresChangementCursus("/cm/epreuves/x", "", "sn").chemin).toBe("/sn/epreuves")

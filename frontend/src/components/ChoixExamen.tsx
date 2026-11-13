@@ -12,17 +12,14 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { catalogueHomePath } from "@/lib/countryPath"
 import { libelleCursus, trierCursus } from "@/lib/cursus"
 import { useCursusPrepareDeclare } from "@/lib/cursusAccueil"
 import { estDeLangue, useCursusListe } from "@/lib/cursusLangue"
 import { useDeclarerCursus } from "@/lib/declarerCursus"
 import { langueDeListe } from "@/lib/discipline"
 import { langueCourante, useI18n } from "@/lib/i18n"
+import { cibleApresChangementCursus } from "@/lib/pageApresChangementCursus"
 import { cn } from "@/lib/utils"
-
-/** Un quiz ou une épreuve inédite en cours (pas leur page de résultat). */
-const TENTATIVE_EN_COURS = /^\/(quiz\/session|inedit\/tentative|simulation)\/\d+\/?$/
 
 /**
  * La liste des examens du pays, ouverte depuis n'importe quel déclencheur (`children`, rendu tel quel) : le même menu pour
@@ -38,14 +35,17 @@ export function SelecteurExamen({ children }: { children: ReactNode }) {
   const { data: liste } = useCursusListe(country, { langue: langueDeListe("", false) })
   const { declarer, enCours } = useDeclarerCursus()
   const navigate = useNavigate()
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
 
-  // Changer d'examen ramène à l'accueil : la page ouverte (épreuve, cours, quiz, liste filtrée) appartient à l'ancien examen,
-  // et l'accueil est la seule qui se recharge toujours en entier pour le nouveau.
+  // Changer d'examen laisse l'élève sur sa page : les listes se rechargent pour le nouvel examen. Une page de détail
+  // (épreuve, cours...) appartient à l'ancien : on remonte à sa liste (voir pageApresChangementCursus).
   function choisir(cursus: Cursus) {
+    const cible = cibleApresChangementCursus(pathname, search, cursus.country?.code ?? country)
     // Un quiz ou une inédite en cours est enregistré (on le reprend), mais on prévient avant de quitter l'écran.
-    if (TENTATIVE_EN_COURS.test(pathname) && !window.confirm(t("choix.quitter_tentative"))) return
-    declarer(cursus, () => navigate(catalogueHomePath(country)))
+    if (cible.seanceEnCours && !window.confirm(t("choix.quitter_tentative"))) return
+    declarer(cursus, () => {
+      if (cible.chemin) navigate(cible.chemin, { replace: true })
+    })
   }
 
   return (

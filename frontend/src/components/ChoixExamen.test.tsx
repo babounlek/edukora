@@ -140,7 +140,7 @@ describe("examen choisi : rappel à l'écran", () => {
       expect(lireCursusPrepareEnAttente()).toBeNull()
     })
 
-    it("changer d'examen ramène à l'accueil du pays, visiteur comme compte", async () => {
+    it("changer d'examen laisse sur une page de liste, visiteur comme compte", async () => {
       memoriserCursusPrepareEnAttente(1)
       afficher(
         <SelecteurExamen>
@@ -151,7 +151,20 @@ describe("examen choisi : rappel à l'écran", () => {
       expect(screen.getByTestId("chemin").textContent).toBe("/cm/cours")
       await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
       await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
-      expect(screen.getByTestId("chemin").textContent).toBe("/cm")
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm/cours")
+    })
+
+    it("depuis une page de détail, remonte à la liste de la rubrique", async () => {
+      memoriserCursusPrepareEnAttente(1)
+      afficher(
+        <SelecteurExamen>
+          <button type="button">ouvrir</button>
+        </SelecteurExamen>,
+        "/cm/epreuves/maths-2024",
+      )
+      await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
+      await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
+      expect(screen.getByTestId("chemin").textContent).toBe("/cm/epreuves")
     })
 
     it("un compte revient à l'accueil seulement une fois le choix enregistré", async () => {
@@ -189,7 +202,7 @@ describe("examen choisi : rappel à l'écran", () => {
       await userEvent.click(screen.getByRole("button", { name: "ouvrir" }))
       await userEvent.click(await screen.findByRole("menuitem", { name: "BAC C" }))
       expect(lireCursusPrepareEnAttente()).toBe(2)
-      expect(screen.getByTestId("chemin").textContent).toBe("/cm")
+      expect(screen.getByTestId("chemin").textContent).toBe("/quiz")
       confirmer.mockRestore()
     })
 

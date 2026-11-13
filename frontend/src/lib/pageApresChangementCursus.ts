@@ -30,8 +30,10 @@ function sansParamsLiesALExamen(search: string): string {
 export function cibleApresChangementCursus(
   pathname: string,
   search: string,
-  paysDuNouvelExamen: string | null,
+  paysBrut: string | null,
 ): CibleChangementCursus {
+  // Le code pays de l'API est en majuscules (« CM »), les URLs en minuscules.
+  const paysDuNouvelExamen = paysBrut ? paysBrut.toLowerCase() : null
   const rester = (chemin: string | null, seanceEnCours = false): CibleChangementCursus => ({ chemin, seanceEnCours })
 
   // Séances : on ne laisse jamais une séance ouverte sous un autre examen. Les pages de RÉSULTAT et
