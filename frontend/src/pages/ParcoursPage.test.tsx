@@ -6,6 +6,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 const listMySubscriptions = vi.hoisted(() => vi.fn())
 const getResumeParcours = vi.hoisted(() => vi.fn())
 const getBilanPeriode = vi.hoisted(() => vi.fn())
+const getErreurs = vi.hoisted(() => vi.fn())
 
 const BEPC = { id: 14, examen: "BEPC", examen_display: "BEPC", series: null }
 const BAC_C = { id: 20, examen: "BAC", examen_display: "BAC", series: { id: 3, code: "C", label: "Série C" } }
@@ -20,7 +21,7 @@ const auth = vi.hoisted(() => ({
   },
 }))
 
-vi.mock("@/api/endpoints", () => ({ listMySubscriptions, getResumeParcours, getBilanPeriode }))
+vi.mock("@/api/endpoints", () => ({ listMySubscriptions, getResumeParcours, getBilanPeriode, getErreurs, refaireErreurs: vi.fn() }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 
@@ -57,6 +58,7 @@ describe("ParcoursPage (Ma progression) - pastilles d'examen", () => {
     ])
     getResumeParcours.mockResolvedValue([])
     getBilanPeriode.mockRejectedValue(new Error("pas de bilan"))
+    getErreurs.mockResolvedValue({ total: 0, paquet: 0, plus_ancienne: null, matieres: [] })
   })
 
   it("ne montre que l'examen préparé quand le profil a payé BEPC et BAC C", async () => {
@@ -98,6 +100,7 @@ describe("ParcoursPage (Ma progression) - ce que disent les chiffres à un élè
     auth.user.cursus_prepare = { id: 14, examen_display: "BEPC", series: null }
     listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
     getBilanPeriode.mockRejectedValue(new Error("pas de bilan"))
+    getErreurs.mockResolvedValue({ total: 0, paquet: 0, plus_ancienne: null, matieres: [] })
   })
 
   it("une matière jamais ouverte est « À découvrir », une matière travaillée sans maîtrise est « En cours »", async () => {

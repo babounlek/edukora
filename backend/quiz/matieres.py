@@ -2,8 +2,9 @@
 Matières que passe un profil - ce qui distingue, pour le coach, une matière « de l'élève » d'une
 matière simplement présente dans le cursus.
 
-Au BEPC, au Probatoire et au BAC, la série fixe les matières : tout le cursus est « à l'élève », et
-`Profil.matieres_passees` reste vide. Le GCE n'a pas de séries : un élève choisit ses matières
+Au BEPC, au Probatoire et au BAC, la série fixe l'essentiel : sans choix, tout le cursus est « à l'élève » et
+`Profil.matieres_passees` reste vide. Mais pas tout - une langue vivante sur deux, une option : l'élève peut alors
+RETIRER ce qu'il ne passe pas (voir serie_fixe ; l'écran part de tout coché). Le GCE n'a pas de séries : un élève choisit ses matières
 parmi celles du Board (6 à 11 au O Level, 5 au plus à l'A Level : voir REGLES_INSCRIPTION_GCE). Le plan du jour, les priorités, la progression et le
 diagnostic se limitent alors à ce choix, ainsi que les listes de la bibliothèque (épreuves, cours,
 pastilles de matière, voir sujets_a_afficher) - tant que le profil garde actif « voir seulement mes
@@ -17,7 +18,7 @@ l'élève devant un plan vide.
 """
 from django.db.models import Exists, OuterRef
 
-from catalog.models import Examen, Lesson, StatutContenu, Subject
+from catalog.models import EXAMENS_GCE, Examen, Lesson, StatutContenu, Subject
 
 from .models import CompetenceItem
 
@@ -106,6 +107,15 @@ def matieres_disponibles(cursus):
         CompetenceItem.objects.filter(subject=OuterRef("pk"), statut=StatutContenu.VALIDE, cursus=cursus),
     )
     return list(Subject.objects.filter(country=cursus.country).filter(avec_epreuve | avec_quiz).order_by("label"))
+
+
+def serie_fixe(cursus):
+    """
+    L'examen a-t-il une série qui fixe les matières (BEPC, Probatoire, BAC), par opposition au GCE où l'élève
+    compose son inscription ? Dit à l'écran dans quel sens présenter le choix : tout coché, on retire ce qu'on ne
+    passe pas - ou rien de coché, on choisit ce qu'on passe. Les règles de restriction, elles, sont les mêmes.
+    """
+    return cursus is not None and cursus.examen not in EXAMENS_GCE
 
 
 def regles_inscription(cursus):

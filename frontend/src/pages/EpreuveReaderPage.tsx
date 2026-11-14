@@ -2,7 +2,7 @@ import { Fragment, useEffect, useRef, useState } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
-import { ArrowLeft, Check, CheckCheck, NotebookPen, Sparkles } from "lucide-react"
+import { ArrowLeft, Check, CheckCheck, EyeOff, NotebookPen, Sparkles } from "lucide-react"
 
 import { getEpreuve, marquerExerciceFait, readEpreuve } from "@/api/endpoints"
 import { annoncerGain } from "@/lib/gainXp"
@@ -39,6 +39,8 @@ import { ExerciceNav } from "@/components/ExerciceNav"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { EtapeSuivante } from "@/components/BarreSeance"
+import { PartReussie } from "@/components/PartReussie"
+import { BasculeEssai, useEssaiEpreuve } from "@/components/BasculeEssai"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { AccesRefuse } from "@/components/AccesRefuse"
 import { CountryBadge } from "@/components/CountryBadge"
@@ -67,6 +69,11 @@ export function EpreuveReaderPage() {
   useDeclarerLangueContenu(epreuve?.subject.langue)
 
   const articleRef = useRef<HTMLElement>(null)
+  // « Essaie d'abord » : les corrigés sont repliés et l'énoncé ouvert, l'élève cherche puis dévoile, exercice par
+  // exercice. Éteint par défaut (le corrigé reste ouvert, voir BasculeEssai) ; `corrigesVus` ne vaut que pour
+  // cette visite, comme dans le lecteur par thème.
+  const [essai, setEssai] = useEssaiEpreuve()
+  const [corrigesVus, setCorrigesVus] = useState<Set<string>>(new Set())
   // Signets et notes par exercice - pas de "compris" ici : l'exercice a déjà sa validation
   // (ValiderResolution), deux cases pour la même chose se contrediraient.
   const etude = useEtude(slug ? { type: "lesson", slug } : null, isAuthenticated && Boolean(content))
@@ -185,8 +192,17 @@ export function EpreuveReaderPage() {
 
   const article = (
     <article ref={articleRef} className="flex min-w-0 flex-col gap-6">
+      {exercises.length > 0 && (
+        // Sur téléphone la bascule est sur sa ligne, la phrase dessous : côte à côte, la phrase s'écrasait en
+        // une colonne d'un mot. À partir de 640 px, phrase à gauche et bascule à droite.
+        <div className="flex flex-col gap-2 sm:flex-row-reverse sm:items-center sm:justify-between sm:gap-4">
+          <BasculeEssai essai={essai} onChange={setEssai} className="shrink-0 self-end sm:self-auto" />
+          {essai && <p className="text-sm text-muted-foreground sm:min-w-0 sm:flex-1">{t("ed.cherche_exercice")}</p>}
+        </div>
+      )}
       {exercises.length > 0 ? (
         exercises.map((exercise, index) => {
+          const corrigeMasque = essai && !corrigesVus.has(exercise.numero_exercice)
           const section = sectionDeLExercice(sections, index)
           // Sans titre propre (le titre est celui de la section), l'exercice se reconnaît à son numéro et à sa question.
           const sansTitrePropre = sections !== null && !titreDistinctif(exercise, section)
@@ -222,25 +238,38 @@ export function EpreuveReaderPage() {
                     <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_intro_markdown)} />
                   </div>
                 )}
-                <EnonceToggle>
+                {/* `key` : changer de mode rouvre ou replie l'énoncé (ouvert pour chercher, replié pour lire). */}
+                <EnonceToggle key={essai ? "essai" : "lecture"} defaultOpen={essai}>
                   <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_markdown)} />
                 </EnonceToggle>
-                {/* Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
-                    correction doit se reconnaître d'un coup d'œil. */}
-                <div className="mt-5">
-                  <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
-                    <CheckCheck className="size-3.5" aria-hidden="true" />
-                    {t("ep.type_CORR")}
-                  </p>
-                  <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
-                    <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
+                {corrigeMasque ? (
+                  // « Essaie d'abord » : le corrigé attend derrière ce bouton, exercice par exercice.
+                  <Button
+                    variant="outline"
+                    className="mt-5 min-h-11 rounded-full border-primary/30 bg-primary/5 text-primary hover:bg-primary/10"
+                    onClick={() => setCorrigesVus((vus) => new Set(vus).add(exercise.numero_exercice))}
+                  >
+                    <EyeOff className="size-4" aria-hidden="true" />
+                    {t("ed.voir_corrige_exercice")}
+                  </Button>
+                ) : (
+                  // Le corrigé, nommé : dans une carte qui contient aussi l'énoncé et les outils, la
+                  // correction doit se reconnaître d'un coup d'œil.
+                  <div className="mt-5">
+                    <p className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
+                      <CheckCheck className="size-3.5" aria-hidden="true" />
+                      {t("ep.type_CORR")}
+                    </p>
+                    <div className="prose prose-neutral max-w-none text-justify dark:prose-invert prose-headings:font-display prose-hr:my-8">
+                      <EpreuveMarkdown markdown={exercise.corrige_markdown} directCoursLinks />
+                    </div>
                   </div>
-                </div>
+                )}
                 {/* La validation vit ICI, après le corrigé, et nulle part ailleurs : c'est le seul
                     endroit où l'élève a de quoi juger s'il a vraiment résolu l'exercice. Une case à
                     cocher sur une liste se coche sans rien avoir lu, et un suivi qu'on peut remplir
-                    sans travailler ne mesure plus rien. */}
-                <ValiderResolution exercise={exercise} />
+                    sans travailler ne mesure plus rien. Corrigé encore replié : pas de validation. */}
+                {!corrigeMasque && <ValiderResolution exercise={exercise} />}
                 <MarquesSection etude={etude} cle={exerciceAnchorId(exercise.numero_exercice)} avecCompris={false} />
                 {exercises.length > 1 && <ExerciceNav exercises={exercises} index={index} />}
               </section>
@@ -448,6 +477,13 @@ export function ValiderResolution({ exercise }: { exercise: EpreuveExercise }) {
           >
             {t("seance.annuler")}
           </button>
+          {/* Sur sa propre ligne : ce qu'il a réussi de l'exercice, traduit en points du barème quand il est connu. */}
+          <PartReussie
+            exerciseId={exercise.id as number}
+            points={exercise.points}
+            initiale={exercise.part_reussie}
+            className="basis-full border-t border-border pt-3"
+          />
         </>
       ) : (
         <>

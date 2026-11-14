@@ -496,3 +496,55 @@ class InscriptionApiTests(TestCase):
         self.assertIsNone(reponse.data["regles"])
         self.assertEqual(reponse.data["officielles"], [])
         self.assertEqual(reponse.data["avertissements"], [])
+
+
+class SerieFixeTests(TestCase):
+    """BEPC, Probatoire, BAC : la série fixe l'essentiel, mais l'élève peut retirer ce qu'il ne passe pas
+    (une langue vivante sur deux, une option). Mêmes règles de restriction qu'au GCE ; seul le sens de
+    l'écran change, et c'est le serveur qui le dit (`serie_fixe`)."""
+
+    def setUp(self):
+        self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BEPC)
+        self.user = User.objects.create_user(phone_number="677400202", password="x")
+        self.profil = self.user.profils.first()
+        self.user.cursus_prepare = self.cursus
+        self.user.save(update_fields=["cursus_prepare"])
+        self.maths, self.allemand, self.espagnol = (self._matiere(code) for code in ("MATHS", "ALLEMAND", "ESPAGNOL"))
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def _matiere(self, code):
+        subject = Subject.objects.get(country=self.cursus.country, code=code)
+        lesson = Lesson.objects.create(
+            title=f"Épreuve {code}", subject=subject, year=2025, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        lesson.cursus.add(self.cursus)
+        _make_competence_item(
+            subject, self.cursus, theme=Tag.objects.create(name=f"theme-serie-{code}"), numero=f"serie-{code}",
+        )
+        return subject
+
+    def test_le_serveur_dit_dans_quel_sens_presenter_le_choix(self):
+        self.assertTrue(self.client.get("/quiz/matieres/").data["serie_fixe"])
+
+        gce = Cursus.objects.get(examen=Examen.GCE_AL, series__isnull=True)
+        self.user.cursus_prepare = gce
+        self.user.save(update_fields=["cursus_prepare"])
+        self.assertFalse(self.client.get("/quiz/matieres/").data["serie_fixe"])
+
+    def test_retirer_une_langue_la_sort_du_coach_et_des_matieres_du_quiz(self):
+        disponibles = {m["code"] for m in self.client.get("/quiz/matieres/").data["disponibles"]}
+        self.assertEqual(disponibles, {"MATHS", "ALLEMAND", "ESPAGNOL"})
+
+        reponse = self.client.put("/quiz/matieres/", {"matieres": [self.maths.id, self.espagnol.id]}, format="json")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertTrue(reponse.data["affichage_restreint"])
+        self.assertEqual(reponse.data["nb_affichees"], 2)
+        self.assertEqual(
+            {s.id for s in _subjects_par_priorite(self.profil, self.cursus)}, {self.maths.id, self.espagnol.id},
+        )
+        self.assertEqual(
+            {s.id for s in matieres_pour_objectif(self.cursus, self.profil)}, {self.maths.id, self.espagnol.id},
+        )

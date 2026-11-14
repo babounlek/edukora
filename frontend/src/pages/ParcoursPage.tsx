@@ -19,7 +19,7 @@ import { SEUIL_DEBUT_PCT, pourcent, prochainPalier } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
-import { BandeauMatieres } from "@/components/ChoixMatieres"
+import { BandeauMatieres, InviteChoixMatieres } from "@/components/ChoixMatieres"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { CarteErreurs } from "@/components/MesErreurs"
 
@@ -408,6 +408,9 @@ export function ParcoursPage() {
         </div>
         <LegendeProgression />
       </div>
+      {/* Une langue vivante sur deux, une option : l'élève retire ici ce qu'il ne passe pas, et les totaux ci-dessus
+          ne comptent plus que ses matières. */}
+      {abonneAuCursus && <InviteChoixMatieres className="mt-4" />}
 
       {!matieres ? (
         erreurResume ? null : (

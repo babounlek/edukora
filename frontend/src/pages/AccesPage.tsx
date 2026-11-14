@@ -26,7 +26,6 @@ import { SecuriteProfils } from "@/components/SecuriteProfils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { estGce } from "@/lib/cursus"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { langueCourante, localeCourante, t, useI18n } from "@/lib/i18n"
@@ -55,7 +54,7 @@ function libelleCursus(cursus: Subscription["cursus"]): string {
  * l'échéance existante (voir Subscription.extend) : rien n'est perdu à le faire tôt.
  */
 function LigneAcces({
-  titre, sous_titre, expiresAt, actif, cursusId, profilId, renouvelable = true, inclutInedit = false, gce = false,
+  titre, sous_titre, expiresAt, actif, cursusId, profilId, renouvelable = true, inclutInedit = false, avecMatieres = false,
 }: {
   titre: string
   sous_titre?: string
@@ -66,7 +65,7 @@ function LigneAcces({
   renouvelable?: boolean
   inclutInedit?: boolean
   /** Examen du GCE : l'élève y choisit ses matières (voir ChoixMatieres). */
-  gce?: boolean
+  avecMatieres?: boolean
 }) {
   const [matieresOuvertes, setMatieresOuvertes] = useState(false)
   const jours = joursRestants(expiresAt)
@@ -118,9 +117,10 @@ function LigneAcces({
         </Button>
       )}
 
-      {/* Au GCE, aucune série ne fixe le programme : le choix (et la correction) des matières de CE profil se fait
-          ici, sur sa ligne, quel que soit le profil actif - pas seulement depuis la page du compte. */}
-      {gce && actif && (
+      {/* Le choix (et la correction) des matières de CE profil se fait ici, sur sa ligne, quel que soit le profil
+          actif - pas seulement depuis la page du compte. Au GCE aucune série ne fixe le programme ; ailleurs la
+          série fixe l'essentiel, et l'élève retire ce qu'il ne passe pas (une langue, une option). */}
+      {avecMatieres && actif && (
         <div className="mt-3 border-t border-border pt-3">
           <button
             type="button"
@@ -464,7 +464,8 @@ export function AccesPage() {
       // aucun sens tant qu'il est actif.
       renouvelable: sub.duration_mode !== "JUSQUA_EXAMEN" || !sub.is_active,
       inclutInedit: cursusAvecInedit.has(`${sub.profil.id}-${sub.cursus.id}`),
-      gce: estGce(sub.cursus),
+      // Tout abonnement à un examen : le choix des matières n'est plus réservé au GCE.
+      avecMatieres: true,
     })),
     ...(inscriptionsRepetiteur ?? []).map((i) => ({
       key: `repet-${i.id}`,

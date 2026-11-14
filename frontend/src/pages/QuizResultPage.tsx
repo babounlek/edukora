@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, FileText, Flame, ListChecks, RotateCcw, Share2, Swords, Timer, Trophy, Zap } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, ChevronDown, FileText, Flame, ListChecks, RotateCcw, Share2, Swords, Timer, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -524,22 +524,29 @@ export function QuizResultPage() {
               <Zap />
               {encoreEnCours === "encore" ? t("quiz.preparation") : t("qr.encore_cinq")}
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full"
-              disabled={encoreEnCours !== null}
-              onClick={() => rebondir("score")}
-            >
-              <RotateCcw />
-              {encoreEnCours === "score" ? t("quiz.preparation") : t("qr.bats_score", { score: result.score, total: result.questions_repondues })}
-            </Button>
           </div>
+          {/* Un seul geste en avant ; les variantes sont repliées (audit du 2026-11-13 : plus de dix boutons de même poids). */}
+          <details className="group mt-3 rounded-xl border border-border bg-card">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 px-4 text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              {t("qr.autres_facons")}
+              <ChevronDown className="size-4 transition-transform group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <div className="flex flex-col gap-2 border-t border-border p-4">
+          <Button
+            size="lg"
+            variant="outline"
+            className="rounded-full"
+            disabled={encoreEnCours !== null}
+            onClick={() => rebondir("score")}
+          >
+            <RotateCcw />
+            {encoreEnCours === "score" ? t("quiz.preparation") : t("qr.bats_score", { score: result.score, total: result.questions_repondues })}
+          </Button>
           {meilleurTheme && pourcentage >= 70 && (
             <Button
               size="lg"
               variant="outline"
-              className="mt-2 rounded-full"
+              className="rounded-full"
               disabled={encoreEnCours !== null}
               onClick={() => rebondir("dur", meilleurTheme.theme_id)}
             >
@@ -555,10 +562,12 @@ export function QuizResultPage() {
               parametres={parametresDefi(result.score, result.questions_repondues)}
               libelle={t("essai.defier")}
               size="lg"
-              className="mt-2 rounded-full"
+              className="rounded-full"
             />
           )}
-          <p className="mt-2 text-xs text-muted-foreground">{t("qr.bats_score_note")}</p>
+          <p className="text-xs text-muted-foreground">{t("qr.bats_score_note")}</p>
+            </div>
+          </details>
           {erreurEncore && <p role="alert" className="mt-2 text-sm text-destructive">{erreurEncore}</p>}
         </section>
       )}
@@ -609,7 +618,7 @@ export function QuizResultPage() {
         </section>
       )}
 
-      <div className="mb-6">
+      <div className="mb-6 hidden sm:block">
         <QuizFichePdfButtons sessionId={Number(id)} cursus={result.cursus} />
       </div>
 
@@ -675,11 +684,6 @@ export function QuizResultPage() {
         {result.subject && !invite && (
           <Button asChild variant="outline" className="flex-1" size="lg">
             <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>{t("qr.retour_parcours")}</Link>
-          </Button>
-        )}
-        {!invite && (
-          <Button asChild variant="outline" className="flex-1" size="lg">
-            <Link to="/compte">{t("qr.mon_compte")}</Link>
           </Button>
         )}
       </div>

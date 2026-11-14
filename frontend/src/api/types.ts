@@ -297,6 +297,8 @@ export interface MatieresChoix {
   choisies: number[]
   /** Préférence d'affichage « voir seulement mes matières » (distincte de l'inscription) ; vrai par défaut. */
   seulement_mes_matieres?: boolean
+  /** BEPC, Probatoire, BAC : la série fixe l'essentiel, l'écran part de tout coché (voir quiz.matieres.serie_fixe). */
+  serie_fixe?: boolean
   /** Les listes sont réellement réduites : interrupteur actif ET un choix qui recoupe du contenu sur cet examen. */
   affichage_restreint?: boolean
   /** Nombre de matières montrées quand `affichage_restreint`. */
@@ -507,6 +509,8 @@ export interface EpreuveExercise {
   id?: number
   // Declare par l'eleve a la fin du corrige (voir access.ExerciceFait).
   fait?: boolean
+  // Part de l'exercice qu'il declare avoir reussie, en % (voir PartReussie) ; null s'il ne s'est pas note.
+  part_reussie?: number | null
   numero_exercice: string
   // Libellé de l'exercice extrait de son en-tête d'énoncé ("Exercice 1 : Chimie
   // organique") - chaîne vide quand l'épreuve source n'en portait aucun, le sommaire
@@ -893,7 +897,11 @@ export interface QuestionLecture {
 }
 
 export interface ExerciceLecture {
-  exercise: { id: number; numero_exercice: string; titre: string; points: string; fait: boolean }
+  exercise: {
+    id: number; numero_exercice: string; titre: string; points: string; fait: boolean
+    /** Part de l'exercice que l'élève a déclaré avoir réussie, en % (voir PartReussie) ; null s'il ne s'est pas noté. */
+    part_reussie?: number | null
+  }
   lesson: {
     slug: string
     title: string
@@ -1623,6 +1631,12 @@ export interface SimulationListItem {
   id: number
   epreuve: number
   epreuve_titre: string
+  /** Facultatifs : absents d'une réponse gardée en cache d'avant « Mes examens blancs ». */
+  epreuve_slug?: string
+  matiere?: string
+  pays?: string
+  /** Le chrono tourne et la copie n'est pas rendue : à reprendre tout de suite. */
+  chrono_en_cours?: boolean
   started_at: string
   submitted_at: string | null
   note_obtenue: number | null

@@ -22,8 +22,8 @@ from users.parent import session_restreinte
 from users.profils import profil_actif
 
 from .matieres import (
-    avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription, sujets_a_afficher,
-    sujets_effectifs,
+    avertissements_inscription, matieres_disponibles, matieres_officielles, regles_inscription, serie_fixe,
+    sujets_a_afficher, sujets_effectifs,
 )
 from .models import (
     CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
@@ -1321,6 +1321,9 @@ def matieres_view(request):
         "affichage_restreint": affichees is not None,
         "nb_affichees": len(affichees or ()),
         "disponibles": [{"id": m.id, "code": m.code, "label": m.label} for m in disponibles],
+        # BEPC, Probatoire, BAC : la série fixe l'essentiel, l'écran part de tout coché et l'élève retire ce qu'il
+        # ne passe pas. GCE : rien de coché, il compose son inscription (voir quiz.matieres.serie_fixe).
+        "serie_fixe": serie_fixe(cursus),
         # Règles d'inscription du Board (None hors GCE général) et les matières du Board à ce niveau : `couverte`
         # = EduKora a du contenu dessus ; `obligatoire` = exigée à l'inscription ; `code_officiel` = code du jury.
         "regles": None if regles is None else {

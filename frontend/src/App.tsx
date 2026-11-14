@@ -19,6 +19,7 @@ import { BandeauCursus } from "@/components/BandeauCursus"
 import { BandeauLangueCursus } from "@/components/BandeauLangueCursus"
 import { BarreSeance } from "@/components/BarreSeance"
 import { BottomTabBar } from "@/components/BottomTabBar"
+import { useConcentration } from "@/lib/concentration"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
@@ -53,6 +54,7 @@ const AccountPage = lazy(() => import("@/pages/AccountPage").then((m) => ({ defa
 const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default: m.AccesPage })))
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
+const MesExamensBlancsPage = lazy(() => import("@/pages/MesExamensBlancsPage").then((m) => ({ default: m.MesExamensBlancsPage })))
 const MesErreursPage = lazy(() => import("@/pages/MesErreursPage").then((m) => ({ default: m.MesErreursPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
 const DevenirRevendeurPage = lazy(() => import("@/pages/DevenirRevendeurPage").then((m) => ({ default: m.DevenirRevendeurPage })))
@@ -131,6 +133,8 @@ function RouteurDeLangue({ basename, children }: { basename: string; children: R
 function App({ basename = "" }: { basename?: string }) {
   useI18n()
   const enExamen = useModeExamen()
+  // Quiz en cours sur téléphone : l'en-tête, la barre d'onglets et le pied de page s'effacent (voir lib/concentration).
+  const concentre = useConcentration()
   return (
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
@@ -150,7 +154,7 @@ function App({ basename = "" }: { basename?: string }) {
               </a>
               {/* Salle d'examen : tant qu'une épreuve chronométrée tourne, seul le bandeau hors connexion
                   reste (il sert l'élève) - voir lib/modeExamen.ts. */}
-              {!enExamen && <Header />}
+              {!enExamen && <div className={concentre ? "max-lg:hidden lg:contents" : "contents"}><Header /></div>}
               <BandeauHorsLigne />
               {!enExamen && <BandeauCursus />}
               {!enExamen && <BandeauCampagneFin />}
@@ -192,6 +196,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/erreurs" element={<MesErreursPage />} />
+                      <Route path="/examens-blancs" element={<MesExamensBlancsPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
                       <Route path="/espace-revendeur" element={<EspaceRevendeurPage />} />
                       <Route path="/devenir-revendeur" element={<DevenirRevendeurPage />} />
@@ -229,13 +234,13 @@ function App({ basename = "" }: { basename?: string }) {
                   </Suspense>
                 </ErrorBoundary>
               </main>
-              {!enExamen && <Footer />}
+              {!enExamen && <div className={concentre ? "max-lg:hidden lg:contents" : "contents"}><Footer /></div>}
               {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
                   sans elle, les derniers liens du pied de page sont recouverts et donc
                   inatteignables sur mobile. */}
-              {!enExamen && <ReserveBarreOnglets />}
+              {!enExamen && !concentre && <ReserveBarreOnglets />}
             </div>
-            {!enExamen && <BottomTabBar />}
+            {!enExamen && !concentre && <BottomTabBar />}
             <OnboardingModal />
             <GuideHost />
             <PinDialogs />

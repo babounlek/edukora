@@ -269,3 +269,83 @@ class CommandesTests(PushTestCase):
         call_command("envoyer_relances", "--seulement", "push", "--dry-run", stdout=sortie)
         self.assertIn("rappel(s) push", sortie.getvalue())
         self.assertNotIn("rappel(s) de séance", sortie.getvalue())
+
+
+@override_settings(**CLES_VAPID)
+class VerifierPushTests(PushTestCase):
+    def lancer(self, *args):
+        from io import StringIO
+
+        sortie = StringIO()
+        call_command("verifier_push", *args, stdout=sortie)
+        return sortie.getvalue()
+
+    def test_dit_que_le_push_est_configure_et_compte_les_appareils(self):
+        self.appareil(self.eleve())
+
+        sortie = self.lancer()
+
+        self.assertIn("Clé privée VAPID   : présente", sortie)
+        self.assertIn("1 appareil(s) abonné(s), 1 compte(s)", sortie)
+
+    @override_settings(VAPID_PUBLIC_KEY="", VAPID_PRIVATE_KEY="", VAPID_CLAIM_EMAIL="")
+    def test_sans_cles_il_echoue_en_disant_quoi_faire(self):
+        from django.core.management.base import CommandError
+
+        with self.assertRaisesMessage(CommandError, "generer_cles_vapid"):
+            self.lancer()
+
+    def test_envoie_un_message_de_test_aux_appareils_du_compte(self):
+        user = self.eleve()
+        user.email = "eleve@example.com"
+        user.save(update_fields=["email"])
+        self.appareil(user)
+        self.appareil(user, endpoint="https://push2.example.com/def")
+
+        with mock.patch("relances.push._webpush") as webpush:
+            sortie = self.lancer("--envoyer", "--email", "ELEVE@example.com")
+
+        self.assertEqual(webpush.call_count, 2)
+        self.assertIn("2/2 message(s) de test envoyé(s)", sortie)
+        self.assertEqual(webpush.call_args.args[1]["tag"], "test-push")
+
+    def test_envoyer_exige_un_compte_connu_et_abonne(self):
+        from django.core.management.base import CommandError
+
+        with self.assertRaises(CommandError):
+            self.lancer("--envoyer")
+        with self.assertRaises(CommandError):
+            self.lancer("--envoyer", "--email", "inconnu@example.com")
+        user = self.eleve()
+        user.email = "sans-appareil@example.com"
+        user.save(update_fields=["email"])
+        with self.assertRaises(CommandError):
+            self.lancer("--envoyer", "--email", "sans-appareil@example.com")
+
+
+class PushAnglaisTests(PushTestCase):
+    def test_un_eleve_du_gce_recoit_son_rappel_en_anglais(self):
+        from catalog.models import Cursus, Examen
+
+        user = self.eleve()
+        gce = Cursus.objects.get(examen=Examen.GCE_AL, series__isnull=True)
+        user.cursus_prepare = gce
+        user.save(update_fields=["cursus_prepare"])
+
+        charge = push.composer_push(user, SOIR)
+
+        self.assertIn("daily session is ready", charge["title"])
+        self.assertTrue(charge["url"].startswith("/en/"))
+
+    def test_une_serie_a_prolonger_est_annoncee_en_anglais(self):
+        from catalog.models import Cursus, Examen
+
+        user = self.eleve()
+        user.cursus_prepare = Cursus.objects.get(examen=Examen.GCE_OL, series__isnull=True)
+        user.save(update_fields=["cursus_prepare"])
+        for decalage in (1, 2, 3):
+            self.seance_terminee(user, SOIR - timedelta(days=decalage))
+
+        charge = push.composer_push(user, SOIR)
+
+        self.assertIn("3-day streak", charge["title"])

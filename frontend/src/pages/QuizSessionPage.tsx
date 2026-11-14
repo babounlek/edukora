@@ -14,6 +14,7 @@ import type { QuizCorrige, QuizSession } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSon } from "@/components/BoutonSon"
+import { definirConcentration } from "@/lib/concentration"
 import { ChronoQuiz } from "@/components/ChronoQuiz"
 import { lireDefiMemorise } from "@/lib/defiEssai"
 import { Button } from "@/components/ui/button"
@@ -87,6 +88,12 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { country } = useCountry()
+
+  // Mode concentration (téléphone) : l'en-tête, les onglets et le pied de page s'effacent le temps du quiz.
+  useEffect(() => {
+    definirConcentration(true)
+    return () => definirConcentration(false)
+  }, [])
 
   const [session, setSession] = useState<QuizSession | null>(null)
   // Un visiteur qui joue un quiz gratuit avec un compte invité (voir lib/invite et lib/quizGratuit) : une vraie séance, mais
@@ -393,7 +400,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               />
             )
           ) : (
-            <QuizFichePdfButtons sessionId={session.id} cursus={session.cursus} />
+            // Pas sur téléphone, pendant le quiz : un bouton de téléchargement de plus à côté du seul geste utile.
+            <div className="hidden sm:block">
+              <QuizFichePdfButtons sessionId={session.id} cursus={session.cursus} />
+            </div>
           )}
         </div>
       </div>

@@ -1176,9 +1176,8 @@ class ThemeExerciceLectureView(APIView):
 
         if acces and profil is not None:
             LectureProgress.objects.update_or_create(profil=profil, lesson=lesson)
-        fait = profil is not None and ExerciceFait.objects.filter(
-            profil=profil, exercise=exercise,
-        ).exists()
+        trace = None if profil is None else ExerciceFait.objects.filter(profil=profil, exercise=exercise).first()
+        fait = trace is not None
 
         # Intro/titre/points/texte complet exactement comme le lecteur les affiche
         # (repères de partie retirés, titre d'exercice unique allégé...) : on reprend
@@ -1195,6 +1194,8 @@ class ThemeExerciceLectureView(APIView):
                 "titre": bloc["titre"],
                 "points": bloc["points"],
                 "fait": fait,
+                # Ce que l'élève a déclaré en avoir réussi (voir access.ExerciceFait.part_reussie).
+                "part_reussie": trace.part_reussie if trace else None,
             },
             "lesson": {
                 "slug": lesson.slug,

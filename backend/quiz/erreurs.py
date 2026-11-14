@@ -28,6 +28,7 @@ from catalog.models import Cursus, StatutContenu, Subject
 from users.profils import profil_actif
 
 from . import textes
+from .matieres import sujets_effectifs
 from .models import CompetenceItem, ModeQuiz, QuizSession
 from .services import _historique_des_items, creer_questions
 
@@ -42,7 +43,8 @@ def banque_d_erreurs(profil, cursus, subject=None):
     """
     [(item, jour de la dernière réponse)] : les items encore publiés dont la dernière réponse du
     profil est fausse, de l'erreur la plus ancienne à la plus récente. Un item dépublié depuis
-    n'y figure pas : on ne saurait plus le servir.
+    n'y figure pas : on ne saurait plus le servir. Ni celui d'une matière que l'élève a dit ne pas
+    passer (voir quiz.matieres) : une langue abandonnée ne doit pas rester une dette à refaire.
     """
     rates = {
         item_id: jour
@@ -54,6 +56,9 @@ def banque_d_erreurs(profil, cursus, subject=None):
     items = CompetenceItem.objects.filter(pk__in=rates, statut=StatutContenu.VALIDE).select_related("subject", "theme")
     if subject is not None:
         items = items.filter(subject=subject)
+    gardees = sujets_effectifs(profil, cursus)
+    if gardees is not None:
+        items = items.filter(subject_id__in=gardees)
     return sorted(((item, rates[item.pk]) for item in items), key=lambda paire: (paire[1], paire[0].pk))
 
 

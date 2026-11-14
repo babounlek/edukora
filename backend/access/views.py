@@ -71,13 +71,17 @@ def read_lesson(request, lesson_slug):
     # seule requête pour toute la page. Sert à proposer la validation au bon endroit,
     # à la fin du corrigé (voir access.ExerciceFait) : c'est le seul moment où l'élève
     # a réellement de quoi juger s'il a résolu l'exercice.
-    exercices_faits = set()
+    # {exercice: part réussie déclarée (ou None)} - voir ExerciceFait.part_reussie.
+    exercices_faits = {}
     if profil is not None:
-        exercices_faits = set(
+        exercices_faits = dict(
             ExerciceFait.objects.filter(profil=profil, exercise__lesson=lesson)
-            .values_list("exercise_id", flat=True),
+            .values_list("exercise_id", "part_reussie"),
         )
-    exercices = [dict(e, fait=e.get("id") in exercices_faits) for e in lesson.exercises_breakdown()]
+    exercices = [
+        dict(e, fait=e.get("id") in exercices_faits, part_reussie=exercices_faits.get(e.get("id")))
+        for e in lesson.exercises_breakdown()
+    ]
 
     return Response({
         "id": lesson.id,
@@ -312,7 +316,8 @@ def marquer_exercice_fait(request, exercise_id):
 
     Toujours explicite : rien ici n'est déduit d'une ouverture de page (voir
     ExerciceFait). `fait` absent vaut true, pour que le cas courant tienne en un POST
-    sans corps.
+    sans corps. `part_reussie` (0, 50, 75 ou 100), facultatif : ce qu'il déclare en avoir
+    réussi, modifiable à volonté ; absent, la part déjà déclarée est gardée.
 
     Réservé à qui a accès à l'épreuve : marquer comme fait un exercice qu'on ne peut
     pas lire n'a aucun sens, et gonflerait un compteur de progression sans travail
@@ -324,9 +329,19 @@ def marquer_exercice_fait(request, exercise_id):
 
     profil = profil_actif(request)
     fait = request.data.get("fait", True)
+    part = request.data.get("part_reussie")
+    if part is not None and (isinstance(part, bool) or part not in ExerciceFait.PARTS_REUSSIES):
+        return Response(
+            {"error": f"part_reussie invalide : attendu {list(ExerciceFait.PARTS_REUSSIES)}."}, status=400,
+        )
     gain = None
+    part_reussie = None
     if fait:
-        _, cree = ExerciceFait.objects.get_or_create(profil=profil, exercise=exercise)
+        trace, cree = ExerciceFait.objects.get_or_create(profil=profil, exercise=exercise)
+        if part is not None and trace.part_reussie != part:
+            trace.part_reussie = part
+            trace.save(update_fields=["part_reussie"])
+        part_reussie = trace.part_reussie
         # Les points de cet exercice, une seule fois pour toutes (voir quiz.xp.crediter_activite) : le décocher puis le
         # recocher ne rapporte rien de plus.
         if cree:
@@ -334,7 +349,7 @@ def marquer_exercice_fait(request, exercise_id):
     else:
         ExerciceFait.objects.filter(profil=profil, exercise=exercise).delete()
     return Response({
-        "exercise_id": exercise.pk, "fait": bool(fait),
+        "exercise_id": exercise.pk, "fait": bool(fait), "part_reussie": part_reussie,
         "xp_gagne": gain.points if gain else 0, "xp_jour": xp.etat_du_jour(profil),
     })
 

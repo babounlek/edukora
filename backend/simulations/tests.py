@@ -472,6 +472,77 @@ class MesSimulationsTests(SimulationTestCase):
 
         self.assertEqual([s["id"] for s in data], [self.simulation.pk])
 
+    def test_la_liste_dit_ce_qu_il_faut_pour_la_reprendre_et_la_retrouver(self):
+        self.demarrer()
+        self.client.post(self.url("mode-examen"))
+
+        ligne = self.client.get("/simulations/mes-simulations/").data[0]
+
+        self.assertTrue(ligne["chrono_en_cours"])
+        self.assertIsNone(ligne["submitted_at"])
+        self.assertEqual(ligne["epreuve_slug"], self.lesson.slug)
+        self.assertEqual(ligne["pays"], "cm")
+        self.assertTrue(ligne["matiere"])
+
+    def test_une_copie_au_chrono_ecoule_est_rendue_a_la_lecture_de_la_liste(self):
+        self.demarrer()
+        self.client.post(self.url("mode-examen"))
+        SimulationEpreuve.objects.filter(pk=self.simulation.pk).update(
+            exam_mode_started_at=timezone.now() - timezone.timedelta(days=1),
+        )
+
+        ligne = self.client.get("/simulations/mes-simulations/").data[0]
+
+        self.assertFalse(ligne["chrono_en_cours"])
+        self.assertIsNotNone(ligne["submitted_at"])
+
+
+class CreditSimulationTests(SimulationTestCase):
+    """Un examen blanc rendu en conditions réelles rapporte de quoi faire compter le jour (voir quiz.xp.XP_SIMULATION)."""
+
+    def _gains(self):
+        from quiz.models import GainXP, SourceXP
+        return GainXP.objects.filter(profil=self.profil, source=SourceXP.SIMULATION)
+
+    def _rendre(self, *, chrono=True, repondre=True):
+        self.demarrer()
+        if chrono:
+            self.client.post(self.url("mode-examen"))
+        if repondre:
+            self.client.post(self.url("noter", self.exercice_pk), {"traitee": True}, format="json")
+        return self.client.post(self.url("completer"))
+
+    def setUp(self):
+        super().setUp()
+        self.exercice_pk = self.lesson.exercises.first()
+
+    def test_rendu_en_conditions_reelles_apres_une_reponse_il_rapporte_une_fois(self):
+        from quiz import xp
+        reponse = self._rendre()
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(self._gains().get().points, xp.XP_SIMULATION)
+        self.client.post(self.url("completer"))
+        self.assertEqual(self._gains().count(), 1)
+
+    def test_un_entrainement_libre_ou_une_copie_vide_ne_rapporte_rien(self):
+        self._rendre(chrono=False)
+        self._rendre(repondre=False)
+
+        self.assertFalse(self._gains().exists())
+
+    def test_une_seule_simulation_rapporte_par_jour(self):
+        self._rendre()
+        self._rendre()
+
+        self.assertEqual(self._gains().count(), 1)
+
+    def test_le_jour_compte_pour_la_serie(self):
+        from quiz.serie import jours_travailles
+        self._rendre()
+
+        self.assertIn(timezone.localdate(), jours_travailles(self.profil))
+
 
 class MarquesTests(SimulationTestCase):
     def test_marquer_a_revoir_bascule(self):

@@ -16,18 +16,24 @@ import { cn } from "@/lib/utils"
 /** Données qui dépendent des matières choisies : à relire après un changement. */
 const CLES_A_RELIRE = [["accueil"], ["plan-du-jour"], ["parcours-resume"], ["priorites"]] as const
 
-/** `cible` : un profil précis du compte sur l'un de ses examens (« Mes accès »), sinon le profil actif. */
-export function useMatieres(cible?: CibleMatieres) {
+/**
+ * `cible` : un profil précis du compte sur l'un de ses examens (« Mes accès »), sinon le profil actif.
+ * `autorise` : faux pour ne pas interroger le serveur du tout (l'invitation de l'accueil hors GCE).
+ */
+export function useMatieres(cible?: CibleMatieres, autorise = true) {
   const { user } = useAuth()
   const cursusId = cible?.cursusId ?? user?.cursus_prepare?.id
-  // Une cible vient d'une ligne GCE de « Mes accès » : pas besoin de redeviner l'examen du profil actif.
-  const actif = cible ? true : estGce(user?.cursus_prepare)
+  // Tout examen préparé, plus seulement le GCE : au BEPC, au Probatoire et au BAC la série fixe l'essentiel, mais
+  // pas tout (une langue vivante sur deux, une option). Sans ce choix, « Ma progression » comptait l'Allemand ET
+  // l'Espagnol d'un élève qui n'en passe qu'un (audit produit du 2026-11-13). Une cible vient d'une ligne de
+  // « Mes accès » : pas besoin de redeviner l'examen du profil actif.
+  const actif = cible ? true : Boolean(user?.cursus_prepare)
   const requete = useQuery({
     queryKey: ["matieres", cursusId, cible?.profilId ?? null],
     queryFn: ({ signal }) => (cible ? getMatieres(signal, cible) : getMatieres(signal)),
-    enabled: actif && Boolean(cursusId),
+    enabled: autorise && actif && Boolean(cursusId),
   })
-  return { actif, cursusId, ...requete }
+  return { actif: autorise && actif, cursusId, ...requete }
 }
 
 /**
@@ -81,11 +87,21 @@ export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => vo
   // touché, on les propose pré-cochées - rien n'est écrit avant « Enregistrer ». Un profil déjà enregistré n'est jamais
   // modifié d'office : il garde son choix et l'avertissement habituel.
   const idsObligatoires = (data?.officielles ?? []).filter((m) => m.obligatoire).map((m) => m.id)
-  const aDefaut = brouillon === null && enregistrees.length === 0 && idsObligatoires.length > 0
-  const choisies = brouillon ?? (aDefaut ? idsObligatoires : enregistrees)
+  // BEPC, Probatoire, BAC (c'est le serveur qui le dit) : la série fixe presque tout, l'élève RETIRE ce qu'il ne
+  // passe pas. On part donc de tout coché - cocher onze matières sur treize pour en écarter deux serait le geste
+  // à l'envers. Au GCE, technique compris, rien n'est coché : l'élève compose son inscription.
+  const modeSerie = data?.serie_fixe === true
+  const idsTous = modeSerie ? (data?.disponibles ?? []).map((m) => m.id) : []
+  const aDefaut = brouillon === null && enregistrees.length === 0 && (modeSerie ? idsTous.length > 0 : idsObligatoires.length > 0)
+  const choisies = brouillon ?? (aDefaut ? (modeSerie ? idsTous : idsObligatoires) : enregistrees)
 
   const enregistrer = useMutation({
-    mutationFn: (ids: number[]) => (cible ? definirMatieres(ids, cible) : definirMatieres(ids)),
+    // Tout coché en mode série = aucune restriction : on enregistre « aucun choix » (liste vide), pour qu'une
+    // matière publiée plus tard ne soit pas masquée par une liste figée aujourd'hui.
+    mutationFn: (ids: number[]) => {
+      const aEnregistrer = modeSerie && idsTous.every((id) => ids.includes(id)) ? [] : ids
+      return cible ? definirMatieres(aEnregistrer, cible) : definirMatieres(aEnregistrer)
+    },
     onSuccess: (reponse) => {
       queryClient.setQueryData(["matieres", cursusId, cible?.profilId ?? null], reponse)
       CLES_A_RELIRE.forEach((cle) => queryClient.invalidateQueries({ queryKey: cle }))
@@ -128,7 +144,7 @@ export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => vo
   const inchange = brouillon === null
   return (
     <div className="flex flex-col gap-3">
-      <p className="text-sm text-muted-foreground">{t("matieres.aide")}</p>
+      <p className="text-sm text-muted-foreground">{t(modeSerie ? "matieres.aide_serie" : "matieres.aide")}</p>
       {regles && choisies.length > 0 && (
         <p className="text-sm font-medium" aria-live="polite">
           {tn(regles.minimum !== null ? "matieres.compteur_plage" : "matieres.compteur_max", choisies.length, {
@@ -184,7 +200,9 @@ export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => vo
         <Button
           size="sm"
           className="min-h-9 rounded-full"
-          disabled={(inchange && !aDefaut) || enregistrer.isPending}
+          // Au GCE le choix proposé par défaut (les matières obligatoires) s'enregistre tel quel ; en mode série,
+          // « tout coché » n'est pas un choix : rien à enregistrer tant que l'élève n'a rien retiré.
+          disabled={(inchange && !(aDefaut && !modeSerie)) || enregistrer.isPending}
           onClick={() => enregistrer.mutate(choisies)}
         >
           {t("matieres.enregistrer")}
@@ -195,7 +213,7 @@ export function ChoixMatieres({ onEnregistre, cible }: { onEnregistre?: () => vo
             variant="ghost"
             className="min-h-9 rounded-full"
             disabled={enregistrer.isPending}
-            onClick={() => setBrouillon([])}
+            onClick={() => setBrouillon(modeSerie ? idsTous : [])}
           >
             {t("matieres.toutes")}
           </Button>
@@ -266,7 +284,11 @@ export function BandeauMatieres() {
  */
 export function InvitationMatieres() {
   const { t } = useI18n()
-  const { actif, data } = useMatieres()
+  const { user } = useAuth()
+  // Sur l'accueil, le GCE seulement : sans série, le choix y décide de tout le plan. Ailleurs la série fixe
+  // l'essentiel, et l'invitation vit sur « Ma progression » (InviteChoixMatieres), là où l'écart se voit - sans
+  // une requête de plus à chaque ouverture de l'accueil.
+  const { actif, data } = useMatieres(undefined, estGce(user?.cursus_prepare))
   const [ouvert, setOuvert] = useState(false)
 
   const nbChoix = data?.officielles?.length || data?.disponibles.length || 0
@@ -299,8 +321,40 @@ export function InvitationMatieres() {
   )
 }
 
-/** Dans la page du compte : la section « Mes matières », seulement pour un élève du GCE. */
+/**
+ * Sur « Ma progression », au-dessus de la liste des matières : « Tu ne passes pas toutes ces matières ? ». Une
+ * ligne discrète qui ouvre le choix sur place, pour tout examen. Disparaît dès qu'un choix est enregistré (le
+ * bandeau « Tu vois seulement tes N matières » prend le relais) et quand il n'y a rien à choisir.
+ */
+export function InviteChoixMatieres({ className }: { className?: string }) {
+  const { t } = useI18n()
+  const { actif, data } = useMatieres()
+  const [ouvert, setOuvert] = useState(false)
+
+  const nbChoix = data?.officielles?.length || data?.disponibles.length || 0
+  if (!actif || !data || data.choisies.length > 0 || nbChoix < 2) return null
+
+  return (
+    <div className={cn("rounded-2xl border border-border bg-card/60 p-4", className)}>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <p className="text-sm text-muted-foreground">{t("matieres.invite_progression")}</p>
+        {!ouvert && (
+          <Button size="sm" variant="outline" className="min-h-9 shrink-0 rounded-full" onClick={() => setOuvert(true)}>
+            {t("matieres.invitation_bouton")}
+          </Button>
+        )}
+      </div>
+      {ouvert && (
+        <div className="mt-4 border-t border-border pt-4">
+          <ChoixMatieres onEnregistre={() => setOuvert(false)} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** Dans la page du compte : la section « Mes matières », dès qu'un examen est préparé. */
 export function useAfficherChoixMatieres(): boolean {
   const { user } = useAuth()
-  return estGce(user?.cursus_prepare)
+  return Boolean(user?.cursus_prepare)
 }

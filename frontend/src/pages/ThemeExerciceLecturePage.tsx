@@ -38,6 +38,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
 import { EtapeSuivante, usePositionDansLaSeance } from "@/components/BarreSeance"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { PartReussie } from "@/components/PartReussie"
 import { exerciceAnchorId } from "@/components/EpreuveSommaire"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { PublierContexte } from "@/components/guides/PublierContexte"
@@ -101,9 +102,15 @@ export function ThemeExerciceLecturePage() {
   const cursusId = searchParams.get("cursus") ?? ""
   const contexte = cursusId && subjectCode ? `?subject=${subjectCode}&cursus=${cursusId}` : ""
 
+  // Cette lecture répond aussi à un visiteur (aperçu, corrigés masqués) : elle ne renvoie donc jamais 401, et rien
+  // ne la relançait une fois la session rétablie. Sur un chargement à froid (rechargement, lien partagé), elle
+  // partait avant le renouvellement du jeton, et un abonné restait devant « Correction réservée aux abonnés »
+  // jusqu'à recharger à la main. On attend donc de savoir qui lit, et la clé distingue visiteur et connecté.
+  const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { data, isLoading, isError, error, refetch } = useQuery({
-    queryKey: ["exercice-lecture", tagId, exerciseId],
+    queryKey: ["exercice-lecture", tagId, exerciseId, isAuthenticated],
     queryFn: ({ signal }) => getExerciceLecture(Number(tagId), Number(exerciseId), signal),
+    enabled: !authLoading,
     // Un exercice introuvable ne le sera pas davantage au 3e essai : réponse immédiate.
     retry: (essais, erreur) => !(erreur instanceof ApiError && erreur.status === 404) && essais < 2,
   })
@@ -434,6 +441,8 @@ function Lecture({ data, country, suivant, lienSuivant, retourListe, cursusId, d
 
       {acces ? (
         <FinExercice
+          points={exercise.points}
+          partInitiale={exercise.part_reussie}
           exerciseId={exercise.id}
           faitInitial={exercise.fait}
           suivant={suivant}
@@ -553,10 +562,13 @@ function CarteQuestion({
  * devient l'action principale.
  */
 function FinExercice({
-  exerciseId, faitInitial, suivant, lienSuivant, retourListe, dernier,
+  exerciseId, faitInitial, points, partInitiale, suivant, lienSuivant, retourListe, dernier,
 }: {
   exerciseId: number
   faitInitial: boolean
+  /** Barème de l'exercice et part déjà déclarée réussie : de quoi répondre à « Qu'as-tu réussi ? » (voir PartReussie). */
+  points?: string | null
+  partInitiale?: number | null
   suivant?: ThemeExercice
   lienSuivant?: string
   retourListe: string
@@ -646,6 +658,14 @@ function FinExercice({
           </Button>
         ) : null}
       </div>
+      {isAuthenticated && fait && (
+        <PartReussie
+          exerciseId={exerciseId}
+          points={points}
+          initiale={partInitiale}
+          className="mt-4 border-t border-border pt-4"
+        />
+      )}
     </div>
     {/* Rien hors séance (voir usePositionDansLaSeance). */}
     <EtapeSuivante />

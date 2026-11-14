@@ -90,6 +90,20 @@ class BanqueTests(ErreursFixture):
 
         self.assertEqual(banque_d_erreurs(self.profil, self.cursus), [])
 
+    def test_une_matiere_que_l_eleve_ne_passe_plus_sort_de_la_banque(self):
+        self.repondre(self.item("m0"), "ECHEC")
+        self.repondre(self.item("o0", subject=self.physique, theme=self.optique), "ECHEC")
+        self.assertEqual(compter_erreurs(self.profil, self.cursus), 2)
+
+        self.profil.matieres_passees.set([self.maths])
+
+        self.assertEqual([item.subject for item, _jour in banque_d_erreurs(self.profil, self.cursus)], [self.maths])
+
+        # « Voir seulement mes matières » éteint : tout revient, l'inscription n'a pas changé.
+        self.profil.voir_seulement_mes_matieres = False
+        self.profil.save(update_fields=["voir_seulement_mes_matieres"])
+        self.assertEqual(compter_erreurs(self.profil, self.cursus), 2)
+
     def test_le_resume_range_matieres_et_themes_par_nombre_d_erreurs(self):
         for i in range(3):
             self.repondre(self.item(f"d{i}"), "ECHEC")

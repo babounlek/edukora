@@ -13,7 +13,7 @@ vi.mock("@/api/endpoints", () => ({ getMatieres, definirMatieres, definirAfficha
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: utilisateur.current }) }))
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }))
 
-import { BandeauMatieres, ChoixMatieres, InvitationMatieres } from "./ChoixMatieres"
+import { BandeauMatieres, ChoixMatieres, InvitationMatieres, InviteChoixMatieres } from "./ChoixMatieres"
 
 const DISPONIBLES = [
   { id: 1, code: "GCE_MATHS", label: "Mathematics" },
@@ -287,7 +287,7 @@ describe("« Voir seulement mes matières »", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument()
   })
 
-  it("se tait sans choix, hors GCE, ou quand le filtre n'agit pas", async () => {
+  it("se tait sans choix, ou quand le filtre n'agit pas ; il parle aussi à un élève du BAC qui a choisi", async () => {
     getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES })
     const sans = afficher(<BandeauMatieres />)
     await waitFor(() => expect(getMatieres).toHaveBeenCalled())
@@ -301,11 +301,85 @@ describe("« Voir seulement mes matières »", () => {
     sansEffet.unmount()
 
     eleve("BAC")
-    getMatieres.mockClear()
-    const bac = afficher(<BandeauMatieres />)
-    await Promise.resolve()
-    expect(bac.container).toBeEmptyDOMElement()
-    expect(getMatieres).not.toHaveBeenCalled()
+    getMatieres.mockResolvedValue({
+      ...CHOIX, serie_fixe: true, seulement_mes_matieres: true, affichage_restreint: true, nb_affichees: 2,
+    })
+    afficher(<BandeauMatieres />)
+    expect(await screen.findByText("Tu vois seulement tes 2 matières.")).toBeInTheDocument()
+  })
+})
+
+describe("ChoixMatieres quand la série fixe l'essentiel (BEPC, Probatoire, BAC)", () => {
+  const SERIE = [
+    { id: 1, code: "MATHS", label: "Mathématiques" },
+    { id: 2, code: "ALLEMAND", label: "Allemand" },
+    { id: 3, code: "ESPAGNOL", label: "Espagnol" },
+  ]
+
+  beforeEach(() => {
+    eleve("BEPC")
+    getMatieres.mockResolvedValue({ choisies: [], disponibles: SERIE, serie_fixe: true })
+  })
+
+  it("part de tout coché : rien à enregistrer tant que l'élève n'a rien retiré", async () => {
+    afficher(<ChoixMatieres />)
+    expect(await screen.findByRole("button", { name: "Allemand" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByRole("button", { name: "Mathématiques" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByText(/Décoche les matières que tu ne passes pas/)).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Enregistrer" })).toBeDisabled()
+  })
+
+  it("retirer une langue enregistre les matières qui restent", async () => {
+    definirMatieres.mockResolvedValue({ choisies: [1, 3], disponibles: SERIE, serie_fixe: true })
+    afficher(<ChoixMatieres />)
+    fireEvent.click(await screen.findByRole("button", { name: "Allemand" }))
+    expect(screen.getByRole("button", { name: "Allemand" })).toHaveAttribute("aria-pressed", "false")
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([1, 3]))
+  })
+
+  it("« Toutes les matières » recoche tout et enregistre « aucun choix », pas une liste figée", async () => {
+    getMatieres.mockResolvedValue({ choisies: [1, 3], disponibles: SERIE, serie_fixe: true })
+    definirMatieres.mockResolvedValue({ choisies: [], disponibles: SERIE, serie_fixe: true })
+    afficher(<ChoixMatieres />)
+    expect(await screen.findByRole("button", { name: "Allemand" })).toHaveAttribute("aria-pressed", "false")
+    fireEvent.click(screen.getByRole("button", { name: "Toutes les matières" }))
+    expect(screen.getByRole("button", { name: "Allemand" })).toHaveAttribute("aria-pressed", "true")
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([]))
+  })
+
+  it("recocher à la main la matière retirée revient aussi à « aucun choix »", async () => {
+    getMatieres.mockResolvedValue({ choisies: [1, 3], disponibles: SERIE, serie_fixe: true })
+    definirMatieres.mockResolvedValue({ choisies: [], disponibles: SERIE, serie_fixe: true })
+    afficher(<ChoixMatieres />)
+    fireEvent.click(await screen.findByRole("button", { name: "Allemand" }))
+    fireEvent.click(screen.getByRole("button", { name: "Enregistrer" }))
+    await waitFor(() => expect(definirMatieres).toHaveBeenCalledWith([]))
+  })
+})
+
+describe("InviteChoixMatieres (Ma progression)", () => {
+  it("propose le choix à un élève du BAC qui n'a rien retiré, et l'ouvre sur place", async () => {
+    eleve("BAC")
+    getMatieres.mockResolvedValue({ choisies: [], disponibles: DISPONIBLES, serie_fixe: true })
+    afficher(<InviteChoixMatieres />)
+    expect(await screen.findByText("Tu ne passes pas toutes ces matières ?")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Choisir mes matières" }))
+    expect(await screen.findByRole("button", { name: "Mathematics" })).toHaveAttribute("aria-pressed", "true")
+  })
+
+  it("se tait une fois un choix enregistré, et quand il n'y a rien à choisir", async () => {
+    getMatieres.mockResolvedValue({ choisies: [1], disponibles: DISPONIBLES, serie_fixe: true })
+    const choisi = afficher(<InviteChoixMatieres />)
+    await waitFor(() => expect(getMatieres).toHaveBeenCalled())
+    await waitFor(() => expect(choisi.container).toBeEmptyDOMElement())
+    choisi.unmount()
+
+    getMatieres.mockResolvedValue({ choisies: [], disponibles: [DISPONIBLES[0]], serie_fixe: true })
+    const seul = afficher(<InviteChoixMatieres />)
+    await waitFor(() => expect(getMatieres).toHaveBeenCalledTimes(2))
+    expect(seul.container).toBeEmptyDOMElement()
   })
 })
 

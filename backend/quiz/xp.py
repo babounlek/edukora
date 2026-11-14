@@ -21,7 +21,7 @@ un élève très actif en quiz libre ne perd pas sa série parce qu'il n'a pas s
 import logging
 
 from django.db import IntegrityError, transaction
-from django.db.models import Sum
+from django.db.models import Q, Sum
 from django.utils import timezone
 
 
@@ -46,6 +46,10 @@ XP_COURS_SECTION = 2
 XP_EXERCICE = 5
 XP_COURS_LU = 3  # un cours lu jusqu'au bout (voir access.views.cours_lu) : le geste de lire, un peu moins que celui de comprendre
 PLAFOND_ACTIVITE_JOUR = 15
+# Un examen blanc passé en conditions réelles (chrono ou papier) puis rendu : le plus exigeant des efforts, jusqu'ici le seul
+# qui ne rapportait rien. Vaut l'objectif par défaut : le jour compte pour la série (voir quiz.serie). Une fois par jour,
+# jamais pour un entraînement libre ni une copie rendue vide ; hors plafond d'activité, qui ne vise que les cases cochées.
+XP_SIMULATION = 20
 
 # Seuils d'XP cumulée des niveaux (rang 1 à 5). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.
 NIVEAUX = (0, 60, 200, 500, 1000)
@@ -151,6 +155,20 @@ def crediter_activite(profil, source, reference, points):
     if points <= 0:
         return None
     return _crediter(profil, jour, source, points, reference=reference)
+
+
+def crediter_simulation(profil, simulation_id):
+    """
+    Crédite un examen blanc terminé (voir simulations.views._complete) : None s'il a déjà rapporté, ou si une simulation a
+    déjà rapporté aujourd'hui (rendre dix copies vides à la suite ne doit pas gonfler un compteur).
+    """
+    reference = f"simulation:{simulation_id}"
+    jour = timezone.localdate()
+    if GainXP.objects.filter(profil=profil, source=SourceXP.SIMULATION).filter(
+        Q(reference=reference) | Q(jour=jour),
+    ).exists():
+        return None
+    return _crediter(profil, jour, SourceXP.SIMULATION, XP_SIMULATION, reference=reference)
 
 
 def niveau_du_profil(profil):

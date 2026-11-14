@@ -1140,10 +1140,11 @@ export function marquerEtapeOuverte(cle: string) {
  * access.views.marquer_exercice_fait). Rien n'est jamais déduit d'une ouverture de
  * page : un suivi deviné serait pire que pas de suivi.
  */
-export function marquerExerciceFait(exerciseId: number, fait: boolean) {
-  return apiRequest<{ exercise_id: number; fait: boolean; xp_gagne?: number; xp_jour?: EtatXp }>(
+/** `partReussie` (0, 50, 75 ou 100), facultatif : ce que l'élève déclare avoir réussi de l'exercice. */
+export function marquerExerciceFait(exerciseId: number, fait: boolean, partReussie?: number) {
+  return apiRequest<{ exercise_id: number; fait: boolean; part_reussie?: number | null; xp_gagne?: number; xp_jour?: EtatXp }>(
     `/access/exercices/${exerciseId}/fait/`,
-    { method: "POST", body: { fait } },
+    { method: "POST", body: partReussie === undefined ? { fait } : { fait, part_reussie: partReussie } },
   )
 }
 

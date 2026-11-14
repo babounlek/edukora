@@ -47,12 +47,21 @@ class ExerciceFait(models.Model):
     Le pendant de "J'ai fini" sur la séance du jour (voir quiz.SeanceJournaliere) :
     même principe, l'élève dit ce qu'il a fait. On ne prétend pas savoir s'il l'a
     RÉUSSI - un exercice d'annale se lit et se compare à son corrigé, il ne se note
-    pas automatiquement.
+    pas automatiquement. Ce qu'il en a réussi, c'est encore lui qui le dit, s'il le
+    veut (`part_reussie`) : une déclaration de plus, jamais une note calculée.
     """
+
+    # Les quatre réponses à « Qu'as-tu réussi ? » : rien, la moitié, presque tout, tout.
+    PARTS_REUSSIES = (0, 50, 75, 100)
 
     profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="exercices_faits")
     exercise = models.ForeignKey("catalog.Exercise", on_delete=models.CASCADE, related_name="faits")
     fait_at = models.DateTimeField(auto_now_add=True)
+    part_reussie = models.PositiveSmallIntegerField(
+        null=True, blank=True,
+        help_text="Part de l'exercice que l'élève déclare avoir réussie, en % (0, 50, 75 ou 100). "
+                  "Vide : il a dit l'avoir fait sans se noter.",
+    )
 
     class Meta:
         ordering = ["-fait_at"]

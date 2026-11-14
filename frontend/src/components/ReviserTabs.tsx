@@ -31,6 +31,8 @@ export function ReviserTabs() {
     { to: coursListPath(country), label: t("nav.cours"), actif: pathname.startsWith(coursListPath(country)) },
     { to: themesFrequentsPath(country), label: t("qd.onglet_themes"), actif: pathname.startsWith(themesFrequentsPath(country)) },
     { to: "/quiz", label: t("qd.onglet_quiz"), actif: pathname.startsWith("/quiz") },
+    // Les annales passées en conditions d'examen : la copie à reprendre et les notes (voir MesExamensBlancsPage).
+    { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs") },
   ]
 
   // Sans conteneur ni marge propres : rendu comme premier enfant du conteneur que
@@ -39,14 +41,15 @@ export function ReviserTabs() {
   return (
     <nav aria-label={t("nav.reviser")} className="mb-6">
       <div className="flex items-end justify-between gap-3 border-b border-border">
-        <div className="flex gap-1">
+        {/* Cinq onglets ne tiennent pas dans 375 px : la rangée défile de côté plutôt que de rogner un libellé. */}
+        <div className="flex min-w-0 gap-1 overflow-x-auto [scrollbar-width:none]">
           {onglets.map((onglet) => (
             <Link
               key={onglet.to}
               to={onglet.to}
               aria-current={onglet.actif ? "page" : undefined}
               className={cn(
-                "-mb-px border-b-2 px-3 py-2 text-sm font-medium transition-colors",
+                "-mb-px shrink-0 whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors",
                 onglet.actif
                   ? "border-primary text-primary"
                   : "border-transparent text-muted-foreground hover:border-border hover:text-foreground",

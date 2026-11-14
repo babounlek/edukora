@@ -5,6 +5,8 @@ import { t, useI18n } from "@/lib/i18n"
 
 interface EnonceToggleProps {
   children?: ReactNode
+  /** Ouvert d'emblée : en mode « Essaie d'abord », l'élève doit lire l'énoncé avant de chercher. */
+  defaultOpen?: boolean
 }
 
 /**
@@ -20,9 +22,9 @@ interface EnonceToggleProps {
  * les `svg` (mesuré), le bouton garde son style intact sous l'article `prose` du
  * lecteur d'épreuve.
  */
-export function EnonceToggle({ children }: EnonceToggleProps) {
+export function EnonceToggle({ children, defaultOpen = false }: EnonceToggleProps) {
   useI18n()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(defaultOpen)
   const idContenu = useId()
 
   return (

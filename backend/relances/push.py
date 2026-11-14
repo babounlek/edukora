@@ -16,11 +16,13 @@ import logging
 from collections import Counter
 from datetime import timedelta
 
+from catalog.models import ExamSession
 from django.conf import settings
 from django.db import IntegrityError
 from django.utils import timezone
 
 from quiz.models import JourXP, QuizAnswer, SeanceJournaliere, StatutSeance
+from quiz import textes
 from quiz.serie import serie_de_jours
 from quiz.services import revisions_dues
 from quiz.xp import etat_du_jour
@@ -89,6 +91,10 @@ def composer_push(user, maintenant=None):
     etat = etat_du_jour(profil)
     prenom = _prenom(user)
     pays = cursus.country.code.lower()
+    # Dans la langue du cursus visé, comme le reste des textes serveur (voir quiz.textes) : un élève du GCE recevait
+    # son rappel en français.
+    if textes.langue_de(cursus) == textes.EN:
+        return _composer_push_en(profil, cursus, serie, etat, prenom, pays)
 
     if serie["jours"] >= SERIE_MINIMUM_ANNONCEE and not serie["actif_aujourdhui"]:
         title = f"Ta série de {serie['jours']} jours se prolonge ce soir"
@@ -104,6 +110,28 @@ def composer_push(user, maintenant=None):
             morceaux.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui.")
         body = " ".join(morceaux) or "Environ 25 minutes, choisies pour toi."
     return {"title": title, "body": body, "url": f"/{pays}", "tag": "rappel-du-jour"}
+
+
+def _composer_push_en(profil, cursus, serie, etat, prenom, pays):
+    """Le rappel du jour d'un élève du GCE : mêmes faits, même ton, en anglais."""
+    if serie["jours"] >= SERIE_MINIMUM_ANNONCEE and not serie["actif_aujourdhui"]:
+        title = f"Your {serie['jours']}-day streak continues tonight"
+        body = f"{etat['objectif']} points are enough, about 25 minutes."
+    else:
+        title = f"{prenom}, your daily session is ready" if prenom else "Your daily session is ready"
+        morceaux = []
+        compte = ExamSession.compte_a_rebours_pour(cursus)
+        if compte and compte["jours_restants"] >= 0:
+            jours = compte["jours_restants"]
+            if compte.get("estimee"):
+                morceaux.append(f"Your exam ({cursus}) is coming up: about {round(jours / 30)} months left.")
+            else:
+                morceaux.append(f"{jours} day{'s' if jours != 1 else ''} until your exam ({cursus}).")
+        dues = revisions_dues(profil, cursus).count()
+        if dues:
+            morceaux.append(f"{dues} topic{'s' if dues > 1 else ''} to review today.")
+        body = " ".join(morceaux) or "About 25 minutes, chosen for you."
+    return {"title": title, "body": body, "url": f"/en/{pays}", "tag": "rappel-du-jour"}
 
 
 def destinataires_push(maintenant=None):

@@ -70,7 +70,9 @@ describe("QuizResultPage : un visiteur qui a joué avec un compte invité", () =
     afficher()
     await screen.findByText("Garde ton quiz et tes points.")
 
-    expect(screen.queryByText(/Changer de rythme|rythme/i)).not.toBeInTheDocument()
+    // Le réglage du rythme, pas le mot : la mascotte dit parfois « garder le rythme » (mascotte.succes_3),
+    // tirée au hasard, et le test échouait alors sans que rien du compte ne soit affiché.
+    expect(screen.queryByText(/Changer (de|mon) rythme/i)).not.toBeInTheDocument()
     expect(screen.queryByRole("button", { name: /Partager mon score/i })).not.toBeInTheDocument()
     expect(screen.queryByText("Invitation aux rappels")).not.toBeInTheDocument()
     expect(screen.queryByRole("link", { name: "Mon compte" })).not.toBeInTheDocument()
@@ -106,7 +108,8 @@ describe("QuizResultPage : un connecté", () => {
     afficher()
 
     expect(await screen.findByText("Invitation aux rappels")).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "Mon compte" })).toBeInTheDocument()
+    // « Mon compte » n'est plus une sortie du quiz (audit du 2026-11-13) : il reste dans l'en-tête et la page du compte.
+    expect(screen.queryByRole("link", { name: "Mon compte" })).not.toBeInTheDocument()
     expect(screen.getByRole("button", { name: /Partager mon score/i })).toBeInTheDocument()
     expect(screen.queryByText("Garde ton quiz et tes points.")).not.toBeInTheDocument()
   })

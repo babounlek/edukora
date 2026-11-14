@@ -63,7 +63,7 @@ describe("ReviserTabs", () => {
   it("est absente de la page de recherche, qui a déjà son grand champ", () => {
     monter("/cm/recherche")
     expect(screen.queryByRole("link", { name: "Rechercher sur tout le site" })).not.toBeInTheDocument()
-    expect(screen.getAllByRole("link")).toHaveLength(4)
+    expect(screen.getAllByRole("link")).toHaveLength(5)
   })
 
   it("le raccourci « / » appelle l'ouverture, sauf quand on écrit dans un champ", async () => {

@@ -19,6 +19,7 @@ from catalog.libelles import libelle_cursus
 from catalog.models import EXAMENS_GCE, Lesson, LessonType, Question, TypeReponse
 from inedit import notation, rapport
 from inedit.models import CausePerte, ResultatDeclare
+from quiz import xp
 from quiz.services import enregistrer_resultat_pour_revision
 from users.profils import profil_actif
 
@@ -118,6 +119,10 @@ def _complete(simulation):
     simulation.save(update_fields=["submitted_at"])
     bilan, exercices = _bilan(simulation)
     notation.enregistrer_note(simulation, bilan)
+    # Un examen blanc passé en conditions réelles et réellement entamé compte pour la série (voir quiz.xp.XP_SIMULATION) :
+    # pas un entraînement libre (le chrono n'a jamais tourné), pas une copie rendue sans une seule réponse.
+    if simulation.exam_mode_started_at is not None and simulation.reponses.exists():
+        xp.crediter_simulation(simulation.profil, simulation.pk)
     # Exercices laissés de côté : leur thème est une faiblesse comme un exercice raté.
     reponses = {r.question_id: r for r in simulation.reponses.all()}
     if simulation_a_la_question(simulation.lesson):
@@ -475,21 +480,30 @@ def simulation_detail(request, simulation_id):
 @api_view(["GET"])
 def mes_simulations(request):
     simulations = (
-        SimulationEpreuve.objects.filter(profil=profil_actif(request)).select_related("lesson").order_by("-started_at")
+        SimulationEpreuve.objects.filter(profil=profil_actif(request))
+        .select_related("lesson__subject__country").order_by("-started_at")
     )
-    return Response([
-        {
+    resultat = []
+    for s in simulations:
+        # Une copie dont le chrono est écoulé se rend ici même, comme à l'ouverture : sans cela la liste la
+        # montrerait « en cours » alors qu'elle est terminée.
+        _auto_complete_if_expired(s)
+        resultat.append({
             "id": s.id,
             "epreuve": s.lesson_id,
             "epreuve_titre": s.lesson.title,
+            "epreuve_slug": s.lesson.slug,
+            "matiere": s.lesson.subject.label,
+            "pays": s.lesson.subject.country.code.lower(),
             "started_at": s.started_at,
             "submitted_at": s.submitted_at,
+            # Le chrono a démarré (conditions réelles ou papier) et la copie n'est pas rendue : à reprendre en priorité.
+            "chrono_en_cours": s.exam_mode_started_at is not None and s.submitted_at is None,
             "note_obtenue": notation.en_nombre(s.note_obtenue),
             "bareme_snapshot": notation.en_nombre(s.bareme_snapshot),
             "score_obtenu": s.score_obtenu,
-        }
-        for s in simulations
-    ])
+        })
+    return Response(resultat)
 
 
 def _as_bool(valeur):
