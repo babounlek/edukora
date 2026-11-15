@@ -384,7 +384,7 @@ class QuizAnswer(models.Model):
 class RevisionSchedule(models.Model):
     """
     Prochaine échéance de révision d'un thème pour un profil, sur un cursus donné -
-    algorithme Leitner à 3 paliers (J+1, J+3, J+7, voir LEITNER_INTERVALS_JOURS dans
+    algorithme Leitner à 5 paliers (J+1, 3, 7, 16, 35, voir LEITNER_INTERVALS_JOURS dans
     quiz.services) déclenché par les réponses en Quiz (voir
     quiz.services.enregistrer_resultat_pour_revision, appelé depuis
     quiz.views.answer_question, seul appelant).

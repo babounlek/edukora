@@ -1757,6 +1757,8 @@ class QuizApiTests(TestCase):
             [{
                 "theme": "dérivation", "theme_id": theme.pk, "subject_code": "MATHS",
                 "total": 1, "reussies": 1, "cours": None,
+                # R6 : un premier quiz sur ce thème le fait passer de « jamais tenté » à « découvert ».
+                "niveau_avant": None, "niveau_apres": "decouvert",
             }],
         )
         self.assertIsNotNone(QuizSession.objects.get(pk=session_id).completed_at)
@@ -3225,11 +3227,10 @@ class ResumeParcoursTests(TestCase):
         item = _make_competence_item(self.maths, self.cursus, theme=theme, numero="1")
         session = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
 
-        # 3 échecs (le dernier fixe le palier à 0), puis 3 réussites consécutives qui
-        # font avancer les 3 paliers (LEITNER_INTERVALS_JOURS) et graduent le thème
-        # hors de la file au dernier succès - moyenne finale : 3 réussies / 6 = 50 %,
-        # nettement sous SEUIL_MAITRISE (70).
-        for ordre, resultat in enumerate((False, False, False, True, True, True), start=1):
+        # 3 échecs (le dernier fixe le palier à 0), puis autant de réussites consécutives que de paliers
+        # (LEITNER_INTERVALS_JOURS) : le thème gradue hors de la file au dernier succès - moyenne finale :
+        # 5 réussies / 8 = 63 %, sous SEUIL_MAITRISE (70).
+        for ordre, resultat in enumerate((False, False, False) + (True,) * len(LEITNER_INTERVALS_JOURS), start=1):
             quiz_question = QuizQuestion.objects.create(session=session, competence_item=item, ordre=ordre)
             QuizAnswer.objects.create(
                 quiz_question=quiz_question,

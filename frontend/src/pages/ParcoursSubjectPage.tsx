@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { estDore, seuilOr as seuilOrFrequence } from "@/lib/frequenceOr"
 import { coursDetailPath } from "@/lib/countryPath"
+import { JaugeNiveau } from "@/components/JaugeNiveau"
 import { SEUIL_MAITRISE } from "@/lib/maitrise"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { STATUTS } from "@/lib/statutsProgression"
@@ -330,6 +331,7 @@ function LigneSavoir({
             </p>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5">
               <BadgeSavoir savoir={savoir} />
+              <JaugeNiveau niveau={savoir.niveau} />
               {isModeFrequence && <Frequence savoir={savoir} />}
             </div>
             <SansCoursIndice savoir={savoir} />

@@ -14,6 +14,7 @@ import type {
   CoursContent,
   CoursPreview,
   BanqueErreurs,
+  Reussites,
   BilanPeriode,
   CarnetEntree,
   CibleEtude,
@@ -1188,6 +1189,11 @@ export function getCarnet(signal?: AbortSignal) {
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */
 export function refaireLesRatees(sessionId: number) {
   return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
+}
+
+/** « Mes réussites » : niveau, jalons d'étude et record de série du profil actif. */
+export function getReussites(signal?: AbortSignal) {
+  return apiRequest<Reussites>("/quiz/reussites/", { signal })
 }
 
 /** « Mes erreurs » : les questions ratées et pas encore réussies de ce cursus, par matière. */

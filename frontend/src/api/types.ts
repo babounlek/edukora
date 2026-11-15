@@ -163,6 +163,23 @@ export interface NiveauXp {
   seuil_suivant: number | null
 }
 
+/** Un jalon d'étude de « Mes réussites » (voir quiz.reussites) : `valeur` est plafonnée à `cible`. */
+export interface Jalon {
+  code: string
+  famille: "quiz" | "themes" | "examens" | "serie"
+  cible: number
+  valeur: number
+  obtenu: boolean
+}
+
+export interface Reussites {
+  niveau: NiveauXp
+  jalons: Jalon[]
+  /** Code du premier jalon pas encore atteint, null quand tous le sont. */
+  prochain: string | null
+  serie: { actuelle: number; record: number; repos_pris: boolean }
+}
+
 export interface EtatXp {
   xp: number
   objectif: number
@@ -1104,6 +1121,9 @@ export interface QuizThemeScore {
   subject_code: string | null
   total: number
   reussies: number
+  // La jauge avant et après ce quiz ; absents d'un rejeu, d'un quiz chronométré ou d'une question historique.
+  niveau_avant?: NiveauTheme | null
+  niveau_apres?: NiveauTheme | null
   // Renseigné seulement pour un thème sous le seuil de maîtrise ET couvert par un cours
   // publié (voir quiz.views._resultat_payload). Absent des résultats d'épreuves inédites.
   cours?: QuizCoursSuggere | null
@@ -1181,6 +1201,9 @@ export interface ParcoursCours {
   sous_theme: string
 }
 
+/** Les quatre crans de la jauge d'un thème (voir quiz.services.niveau_theme). */
+export type NiveauTheme = "decouvert" | "en_cours" | "solide" | "maitrise"
+
 export interface ParcoursSavoir {
   id: number
   numero: string
@@ -1193,6 +1216,8 @@ export interface ParcoursSavoir {
   // réponse gardée en cache d'avant ces champs.
   nb_reponses?: number
   maitrise?: boolean
+  /** null : jamais tenté. Facultatif : absent d'une réponse gardée en cache d'avant R6. */
+  niveau?: NiveauTheme | null
   en_revision: boolean
   a_lu_le_cours: boolean
   has_quiz: boolean
@@ -1939,6 +1964,7 @@ export interface QuizEnCoursItem {
   subject: number | null
   subject_label: string
   theme: string
+  theme_id?: number | null
   started_at: string
   derniere_reponse_at: string
   nb_repondues: number

@@ -159,7 +159,7 @@ class NiveauTests(ActiviteFixture):
         self.assertEqual((niveau["rang"], niveau["xp_total"], niveau["seuil_suivant"]), (3, 200, 500))
 
     def test_au_sommet_il_n_y_a_pas_de_seuil_suivant(self):
-        GainXP.objects.create(profil=self.profil, jour=timezone.localdate(), source=SourceXP.SEANCE, points=1000)
+        GainXP.objects.create(profil=self.profil, jour=timezone.localdate(), source=SourceXP.SEANCE, points=xp.NIVEAUX[-1])
 
         niveau = xp.niveau_du_profil(self.profil)
 

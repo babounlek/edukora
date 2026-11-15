@@ -7,6 +7,7 @@ import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, sta
 import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { oublierAccueilEnCache } from "@/lib/accueilCache"
+import { ProgressionNiveau } from "@/components/JaugeNiveau"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
@@ -245,6 +246,11 @@ function LigneTheme({
             <span className="font-normal text-muted-foreground"> / {theme.total}</span>
           </span>
         </div>
+        {theme.niveau_apres && (
+          <div className="mt-1">
+            <ProgressionNiveau avant={theme.niveau_avant} apres={theme.niveau_apres} />
+          </div>
+        )}
         <span className="mt-2 block h-1.5 w-full overflow-hidden rounded-full bg-muted">
           <span className={cn("block h-full rounded-full transition-[width] duration-700", tonalite)} style={{ width: `${Math.max(taux, 4)}%` }} />
         </span>

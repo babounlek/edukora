@@ -1,9 +1,13 @@
 import type { NiveauXp } from "@/api/types"
 import { t, type CleI18n } from "@/lib/i18n"
 
-const NOMS: CleI18n[] = ["niveau.nom_1", "niveau.nom_2", "niveau.nom_3", "niveau.nom_4", "niveau.nom_5"]
+const NOMS: CleI18n[] = [
+  "niveau.nom_1", "niveau.nom_2", "niveau.nom_3", "niveau.nom_4", "niveau.nom_5",
+  "niveau.nom_6", "niveau.nom_7", "niveau.nom_8", "niveau.nom_9", "niveau.nom_10",
+  "niveau.nom_11", "niveau.nom_12", "niveau.nom_13", "niveau.nom_14", "niveau.nom_15",
+]
 
-/** Le nom du niveau d'un rang (1 à 5), dans la langue de l'interface ; un rang hors bornes retombe sur le plus proche. */
+/** Le nom du niveau d'un rang (1 à 15), dans la langue de l'interface ; un rang hors bornes retombe sur le plus proche. */
 export function nomNiveau(rang: number): string {
   return t(NOMS[Math.min(Math.max(rang, 1), NOMS.length) - 1])
 }

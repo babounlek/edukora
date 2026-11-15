@@ -39,7 +39,7 @@ from .progression import progression_par_matiere
 from .services import libelle_etape
 from .services import (
     EPREUVES_MINIMUM_FREQUENCE,
-    SEUIL_MAITRISE, AucuneQuestionPlusDure, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
+    SEUIL_MAITRISE, AucuneQuestionPlusDure, niveaux_avant_apres, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
     generer_session, maitrise_par_theme, plan_du_jour, rattacher_quiz_a_la_seance, resume_parcours, revisions_dues,
     BUDGETS_SEANCE_MINUTES, ajuster_duree_seance, cle_etape, etape_ouverte, marquer_etape_ouverte, definir_objectif_matiere, matieres_pour_objectif, objectif_matiere_actif, retirer_objectif_matiere, exercices_du_theme, prochaine_revision, raisons_de_la_seance,
     perimetre_est_vitrine,
@@ -432,6 +432,7 @@ def _resultat_payload(session, request):
                 if not correcte and stats["item_rate"] is None:
                     stats["item_rate"] = quiz_question.competence_item
 
+    niveaux = niveaux_avant_apres(session)
     par_theme_payload = []
     for nom, s in sorted(par_theme.items()):
         entree = {
@@ -444,6 +445,8 @@ def _resultat_payload(session, request):
             "reussies": s["reussies"],
             "cours": None,
         }
+        if s["theme_id"] in niveaux:
+            entree["niveau_avant"], entree["niveau_apres"] = niveaux[s["theme_id"]]
         # Cours suggéré seulement sous le seuil de maîtrise habituel (même barre que
         # partout ailleurs dans l'app, voir quiz.services.SEUIL_MAITRISE) - jamais sous
         # un thème déjà réussi, qui n'a besoin de rien. La séance de calibrage day-one

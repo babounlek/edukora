@@ -11,7 +11,8 @@ describe("niveau", () => {
     expect(nomNiveau(1)).toBe("Débutant")
     expect(nomNiveau(3)).toBe("Costaud")
     expect(nomNiveau(0)).toBe("Débutant")
-    expect(nomNiveau(9)).toBe("Champion")
+    expect(nomNiveau(9)).toBe("Maître")
+    expect(nomNiveau(99)).toBe("Major de promo")
     expect(libelleNiveau(malin)).toBe("Niveau 2 · Malin")
   })
 

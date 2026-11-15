@@ -264,11 +264,18 @@ _REPARTITION_DIAGNOSTIC = {
 _POIDS_THEME_NEUTRE = 1.0
 
 # Paliers de la file de révision espacée (RevisionSchedule) : un thème raté revient
-# demain, puis - à chaque réussite suivante - dans 3 jours, puis 7 jours, avant de
-# graduer hors de la file. Trois paliers seulement (pas cinq/six comme un Leitner
-# classique papier) : suffisant pour couvrir la fenêtre utile avant un examen, sans
-# complexifier l'UI d'une file qui doit rester consultable d'un coup d'œil.
-LEITNER_INTERVALS_JOURS = [1, 3, 7]
+# demain, puis - à chaque réussite suivante, faite À L'ÉCHÉANCE - dans 3, 7, 16 puis 35 jours,
+# avant de graduer hors de la file. Trois paliers jusqu'au 2026-11-14 (J+1, 3, 7) : un thème
+# « gradué » à J+11 au bout de 11 jours n'était pas ancré pour un examen à six mois (audit
+# produit R13). La file reste consultable d'un coup d'œil : un thème n'y figure que le jour
+# de son échéance.
+LEITNER_INTERVALS_JOURS = [1, 3, 7, 16, 35]
+
+# Un thème solide dont la dernière réponse date de plus de 30 jours repasse en file (voir
+# rafraichir_themes_anciens) : la maîtrise s'oublie, et le taux, lui, ne s'efface jamais.
+JOURS_AVANT_RAFRAICHISSEMENT = 30
+RAFRAICHISSEMENTS_MAX_PAR_JOUR = 2
+PALIER_DE_RAFRAICHISSEMENT = 3  # J+16 en cas de réussite : le thème est connu, il ne repart pas de J+1
 
 
 def _items_eligibles(cursus, subject=None, theme=None, savoir=None):
@@ -794,6 +801,65 @@ def maitrise_par_savoir(profil, cursus=None):
     }
 
 
+# R6 (audit 2026-11-13) : la jauge d'un thème a quatre crans, pour qu'un quiz la fasse avancer de façon visible.
+# « solide » est exactement ce que est_maitrise appelait « maîtrisé » (les compteurs ne changent pas) ; « maîtrisé »
+# demande en plus un échantillon plus large et un taux plus haut, pour qu'il se mérite.
+NIVEAU_DECOUVERT, NIVEAU_EN_COURS, NIVEAU_SOLIDE, NIVEAU_MAITRISE = "decouvert", "en_cours", "solide", "maitrise"
+NIVEAUX_THEME = (NIVEAU_DECOUVERT, NIVEAU_EN_COURS, NIVEAU_SOLIDE, NIVEAU_MAITRISE)
+REPONSES_MIN_THEME_MAITRISE_PLEIN = 6
+TAUX_THEME_MAITRISE_PLEIN = 85
+
+
+def niveau_theme(taux, nb_reponses):
+    """
+    Cran de la jauge d'un thème : None (jamais tenté), « decouvert » (moins de REPONSES_MIN_THEME_CONSOLIDE réponses : le
+    travail est compté, pas prouvé), « en_cours » (assez de réponses, taux sous le seuil), « solide » (= est_maitrise),
+    « maitrise » (solide, avec au moins 6 réponses et 85 %).
+    """
+    if not nb_reponses or taux is None:
+        return None
+    if nb_reponses < REPONSES_MIN_THEME_CONSOLIDE:
+        return NIVEAU_DECOUVERT
+    if taux < SEUIL_MAITRISE:
+        return NIVEAU_EN_COURS
+    if nb_reponses >= REPONSES_MIN_THEME_MAITRISE_PLEIN and taux >= TAUX_THEME_MAITRISE_PLEIN:
+        return NIVEAU_MAITRISE
+    return NIVEAU_SOLIDE
+
+
+def niveaux_avant_apres(session):
+    """
+    {theme_id: (niveau avant ce quiz, niveau après)} pour les thèmes de cette session, sur l'historique du profil dans le
+    cursus (mêmes réponses que maitrise_par_theme). Vide pour un rejeu ou un quiz chronométré : ils sont neutres pour la
+    maîtrise, donc ne font rien avancer. Alimente « en cours → solide » de l'écran de résultat.
+    """
+    if session.rejeu_de_id is not None or session.chrono_actif:
+        return {}
+    ids_session = set(session.quiz_questions.filter(competence_item__isnull=False).values_list("competence_item__theme_id", flat=True))
+    if not ids_session:
+        return {}
+    reponses = QuizAnswer.objects.filter(
+        quiz_question__session__profil=session.profil,
+        quiz_question__session__cursus_id=session.cursus_id,
+        quiz_question__competence_item__theme_id__in=ids_session,
+        quiz_question__session__rejeu_de__isnull=True,
+        quiz_question__session__chrono_actif=False,
+    ).select_related("quiz_question__competence_item")  # est_correcte est une propriété : il faut l'objet
+    stats = {}
+    for reponse in reponses:
+        theme_id = reponse.quiz_question.competence_item.theme_id
+        s = stats.setdefault(theme_id, {"avant": [0, 0], "apres": [0, 0]})
+        cumuls = [s["apres"]] if reponse.quiz_question.session_id == session.id else [s["avant"], s["apres"]]
+        for c in cumuls:
+            c[0] += 1
+            c[1] += 1 if reponse.est_correcte else 0
+
+    def niveau(c):
+        return niveau_theme(round(100 * c[1] / c[0]) if c[0] else None, c[0])
+
+    return {theme_id: (niveau(s["avant"]), niveau(s["apres"])) for theme_id, s in stats.items()}
+
+
 def est_maitrise(taux, nb_reponses):
     """
     Un thème (ou un savoir) est-il « maîtrisé » ? Le taux seul ne suffit pas : une unique
@@ -1072,6 +1138,7 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
             "taux": round(100 * reussies / total) if total else None,
             "nb_reponses": total,
             "maitrise": est_maitrise(round(100 * reussies / total) if total else None, total),
+            "niveau": niveau_theme(round(100 * reussies / total) if total else None, total),
             "en_revision": bool(tag_ids & tags_en_revision),
             "a_lu_le_cours": bool(tag_ids & tags_lus),
             "has_quiz": bool(tag_ids & tags_avec_quiz),
@@ -1220,6 +1287,7 @@ def construire_parcours(profil, cursus, subject):
                 "maitrise": est_maitrise(
                     taux_par_savoir.get(savoir.id), stats_par_savoir.get(savoir.id, {}).get("total", 0),
                 ),
+                "niveau": niveau_theme(taux_par_savoir.get(savoir.id), stats_par_savoir.get(savoir.id, {}).get("total", 0)),
                 "en_revision": savoir.id in savoir_ids_en_revision,
                 "a_lu_le_cours": savoir.id in savoir_ids_lus,
                 "has_quiz": savoir.id in savoir_ids_avec_quiz,
@@ -1392,6 +1460,44 @@ EXERCICES_PAR_SEANCE_MAX = 2
 BUDGETS_SEANCE_MINUTES = (10, 25, 45)
 
 
+def rafraichir_themes_anciens(profil, cursus):
+    """
+    Remet « à réviser » (RevisionSchedule, échéance aujourd'hui) les thèmes maîtrisés que l'élève n'a pas touchés depuis
+    JOURS_AVANT_RAFRAICHISSEMENT jours, les plus anciens d'abord, RAFRAICHISSEMENTS_MAX_PAR_JOUR au plus : un thème solide
+    ne doit pas rester « solide » indéfiniment sans avoir été revu. Un thème déjà suivi n'est pas touché. Renvoie la liste
+    des thèmes remis en file.
+    """
+    limite = timezone.now() - timedelta(days=JOURS_AVANT_RAFRAICHISSEMENT)
+    reponses = (
+        QuizAnswer.objects.filter(
+            quiz_question__session__profil=profil, quiz_question__session__cursus=cursus,
+            quiz_question__competence_item__isnull=False,
+            quiz_question__session__rejeu_de__isnull=True, quiz_question__session__chrono_actif=False,
+        )
+        .select_related("quiz_question__competence_item")
+    )
+    stats = {}
+    for reponse in reponses:
+        item = reponse.quiz_question.competence_item
+        s = stats.setdefault(item.theme_id, {"subject_id": item.subject_id, "total": 0, "reussies": 0, "derniere": reponse.answered_at})
+        s["total"] += 1
+        s["reussies"] += 1 if reponse.est_correcte else 0
+        s["derniere"] = max(s["derniere"], reponse.answered_at)
+    deja_suivis = set(RevisionSchedule.objects.filter(profil=profil, cursus=cursus).values_list("theme_id", flat=True))
+    anciens = sorted(
+        (theme_id for theme_id, s in stats.items()
+         if theme_id not in deja_suivis and s["derniere"] < limite
+         and est_maitrise(round(100 * s["reussies"] / s["total"]), s["total"])),
+        key=lambda theme_id: stats[theme_id]["derniere"],
+    )[:RAFRAICHISSEMENTS_MAX_PAR_JOUR]
+    for theme_id in anciens:
+        RevisionSchedule.objects.get_or_create(
+            profil=profil, cursus=cursus, theme_id=theme_id,
+            defaults={"subject_id": stats[theme_id]["subject_id"], "palier": PALIER_DE_RAFRAICHISSEMENT, "due_at": timezone.localdate()},
+        )
+    return anciens
+
+
 def plan_du_jour(profil, cursus, date=None):
     """
     La séance du jour, créée une fois puis relue telle quelle (voir
@@ -1423,6 +1529,7 @@ def plan_du_jour(profil, cursus, date=None):
     if existante is not None:
         return existante
 
+    rafraichir_themes_anciens(profil, cursus)
     proposition = _construire_seance(profil, cursus)
     if proposition is None:
         return None

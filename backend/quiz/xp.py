@@ -51,8 +51,10 @@ PLAFOND_ACTIVITE_JOUR = 15
 # jamais pour un entraînement libre ni une copie rendue vide ; hors plafond d'activité, qui ne vise que les cases cochées.
 XP_SIMULATION = 20
 
-# Seuils d'XP cumulée des niveaux (rang 1 à 5). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.
-NIVEAUX = (0, 60, 200, 500, 1000)
+# Seuils d'XP cumulée des niveaux (rang 1 à 15). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.
+# Cinq rangs jusqu'au 2026-11-14 : le dernier tombait au bout de quelques semaines à l'objectif par défaut, et plus rien
+# ne bougeait jusqu'à l'examen (audit produit R12). Les cinq premiers seuils sont inchangés : personne ne perd son rang.
+NIVEAUX = (0, 60, 200, 500, 1000, 1600, 2400, 3400, 4600, 6000, 7600, 9400, 11400, 13600, 16000)
 
 
 def points_de_base(answer):

@@ -55,6 +55,7 @@ const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default:
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
 const MesExamensBlancsPage = lazy(() => import("@/pages/MesExamensBlancsPage").then((m) => ({ default: m.MesExamensBlancsPage })))
+const MesReussitesPage = lazy(() => import("@/pages/MesReussitesPage").then((m) => ({ default: m.MesReussitesPage })))
 const MesErreursPage = lazy(() => import("@/pages/MesErreursPage").then((m) => ({ default: m.MesErreursPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
 const DevenirRevendeurPage = lazy(() => import("@/pages/DevenirRevendeurPage").then((m) => ({ default: m.DevenirRevendeurPage })))
@@ -196,6 +197,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/erreurs" element={<MesErreursPage />} />
+                      <Route path="/reussites" element={<MesReussitesPage />} />
                       <Route path="/examens-blancs" element={<MesExamensBlancsPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
                       <Route path="/espace-revendeur" element={<EspaceRevendeurPage />} />
