@@ -46,7 +46,7 @@ export function MesErreursPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
         <RotateCcw className="size-3.5" />
         {t("erreurs.titre")}

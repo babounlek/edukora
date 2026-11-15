@@ -67,7 +67,7 @@ export function MesReussitesPage() {
   if (!authLoading && !isAuthenticated) return <Navigate to="/connexion" state={{ from: "/reussites" }} replace />
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
         <Award className="size-3.5" />
         {t("reussites.titre")}
