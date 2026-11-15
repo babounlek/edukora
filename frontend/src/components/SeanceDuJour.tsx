@@ -321,7 +321,10 @@ function SeanceAFaire({
   const ignores = cleQuizEnCours ? lireQuizIgnores(cleQuizEnCours) : []
   const quizAReprendre = quizEnCours?.find(
     (s) => !ignores.includes(s.id) && s.mode !== "DIAGNOSTIC" && s.rejeu_de === null && !s.chrono_ecoule
-      && s.cursus === plan.cursus?.id,
+      && s.cursus === plan.cursus?.id
+      // Le quiz de CETTE séance : même thème, sinon « Quiz express » rouvrait un quiz en cours d'une autre
+      // matière ou d'un autre thème (signalé 2026-11-15 : Effet photoélectrique renvoyait ailleurs).
+      && (!seance.theme || s.theme_id === seance.theme.id),
   )
   const lienDeLEtape = (etape: EtapeSeance) =>
     etape.type === "quiz" && quizAReprendre ? `/quiz/session/${quizAReprendre.id}` : lienEtape(etape, country, plan)

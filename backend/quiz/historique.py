@@ -349,6 +349,7 @@ def en_cours(request):
             "subject": s.subject_id,
             "subject_label": s.subject.label if s.subject_id else "",
             "theme": s.theme.name if s.theme_id else "",
+            "theme_id": s.theme_id,
             "started_at": s.started_at,
             "derniere_reponse_at": s.derniere_reponse,
             "nb_repondues": s.nb_repondues,

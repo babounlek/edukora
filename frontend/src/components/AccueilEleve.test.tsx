@@ -383,12 +383,31 @@ describe("AccueilEleve", () => {
       }))
       listQuizEnCours.mockResolvedValue([
         { id: 321, mode: "PRATIQUE", cursus: 4, cursus_display: "BAC D", subject: 1, subject_label: "Maths", theme: "x",
+          theme_id: 9,
           started_at: "2026-11-07T06:00:00Z", derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 4, total_questions: 7,
           a_terminer: false, rejeu_de: null },
       ])
       afficher()
       const bouton = await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })
       await vi.waitFor(() => expect(bouton).toHaveAttribute("href", "/quiz/session/321"))
+    })
+
+    it("ne rouvre pas le quiz en cours d'un AUTRE thème : le bouton lance le quiz de la séance", async () => {
+      const base = accueil()
+      const etapes = (base.plan.seance!.etapes as EtapeSeance[]).map((e) => ({ ...e, ouverte: e.type !== "quiz" }))
+      getAccueil.mockResolvedValue(accueil({
+        plan: { ...base.plan, seance: { ...base.plan.seance!, etapes } },
+      }))
+      listQuizEnCours.mockResolvedValue([
+        { id: 322, mode: "PRATIQUE", cursus: 4, cursus_display: "BAC D", subject: 2, subject_label: "Physique", theme: "autre",
+          theme_id: 77,
+          started_at: "2026-11-07T06:00:00Z", derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 4, total_questions: 7,
+          a_terminer: false, rejeu_de: null },
+      ])
+      afficher()
+      const bouton = await screen.findByRole("link", { name: /Reprendre : faire le quiz/ })
+      await vi.waitFor(() => expect(bouton.getAttribute("href")).toMatch(/^\/quiz\?/))
+      expect(bouton.getAttribute("href")).toContain("theme=9")
     })
 
     it("ne reprend ni le test de niveau ni un quiz d'un autre examen", async () => {
