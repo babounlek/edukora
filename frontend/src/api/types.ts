@@ -173,6 +173,32 @@ export interface PertesCumulees {
 export type MotifSignalement = "REPONSE_FAUSSE" | "ENONCE_CONFUS" | "FIGURE" | "HORS_PROGRAMME" | "AUTRE"
 
 /** Une carte de révision (R18, voir quiz.cartes) : la règle d'un cours ou l'une de ses erreurs classiques. */
+/** Une matière du bulletin prévisionnel (R15) : une fourchette, ou la raison pour laquelle il n'y en a pas encore. */
+export interface MatiereNoteEstimee {
+  subject_id: number
+  subject_label: string
+  subject_code: string
+  coefficient?: number | null
+  statut: "estimee" | "pas_assez" | "sans_donnees"
+  bas?: number
+  haut?: number
+  calibre?: boolean
+  examens_blancs?: number
+  reponses?: number
+  reponses_min?: number
+  couverture_pct?: number
+  couverture_min_pct?: number
+  themes_rentables?: { theme: string; points: number; reponses: number }[]
+}
+
+export interface NoteEstimee {
+  actif: boolean
+  /** Visible du personnel seulement, pour relire la méthode : l'élève ne le voit pas encore. */
+  relecture?: boolean
+  matieres?: MatiereNoteEstimee[]
+  moyenne?: { bas: number; haut: number; matieres: number; total: number } | null
+}
+
 /** Un paquet de « Mes cartes » : un cours dont l'élève a déjà revu au moins une carte. */
 export interface PaquetCartes {
   slug: string

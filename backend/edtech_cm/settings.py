@@ -254,6 +254,11 @@ SUPPORT_EMAIL = config("SUPPORT_EMAIL", default="support@edukora.africa")
 EMAIL_CODE_MAX_PER_IP_PER_HOUR = config("EMAIL_CODE_MAX_PER_IP_PER_HOUR", default=60, cast=int)
 EMAIL_CODE_DAILY_GLOBAL_CAP = config("EMAIL_CODE_DAILY_GLOBAL_CAP", default=5000, cast=int)
 
+# Bulletin prévisionnel (audit produit 2026-11-13, R15) : une fourchette de note engage la crédibilité du produit. Tant qu'un
+# enseignant n'a pas relu la méthode (docs-relecture/note-estimee-methode.md), elle reste invisible des élèves ; le personnel la voit
+# pour cette relecture. À passer à vrai par l'environnement une fois validée.
+NOTE_ESTIMEE_ACTIVE = config("NOTE_ESTIMEE_ACTIVE", default=False, cast=bool)
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "corsheaders.middleware.CorsMiddleware",

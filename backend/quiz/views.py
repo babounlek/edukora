@@ -1625,3 +1625,25 @@ def cartes_paquets_view(request):
     from . import cartes
 
     return Response({"paquets": cartes.paquets_de_l_eleve(profil_actif(request))})
+
+
+@api_view(["GET"])
+def note_estimee_view(request):
+    """
+    GET /quiz/note-estimee/ : le bulletin prévisionnel (voir quiz.note_estimee). Invisible tant que NOTE_ESTIMEE_ACTIVE est faux,
+    sauf pour le personnel qui relit la méthode : `{"actif": false}` n'est pas une erreur, la page n'affiche simplement rien.
+    """
+    from django.conf import settings
+
+    from .note_estimee import note_estimee
+
+    if not (settings.NOTE_ESTIMEE_ACTIVE or request.user.is_staff):
+        return Response({"actif": False})
+    cursus = request.user.cursus_prepare
+    if cursus is None:
+        return Response({"actif": False})
+    profil = profil_actif(request)
+    if not Subscription.objects.filter(profil=profil, cursus=cursus).exists():
+        return Response({"actif": False})
+    return Response({"actif": True, "relecture": not settings.NOTE_ESTIMEE_ACTIVE, **note_estimee(profil, cursus)})
+

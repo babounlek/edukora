@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { BandeauMatieres, InviteChoixMatieres } from "@/components/ChoixMatieres"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
+import { BulletinPrevisionnel } from "@/components/BulletinPrevisionnel"
 import { CarteErreurs } from "@/components/MesErreurs"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
@@ -400,6 +401,7 @@ export function ParcoursPage() {
       {/* Avant le bilan : c'est la seule chose de cette page qui se fait tout de suite. */}
       {abonneAuCursus && <CarteErreurs cursusId={Number(cursusId)} className="mt-6" />}
       {abonneAuCursus && <BilanDePeriode cursusId={Number(cursusId)} className="mt-6" />}
+      {abonneAuCursus && <BulletinPrevisionnel className="mt-6" />}
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-3">
         <div>
