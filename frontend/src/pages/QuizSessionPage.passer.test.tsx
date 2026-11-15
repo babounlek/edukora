@@ -5,8 +5,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 const getQuizSession = vi.hoisted(() => vi.fn())
 const passerQuizQuestion = vi.hoisted(() => vi.fn())
 const completeQuizSession = vi.hoisted(() => vi.fn())
+const invite = vi.hoisted(() => ({ actif: false }))
 
 vi.mock("@/api/endpoints", () => ({ getQuizSession, passerQuizQuestion, completeQuizSession }))
+vi.mock("@/lib/useEssaiSansCompte", () => ({ useEssaiSansCompte: () => invite.actif }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
@@ -41,6 +43,7 @@ function afficher() {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  invite.actif = false
   window.scrollTo = vi.fn()
   passerQuizQuestion.mockImplementation((_s: number, id: number) => Promise.resolve(question(id, { passee: true })))
   completeQuizSession.mockResolvedValue({})
@@ -78,5 +81,14 @@ describe("QuizSessionPage : passer une question", () => {
     getQuizSession.mockResolvedValue(session([question(1, { type_reponse: "OUVERTE", choix: [] }), question(2)]))
     afficher()
     expect(await screen.findByRole("button", { name: "Passer cette question" })).toBeInTheDocument()
+  })
+
+  it("un invité (quiz gratuit sans compte) ne voit pas le bouton : la route n'est pas ouverte à son jeton", async () => {
+    invite.actif = true
+    getQuizSession.mockResolvedValue(session([question(1), question(2)]))
+    afficher()
+
+    expect(await screen.findByText("Énoncé 1")).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Passer cette question" })).not.toBeInTheDocument()
   })
 })

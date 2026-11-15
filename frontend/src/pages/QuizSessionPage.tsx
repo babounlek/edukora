@@ -738,9 +738,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       </div>
       </div>
 
-      {/* Passer : discret, jamais un second bouton de même poids que « Question suivante ». Pas dans l'essai sans compte, ni une
-          fois le corrigé d'une question ouverte vu (la réponse est connue : il reste à dire si on l'avait). */}
-      {!answered && !essai && !questionCorrige && (
+      {/* Passer : discret, jamais un second bouton de même poids que « Question suivante ». Pas dans l'essai sans compte, ni pour
+          un invité (sa séance est réelle, mais la route n'est pas ouverte à son jeton, voir CHEMIN_QUIZ_INVITE : le bouton
+          échouait), ni une fois le corrigé d'une question ouverte vu (la réponse est connue : il reste à dire si on l'avait). */}
+      {!answered && !essai && !invite && !questionCorrige && (
         <div className="mt-5 flex justify-end">
           <Button type="button" variant="ghost" size="sm" className="text-muted-foreground" disabled={submitting || chronoEcoule} onClick={handlePasser}>
             {t("qs.passer")}
