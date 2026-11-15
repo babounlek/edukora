@@ -23,9 +23,8 @@
           "GCE A Level": "https://sujetexa.com/index.php/category/gce/gce-al/"
         }
       },
-      "notes": "PDF directs sous /wp-content/uploads/ (lien porté par l'image de couverture de chaque article). Au 2026-10-30 le certificat TLS du site est expiré : le skill ne désactive jamais la vérification, l'utilisateur télécharge dans son navigateur. API REST WordPress ouverte (catégorie 129 = O/L, 130 = A/L). Titres sans nom d'école = officiels ; « Mock », « GBHS », « Séquence », « Pre-mock » = à écarter. Un fichier peut être tronqué (Literature A/L P3 2024 : 6 p., 3 questions sur 4). 2026-11-09 : le site ne répond plus du tout depuis ce poste (délai dépassé sur la recherche et sur le fascicule BEPC 2026) : liens de recherche sujetexa retirés des listes remises à l'utilisateur tant que le site ne répond pas.",
-      "verifie_le": "2026-11-09",
-      "hors_service": true
+      "notes": "PDF directs sous /wp-content/uploads/ (lien porté par l'image de couverture de chaque article). Au 2026-10-30 le certificat TLS du site est expiré : le skill ne désactive jamais la vérification, l'utilisateur télécharge dans son navigateur. API REST WordPress ouverte (catégorie 129 = O/L, 130 = A/L). Titres sans nom d'école = officiels ; « Mock », « GBHS », « Séquence », « Pre-mock » = à écarter. Un fichier peut être tronqué (Literature A/L P3 2024 : 6 p., 3 questions sur 4). 2026-11-09 : le site ne répond plus du tout depuis ce poste (délai dépassé sur la recherche et sur le fascicule BEPC 2026) : liens de recherche sujetexa retirés des listes remises à l'utilisateur tant que le site ne répond pas. 2026-11-13 : le site est EN LIGNE (accueil, API et PDF répondent 200). Le « certificat expiré » et la panne constatés du 2026-10-30 au 2026-11-09 venaient du client : Python 3.9 d'Anaconda (OpenSSL 1.1.1q, 2022) rejette le certificat, alors que le client du système (curl de Git Bash, Schannel, vérification activée) le valide. `corpus.py head` et `collecter` échouent donc encore sur ce site ; lire l'API et vérifier les liens avec curl (ce n'est pas un contournement). API utile : /wp-json/wp/v2/posts?after=…&before=…&search=…&per_page=100&_fields=id,date,link,title ; le PDF est dans la page de l'article. La date de l'article est un bon indice de millésime (publication à la session). Session 2026 : seulement Mathématiques BAC C/E et D/TI, Physique BAC C, SVT Probatoire D et C/TI, Sciences Probatoire A, Chimie Probatoire C/D/E, Physique Probatoire C/E, et les corrigés harmonisés.",
+      "verifie_le": "2026-11-13"
     },
     {
       "id": "epreuvesetcorriges",
@@ -45,8 +44,8 @@
           "Cameroun": "https://epreuvesetcorriges.com/categories/cameroun"
         }
       },
-      "notes": "2026-10-30 : les pages /categories/... répondent 403 (LiteSpeed), même dans le Chrome de l'utilisateur ; seule la page d'accueil répond (et affiche le Bénin). Ne pas contourner. Les liens /download des fiches (…/categories/cameroun/examens/bac/<id>-<slug>/download) répondent HTTP 200 application/pdf (testé 2026-10-25). Gratuit. Vérifier la page de garde : séries mélangées (A4/ABI, C, D, E, TI). 2026-11-09 : la recherche (/search?q=) et les rubriques par année (/bepc/2024) répondent 403 aux accès automatisés ; les pages de documents (…/<id>-<slug>) répondent 200. Le fascicule BEPC 2026 (id 42998) ne contient pas les sujets d'Allemand, Anglais, Histoire ni d'EPS : seuls les corrigés Anglais/Allemand existent.",
-      "verifie_le": "2026-11-09"
+      "notes": "2026-10-30 : les pages /categories/... répondent 403 (LiteSpeed), même dans le Chrome de l'utilisateur ; seule la page d'accueil répond (et affiche le Bénin). Ne pas contourner. Les liens /download des fiches (…/categories/cameroun/examens/bac/<id>-<slug>/download) répondent HTTP 200 application/pdf (testé 2026-10-25). Gratuit. Vérifier la page de garde : séries mélangées (A4/ABI, C, D, E, TI). 2026-11-09 : la recherche (/search?q=) et les rubriques par année (/bepc/2024) répondent 403 aux accès automatisés ; les pages de documents (…/<id>-<slug>) répondent 200. Le fascicule BEPC 2026 (id 42998) ne contient pas les sujets d'Allemand, Anglais, Histoire ni d'EPS : seuls les corrigés Anglais/Allemand existent. 2026-11-13 : les rubriques /categories/cameroun/examens/bac et /probatoire répondent de nouveau 200 (10 titres par page, ?start=10, 20…), mais repassent en 403 après quelques pages lues à la suite (2 pages pour le BAC, 9 pour le Probatoire, à 2,6 s d'intervalle) : ne pas insister, lire peu de pages. Aucun sujet officiel du BAC 2026 (blancs et épreuves zéro) ; Probatoire 2026 : corrigés harmonisés seulement.",
+      "verifie_le": "2026-11-13"
     },
     {
       "id": "camerecole",
@@ -64,11 +63,11 @@
       "recherche": {
         "google": true,
         "categories": {
-          "Examens": "http://www.camerecole.org/examens.html"
+          "Examens": "https://www.camerecole.org/examens.html"
         }
       },
-      "notes": "Redirige vers http://www.camerecole.org/. Beaucoup d'épreuves sont TRANSCRITES dans la page HTML (pas de PDF) : lecture de la page, pas de téléchargement. Corrigés mêlés aux sujets, titres « Correction … » à écarter.",
-      "verifie_le": "2026-10-25"
+      "notes": "Redirige vers http://www.camerecole.org/. Beaucoup d'épreuves sont TRANSCRITES dans la page HTML (pas de PDF) : lecture de la page, pas de téléchargement. Corrigés mêlés aux sujets, titres « Correction … » à écarter. 2026-11-13 : liste complète lisible sur /examens.html?start=N (12 titres par page, 1 659 articles, robots.txt ne l'interdit pas). Dernier article : n° 2783 (corrigés 2025) ; aucune session 2026. La page d'un sujet indique « Série : … » dans son en-tête, parfois plus complet que le titre (ex. 674 titré « C 2019 », en-tête « C & E »). Les listes par session sont complètes et datent de la session : utiles pour prouver qu'une épreuve n'existait pas (Probatoire 2019 : ni Philosophie, ni Langue française, ni EPS). Attention : les pages Informatique Probatoire A 2022 (1736) et 2023 (2110) portent le même sujet.",
+      "verifie_le": "2026-11-13"
     },
     {
       "id": "concourscameroon",
@@ -91,8 +90,8 @@
           "GCE A Level": "https://www.concourscameroon.com/gce-advance-level-past-questions"
         }
       },
-      "notes": "403 sur tout accès automatique. Liens Google Drive (drive.google.com/uc?export=download&id=…) : ouverts par l'utilisateur. Rien de 2026. « O Level Religious Studies » est souvent un A Level : lire la page de garde. Slugs d'année parfois faux.",
-      "verifie_le": "2026-10-20"
+      "notes": "403 sur tout accès automatique. Liens Google Drive (drive.google.com/uc?export=download&id=…) : ouverts par l'utilisateur. Rien de 2026. « O Level Religious Studies » est souvent un A Level : lire la page de garde. Slugs d'année parfois faux. 2026-11-13 : toujours 403 (page /anciennes-epreuves-de-litterature.html) ; liens à remettre à l'utilisateur.",
+      "verifie_le": "2026-11-13"
     },
     {
       "id": "cameroongcerevision",

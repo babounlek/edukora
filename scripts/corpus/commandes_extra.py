@@ -152,7 +152,51 @@ def commande_sources(args):
     return 0
 
 
+def commande_moissonner(args):
+    import catalogue
+    if args.source == "ndolomath":
+        print("ndolomath : %d fichier(s) au catalogue" % catalogue.moissonner_ndolomath())
+        return 0
+    if args.source == "sujetexam":
+        print("sujetexam : %d fiche(s) ajoutée(s) au catalogue" % catalogue.moissonner_sujetexam(plein=args.plein, limite_pages=args.pages))
+        return 0
+    n = catalogue.moissonner_sujetexa(plein=args.plein, limite_pages=args.pages)
+    print("sujetexa : %d article(s) ajouté(s) au catalogue" % n)
+    return 0
+
+
+def commande_rapprocher(args):
+    import datetime
+    import catalogue
+    from commun import AUDIT, lire_jsonl
+    date = args.date or datetime.date.today().isoformat()
+    dossier = os.path.join(AUDIT, "corpus", date)
+    matrice = args.matrice or os.path.join(dossier, "matrice_corpus.tsv")
+    entrees = []
+    for source in (args.source or ["sujetexa"]):
+        entrees += lire_jsonl(os.path.join(catalogue.CATALOGUES, source + ".jsonl"))
+    sorties = catalogue.rapprocher(entrees, catalogue.charger_matrice(matrice), annee_min=args.depuis_annee)
+    tsv, md = catalogue.ecrire_rapprochement(sorties, dossier, date)
+    print("%d entrée(s) exploitable(s) sur %d lues" % (len(sorties), len(entrees)))
+    print("Rapport :", md)
+    print("Table   :", tsv)
+    return 0
+
+
 def ajouter(sous):
+    m = sous.add_parser("moissonner", help="met à jour le catalogue d'une source (index seulement, incrémental)")
+    m.add_argument("--source", default="sujetexa", choices=("sujetexa", "ndolomath", "sujetexam"))
+    m.add_argument("--plein", action="store_true", help="relit tout (défaut : depuis la dernière lecture)")
+    m.add_argument("--pages", type=int, help="limite de pages (essai)")
+    m.set_defaults(fonction=commande_moissonner)
+
+    rp = sous.add_parser("rapprocher", help="croise les catalogues avec la matrice de la cartographie")
+    rp.add_argument("--source", action="append", default=None)
+    rp.add_argument("--date", help="dossier de cartographie AAAA-MM-JJ (défaut : aujourd'hui)")
+    rp.add_argument("--matrice")
+    rp.add_argument("--depuis-annee", type=int, default=2019)
+    rp.set_defaults(fonction=commande_rapprocher)
+
     def cible_opts(p):
         p.add_argument("--niveau")
         p.add_argument("--matiere")

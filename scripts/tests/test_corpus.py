@@ -27,6 +27,7 @@ import similarite  # noqa: E402
 import registre  # noqa: E402
 import synchro  # noqa: E402
 import sources  # noqa: E402
+import catalogue  # noqa: E402
 
 
 def faire_pdf(chemin, pages):
@@ -261,7 +262,7 @@ class Sources(unittest.TestCase):
         liens = sources.liens_de_recherche({"niveau": "GCE_AL", "matiere": "GCE_ENGLISH", "annee": 2023, "paper": 2})
         ids = {l["source"] for l in liens}
         self.assertIn("scribd", ids)
-        self.assertNotIn("sujetexa", ids)  # marqué hors_service le 2026-11-09 : plus proposé
+        self.assertIn("sujetexa", ids)  # de nouveau proposé : hors_service retiré le 2026-11-13 (la panne venait du SSL de Python)
         self.assertNotIn("ndolomath", ids)
         self.assertNotIn("epreuvesetcorriges", ids)
         self.assertTrue(any("Advanced+Level+English+paper+2+june+2023" in l["url"] for l in liens))
@@ -269,8 +270,7 @@ class Sources(unittest.TestCase):
     def test_liens_francophones_incluent_ndolomath_et_scribd(self):
         liens = sources.liens_de_recherche({"examen": "probatoire", "matiere": "MATHS", "serie": "D", "annee": 2024, "langue": "fr"})
         ids = {l["source"] for l in liens}
-        self.assertTrue({"ndolomath", "scribd", "epreuvesetcorriges"} <= ids)
-        self.assertNotIn("sujetexa", ids)
+        self.assertTrue({"ndolomath", "scribd", "epreuvesetcorriges", "sujetexa"} <= ids)
 
     def test_collecte_impossible_propose_des_liens(self):
         base = tempfile.mkdtemp(prefix="corpus_test_")
@@ -462,6 +462,88 @@ class SourcesHorsService(unittest.TestCase):
             s.pop("hors_service", None)
         ids = {l["source"] for l in sources.liens_de_recherche({"examen": "bepc", "matiere": "SVT", "annee": 2024, "langue": "fr"}, registre_test)}
         self.assertIn("sujetexa", ids)
+
+
+class Catalogue(unittest.TestCase):
+    def test_autre_pays(self):
+        r = catalogue.analyser_titre("EPREUVE BAC 2022 PHILOSOPHIE SERIES C D E COTE D’IVOIRE")
+        self.assertEqual(r["nature"], "autre_pays")
+        self.assertNotEqual(catalogue.analyser_titre("Philosophie BAC C 2022")["nature"], "autre_pays")
+
+    def test_mojibake_sujetexam(self):
+        self.assertEqual(catalogue._reparer_mojibake("Ã‰preuve â€“ CollÃ¨ge"), "Épreuve – Collège")
+        self.assertEqual(catalogue._reparer_mojibake("Épreuve – Collège"), "Épreuve – Collège")
+
+    def test_cartes_sujetexam(self):
+        page = ('<div class="card"><div class="card-top"><div style="flex:1">'
+                '<a href="/epreuve/60776-epreuve-x/" class="card-title card-title-link">Épreuve – Chimie &amp; Phys – 1ère C – 2021-2022</a>'
+                '<div>📅 15/11/2026</div></div></div><div class="card-actions"></div></div>')
+        cartes = catalogue.extraire_cartes_sujetexam(page)
+        self.assertEqual(len(cartes), 1)
+        self.assertEqual(cartes[0]["id"], 60776)
+        self.assertEqual(cartes[0]["date"], "2026-11-15")
+        self.assertEqual(cartes[0]["titre"], "Épreuve – Chimie & Phys – 1ère C – 2021-2022")
+        self.assertEqual(cartes[0]["lien"], "https://sujetexam.com/epreuve/60776-epreuve-x/")
+
+    def test_sujet_officiel(self):
+        a = catalogue.analyser_titre("MATHEMATIQUES-BACCALAUREAT SERIE C/E-SESSION 2026")
+        self.assertEqual((a["nature"], a["examen"], a["matiere"], a["series"], a["annee"]), ("officiel", "BAC", "MATHS", ["C", "E"], 2026))
+
+    def test_series_a_regroupees_et_ti(self):
+        a = catalogue.analyser_titre("SCIENCES-PROBATOIRE A1,A2,A3,A4,A5,ABI-SESSION 2026")
+        self.assertEqual(a["series"], ["A"])
+        a = catalogue.analyser_titre("SVTEEEHB-PROBATOIRE C,TI-SESSION 2026")
+        self.assertEqual(a["series"], ["C", "TI"])
+
+    def test_blanc_et_etablissement_ne_sont_pas_officiels(self):
+        for t in ("MATHEMATIQUES-BACCALAUREAT BLANC SERIE F-SESSION 2026",
+                  "MATHEMATIQUES-COLLEGE SAINT JOSEPH PK 10-PROBATOIRE BLANC-SERIE C-2025/2026",
+                  "SVTEEHB THEORIQUE-DRES DU SUD-BACCALAUREAT BLANC REGIONAL N°1-Série :C TI-SESSION DE FEVRIER 2026"):
+            self.assertEqual(catalogue.analyser_titre(t)["nature"], "blanc_ou_etablissement", t)
+
+    def test_corrige_zero_et_fascicule(self):
+        self.assertEqual(catalogue.analyser_titre("CORRIGE HARMONISE NATIONAL-EPREUVE DE SVTEEHB-PROBATOIRE D-SESSION 2026")["nature"], "corrige")
+        self.assertEqual(catalogue.analyser_titre("EPREUVE ZERO D&#8217;ECM-BACCALAUREAT SESSION 2026")["nature"], "zero")
+        self.assertEqual(catalogue.analyser_titre("FASCICULE ANCIENNES EPREUVES CORRIGEES DE MATHEMATIQUES-BACCALAUREAT A4-(2009….2016)")["nature"], "fascicule")
+
+    def test_titre_court_ancien_depot(self):
+        a = catalogue.analyser_titre("maths bac C 2019")
+        self.assertEqual((a["nature"], a["series"], a["annee"]), ("officiel", ["C"], 2019))
+        self.assertEqual(catalogue.analyser_titre("PCT BEPC 2019")["matiere"], "PHYSIQUE_CHIMIE_TECH")
+
+    def test_inventaire_ndolomath_decode_base64(self):
+        import base64, json
+        js = 'const ndoloBepcLinks=' + json.dumps({"Anglais": {"2026": {"view": "v", "pdf": "https://x/uploads/2026/07/a.pdf"}, "2025": {"view": "", "pdf": ""}}}) + ';'
+        page = '<script src="data:text/javascript;base64,%s"></script>' % base64.b64encode((js + " " * 200).encode()).decode()
+        objets = catalogue.extraire_liens_ndolomath(page)
+        entrees = catalogue.entrees_ndolomath("BEPC", "", objets["ndoloBepcLinks"])
+        self.assertEqual(len(entrees), 1)  # la case sans PDF est ignorée
+        self.assertEqual(entrees[0]["date"], "2026-07")
+
+    def test_partie_theorique_pratique(self):
+        self.assertEqual(catalogue.analyser_titre("PHYSIQUE PRATIQUE-BACCALAUREAT SERIE C-SESSION 2026")["partie"], "pratique")
+
+    def test_rapprochement(self):
+        matrice = [
+            {"systeme": "fr", "examen": "BAC", "serie": "C", "matiere": "MATHS", "annee": "2026", "etat": "MANQUANT"},
+            {"systeme": "fr", "examen": "BAC", "serie": "E", "matiere": "MATHS", "annee": "2026", "etat": "PUBLIE_PROD"},
+            {"systeme": "fr", "examen": "PROBATOIRE", "serie": "D", "matiere": "SVT", "annee": "2026", "etat": "MANQUANT"},
+            {"systeme": "fr", "examen": "BAC", "serie": "D", "matiere": "PHILOSOPHIE", "annee": "2026", "etat": "MANQUANT"},
+        ]
+        entrees = [
+            {"source": "x", "titre": "MATHEMATIQUES-BACCALAUREAT SERIE C/E-SESSION 2026", "date": "2026-06-05", "lien": "u1"},
+            {"source": "x", "titre": "CORRIGE HARMONISE NATIONAL-EPREUVE DE SVTEEHB-PROBATOIRE D-SESSION 2026", "date": "2026-07-08", "lien": "u2"},
+            {"source": "x", "titre": "Philosophie BAC série D session 2026", "date": "2026-08", "lien": "u4"},
+            {"source": "x", "titre": "MATHEMATIQUES-COLLEGE X-BACCALAUREAT BLANC SERIE C-SESSION 2026", "date": "2026-05-01", "lien": "u3"},
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            sorties = catalogue.rapprocher(entrees, matrice, registre_chemin=os.path.join(d, "vide.jsonl"))
+        classes = {(s["serie"], s["matiere"]): s["classe"] for s in sorties}
+        self.assertEqual(classes[("C", "MATHS")], "serie_a_rattacher_probable")  # E est déjà en base : sujet commun probable
+        self.assertEqual(classes[("E", "MATHS")], "deja_en_base")
+        self.assertEqual(classes[("D", "SVT")], "corrige_seul_case_manquante")
+        self.assertEqual(classes[("D", "PHILOSOPHIE")], "candidat_nouveau")
+        self.assertEqual(len(sorties), 4)  # le blanc est ignoré
 
 
 if __name__ == "__main__":
