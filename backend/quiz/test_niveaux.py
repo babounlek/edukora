@@ -107,3 +107,24 @@ def timezone_localdate():
     from django.utils import timezone
 
     return timezone.localdate()
+
+
+class MaitriseDesThemesTests(ErreursFixture):
+    """R20 : où en est le profil sur chaque thème d'un classement (voir quiz.progression.maitrise_des_themes)."""
+
+    def test_le_niveau_de_chaque_theme_du_classement(self):
+        from .progression import maitrise_des_themes
+
+        for i in range(4):
+            self.repondre(self.item(f"m{i}"), "REUSSI")
+        self.repondre(self.item("l0", theme=self.limites), "ECHEC")
+
+        maitrise = maitrise_des_themes(self.profil, self.cursus, [self.derivation, self.limites])
+
+        self.assertEqual(maitrise[self.derivation.id], {"taux": 100, "nb_reponses": 4, "niveau": "solide"})
+        self.assertEqual(maitrise[self.limites.id]["niveau"], "decouvert")
+
+    def test_un_theme_jamais_tente_n_a_pas_d_entree(self):
+        from .progression import maitrise_des_themes
+
+        self.assertEqual(maitrise_des_themes(self.profil, self.cursus, [self.derivation]), {})

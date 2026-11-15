@@ -89,3 +89,43 @@ def progression_par_theme(profil, cursus, themes, subject=None):
         vues, tours = etat_du_tour(ensemble, reponses)
         progression[theme.id] = {"total": len(ensemble), "vues": vues, "tours": tours}
     return progression
+
+
+def maitrise_des_themes(profil, cursus, themes, subject=None):
+    """
+    tag_id -> {"taux", "nb_reponses", "niveau"} pour les thèmes donnés (objets Tag) : où en est le profil sur chacun, avec les
+    mêmes réponses que la maîtrise (items de compétence, rejeux et quiz chronométrés exclus). Même cascade que
+    progression_par_theme : les réponses rangées sous le tag du thème, à défaut celles de son savoir officiel (deux
+    vocabulaires de tags coexistent). Un thème jamais tenté n'a pas d'entrée. Alimente le tri « à travailler d'abord » de
+    la page des thèmes qui tombent (audit produit 2026-11-13, R20).
+    """
+    from .services import niveau_theme
+
+    reponses = QuizAnswer.objects.filter(
+        quiz_question__session__profil=profil,
+        quiz_question__session__cursus=cursus,
+        quiz_question__competence_item__isnull=False,
+        quiz_question__session__rejeu_de__isnull=True,
+        quiz_question__session__chrono_actif=False,
+    ).select_related("quiz_question__competence_item__theme")
+    if subject is not None:
+        reponses = reponses.filter(quiz_question__competence_item__subject=subject)
+
+    par_tag, par_savoir = {}, {}
+    for reponse in reponses:
+        tag = reponse.quiz_question.competence_item.theme
+        juste = 1 if reponse.est_correcte else 0
+        for cle, table in ((tag.id, par_tag), (tag.savoir_officiel_id, par_savoir)):
+            if cle is None:
+                continue
+            total, reussies = table.get(cle, (0, 0))
+            table[cle] = (total + 1, reussies + juste)
+
+    maitrise = {}
+    for theme in themes:
+        total, reussies = par_tag.get(theme.id) or par_savoir.get(theme.savoir_officiel_id) or (0, 0)
+        if not total:
+            continue
+        taux = round(100 * reussies / total)
+        maitrise[theme.id] = {"taux": taux, "nb_reponses": total, "niveau": niveau_theme(taux, total)}
+    return maitrise

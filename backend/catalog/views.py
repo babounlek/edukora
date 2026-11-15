@@ -19,7 +19,7 @@ from access.services import (
 from inedit.models import EpreuveInedite
 from quiz.matieres import sujets_a_afficher
 from quiz.models import CompetenceItem
-from quiz.progression import progression_par_theme
+from quiz.progression import maitrise_des_themes, progression_par_theme
 from users.profils import profil_actif
 
 from .inedit_bridge import (
@@ -981,6 +981,31 @@ TEASER_THEMES_FREQUENTS = 2
 MAX_THEMES_FREQUENTS = 50
 
 
+def _cours_des_themes(themes, subject, cursus):
+    """
+    tag_id -> slug du Cours publié à lire pour ce thème, en deux requêtes pour tout le classement : le cours rangé sous le
+    même tag, à défaut celui du même savoir officiel (les deux premiers niveaux de quiz.views._cours_pour_theme, les seuls
+    sûrs sans l'énoncé d'une question). Le plus petit id gagne, comme là-bas. Un thème sans cours n'a pas d'entrée.
+    """
+    publies = Cours.objects.visibles().filter(subject=subject).filter(q_cours_du_cursus([cursus.id]))
+    ids = [t.id for t in themes]
+    par_tag = {}
+    for tag_id, cours_id, slug in publies.filter(tags__in=ids).values_list("tags", "id", "slug").order_by("-id"):
+        par_tag[tag_id] = slug
+    savoirs = {t.savoir_officiel_id for t in themes if t.savoir_officiel_id}
+    par_savoir = {}
+    if savoirs:
+        for savoir_id, cours_id, slug in publies.filter(tags__savoir_officiel_id__in=savoirs).values_list(
+            "tags__savoir_officiel_id", "id", "slug",
+        ).order_by("-id"):
+            par_savoir[savoir_id] = slug
+    return {
+        t.id: par_tag.get(t.id) or par_savoir.get(t.savoir_officiel_id)
+        for t in themes
+        if par_tag.get(t.id) or par_savoir.get(t.savoir_officiel_id)
+    }
+
+
 class ThemesFrequentsView(APIView):
     """
     Classement des thèmes (Tag) les plus fréquents aux épreuves officielles d'un
@@ -1076,6 +1101,20 @@ class ThemesFrequentsView(APIView):
         if request.user.is_authenticated:
             progression = progression_par_theme(profil_actif(request), cursus, themes_visibles, subject=subject)
 
+        # R20 : l'année de chaque sortie, le niveau de l'élève et le cours à lire, pour les seuls thèmes montrés.
+        ids_visibles = [t.id for t in themes_visibles]
+        annees = {}
+        for tag_id, annee in (
+            Lesson.objects.filter(pk__in=lessons.values("pk"), exercises__questions__themes__in=ids_visibles)
+            .values_list("exercises__questions__themes", "year").distinct()
+        ):
+            if annee:
+                annees.setdefault(tag_id, set()).add(annee)
+        maitrise = {}
+        if request.user.is_authenticated:
+            maitrise = maitrise_des_themes(profil_actif(request), cursus, themes_visibles, subject=subject)
+        cours_par_theme = _cours_des_themes(themes_visibles, subject, cursus)
+
         return Response({
             "nb_sessions_disponibles": nb_sessions_disponibles,
             "seuil_minimum": SEUIL_MINIMUM_THEMES_FREQUENTS,
@@ -1092,6 +1131,9 @@ class ThemesFrequentsView(APIView):
                     "quiz_total": progression.get(t.id, {}).get("total", 0),
                     "quiz_vues": progression.get(t.id, {}).get("vues", 0),
                     "quiz_tours": progression.get(t.id, {}).get("tours", 0),
+                    "annees": sorted(annees.get(t.id, ())),
+                    "maitrise": maitrise.get(t.id),
+                    "cours_slug": cours_par_theme.get(t.id),
                 }
                 for t in themes_visibles
             ],

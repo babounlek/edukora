@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight,
   BadgeCheck,
+  BookOpen,
   Crown,
   FileText,
   Layers,
@@ -26,6 +27,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { subjectShortLabel } from "@/lib/subjectLabel"
 import { lienExercicesTheme } from "@/components/ThemesFrequents"
 import { AnneauFrequence } from "@/components/AnneauFrequence"
+import { JaugeNiveau } from "@/components/JaugeNiveau"
 import { EtapesPresentation, StatChip } from "@/components/Configurateur"
 import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
 import { useAbonneActif } from "@/lib/abonneActif"
@@ -126,7 +128,15 @@ interface ActionsThemeProps {
 function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_avant }: ActionsThemeProps) {
   useI18n()
   return (
-    <div className="flex shrink-0 gap-1.5">
+    <div className="flex shrink-0 flex-wrap gap-1.5">
+      {theme.cours_slug && (
+        <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs">
+          <Link to={`/cours/${theme.cours_slug}`}>
+            <BookOpen className="size-3.5" />
+            {t("tf.cours")}
+          </Link>
+        </Button>
+      )}
       <Button asChild size="sm" variant={mis_en_avant ? "default" : "outline"} className="h-8 px-3 text-xs">
         <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, total)}>
           <FileText className="size-3.5" />
@@ -155,6 +165,42 @@ function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_ava
     </div>
   )
 }
+
+/** Combien d'années on nomme avant de résumer : « Tombé en 2021, 2023, 2024 » reste lisible sur un téléphone. */
+const ANNEES_NOMMEES = 4
+
+/** R20 : ce qui rend le classement personnel : les années où le thème est tombé, et où en est l'élève dessus. */
+function LignePerso({ theme }: { theme: ThemeFrequent }) {
+  useI18n()
+  const annees = theme.annees ?? []
+  const recentes = annees.slice(-ANNEES_NOMMEES)
+  const maitrise = theme.maitrise
+  if (annees.length === 0 && !maitrise) return null
+  return (
+    <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+      {annees.length > 0 && (
+        <span>
+          {t("tf.annees", { annees: `${annees.length > recentes.length ? "… " : ""}${recentes.join(", ")}` })}
+        </span>
+      )}
+      {maitrise?.niveau ? (
+        <span className="inline-flex items-center gap-1.5">
+          <JaugeNiveau niveau={maitrise.niveau} />
+          <span className="tabular-nums">{t("tf.ton_niveau", { n: maitrise.taux })}</span>
+        </span>
+      ) : null}
+    </div>
+  )
+}
+
+/** Priorité personnelle : un thème fréquent que l'élève maîtrise mal passe avant un thème rare ou déjà acquis. Un thème
+ * jamais tenté compte comme entièrement à travailler. */
+export function prioriteTheme(theme: ThemeFrequent): number {
+  const taux = theme.maitrise?.taux ?? 0
+  return theme.frequence_pct * (100 - taux)
+}
+
+type TriThemes = "frequence" | "travail"
 
 /** Une marche du podium (rangs 1 à 3). Le n°1 est doré et, dès `sm`, placé au centre et
  * surélevé, comme un vrai podium. */
@@ -190,6 +236,7 @@ function CartePodium(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang: nu
         <p className="mt-1 text-sm text-muted-foreground">
           {t("tf.present_avant")}<span className="font-medium tabular-nums text-foreground">{theme.nb_epreuves}</span>{t("tf.present_milieu")}<span className="tabular-nums">{total}</span>{t("tf.present_apres")}
         </p>
+        <LignePerso theme={theme} />
       </div>
       <ActionsTheme {...props} mis_en_avant={premier} />
     </div>
@@ -244,6 +291,7 @@ function LigneClassement(props: Omit<ActionsThemeProps, "mis_en_avant"> & { rang
               {theme.nb_epreuves}/{total}
             </span>
           </div>
+          <LignePerso theme={theme} />
         </div>
       </div>
       <div className="pl-[2.875rem] sm:pl-0">
@@ -435,6 +483,8 @@ export function ThemesFrequentsPage() {
   useEffect(() => {
     setNbAffiches(THEMES_AFFICHES_PAR_DEFAUT)
   }, [cursusId, subjectFilter])
+  // R20 : « À travailler d'abord » remet en premier les thèmes fréquents que l'élève maîtrise mal.
+  const [tri, setTri] = useState<TriThemes>("frequence")
 
   function updateFilter(key: string, value: string) {
     const next = new URLSearchParams(searchParams)
@@ -463,13 +513,19 @@ export function ThemesFrequentsPage() {
   const disponible = themesData?.disponible === true
   const themes = disponible ? themesData.themes : []
   const total = themesData?.nb_sessions_disponibles ?? 0
-  const themesAffiches = themes.slice(0, nbAffiches)
-  const podium = themesAffiches.slice(0, 3)
-  const suite = themesAffiches.slice(3)
+  // Le tri personnel n'a de sens que si l'élève a déjà travaillé au moins un de ces thèmes.
+  const triPossible = themes.some((th) => th.maitrise)
+  const triTravail = tri === "travail" && triPossible
+  const themesRanges = triTravail ? [...themes].sort((a, b) => prioriteTheme(b) - prioriteTheme(a)) : themes
+  const themesAffiches = themesRanges.slice(0, nbAffiches)
+  // Triés par priorité, plus de podium : il couronnerait les thèmes les plus fréquents, pas ceux à travailler.
+  const podium = triTravail ? [] : themesAffiches.slice(0, 3)
+  const suite = triTravail ? themesAffiches : themesAffiches.slice(3)
+  const rangDeSuite = triTravail ? 1 : 4
   const verrouille = disponible && !themesData.has_access && themesData.nb_themes_verrouilles > 0
   // Le thème juste sous la coupure actuelle : tant qu'il reste assez fréquent pour
   // valoir le clic, "Charger 10 de plus" révèle la suite déjà reçue du serveur.
-  const prochainTheme = themes[nbAffiches]
+  const prochainTheme = themesRanges[nbAffiches]
   const chargerPlusVisible = Boolean(prochainTheme && prochainTheme.frequence_pct >= SEUIL_CHARGER_PLUS_PCT)
   const topTheme = themes[0]
   const matiereLabel = matiereCourante?.label
@@ -698,7 +754,18 @@ export function ThemesFrequentsPage() {
               </div>
             </div>
 
-            <div className="grid gap-4 pt-2 sm:grid-cols-3 sm:items-end">
+            {triPossible && (
+              <div role="group" aria-label={t("tf.tri_titre")} className="mb-4 flex flex-wrap gap-2">
+                <PastilleFiltre actif={!triTravail} onClick={() => setTri("frequence")}>
+                  {t("tf.tri_frequence")}
+                </PastilleFiltre>
+                <PastilleFiltre actif={triTravail} onClick={() => setTri("travail")}>
+                  {t("tf.tri_travail")}
+                </PastilleFiltre>
+              </div>
+            )}
+
+            <div className={cn("grid gap-4 pt-2 sm:grid-cols-3 sm:items-end", triTravail && "hidden")}>
               {podium.map((theme, index) => (
                 <CartePodium
                   key={theme.id}
@@ -718,7 +785,7 @@ export function ThemesFrequentsPage() {
                 {suite.map((theme, index) => (
                   <LigneClassement
                     key={theme.id}
-                    rang={index + 4}
+                    rang={index + rangDeSuite}
                     country={country}
                     theme={theme}
                     subjectCode={subjectFilter}
@@ -741,7 +808,7 @@ export function ThemesFrequentsPage() {
               <div className="mt-6">
                 <SuiteVerrouillee
                   nbVerrouilles={themesData.nb_themes_verrouilles}
-                  premierRang={podium.length < 3 ? 4 : themes.length + 1}
+                  premierRang={!triTravail && podium.length < 3 ? 4 : themes.length + 1}
                   dernierPct={themes[themes.length - 1].frequence_pct}
                   cursusId={cursusId}
                   matiereLabel={matiereLabel}

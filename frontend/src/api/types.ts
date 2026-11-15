@@ -855,6 +855,11 @@ export interface ThemeFrequent {
   quiz_total?: number
   quiz_vues?: number
   quiz_tours?: number
+  /** R20 : les années où ce thème est tombé (croissantes), le niveau de l'élève dessus (null : jamais tenté ou visiteur) et
+   * le cours à lire (null : aucun cours rattaché). */
+  annees?: number[]
+  maitrise?: { taux: number; nb_reponses: number; niveau: NiveauTheme | null } | null
+  cours_slug?: string | null
 }
 
 /** Matière proposée au choix sur /themes-frequents (voir ThemesFrequentsMatieresView) :

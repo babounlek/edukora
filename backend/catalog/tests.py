@@ -4927,6 +4927,23 @@ class ThemesFrequentsApiTests(TestCase):
                 themes.append("primitives")
             self._make_lesson(year, themes)
 
+    def test_chaque_theme_porte_ses_annees_de_sortie_et_son_cours(self):
+        self._seed_above_threshold()
+        cours = Cours.objects.create(
+            titre="Le tableau de variation", slug="le-tableau-de-variation", subject=self.subject,
+            statut=StatutContenu.VALIDE,
+        )
+        cours.cursus.add(self.cursus)
+        cours.tags.add(Tag.objects.get(name="tableau de variation"))
+
+        data = self.client.get(self._url(), {"subject": self.subject.code}).json()
+        par_nom = {t["tag"]: t for t in data["themes"]}
+
+        self.assertEqual(par_nom["tableau de variation"]["annees"], list(range(2015, 2025)))
+        self.assertEqual(par_nom["tableau de variation"]["cours_slug"], "le-tableau-de-variation")
+        self.assertIsNone(par_nom["tableau de variation"]["maitrise"])  # visiteur : pas de maîtrise
+        self.assertIsNone(par_nom["nombres complexes"]["cours_slug"])
+
     def test_missing_subject_is_a_400(self):
         response = self.client.get(self._url())
         self.assertEqual(response.status_code, 400)
