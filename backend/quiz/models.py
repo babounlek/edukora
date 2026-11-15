@@ -311,6 +311,10 @@ class QuizQuestion(models.Model):
         null=True, blank=True,
         help_text="Contenu pédagogique tel qu'il existait à la création de la session - voir quiz.instantane.",
     )
+    indice_vu = models.BooleanField(
+        default=False,
+        help_text="L'élève a demandé le coup de pouce (rappel de méthode) avant de répondre - voir views.indice_question.",
+    )
     snapshot_retroactif = models.BooleanField(
         default=False,
         help_text=(

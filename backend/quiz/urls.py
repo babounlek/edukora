@@ -13,6 +13,10 @@ urlpatterns = [
     ),
     path("sessions/<int:session_id>/questions/<int:quiz_question_id>/answer/", views.answer_question, name="answer-question"),
     path(
+        "sessions/<int:session_id>/questions/<int:quiz_question_id>/indice/",
+        views.indice_question, name="indice-question",
+    ),
+    path(
         "sessions/<int:session_id>/questions/<int:quiz_question_id>/signaler/",
         views.signaler_question, name="signaler-question",
     ),

@@ -1062,6 +1062,10 @@ export interface QuizQuestion {
   // corrigés du thème (/themes-frequents/<id>/exercices).
   theme_id?: number
   subject_code?: string
+  // R19 : difficulté estimée (null : non estimée ; absente d'une ancienne séance) et coup de pouce « rappel de méthode ».
+  difficulte?: Difficulte | null
+  indice_disponible?: boolean
+  indice_vu?: boolean
   // Présents uniquement pour l'historique pré-bascule (source catalog.Question,
   // extraite d'une épreuve réelle) - jamais peuplés pour une session créée après la
   // bascule vers CompetenceItem.

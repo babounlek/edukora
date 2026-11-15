@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ObjectifXp } from "@/components/ObjectifXp"
+import { CoupDePouce, PastilleDifficulte } from "@/components/CoupDePouce"
 import { SignalerQuestion } from "@/components/SignalerQuestion"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
@@ -495,6 +496,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
               {capitaliserTheme(question.theme)}
             </span>
           )}
+          <PastilleDifficulte difficulte={question.difficulte} />
         </div>
 
         {/* Uniquement pour l'historique pré-bascule : un CompetenceItem n'appartient à
@@ -514,6 +516,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         <article className="prose prose-neutral max-w-none dark:prose-invert">
           <EpreuveMarkdown markdown={enonce} />
         </article>
+
+        {!answered && !essai && !invite && question.indice_disponible && (
+          <CoupDePouce sessionId={session.id} questionId={question.id} />
+        )}
 
         {isQcm ? (
           <div className="mt-6 flex flex-col gap-2.5">

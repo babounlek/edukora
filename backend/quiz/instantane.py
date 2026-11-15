@@ -21,6 +21,24 @@ from catalog.models import TypeReponse
 VERSION = 1
 
 
+# Le titre de la section du corrigé qui sert d'indice : la méthode, sans la réponse (convention de rédaction des items).
+TITRE_INDICE = "Rappel de méthode"
+
+
+def indice_du_corrige(corrige_markdown):
+    """
+    L'indice d'une question, tiré de son corrigé : la section « Rappel de méthode », qui dit comment s'y prendre sans donner
+    la réponse. Chaîne vide quand le corrigé n'en a pas. Jamais le reste du corrigé : un indice qui donnerait la clé viderait la
+    question de son sens.
+    """
+    import re
+
+    trouve = re.search(
+        rf"(?ms)^#{{2,4}}\s*{re.escape(TITRE_INDICE)}\s*$(.*?)(?=^#{{2,4}}\s|\Z)", corrige_markdown or "",
+    )
+    return trouve.group(1).strip() if trouve else ""
+
+
 def figer_item(item):
     """Instantané d'un CompetenceItem - suppose item.theme et item.subject déjà chargés."""
     return {
@@ -33,6 +51,7 @@ def figer_item(item):
         "type_reponse": item.type_reponse,
         "choix": item.choix,
         "reponse_correcte": item.reponse_correcte,
+        "difficulte": item.difficulte_estimee,
         "theme": {"id": item.theme_id, "name": item.theme.name},
         "subject": {"id": item.subject_id, "code": item.subject.code, "label": item.subject.label},
     }

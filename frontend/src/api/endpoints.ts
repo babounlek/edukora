@@ -694,6 +694,11 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
   })
 }
 
+/** Le coup de pouce d'une question non répondue : son rappel de méthode, jamais la réponse (R19). */
+export function getIndiceQuiz(sessionId: number, quizQuestionId: number) {
+  return apiRequest<{ indice_markdown: string }>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/indice/`)
+}
+
 /** « Signaler cette question » (R22) : sans effet sur les points ni la maîtrise ; renvoyer met à jour le signalement. */
 export function signalerQuestionQuiz(
   sessionId: number, quizQuestionId: number, params: { motif: MotifSignalement; commentaire?: string },

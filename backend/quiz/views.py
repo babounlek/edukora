@@ -297,6 +297,10 @@ def _question_payload(quiz_question):
             "theme_id": donnees["theme"]["id"],
             "subject_code": donnees["subject"]["code"],
             "subject_label": donnees["subject"]["label"],
+            # R19 : la difficulté estimée (pastille) et le coup de pouce, jamais le texte de l'indice avant qu'on le demande.
+            "difficulte": donnees.get("difficulte") or None,
+            "indice_disponible": bool(instantane.indice_du_corrige(donnees["corrige_markdown"])),
+            "indice_vu": quiz_question.indice_vu,
         }
         if answer:
             payload["corrige_markdown"] = _corrige_de_la_question(quiz_question, donnees)
@@ -586,6 +590,28 @@ def reveal_corrige(request, session_id, quiz_question_id):
         _corrige_de_la_question(quiz_question, donnees) if donnees["source"] == "competence_item" else donnees["corrige_markdown"]
     )
     return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": donnees["reponse_correcte"]})
+
+
+@api_view(["GET"])
+def indice_question(request, session_id, quiz_question_id):
+    """
+    Le coup de pouce d'une question (R19) : sa section « Rappel de méthode », rien d'autre. Refusé une fois la réponse donnée
+    (le corrigé complet est alors lisible) et quand le corrigé n'a pas de rappel de méthode. La demande est retenue sur la
+    question (`indice_vu`) ; elle ne change ni les points ni la maîtrise.
+    """
+    quiz_question = get_object_or_404(
+        QuizQuestion.objects.select_related("competence_item", "question", "session"),
+        pk=quiz_question_id, session_id=session_id, session__profil=profil_actif(request),
+    )
+    if _get_answer(quiz_question):
+        return Response({"error": "Cette question a déjà reçu sa réponse."}, status=409)
+    indice = instantane.indice_du_corrige(instantane.donnees(quiz_question)["corrige_markdown"])
+    if not indice:
+        return Response({"error": "Pas de coup de pouce pour cette question."}, status=404)
+    if not quiz_question.indice_vu:
+        quiz_question.indice_vu = True
+        quiz_question.save(update_fields=["indice_vu"])
+    return Response({"indice_markdown": indice})
 
 
 # Plafond de signalements par profil et par jour : un robinet, pas une règle pédagogique (un élève de bonne foi en fait
