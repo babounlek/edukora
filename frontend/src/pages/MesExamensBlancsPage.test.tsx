@@ -5,8 +5,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMySimulations = vi.hoisted(() => vi.fn())
 const getMesPertes = vi.hoisted(() => vi.fn())
+const listMyTentativesInedites = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({ isAuthenticated: true, isLoading: false, user: { id: 1, cursus_prepare: { id: 14 } } }))
-vi.mock("@/api/endpoints", () => ({ listMySimulations, getMesPertes }))
+vi.mock("@/api/endpoints", () => ({ listMySimulations, getMesPertes, listMyTentativesInedites }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
@@ -36,6 +37,13 @@ function afficher() {
 beforeEach(() => {
   vi.clearAllMocks()
   auth.isAuthenticated = true
+  listMyTentativesInedites.mockResolvedValue([])
+})
+
+const inedite = (surcharges: Record<string, unknown>) => ({
+  id: 70, epreuve: 8, epreuve_titre: "Mini maths", genre: "mini", subject_label: "Mathématiques", cursus_display: "BEPC",
+  started_at: "2026-11-12T08:00:00Z", exam_mode_started_at: "2026-11-12T08:00:00Z", echeance: null,
+  submitted_at: "2026-11-12T09:00:00Z", score_obtenu: 8, note_obtenue: 16, bareme_snapshot: 20, ...surcharges,
 })
 
 describe("MesExamensBlancsPage", () => {
@@ -94,5 +102,54 @@ describe("MesExamensBlancsPage", () => {
     afficher()
 
     expect(screen.getByText("Écran de connexion")).toBeInTheDocument()
+  })
+
+  it("mêle annales, inédites, minis et défis, chacun avec sa pastille et le lien de son résultat", async () => {
+    listMySimulations.mockResolvedValue([copie({ id: 3, note_obtenue: 12, submitted_at: "2026-11-10T10:00:00Z" })])
+    listMyTentativesInedites.mockResolvedValue([
+      inedite({ id: 70, genre: "mini", submitted_at: "2026-11-12T09:00:00Z" }),
+      inedite({ id: 71, genre: "defi", epreuve_titre: "Défi du lundi", submitted_at: "2026-11-11T09:00:00Z" }),
+    ])
+    afficher()
+
+    expect(await screen.findByText("3 examens blancs passés")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Mini maths/ })).toHaveAttribute("href", "/inedit/tentative/70/resultat")
+    expect(screen.getByRole("link", { name: /Défi du lundi/ })).toHaveAttribute("href", "/inedit/tentative/71/resultat")
+    expect(screen.getByRole("link", { name: /Maths BEPC 2025/ })).toHaveAttribute("href", "/simulation/3/resultat")
+    expect(screen.getByText("Mini-inédite")).toBeInTheDocument()
+    expect(screen.getByText("Défi de la semaine")).toBeInTheDocument()
+    expect(screen.getByText("Annale")).toBeInTheDocument()
+    expect(screen.getByText("80 %", { selector: "p" })).toBeInTheDocument() // la meilleure : la mini à 16/20
+  })
+
+  it("une inédite chronométrée non rendue se reprend ; une copie libre entamée n'y figure pas", async () => {
+    listMySimulations.mockResolvedValue([])
+    listMyTentativesInedites.mockResolvedValue([
+      inedite({ id: 80, genre: "inedite", epreuve_titre: "Inédite en cours", submitted_at: null, note_obtenue: null, bareme_snapshot: null }),
+      inedite({ id: 81, epreuve_titre: "Brouillon libre", submitted_at: null, exam_mode_started_at: null, note_obtenue: null, bareme_snapshot: null }),
+    ])
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: /Inédite en cours/ })
+    expect(lien).toHaveAttribute("href", "/inedit/tentative/80")
+    expect(screen.queryByText("Brouillon libre")).not.toBeInTheDocument()
+  })
+
+  it("une copie rendue mais pas encore notée dit « À noter » sans fausser la meilleure note", async () => {
+    listMySimulations.mockResolvedValue([])
+    listMyTentativesInedites.mockResolvedValue([inedite({ id: 90, note_obtenue: null, bareme_snapshot: null })])
+    afficher()
+
+    expect(await screen.findByText("À noter")).toBeInTheDocument()
+    expect(screen.queryByText(/NaN/)).not.toBeInTheDocument()
+  })
+
+  it("sans accès aux inédites, les annales restent affichées", async () => {
+    listMySimulations.mockResolvedValue([copie({})])
+    listMyTentativesInedites.mockRejectedValue(new Error("403"))
+    afficher()
+
+    expect(await screen.findByText("1 examen blanc passé")).toBeInTheDocument()
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument()
   })
 })

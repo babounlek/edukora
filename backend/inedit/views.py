@@ -33,7 +33,7 @@ from users.parent import portee_famille
 from users.profils import profil_actif
 
 from . import notation, rapport
-from .models import CausePerte, EpreuveInedite, QuestionInedite, TentativeInedite, TentativeReponse
+from .models import CausePerte, DefiSemaine, EpreuveInedite,QuestionInedite, TentativeInedite, TentativeReponse
 
 
 def _corrige_markdown_with_cours_links(question, exercice):
@@ -551,11 +551,17 @@ def list_my_tentatives_inedites(request):
     if derniere_rendue is not None:
         exercices = derniere_rendue.epreuve.exercices_ordonnes("questions__themes")
         a_noter[derniere_rendue.id] = notation.calculer(derniere_rendue, exercices)["questions_a_noter"]
+    # Ce que l'élève a passé : une épreuve inédite entière, une mini-inédite, ou le défi de la semaine (une mini choisie par le
+    # serveur). La page « Mes examens blancs » (R-unifiée) s'en sert pour poser la pastille et choisir le lien du résultat.
+    ids_defis = set(
+        DefiSemaine.objects.filter(epreuve_id__in={t.epreuve_id for t in tentatives}).values_list("epreuve_id", flat=True),
+    )
     return Response([
         {
             "id": tentative.id,
             "epreuve": tentative.epreuve_id,
             "epreuve_titre": tentative.epreuve.titre,
+            "genre": "defi" if tentative.epreuve_id in ids_defis else "mini" if tentative.epreuve.est_mini else "inedite",
             "subject_label": tentative.epreuve.subject.label,
             "cursus_display": _cursus_display(tentative.epreuve.cursus.all()),
             "started_at": tentative.started_at,

@@ -1461,6 +1461,8 @@ export interface TentativeInediteListItem {
   id: number
   epreuve: number
   epreuve_titre: string
+  /** Ce que l'élève a passé : épreuve inédite, mini-inédite ou défi de la semaine (absent d'une réponse gardée en cache). */
+  genre?: "inedite" | "mini" | "defi"
   subject_label: string
   cursus_display: string
   started_at: string

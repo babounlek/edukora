@@ -1454,6 +1454,28 @@ class ListMyTentativesInediteAPITests(TestCase):
         self.assertIsNone(by_id[en_cours.id]["submitted_at"])
         self.assertEqual(by_id[soumise.id]["score_obtenu"], 75)
 
+    def test_dit_si_la_copie_est_une_inedite_une_mini_ou_le_defi_de_la_semaine(self):
+        from datetime import date
+
+        from .models import DefiSemaine
+
+        profil = self.user.profils.first()
+        from .test_defi import _mini
+
+        mini = _mini(self.cursus, "Mini du test")
+        defi = _mini(self.cursus, "Defi du test")
+        DefiSemaine.objects.create(cursus=self.cursus, debut=date(2026, 11, 9), epreuve=defi)
+        entiere = TentativeInedite.objects.create(profil=profil, epreuve=self.epreuve)
+        t_mini = TentativeInedite.objects.create(profil=profil, epreuve=mini)
+        t_defi = TentativeInedite.objects.create(profil=profil, epreuve=defi)
+        self.client.force_authenticate(user=self.user)
+
+        by_id = {t["id"]: t for t in self.client.get("/inedit/mes-tentatives/").data}
+
+        self.assertEqual(by_id[entiere.id]["genre"], "inedite")
+        self.assertEqual(by_id[t_mini.id]["genre"], "mini")
+        self.assertEqual(by_id[t_defi.id]["genre"], "defi")  # le défi prime sur « mini » : c'est une mini choisie par le serveur
+
     def test_dit_combien_de_questions_de_la_derniere_copie_rendue_restent_a_noter(self):
         en_cours = TentativeInedite.objects.create(profil=self.user.profils.first(), epreuve=self.epreuve)
         soumise = TentativeInedite.objects.create(
