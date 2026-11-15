@@ -99,7 +99,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
 
   if (error) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+      <div className="mx-auto max-w-5xl px-4 py-10 text-center sm:px-6">
         <p className="text-destructive">{error}</p>
         <Link
           to={result ? cheminRetour(source, result.country) : "/"}
@@ -113,7 +113,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
 
   if (!result) {
     return (
-      <div className="mx-auto max-w-xl px-4 py-10">
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         <Skeleton className="mb-4 h-8 w-48" />
         <Skeleton className="h-24 w-full" />
       </div>
@@ -148,7 +148,7 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
   const dejaNotees = Math.max(0, result.questions_repondues - result.questions_a_noter)
 
   return (
-    <div className="mx-auto max-w-xl animate-fade-up px-4 py-10">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <div className="mb-8 text-center">
         {notationEnCours ? (
           <ClipboardCheck className="mx-auto mb-3 size-8 text-primary" />
