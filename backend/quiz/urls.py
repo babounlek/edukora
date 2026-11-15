@@ -16,6 +16,9 @@ urlpatterns = [
         "sessions/<int:session_id>/questions/<int:quiz_question_id>/indice/",
         views.indice_question, name="indice-question",
     ),
+    path("cartes/dues/", views.cartes_dues_view, name="cartes-dues"),
+    path("cartes/cours/<slug:slug>/", views.cartes_du_cours_view, name="cartes-cours"),
+    path("cartes/cours/<slug:slug>/<str:cle>/", views.noter_carte, name="cartes-noter"),
     path(
         "sessions/<int:session_id>/questions/<int:quiz_question_id>/signaler/",
         views.signaler_question, name="signaler-question",

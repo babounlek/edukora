@@ -7,6 +7,7 @@ import { ApiError } from "@/api/client"
 import type { Cours, CoursContent, CoursSectionData } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { CartesDuCours } from "@/components/CartesDeRevision"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
@@ -301,6 +302,7 @@ export function CoursReaderPage() {
         </div>
       )}
 
+      {isAuthenticated && slug && <CartesDuCours slug={slug} />}
       <EtapeSuivante />
       {cours && <SuiteDuCours cours={cours} />}
 

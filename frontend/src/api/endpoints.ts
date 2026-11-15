@@ -16,6 +16,7 @@ import type {
   BanqueErreurs,
   Reussites,
   DefiSemaine,
+  CarteRevision,
   BilanPeriode,
   CarnetEntree,
   CibleEtude,
@@ -1211,6 +1212,23 @@ export function getCarnet(signal?: AbortSignal) {
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */
 export function refaireLesRatees(sessionId: number) {
   return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
+}
+
+/** Les cartes de révision d'un cours (la règle, ses erreurs classiques) et l'état de révision de chacune (R18). */
+export function getCartesCours(slug: string, signal?: AbortSignal) {
+  return apiRequest<{ cours: { slug: string; titre: string }; cartes: CarteRevision[] }>(`/quiz/cartes/cours/${slug}/`, { signal })
+}
+
+/** Les cartes à revoir aujourd'hui, toutes matières (R18). */
+export function getCartesDues(signal?: AbortSignal) {
+  return apiRequest<{ total: number; cartes: CarteRevision[] }>("/quiz/cartes/dues/", { signal })
+}
+
+/** Note une revue de carte : sue (revient plus tard) ou à revoir (revient demain). */
+export function noterCarte(slug: string, cle: string, savais: boolean) {
+  return apiRequest<{ cle: string; palier: number; due_at: string }>(`/quiz/cartes/cours/${slug}/${cle}/`, {
+    method: "POST", body: JSON.stringify({ savais }),
+  })
 }
 
 /** Le défi de la semaine d'un cursus et où en est l'élève (R17) ; `defi: null` quand le cursus n'a pas de mini publiée. */

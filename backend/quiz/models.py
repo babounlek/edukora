@@ -737,3 +737,24 @@ class SignalementQuestion(models.Model):
 
     def __str__(self):
         return f"Signalement {self.get_motif_display()} - item {self.competence_item_id_garde}"
+
+
+class CarteRevue(models.Model):
+    """
+    La revue d'une carte de révision par un profil (R18, voir quiz.cartes) : palier et prochaine échéance. La carte elle-même
+    n'est jamais stockée, elle se lit dans le cours ; `cle` la désigne dans son cours (« regle », « erreur-0 »...).
+    """
+
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="cartes_revues")
+    cours = models.ForeignKey("catalog.Cours", on_delete=models.CASCADE, related_name="cartes_revues")
+    cle = models.CharField(max_length=20)
+    palier = models.PositiveSmallIntegerField(default=0, help_text="Index dans LEITNER_INTERVALS_JOURS.")
+    due_at = models.DateField(help_text="Prochaine date à laquelle cette carte doit revenir.")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["due_at"]
+        constraints = [models.UniqueConstraint(fields=["profil", "cours", "cle"], name="unique_carte_revue")]
+
+    def __str__(self):
+        return f"{self.profil} - {self.cours_id}/{self.cle} ({self.due_at})"

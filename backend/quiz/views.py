@@ -1577,3 +1577,43 @@ def refaire_ratees_view(request, session_id):
     except ValueError as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(_session_payload(refaite), status=201)
+
+
+@api_view(["GET"])
+def cartes_du_cours_view(request, slug):
+    """GET /quiz/cartes/cours/<slug>/ : les cartes (règle, erreurs classiques) d'un cours et l'état de révision de chacune."""
+    from catalog.models import Cours
+
+    from . import cartes
+
+    cours = get_object_or_404(Cours.objects.visibles(), slug=slug)
+    return Response({
+        "cours": {"slug": cours.slug, "titre": cours.titre},
+        "cartes": cartes.cartes_avec_etat(profil_actif(request), cours),
+    })
+
+
+@api_view(["POST"])
+def noter_carte(request, slug, cle):
+    """POST /quiz/cartes/cours/<slug>/<cle>/ {savais: bool} : enregistre la revue et renvoie la prochaine échéance."""
+    from catalog.models import Cours
+
+    from . import cartes
+
+    savais = request.data.get("savais")
+    if not isinstance(savais, bool):
+        return Response({"error": "« savais » doit être vrai ou faux."}, status=400)
+    cours = get_object_or_404(Cours.objects.visibles(), slug=slug)
+    revue = cartes.noter(profil_actif(request), cours, cle, savais)
+    if revue is None:
+        return Response({"error": "Carte inconnue."}, status=404)
+    return Response({"cle": cle, "palier": revue.palier, "due_at": revue.due_at.isoformat()})
+
+
+@api_view(["GET"])
+def cartes_dues_view(request):
+    """GET /quiz/cartes/dues/ : les cartes à revoir aujourd'hui (20 au plus, la plus en retard d'abord) et leur total."""
+    from . import cartes
+
+    total, liste = cartes.cartes_dues(profil_actif(request))
+    return Response({"total": total, "cartes": liste})

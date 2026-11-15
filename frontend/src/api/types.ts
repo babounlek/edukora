@@ -172,6 +172,18 @@ export interface PertesCumulees {
 
 export type MotifSignalement = "REPONSE_FAUSSE" | "ENONCE_CONFUS" | "FIGURE" | "HORS_PROGRAMME" | "AUTRE"
 
+/** Une carte de révision (R18, voir quiz.cartes) : la règle d'un cours ou l'une de ses erreurs classiques. */
+export interface CarteRevision {
+  cle: string
+  type: "regle" | "erreur"
+  recto: string
+  verso: string
+  etat: "nouvelle" | "a_revoir" | "planifiee"
+  due_at: string | null
+  /** Présent dans la liste des cartes dues, toutes matières. */
+  cours?: { slug: string; titre: string }
+}
+
 /** Où en est l'élève du défi de la semaine de son cursus (R17, voir inedit.defi). `bande` : seulement le dimanche, jamais un rang. */
 export interface BandeDefi {
   disponible: boolean

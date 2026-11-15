@@ -41,6 +41,7 @@ vi.mock("@/api/endpoints", () => ({
   listEpreuvesInedites: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listEpreuves: vi.fn(() => Promise.resolve({ count: 0, results: [] })),
   listCursus: vi.fn(() => Promise.resolve([])),
+  getCartesDues: vi.fn(() => Promise.resolve({ total: 0, cartes: [] })),
   getDefiSemaine: vi.fn(() => Promise.resolve({ defi: null })),
   listMySubscriptions: vi.fn(() => Promise.resolve([])),
 }))

@@ -69,4 +69,4 @@ class JalonsTests(ErreursFixture):
 
         self.assertEqual(reponse.status_code, 200)
         self.assertEqual(reponse.data["niveau"]["rang"], 1)
-        self.assertEqual(len(reponse.data["jalons"]), 9)
+        self.assertEqual(len(reponse.data["jalons"]), 11)
