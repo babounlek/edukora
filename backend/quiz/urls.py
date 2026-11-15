@@ -12,6 +12,7 @@ urlpatterns = [
         views.reveal_corrige, name="reveal-corrige",
     ),
     path("sessions/<int:session_id>/questions/<int:quiz_question_id>/answer/", views.answer_question, name="answer-question"),
+    path("sessions/<int:session_id>/questions/<int:quiz_question_id>/passer/", views.passer_question, name="passer-question"),
     path(
         "sessions/<int:session_id>/questions/<int:quiz_question_id>/indice/",
         views.indice_question, name="indice-question",

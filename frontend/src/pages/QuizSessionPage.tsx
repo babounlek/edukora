@@ -7,7 +7,7 @@ import rehypeRaw from "rehype-raw"
 import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Swords, Target, X, Zap } from "lucide-react"
 
 import {
-  answerQuizEssai, answerQuizQuestion, completeQuizSession, getQuizSession, revealQuizCorrige, revealQuizEssaiCorrige,
+  answerQuizEssai, answerQuizQuestion, completeQuizSession, passerQuizQuestion, getQuizSession, revealQuizCorrige, revealQuizEssaiCorrige,
 } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizCorrige, QuizSession } from "@/api/types"
@@ -70,6 +70,7 @@ function pick(messages: CleI18n[], seed: number) {
 
 /** Couleur du segment de progression d'une question, selon ce que l'élève en a fait. */
 function segmentClass(q: QuizSession["questions"][number], isCurrent: boolean) {
+  if (!q.reponse && q.passee) return isCurrent ? "bg-primary" : "bg-muted-foreground/40"
   if (q.reponse) {
     if (q.reponse.est_correcte) return "bg-success"
     if (q.reponse.resultat_declare === "PARTIEL") return "bg-gold"
@@ -158,7 +159,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         return
       }
       setSession(enCours)
-      const premiere = enCours.questions.findIndex((q) => !q.reponse)
+      const premiere = enCours.questions.findIndex((q) => !q.reponse && !q.passee)
       setCurrentIndex(premiere === -1 ? Math.max(0, enCours.questions.length - 1) : premiere)
       return
     }
@@ -170,7 +171,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           return
         }
         setSession(data)
-        const firstUnanswered = data.questions.findIndex((q) => !q.reponse)
+        const firstUnanswered = data.questions.findIndex((q) => !q.reponse && !q.passee)
         // Tout répondu mais pas rendu (reprise après coup) : on arrive sur la dernière question,
         // d'où « Voir mon résultat » est à portée, plutôt qu'au début d'un quiz fini.
         setCurrentIndex(firstUnanswered === -1 ? Math.max(0, data.questions.length - 1) : firstUnanswered)
@@ -278,6 +279,22 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     }
   }
 
+  /** « Passer cette question » (R22) : rien n'est compté, ni réussi ni raté ; on avance, et la question reste à faire. */
+  async function handlePasser() {
+    if (submitting || question.reponse || chronoEcoule) return
+    setActionError("")
+    setSubmitting(true)
+    try {
+      const updated = await passerQuizQuestion(session!.id, question.id)
+      setSession((prev) => (prev ? { ...prev, questions: prev.questions.map((q) => (q.id === updated.id ? updated : q)) } : prev))
+      setSubmitting(false)
+      await handleNext()
+    } catch (err) {
+      signalerEchec(err)
+      setSubmitting(false)
+    }
+  }
+
   /** Secondes passées sur la question affichée, plafonnées : un onglet laissé ouvert une nuit n'est pas un temps de réponse. */
   function tempsPasse() {
     return Math.min(3600, Math.max(0, Math.round((Date.now() - debutQuestionRef.current) / 1000)))
@@ -345,8 +362,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
   // Relecture : on peut revenir sur toute question déjà répondue, et sur la première
   // restée sans réponse - jamais sauter en avant, l'ordre de la séance reste celui du quiz.
-  const premiereSansReponse = session.questions.findIndex((q) => !q.reponse)
-  const accessible = (i: number) => Boolean(session.questions[i].reponse) || i === premiereSansReponse
+  const premiereSansReponse = session.questions.findIndex((q) => !q.reponse && !q.passee)
+  const accessible = (i: number) => Boolean(session.questions[i].reponse) || Boolean(session.questions[i].passee) || i === premiereSansReponse
   const SubjectIcon = subjectIcon(question.subject_code ?? "")
   // Exercices corrigés du thème (/themes-frequents/<id>/exercices) : le pont entre une
   // question et un vrai sujet d'examen sur la même notion.
@@ -720,6 +737,16 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         )}
       </div>
       </div>
+
+      {/* Passer : discret, jamais un second bouton de même poids que « Question suivante ». Pas dans l'essai sans compte, ni une
+          fois le corrigé d'une question ouverte vu (la réponse est connue : il reste à dire si on l'avait). */}
+      {!answered && !essai && !questionCorrige && (
+        <div className="mt-5 flex justify-end">
+          <Button type="button" variant="ghost" size="sm" className="text-muted-foreground" disabled={submitting || chronoEcoule} onClick={handlePasser}>
+            {t("qs.passer")}
+          </Button>
+        </div>
+      )}
 
       {/* Sur téléphone, "Question suivante" reste sous le pouce, sans remonter : au-dessus de la barre
           d'onglets (BottomTabBar, z-40), dont la hauteur est publiée dans --bottom-tab-bar (0 quand elle

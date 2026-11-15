@@ -1145,6 +1145,8 @@ export interface QuizQuestion {
   difficulte?: Difficulte | null
   indice_disponible?: boolean
   indice_vu?: boolean
+  /** L'élève l'a passée et n'y a pas (encore) répondu (R22). */
+  passee?: boolean
   // Présents uniquement pour l'historique pré-bascule (source catalog.Question,
   // extraite d'une épreuve réelle) - jamais peuplés pour une session créée après la
   // bascule vers CompetenceItem.
@@ -1232,6 +1234,8 @@ export interface QuizResult {
   subject: number | null
   total_questions: number
   questions_repondues: number
+  /** Questions passées et jamais répondues : ni points ni échec (R22). */
+  questions_passees?: number
   score: number
   meilleure_serie: number
   seances_cette_semaine: number

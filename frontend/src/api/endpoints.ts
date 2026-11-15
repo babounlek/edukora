@@ -709,6 +709,11 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
   })
 }
 
+/** Passer une question (R22) : ni réponse ni échec, elle reste à faire. */
+export function passerQuizQuestion(sessionId: number, quizQuestionId: number) {
+  return apiRequest<QuizQuestion>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/passer/`, { method: "POST" })
+}
+
 /** Le coup de pouce d'une question non répondue : son rappel de méthode, jamais la réponse (R19). */
 export function getIndiceQuiz(sessionId: number, quizQuestionId: number) {
   return apiRequest<{ indice_markdown: string }>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/indice/`)

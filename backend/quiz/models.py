@@ -315,6 +315,13 @@ class QuizQuestion(models.Model):
         default=False,
         help_text="L'élève a demandé le coup de pouce (rappel de méthode) avant de répondre - voir views.indice_question.",
     )
+    passee = models.BooleanField(
+        default=False,
+        help_text=(
+            "L'élève a choisi de passer cette question (audit produit R22) : ni réponse, ni échec. Aucune QuizAnswer n'est écrite, "
+            "donc la maîtrise, les points, les erreurs et la série n'en savent rien. Elle reste répondable plus tard."
+        ),
+    )
     snapshot_retroactif = models.BooleanField(
         default=False,
         help_text=(

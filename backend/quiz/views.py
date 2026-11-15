@@ -335,6 +335,8 @@ def _question_payload(quiz_question):
             # getattr avec défaut suffit pour une réponse sans gain.
             "xp_gagne": gain.points if gain else 0,
         }
+    # Passée et pas (encore) répondue : le client la saute, l'élève peut y revenir.
+    payload["passee"] = bool(quiz_question.passee and not answer)
 
     return payload
 
@@ -469,6 +471,8 @@ def _resultat_payload(session, request):
         "subject": session.subject_id,
         "total_questions": quiz_questions.count(),
         "questions_repondues": repondues,
+        # Questions passées et jamais répondues : ni points ni échec, mais l'élève sait qu'elles restent à faire.
+        "questions_passees": sum(1 for qq in quiz_questions if qq.passee and not _get_answer(qq)),
         "mode": session.mode,
         "nb_ratees": len(_items_rates(session)),
         "score": reussies,
@@ -741,6 +745,37 @@ def answer_question(request, session_id, quiz_question_id):
 
 
 @api_view(["POST"])
+def passer_question(request, session_id, quiz_question_id):
+    """
+    POST /quiz/sessions/<id>/questions/<id>/passer/ (audit produit 2026-11-13, R22) : l'élève passe cette question. Aucune
+    QuizAnswer n'est écrite : ni échec, ni point, ni effet sur la maîtrise, les erreurs ou la série - elle reste simplement à
+    faire. Refusée si la question est déjà répondue, la session terminée ou le chrono écoulé.
+    """
+    profil = profil_actif(request)
+    quiz_question = get_object_or_404(
+        QuizQuestion.objects.select_related("session", "competence_item", "question"),
+        pk=quiz_question_id, session_id=session_id, session__profil=profil,
+    )
+    with transaction.atomic():
+        session = QuizSession.objects.select_for_update().get(pk=quiz_question.session_id)
+        if session.completed_at:
+            return Response(
+                {"error": textes.texte("quiz.session_terminee", textes.langue_de(session.cursus))}, status=409,
+            )
+        if chrono.est_ecoule(session, tolerance=chrono.TOLERANCE_RESEAU_SECONDES):
+            return Response(
+                {"error": textes.texte("quiz.chrono_ecoule", textes.langue_de(session.cursus)), "chrono_ecoule": True, "code": "chrono_ecoule"},
+                status=409,
+            )
+        if _get_answer(quiz_question):
+            return Response({"error": textes.texte("quiz.deja_repondue", textes.langue_de(session.cursus))}, status=409)
+        if not quiz_question.passee:
+            quiz_question.passee = True
+            quiz_question.save(update_fields=["passee"])
+    return Response(_question_payload(quiz_question))
+
+
+@api_view(["POST"])
 def complete_session(request, session_id):
     get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     with transaction.atomic():
@@ -751,7 +786,11 @@ def complete_session(request, session_id):
         if cloture_ici:
             session.completed_at = timezone.now()
             session.save(update_fields=["completed_at"])
-    if cloture_ici:
+    # Un quiz où tout a été passé (aucune réponse) n'a rien fait faire : il ne valide pas la séance du jour.
+    tout_passe = (
+        session.quiz_questions.filter(passee=True).exists() and not session.quiz_questions.filter(answer__isnull=False).exists()
+    )
+    if cloture_ici and not tout_passe:
         # Le quiz est toujours la dernière étape d'une séance : le boucler, c'est
         # avoir fait la séance. Sous le `if` : une session rouverte plus tard ne doit
         # pas reclôturer quoi que ce soit.

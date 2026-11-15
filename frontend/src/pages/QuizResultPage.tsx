@@ -455,6 +455,9 @@ export function QuizResultPage() {
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">{message.titre}</h1>
             <p className="mt-2 max-w-md text-muted-foreground">{message.texte}</p>
+            {(result.questions_passees ?? 0) > 0 && (
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">{tn("qr.passees", result.questions_passees ?? 0)}</p>
+            )}
             {!diagnostic && (
               <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
                 <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
