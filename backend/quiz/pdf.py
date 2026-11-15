@@ -22,7 +22,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import markdown
@@ -31,17 +30,16 @@ from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 
 from catalog.libelles import libelle_cursus
+from catalog.pdf_fin import adresse_du_site, contexte_fin
 from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
 from catalog.segments_url import chemin_public
 from catalog.sujet_pdf import (
-    _footer_template,
     _italicize_quotes,
     _protect_math,
-    _qr_code_data_uri,
     _resolve_media_paths,
     _restore_math,
+    html_vers_pdf,
 )
-from playwright.sync_api import sync_playwright
 
 # Même dossier statique que catalog.sujet_pdf._KATEX_DIR (fichiers copiés depuis
 # frontend/node_modules/katex/dist) - pas un import direct de cette constante privée,
@@ -163,40 +161,16 @@ def _render_html(session, *, avec_corrige, template_name, deep_link):
         "total_questions": session.quiz_questions.count(),
         "content_html": content_html,
         "site_name": settings.SITE_NAME,
-        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
-        "deep_link": deep_link,
-        "qr_code_data_uri": _qr_code_data_uri(deep_link),
+        # Le lien ramène à l'accueil du pays : une adresse assez courte pour être tapée telle quelle.
+        "fin": contexte_fin(
+            tx, lien=deep_link, titre=tx["quiz_cta_titre"], corps=tx["quiz_cta_corps"], bouton=tx["quiz_cta_lien"],
+            qr_alt=tx["quiz_qr_alt"], legende=tx["quiz_qr_legende"],
+            adresse=f"{adresse_du_site()}/{session.cursus.country.code.lower()}",
+        ),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
         "katex_js_url": (_KATEX_DIR / "katex.min.js").as_uri(),
         "katex_auto_render_url": (_KATEX_DIR / "contrib" / "auto-render.min.js").as_uri(),
     })
-
-
-def _render_pdf_bytes(html):
-    # page.set_content() bloquerait le chargement des ressources file:// locales (voir
-    # catalog.sujet_pdf.generate_sujet_pdf, docstring inline) - même détour par un vrai
-    # fichier temporaire, même origine que les ressources KaTeX qu'il charge.
-    with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False, encoding="utf-8") as tmp:
-        tmp.write(html)
-        tmp_path = Path(tmp.name)
-    try:
-        with sync_playwright() as p:
-            browser = p.chromium.launch()
-            page = browser.new_page()
-            page.goto(tmp_path.as_uri(), wait_until="load")
-            page.wait_for_function("() => window.__katexDone === true", timeout=15000)
-            pdf_bytes = page.pdf(
-                format="A4",
-                print_background=True,
-                margin={"top": "20px", "bottom": "56px", "left": "0px", "right": "0px"},
-                display_header_footer=True,
-                header_template="<span></span>",
-                footer_template=_footer_template(),
-            )
-            browser.close()
-    finally:
-        tmp_path.unlink(missing_ok=True)
-    return pdf_bytes
 
 
 def generate_quiz_fiche_pdfs(session):
@@ -209,7 +183,7 @@ def generate_quiz_fiche_pdfs(session):
         session, avec_corrige=True, template_name="quiz/fiche_corrige_pdf_template.html",
         deep_link=_corrige_deep_link(session),
     )
-    return _render_pdf_bytes(sujet_html), _render_pdf_bytes(corrige_html)
+    return html_vers_pdf(sujet_html), html_vers_pdf(corrige_html)
 
 
 def save_quiz_fiche_pdfs(session):

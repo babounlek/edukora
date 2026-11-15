@@ -189,7 +189,8 @@ export function FichesPage() {
     // donc comptée une seule fois, au moment où elle aboutit.
     if (!isAuthenticated) return
     if (searchParams.get("ref") !== "pdf_fiche_corrige") return
-    trackEvent("pdf_fiche_corrige_landing", {})
+    // ?pos= : l'emplacement du lien dans le PDF (voir EpreuveDetailPage et backend catalog.pdf_fin).
+    trackEvent("pdf_fiche_corrige_landing", { position: searchParams.get("pos") ?? "" })
   }, [isAuthenticated, searchParams])
 
   // searchParams.toString() plutôt que juste "/fiches" : préserve ?ref=pdf_fiche_corrige

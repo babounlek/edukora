@@ -1,0 +1,245 @@
+{# Styles du bloc de fin et du QR d'en-tête, communs à tous les PDF (voir catalog.pdf_fin). À inclure APRÈS le <style> du gabarit : ces règles l'emportent sur sa règle générique `img`, pensée pour les figures d'exercice. #}
+<style>
+    .brand-header {
+        position: relative;
+        padding-right: 150px;
+        min-height: 124px;
+    }
+    .entete-qr {
+        position: absolute;
+        right: 40px;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .entete-qr img.qr-image {
+        display: block;
+        width: 78px;
+        height: 78px;
+        max-width: none;
+        max-height: none;
+        margin: 0 auto;
+        padding: 3px;
+        background: #ffffff;
+        border: none;
+        border-radius: 4px;
+    }
+    .entete-qr p {
+        margin: 4px 0 0 0;
+        font-size: 9px;
+        font-weight: bold;
+        color: #ffffff;
+        white-space: nowrap;
+    }
+
+    /* Le bloc et sa ligne de pied restent ensemble, et le bloc n'est jamais coupé par un saut de page. */
+    .fin-ensemble {
+        margin-top: 36px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .reserve-note + .fin-ensemble {
+        margin-top: 14px;
+    }
+    .fin {
+        border: 1.5px solid #0a6e4e;
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        text-align: left;
+    }
+    .fin-tete {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 20px 24px;
+        background: #e8f5ef;
+    }
+    .fin-texte {
+        flex: 1;
+    }
+    .fin-titre {
+        font-weight: bold;
+        font-size: 15px;
+        line-height: 1.3;
+        color: #0a6e4e;
+        margin: 0 0 6px 0;
+    }
+    .fin-corps {
+        font-size: 12.5px;
+        color: #333;
+        margin: 0 0 10px 0;
+    }
+    .fin-bouton {
+        display: inline-block;
+        background: #0a6e4e;
+        color: #ffffff;
+        padding: 8px 18px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    .fin-adresse {
+        display: none;
+        font-size: 11.5px;
+        color: #333;
+        margin: 12px 0 0 0;
+    }
+    .fin-qr-bloc {
+        flex-shrink: 0;
+        text-align: center;
+    }
+    .fin img.fin-qr {
+        display: block;
+        width: 104px;
+        height: 104px;
+        max-width: none;
+        max-height: none;
+        margin: 0;
+        padding: 3px;
+        background: #ffffff;
+        border: 1px solid #b9d6c9;
+        border-radius: 6px;
+    }
+    .fin-scan {
+        margin: 6px 0 0 0;
+        font-size: 10px;
+        font-weight: bold;
+        color: #0a6e4e;
+    }
+    .fin-aussi,
+    .fin-autres,
+    .fin-parents {
+        display: none;
+        margin: 0;
+        padding: 14px 24px;
+        border-top: 1px solid #b9d6c9;
+    }
+    .fin-sous-titre {
+        margin: 0 0 8px 0;
+        font-size: 10.5px;
+        font-weight: bold;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #0a6e4e;
+    }
+    .fin-aussi ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px 24px;
+    }
+    .fin-aussi li {
+        position: relative;
+        padding-left: 16px;
+        font-size: 12.5px;
+        line-height: 1.4;
+        color: #222;
+    }
+    .fin-aussi li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #0a6e4e;
+    }
+    .fin-pastilles {
+        margin: 0;
+    }
+    .fin-pastilles a {
+        display: inline-block;
+        margin: 0 8px 4px 0;
+        padding: 3px 12px;
+        border: 1px solid #0a6e4e;
+        border-radius: 14px;
+        font-size: 12.5px;
+        font-weight: bold;
+        color: #0a6e4e;
+        text-decoration: none;
+    }
+    .fin-parents {
+        font-size: 12px;
+        color: #333;
+        background: #f6f6f2;
+    }
+    .footer-note {
+        margin: 12px 0 0 0;
+        font-size: 10.5px;
+        color: #777;
+        text-align: center;
+        font-family: "Helvetica Neue", Arial, sans-serif;
+    }
+    .footer-note a {
+        color: inherit;
+        text-decoration: underline;
+    }
+
+    /* Tailles : sans attribut, le bandeau. « aucun » ne sert qu'à compter les pages du contenu seul. */
+    body[data-fin="aucun"] .fin-ensemble {
+        display: none;
+    }
+    body[data-fin="mini"] .fin-ensemble {
+        margin-top: 18px;
+    }
+    body[data-fin="mini"] .fin-tete {
+        padding: 10px 16px;
+        gap: 16px;
+    }
+    body[data-fin="mini"] .fin-titre {
+        font-size: 13px;
+        margin-bottom: 2px;
+    }
+    body[data-fin="mini"] .fin-corps {
+        font-size: 11px;
+        margin: 0;
+    }
+    body[data-fin="mini"] .fin-bouton,
+    body[data-fin="mini"] .fin-scan,
+    body[data-fin="mini"] .footer-note {
+        display: none;
+    }
+    body[data-fin="mini"] .fin img.fin-qr {
+        width: 68px;
+        height: 68px;
+        padding: 2px;
+    }
+    body[data-fin="demi"] .fin-aussi,
+    body[data-fin="pleine"] .fin-aussi,
+    body[data-fin="demi"] .fin-adresse,
+    body[data-fin="pleine"] .fin-adresse,
+    body[data-fin="pleine"] .fin-autres,
+    body[data-fin="pleine"] .fin-parents {
+        display: block;
+    }
+    body[data-fin="demi"] .fin img.fin-qr {
+        width: 140px;
+        height: 140px;
+    }
+    body[data-fin="pleine"] .fin img.fin-qr {
+        width: 178px;
+        height: 178px;
+    }
+    body[data-fin="pleine"] .fin-tete {
+        padding: 28px;
+    }
+    body[data-fin="pleine"] .fin-titre {
+        font-size: 19px;
+        margin-bottom: 8px;
+    }
+    body[data-fin="pleine"] .fin-corps {
+        font-size: 13.5px;
+        margin-bottom: 14px;
+    }
+    body[data-fin="demi"] .fin-scan,
+    body[data-fin="pleine"] .fin-scan {
+        font-size: 12px;
+    }
+</style>

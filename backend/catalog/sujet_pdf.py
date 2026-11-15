@@ -5,8 +5,6 @@ copie du produit payant. Distinct de l'ancien pipeline PDF supprimé, qui rendai
 le corrigé complet et devait donc être protégé - ici la fuite est le but.
 """
 
-import base64
-import io
 import os
 import re
 import subprocess
@@ -16,13 +14,13 @@ from html import escape
 from pathlib import Path
 
 import markdown
-import qrcode
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.template.loader import render_to_string
 from django.utils.text import slugify
 
 from catalog.libelles import matiere_dans_titre, public_dans_titre
+from catalog.pdf_fin import POSITION_AUTRES, adresse_du_site, avec_position, contexte_fin, imprimer_a_la_bonne_taille
 from catalog.pdf_textes import adapter_markdown, langue_du_contenu, nom_pays, textes_pdf
 from catalog.segments_url import chemin_public
 
@@ -55,9 +53,10 @@ _FLAGS_DIR = Path(settings.BASE_DIR) / "catalog" / "static" / "flags" / "4x3"
 def _footer_template():
     # Fonction plutôt que constante de module : settings.SITE_NAME doit être lu au
     # moment de la génération, pas figé dans une chaîne construite à l'import.
+    # L'adresse du site sur CHAQUE page : une page photocopiée seule doit encore dire d'où elle vient.
     return (
         '<div style="font-size:9px; width:100%; text-align:center; color:#888;">'
-        f"{settings.SITE_NAME} - "
+        f"{settings.SITE_NAME} - {adresse_du_site()} - "
         '<span class="pageNumber"></span> / <span class="totalPages"></span>'
         "</div>"
     )
@@ -130,7 +129,11 @@ def _resolve_media_paths(markdown_text):
 # visites viennent réellement d'un PDF partagé - voir EpreuveDetailPage.tsx (capture)
 # et analytics.models.EventName.PDF_SUJET_LANDING (évènement) côté frontend.
 def _lesson_deep_link(lesson, header):
-    country_code = header["pays"]["code"].lower()
+    return _lien_epreuve(lesson, header["pays"]["code"])
+
+
+def _lien_epreuve(lesson, code_pays):
+    country_code = code_pays.lower()
     # settings.PDF_SITE_URL, pas FRONTEND_URL : ce lien est imprimé dans un PDF
     # destiné à circuler tel quel après coup (voir settings.py) - il doit rester
     # valide indépendamment de l'environnement qui a généré le fichier.
@@ -140,17 +143,39 @@ def _lesson_deep_link(lesson, header):
     return f"{settings.PDF_SITE_URL}{chemin}?ref=pdf_sujet"
 
 
-def _qr_code_data_uri(url):
-    """QR code encodé en data URI (comme KaTeX/les drapeaux, voir plus haut : jamais
-    de service tiers pour un asset généré à chaque PDF)."""
-    qr = qrcode.QRCode(border=1, box_size=8)
-    qr.add_data(url)
-    qr.make(fit=True)
-    image = qr.make_image(fill_color="#0a6e4e", back_color="#ffffff")
-    buffer = io.BytesIO()
-    image.save(buffer, format="PNG")
-    encoded = base64.b64encode(buffer.getvalue()).decode("ascii")
-    return f"data:image/png;base64,{encoded}"
+# Au plus ce nombre d'autres sessions au bas du PDF : une ligne de pastilles, pas un catalogue.
+MAX_AUTRES_SESSIONS = 8
+
+
+def _autres_sessions(lesson, code_pays):
+    """Les autres sessions de la MÊME épreuve (même matière, même public, même paper, même partie), les plus récentes
+    d'abord : `[{"libelle": "2023", "url": …}]`. Le lecteur d'un sujet veut le suivant ; chaque PDF ouvre ainsi sur le
+    reste du catalogue. Une seule épreuve par année : deux variantes d'une même session porteraient le même libellé."""
+    if not lesson.year:
+        return []
+    voisines = (
+        type(lesson).objects.visibles()
+        .filter(
+            subject=lesson.subject, lesson_type=lesson.lesson_type, cursus__in=lesson.cursus.all(),
+            origine=lesson.origine, numero_paper=lesson.numero_paper, nature_epreuve=lesson.nature_epreuve,
+            partie_epreuve_francais=lesson.partie_epreuve_francais, filiere_serie_a=lesson.filiere_serie_a,
+        )
+        .exclude(pk=lesson.pk).exclude(year=None).exclude(year=lesson.year)
+        .select_related("subject")
+        .order_by("-year", "pk").distinct()
+    )
+    autres, annees = [], set()
+    for voisine in voisines:
+        if voisine.year in annees:
+            continue
+        annees.add(voisine.year)
+        autres.append({
+            "libelle": str(voisine.year),
+            "url": avec_position(_lien_epreuve(voisine, code_pays), POSITION_AUTRES),
+        })
+        if len(autres) == MAX_AUTRES_SESSIONS:
+            break
+    return autres
 
 
 def _meta_entete(lesson, header, tx):
@@ -200,8 +225,12 @@ def _render_html(lesson):
         "site_name": settings.SITE_NAME,
         "site_url": settings.PDF_SITE_URL,
         "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
-        "lesson_url": lesson_url,
-        "qr_code_data_uri": _qr_code_data_uri(lesson_url),
+        "fin": contexte_fin(
+            tx, lien=lesson_url, titre=tx["sujet_cta_titre"], corps=tx["sujet_cta_corps"], bouton=tx["sujet_cta_lien"],
+            qr_alt=tx["sujet_qr_alt"], legende=tx["sujet_qr_legende"], note_pied=tx["sujet_note_pied"],
+            recherche=lesson.title, autres=_autres_sessions(lesson, header["pays"]["code"]),
+            autres_titre=tx["sujet_autres_titre"], parents=True,
+        ),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
         "katex_js_url": (_KATEX_DIR / "katex.min.js").as_uri(),
         "katex_auto_render_url": (_KATEX_DIR / "contrib" / "auto-render.min.js").as_uri(),
@@ -216,8 +245,11 @@ def generate_sujet_pdf(lesson):
 
 def html_vers_pdf(html):
     """Les octets du PDF (A4, pied de page numéroté) d'une page HTML complète qui rend ses formules avec KaTeX et
-    pose `window.__katexDone` une fois fini. Partagé avec catalog.cours_pdf. Même contrainte que le reste du module :
-    jamais appelé depuis le thread d'une requête HTTP."""
+    pose `window.__katexDone` une fois fini. Partagé par tous les PDF (cours, fiches, quiz, inédites). Même contrainte
+    que le reste du module : jamais appelé depuis le thread d'une requête HTTP.
+
+    Le bloc de fin (voir catalog.pdf_fin) est imprimé à plusieurs tailles : on garde la plus grande qui n'ajoute pas
+    de page au contenu."""
     # page.set_content() donne à la page une origine "about:blank" : Chromium bloque
     # alors le chargement des ressources file:// (nos fichiers KaTeX locaux) depuis
     # cette origine, ce qui fait silencieusement échouer katex.min.js/auto-render.min.js
@@ -241,23 +273,35 @@ def html_vers_pdf(html):
             page = browser.new_page()
             page.goto(tmp_path.as_uri(), wait_until="load")
             page.wait_for_function("() => window.__katexDone === true", timeout=15000)
-            pdf_bytes = page.pdf(
-                format="A4",
-                print_background=True,
-                # bottom généreux : le corps du texte ne doit jamais chevaucher le pied
-                # de page injecté par footer_template (constaté avec 36px - la marge
-                # CSS @page:0 du template, supprimée, aggravait aussi le problème en
-                # empêchant Chromium de réserver cet espace lors de la pagination).
-                margin={"top": "20px", "bottom": "56px", "left": "0px", "right": "0px"},
-                display_header_footer=True,
-                header_template="<span></span>",
-                footer_template=_footer_template(),
-            )
+            def imprimer(taille):
+                page.evaluate("taille => document.body.setAttribute('data-fin', taille)", taille)
+                return _imprimer(page)
+
+            # Une page sans bloc de fin s'imprime telle quelle, en une fois.
+            if page.query_selector(".fin-ensemble"):
+                pdf_bytes = imprimer_a_la_bonne_taille(imprimer)
+            else:
+                pdf_bytes = _imprimer(page)
             browser.close()
     finally:
         tmp_path.unlink(missing_ok=True)
 
     return pdf_bytes
+
+
+def _imprimer(page):
+    return page.pdf(
+        format="A4",
+        print_background=True,
+        # bottom généreux : le corps du texte ne doit jamais chevaucher le pied
+        # de page injecté par footer_template (constaté avec 36px - la marge
+        # CSS @page:0 du template, supprimée, aggravait aussi le problème en
+        # empêchant Chromium de réserver cet espace lors de la pagination).
+        margin={"top": "20px", "bottom": "56px", "left": "0px", "right": "0px"},
+        display_header_footer=True,
+        header_template="<span></span>",
+        footer_template=_footer_template(),
+    )
 
 
 def sujet_pdf_filename(lesson):

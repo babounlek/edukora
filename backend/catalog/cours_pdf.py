@@ -33,6 +33,7 @@ from django.core.files.storage import storages
 from django.template.loader import render_to_string
 
 from catalog.libelles import matiere_dans_titre
+from catalog.pdf_fin import contexte_fin
 from catalog.pdf_textes import langue_du_contenu, nom_pays, textes_pdf
 from catalog.rendering import SECTIONS_PAYANTES_COURS
 from catalog.segments_url import chemin_public
@@ -41,7 +42,6 @@ from catalog.sujet_pdf import (
     _KATEX_DIR,
     _italicize_quotes,
     _protect_math,
-    _qr_code_data_uri,
     _resolve_media_paths,
     _restore_math,
     html_vers_pdf,
@@ -53,7 +53,7 @@ VARIANTES = (LIBRE, COMPLET)
 
 # À incrémenter quand le gabarit ou le rendu change : toutes les empreintes changent, les PDF déjà en cache ne sont
 # plus servis.
-VERSION_GABARIT = "2"
+VERSION_GABARIT = "3"
 
 # Chromium est lourd : au plus ce nombre de générations en même temps, quel que soit le nombre de visiteurs.
 MAX_GENERATIONS_SIMULTANEES = 2
@@ -172,13 +172,13 @@ def rendre_html(cours, variante):
         "meta": _meta_entete(cours, header),
         "content_html": contenu_html,
         "site_name": settings.SITE_NAME,
-        "site_url_display": settings.PDF_SITE_URL.removeprefix("https://").removeprefix("http://"),
-        "cours_url": cours_url,
-        "qr_code_data_uri": _qr_code_data_uri(cours_url),
-        "cta_titre": tx[f"{prefixe}_cta_titre"],
-        "cta_corps": tx[f"{prefixe}_cta_corps"],
-        "cta_lien": tx[f"{prefixe}_cta_lien"],
-        "note_pied": tx[f"{prefixe}_note_pied"],
+        # La ligne pour les parents ne figure que sur la version libre, celle qui circule : la version complète est
+        # déjà entre les mains d'un abonné.
+        "fin": contexte_fin(
+            tx, lien=cours_url, titre=tx[f"{prefixe}_cta_titre"], corps=tx[f"{prefixe}_cta_corps"],
+            bouton=tx[f"{prefixe}_cta_lien"], qr_alt=tx["cours_qr_alt"], legende=tx["cours_qr_legende"],
+            note_pied=tx[f"{prefixe}_note_pied"], recherche=cours.titre, parents=variante == LIBRE,
+        ),
         "katex_css_url": (_KATEX_DIR / "katex.min.css").as_uri(),
         "katex_js_url": (_KATEX_DIR / "katex.min.js").as_uri(),
         "katex_auto_render_url": (_KATEX_DIR / "contrib" / "auto-render.min.js").as_uri(),

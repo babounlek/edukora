@@ -103,7 +103,9 @@ export function EpreuveDetailPage() {
     // plateforme, plutôt que de le supposer sans donnée.
     if (!epreuve) return
     if (searchParams.get("ref") !== "pdf_sujet") return
-    trackEvent("pdf_sujet_landing", { subject_code: epreuve.subject.code })
+    // ?pos= : l'emplacement du lien dans le PDF (p1 = QR de l'en-tête, fin = bloc de fin, autres = autre session),
+    // voir backend catalog.pdf_fin. Absent des PDF générés avant ce paramètre.
+    trackEvent("pdf_sujet_landing", { subject_code: epreuve.subject.code, position: searchParams.get("pos") ?? "" })
   }, [epreuve, searchParams])
 
   useEffect(() => {

@@ -112,7 +112,8 @@ function CatalogueVitrine() {
     // pas directement le moteur de recherche. Seule façon de mesurer combien de
     // visites viennent réellement d'une fiche imprimée/partagée hors plateforme.
     if (searchParams.get("ref") !== "pdf_fiche_sujet") return
-    trackEvent("pdf_fiche_sujet_landing", { country })
+    // ?pos= : l'emplacement du lien dans le PDF (voir EpreuveDetailPage et backend catalog.pdf_fin).
+    trackEvent("pdf_fiche_sujet_landing", { country, position: searchParams.get("pos") ?? "" })
   }, [searchParams, country])
 
   // "Reprendre ma lecture" - jusqu'ici uniquement visible sur /compte, où un

@@ -83,7 +83,8 @@ export function EpreuveInediteDetailPage() {
     // imprimé, pas une acquisition.
     if (!epreuve) return
     if (searchParams.get("ref") !== "pdf_sujet_inedit") return
-    trackEvent("pdf_sujet_inedit_landing", { subject_code: epreuve.subject.code })
+    // ?pos= : l'emplacement du lien dans le PDF (voir EpreuveDetailPage et backend catalog.pdf_fin).
+    trackEvent("pdf_sujet_inedit_landing", { subject_code: epreuve.subject.code, position: searchParams.get("pos") ?? "" })
   }, [epreuve, searchParams])
 
   useEffect(() => {

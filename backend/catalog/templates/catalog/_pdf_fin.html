@@ -1,0 +1,31 @@
+{# Bloc de fin commun à tous les PDF - voir catalog.pdf_fin. La taille (mini, bandeau, demi, pleine) est posée sur <body data-fin="…"> par catalog.sujet_pdf.html_vers_pdf ; sans cet attribut, c'est le bandeau. #}
+<div class="fin-ensemble">
+    <div class="fin">
+        <div class="fin-tete">
+            <div class="fin-texte">
+                <p class="fin-titre">{{ fin.titre }}</p>
+                <p class="fin-corps">{{ fin.corps }}</p>
+                {% if fin.bouton %}<a href="{{ fin.lien }}" class="fin-bouton">{{ fin.bouton }}</a>{% endif %}
+                <p class="fin-adresse">{{ fin.sans_appareil }}</p>
+            </div>
+            <div class="fin-qr-bloc">
+                <a href="{{ fin.lien }}"><img src="{{ fin.qr }}" alt="{{ fin.qr_alt }}" class="qr-image fin-qr"></a>
+                <p class="fin-scan">{{ fin.scan_me }}</p>
+            </div>
+        </div>
+        <div class="fin-aussi">
+            <p class="fin-sous-titre">{{ fin.aussi_titre }}</p>
+            <ul>
+                {% for ligne in fin.aussi %}<li>{{ ligne }}</li>{% endfor %}
+            </ul>
+        </div>
+        {% if fin.autres %}
+        <div class="fin-autres">
+            <p class="fin-sous-titre">{{ fin.autres_titre }}</p>
+            <p class="fin-pastilles">{% for autre in fin.autres %}<a href="{{ autre.url }}">{{ autre.libelle }}</a>{% endfor %}</p>
+        </div>
+        {% endif %}
+        {% if fin.parents %}<p class="fin-parents">{{ fin.parents }}</p>{% endif %}
+    </div>
+    <p class="footer-note"><a href="{{ fin.lien }}">{{ fin.site }}</a>{% if fin.note_pied %} - {{ fin.note_pied }}{% endif %}</p>
+</div>

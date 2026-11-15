@@ -22,6 +22,21 @@ TEXTES = {
         "scan_me": "Scanne-moi",
         "titre_corrige": "Corrigé",
         "un_repetiteur": "un répétiteur",
+        # Bloc de fin commun (catalog.pdf_fin) : ce qui s'ajoute au bandeau quand la dernière page a de la place.
+        # AUCUN montant ni chiffre du catalogue ici non plus : ils seraient faux au premier changement.
+        "fin_aussi_titre": "Sur {site}, tu trouves aussi",
+        "fin_aussi": [
+            "Les anciennes épreuves, corrigées pas à pas",
+            "Des quiz par thème, pour voir ce que tu maîtrises",
+            "Des cours qui expliquent chaque méthode",
+            "Des épreuves inédites, chronométrées et notées",
+        ],
+        "fin_parents": (
+            "Parents : l'abonnement se prend au mois et se paie par Mobile Money. "
+            "Le prix est affiché avant de payer."
+        ),
+        "fin_sans_appareil_recherche": "Sans appareil photo ? Ouvre {adresse} et cherche « {titre} ».",
+        "fin_sans_appareil_adresse": "Sans appareil photo ? Ouvre {adresse}.",
         # Sujet d'épreuve (catalog)
         "sujet_gratuit": "Sujet gratuit",
         "sujet_cta_titre": "Envie de vérifier tes réponses ?",
@@ -34,6 +49,8 @@ TEXTES = {
         ),
         "sujet_cta_lien": "Voir la correction",
         "sujet_qr_alt": "QR code vers la correction",
+        "sujet_qr_legende": "La correction",
+        "sujet_autres_titre": "Les autres sessions de cette épreuve",
         "sujet_note_pied": "Sujet en libre accès, à partager. La correction reste réservée aux abonnés.",
         "meta_session": "Session {annee}",
         "meta_duree": "Durée : {valeur}",
@@ -46,10 +63,14 @@ TEXTES = {
         "fiche_brand_corrige": "Corrigé (usage répétiteur)",
         "fiche_cta_titre": "Envie de plus d'exercices comme ceux-ci ?",
         "fiche_cta_corps": "Cours, corrigés d'annales et quiz pour le BEPC, le Probatoire et le BAC - sur {site}.",
+        "fiche_cta_lien": "Découvrir {site}",
+        "fiche_qr_legende": "Plus d'exercices",
         "fiche_note_pied": "Fiche préparée par {prepared_by}",
         "fiche_reserve": "Corrigé réservé à l'usage personnel de {prepared_by} - à ne pas distribuer aux élèves.",
         "fiche_suite_titre": "Prêt(e) pour la prochaine fiche ?",
         "fiche_suite_corps": "Génère une nouvelle fiche d'exercices en quelques secondes sur {site}.",
+        "fiche_suite_lien": "Créer une fiche",
+        "fiche_suite_qr_legende": "Nouvelle fiche",
         "fiche_qr_alt_site": "QR code vers {site}",
         "fiche_qr_alt_outil": "QR code vers l'outil Fiches",
         # Fiche de quiz
@@ -57,6 +78,8 @@ TEXTES = {
         "quiz_brand_corrige": "Correction",
         "quiz_cta_titre": "Continue à t'entraîner",
         "quiz_cta_corps": "Refais un quiz en quelques secondes sur {site}.",
+        "quiz_cta_lien": "Refaire un quiz",
+        "quiz_qr_legende": "Refaire un quiz",
         "quiz_qr_alt": "QR code vers le quiz",
         "voir_cours": "Voir le cours complet →",
         # Épreuve inédite
@@ -67,6 +90,8 @@ TEXTES = {
         ),
         "inedite_cta_titre": "Prêt(e) à passer l'épreuve ?",
         "inedite_cta_corps": "Lance ta tentative chronométrée et accède à la correction directement sur {site}.",
+        "inedite_cta_lien": "Passer l'épreuve",
+        "inedite_qr_legende": "Passer l'épreuve",
         "inedite_qr_alt": "QR code vers l'épreuve",
         # Cours (version « libre » : sans les exercices d'application, payants ; version « complète » : abonné)
         "cours_brand": "Cours",
@@ -82,11 +107,25 @@ TEXTES = {
         "cours_complet_cta_lien": "Ouvrir le cours",
         "cours_complet_note_pied": "Les exercices d'application sont réservés aux abonnés : merci de ne pas diffuser ce document.",
         "cours_qr_alt": "QR code vers le cours",
+        "cours_qr_legende": "Le cours en ligne",
     },
     "en": {
         "scan_me": "Scan me",
         "titre_corrige": "Solution",
         "un_repetiteur": "a tutor",
+        "fin_aussi_titre": "On {site} you will also find",
+        "fin_aussi": [
+            "Past papers with step-by-step corrections",
+            "Topic quizzes, to see what you have mastered",
+            "Lessons that explain each method",
+            "Original practice papers, timed and marked",
+        ],
+        "fin_parents": (
+            "Parents: the subscription is taken by the month and paid by Mobile Money. "
+            "The price is shown before you pay."
+        ),
+        "fin_sans_appareil_recherche": "No camera? Open {adresse} and search for “{titre}”.",
+        "fin_sans_appareil_adresse": "No camera? Open {adresse}.",
         "sujet_gratuit": "Free paper",
         "sujet_cta_titre": "Want to check your answers?",
         "sujet_cta_corps": (
@@ -95,6 +134,8 @@ TEXTES = {
         ),
         "sujet_cta_lien": "View the correction",
         "sujet_qr_alt": "QR code to the correction",
+        "sujet_qr_legende": "The correction",
+        "sujet_autres_titre": "Other sessions of this paper",
         "sujet_note_pied": "Free-access paper, feel free to share. The correction is for subscribers only.",
         "meta_session": "Session {annee}",
         "meta_duree": "Duration: {valeur}",
@@ -111,16 +152,22 @@ TEXTES = {
         "fiche_brand_corrige": "Solutions (tutor's copy)",
         "fiche_cta_titre": "Want more exercises like these?",
         "fiche_cta_corps": "Lessons, past paper solutions and quizzes for the GCE O Level and A Level - on {site}.",
+        "fiche_cta_lien": "Discover {site}",
+        "fiche_qr_legende": "More exercises",
         "fiche_note_pied": "Sheet prepared by {prepared_by}",
         "fiche_reserve": "Solutions for {prepared_by}'s personal use only - not to be handed out to students.",
         "fiche_suite_titre": "Ready for the next sheet?",
         "fiche_suite_corps": "Generate a new exercise sheet in seconds on {site}.",
+        "fiche_suite_lien": "Create a sheet",
+        "fiche_suite_qr_legende": "New sheet",
         "fiche_qr_alt_site": "QR code to {site}",
         "fiche_qr_alt_outil": "QR code to the Sheets tool",
         "quiz_brand": "Quiz sheet",
         "quiz_brand_corrige": "Solutions",
         "quiz_cta_titre": "Keep practising",
         "quiz_cta_corps": "Take another quiz in seconds on {site}.",
+        "quiz_cta_lien": "Take another quiz",
+        "quiz_qr_legende": "Another quiz",
         "quiz_qr_alt": "QR code to the quiz",
         "voir_cours": "View the full lesson →",
         "inedite_brand": "Paper - Original practice paper",
@@ -130,6 +177,8 @@ TEXTES = {
         ),
         "inedite_cta_titre": "Ready to sit the paper?",
         "inedite_cta_corps": "Start your timed attempt and access the correction directly on {site}.",
+        "inedite_cta_lien": "Sit the paper",
+        "inedite_qr_legende": "Sit the paper",
         "inedite_qr_alt": "QR code to the paper",
         "cours_brand": "Lesson",
         "cours_libre_cta_titre": "The practice exercises are waiting for you",
@@ -144,6 +193,7 @@ TEXTES = {
         "cours_complet_cta_lien": "Open the lesson",
         "cours_complet_note_pied": "The practice exercises are for subscribers only: please do not share this document.",
         "cours_qr_alt": "QR code to the lesson",
+        "cours_qr_legende": "The lesson online",
     },
 }
 

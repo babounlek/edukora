@@ -121,52 +121,12 @@
         break-inside: avoid;
         page-break-inside: avoid;
     }
-    .continue-cta {
-        margin-top: 14px;
-        padding: 18px 22px;
-        background: #e8f5ef;
-        border: 1px solid #0a6e4e;
-        border-radius: 6px;
-        font-family: "Helvetica Neue", Arial, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 20px;
-        break-inside: avoid;
-        page-break-inside: avoid;
-    }
-    .continue-cta p.title {
-        font-weight: bold;
-        font-size: 13.5px;
-        color: #0a6e4e;
-        margin: 0 0 4px 0;
-    }
-    .continue-cta p.body {
-        font-size: 11.5px;
-        color: #333;
-        margin: 0;
-    }
-    .continue-cta .qr-image {
-        width: 74px;
-        height: 74px;
-        margin: 0;
-        flex-shrink: 0;
-    }
-    .footer-note {
-        margin-top: 14px;
-        font-size: 10.5px;
-        color: #999;
-        text-align: center;
-        font-family: "Helvetica Neue", Arial, sans-serif;
-    }
-    .footer-note a {
-        color: inherit;
-        text-decoration: underline;
-    }
 </style>
+{% include "catalog/_pdf_fin_styles.html" %}
 </head>
 <body>
     <div class="brand-header">
+        {% include "catalog/_pdf_entete_qr.html" %}
         <div class="brand-row">
             <p class="brand">{{ site_name }} - {{ tx.inedite_brand }}</p>
             <span class="pays-line">{% if flag_url %}<img src="{{ flag_url }}" alt="" class="flag-icon">{% endif %}{{ header.pays_label }}</span>
@@ -184,16 +144,7 @@
     <div class="reserve-note">
         {{ tx.inedite_reserve }}
     </div>
-    <div class="continue-cta">
-        <div>
-            <p class="title">{{ tx.inedite_cta_titre }}</p>
-            <p class="body">{{ tx.inedite_cta_corps }}</p>
-        </div>
-        {% if qr_code_data_uri %}
-        <img src="{{ qr_code_data_uri }}" alt="{{ tx.inedite_qr_alt }}" class="qr-image">
-        {% endif %}
-    </div>
-    <p class="footer-note"><a href="{{ epreuve_url }}">{{ site_url_display }}</a></p>
+    {% include "catalog/_pdf_fin.html" %}
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

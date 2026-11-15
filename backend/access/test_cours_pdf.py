@@ -46,6 +46,16 @@ class RenduDuPdfTests(_Base):
         self.assertIn("réservés aux abonnés", rendre_html(self.cours, LIBRE))
         self.assertNotIn("réservés aux abonnés de", rendre_html(self.cours, COMPLET))
 
+    def test_le_bloc_de_fin_ne_parle_aux_parents_que_sur_la_version_libre(self):
+        # La version libre circule ; la version complète est déjà entre les mains d'un abonné (voir catalog.pdf_fin).
+        libre, complet = rendre_html(self.cours, LIBRE), rendre_html(self.cours, COMPLET)
+        for html in (libre, complet):
+            self.assertIn('class="fin-ensemble"', html)
+            self.assertIn('class="entete-qr"', html)
+            self.assertIn("ref=pdf_cours&amp;pos=fin", html)
+        self.assertIn("Parents :", libre)
+        self.assertNotIn("Parents :", complet)
+
     def test_un_renvoi_vers_un_autre_cours_devient_du_texte(self):
         texte = adapter_markdown_cours("- [Théorème de Thalès](COURS_REF:theoreme-de-thales)", "fr")
 
