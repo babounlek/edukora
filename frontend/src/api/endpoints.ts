@@ -83,6 +83,7 @@ import type {
   ThemesFrequentsResponse,
   PaiementAReprendre,
   SimulationListItem,
+  PaquetCartes,
   TentativeInedite,
   TentativeInediteCorrige,
   TentativeInediteListItem,
@@ -1230,6 +1231,10 @@ export function getCartesCours(slug: string, signal?: AbortSignal) {
 }
 
 /** Les cartes à revoir aujourd'hui, toutes matières (R18). */
+export function getPaquetsCartes(signal?: AbortSignal) {
+  return apiRequest<{ paquets: PaquetCartes[] }>("/quiz/cartes/paquets/", { signal })
+}
+
 export function getCartesDues(signal?: AbortSignal) {
   return apiRequest<{ total: number; cartes: CarteRevision[] }>("/quiz/cartes/dues/", { signal })
 }

@@ -173,6 +173,16 @@ export interface PertesCumulees {
 export type MotifSignalement = "REPONSE_FAUSSE" | "ENONCE_CONFUS" | "FIGURE" | "HORS_PROGRAMME" | "AUTRE"
 
 /** Une carte de révision (R18, voir quiz.cartes) : la règle d'un cours ou l'une de ses erreurs classiques. */
+/** Un paquet de « Mes cartes » : un cours dont l'élève a déjà revu au moins une carte. */
+export interface PaquetCartes {
+  slug: string
+  titre: string
+  total: number
+  revues: number
+  dues: number
+  prochaine: string | null
+}
+
 export interface CarteRevision {
   cle: string
   type: "regle" | "erreur"

@@ -132,5 +132,24 @@ class CartesAPITests(TestCase):
         self.assertEqual(r["total"], 1)
         self.assertEqual(r["cartes"][0]["cle"], "regle")
 
+    def test_paquets_un_par_cours_deja_revu_avec_les_cartes_dues(self):
+        self.assertEqual(self.client.get("/quiz/cartes/paquets/").json(), {"paquets": []})  # rien revu : pas de paquet
+        self.client.post(f"/quiz/cartes/cours/{self.cours.slug}/regle/", {"savais": False}, format="json")
+        self.client.post(f"/quiz/cartes/cours/{self.cours.slug}/erreur-0/", {"savais": True}, format="json")
+        paquet = self.client.get("/quiz/cartes/paquets/").json()["paquets"][0]
+        self.assertEqual((paquet["slug"], paquet["total"], paquet["revues"], paquet["dues"]), (self.cours.slug, 2, 2, 0))
+        with mock.patch("django.utils.timezone.localdate", return_value=timezone.localdate() + timedelta(days=1)):
+            paquet = self.client.get("/quiz/cartes/paquets/").json()["paquets"][0]
+        self.assertEqual(paquet["dues"], 1)  # la carte ratée est due demain ; la sue (palier 1, J+3) non
+
+    def test_les_paquets_sont_ceux_de_l_eleve_et_des_cours_publies(self):
+        autre = User.objects.create_user(phone_number="677400204", password="x")
+        c2 = APIClient(); c2.force_authenticate(user=autre)
+        c2.post(f"/quiz/cartes/cours/{self.cours.slug}/regle/", {"savais": True}, format="json")
+        self.assertEqual(self.client.get("/quiz/cartes/paquets/").json(), {"paquets": []})
+        self.assertEqual(len(c2.get("/quiz/cartes/paquets/").json()["paquets"]), 1)
+        type(self.cours).objects.filter(pk=self.cours.pk).update(statut=StatutContenu.BROUILLON)
+        self.assertEqual(c2.get("/quiz/cartes/paquets/").json(), {"paquets": []})
+
     def test_exige_une_connexion(self):
         self.assertIn(APIClient().get("/quiz/cartes/dues/").status_code, (401, 403))

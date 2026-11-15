@@ -112,3 +112,31 @@ def cartes_dues(profil, limite=CARTES_PAR_REVUE_MAX):
         if len(sortie) >= limite:
             break
     return total, sortie
+
+
+def paquets_de_l_eleve(profil):
+    """
+    « Mes cartes » : un paquet par cours dont l'élève a déjà revu au moins une carte. Pour chacun : combien de cartes il compte,
+    combien sont à revoir aujourd'hui et la prochaine échéance. Les plus urgents (le plus de cartes dues, puis l'échéance la
+    plus proche) d'abord. Une carte dont le clé n'existe plus dans le cours (cours réécrit) ne compte plus.
+    """
+    aujourdhui = timezone.localdate()
+    par_cours = {}
+    revues = CarteRevue.objects.filter(profil=profil, cours__statut=StatutContenu.VALIDE).select_related("cours")
+    for revue in revues:
+        par_cours.setdefault(revue.cours_id, {"cours": revue.cours, "revues": []})["revues"].append(revue)
+    paquets = []
+    for entree in par_cours.values():
+        cours = entree["cours"]
+        cles = {c["cle"] for c in cartes_du_cours(cours)}
+        revues_valides = [r for r in entree["revues"] if r.cle in cles]
+        if not revues_valides:
+            continue
+        dues = [r for r in revues_valides if r.due_at <= aujourdhui]
+        futures = sorted(r.due_at for r in revues_valides if r.due_at > aujourdhui)
+        paquets.append({
+            "slug": cours.slug, "titre": cours.titre, "total": len(cles), "revues": len(revues_valides), "dues": len(dues),
+            "prochaine": futures[0].isoformat() if futures else None,
+        })
+    paquets.sort(key=lambda p: (-p["dues"], p["prochaine"] or "", p["titre"]))
+    return paquets

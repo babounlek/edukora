@@ -17,6 +17,7 @@ const PREFIXES_PRIVES = [
   "/historique",
   "/carnet",
   "/erreurs",
+  "/cartes",
   "/reussites",
   "/examens-blancs",
   "/quiz",

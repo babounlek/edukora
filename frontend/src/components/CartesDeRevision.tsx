@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { Link } from "react-router-dom"
 import { Layers } from "lucide-react"
 
 import { getCartesCours, getCartesDues, noterCarte } from "@/api/endpoints"
@@ -53,6 +54,7 @@ export function CartesDuCours({ slug }: { slug: string }) {
             onTermine={() => {
               client.invalidateQueries({ queryKey: ["cartes-cours", slug] })
               client.invalidateQueries({ queryKey: CLE_DUES })
+              client.invalidateQueries({ queryKey: ["cartes-paquets"] })
             }}
           />
         </div>
@@ -65,14 +67,14 @@ export function CartesDuCours({ slug }: { slug: string }) {
  * Sur l'accueil : les cartes dont l'échéance est arrivée, toutes matières. Une ligne, un geste pour les ouvrir ; rien tant
  * qu'aucune carte n'est due (une élève qui n'a jamais révisé de carte ne voit pas cette ligne : elle les découvre en fin de cours).
  */
-export function LigneCartes() {
+export function LigneCartes({ integre = false }: { integre?: boolean }) {
   useI18n()
   const [paquet, setPaquet] = useState<CarteRevision[] | null>(null)
   const { data } = useQuery({ queryKey: CLE_DUES, queryFn: ({ signal }) => getCartesDues(signal) })
   if (!data || (data.total === 0 && !paquet)) return null
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("cartes.titre")}>
+    <section className={integre ? undefined : "mx-auto max-w-5xl px-4 pt-6 sm:px-6"} aria-label={t("cartes.titre")}>
       <div className="rounded-2xl border border-border bg-card px-5 py-3">
         <div className="flex items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
@@ -82,6 +84,9 @@ export function LigneCartes() {
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("cartes.titre")}</p>
             <p className="truncate text-sm font-medium">{tn("cartes.dues", data.total)}</p>
           </div>
+          {!integre && !paquet && (
+            <Link to="/cartes" className="shrink-0 text-xs font-medium text-primary hover:underline">{t("cartes.toutes")}</Link>
+          )}
           {!paquet && (
             <Button type="button" variant="outline" className="min-h-11 shrink-0 rounded-full" onClick={() => setPaquet(data.cartes)}>
               {t("cartes.reviser")}

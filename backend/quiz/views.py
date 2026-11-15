@@ -1617,3 +1617,11 @@ def cartes_dues_view(request):
 
     total, liste = cartes.cartes_dues(profil_actif(request))
     return Response({"total": total, "cartes": liste})
+
+
+@api_view(["GET"])
+def cartes_paquets_view(request):
+    """GET /quiz/cartes/paquets/ : « Mes cartes » - un paquet par cours dont l'élève a déjà revu une carte."""
+    from . import cartes
+
+    return Response({"paquets": cartes.paquets_de_l_eleve(profil_actif(request))})

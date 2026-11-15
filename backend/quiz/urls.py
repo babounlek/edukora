@@ -17,6 +17,7 @@ urlpatterns = [
         views.indice_question, name="indice-question",
     ),
     path("cartes/dues/", views.cartes_dues_view, name="cartes-dues"),
+    path("cartes/paquets/", views.cartes_paquets_view, name="cartes-paquets"),
     path("cartes/cours/<slug:slug>/", views.cartes_du_cours_view, name="cartes-cours"),
     path("cartes/cours/<slug:slug>/<str:cle>/", views.noter_carte, name="cartes-noter"),
     path(
