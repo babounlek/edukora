@@ -865,3 +865,21 @@ def download_sujet_pdf(request, epreuve_id):
         request, f"inedit:{epreuve.pk}", lambda: epreuve.sujet_pdf.open("rb"),
         as_attachment=False, filename=f"{slugify(epreuve.titre)}-sujet.pdf",
     )
+
+
+@api_view(["GET"])
+def defi_semaine(request):
+    """
+    GET /inedit/defi-semaine/?cursus=<id> : le défi de la semaine de ce cursus (R17, voir inedit.defi) et où en est l'élève.
+    `defi: null` quand le cursus n'a pas de mini publiée. Lecture seule ; la mini elle-même reste réservée aux abonnés du
+    cursus (has_access_inedite, au moment de la démarrer).
+    """
+    from . import defi
+
+    try:
+        cursus = Cursus.objects.select_related("country").get(pk=int(request.query_params.get("cursus", "")))
+    except (ValueError, Cursus.DoesNotExist):
+        return Response({"error": "Cursus inconnu."}, status=404)
+    if not cursus.country.actif:
+        return Response({"defi": None})
+    return Response({"defi": defi.etat_du_defi(profil_actif(request), cursus)})

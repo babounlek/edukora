@@ -7,6 +7,7 @@ app_name = "inedit"
 urlpatterns = [
     path("mes-inscriptions/", views.list_my_inscriptions_inedites, name="mes-inscriptions"),
     path("mes-tentatives/", views.list_my_tentatives_inedites, name="mes-tentatives"),
+    path("defi-semaine/", views.defi_semaine, name="defi-semaine"),
     path("epreuves/", views.list_epreuves, name="epreuve-list"),
     # <slug:id> (pas <int:id>) : accepte aussi bien le slug ("URL publique", voir
     # EpreuveInedite.slug) que l'id numérique historique - même patron que

@@ -9,6 +9,7 @@ actuelle, une `cible` et `obtenu`.
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from inedit.defi import defis_releves
 from simulations.models import SimulationEpreuve
 from users.profils import profil_actif
 
@@ -25,6 +26,8 @@ JALONS = (
     ("themes_solides_25", "themes", 25),
     ("premier_examen_blanc", "examens", 1),
     ("examens_blancs_5", "examens", 5),
+    ("premier_defi", "defis", 1),
+    ("defis_4", "defis", 4),
     ("serie_7", "serie", 7),
     ("serie_30", "serie", 30),
 )
@@ -45,6 +48,7 @@ def _valeurs(profil):
     etat_serie = serie.serie_de_jours(profil)
     return {
         "quiz": total, "bonnes": bonnes, "themes": themes_solides, "examens": examens,
+        "defis": defis_releves(profil),
         "serie": etat_serie["record"],
     }, etat_serie
 

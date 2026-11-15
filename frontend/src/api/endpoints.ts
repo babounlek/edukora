@@ -15,6 +15,7 @@ import type {
   CoursPreview,
   BanqueErreurs,
   Reussites,
+  DefiSemaine,
   BilanPeriode,
   CarnetEntree,
   CibleEtude,
@@ -1210,6 +1211,11 @@ export function getCarnet(signal?: AbortSignal) {
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */
 export function refaireLesRatees(sessionId: number) {
   return apiRequest<QuizSession>(`/quiz/sessions/${sessionId}/refaire-ratees/`, { method: "POST" })
+}
+
+/** Le défi de la semaine d'un cursus et où en est l'élève (R17) ; `defi: null` quand le cursus n'a pas de mini publiée. */
+export function getDefiSemaine(cursusId: number, signal?: AbortSignal) {
+  return apiRequest<{ defi: DefiSemaine | null }>(`/inedit/defi-semaine/?cursus=${cursusId}`, { signal })
 }
 
 /** « Mes réussites » : niveau, jalons d'étude et record de série du profil actif. */

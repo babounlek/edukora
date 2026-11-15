@@ -638,3 +638,23 @@ class TentativeReponse(models.Model):
         if self.question.type_reponse == TypeReponse.QCM:
             return bool(self.reponse_choisie) and self.reponse_choisie == self.question.reponse_correcte
         return self.resultat_declare == ResultatDeclare.REUSSI
+
+
+class DefiSemaine(models.Model):
+    """
+    Le défi de la semaine d'un cursus (audit produit 2026-11-13, R17) : UNE mini-inédite, la même pour tous les élèves du
+    cursus, du lundi au dimanche. Le choix est figé en base à la première demande de la semaine : recalculé chaque fois, il
+    bougerait quand une mini s'ajoute, et les défis passés (donc les badges) ne se retrouveraient plus.
+    """
+
+    cursus = models.ForeignKey("catalog.Cursus", on_delete=models.CASCADE, related_name="defis_semaine")
+    debut = models.DateField(help_text="Le lundi de la semaine du défi.")
+    epreuve = models.ForeignKey(EpreuveInedite, on_delete=models.PROTECT, related_name="defis")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=["cursus", "debut"], name="defi_unique_par_cursus_et_semaine")]
+        ordering = ["-debut"]
+
+    def __str__(self):
+        return f"{self.cursus} - semaine du {self.debut} - {self.epreuve.titre}"

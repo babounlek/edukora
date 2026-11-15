@@ -12,7 +12,7 @@ import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, useI18n, type CleI18n } from "@/lib/i18n"
 
-const FAMILLES = ["quiz", "themes", "examens", "serie"] as const
+const FAMILLES = ["quiz", "themes", "examens", "defis", "serie"] as const
 
 /** Une ligne de jalon : le titre, ce qu'il demande, et où l'élève en est. Un jalon atteint reste affiché, plein. */
 function LigneJalon({ jalon, prochain }: { jalon: Jalon; prochain: boolean }) {

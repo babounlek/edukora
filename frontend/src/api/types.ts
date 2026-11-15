@@ -172,10 +172,30 @@ export interface PertesCumulees {
 
 export type MotifSignalement = "REPONSE_FAUSSE" | "ENONCE_CONFUS" | "FIGURE" | "HORS_PROGRAMME" | "AUTRE"
 
+/** Où en est l'élève du défi de la semaine de son cursus (R17, voir inedit.defi). `bande` : seulement le dimanche, jamais un rang. */
+export interface BandeDefi {
+  disponible: boolean
+  bande: "quart" | "moitie" | null
+}
+
+export interface DefiSemaine {
+  epreuve_id: number
+  slug: string
+  titre: string
+  duree_minutes: number | null
+  debut: string
+  fin: string
+  jours_restants: number
+  releve: boolean
+  resultat_ouvert: boolean
+  bande: BandeDefi | null
+  precedent: { titre: string; bande: BandeDefi } | null
+}
+
 /** Un jalon d'étude de « Mes réussites » (voir quiz.reussites) : `valeur` est plafonnée à `cible`. */
 export interface Jalon {
   code: string
-  famille: "quiz" | "themes" | "examens" | "serie"
+  famille: "quiz" | "themes" | "examens" | "defis" | "serie"
   cible: number
   valeur: number
   obtenu: boolean

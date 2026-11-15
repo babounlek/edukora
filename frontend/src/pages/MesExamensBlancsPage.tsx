@@ -62,7 +62,7 @@ export function MesExamensBlancsPage() {
     chrono.length >= 2 ? (pourcentage(chrono[chrono.length - 1]) as number) - (pourcentage(chrono[0]) as number) : null
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
         <Timer className="size-3.5" />
