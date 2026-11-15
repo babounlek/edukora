@@ -4961,6 +4961,22 @@ class ThemesFrequentsApiTests(TestCase):
                 themes.append("primitives")
             self._make_lesson(year, themes)
 
+    def test_chaque_theme_dit_son_chapitre_du_programme_ou_aucun(self):
+        from programme.models import Module, Savoir
+
+        self._seed_above_threshold()
+        module = Module.objects.create(subject=self.subject, numero="13", titre="RELATIONS ET OPERATIONS", ordre=4)
+        savoir = Savoir.objects.create(module=module, numero="II", intitule="II NOMBRES RÉELS.", ordre=2)
+        Tag.objects.filter(name="tableau de variation").update(savoir_officiel=savoir)
+
+        par_nom = {t["tag"]: t for t in self.client.get(self._url(), {"subject": self.subject.code}).json()["themes"]}
+
+        chapitre = par_nom["tableau de variation"]["chapitre"]
+        self.assertEqual(chapitre["titre"], "Nombres réels")  # numéro romain et point final retirés, casse normale
+        self.assertEqual(chapitre["module"], "Relations et operations")
+        self.assertEqual(chapitre["ordre"], [4, 2])
+        self.assertIsNone(par_nom["nombres complexes"]["chapitre"])  # thème sans savoir : « Autres thèmes » côté page
+
     def test_chaque_theme_porte_ses_annees_de_sortie_et_son_cours(self):
         self._seed_above_threshold()
         cours = Cours.objects.create(

@@ -18,6 +18,7 @@ import {
 
 import { getThemesFrequents, getThemesFrequentsMatieres } from "@/api/endpoints"
 import type { Cursus, PlanDuJour, ThemeFrequent, ThemesFrequentsMatiere } from "@/api/types"
+import { grouperParChapitre } from "@/lib/chapitres"
 import { useSeo } from "@/lib/seo"
 import { nomPays } from "@/lib/pays"
 import { useCountry } from "@/context/CountryContext"
@@ -485,6 +486,8 @@ export function ThemesFrequentsPage() {
   }, [cursusId, subjectFilter])
   // R20 : « À travailler d'abord » remet en premier les thèmes fréquents que l'élève maîtrise mal.
   const [tri, setTri] = useState<TriThemes>("frequence")
+  // R6 : la même liste rangée par chapitre du programme, quand les thèmes s'y rattachent.
+  const [parChapitre, setParChapitre] = useState(false)
 
   function updateFilter(key: string, value: string) {
     const next = new URLSearchParams(searchParams)
@@ -516,6 +519,9 @@ export function ThemesFrequentsPage() {
   // Le tri personnel n'a de sens que si l'élève a déjà travaillé au moins un de ces thèmes.
   const triPossible = themes.some((th) => th.maitrise)
   const triTravail = tri === "travail" && triPossible
+  const aDesChapitres = themes.some((th) => th.chapitre)
+  const vueChapitres = parChapitre && aDesChapitres
+  const chapitres = vueChapitres ? grouperParChapitre(themes) : []
   const themesRanges = triTravail ? [...themes].sort((a, b) => prioriteTheme(b) - prioriteTheme(a)) : themes
   const themesAffiches = themesRanges.slice(0, nbAffiches)
   // Triés par priorité, plus de podium : il couronnerait les thèmes les plus fréquents, pas ceux à travailler.
@@ -754,18 +760,54 @@ export function ThemesFrequentsPage() {
               </div>
             </div>
 
-            {triPossible && (
+            {(triPossible || aDesChapitres) && (
               <div role="group" aria-label={t("tf.tri_titre")} className="mb-4 flex flex-wrap gap-2">
-                <PastilleFiltre actif={!triTravail} onClick={() => setTri("frequence")}>
+                <PastilleFiltre actif={!triTravail && !vueChapitres} onClick={() => { setTri("frequence"); setParChapitre(false) }}>
                   {t("tf.tri_frequence")}
                 </PastilleFiltre>
-                <PastilleFiltre actif={triTravail} onClick={() => setTri("travail")}>
-                  {t("tf.tri_travail")}
-                </PastilleFiltre>
+                {triPossible && (
+                  <PastilleFiltre actif={triTravail && !vueChapitres} onClick={() => { setTri("travail"); setParChapitre(false) }}>
+                    {t("tf.tri_travail")}
+                  </PastilleFiltre>
+                )}
+                {aDesChapitres && (
+                  <PastilleFiltre actif={vueChapitres} onClick={() => setParChapitre(true)}>
+                    {t("tf.tri_chapitre")}
+                  </PastilleFiltre>
+                )}
               </div>
             )}
 
-            <div className={cn("grid gap-4 pt-2 sm:grid-cols-3 sm:items-end", triTravail && "hidden")}>
+            {vueChapitres && (
+              <div className="flex flex-col gap-6">
+                {chapitres.map((groupe) => (
+                  <section key={groupe.cle} aria-label={groupe.titre || t("tf.chapitre_autres")}>
+                    <div className="mb-2 flex flex-wrap items-baseline justify-between gap-x-3">
+                      <h3 className="font-display text-lg font-semibold">{groupe.titre || t("tf.chapitre_autres")}</h3>
+                      <p className="text-xs text-muted-foreground">
+                        {tn("tf.chapitre_themes", groupe.themes.length)}
+                        {groupe.tentes > 0 && ` · ${t("tf.chapitre_solides", { solides: groupe.solides, tentes: groupe.tentes })}`}
+                      </p>
+                    </div>
+                    <ol className="divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
+                      {groupe.themes.map((theme, index) => (
+                        <LigneClassement
+                          key={theme.id}
+                          rang={index + 1}
+                          country={country}
+                          theme={theme}
+                          subjectCode={subjectFilter}
+                          cursusId={cursusId}
+                          total={total}
+                        />
+                      ))}
+                    </ol>
+                  </section>
+                ))}
+              </div>
+            )}
+
+            <div className={cn("grid gap-4 pt-2 sm:grid-cols-3 sm:items-end", (triTravail || vueChapitres) && "hidden")}>
               {podium.map((theme, index) => (
                 <CartePodium
                   key={theme.id}
@@ -780,7 +822,7 @@ export function ThemesFrequentsPage() {
               {verrouille && podium.length < 3 && <CartePodiumVerrouillee cursusId={cursusId} />}
             </div>
 
-            {suite.length > 0 && (
+            {!vueChapitres && suite.length > 0 && (
               <ol className="mt-6 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card">
                 {suite.map((theme, index) => (
                   <LigneClassement
@@ -796,7 +838,7 @@ export function ThemesFrequentsPage() {
               </ol>
             )}
 
-            {chargerPlusVisible && (
+            {!vueChapitres && chargerPlusVisible && (
               <div className="mt-6 flex justify-center">
                 <Button variant="outline" onClick={() => setNbAffiches((n) => n + THEMES_CHARGES_PAR_CLIC)}>
                   {t("tf.charger_plus", { n: THEMES_CHARGES_PAR_CLIC })}

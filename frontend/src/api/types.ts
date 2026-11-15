@@ -948,6 +948,8 @@ export interface ThemeFrequent {
   annees?: number[]
   maitrise?: { taux: number; nb_reponses: number; niveau: NiveauTheme | null } | null
   cours_slug?: string | null
+  /** R6 : le chapitre du programme officiel (savoir) auquel se rattache ce thème ; null quand aucun savoir ne lui est lié. */
+  chapitre?: { id: number; titre: string; numero: string; module: string; ordre: [number, number] } | null
 }
 
 /** Matière proposée au choix sur /themes-frequents (voir ThemesFrequentsMatieresView) :

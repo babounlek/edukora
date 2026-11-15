@@ -1,4 +1,5 @@
 import random
+import re
 
 from django.db.models import Case, Count, Exists, IntegerField, Min, OuterRef, Q, Subquery, When
 from django.db.models.functions import Coalesce
@@ -1006,6 +1007,27 @@ def _cours_des_themes(themes, subject, cursus):
     }
 
 
+def chapitre_du_theme(tag):
+    """
+    Le chapitre du programme officiel auquel se rattache un thème (audit produit 2026-11-13, R6) : le savoir (« II. Nombres
+    réels »), avec son module pour le situer. Aucun travail éditorial : le programme officiel découpe déjà chaque matière en
+    chapitres (16 en Mathématiques de 3e). None quand le thème n'est rattaché à aucun savoir (environ un quart des thèmes) :
+    la page les range sous « Autres thèmes ».
+    """
+    savoir = tag.savoir_officiel
+    if savoir is None:
+        return None
+    titre = re.sub(r"^\s*[IVXLC]+\s*[.)-]?\s+", "", savoir.intitule or "").strip(" .")
+    titre = (titre[:1].upper() + titre[1:].lower()) if titre else savoir.intitule
+    return {
+        "id": savoir.pk,
+        "titre": titre,
+        "numero": (savoir.numero or "").strip(),
+        "module": savoir.module.titre.strip().capitalize() if savoir.module_id else "",
+        "ordre": [savoir.module.ordre if savoir.module_id else 0, savoir.ordre],
+    }
+
+
 class ThemesFrequentsView(APIView):
     """
     Classement des thèmes (Tag) les plus fréquents aux épreuves officielles d'un
@@ -1059,6 +1081,7 @@ class ThemesFrequentsView(APIView):
 
         classement = list(
             Tag.objects.filter(questions_as_theme__exercise__lesson__in=lessons)
+            .select_related("savoir_officiel__module")
             .annotate(nb_epreuves=Count("questions_as_theme__exercise__lesson", distinct=True))
             .order_by("-nb_epreuves", "name")[:MAX_THEMES_FREQUENTS],
         )
@@ -1134,6 +1157,7 @@ class ThemesFrequentsView(APIView):
                     "annees": sorted(annees.get(t.id, ())),
                     "maitrise": maitrise.get(t.id),
                     "cours_slug": cours_par_theme.get(t.id),
+                    "chapitre": chapitre_du_theme(t),
                 }
                 for t in themes_visibles
             ],
