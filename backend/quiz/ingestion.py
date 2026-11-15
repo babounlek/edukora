@@ -157,6 +157,21 @@ def _resolve_cursus_from_entries(cursus_data, country):
     return cursus_list
 
 
+# Matières de la filière informatique : enseignées et examinées en série TI seulement. Un cursus « bac » sans
+# série se résolvait en toutes les séries du BAC, et ces quiz apparaissaient alors en BAC C, D, E et A
+# (Programmation, Systèmes d'information, Réseaux dans « Ta séance » d'un élève de C).
+MATIERES_SERIE_TI_SEULEMENT = {"PROGRAMMATION", "SYSTEMES_INFORMATION", "RESEAUX_SECURITE"}
+
+
+def restreindre_aux_series_de_la_matiere(subject, cursus_list):
+    """Pour ces matières, ne garde que les cursus de la série TI ; sans aucun cursus TI, la liste reste intacte
+    (on ne perd jamais un rattachement faute de mieux)."""
+    if subject.code not in MATIERES_SERIE_TI_SEULEMENT:
+        return cursus_list
+    ti = [c for c in cursus_list if c.series and c.series.code == "TI"]
+    return ti or cursus_list
+
+
 def _find_undercovered_competencies(country, floor, min_questions=SELECTION_MIN_QUESTIONS):
     """
     Groupe les Question validées de ce pays par (theme, matière) - une compétence est
@@ -533,6 +548,7 @@ def mettre_a_jour_item(existing, data, country, source_dir=None, sync=None):
 
     subject = _resolve_subject(data["matiere"], country)
     cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    cursus_list = restreindre_aux_series_de_la_matiere(subject, cursus_list)
     subject = sciences_si_serie_a(subject, cursus_list)  # série A : Sciences, pas SVT
     savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
     theme = _resolve_theme(data["theme"], allow_create=bool(savoir))
@@ -597,6 +613,7 @@ def ingest_competence_item(data, country, source_dir=None, sync=None):
 
     subject = _resolve_subject(data["matiere"], country)
     cursus_list = _resolve_cursus_from_entries(data["cursus"], country)
+    cursus_list = restreindre_aux_series_de_la_matiere(subject, cursus_list)
     subject = sciences_si_serie_a(subject, cursus_list)  # série A : Sciences, pas SVT
     savoir = _resolve_savoir_officiel(data.get("savoir_officiel"), subject)
     theme = _resolve_theme(data["theme"], allow_create=bool(savoir))

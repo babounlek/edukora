@@ -595,21 +595,34 @@ export function QuizStartPage() {
           {/* Configuration : la même carte surélevée et les mêmes pastilles que
               /epreuves et /themes-frequents, lancement au pied de la carte. */}
           <div data-guide="quiz-config" className="mb-8 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-            <p className="font-display text-lg font-semibold">{t("qd.ta_seance")}</p>
+            <p className="font-display text-lg font-semibold">
+              {t("qd.ta_seance")}
+              {subscriptions.length === 1 && (
+                <span className="font-sans text-sm font-medium text-muted-foreground">
+                  {" · "}
+                  {subscriptions[0].cursus.examen_display}
+                  {subscriptions[0].cursus.series ? ` ${subscriptions[0].cursus.series.code}` : ""}
+                </span>
+              )}
+            </p>
             <p className="text-sm text-muted-foreground">{t("qd.tout_pret")}</p>
 
-            <FiltreLigne titre={t("quiz.examen")}>
-              {subscriptions.map((sub) => (
-                <PastilleFiltre
-                  key={sub.id}
-                  actif={selectedCursus === String(sub.cursus.id)}
-                  onClick={() => setSelectedCursus(String(sub.cursus.id))}
-                >
-                  {sub.cursus.examen_display}
-                  {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}
-                </PastilleFiltre>
-              ))}
-            </FiltreLigne>
+            {/* Un seul examen : rien à choisir, la pastille unique n'était qu'un bruit (même règle que
+                /themes-frequents). Le sélecteur n'apparaît que pour un compte à plusieurs examens. */}
+            {subscriptions.length > 1 && (
+              <FiltreLigne titre={t("quiz.examen")}>
+                {subscriptions.map((sub) => (
+                  <PastilleFiltre
+                    key={sub.id}
+                    actif={selectedCursus === String(sub.cursus.id)}
+                    onClick={() => setSelectedCursus(String(sub.cursus.id))}
+                  >
+                    {sub.cursus.examen_display}
+                    {sub.cursus.series ? ` ${sub.cursus.series.code}` : ""}
+                  </PastilleFiltre>
+                ))}
+              </FiltreLigne>
+            )}
 
             <FiltreLigne titre={t("quiz.matiere")}>
               {!subjectsLoaded ? (

@@ -65,6 +65,10 @@ const REGLAGE_CHRONO = {
   secondes_par_question_ouverte: 150,
 }
 
+// Examen unique : nommé dans le titre de la carte (« Ta séance · BEPC »), sans pastille.
+const examenDuTitre = (nom: string) => (_contenu: string, el: Element | null) =>
+  el?.tagName === "SPAN" && el.textContent?.trim() === `· ${nom}`
+
 describe("QuizStartPage - pastilles d'examen", () => {
   beforeEach(() => {
     vi.clearAllMocks()
@@ -83,21 +87,23 @@ describe("QuizStartPage - pastilles d'examen", () => {
 
   it("ne propose que l'examen préparé quand le profil a payé BEPC et BAC C", async () => {
     afficher()
-    expect(await screen.findByRole("button", { name: "BEPC" })).toBeTruthy()
+    // Un seul examen proposé : nommé dans le titre de la carte, sans pastille à choisir.
+    expect(await screen.findByText(examenDuTitre("BEPC"))).toBeTruthy()
     await waitFor(() => expect(listQuizSubjects).toHaveBeenCalledWith(14))
+    expect(screen.queryByRole("button", { name: "BEPC" })).toBeNull()
     expect(screen.queryByRole("button", { name: "BAC C" })).toBeNull()
     expect(listQuizSubjects).not.toHaveBeenCalledWith(20)
   })
 
   it("suit l'examen préparé quand l'élève le change depuis le bandeau", async () => {
     const { rerenderPage } = afficher()
-    expect(await screen.findByRole("button", { name: "BEPC" })).toBeTruthy()
+    expect(await screen.findByText(examenDuTitre("BEPC"))).toBeTruthy()
 
     auth.user.cursus_prepare = { id: 20 }
     rerenderPage()
 
-    expect(await screen.findByRole("button", { name: "BAC C" })).toBeTruthy()
-    expect(screen.queryByRole("button", { name: "BEPC" })).toBeNull()
+    expect(await screen.findByText(examenDuTitre("BAC C"))).toBeTruthy()
+    expect(screen.queryByText(examenDuTitre("BEPC"))).toBeNull()
     await waitFor(() => expect(listQuizSubjects).toHaveBeenLastCalledWith(20))
   })
 
