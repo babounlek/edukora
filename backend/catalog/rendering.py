@@ -1180,6 +1180,7 @@ def lesson_exercises_breakdown(lesson):
     solo = len(exercises) == 1
     a_retirer = _partie_labels_to_strip(exercises)
     groupes_par_exercice = _fallback_group_paths_if_needed(exercises)
+    qcm_par_exercice = _qcm_par_exercice(exercises)
     result = []
     for exercise in exercises:
         intro = exercise.enonce_intro_markdown
@@ -1204,8 +1205,28 @@ def lesson_exercises_breakdown(lesson):
             "enonce_intro_markdown": intro,
             "enonce_markdown": enonce,
             "corrige_markdown": _clean_exercise_corrige(exercise),
+            # Les QCM de l'exercice, de quoi y répondre en cliquant avant de voir le corrigé (audit produit 2026-11-13, R19/D3).
+            # Même exposition que le corrigé : la lecture abonnée seule les sert, et la bonne lettre est déjà dans le corrigé.
+            "qcm": qcm_par_exercice.get(exercise.pk, []),
         })
     return result
+
+
+def _qcm_par_exercice(exercises):
+    """{exercice: [{id, numero, enonce_markdown, choix, reponse_correcte}]} : les QCM exploitables (au moins 2 choix et une bonne
+    lettre qui en désigne un), dans l'ordre du sujet. Une requête pour toute l'épreuve."""
+    from .models import Question, TypeReponse
+
+    par_exercice = {}
+    for q in Question.objects.filter(exercise__in=exercises, type_reponse=TypeReponse.QCM).order_by("exercise_id", "ordre", "id"):
+        lettres = {str(c.get("lettre", "")).lower() for c in (q.choix or []) if isinstance(c, dict)}
+        if len(lettres) < 2 or (q.reponse_correcte or "").lower() not in lettres:
+            continue
+        par_exercice.setdefault(q.exercise_id, []).append({
+            "id": q.pk, "numero": q.numero, "enonce_markdown": q.enonce_markdown, "choix": q.choix,
+            "reponse_correcte": q.reponse_correcte.lower(),
+        })
+    return par_exercice
 
 
 # Séparateur posé entre les corrigés de deux Question le temps d'un seul passage de

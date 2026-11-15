@@ -2887,6 +2887,40 @@ class LessonExercisesBreakdownTests(TestCase):
         exercise.compile_from_questions()
         return exercise
 
+    def test_les_qcm_exploitables_sont_servis_avec_la_bonne_lettre(self):
+        exercise = self._exercise("1")
+        Question.objects.create(
+            exercise=exercise, numero="2", ordre=2, enonce_markdown="Capitale ?", corrige_markdown="Yaoundé.",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "Douala"}, {"lettre": "b", "texte": "Yaoundé"}],
+            reponse_correcte="B",
+        )
+
+        qcm = self.lesson.exercises_breakdown()[0]["qcm"]
+
+        self.assertEqual(len(qcm), 1)
+        self.assertEqual(qcm[0]["numero"], "2")
+        self.assertEqual(qcm[0]["reponse_correcte"], "b")  # normalisée en minuscule, comme les lettres des choix
+        self.assertEqual([c["lettre"] for c in qcm[0]["choix"]], ["a", "b"])
+
+    def test_un_qcm_inexploitable_n_est_pas_servi(self):
+        exercise = self._exercise("1")
+        mal_formes = [
+            ("sans bonne lettre", [{"lettre": "a", "texte": "x"}, {"lettre": "b", "texte": "y"}], ""),
+            ("lettre hors choix", [{"lettre": "a", "texte": "x"}, {"lettre": "b", "texte": "y"}], "e"),
+            ("un seul choix", [{"lettre": "a", "texte": "x"}], "a"),
+        ]
+        for i, (enonce, choix, bonne) in enumerate(mal_formes, start=2):
+            Question.objects.create(
+                exercise=exercise, numero=str(i), ordre=i, enonce_markdown=enonce, corrige_markdown="c",
+                type_reponse=TypeReponse.QCM, choix=choix, reponse_correcte=bonne,
+            )
+
+        self.assertEqual(self.lesson.exercises_breakdown()[0]["qcm"], [])
+
+    def test_une_question_ouverte_n_est_pas_un_qcm(self):
+        self._exercise("1")
+        self.assertEqual(self.lesson.exercises_breakdown()[0]["qcm"], [])
+
     def test_stored_groupes_take_priority_over_regex_fallback(self):
         # L'intro elle-même ne porte aucun repère détectable par regex : seul le champ
         # Exercise.groupes, renseigné à l'ingestion, permet de retrouver le groupe.

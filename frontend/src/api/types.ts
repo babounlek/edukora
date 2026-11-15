@@ -597,6 +597,15 @@ export interface EpreuveHeader {
   pays: Pays
 }
 
+/** Un QCM d'annale lu en ligne (R19/D3) : la bonne lettre est servie avec le corrigé, jamais dans l'aperçu public. */
+export interface QcmEpreuve {
+  id: number
+  numero: string
+  enonce_markdown: string
+  choix: { lettre: string; texte: string }[]
+  reponse_correcte: string
+}
+
 export interface EpreuveExercise {
   // Identifiant reel de l'Exercise - present en lecture abonnee, absent des apercus
   // publics et des epreuves inedites. Ce qui permet de valider sa resolution.
@@ -626,6 +635,8 @@ export interface EpreuveExercise {
   enonce_intro_markdown: string
   enonce_markdown: string
   corrige_markdown: string
+  /** Les QCM de l'exercice, cliquables avant le corrigé ; absent des aperçus publics et des épreuves inédites. */
+  qcm?: QcmEpreuve[]
 }
 
 export interface EpreuveContent {

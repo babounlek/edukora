@@ -71,3 +71,55 @@ class PlusDurTests(TestCase):
         reponse = self.demarrer(plus_dur=False)
 
         self.assertEqual(reponse.status_code, 201)
+
+
+class PlusFacileTests(PlusDurTests):
+    """« Même thème, plus accessible » (plus_facile=True), le miroir de plus_dur : jamais une question élevée."""
+
+    def demarrer(self, **extra):
+        corps = {"cursus": self.cursus.id, "theme": self.theme.id, "n": 3, "plus_facile": True, **extra}
+        return self.client.post("/quiz/sessions/", corps, format="json")
+
+    # Les tests hérités de plus_dur n'ont pas de sens ici : on ne garde que ceux écrits pour plus_facile.
+    test_sert_les_elevees_d_abord_et_jamais_une_faible = None
+    test_complete_par_des_moyennes_quand_les_elevees_manquent = None
+    test_un_theme_sans_question_plus_dure_repond_une_phrase_claire = None
+    test_sans_plus_dur_le_tirage_est_inchange = None
+
+    def test_sert_les_faibles_d_abord_et_jamais_une_elevee(self):
+        for n in range(3):
+            self.item(f"e{n}", Difficulte.ELEVEE)
+            self.item(f"f{n}", Difficulte.FAIBLE)
+
+        reponse = self.demarrer()
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertEqual(self.difficultes(reponse), [Difficulte.FAIBLE] * 3)
+
+    def test_complete_par_des_moyennes_quand_les_faibles_manquent(self):
+        self.item("f0", Difficulte.FAIBLE)
+        for n in range(3):
+            self.item(f"m{n}", Difficulte.MOYENNE)
+        self.item("e0", Difficulte.ELEVEE)
+
+        reponse = self.demarrer()
+
+        self.assertEqual(reponse.status_code, 201)
+        self.assertNotIn(Difficulte.ELEVEE, self.difficultes(reponse))
+        self.assertIn(Difficulte.FAIBLE, self.difficultes(reponse))
+
+    def test_un_theme_sans_question_plus_accessible_repond_une_phrase_claire(self):
+        for n in range(3):
+            self.item(f"e{n}", Difficulte.ELEVEE)
+
+        reponse = self.demarrer()
+
+        self.assertEqual(reponse.status_code, 404)
+        self.assertIn("plus accessible", reponse.json()["error"])
+
+    def test_plus_dur_et_plus_facile_ensemble_sont_refuses(self):
+        self.item("m0", Difficulte.MOYENNE)
+
+        reponse = self.demarrer(plus_dur=True)
+
+        self.assertEqual(reponse.status_code, 404)

@@ -562,7 +562,11 @@ class AucuneQuestionPlusDure(ValueError):
     """Le périmètre existe mais n'a aucune question de difficulté moyenne ou élevée (voir `plus_dur`)."""
 
 
-def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10, plus_dur=False):
+class AucuneQuestionPlusFacile(ValueError):
+    """Le périmètre existe mais n'a aucune question de difficulté faible ou moyenne (voir `plus_facile`)."""
+
+
+def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10, plus_dur=False, plus_facile=False):
     """
     Sélectionne jusqu'à n CompetenceItem et crée une QuizSession. Lève ValueError si
     aucun item n'est éligible pour ces critères (pas encore de banque générée pour
@@ -582,12 +586,25 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
     items = _items_eligibles(cursus, subject=subject, theme=theme, savoir=savoir)
     if not items:
         raise ValueError("Aucune question disponible pour ces critères.")
+    reservees = []
+    if plus_dur and plus_facile:
+        raise ValueError("plus_dur et plus_facile s'excluent.")
+    if plus_facile:
+        # « Même thème, plus accessible » (après un échec) : les questions faibles d'abord, complétées par les moyennes seulement
+        # s'il n'y en a pas assez ; jamais une élevée - symétrique de plus_dur, pour que le bouton tienne sa promesse.
+        faibles = [i for i in items if i.difficulte_estimee == Difficulte.FAIBLE]
+        moyennes = [i for i in items if i.difficulte_estimee == Difficulte.MOYENNE]
+        if len(faibles) >= n:
+            items = faibles
+        else:
+            reservees, items, n = faibles, moyennes, n - len(faibles)
+        if not items and not reservees:
+            raise AucuneQuestionPlusFacile("Aucune question plus accessible pour ces critères.")
     if plus_dur:
         # « Même thème, en plus dur » : les questions élevées d'abord, complétées par les moyennes seulement s'il n'y en a
         # pas assez ; jamais une faible - sinon le bouton promettrait du plus dur et servirait du plus facile.
         elevees = [i for i in items if i.difficulte_estimee == Difficulte.ELEVEE]
         moyennes = [i for i in items if i.difficulte_estimee == Difficulte.MOYENNE]
-        reservees = []
         if len(elevees) >= n:
             items = elevees
         else:
@@ -599,7 +616,7 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
 
     historique = _historique_des_items(profil, cursus)
     if not items:
-        selection = []  # plus_dur : les élevées réservées suffisent à remplir la séance
+        selection = []  # plus_dur / plus_facile : les questions réservées suffisent à remplir la séance
     elif mode == ModeQuiz.DIAGNOSTIC:
         # Sans matière, thème ni savoir imposé : le diagnostic d'accueil, équilibré par
         # matière. Avec l'un des trois, on sonde déjà un périmètre précis.
@@ -612,7 +629,7 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
         # Pratique : ce que l'élève a déjà fait compte (jamais vues d'abord, ratées qui reviennent, réussies en dernier).
         poids_par_theme = _poids_par_theme(profil, cursus)
         selection = _selection_par_reprise(items, historique, poids_par_theme, n)
-    selection = list(reservees) + list(selection) if plus_dur else selection
+    selection = list(reservees) + list(selection) if (plus_dur or plus_facile) else selection
 
     session = QuizSession.objects.create(profil=profil, cursus=cursus, subject=subject, theme=theme, mode=mode)
     creer_questions(session, selection)

@@ -36,6 +36,7 @@ import {
 import { EnTeteSection } from "@/components/EnTeteSection"
 import { ReglesChoix } from "@/components/inedit/ReglesChoix"
 import { ExerciceNav } from "@/components/ExerciceNav"
+import { QcmDExercice } from "@/components/QcmDExercice"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
 import { EtapeSuivante } from "@/components/BarreSeance"
@@ -242,6 +243,10 @@ export function EpreuveReaderPage() {
                 <EnonceToggle key={essai ? "essai" : "lecture"} defaultOpen={essai}>
                   <EpreuveMarkdown markdown={libelleEnteteExercice(exercise.enonce_markdown)} />
                 </EnonceToggle>
+                {/* Les QCM de l'exercice, cliquables avant le corrigé ; ouverts d'emblée en « Essaie d'abord ». */}
+                {exercise.qcm && exercise.qcm.length > 0 && (
+                  <QcmDExercice key={essai ? "essai" : "lecture"} qcm={exercise.qcm} defaultOpen={essai} />
+                )}
                 {corrigeMasque ? (
                   // « Essaie d'abord » : le corrigé attend derrière ce bouton, exercice par exercice.
                   <Button

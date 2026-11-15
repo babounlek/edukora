@@ -33,6 +33,10 @@ TEXTES = {
         FR: "Il n'y a pas de question plus difficile sur ce thème pour l'instant.",
         EN: "There are no harder questions on this topic yet.",
     },
+    "quiz.aucune_plus_facile": {
+        FR: "Il n'y a pas de question plus accessible sur ce thème pour l'instant.",
+        EN: "There are no easier questions on this topic yet.",
+    },
     # --- Historique et rejeu (quiz.views.answer_question, quiz.historique) ---
     "quiz.session_terminee": {
         FR: "Ce quiz est terminé : tes réponses ne peuvent plus être modifiées. Tu peux le rejouer.",

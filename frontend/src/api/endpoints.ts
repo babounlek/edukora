@@ -668,6 +668,7 @@ export interface StartQuizSessionParams {
   n?: number
   // « Même thème, plus dur » : seulement des questions élevées, complétées par des moyennes (voir quiz.services.generer_session).
   plus_dur?: boolean
+  plus_facile?: boolean
   // Drapeau "ce quiz est l'étape finale de ma séance du jour" - le serveur ne lui
   // fait pas confiance pour DÉSIGNER une séance, il ne rattache que la séance du jour
   // de l'utilisateur (voir quiz.services.rattacher_quiz_a_la_seance). Sert à clore la

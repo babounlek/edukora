@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, ChevronDown, FileText, Flame, ListChecks, RotateCcw, Share2, Swords, Timer, Trophy, Zap } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, ChevronDown, FileText, Flame, ListChecks, RotateCcw, Share2, Sprout, Swords, Timer, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -314,12 +314,12 @@ export function QuizResultPage() {
   // Le quiz GRATUIT de la même matière : un défi se lance par un lien qui marche sans compte (le quiz de l'élève, lui, est
   // peut-être payant). Les scores se comparent en proportion, donc deux quiz différents restent comparables.
   const { data: essais } = useQuery({ queryKey: ["quiz", "essais"], queryFn: ({ signal }) => listQuizEssais(signal), staleTime: 5 * 60_000 })
-  const [encoreEnCours, setEncoreEnCours] = useState<"encore" | "score" | "dur" | null>(null)
+  const [encoreEnCours, setEncoreEnCours] = useState<"encore" | "score" | "dur" | "facile" | null>(null)
   const [erreurEncore, setErreurEncore] = useState("")
 
   // Rebondir tout de suite : « encore 5 questions » sur le thème le plus fragile, ou le même quiz pour battre son score
   // (le rejeu ne rapporte pas de points, voir quiz.historique). Aucune page de choix entre deux : l'envie ne dure pas.
-  async function rebondir(mode: "encore" | "score" | "dur", themeId?: number) {
+  async function rebondir(mode: "encore" | "score" | "dur" | "facile", themeId?: number) {
     if (!result || encoreEnCours) return
     setEncoreEnCours(mode)
     setErreurEncore("")
@@ -327,7 +327,7 @@ export function QuizResultPage() {
       const session =
         mode === "score"
           ? await rejouerQuiz(Number(id))
-          : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5, plus_dur: mode === "dur" })
+          : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5, plus_dur: mode === "dur", plus_facile: mode === "facile" })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
       setErreurEncore(err instanceof ApiError ? err.message : t("qr.err_lancer"))
@@ -558,6 +558,18 @@ export function QuizResultPage() {
             >
               <Flame />
               {encoreEnCours === "dur" ? t("quiz.preparation") : t("qr.plus_dur")}
+            </Button>
+          )}
+          {pireTheme && pourcentage < 50 && (
+            <Button
+              size="lg"
+              variant="outline"
+              className="rounded-full"
+              disabled={encoreEnCours !== null}
+              onClick={() => rebondir("facile", pireTheme.theme_id)}
+            >
+              <Sprout />
+              {encoreEnCours === "facile" ? t("quiz.preparation") : t("qr.plus_facile")}
             </Button>
           )}
           {essaiDuDefi && result.questions_repondues >= 3 && (
