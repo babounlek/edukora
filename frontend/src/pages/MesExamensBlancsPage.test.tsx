@@ -4,8 +4,9 @@ import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const listMySimulations = vi.hoisted(() => vi.fn())
+const getMesPertes = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({ isAuthenticated: true, isLoading: false, user: { id: 1, cursus_prepare: { id: 14 } } }))
-vi.mock("@/api/endpoints", () => ({ listMySimulations }))
+vi.mock("@/api/endpoints", () => ({ listMySimulations, getMesPertes }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))

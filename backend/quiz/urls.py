@@ -12,6 +12,10 @@ urlpatterns = [
         views.reveal_corrige, name="reveal-corrige",
     ),
     path("sessions/<int:session_id>/questions/<int:quiz_question_id>/answer/", views.answer_question, name="answer-question"),
+    path(
+        "sessions/<int:session_id>/questions/<int:quiz_question_id>/signaler/",
+        views.signaler_question, name="signaler-question",
+    ),
     path("sessions/<int:session_id>/refaire-ratees/", views.refaire_ratees_view, name="refaire-ratees"),
     path("en-cours/", historique.en_cours, name="en-cours"),
     path("historique/", historique.historique, name="historique"),

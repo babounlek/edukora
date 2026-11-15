@@ -154,3 +154,28 @@ __all__ = [
     "EFFECTIF_MIN_COMPARAISON", "LIBELLES_CAUSES", "NON_PRECISEE", "NON_TRAITEE", "exercice_chronophage",
     "pertes_par_cause", "situer", "temps_par_exercice", "temps_passe_secondes",
 ]
+
+
+def fusionner_pertes(pertes_de_copies):
+    """
+    Cumule plusieurs `pertes_par_cause` (une par copie) en un seul : {total_perdu, causes: [{cause, libelle, points, part}]}.
+    La part est recalculée sur le total cumulé, jamais moyennée : une copie qui a perdu 12 points pèse plus qu'une qui en a
+    perdu 2. Alimente « Tes points partent surtout en calcul » (audit produit 2026-11-13, R23).
+    """
+    par_cause = {}
+    libelles = {}
+    for pertes in pertes_de_copies:
+        for ligne in pertes["causes"]:
+            par_cause[ligne["cause"]] = par_cause.get(ligne["cause"], 0) + ligne["points"]
+            libelles.setdefault(ligne["cause"], ligne["libelle"])
+    total = sum(par_cause.values())
+    causes = [
+        {
+            "cause": cause,
+            "libelle": libelles[cause],
+            "points": round(points, 2),
+            "part": round(100 * points / total) if total else 0,
+        }
+        for cause, points in sorted(par_cause.items(), key=lambda item: item[1], reverse=True)
+    ]
+    return {"total_perdu": round(total, 2), "causes": causes}

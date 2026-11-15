@@ -86,6 +86,8 @@ import type {
   TentativeInediteListItem,
   TentativeInediteQuestion,
   TentativeInediteResult,
+  MotifSignalement,
+  PertesCumulees,
   User,
   WhatsAppStatus,
 } from "./types"
@@ -692,6 +694,16 @@ export function answerQuizQuestion(sessionId: number, quizQuestionId: number, pa
   })
 }
 
+/** « Signaler cette question » (R22) : sans effet sur les points ni la maîtrise ; renvoyer met à jour le signalement. */
+export function signalerQuestionQuiz(
+  sessionId: number, quizQuestionId: number, params: { motif: MotifSignalement; commentaire?: string },
+) {
+  return apiRequest<{ id: number }>(`/quiz/sessions/${sessionId}/questions/${quizQuestionId}/signaler/`, {
+    method: "POST",
+    body: params,
+  })
+}
+
 export function completeQuizSession(sessionId: number) {
   return apiRequest<QuizResult>(`/quiz/sessions/${sessionId}/completer/`, { method: "POST" })
 }
@@ -925,6 +937,10 @@ export function marquerSimulationExercice(id: number, exerciceId: number) {
 
 export function completeSimulation(id: number) {
   return apiRequest<TentativeInediteResult>(`/simulations/${id}/completer/`, { method: "POST" })
+}
+
+export function getMesPertes(signal?: AbortSignal) {
+  return apiRequest<PertesCumulees>("/simulations/mes-pertes/", { signal })
 }
 
 export function listMySimulations() {

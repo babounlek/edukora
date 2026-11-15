@@ -5,6 +5,7 @@ import { ArrowRight, Timer, Trophy } from "lucide-react"
 import { listMySimulations } from "@/api/endpoints"
 import type { SimulationListItem } from "@/api/types"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { PointsPerdus } from "@/components/PointsPerdus"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -117,6 +118,7 @@ export function MesExamensBlancsPage() {
                   <p className="mt-0.5 text-xs text-muted-foreground">{t("blancs.depuis_premier")}</p>
                 </div>
               </div>
+              <PointsPerdus />
               <ul className="mt-4 flex flex-col gap-2">
                 {rendues.map((s) => {
                   const p = pourcentage(s) as number

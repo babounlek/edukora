@@ -5,6 +5,7 @@ import { ArrowRight, BookOpen, CalendarCheck, Check, Crown, ListChecks, type Luc
 
 import { getPlanDuJour, getPriorites, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
+import { InterrupteurBilanParent } from "@/components/RappelsEmail"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
 import { cn } from "@/lib/utils"
@@ -94,6 +95,12 @@ export function BienvenueAbonne({
           {inclutInedit && <Debloque icone={Crown} texte={t("bv.inedites")} />}
         </ul>
       )}
+
+      {/* R23 : le moment où le parent vient de payer est celui où le bilan du dimanche a le plus de sens ; il reste éteint
+          tant que personne ne l'allume. */}
+      <div className="mt-5 w-full rounded-2xl border border-border bg-card p-4 text-left">
+        <InterrupteurBilanParent />
+      </div>
 
       <div className="mt-7 flex w-full flex-col items-center gap-3">
         {retour && (

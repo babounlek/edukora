@@ -10,7 +10,9 @@ from catalog.ingestion import queue_ingestion, read_ingestion_report
 from catalog.models import Country, StatutContenu
 
 from .ingestion import SELECTION_FLOOR, SELECTION_LIMIT, select_quiz_batch
-from .models import CompetenceItem, CompetenceItemFigure, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule
+from .models import (
+    CompetenceItem, CompetenceItemFigure, QuizAnswer, QuizQuestion, QuizSession, RevisionSchedule, SignalementQuestion,
+)
 
 # Sous-dossier de catalog.admin.INGEST_DIR réservé aux lots CompetenceItem du skill
 # concepteur-quiz-competence - voir quiz.ingestion (docstring de module) pour la
@@ -227,3 +229,15 @@ class CompetenceItemAdmin(admin.ModelAdmin):
             "report": report,
         }
         return render(request, "admin/quiz/ingestion.html", context)
+
+
+@admin.register(SignalementQuestion)
+class SignalementQuestionAdmin(admin.ModelAdmin):
+    """Les questions signalées par les élèves (R22) : à traiter, avec l'item concerné et le commentaire."""
+
+    list_display = ["cree_le", "motif", "statut", "competence_item_id_garde", "commentaire"]
+    list_filter = ["statut", "motif"]
+    search_fields = ["commentaire", "competence_item__theme__name"]
+    raw_id_fields = ["profil", "quiz_question", "competence_item"]
+    readonly_fields = ["cree_le", "modifie_le", "competence_item_id_garde"]
+    list_editable = ["statut"]

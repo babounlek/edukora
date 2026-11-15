@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ObjectifXp } from "@/components/ObjectifXp"
+import { SignalerQuestion } from "@/components/SignalerQuestion"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
@@ -703,6 +704,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             <ArrowRight className="size-4 shrink-0 text-primary" />
           </Link>
         )}
+
+        {!essai && !invite && <SignalerQuestion sessionId={session.id} questionId={question.id} />}
 
         {actionError && (
           <p role="alert" className="mt-4 text-sm text-destructive">

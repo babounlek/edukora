@@ -506,6 +506,40 @@ def mes_simulations(request):
     return Response(resultat)
 
 
+# Combien de copies rendues récentes entrent dans la synthèse : le bilan de chacune relit tout l'énoncé.
+COPIES_DANS_LA_SYNTHESE = 10
+
+
+@api_view(["GET"])
+def mes_pertes(request):
+    """
+    Où partent les points de l'élève, sur ses dernières copies rendues (examens blancs sur annales et épreuves inédites) :
+    le cumul des causes déclarées après le corrigé (voir inedit.rapport.fusionner_pertes). `copies` dit combien de copies
+    comptent, `avec_cause` combien de points perdus portent une cause déclarée ou « non traitée » - le reste est « non
+    précisé », jamais deviné.
+    """
+    from inedit.models import TentativeInedite
+
+    profil = profil_actif(request)
+    pertes = []
+    for simulation in (
+        SimulationEpreuve.objects.filter(profil=profil, submitted_at__isnull=False)
+        .select_related("lesson__subject").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]
+    ):
+        bilan, _ = _bilan(simulation)
+        unite = "question" if simulation_a_la_question(simulation.lesson) else "exercice"
+        pertes.append(rapport.pertes_par_cause(bilan["lignes"], unite=unite))
+    for tentative in (
+        TentativeInedite.objects.filter(profil=profil, submitted_at__isnull=False)
+        .select_related("epreuve").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]
+    ):
+        bilan = notation.calculer(tentative, tentative.epreuve.exercices_ordonnes("questions__themes"))
+        pertes.append(rapport.pertes_par_cause(bilan["lignes"]))
+    pertes = [p for p in pertes if p["causes"]]
+    cumul = rapport.fusionner_pertes(pertes)
+    return Response({"copies": len(pertes), **cumul})
+
+
 def _as_bool(valeur):
     return valeur is True or str(valeur).lower() in ("true", "1")
 

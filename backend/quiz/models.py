@@ -689,3 +689,47 @@ class JourXP(models.Model):
 
     def __str__(self):
         return f"{self.profil_id} {self.jour}: {self.xp}/{self.objectif} XP"
+
+
+class MotifSignalement(models.TextChoices):
+    REPONSE_FAUSSE = "REPONSE_FAUSSE", "La bonne réponse me semble fausse"
+    ENONCE_CONFUS = "ENONCE_CONFUS", "L'énoncé est confus ou incomplet"
+    FIGURE = "FIGURE", "Une figure manque ou est illisible"
+    HORS_PROGRAMME = "HORS_PROGRAMME", "Hors programme"
+    AUTRE = "AUTRE", "Autre"
+
+
+class StatutSignalement(models.TextChoices):
+    NOUVEAU = "NOUVEAU", "Nouveau"
+    EN_COURS = "EN_COURS", "En cours d'examen"
+    CORRIGE = "CORRIGE", "Corrigé"
+    REJETE = "REJETE", "Sans suite"
+
+
+class SignalementQuestion(models.Model):
+    """
+    « Signaler cette question » (audit produit 2026-11-13, R22) : l'élève dit qu'une question lui paraît fausse, confuse ou
+    hors programme. Un signalement par (profil, question de séance) : le renvoyer met à jour le précédent. L'item de
+    compétence est gardé par identifiant même si le contenu est supprimé depuis, pour que l'équipe retrouve de quoi il
+    s'agissait. Aucun effet sur la maîtrise ni sur les points : signaler n'est ni une réponse ni une pénalité.
+    """
+
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="signalements_questions")
+    quiz_question = models.ForeignKey(QuizQuestion, null=True, blank=True, on_delete=models.SET_NULL, related_name="+")
+    competence_item = models.ForeignKey(CompetenceItem, null=True, blank=True, on_delete=models.SET_NULL, related_name="signalements")
+    competence_item_id_garde = models.PositiveIntegerField(null=True, blank=True)
+    motif = models.CharField(max_length=20, choices=MotifSignalement.choices)
+    commentaire = models.CharField(max_length=500, blank=True)
+    statut = models.CharField(max_length=10, choices=StatutSignalement.choices, default=StatutSignalement.NOUVEAU)
+    note_equipe = models.TextField(blank=True, help_text="Réponse ou décision de l'équipe (invisible de l'élève).")
+    cree_le = models.DateTimeField(auto_now_add=True)
+    modifie_le = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-cree_le"]
+        constraints = [
+            models.UniqueConstraint(fields=["profil", "quiz_question"], name="uniq_signalement_par_profil_et_question"),
+        ]
+
+    def __str__(self):
+        return f"Signalement {self.get_motif_display()} - item {self.competence_item_id_garde}"

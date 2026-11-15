@@ -26,8 +26,8 @@ from .matieres import (
     sujets_a_afficher, sujets_effectifs,
 )
 from .models import (
-    CompetenceItem, ModeQuiz, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
-    StatutFichePdf, StatutSeance,
+    CompetenceItem, ModeQuiz, MotifSignalement, QuizAnswer, QuizQuestion, QuizSession, ResultatDeclare, SeanceJournaliere,
+    SignalementQuestion, StatutFichePdf, StatutSeance,
 )
 from . import accueil, chrono, instantane, xp
 from .classement import classement_hebdo
@@ -586,6 +586,44 @@ def reveal_corrige(request, session_id, quiz_question_id):
         _corrige_de_la_question(quiz_question, donnees) if donnees["source"] == "competence_item" else donnees["corrige_markdown"]
     )
     return Response({"corrige_markdown": corrige_markdown, "reponse_correcte": donnees["reponse_correcte"]})
+
+
+# Plafond de signalements par profil et par jour : un robinet, pas une règle pédagogique (un élève de bonne foi en fait
+# quelques-uns).
+SIGNALEMENTS_MAX_PAR_JOUR = 20
+
+
+@api_view(["POST"])
+def signaler_question(request, session_id, quiz_question_id):
+    """
+    « Signaler cette question » (R22) : motif obligatoire, commentaire facultatif de 500 caractères. Renvoyer un signalement
+    pour la même question le met à jour. Possible avant comme après la réponse, sur une séance en cours ou terminée, et sans
+    effet sur les points ni sur la maîtrise.
+    """
+    profil = profil_actif(request)
+    quiz_question = get_object_or_404(
+        QuizQuestion.objects.select_related("competence_item"), pk=quiz_question_id, session_id=session_id, session__profil=profil,
+    )
+    motif = request.data.get("motif")
+    if motif not in MotifSignalement.values:
+        return Response({"error": f"motif invalide : {motif!r}. Attendu {MotifSignalement.values}."}, status=400)
+    commentaire = str(request.data.get("commentaire") or "").strip()[:500]
+
+    deja = SignalementQuestion.objects.filter(profil=profil, quiz_question=quiz_question).exists()
+    aujourdhui = SignalementQuestion.objects.filter(profil=profil, cree_le__date=timezone.localdate()).count()
+    if not deja and aujourdhui >= SIGNALEMENTS_MAX_PAR_JOUR:
+        return Response({"error": "Trop de signalements aujourd'hui."}, status=429)
+
+    signalement, _ = SignalementQuestion.objects.update_or_create(
+        profil=profil, quiz_question=quiz_question,
+        defaults={
+            "competence_item": quiz_question.competence_item,
+            "competence_item_id_garde": quiz_question.competence_item_id,
+            "motif": motif,
+            "commentaire": commentaire,
+        },
+    )
+    return Response({"id": signalement.id, "motif": signalement.motif, "commentaire": signalement.commentaire}, status=200 if deja else 201)
 
 
 @api_view(["POST"])

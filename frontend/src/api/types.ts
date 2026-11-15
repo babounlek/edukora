@@ -163,6 +163,15 @@ export interface NiveauXp {
   seuil_suivant: number | null
 }
 
+/** « Où partent tes points » (R23) : le cumul des causes de perte déclarées sur les dernières copies rendues. */
+export interface PertesCumulees {
+  copies: number
+  total_perdu: number
+  causes: { cause: string; libelle: string; points: number; part: number }[]
+}
+
+export type MotifSignalement = "REPONSE_FAUSSE" | "ENONCE_CONFUS" | "FIGURE" | "HORS_PROGRAMME" | "AUTRE"
+
 /** Un jalon d'étude de « Mes réussites » (voir quiz.reussites) : `valeur` est plafonnée à `cible`. */
 export interface Jalon {
   code: string

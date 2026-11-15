@@ -218,3 +218,36 @@ class RapportDansLeResultatTests(NotationAPITestCase):
                 submitted_at=timezone.now(), note_obtenue=D("4"), bareme_snapshot=D("8"),
             )
         self.assertIsNone(self.client.post(self.url("completer")).data["comparaison"])
+
+
+class FusionDesPertesTests(SimpleTestCase):
+    def test_le_cumul_pese_les_copies_par_leurs_points_pas_par_leur_nombre(self):
+        petite = rapport.pertes_par_cause([ligne("1", 2, 0, cause="TEMPS")])
+        grosse = rapport.pertes_par_cause([ligne("1", 10, 2, cause="CALCUL")])
+
+        cumul = rapport.fusionner_pertes([petite, grosse])
+
+        self.assertEqual(cumul["total_perdu"], 10.0)
+        self.assertEqual([(c["cause"], c["points"], c["part"]) for c in cumul["causes"]], [("CALCUL", 8.0, 80), ("TEMPS", 2.0, 20)])
+
+    def test_aucune_copie_ou_rien_de_perdu(self):
+        self.assertEqual(rapport.fusionner_pertes([]), {"total_perdu": 0, "causes": []})
+
+
+class MesPertesAPITests(NotationAPITestCase):
+    def test_la_synthese_cumule_les_causes_des_copies_rendues(self):
+        self.ouverte.criteres_notation = []
+        self.ouverte.save(update_fields=["criteres_notation"])
+        self.client.post(self.url("answer", self.qcm), {"reponse_choisie": "b"})
+        self.client.post(self.url("noter", self.ouverte), {"points_obtenus": 1}, format="json")
+        self.client.post(self.url("noter", self.ouverte), {"cause_perte": "CALCUL"}, format="json")
+        self.client.post(self.url("completer"))
+
+        data = self.client.get("/simulations/mes-pertes/").json()
+
+        self.assertEqual(data["copies"], 1)
+        self.assertEqual(data["causes"][0]["cause"], "CALCUL")
+        self.assertGreater(data["total_perdu"], 0)
+
+    def test_sans_copie_rendue_rien_a_dire(self):
+        self.assertEqual(self.client.get("/simulations/mes-pertes/").json(), {"copies": 0, "total_perdu": 0, "causes": []})
