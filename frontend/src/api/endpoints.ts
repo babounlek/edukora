@@ -1227,7 +1227,7 @@ export function getCartesDues(signal?: AbortSignal) {
 /** Note une revue de carte : sue (revient plus tard) ou à revoir (revient demain). */
 export function noterCarte(slug: string, cle: string, savais: boolean) {
   return apiRequest<{ cle: string; palier: number; due_at: string }>(`/quiz/cartes/cours/${slug}/${cle}/`, {
-    method: "POST", body: JSON.stringify({ savais }),
+    method: "POST", body: { savais },
   })
 }
 
