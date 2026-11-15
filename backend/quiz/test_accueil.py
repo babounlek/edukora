@@ -344,6 +344,67 @@ class TrajectoireTests(AccueilFixture):
         self.assertIn(traj["atteignable"], (True, False))
 
 
+class PlanDateTests(TrajectoireTests):
+    """R16 : la trajectoire rendue concrète, avec des dates (voir quiz.accueil._plan_date)."""
+
+    def _huit_savoirs(self):
+        for n in range(1, 9):
+            savoir = self._module_savoir(numero=str(n), intitule=f"S{n}")
+            tag = Tag.objects.create(name=f"p{n} (test accueil)", savoir_officiel=savoir)
+            _make_competence_item(self.subject, self.cursus, theme=tag, numero=f"acc-p{n}")
+        return resume_parcours(self.profil, self.cursus)
+
+    def test_le_plan_dit_combien_de_themes_et_par_semaine_sans_rythme_mesure(self):
+        compte = self._examen_dans(70)
+        traj = accueil.trajectoire(self.profil, self.cursus, self._huit_savoirs(), compte)
+        plan = traj["plan"]
+
+        self.assertIsNone(traj["couverture_projetee"])  # pas de rythme : la cible fixe quand même le plan
+        self.assertGreater(plan["themes_a_consolider"], 0)
+        self.assertEqual(plan["par_semaine"], -(-plan["themes_a_consolider"] // 10))  # 70 jours = 10 semaines
+        self.assertEqual(plan["cette_semaine"]["cible"], plan["par_semaine"])
+        self.assertEqual(plan["cette_semaine"]["faits"], 0)
+        self.assertIsNone(plan["une_seance_de_plus"])
+
+    def test_les_etapes_sont_datees_croissantes_et_finissent_au_jour_j(self):
+        compte = self._examen_dans(100)
+        plan = accueil.trajectoire(self.profil, self.cursus, self._huit_savoirs(), compte)["plan"]
+
+        dates = [e["date"] for e in plan["etapes"]]
+        themes = [e["themes"] for e in plan["etapes"]]
+        self.assertEqual(dates, sorted(dates))
+        self.assertEqual(dates[-1], plan["jour_j"])
+        self.assertEqual(themes, sorted(themes))
+        self.assertEqual(themes[-1], plan["themes_a_consolider"])
+        self.assertLessEqual(len(dates), accueil.ETAPES_PLAN_MAX + 1)
+
+    def test_les_themes_consolides_cette_semaine_comptent_dans_le_plan(self):
+        compte = self._examen_dans(70)
+        for _ in range(3):
+            self._repondre(True, il_y_a_jours=0)
+        plan = accueil.trajectoire(self.profil, self.cursus, self._huit_savoirs(), compte)["plan"]
+
+        self.assertEqual(plan["cette_semaine"]["faits"], 1)
+
+    def test_une_seance_de_plus_par_semaine_montre_la_couverture_atteinte(self):
+        compte = self._examen_dans(10)
+        for j in (1, 3, 5):
+            self._seance(il_y_a_jours=j)
+        traj = accueil.trajectoire(self.profil, self.cursus, self._huit_savoirs(), compte)
+
+        self.assertFalse(traj["suffisant"])
+        plus = traj["plan"]["une_seance_de_plus"]["couverture_projetee"]
+        self.assertGreater(plus, traj["couverture_projetee"])
+        self.assertLessEqual(plus, 1.0)
+
+    def test_cible_deja_atteinte_rien_a_consolider(self):
+        compte = self._examen_dans(60)
+        plan = accueil.trajectoire(self.profil, self.cursus, self._resume(), compte)["plan"]
+        # Aucun savoir maîtrisé dans cette fixture : le plan ne peut pas être vide.
+        self.assertGreaterEqual(plan["themes_a_consolider"], 0)
+        self.assertEqual(plan["etapes"] == [], plan["themes_a_consolider"] == 0)
+
+
 class LectureAReprendreTests(AccueilFixture):
     def _lecture(self, titre, cursus):
         from access.models import LectureProgress

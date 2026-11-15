@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { ArrowRight, ChevronRight, Compass, TrendingUp } from "lucide-react"
 
 import type { Accueil, PhaseExamen, ResumeMatiere, Trajectoire } from "@/api/types"
+import { PlanDate } from "@/components/PlanDate"
 import { phraseTrajectoire } from "@/lib/trajectoire"
 import { Button } from "@/components/ui/button"
 import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
@@ -168,6 +169,7 @@ function BlocTrajectoire({
           {t("oujensuis.essentiel")}
         </span>
       </div>
+      {trajectoire.plan && <PlanDate plan={trajectoire.plan} />}
     </div>
   )
 }

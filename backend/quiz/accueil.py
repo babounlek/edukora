@@ -85,6 +85,9 @@ LECTURE_A_REPRENDRE_JOURS = 7
 
 REVISIONS_ACCUEIL_MAX = 2
 
+# Le plan daté (R16) : au plus cinq étapes avant le jour J (les fins de mois), pour qu'il tienne sur un écran de téléphone.
+ETAPES_PLAN_MAX = 5
+
 
 # --- Visite ----------------------------------------------------------------------------
 
@@ -307,6 +310,61 @@ def preparation(resume):
     }
 
 
+def _fin_de_mois(jour):
+    suivant = jour.replace(day=28) + timedelta(days=4)
+    return suivant - timedelta(days=suivant.day)
+
+
+def _plan_date(profil, cursus, compte, aujourdhui, manque_poids, poids_restant_moyen, restantes):
+    """
+    Le plan daté (audit produit 2026-11-13, R16) : la trajectoire rendue concrète. Combien de thèmes à consolider d'ici le
+    jour J pour atteindre CIBLE_COUVERTURE, combien par semaine, où l'élève en est cette semaine (lundi à dimanche), et le
+    chemin en étapes datées (fins de mois, puis le jour J) en supposant un rythme régulier.
+
+    Même approximation que la trajectoire : un thème consolidé vaut le poids moyen des thèmes qui restent. Ne dépend pas du
+    rythme de l'élève (c'est la cible qui fixe le plan, pas son passé) ; `themes_a_consolider` vaut 0 quand la cible est déjà
+    atteinte. Plafonné au nombre de thèmes qui restent : on ne demande pas plus que le programme n'en contient.
+    """
+    jours_restants = compte["jours_restants"]
+    jour_j = aujourdhui + timedelta(days=jours_restants)
+    if poids_restant_moyen > 0 and manque_poids > 0:
+        a_consolider = min(restantes, ceil(manque_poids / poids_restant_moyen))
+    else:
+        a_consolider = 0
+    semaines = max(1, ceil(jours_restants / 7))
+    par_semaine = ceil(a_consolider / semaines) if a_consolider else 0
+
+    lundi = aujourdhui - timedelta(days=aujourdhui.weekday())
+    faits = 0
+    if a_consolider:
+        depuis = timezone.make_aware(timezone.datetime.combine(lundi, timezone.datetime.min.time()))
+        faits = len(_rejouer_reponses(profil, cursus, depuis)["consolides"])
+
+    etapes = []
+    if a_consolider:
+        fin = _fin_de_mois(aujourdhui)
+        while fin < jour_j and len(etapes) < ETAPES_PLAN_MAX:
+            if (fin - aujourdhui).days >= 7:
+                part = (fin - aujourdhui).days / jours_restants
+                etapes.append({"date": fin.isoformat(), "themes": min(a_consolider, ceil(a_consolider * part))})
+            fin = _fin_de_mois(fin + timedelta(days=1))
+        etapes.append({"date": jour_j.isoformat(), "themes": a_consolider})
+
+    return {
+        "jour_j": jour_j.isoformat(),
+        "themes_a_consolider": a_consolider,
+        "par_semaine": par_semaine,
+        "cette_semaine": {
+            "debut": lundi.isoformat(),
+            "fin": (lundi + timedelta(days=6)).isoformat(),
+            "cible": par_semaine,
+            "faits": faits,
+        },
+        "etapes": etapes,
+        "une_seance_de_plus": None,
+    }
+
+
 def trajectoire(profil, cursus, resume, compte, aujourdhui=None):
     """
     Où mène le rythme des trois dernières semaines d'ici le jour J.
@@ -340,6 +398,9 @@ def trajectoire(profil, cursus, resume, compte, aujourdhui=None):
     restantes = etat["exploitables"] - etat["maitrises"]
     poids_restant_moyen = (poids_total - poids_maitrise) / restantes if restantes > 0 else 0.0
 
+    manque_cible = CIBLE_COUVERTURE * poids_total - poids_maitrise
+    plan = _plan_date(profil, cursus, compte, aujourdhui, manque_cible, poids_restant_moyen, restantes)
+
     debut = aujourdhui - timedelta(days=FENETRE_RYTHME_JOURS)
     seances_fenetre = SeanceJournaliere.objects.filter(
         profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, date__gt=debut, date__lte=aujourdhui,
@@ -356,6 +417,7 @@ def trajectoire(profil, cursus, resume, compte, aujourdhui=None):
         "suffisant": None,
         "seances_de_plus_par_semaine": None,
         "atteignable": None,
+        "plan": plan,
     }
     if seances_fenetre < SEANCES_MINIMUM_RYTHME:
         return base
@@ -371,6 +433,10 @@ def trajectoire(profil, cursus, resume, compte, aujourdhui=None):
     atteignable = True
     if not suffisant:
         rendement = max(RENDEMENT_PLANCHER, consolides / seances_fenetre)
+        # L'effet d'une séance de plus par semaine : ses thèmes en plus d'ici le jour J, au même rendement.
+        semaines_restantes = jours_restants / 7
+        plus = (poids_maitrise + gain_poids + rendement * semaines_restantes * poids_restant_moyen) / poids_total
+        plan["une_seance_de_plus"] = {"couverture_projetee": round(min(1.0, plus), 4)}
         manque_poids = CIBLE_COUVERTURE * poids_total - poids_maitrise - gain_poids
         if poids_restant_moyen > 0:
             seances_manquantes = (manque_poids / poids_restant_moyen) / rendement

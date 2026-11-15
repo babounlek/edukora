@@ -1317,6 +1317,17 @@ export interface DepuisLaDerniereVisite {
 
 /** Où mène le rythme actuel (voir quiz.accueil.trajectoire). Les champs de projection
  * sont null tant qu'il n'y a pas de rythme mesurable. */
+/** Le plan daté (R16, voir quiz.accueil._plan_date) : combien de thèmes à consolider d'ici le jour J, et par où passer. */
+export interface PlanDate {
+  jour_j: string
+  themes_a_consolider: number
+  par_semaine: number
+  cette_semaine: { debut: string; fin: string; cible: number; faits: number }
+  etapes: { date: string; themes: number }[]
+  /** Couverture projetée avec une séance de plus par semaine ; null quand le rythme n'est pas mesurable ou suffit. */
+  une_seance_de_plus: { couverture_projetee: number } | null
+}
+
 export interface Trajectoire {
   jours_restants: number
   fenetre_jours: number
@@ -1329,6 +1340,7 @@ export interface Trajectoire {
   seances_de_plus_par_semaine: number | null
   // Faux quand même en travaillant tous les jours la cible n'est plus atteignable.
   atteignable: boolean | null
+  plan?: PlanDate
 }
 
 export interface PreparationExamen {
