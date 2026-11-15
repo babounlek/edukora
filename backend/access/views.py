@@ -148,15 +148,20 @@ def read_cours(request, cours_id):
         LectureProgress.objects.update_or_create(profil=profil_actif(request), cours=cours)
 
     exercices_acces = a_acces_exercices_cours(request.user, cours, profil_actif(request) if request.user.is_authenticated else None)
+    sections = cours.sections_breakdown(verrouiller_payantes=not exercices_acces)
+    # `?compact=1` (R21, audit produit 2026-11-13) : le même texte partait deux fois, en Markdown aplati et en sections, alors
+    # que le lecteur n'affiche le Markdown que faute de sections. Un client qui le demande ne reçoit le Markdown que dans ce cas :
+    # moitié moins d'octets sur un forfait de données, et moitié moins à garder pour lire sans réseau.
+    sans_doublon = request.query_params.get("compact") == "1" and bool(sections)
     return Response({
         "id": cours.id,
         "title": cours.titre,
-        "content_markdown": cours.content_markdown if exercices_acces else cours.libre_markdown(),
+        "content_markdown": "" if sans_doublon else (cours.content_markdown if exercices_acces else cours.libre_markdown()),
         # Sections individuellement typées, pour un rendu distinguant visuellement
         # chaque type - voir Cours.sections_breakdown(). Liste vide (cas déjà couvert
         # par le fallback frontend, même convention que EpreuveContent.exercises) si
         # sections_raw est vide : le frontend retombe alors sur content_markdown.
-        "sections": cours.sections_breakdown(verrouiller_payantes=not exercices_acces),
+        "sections": sections,
         "exercices_acces": exercices_acces,
         "header": cours.header_info(),
     })

@@ -413,7 +413,7 @@ export function listCours(filters: CoursFilters = {}, signal?: AbortSignal) {
 }
 
 export function getCours(slug: string) {
-  return apiRequest<Cours>(`/catalog/cours/${slug}/`, { auth: "optional" })
+  return apiRequest<Cours>(cheminCours(slug), { auth: "optional" })
 }
 
 /** Titres de plusieurs cours en une requête ({slug: titre}) ; un cours inconnu ou non publié est absent. */
@@ -453,7 +453,7 @@ export function readCours(slug: string) {
   // doit obtenir son contenu normalement plutôt qu'un événement "session expirée"
   // déclenché à tort par l'échec du refresh silencieux d'un token qui n'a jamais
   // existé. Même motif que readEpreuve.
-  return apiRequest<CoursContent>(`/access/cours/read/${slug}/`, { auth: "optional" })
+  return apiRequest<CoursContent>(cheminLectureCours(slug), { auth: "optional" })
 }
 
 export function previewCours(slug: string) {
@@ -511,9 +511,19 @@ export function getThemesFrequentsMatieres(cursusId: number, signal?: AbortSigna
   })
 }
 
+// Chemins d'API des contenus qu'on peut garder pour lire sans réseau (R21, voir lib/pwa) : une seule écriture, partagée entre
+// l'appel et la clé du cache, pour qu'une réponse gardée soit retrouvée à l'identique.
+export const cheminExerciceLecture = (tagId: number, exerciseId: number) =>
+  `/catalog/themes/${tagId}/exercices/${exerciseId}/lecture/`
+export const cheminThemeExercices = (cursusId: number, tagId: number, subjectId: string) =>
+  `/catalog/cursus/${cursusId}/themes-frequents/${tagId}/exercices/?subject=${subjectId}`
+export const cheminCours = (slug: string) => `/catalog/cours/${slug}/`
+/** `compact=1` : le serveur n'envoie pas le Markdown aplati quand les sections portent déjà le même texte. */
+export const cheminLectureCours = (slug: string) => `/access/cours/read/${slug}/?compact=1`
+
 export function getExerciceLecture(tagId: number, exerciseId: number, signal?: AbortSignal) {
   // "optional" : un visiteur voit les énoncés (publics), seul le corrigé est réservé.
-  return apiRequest<ExerciceLecture>(`/catalog/themes/${tagId}/exercices/${exerciseId}/lecture/`, {
+  return apiRequest<ExerciceLecture>(cheminExerciceLecture(tagId, exerciseId), {
     auth: "optional",
     signal,
   })
@@ -523,7 +533,7 @@ export function getThemeExercices(cursusId: number, tagId: number, subjectId: st
   // "optional" : chaque exercice porte son propre has_access (voir ThemeExercice) -
   // même motif que getThemesFrequents, un visiteur anonyme voit la liste normalement.
   return apiRequest<ThemeExercicesResponse>(
-    `/catalog/cursus/${cursusId}/themes-frequents/${tagId}/exercices/?subject=${subjectId}`,
+    cheminThemeExercices(cursusId, tagId, subjectId),
     { auth: "optional", signal },
   )
 }

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react"
+import { useMemo, useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowLeft, ArrowRight, BookOpen, Check, Crown, FileText, Lock, TrendingUp } from "lucide-react"
@@ -7,6 +7,7 @@ import { getThemeExercices, getThemesFrequents } from "@/api/endpoints"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import type { Cursus, ThemeExercice } from "@/api/types"
+import { BoutonThemeHorsLigne } from "@/components/BoutonThemeHorsLigne"
 import { useSeo } from "@/lib/seo"
 import { coursReaderPath, themeExerciceLecturePath, themesFrequentsPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -94,6 +95,14 @@ export function ThemeExercicesPage() {
     description: data ? t("te.seo_description", { theme: capitaliserTheme(data.tag) }) : undefined,
   })
 
+  // Ce qu'« Télécharger ce thème » garde pour lire sans réseau (R21) ; mémorisé pour que le bouton ne revérifie pas son état à chaque rendu.
+  const paquetHorsLigne = useMemo(
+    () => (data && cursusId && tagId && subjectCode
+      ? { cursusId: Number(cursusId), tagId: Number(tagId), subject: subjectCode, liste: data }
+      : null),
+    [data, cursusId, tagId, subjectCode],
+  )
+
   function changerSelection(cursus: string, subject: string) {
     setSearchParams({ cursus, subject }, { replace: true })
     setFiltreOrigine("tous")
@@ -179,6 +188,11 @@ export function ThemeExercicesPage() {
                 </StatChip>
               )}
             </div>
+            {paquetHorsLigne && (
+              <div className="mt-3">
+                <BoutonThemeHorsLigne paquet={paquetHorsLigne} />
+              </div>
+            )}
           </div>
 
           {frequence && (

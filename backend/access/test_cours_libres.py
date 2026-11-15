@@ -217,3 +217,32 @@ class ListesEtEtudeTests(_Base):
         reponse = self.client.get(f"/access/etude/?cours={self.cours.slug}")
 
         self.assertEqual(reponse.status_code, 200)
+
+
+class LectureCompacteTests(_Base):
+    """R21 : `?compact=1` n'envoie pas deux fois le même texte (Markdown aplati + sections)."""
+
+    def _compact(self, **kw):
+        if kw.get("connecte", True):
+            self.client.force_authenticate(user=self.user)
+        return self.client.get(f"/access/cours/read/{self.cours.slug}/?compact=1")
+
+    def test_le_markdown_double_n_est_pas_envoye(self):
+        corps = self._compact(connecte=False).json()
+        self.assertEqual(corps["content_markdown"], "")
+        self.assertTrue(corps["sections"])
+        self.assertIn("SYNTHESE_LIBRE", json.dumps(corps, ensure_ascii=False))  # le texte reste, dans les sections
+
+    def test_sans_le_parametre_rien_ne_change(self):
+        corps = self.client.get(f"/access/cours/read/{self.cours.slug}/").json()
+        self.assertIn("EXEMPLE_LIBRE", corps["content_markdown"])
+
+    def test_le_mode_compact_ne_fait_pas_fuiter_les_solutions_payantes(self):
+        self.assertSansSecret(self._compact(connecte=False))
+
+    def test_un_cours_sans_sections_garde_son_markdown(self):
+        Cours.objects.filter(pk=self.cours.pk).update(sections_raw=[])
+        corps = self._compact(connecte=False).json()
+        normal = self.client.get(f"/access/cours/read/{self.cours.slug}/").json()
+        self.assertEqual(corps["sections"], [])
+        self.assertEqual(corps["content_markdown"], normal["content_markdown"])  # rien n'est retiré faute de sections

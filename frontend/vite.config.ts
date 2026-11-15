@@ -86,7 +86,7 @@ export default defineConfig(() => {
                     options: {
                       cacheName: 'lecture-hors-ligne',
                       networkTimeoutSeconds: 5,
-                      expiration: { maxEntries: 120, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
+                      expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 30, purgeOnQuotaError: true },
                       cacheableResponse: { statuses: [200] },
                     },
                   },
