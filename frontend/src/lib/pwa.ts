@@ -7,7 +7,7 @@ import {
   getExerciceLecture, readCours, readEpreuve,
 } from "@/api/endpoints"
 import type { ThemeExercicesResponse } from "@/api/types"
-import { t } from "@/lib/i18n"
+import { localeCourante, t } from "@/lib/i18n"
 
 /** Cache Workbox des réponses d'API de lecture - même nom que dans vite.config.ts. */
 export const CACHE_LECTURE = "lecture-hors-ligne"
@@ -192,6 +192,41 @@ function elementsDuPaquet({ cursusId, tagId, subject, liste }: PaquetTheme): Ele
 
 export function nombreElementsDuPaquet(paquet: PaquetTheme): number {
   return elementsDuPaquet(paquet).length
+}
+
+/**
+ * Retire un thème gardé pour lire sans réseau (R21) : sa liste, ses cours et ses exercices. Un cours partagé avec un autre thème
+ * part avec lui ; l'autre thème n'est alors plus dit disponible et se retélécharge d'un geste.
+ */
+export async function retirerTheme(paquet: PaquetTheme): Promise<void> {
+  try {
+    if (!("caches" in window)) return
+    const cache = await caches.open(CACHE_LECTURE)
+    await Promise.all(elementsDuPaquet(paquet).map((e) => cache.delete(`${API_BASE_URL}${e.chemin}`)))
+  } catch {
+    // Rien à retirer si le cache n'est pas lisible.
+  }
+}
+
+/** La place que ce site occupe sur l'appareil, en octets, quand le navigateur sait la dire (sinon null). */
+export async function espaceUtilise(): Promise<{ usage: number; quota: number } | null> {
+  try {
+    const estimation = await navigator.storage?.estimate?.()
+    if (!estimation || typeof estimation.usage !== "number") return null
+    return { usage: estimation.usage, quota: estimation.quota ?? 0 }
+  } catch {
+    return null
+  }
+}
+
+/** « 12,4 Mo », « 830 Ko » (« 12.4 MB », « 830 KB » en anglais) : une taille lisible pour l'élève. */
+export function tailleLisible(octets: number): string {
+  const anglais = localeCourante().startsWith("en")
+  if (octets >= 1024 * 1024) {
+    const valeur = (octets / (1024 * 1024)).toFixed(1)
+    return anglais ? `${valeur} MB` : `${valeur.replace(".", ",")} Mo`
+  }
+  return `${Math.max(1, Math.round(octets / 1024))} ${anglais ? "KB" : "Ko"}`
 }
 
 /** Ce thème est-il entièrement lisible sans réseau ? */

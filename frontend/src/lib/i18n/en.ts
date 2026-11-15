@@ -580,6 +580,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "theme.hors_ligne_dispo": "Topic available offline",
   "theme.hors_ligne_partiel_one": "{n} item could not be saved. Try again with a connection.",
   "theme.hors_ligne_partiel_other": "{n} items could not be saved. Try again with a connection.",
+  "theme.hors_ligne_retirer": "Remove from this device",
+  "theme.hors_ligne_retire": "Topic removed from this device.",
+  "theme.hors_ligne_espace": "EduKora uses {taille} on this device.",
   "theme.hors_ligne_impossible": "This browser cannot keep content offline.",
   "traj.continue": "At this pace{rythme}, you'll cover {pct}% of the essentials by exam day. Keep it up.",
   "traj.plus_one":

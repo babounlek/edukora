@@ -9,7 +9,7 @@ vi.mock("@/api/endpoints", async (importOriginal) => ({ ...(await importOriginal
 vi.mock("sonner", () => ({ toast: vi.fn() }))
 
 import { CONTENU_DE_LECTURE } from "./contenuDeLecture"
-import { EXERCICES_MAX_PAR_PAQUET, estThemeDisponibleHorsLigne, nombreElementsDuPaquet, telechargerTheme, type PaquetTheme } from "./pwa"
+import { EXERCICES_MAX_PAR_PAQUET, estThemeDisponibleHorsLigne, nombreElementsDuPaquet, retirerTheme, tailleLisible, telechargerTheme, type PaquetTheme } from "./pwa"
 
 const exercice = (id: number, has_access = true) => ({
   exercise_id: id, lesson_slug: "l", lesson_title: "L", lesson_year: 2024, origine: "OFFICIEL", numero_exercice: "1", has_access, fait: false,
@@ -27,6 +27,7 @@ function installerCache() {
   const magasin = new Map<string, Response>()
   const cache = {
     put: vi.fn(async (url: string, reponse: Response) => void magasin.set(url, reponse)),
+    delete: vi.fn(async (url: string) => magasin.delete(url)),
     match: vi.fn(async (url: string) => magasin.get(url)),
   }
   vi.stubGlobal("caches", { open: vi.fn(async () => cache) })
@@ -68,6 +69,39 @@ describe("paquet « Télécharger ce thème »", () => {
     const echecs = await telechargerTheme(paquet())
     expect(echecs).toBe(1)
     expect(await estThemeDisponibleHorsLigne(paquet())).toBe(false)
+  })
+})
+
+describe("retirer un thème gardé", () => {
+  beforeEach(() => {
+    Object.values(api).forEach((f) => f.mockReset().mockResolvedValue({ ok: true }))
+  })
+
+  it("efface tout ce que le paquet avait écrit, et le thème n'est plus dit disponible", async () => {
+    const { magasin } = installerCache()
+    await telechargerTheme(paquet())
+    expect(magasin.size).toBe(5)
+
+    await retirerTheme(paquet())
+
+    expect(magasin.size).toBe(0)
+    expect(await estThemeDisponibleHorsLigne(paquet())).toBe(false)
+  })
+
+  it("ne laisse pas les autres entrées du cache de lecture", async () => {
+    const { magasin } = installerCache()
+    magasin.set("http://x/autre-chose/", new Response("{}"))
+    await telechargerTheme(paquet())
+
+    await retirerTheme(paquet())
+
+    expect([...magasin.keys()]).toEqual(["http://x/autre-chose/"])
+  })
+})
+
+describe("tailleLisible", () => {
+  it.each([[500, "1 Ko"], [830 * 1024, "830 Ko"], [12.4 * 1024 * 1024, "12,4 Mo"]])("%d octets -> %s", (octets, attendu) => {
+    expect(tailleLisible(octets)).toBe(attendu)
   })
 })
 

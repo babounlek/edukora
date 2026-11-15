@@ -586,6 +586,9 @@ export const fr = {
   "theme.hors_ligne_dispo": "Thème disponible hors connexion",
   "theme.hors_ligne_partiel_one": "{n} élément n'a pas pu être gardé. Réessaie avec du réseau.",
   "theme.hors_ligne_partiel_other": "{n} éléments n'ont pas pu être gardés. Réessaie avec du réseau.",
+  "theme.hors_ligne_retirer": "Retirer de cet appareil",
+  "theme.hors_ligne_retire": "Thème retiré de cet appareil.",
+  "theme.hors_ligne_espace": "EduKora occupe {taille} sur cet appareil.",
   "theme.hors_ligne_impossible": "Ce navigateur ne permet pas de garder du contenu hors connexion.",
   "traj.continue": "À ce rythme{rythme}, tu couvres {pct} % de l'essentiel le jour J. Continue comme ça.",
   "traj.plus_one":

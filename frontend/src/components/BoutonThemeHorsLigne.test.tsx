@@ -5,6 +5,7 @@ import type { PaquetTheme } from "@/lib/pwa"
 
 const pwa = vi.hoisted(() => ({
   activerLeHorsLigne: vi.fn(), estThemeDisponibleHorsLigne: vi.fn(), nombreElementsDuPaquet: vi.fn(), telechargerTheme: vi.fn(),
+  retirerTheme: vi.fn(), espaceUtilise: vi.fn(), tailleLisible: vi.fn((o: number) => `${o} o`),
   useEnLigne: vi.fn(() => true),
 }))
 const toast = vi.hoisted(() => ({ success: vi.fn(), error: vi.fn() }))
@@ -23,6 +24,9 @@ describe("BoutonThemeHorsLigne", () => {
     pwa.estThemeDisponibleHorsLigne.mockResolvedValue(false)
     pwa.activerLeHorsLigne.mockResolvedValue(true)
     pwa.telechargerTheme.mockResolvedValue(0)
+    pwa.retirerTheme.mockResolvedValue(undefined)
+    pwa.espaceUtilise.mockResolvedValue({ usage: 2048, quota: 100000 })
+    pwa.tailleLisible.mockImplementation((o: number) => `${o} o`)
     Object.defineProperty(window, "caches", { value: {}, configurable: true })
     Object.defineProperty(navigator, "serviceWorker", { value: {}, configurable: true })
   })
@@ -57,5 +61,28 @@ describe("BoutonThemeHorsLigne", () => {
     const { container } = render(<BoutonThemeHorsLigne paquet={paquet} />)
     await waitFor(() => expect(pwa.estThemeDisponibleHorsLigne).toHaveBeenCalled())
     expect(container.textContent).toBe("")
+  })
+
+  it("un thème gardé dit la place occupée et peut être retiré de l'appareil", async () => {
+    pwa.estThemeDisponibleHorsLigne.mockResolvedValue(true)
+    render(<BoutonThemeHorsLigne paquet={paquet} />)
+
+    expect(await screen.findByText("Thème disponible hors connexion")).toBeTruthy()
+    expect(await screen.findByText("EduKora occupe 2048 o sur cet appareil.")).toBeTruthy()
+
+    fireEvent.click(screen.getByRole("button", { name: "Retirer de cet appareil" }))
+
+    await waitFor(() => expect(pwa.retirerTheme).toHaveBeenCalledWith(paquet))
+    expect(await screen.findByRole("button", { name: /Télécharger ce thème/ })).toBeTruthy() // il se retélécharge d'un geste
+    expect(toast.success).toHaveBeenCalled()
+  })
+
+  it("sans estimation de place par le navigateur, la ligne d'espace n'apparaît pas", async () => {
+    pwa.estThemeDisponibleHorsLigne.mockResolvedValue(true)
+    pwa.espaceUtilise.mockResolvedValue(null)
+    render(<BoutonThemeHorsLigne paquet={paquet} />)
+
+    expect(await screen.findByText("Thème disponible hors connexion")).toBeTruthy()
+    expect(screen.queryByText(/occupe/)).toBeNull()
   })
 })

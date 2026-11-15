@@ -4,7 +4,8 @@ import { CheckCircle2, Download, Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  activerLeHorsLigne, estThemeDisponibleHorsLigne, nombreElementsDuPaquet, telechargerTheme, useEnLigne, type PaquetTheme,
+  activerLeHorsLigne, espaceUtilise, estThemeDisponibleHorsLigne, nombreElementsDuPaquet, retirerTheme, tailleLisible, telechargerTheme,
+  useEnLigne, type PaquetTheme,
 } from "@/lib/pwa"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -18,6 +19,7 @@ export function BoutonThemeHorsLigne({ paquet }: { paquet: PaquetTheme }) {
   const enLigne = useEnLigne()
   const [disponible, setDisponible] = useState<boolean | null>(null)
   const [progres, setProgres] = useState<{ faits: number; total: number } | null>(null)
+  const [espace, setEspace] = useState<number | null>(null)
   const total = nombreElementsDuPaquet(paquet)
 
   useEffect(() => {
@@ -28,7 +30,24 @@ export function BoutonThemeHorsLigne({ paquet }: { paquet: PaquetTheme }) {
     }
   }, [paquet])
 
+  // La place occupée sur l'appareil, dite seulement quand un thème y est gardé : c'est là que l'élève se demande ce que ça pèse.
+  useEffect(() => {
+    if (!disponible) return
+    let vivant = true
+    espaceUtilise().then((e) => vivant && setEspace(e ? e.usage : null))
+    return () => {
+      vivant = false
+    }
+  }, [disponible])
+
   if (typeof caches === "undefined" || !("serviceWorker" in navigator)) return null
+
+  async function retirer() {
+    await retirerTheme(paquet)
+    setDisponible(false)
+    setEspace(null)
+    toast.success(t("theme.hors_ligne_retire"))
+  }
 
   async function telecharger() {
     setProgres({ faits: 0, total })
@@ -53,9 +72,17 @@ export function BoutonThemeHorsLigne({ paquet }: { paquet: PaquetTheme }) {
 
   if (disponible) {
     return (
-      <span className="inline-flex items-center gap-1.5 text-sm text-success">
-        <CheckCircle2 className="size-4" aria-hidden="true" />
-        {t("theme.hors_ligne_dispo")}
+      <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+        <span className="inline-flex items-center gap-1.5 text-success">
+          <CheckCircle2 className="size-4" aria-hidden="true" />
+          {t("theme.hors_ligne_dispo")}
+        </span>
+        <button type="button" onClick={retirer} className="min-h-11 text-xs font-medium text-muted-foreground underline-offset-2 hover:underline sm:min-h-0">
+          {t("theme.hors_ligne_retirer")}
+        </button>
+        {espace !== null && (
+          <span className="text-xs text-muted-foreground">{t("theme.hors_ligne_espace", { taille: tailleLisible(espace) })}</span>
+        )}
       </span>
     )
   }
