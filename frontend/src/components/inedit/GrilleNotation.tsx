@@ -1,6 +1,7 @@
 import { Minus, Plus } from "lucide-react"
 
 import type { TentativeInediteQuestion } from "@/api/types"
+import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { arrondiQuart, formatPoints, libellePoints, pointsDuNiveau } from "@/lib/notation"
 import { cn } from "@/lib/utils"
 import { t, useI18n, type CleI18n } from "@/lib/i18n"
@@ -56,7 +57,9 @@ export function GrilleNotation({ question, onCriteres, onPoints }: GrilleNotatio
                   checked={coches.includes(indice)}
                   onChange={() => basculer(indice)}
                 />
-                <span className="flex-1 text-sm">{critere.libelle}</span>
+                <div className="prose prose-sm prose-neutral min-w-0 max-w-none flex-1 dark:prose-invert">
+                  <EpreuveMarkdown markdown={critere.libelle} />
+                </div>
                 <span className="shrink-0 text-sm tabular-nums text-muted-foreground">
                   +{formatPoints(critere.points)}
                 </span>
