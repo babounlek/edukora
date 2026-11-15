@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react"
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+
+import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, Bookmark, BookOpen, FileText, NotebookPen, Trash2 } from "lucide-react"
 import { toast } from "sonner"
@@ -84,7 +86,7 @@ export function CarnetPage() {
   const entrees = useMemo(() => data ?? [], [data])
 
   if (!authLoading && !isAuthenticated) {
-    return <Navigate to="/connexion" state={{ from: "/carnet" }} replace />
+    return <ConnexionRequise from="/carnet" titre={t("cpt.carnet")} explication={t("carnet.intent")} />
   }
 
   return (

@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom"
+import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useQuery } from "@tanstack/react-query"
 import { Award, Check, Flame } from "lucide-react"
 
@@ -64,7 +64,7 @@ export function MesReussitesPage() {
     enabled: isAuthenticated,
   })
 
-  if (!authLoading && !isAuthenticated) return <Navigate to="/connexion" state={{ from: "/reussites" }} replace />
+  if (!authLoading && !isAuthenticated) return <ConnexionRequise from="/reussites" titre={t("reussites.titre")} explication={t("reussites.intent")} />
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">

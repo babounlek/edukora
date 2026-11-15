@@ -1,9 +1,10 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Timer, Trophy } from "lucide-react"
 
 import { listMySimulations, listMyTentativesInedites } from "@/api/endpoints"
 import type { SimulationListItem, TentativeInediteListItem } from "@/api/types"
+import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { PointsPerdus } from "@/components/PointsPerdus"
 import { ReviserTabs } from "@/components/ReviserTabs"
@@ -89,7 +90,7 @@ export function MesExamensBlancsPage() {
   })
 
   if (!authLoading && !isAuthenticated) {
-    return <Navigate to="/connexion" state={{ from: "/examens-blancs" }} replace />
+    return <ConnexionRequise from="/examens-blancs" titre={t("blancs.h1")} explication={t("blancs.intent")} />
   }
 
   // Les inédites ne sont pas la panne de la page : sans l'option, leur liste est vide ou refusée, les annales restent.

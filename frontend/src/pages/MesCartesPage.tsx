@@ -1,5 +1,7 @@
 import { useState } from "react"
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+
+import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Layers } from "lucide-react"
 
@@ -36,7 +38,7 @@ export function MesCartesPage() {
     enabled: isAuthenticated,
   })
 
-  if (!authLoading && !isAuthenticated) return <Navigate to="/connexion" state={{ from: "/cartes" }} replace />
+  if (!authLoading && !isAuthenticated) return <ConnexionRequise from="/cartes" titre={t("cartes.titre")} explication={t("cartes.intent")} />
 
   const paquets = data?.paquets ?? []
   const totalDues = paquets.reduce((somme, p) => somme + p.dues, 0)

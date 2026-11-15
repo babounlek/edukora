@@ -130,10 +130,11 @@ describe("MesErreursPage", () => {
     expect(getErreurs).not.toHaveBeenCalled()
   })
 
-  it("renvoie à la connexion un visiteur", () => {
+  it("montre à un visiteur pourquoi se connecter, avec un lien vers la connexion", () => {
     auth.isAuthenticated = false
     afficher()
 
-    expect(screen.getByText("Écran de connexion")).toBeInTheDocument()
+    // Un visiteur voit ce que la page contient et pourquoi un compte est nécessaire, puis un lien vers la connexion (plus de redirection sèche).
+    expect(screen.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/connexion")
   })
 })

@@ -97,11 +97,12 @@ describe("MesExamensBlancsPage", () => {
     expect(screen.queryByText("Aucun examen blanc pour l'instant")).not.toBeInTheDocument()
   })
 
-  it("renvoie un visiteur à la connexion", () => {
+  it("montre à un visiteur pourquoi se connecter, avec un lien vers la connexion", () => {
     auth.isAuthenticated = false
     afficher()
 
-    expect(screen.getByText("Écran de connexion")).toBeInTheDocument()
+    // Un visiteur voit ce que la page contient et pourquoi un compte est nécessaire, puis un lien vers la connexion (plus de redirection sèche).
+    expect(screen.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/connexion")
   })
 
   it("mêle annales, inédites, minis et défis, chacun avec sa pastille et le lien de son résultat", async () => {

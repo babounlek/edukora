@@ -1,4 +1,6 @@
-import { Link, Navigate } from "react-router-dom"
+import { Link } from "react-router-dom"
+
+import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, CheckCircle2, Loader2, RotateCcw } from "lucide-react"
 
@@ -42,7 +44,7 @@ export function MesErreursPage() {
   const { lancer, enCours, echec } = useRefaireErreurs(cursusId)
 
   if (!authLoading && !isAuthenticated) {
-    return <Navigate to="/connexion" state={{ from: "/erreurs" }} replace />
+    return <ConnexionRequise from="/erreurs" titre={t("erreurs.titre")} explication={t("erreurs.intent")} />
   }
 
   return (
