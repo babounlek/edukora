@@ -1,6 +1,8 @@
 """Pages sans identifiant servies aux moteurs et aux robots de partage (voir catalog.pages_statiques) : un titre propre,
 un texte et des liens vers les pages d'examen au lieu du HTML vide de la SPA."""
+import json
 import re
+from pathlib import Path
 
 from django.conf import settings
 from django.test import TestCase
@@ -49,12 +51,33 @@ class PagesStatiquesTests(TestCase):
         self.assertEqual(reponse.status_code, 200)
         html = reponse.content.decode()
         self.assertEqual(self._titre(html), "Corrigés BEPC - Cameroun | EduKora")
+        # La page française s'annonce en français : elle portait lang="en", comme tout contenu « bilingue ».
+        self.assertIn('<html lang="fr">', html)
         self.assertEqual(self._canonical(html), f"{self.base}/cm")
         # Un lien vers la page de chaque examen francophone, jamais vers le GCE (autre langue).
         self.assertIn('href="/cm/examens/bepc"', html)
         self.assertNotIn("gce", html)
         self.assertIn("3 épreuves", html)
         self.assertIn('href="/cm/epreuves"', html)
+
+    def test_accueil_porte_les_questions_frequentes_et_leur_balisage(self):
+        html = self.get("cm").content.decode()
+        self.assertIn("<h2>Questions fréquentes</h2>", html)
+        self.assertIn("Combien coûte l'abonnement ?", html)
+        self.assertIn("2\u00a0000 FCFA par mois", html)
+        self.assertIn('"@type": "FAQPage"', html)
+        self.assertIn('"@type": "Organization"', html)
+        # Les autres pages d'ensemble n'ont pas ces questions.
+        self.assertNotIn("FAQPage", self.get("cm/epreuves").content.decode())
+        # La version anglaise a les siennes.
+        self.assertIn("How much is the subscription?", self.get("en/cm").content.decode())
+
+    def test_les_questions_sont_la_copie_exacte_de_celles_du_frontend(self):
+        source = Path(__file__).resolve().parents[2] / "frontend" / "src" / "lib" / "faq-accueil.json"
+        if not source.is_file():
+            self.skipTest("dossier frontend absent (exécution dans le conteneur)")
+        copie = Path(__file__).with_name("faq_accueil.json")
+        self.assertEqual(json.loads(source.read_text(encoding="utf-8")), json.loads(copie.read_text(encoding="utf-8")))
 
     def test_l_accueil_sans_pays_vaut_celui_du_pays_par_defaut(self):
         html = self.get("").content.decode()

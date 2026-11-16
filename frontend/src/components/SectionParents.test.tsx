@@ -21,14 +21,14 @@ describe("SectionParents : l'accueil parle aussi au parent qui paie", () => {
     expect(screen.getByText(/Un code parent réserve les paiements/)).toBeInTheDocument()
   })
 
-  it("mène aux tarifs et à l'aide sur le paiement", () => {
+  it("mène à l'aide sur le paiement ; le bouton des prix est celui du bloc suivant de l'accueil", () => {
     render(
       <MemoryRouter>
         <SectionParents />
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole("link", { name: /Voir les prix/ })).toHaveAttribute("href", "/tarifs")
+    expect(screen.queryByRole("link", { name: /Voir les prix/ })).toBeNull()
     expect(screen.getByRole("link", { name: "Comment payer ?" })).toHaveAttribute("href", "/aide/comment-payer")
   })
 })

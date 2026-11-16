@@ -114,6 +114,18 @@
     redir @seg_en_45 /en/{re.seg45.1}/mock-papers/{re.seg45.2}{qs_en} 301
     # <<< redirections-segments-en
 
+    # `/` et `/en` ne sont l'adresse d'aucune page : l'application y redirigeait en JavaScript vers l'accueil du pays,
+    # après avoir chargé tout le site. Le serveur le fait lui-même (audit de l'accueil du 2026-11-15, D4) : l'adresse la
+    # plus partagée mène droit à /cm, pour un visiteur comme pour un moteur. La query est conservée (lien de parrainage
+    # « /?ref=CODE », voir frontend/src/lib/referral.ts).
+    # 302 et non 301 : un seul pays est ouvert aujourd'hui (même défaut que DEFAULT_COUNTRY_CODE, frontend/src/lib/
+    # countryPath.ts) ; le jour où un deuxième ouvre, cette règle doit pouvoir changer sans qu'un navigateur ait gardé
+    # l'ancienne redirection pour toujours. RootRedirect (App.tsx) reste en filet.
+    @racine path /
+    redir @racine /cm{qs_en} 302
+    @racine_en path /en /en/
+    redir @racine_en /en/cm{qs_en} 302
+
     handle_path /static/* {
         root * /srv/staticfiles
         file_server

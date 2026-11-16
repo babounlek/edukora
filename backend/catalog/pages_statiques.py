@@ -8,7 +8,9 @@ voit déjà : un texte d'introduction et des liens (les pages d'examen, les arti
 Les titres et descriptions reprennent ceux que le frontend pose à l'exécution (useSeo) : un moteur qui compare le HTML
 initial au rendu ne doit pas y voir deux pages différentes. Un test le garde pour les gabarits partagés.
 """
+import json
 import re
+from pathlib import Path
 
 from django.conf import settings
 
@@ -25,6 +27,16 @@ CHEMIN_RE = re.compile(
 
 NOMS_PAYS_EN = {"CM": "Cameroon"}
 
+# Les questions fréquentes de l'accueil : copie exacte de frontend/src/lib/faq-accueil.json (un test échoue si les deux
+# divergent), pour que le HTML servi aux moteurs porte les mêmes questions que la page (audit de l'accueil du 2026-11-15).
+_FAQ = json.loads(Path(__file__).with_name("faq_accueil.json").read_text(encoding="utf-8"))
+
+
+def faq_accueil(langue):
+    """[(question, réponse)] de l'accueil dans `langue`, prix rempli (« 2 000 », espace insécable comme sur la page)."""
+    prix = f"{_FAQ['prix_mois_fcfa']:,}".replace(",", "\u00a0")
+    return [(e["q"], e["r"].replace("{prix}", prix)) for e in _FAQ[langue]]
+
 TEXTES = {
     "fr": {
         "accueil_titre": "Corrigés {examens} - {pays}",
@@ -36,6 +48,7 @@ TEXTES = {
             "Chaque jour, EduKora te dit quoi réviser : une séance de 25 minutes sur un thème qui tombe vraiment à ton "
             "examen, avec le cours pour la méthode, un exercice réellement posé et un quiz pour vérifier."
         ),
+        "faq": "Questions fréquentes",
         "epreuves_titre": "Épreuves et corrigés - {pays}",
         "epreuves_description": "{pays} : sujets et corrigés d'annales, examens blancs et épreuves inédites, classés par matière, cursus et série.",
         "epreuves_intro": "Toutes les annales corrigées, examen par examen. Les sujets sont toujours consultables gratuitement.",
@@ -50,7 +63,7 @@ TEXTES = {
         "tarifs_intro": (
             "Un abonnement au mois : tu choisis le nombre de mois, de un mois jusqu'à ton examen, et le total est affiché "
             "avant de payer. Paiement par Mobile Money (MTN, Orange), sans prélèvement automatique. Un seul compte peut "
-            "servir plusieurs enfants, avec un tarif réduit à partir du deuxième."
+            "servir plusieurs enfants, chacun au même prix."
         ),
         "tarifs_inclus": ["Corrigés complets en illimité", "Exercices d'application corrigés", "Le quiz qui cible tes révisions", "Épreuves inédites EduKora", "Les thèmes qui reviennent le plus"],
         "apropos_titre": "À propos",
@@ -85,6 +98,7 @@ TEXTES = {
             "Every day, EduKora tells you what to revise: a 25-minute session on a topic that really comes up in your "
             "exam, with the lesson for the method, a question that was actually set and a quiz to check yourself."
         ),
+        "faq": "Frequently asked questions",
         "epreuves_titre": "Past papers and solutions - {pays}",
         "epreuves_description": "{pays}: past papers with solutions, mock exams and original papers, sorted by subject, exam and series.",
         "epreuves_intro": "Every past paper with its solution, exam by exam. The papers are always free to read.",
@@ -99,7 +113,7 @@ TEXTES = {
         "tarifs_intro": (
             "A monthly subscription: you choose the number of months, from one month up to your exam, and the total is shown "
             "before you pay. Payment by Mobile Money (MTN, Orange), with no automatic charges. One account can serve several "
-            "children, with a reduced price from the second."
+            "children, each at the same price."
         ),
         "tarifs_inclus": ["Unlimited full solutions", "Worked practice exercises", "The quiz that targets your revision", "EduKora original papers", "The topics that come up most"],
         "apropos_titre": "About",
@@ -169,6 +183,7 @@ def page_statique(interne, langue):
         return None
     textes = TEXTES[langue]
     site = "EduKora"
+    faq = []
     if m.group("page"):
         cle = CLES_PAGE[m.group("page")]
         chemin = f"/{m.group('page')}"
@@ -211,11 +226,20 @@ def page_statique(interne, langue):
             liens.append((textes["lien_themes"], f"/{pays}/themes-frequents"))
         if cle == "accueil":
             liens += [(textes["lien_tarifs"], "/tarifs"), (textes["lien_aide"], "/aide")]
+            faq = faq_accueil(langue)
+            corps += ["", f"## {textes['faq']}", ""]
+            for question, reponse in faq:
+                corps += [f"### {question}", "", reponse, ""]
     return {
         "titre": textes[f"{cle}_titre"].format(**valeurs),
         "description": textes[f"{cle}_description"].format(**valeurs),
         "interne": chemin,
         "bilingue": True,  # les pages d'ensemble existent dans les deux langues (comme au sitemap)
+        # Leur texte est écrit dans la langue de la page : sans cette clé, `bilingue` faisait annoncer <html lang="en">
+        # à la version française (voir prerendu.prerendu), accueil compris.
+        "langue_texte": langue,
+        # Seulement pour l'accueil d'un pays : ses questions fréquentes, balisées FAQPage par le prérendu.
+        "faq": faq,
         "meta": [],
         "corps": "\n".join(corps),
         "liens": liens,

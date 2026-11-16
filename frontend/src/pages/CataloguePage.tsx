@@ -1,16 +1,12 @@
 import { useEffect, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, Target, TrendingUp } from "lucide-react"
+import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, TrendingUp } from "lucide-react"
 
-// WebP au lieu du JPEG d'origine (82 Ko -> 20 Ko, 9 Ko pour l'écran d'un téléphone en densité 1) : même rendu,
-// photo décorative. Tous les navigateurs pris en charge par l'app lisent le WebP.
-import heroStudent from "@/assets/hero-student.webp"
-import heroStudentPetit from "@/assets/hero-student-408.webp"
 import {
+  getAccueilVitrine,
   getEpreuveInedite,
   getMyProgression,
-  listSubjects,
   readEpreuve,
 } from "@/api/endpoints"
 import { trackEvent } from "@/lib/analytics"
@@ -22,9 +18,9 @@ import { useCursusListe } from "@/lib/cursusLangue"
 import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
 import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
-import { useTotalCours, useTotalEpreuves } from "@/lib/totauxCatalogue"
 import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { SectionParents } from "@/components/SectionParents"
+import { FaqAccueil } from "@/components/FaqAccueil"
 import { useSeo } from "@/lib/seo"
 import { SITE_NAME } from "@/lib/site"
 import {
@@ -44,14 +40,26 @@ import { SocialProofSection } from "@/components/SocialProofSection"
 import { SeanceDuJour } from "@/components/SeanceDuJour"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
-import { requeteInedites, useCursusAccueil, useCursusPrepareDeclare, useInedites } from "@/lib/cursusAccueil"
-import { LigneExamenChoisi } from "@/components/ChoixExamen"
+import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
+import { PremiereSeance } from "@/components/PremiereSeance"
+import { SqueletteDePage } from "@/components/RouteFallback"
+import { accueilEleveProbable, marquerAccueilEleve, oublierAccueilEleve } from "@/lib/indiceAccueil"
 
 // Clés de filtre reconnues par /epreuves (voir EpreuvesListPage) - un lien déjà en
 // circulation qui les porte encore sur cette URL (recherche sauvegardée en session,
 // lien partagé, l'onboarding qui pointait ici avant la scission accueil/catalogue)
 // doit continuer à filtrer, pas silencieusement retomber sur l'accueil nu.
 const FILTER_PARAM_KEYS = ["subject", "cursus", "origine", "nature", "gratuit", "search"]
+
+/** Les boutons mesurés de la vitrine : vocabulaire fermé, comme les noms d'évènements. */
+type CibleAccueil =
+  | "campagne"
+  | "corrige_gratuit"
+  | "themes"
+  | "exemple_corrige"
+  | "inedite_vedette"
+  | "inedites_liste"
+  | "prix"
 
 /** Chiffre de volumétrie du hero - même gabarit de puce que /epreuves, /quiz et /cours. */
 function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; libelle: string }) {
@@ -98,6 +106,11 @@ function CatalogueVitrine() {
   const campagne = useCampagne()
   const [searchParams] = useSearchParams()
 
+  // Mesure des clics de la vitrine (audit de l'accueil du 2026-11-15, R5) : seul le nom du bouton part (`cible`),
+  // jamais de texte ni d'identité - voir analytics.models.EventName.ACCUEIL_BOUTON_CLIC. Sans elle, impossible de
+  // savoir lequel des boutons du hero sert, ni si quelqu'un descend jusqu'aux prix.
+  const mesurer = (cible: CibleAccueil) => () => trackEvent("accueil_bouton_clic", { cible })
+
   // Un lien encore en circulation vers l'ancien catalogue-sur-l'accueil (ex.
   // "/cm?cursus=12", posé par l'onboarding ou une recherche sauvegardée avant la
   // scission accueil/catalogue) doit continuer à filtrer plutôt que d'atterrir sur un
@@ -131,10 +144,15 @@ function CatalogueVitrine() {
   // précédent.
   const progression = isAuthenticated ? progressionData : undefined
 
-  const { data: subjects = [] } = useQuery({
-    // Le catalogue d'accueil montre les matières de la langue de l'interface (voir lib/discipline.langueDeListe).
-    queryKey: ["subjects", country, langueDeListe("", false)],
-    queryFn: ({ signal }) => listSubjects(country, signal, undefined, langueDeListe("", false)),
+  // Les trois chiffres du hero et les témoignages, en UN appel (audit de l'accueil du 2026-11-15, R9). La page demandait
+  // la liste des épreuves, celle des cours et celle des matières pour n'en lire que le total, puis les témoignages. Les
+  // totaux restent ceux des listes, dans la langue de l'interface : le serveur interroge les mêmes vues (voir
+  // catalog.accueil_api), donc une puce « N cours » mène toujours à une liste qui affiche N.
+  const langueAccueil = langueDeListe("", false)
+  const { data: accueil } = useQuery({
+    queryKey: ["accueil-vitrine", country, langueAccueil],
+    queryFn: ({ signal }) => getAccueilVitrine(country, langueAccueil, signal),
+    enabled: Boolean(country) && !hasLegacyFilters,
   })
 
   // Les examens annoncés suivent la langue de l'interface (voir lib/cursusLangue) : « BEPC · Probatoire · BAC »
@@ -149,8 +167,6 @@ function CatalogueVitrine() {
   // un GCE en anglais - et l'examen déclaré quand une mathématique gratuite existe pour lui (BAC C, D, E).
   // Le slug fait partie de la clé de cache, donc un changement de langue ou d'examen recharge.
   const cursusAccueil = useCursusAccueil(country ?? "")
-  // L'examen déclaré en entier (compte ou visiteur), pour le dire à l'écran : hero, exemple, inédites.
-  const examenChoisi = useCursusPrepareDeclare(country)
   const examenServi = cursusList?.find((c) => c.id === cursusAccueil)
   // Toujours un corrigé de l'examen déclaré, ou rien : null tant que la liste des examens charge (sinon l'exemple par
   // défaut, celui d'un autre examen, clignoterait avant le bon) et pour un examen sans épreuve gratuite.
@@ -166,18 +182,6 @@ function CatalogueVitrine() {
   const exempleExercice = extrait?.exercice
   const exempleCorrigeQ1 = extrait?.corrigeMarkdown
 
-  // Volume de cours du pays, pour la puce du hero et la carte "Cours" - même clé de
-  // cache que /cours (voir CoursListPage), donc un aller-retour entre les deux pages
-  // ne repaie pas la requête.
-  // Dans la langue de l'interface, comme les matières et les épreuves : la puce annonce ce que /cours affichera.
-  const langueAccueil = langueDeListe("", false)
-  const { data: coursData } = useTotalCours(country, langueAccueil, !hasLegacyFilters)
-
-  // Volumétrie totale d'épreuves annoncée par le hero - même clé de cache que sur
-  // /epreuves (voir EpreuvesListPage), donc un aller-retour entre les deux pages ne
-  // repaie pas la requête.
-  const { data: epreuvesTotalData } = useTotalEpreuves(country, langueAccueil, !hasLegacyFilters)
-  const epreuvesTotal = epreuvesTotalData?.count
 
   // Épreuve inédite mise en avant, pour la section "preuve" dédiée plus bas - jamais un
   // slug codé en dur (contrairement à EXEMPLES_CORRIGE) : la plus récente pour ce
@@ -271,7 +275,7 @@ function CatalogueVitrine() {
           qui ne descend pas jusqu'au bloc « Prêt à commencer ? » doit quand même la voir. Cliquable vers /tarifs. */}
       {campagne && (
         <div className="mx-auto max-w-5xl px-4 pt-4 sm:px-6">
-          <Link to="/tarifs" className="block transition-opacity hover:opacity-90">
+          <Link to="/tarifs" onClick={mesurer("campagne")} className="block transition-opacity hover:opacity-90">
             <BandeauCampagne campagne={campagne} prix={campagne.prix} prixReference={campagne.prix_reference} />
           </Link>
         </div>
@@ -287,27 +291,19 @@ function CatalogueVitrine() {
         />
         {/* pb-8 et non py-14 : le bandeau de chiffres qui suit appartient au hero, il
             ne doit pas en être séparé par 56 px de vide. */}
-        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-8 pt-14 sm:px-6 md:grid-cols-[1.15fr_1fr] md:items-center md:gap-10">
-          <div>
-            {/* Qui a déclaré son examen le voit ici, avec le moyen de le changer ; sans déclaration (visiteur neuf,
-                robots), l'accroche d'origine, qui énumère les examens du pays. */}
-            {examenChoisi ? (
-              <LigneExamenChoisi cursus={examenChoisi} />
-            ) : (
-              <p className="mb-2 font-display text-sm italic text-primary">
-                {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
-              </p>
-            )}
-            {/* La promesse vendait une bibliothèque ("cours structurés et corrigés
-                d'annales, classés par matière et par série") alors que le produit est
-                devenu un coach : une séance par jour, choisie pour l'élève. Le
-                meilleur argument - "tu ne sais pas quoi réviser, on te le dit, et ce
-                thème est tombé dans 35 des 41 dernières épreuves" - n'apparaissait
-                qu'APRÈS s'être connecté et avoir déclaré son examen, c'est-à-dire
-                après la conversion au lieu de la provoquer.
-
-                Le volume reste, mais comme PREUVE et non comme argument : il rassure
-                sur le sérieux du corpus, il ne dit pas quoi en faire. */}
+        {/* Trois blocs dans une grille. Sur un téléphone ils se suivent : promesse, carte, liens - la carte arrive donc
+            dès le premier écran, avant les liens secondaires. Sur un écran large, la carte occupe la colonne de droite
+            et les deux blocs de texte s'empilent à gauche.
+            pb-8 : le bandeau de chiffres qui suit appartient au hero. */}
+        <div className="relative mx-auto grid max-w-5xl gap-x-10 gap-y-6 px-4 pb-8 pt-10 sm:px-6 sm:pt-14 md:grid-cols-[1.1fr_1fr] md:items-center">
+          <div className="md:col-start-1 md:row-start-1 md:self-end">
+            {/* L'examen choisi se lit et se change dans la carte (voir PremiereSeance) : l'accroche garde les examens
+                du pays, pour un visiteur neuf comme pour un robot. */}
+            <p className="mb-2 font-display text-sm italic text-primary">
+              {examLevelsHero}{countryLabel ? ` - ${countryLabel}` : ""}
+            </p>
+            {/* La promesse est celle d'un coach (« on te dit quoi réviser »), pas d'une bibliothèque : le volume du
+                corpus vient après, comme preuve. */}
             <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
               {t("accueil.hero_titre_debut")}{" "}
               <span className="text-primary">{t("accueil.hero_titre_accent")}</span>.
@@ -315,43 +311,34 @@ function CatalogueVitrine() {
             <p className="mt-4 max-w-lg text-muted-foreground">
               {t("accueil.hero_texte")}
             </p>
-            {/* Le premier bouton sert la promesse : sans savoir quel examen l'élève
-                prépare, il n'y a pas de séance possible, donc c'est la première chose
-                à lui demander - il descend vers la grille des cursus plus bas, qui
-                écrit la déclaration. Le second reste ce qu'il y a de gratuit : goûter
-                d'abord, payer ensuite (avant, le CTA menait à origine=INEDITE,
-                c'est-à-dire au produit le plus cher, pour un visiteur qui n'a encore
-                rien lu).
+          </div>
 
-                Pour qui a déjà déclaré son examen, cette question n'a plus lieu
-                d'être : sa séance l'attend en haut de page, et ces boutons redeviennent
-                ce qu'ils étaient - des portes vers le catalogue. */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <Button size="lg" asChild>
-                <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`}>
+          {/* L'action principale du hero (audit de l'accueil du 2026-11-15, R6 et R7) : choisir son examen, puis lancer
+              une vraie première séance sans compte. Elle remplace la photo d'illustration et les deux boutons qui
+              menaient à des listes. */}
+          <div className="md:col-start-2 md:row-span-2 md:row-start-1">
+            <PremiereSeance country={country ?? ""} />
+          </div>
+
+          <div className="md:col-start-1 md:row-start-2 md:self-start">
+            {/* Le prix n'apparaissait qu'au septième écran, alors que c'est un argument (audit de l'accueil du
+                2026-11-15, R2) : une ligne dit ce qui est gratuit et ce que coûte la suite. */}
+            <p className="max-w-lg text-sm text-muted-foreground">
+              {t("accueil.hero_reassurance", { prix: formatAmount(PRIX_MOIS_FCFA) })}
+            </p>
+            {/* Porte secondaire : lire d'abord, pour qui ne veut pas d'un quiz. Bouton de contour, la carte porte
+                le seul bouton plein du hero. */}
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
+                <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`} onClick={mesurer("corrige_gratuit")}>
                   {t("accueil.cta_corrige_gratuit")}
                   <ArrowRight />
                 </Link>
               </Button>
-              {/* Le quiz gratuit est la façon la plus rapide de goûter au produit (une minute, un
-                  résultat) et il ne demande pas de compte. La recherche d'épreuve n'a plus de bouton
-                  ici : « Épreuves » et la loupe de l'en-tête la portent sur toutes les pages. Pour un
-                  visiteur connecté, « sans compte » serait faux. */}
-              <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
-                <Link to="/quiz">
-                  <Target />
-                  {isAuthenticated ? t("accueil.cta_quiz_connecte") : t("accueil.cta_quiz_anonyme")}
-                </Link>
-              </Button>
             </div>
-
-            {/* Mention légère plutôt qu'une carte à part entière (voir la discussion
-                produit) : l'accueil vient d'être volontairement réduit à trois piliers
-                (Épreuves/Cours/Quiz, voir "accueil/catalogue split") et le classement
-                n'a pas de sens sans qu'une matière/série soit choisie - ThemesFrequentsPage
-                s'en charge, pas cette page. */}
             <Link
               to={themesFrequentsPath(country ?? "")}
+              onClick={mesurer("themes")}
               className="mt-3 flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
             >
               <TrendingUp className="size-3.5 text-primary" />
@@ -359,21 +346,10 @@ function CatalogueVitrine() {
               <ArrowRight className="size-3" />
             </Link>
             {/* Pour qui prépare l'autre sous-système (le GCE sur la version française, le BAC sur
-                l'anglaise) : la page ne propose que les examens de sa langue. */}
-            <InviteAutreSousSystemeDuPays className="mt-3" />
+                l'anglaise) : la page ne propose que les examens de sa langue. Variante compacte : une seule phrase,
+                là où la ligne doublée en deux langues prenait trois lignes sur un téléphone. */}
+            <InviteAutreSousSystemeDuPays variante="compacte" className="mt-3" />
           </div>
-          <img
-            src={heroStudent}
-            srcSet={`${heroStudentPetit} 408w, ${heroStudent} 816w`}
-            sizes="(min-width: 768px) 435px, calc(100vw - 32px)"
-            alt={t("accueil.hero_alt")}
-            // Image du premier écran (probablement l'élément le plus grand = LCP) : priorité de
-            // téléchargement, et dimensions réservées pour que le texte ne saute pas à son arrivée.
-            fetchPriority="high"
-            width={816}
-            height={499}
-            className="h-auto w-full rounded-2xl border border-border"
-          />
         </div>
 
         {/* La page n'affichait aucun chiffre, alors que sa volumétrie est son argument
@@ -384,27 +360,23 @@ function CatalogueVitrine() {
             cassaient en 2 + 1, ce qui se lisait comme un accident de mise en page.
             Constaté à l'écran, pas déduit. Ce bandeau comble aussi la couture un peu
             vide entre le hero et la section suivante. */}
-        {(epreuvesTotal !== undefined || coursData || subjects.length > 0) && (
+        {accueil && (
           <div className="relative mx-auto flex max-w-5xl flex-wrap gap-2 px-4 pb-14 sm:px-6">
-            {epreuvesTotal !== undefined && (
-              <StatChip
-                icon={<BookOpen className="size-3.5 text-primary" />}
-                valeur={formatAmount(epreuvesTotal)}
-                libelle={tn("accueil.stat_epreuves", epreuvesTotal > 1 ? 2 : 1)}
-              />
-            )}
-            {coursData && (
-              <StatChip
-                icon={<GraduationCap className="size-3.5 text-gold-text" />}
-                valeur={formatAmount(coursData.count)}
-                libelle={t("accueil.stat_cours")}
-              />
-            )}
-            {subjects.length > 0 && (
+            <StatChip
+              icon={<BookOpen className="size-3.5 text-primary" />}
+              valeur={formatAmount(accueil.epreuves)}
+              libelle={tn("accueil.stat_epreuves", accueil.epreuves > 1 ? 2 : 1)}
+            />
+            <StatChip
+              icon={<GraduationCap className="size-3.5 text-gold-text" />}
+              valeur={formatAmount(accueil.cours)}
+              libelle={t("accueil.stat_cours")}
+            />
+            {accueil.matieres > 0 && (
               <StatChip
                 icon={<Layers className="size-3.5 text-success" />}
-                valeur={String(subjects.length)}
-                libelle={tn("accueil.stat_matieres", subjects.length > 1 ? 2 : 1)}
+                valeur={String(accueil.matieres)}
+                libelle={tn("accueil.stat_matieres", accueil.matieres > 1 ? 2 : 1)}
               />
             )}
           </div>
@@ -445,7 +417,7 @@ function CatalogueVitrine() {
             </div>
             <div className="mt-4 flex justify-center border-t border-border pt-4">
               <Button asChild variant="outline">
-                <Link to={epreuveReaderPath(country ?? "", exemple.slug)}>
+                <Link to={epreuveReaderPath(country ?? "", exemple.slug)} onClick={mesurer("exemple_corrige")}>
                   {t("accueil.lire_corrige_complet")}
                   <ArrowRight />
                 </Link>
@@ -456,17 +428,6 @@ function CatalogueVitrine() {
       )}
 
 
-      {/* Les portes d'entrée du produit. Rien sur cette page ne disait qu'elles
-          existent : il fallait les déduire du menu du header. Grille à exactement
-          quatre cartes (jamais un nombre impair qui laisserait une orpheline sur sa
-          propre ligne, constaté à l'écran) - "Épreuves Inédites" en sort volontairement
-          pour un bandeau pleine largeur ci-dessous plutôt que de rejoindre la grille :
-          le produit le plus cher de la maison mérite de se distinguer, pas de se fondre
-          dans le même gabarit que les trois portes d'entrée gratuites. Jusqu'ici son
-          unique présence sur cette page était l'encart vedette plus bas, entièrement
-          masqué quand aucune inédite récente n'a d'aperçu public (voir inediteVedette).
-          Ce bandeau ne dépend que de inediteRecenteData.count : il reste visible même
-          quand l'encart vedette ne l'est pas. */}
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         {/* Le récit du plan, à la place d'une grille de quatre portes (Épreuves,
             Cours, Parcours, Quiz). Cette grille décrivait notre modèle de données -
@@ -474,8 +435,11 @@ function CatalogueVitrine() {
             itinéraire lui-même, exactement ce dont la séance du jour le décharge. Elle
             contredisait aussi la navigation, réduite depuis à trois entrées.
             Les quatre destinations restent atteignables : "Réviser" dans le menu, et
-            le bandeau Épreuves Inédites juste en dessous pour le produit payant. */}
+            l'encart Épreuves Inédites plus bas pour le produit payant. */}
         <h2 className="font-display text-xl font-semibold">{t("accueil.comment_titre")}</h2>
+        {/* Ce qui distingue le produit des annales gratuites, dit une fois, ici : la grille « Pourquoi EduKora ? » qui
+            suivait redisait ces trois étapes en quatre cartes (audit de l'accueil du 2026-11-15, R4). */}
+        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("accueil.pourquoi_texte", { site: SITE_NAME })}</p>
         <div className="mt-4 grid gap-5 sm:grid-cols-3">
           <EtapeExplication
             numero="1"
@@ -493,31 +457,6 @@ function CatalogueVitrine() {
             description={t("accueil.etape3_texte")}
           />
         </div>
-        {inediteRecenteData && inediteRecenteData.count > 0 && (
-          <Link
-            to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}
-            className="group mt-5 flex flex-col items-start gap-4 rounded-2xl border border-gold/40 bg-gradient-to-b from-gold/5 to-card p-5 transition-all duration-300 hover:-translate-y-1 hover:border-gold/60 hover:shadow-lg hover:shadow-gold/10 sm:flex-row sm:items-center sm:gap-5 sm:p-6"
-          >
-            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-              <Crown className="size-5" />
-            </span>
-            <div className="flex-1">
-              <h3 className="flex flex-wrap items-center gap-2 font-display text-lg font-semibold">
-                {t("accueil.inedites_titre")}
-                <span className="rounded-full bg-gold/15 px-2.5 py-0.5 text-xs font-bold tracking-wide text-gold-text uppercase">
-                  {t("accueil.inedites_exclusif")}
-                </span>
-              </h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {t("accueil.inedites_texte", { site: SITE_NAME })}
-              </p>
-            </div>
-            <span className="flex shrink-0 items-center gap-1.5 text-sm font-medium text-gold-text">
-              {t("accueil.explorer")}
-              <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
-            </span>
-          </Link>
-        )}
         {/* L'examen déclaré n'a aucune inédite : plutôt que de faire disparaître le bloc, on le dit (sinon le choix semble
             ignoré), et on ouvre celles des autres examens quand il y en a. `tout=1` : sans lui, la liste se réduirait
             aussitôt à l'examen déclaré, c'est-à-dire à rien (voir useFiltreCursusParDefaut). */}
@@ -537,57 +476,9 @@ function CatalogueVitrine() {
         )}
       </section>
 
-      {/* Différenciation face aux annales/corrigés déjà gratuits sur Internet (audit UX
-          externe, 2026-09-04) - la grille "Comment travailler" ci-dessus dit CE QUE le
-          produit contient, jamais POURQUOI ça vaut mieux qu'un PDF trouvé ailleurs. Les
-          quatre points reprennent des mécanismes déjà montrés plus haut sur cette même
-          page (quiz, corrigés pas à pas, thèmes fréquents, inédites) plutôt que des
-          promesses nouvelles - jamais un argument que le reste de la page ne prouve pas. */}
-      <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6">
-        <h2 className="font-display text-xl font-semibold">{t("accueil.pourquoi_titre", { site: SITE_NAME })}</h2>
-        <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
-          {t("accueil.pourquoi_texte", { site: SITE_NAME })}
-        </p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <Target className="size-5" />
-            </span>
-            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage1_titre")}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("accueil.avantage1_texte")}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <GraduationCap className="size-5" />
-            </span>
-            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage2_titre")}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("accueil.avantage2_texte")}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <TrendingUp className="size-5" />
-            </span>
-            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage3_titre")}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("accueil.avantage3_texte")}
-            </p>
-          </div>
-          <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-              <Crown className="size-5" />
-            </span>
-            <h3 className="mt-3 font-display text-base font-semibold">{t("accueil.avantage4_titre")}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t("accueil.avantage4_texte")}
-            </p>
-          </div>
-        </div>
-      </section>
-
+      {/* Les épreuves inédites n'ont plus qu'une présentation sur cette page : l'encart ci-dessous, avec une vraie
+          question (ou son repli compact). Le bandeau « Exclusif » et la carte « Tu te testes sur l'inconnu » qui les
+          annonçaient deux fois de plus ont été retirés (audit de l'accueil du 2026-11-15, R4). */}
       {/* Pendant du "Un exemple, plutôt qu'une promesse" plus haut, mais pour Inédites -
           jamais un rail de cartes (qui la ferait ressembler à une liste de plus parmi
           tant d'autres sur cette page) : une vraie question de l'épreuve la plus
@@ -626,7 +517,10 @@ function CatalogueVitrine() {
             </div>
             <div className="mt-4 flex flex-wrap justify-center gap-3">
               <Button asChild>
-                <Link to={epreuveInediteDetailPath(country ?? "", inediteVedette.slug ?? inediteVedette.id)}>
+                <Link
+                  to={epreuveInediteDetailPath(country ?? "", inediteVedette.slug ?? inediteVedette.id)}
+                  onClick={mesurer("inedite_vedette")}
+                >
                   {t("accueil.vedette_decouvrir")}
                   <ArrowRight />
                 </Link>
@@ -635,7 +529,7 @@ function CatalogueVitrine() {
                   sans ce second lien, un visiteur convaincu par l'aperçu n'avait aucun
                   moyen de savoir que d'autres inédites existent pour d'autres matières. */}
               <Button asChild variant="outline">
-                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
+                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`} onClick={mesurer("inedites_liste")}>
                   {inediteRecenteData && inediteRecenteData.count > 1
                     ? t("accueil.vedette_voir_n", { n: inediteRecenteData.count })
                     : t("accueil.vedette_voir_toutes")}
@@ -668,7 +562,7 @@ function CatalogueVitrine() {
                 </p>
               </div>
               <Button asChild>
-                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`}>
+                <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`} onClick={mesurer("inedites_liste")}>
                   {t("accueil.repli_bouton")}
                   <ArrowRight />
                 </Link>
@@ -685,10 +579,13 @@ function CatalogueVitrine() {
           plus haut en tient déjà lieu, et le CTA du hero mène à du contenu gratuit réel
           en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
-      <SocialProofSection />
+      <SocialProofSection fournis={accueil ? accueil.temoignages : null} />
 
       {/* Le parent qui paie : voir SectionParents (audit du 2026-11-12, UX-03). */}
       <SectionParents />
+
+      {/* Les questions qu'on se pose avant d'essayer : voir FaqAccueil (audit de l'accueil du 2026-11-15, R10). */}
+      <FaqAccueil />
 
       {/* Dernière section avant le footer (audit UX externe, 2026-09-04) : la page
           démontrait la valeur du produit (démo de corrigé, inédites, preuve sociale)
@@ -720,7 +617,7 @@ function CatalogueVitrine() {
             )}
             <div className="mt-5 flex justify-center">
               <Button size="lg" asChild>
-                <Link to="/tarifs">
+                <Link to="/tarifs" onClick={mesurer("prix")}>
                   {t("accueil.voir_prix")}
                   <ArrowRight />
                 </Link>
@@ -752,15 +649,22 @@ function CatalogueVitrine() {
  * Pendant que l'authentification se résout (un aller-retour de rafraîchissement au
  * démarrage), c'est la vitrine qui s'affiche. C'est volontaire : c'est le seul défaut
  * sûr pour un robot ou un visiteur, qui sont la majorité des arrivées sur cette URL.
- * Un élève abonné voit donc brièvement la vitrine avant sa page - à corriger avec un
- * indice mémorisé côté navigateur si la bascule se voit trop.
+ * Un élève abonné la verrait donc un instant avant sa page : un indice mémorisé côté navigateur l'évite (voir plus bas).
  */
 export function CataloguePage() {
-  const { isAuthenticated, user } = useAuth()
+  const { isAuthenticated, isLoading, user } = useAuth()
   const { country } = useParams<{ country: string }>()
+  const abonne = Boolean(isAuthenticated && user?.cursus_prepare && user.a_un_abonnement_actif)
 
-  if (isAuthenticated && user?.cursus_prepare && user.a_un_abonnement_actif) {
-    return <AccueilEleve country={country ?? ""} />
-  }
+  // L'indice mémorisé annoncé plus haut (voir lib/indiceAccueil) : posé quand l'accueil de l'élève s'affiche, retiré dès
+  // que la session est connue et que ce n'est pas un abonné. Tant que la session se retrouve, un abonné probable voit
+  // un squelette et non la vitrine ; un visiteur ou un robot, qui n'ont jamais l'indice, voient la vitrine d'emblée.
+  useEffect(() => {
+    if (abonne) marquerAccueilEleve()
+    else if (!isLoading) oublierAccueilEleve()
+  }, [abonne, isLoading])
+
+  if (abonne) return <AccueilEleve country={country ?? ""} />
+  if (isLoading && accueilEleveProbable()) return <SqueletteDePage />
   return <CatalogueVitrine />
 }

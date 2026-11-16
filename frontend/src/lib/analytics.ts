@@ -53,6 +53,10 @@ export type AnalyticsEventName =
   // Le nombre de mois et la source seulement, jamais de texte - voir analytics.models.
   | "tarifs_bouton_clic"
   | "tarifs_duree_choisie"
+  // Accueil visiteur (audit du 2026-11-15) : le bouton cliqué sur la vitrine (`cible`) et l'endroit d'où l'examen est
+  // déclaré (`source`, avec l'identifiant de l'examen). Jamais de texte - voir analytics.models.
+  | "accueil_bouton_clic"
+  | "examen_choisi"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

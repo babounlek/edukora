@@ -3,6 +3,7 @@ import { toast } from "sonner"
 import type { Cursus } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { libelleCursus } from "@/lib/cursus"
+import { trackEvent } from "@/lib/analytics"
 import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { t } from "@/lib/i18n"
@@ -15,20 +16,32 @@ import { t } from "@/lib/i18n"
  * repris à la première connexion ; un toast le confirme à l'endroit même du clic, car sans compte le seul autre effet
  * du choix est discret (listes réduites, inédites de son examen).
  */
+/** D'où l'examen est déclaré : vocabulaire fermé, comme les noms d'évènements. */
+export type SourceChoixExamen = "bandeau" | "hero" | "selecteur"
+
 export function useDeclarerCursus() {
   const { isAuthenticated } = useAuth()
   const changer = useChangerCursusPrepare()
 
-  /** `apres` : appelé une fois le choix enregistré (compte) ou mémorisé (visiteur) - par exemple pour revenir à l'accueil. */
-  function declarer(cursus: Cursus, apres?: () => void) {
+  /**
+   * `apres` : appelé une fois le choix enregistré (compte) ou mémorisé (visiteur) - par exemple pour revenir à l'accueil.
+   * `source` : l'endroit du clic (bandeau, carte du hero de l'accueil, ou menu de l'examen choisi), pour savoir d'où les élèves déclarent
+   * leur examen (audit de l'accueil du 2026-11-15, R5). Seuls la source et l'identifiant de l'examen partent.
+   */
+  function declarer(cursus: Cursus, apres?: () => void, source: SourceChoixExamen = "selecteur") {
+    trackEvent("examen_choisi", { source, cursus_id: cursus.id })
     if (isAuthenticated) {
       changer.mutate(cursus.id, { onSuccess: apres })
       return
     }
     memoriserCursusPrepareEnAttente(cursus.id)
-    toast.success(t("bandeau.note", { cursus: libelleCursus(cursus) }), {
-      description: t("bandeau.connecte_toi"),
-    })
+    // Depuis la carte du hero, pas de message : la carte affiche aussitôt l'examen choisi et sa première séance, et le
+    // message recouvrait son bouton sur un téléphone.
+    if (source !== "hero") {
+      toast.success(t("bandeau.note", { cursus: libelleCursus(cursus) }), {
+        description: t("bandeau.connecte_toi"),
+      })
+    }
     apres?.()
   }
 

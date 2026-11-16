@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom"
-import { ArrowRight, ShieldCheck, Smartphone, Users } from "lucide-react"
+import { ShieldCheck, Smartphone, Users } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { trackEvent } from "@/lib/analytics"
 import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { formatAmount } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
@@ -11,6 +12,9 @@ import { t, useI18n } from "@/lib/i18n"
  * bloc lui donne, au même endroit, ce qu'il cherche avant de décider : ce que son enfant obtient, comment on paie, ce
  * qu'il garde sous contrôle (audit du 2026-11-12, UX-03). Il ne dit que ce que le produit fait déjà : profils d'enfants
  * dans un seul compte, Mobile Money sans prélèvement automatique, code parent pour les paiements et la gestion.
+ *
+ * Un seul bouton, « Comment payer ? » : le bloc qui suit sur l'accueil (« Prêt à commencer ? ») porte déjà « Voir les
+ * prix », et les deux se suivaient à un écran d'écart (audit de l'accueil du 2026-11-15, R4).
  */
 export function SectionParents() {
   useI18n()
@@ -40,14 +44,10 @@ export function SectionParents() {
         ))}
       </div>
       <div className="mt-5 flex flex-wrap gap-2">
-        <Button asChild>
-          <Link to="/tarifs">
-            {t("parents.voir_prix")}
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
-        </Button>
         <Button asChild variant="outline">
-          <Link to="/aide/comment-payer">{t("parents.comment_payer")}</Link>
+          <Link to="/aide/comment-payer" onClick={() => trackEvent("accueil_bouton_clic", { cible: "parents_payer" })}>
+            {t("parents.comment_payer")}
+          </Link>
         </Button>
       </div>
     </section>

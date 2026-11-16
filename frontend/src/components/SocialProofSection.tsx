@@ -10,13 +10,21 @@ import { t, useI18n } from "@/lib/i18n"
  * Disparaît silencieusement tant qu'aucun témoignage n'est publié depuis l'admin
  * (jamais générés ni fabriqués - voir catalog.models.Temoignage).
  */
-export function SocialProofSection() {
+export function SocialProofSection({ fournis }: {
+  /** Les témoignages déjà reçus par la page (l'accueil les a avec ses chiffres, voir getAccueilVitrine) : la section ne les
+   * redemande pas. `null` tant que la page les attend. Sans cette prop, la section les charge elle-même (/tarifs). */
+  fournis?: Temoignage[] | null
+} = {}) {
   useI18n()
-  const [temoignages, setTemoignages] = useState<Temoignage[]>([])
+  const [charges, setCharges] = useState<Temoignage[]>([])
+  const autonome = fournis === undefined
 
   useEffect(() => {
-    listTemoignages().then(setTemoignages).catch(() => {})
-  }, [])
+    if (!autonome) return
+    listTemoignages().then(setCharges).catch(() => {})
+  }, [autonome])
+
+  const temoignages = autonome ? charges : (fournis ?? [])
 
   const hasTemoignages = temoignages.length > 0
 

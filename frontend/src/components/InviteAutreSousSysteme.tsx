@@ -117,7 +117,13 @@ export function InviteAutreSousSysteme({
  * La même invitation, pour une page qui n'a pas déjà la liste des examens du pays : elle la lit (même clé de
  * cache que partout, voir useCursusListe) pour savoir si l'autre sous-système existe ici.
  */
-export function InviteAutreSousSystemeDuPays({ variante, className }: { variante?: "ligne" | "bloc"; className?: string }) {
+export function InviteAutreSousSystemeDuPays({
+  variante,
+  className,
+}: {
+  variante?: "ligne" | "bloc" | "compacte"
+  className?: string
+}) {
   const { langue } = useI18n()
   const { country } = useCountry()
   const { tous } = useCursusListe(country, { langue: undefined })

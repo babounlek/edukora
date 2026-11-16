@@ -14,6 +14,7 @@ principe que quiz.views.start_session pour un connecté non abonné.
 """
 import random
 
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -22,7 +23,7 @@ from rest_framework.decorators import api_view, permission_classes, throttle_cla
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
-from catalog.models import Cursus, Examen, StatutContenu, Subject, Tag, TypeReponse
+from catalog.models import Cursus, Examen, Lesson, Origine, StatutContenu, Subject, Tag, TypeReponse
 
 from .models import CompetenceItem, ModeQuiz, ResultatDeclare
 from .gratuits import themes_gratuits_par_matiere
@@ -96,6 +97,31 @@ def _entier(valeur):
         return None
 
 
+def _frequences_officielles(complets):
+    """
+    Pour chaque essai (cursus, matière, thème) : dans combien d'épreuves OFFICIELLES de la matière le thème est tombé, et
+    combien d'épreuves officielles cette matière compte pour le cursus - de quoi écrire « tombé dans 12 épreuves sur 28 »
+    sur la carte « première séance » de l'accueil (audit du 2026-11-15, R6). Deux requêtes pour toute la liste.
+
+    Les épreuves officielles seulement, et de la matière seulement : le numérateur ne peut pas dépasser le dénominateur,
+    et un examen blanc ne gonfle pas un chiffre présenté comme celui de l'examen.
+    """
+    base = Lesson.objects.filter(
+        statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        cursus__in={c for c, _, _, _ in complets}, subject__in={s for _, s, _, _ in complets},
+    )
+    totaux = {
+        (r["cursus"], r["subject"]): r["n"]
+        for r in base.values("cursus", "subject").annotate(n=Count("id", distinct=True)).order_by()
+    }
+    occurrences = {
+        (r["cursus"], r["subject"], r["exercises__questions__themes"]): r["n"]
+        for r in base.filter(exercises__questions__themes__in={t for _, _, t, _ in complets})
+        .values("cursus", "subject", "exercises__questions__themes").annotate(n=Count("id", distinct=True)).order_by()
+    }
+    return occurrences, totaux
+
+
 @api_view(["GET"])
 @permission_classes([permissions.AllowAny])
 @throttle_classes([EssaiThrottle])
@@ -111,6 +137,7 @@ def liste_essais(request):
     cursus = {c.id: c for c in Cursus.objects.filter(id__in={c[0] for c in complets}).select_related("country", "series")}
     matieres = {s.id: s for s in Subject.objects.filter(id__in={c[1] for c in complets})}
     themes = {t.id: t for t in Tag.objects.filter(id__in={c[2] for c in complets})}
+    occurrences, totaux = _frequences_officielles(complets) if complets else ({}, {})
 
     essais = [
         {
@@ -119,6 +146,8 @@ def liste_essais(request):
             "cursus": c, "cursus_display": _cursus_display(cursus[c]), "langue": cursus[c].langue,
             "subject": s, "subject_label": matieres[s].label, "subject_code": matieres[s].code,
             "theme": t, "theme_name": themes[t].name, "nb_questions": n,
+            # Voir _frequences_officielles : 0 quand le thème n'est tombé dans aucune épreuve officielle de la matière.
+            "nb_epreuves": occurrences.get((c, s, t), 0), "nb_epreuves_matiere": totaux.get((c, s), 0),
         }
         for c, s, t, n in complets
     ]

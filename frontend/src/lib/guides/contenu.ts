@@ -125,6 +125,10 @@ export const GUIDES: readonly DefinitionGuide[] = [
     public: "visiteur",
     cheminRelance: "accueil",
     route: estAccueilCatalogue,
+    // Pas par-dessus la carte « première séance » du hero (voir PremiereSeance) : ce tutoriel s'ouvrait à l'instant
+    // où le visiteur choisissait son examen, donc sur le bouton « Commencer » que la carte venait d'afficher, pour
+    // l'inviter à se connecter. La carte dit déjà la même chose et le fait sans compte (audit de l'accueil du 2026-11-15).
+    condition: (contexte) => !contexte.ciblePresente("premiere-seance"),
     etapes: [
       ETAPE_INTERET,
       {

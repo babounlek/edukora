@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useDeclarerCursus } from "@/lib/declarerCursus"
+import { ACCUEIL_PAYS_RE } from "@/components/CoquilleAccueil"
 import { InviteAutreSousSysteme } from "@/components/InviteAutreSousSysteme"
 import { BoutonToutVoir, useRangeeDefilante } from "@/components/FiltresCatalogue"
 import { Button } from "@/components/ui/button"
@@ -21,8 +22,6 @@ const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 // l'élève arrive directement sur un cours ou une épreuve depuis un PDF ou une recherche.
 const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/quiz\/essai|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/tarifs/
 
-// L'accueil d'un pays (/cm, /sn...) : même motif que celui de l'onboarding (OnboardingModal).
-const ACCUEIL_PAYS_RE = /^\/[a-z]{2}\/?$/i
 
 function lireFerme(): boolean {
   try {
@@ -53,7 +52,10 @@ export function BandeauCursus() {
   const enAttente = useCursusPrepareEnAttente()
 
   const aDeclare = isAuthenticated ? Boolean(user?.cursus_prepare) : enAttente !== null
-  const visible = !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && Boolean(country)
+  // Pas sur l'accueil d'un pays : la carte du hero y pose la même question (voir PremiereSeance), et deux fois sur le
+  // même écran, c'était du bruit (audit de l'accueil du 2026-11-15, R6).
+  const visible =
+    !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && !ACCUEIL_PAYS_RE.test(pathname) && Boolean(country)
 
   // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
   const { data: cursusList, tous: tousLesCursus, isPending } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
@@ -64,7 +66,7 @@ export function BandeauCursus() {
   const rangee = useRangeeDefilante()
 
   function choisir(cursus: Cursus) {
-    declarer(cursus)
+    declarer(cursus, undefined, "bandeau")
   }
 
   function fermer() {

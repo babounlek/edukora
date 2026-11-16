@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .accueil_api import AccueilView
 
 app_name = "catalog"
 
@@ -36,5 +37,6 @@ urlpatterns = [
     path("countries/", views.CountryListView.as_view(), name="country-list"),
     path("temoignages/", views.TemoignageListView.as_view(), name="temoignage-list"),
     path("stats/", views.PlatformStatsView.as_view(), name="platform-stats"),
+    path("accueil/", AccueilView.as_view(), name="accueil"),
     path("question-exemple/", views.QuestionExempleView.as_view(), name="question-exemple"),
 ]

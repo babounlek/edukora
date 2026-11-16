@@ -442,6 +442,14 @@ export interface Temoignage {
   note: number | null
 }
 
+/** L'accueil visiteur en un appel (voir catalog.accueil_api côté backend) : les totaux des listes et les témoignages publiés. */
+export interface AccueilVitrine {
+  epreuves: number
+  cours: number
+  matieres: number
+  temoignages: Temoignage[]
+}
+
 export interface PlatformStats {
   corriges_disponibles: number
   cours_disponibles: number
@@ -1201,6 +1209,10 @@ export interface QuizEssai {
   theme: number
   theme_name: string
   nb_questions: number
+  /** Épreuves officielles de la matière où ce thème est tombé, et épreuves officielles de la matière pour cet examen
+   * (0 quand il n'y en a pas) : « tombé dans 12 épreuves sur 28 », sur la carte « première séance » de l'accueil. */
+  nb_epreuves?: number
+  nb_epreuves_matiere?: number
 }
 
 export interface QuizCorrige {

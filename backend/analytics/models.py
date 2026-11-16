@@ -85,6 +85,13 @@ class EventName(models.TextChoices):
     # attire plus de familles que le prix unique, ni quelle durée elles choisissent. Jamais de texte, jamais d'identité.
     TARIFS_BOUTON_CLIC = "tarifs_bouton_clic", "Bouton de la page des tarifs cliqué"
     TARIFS_DUREE_CHOISIE = "tarifs_duree_choisie", "Durée choisie dans le tunnel d'abonnement"
+    # Accueil visiteur (audit du 2026-11-15) : la page la plus vue du site n'était pas mesurée. ACCUEIL_BOUTON_CLIC : quel
+    # bouton de la vitrine est cliqué (`cible` : corrige_gratuit, quiz, themes, exemple_corrige, inedite_vedette,
+    # inedites_liste, prix, parents_payer, campagne, premiere_seance, aide). EXAMEN_CHOISI : d'où l'élève déclare son examen
+    # (`source` : bandeau, hero, selecteur) et lequel (`cursus_id`). De quoi comparer deux versions du hero ; jamais de
+    # texte, jamais d'identité.
+    ACCUEIL_BOUTON_CLIC = "accueil_bouton_clic", "Bouton de l'accueil visiteur cliqué"
+    EXAMEN_CHOISI = "examen_choisi", "Examen déclaré (bandeau ou sélecteur)"
 
 
 class AnalyticsEvent(models.Model):

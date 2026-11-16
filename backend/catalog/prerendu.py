@@ -272,6 +272,42 @@ def _fil_d_ariane_json_ld(fil, libelles, langue_page, canonical):
     return f'<script type="application/ld+json">{texte}</script>'
 
 
+def _json_ld(donnees):
+    # « < » échappé : un texte ne doit jamais pouvoir fermer la balise <script>.
+    texte = json.dumps(donnees, ensure_ascii=False).replace("<", "\\u003c")
+    return f'<script type="application/ld+json">{texte}</script>'
+
+
+def _faq_json_ld(faq):
+    """Le balisage FAQPage des questions de l'accueil (les mêmes que dans le corps de la page), ou "" sans question."""
+    if not faq:
+        return ""
+    return _json_ld({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": question, "acceptedAnswer": {"@type": "Answer", "text": reponse}}
+            for question, reponse in faq
+        ],
+    })
+
+
+def _site_json_ld():
+    """Organization et WebSite, comme dans la coquille de l'application (frontend/index.html) : l'accueil servi aux
+    moteurs n'en portait aucun."""
+    base, site = settings.FRONTEND_URL, settings.SITE_NAME
+    return _json_ld({
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "Organization", "@id": f"{base}/#organisation", "name": site, "url": f"{base}/", "logo": f"{base}/pwa-512.png"},
+            {
+                "@type": "WebSite", "@id": f"{base}/#site", "name": site, "url": f"{base}/",
+                "inLanguage": ["fr", "en"], "publisher": {"@id": f"{base}/#organisation"},
+            },
+        ],
+    })
+
+
 def _introuvable(langue_page):
     html = (
         f'<!doctype html><html lang="{langue_page}"><head><meta charset="utf-8">'
@@ -300,7 +336,9 @@ def prerendu(request, chemin=""):
 
     site = settings.SITE_NAME
     # <html lang> : la langue du TEXTE servi, qui est celle du contenu (jamais celle d'une interface qu'on ne sert pas).
-    langue_texte = "en" if page["bilingue"] else "fr"
+    # Une épreuve ou un cours « bilingue » est un contenu anglais (GCE) servi sous deux adresses ; une page d'ensemble,
+    # elle, est écrite dans chaque langue et le dit elle-même (`langue_texte`, voir pages_statiques).
+    langue_texte = page.get("langue_texte") or ("en" if page["bilingue"] else "fr")
     canonical, hreflang = adresses(page, langue_page)
     titre = _sans_gabarits(page["titre"])
     description = _sans_gabarits(page["description"])
@@ -311,6 +349,8 @@ def prerendu(request, chemin=""):
     )
     libelles = LIBELLES[langue_page]
     json_ld = _fil_d_ariane_json_ld(page.get("fil"), libelles, langue_page, canonical)
+    if page.get("faq"):
+        json_ld += _site_json_ld() + _faq_json_ld(page["faq"])
     meta = f"<p>{escape(' · '.join(page['meta']))}</p>" if page["meta"] else ""
     corps = _html(_sans_gabarits(page["corps"]) if page["corps"] else "", langue_page)
     liens = [(libelles["accueil"], chemin_public("/", langue_page))] + [

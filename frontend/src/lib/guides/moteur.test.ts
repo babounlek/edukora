@@ -16,6 +16,10 @@ const contexteEleve = (surcharges: Partial<ContexteGuide> = {}): ContexteGuide =
   ...surcharges,
 })
 
+/** Un visiteur sur un accueil sans la carte « première séance » (elle retient le tutoriel du visiteur, voir contenu.ts). */
+const contexteVisiteur = (): ContexteGuide =>
+  contexteEleve({ public: "visiteur", ciblePresente: (nom) => nom !== "premiere-seance" })
+
 const situation = (surcharges: Partial<SituationAuto> = {}): SituationAuto => ({
   memoire: memoireVide(),
   guideOuvert: false,
@@ -91,9 +95,13 @@ describe("peutDeclencherAuto", () => {
   })
 
   it("le tutoriel du visiteur se lance pour un visiteur, pas pour un élève", () => {
-    expect(peutDeclencherAuto(bienvenueVisiteur, contexteEleve({ public: "visiteur" }), situation())).toBe(true)
+    expect(peutDeclencherAuto(bienvenueVisiteur, contexteVisiteur(), situation())).toBe(true)
     expect(peutDeclencherAuto(bienvenueVisiteur, contexteEleve({ public: "eleve" }), situation())).toBe(false)
     expect(peutDeclencherAuto(bienvenue, contexteEleve({ public: "visiteur" }), situation())).toBe(false)
+  })
+
+  it("le tutoriel du visiteur ne s'ouvre pas par-dessus la carte « première séance » de l'accueil", () => {
+    expect(peutDeclencherAuto(bienvenueVisiteur, contexteEleve({ public: "visiteur" }), situation())).toBe(false)
   })
 
   it("rien tant qu'on ne sait pas qui regarde", () => {
@@ -238,7 +246,7 @@ describe("aides de page (cours, exercice, quiz)", () => {
 describe("guideAutomatique", () => {
   it("choisit le tutoriel qui correspond à qui regarde", () => {
     expect(guideAutomatique(contexteEleve(), situation())?.id).toBe("bienvenue")
-    expect(guideAutomatique(contexteEleve({ public: "visiteur" }), situation())?.id).toBe("bienvenue-visiteur")
+    expect(guideAutomatique(contexteVisiteur(), situation())?.id).toBe("bienvenue-visiteur")
   })
 
   it("aucun quand rien n'est permis", () => {

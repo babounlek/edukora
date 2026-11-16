@@ -41,6 +41,8 @@ class EssaiGratuitTests(TestCase):
         self.assertEqual(essai["cursus"], self.cursus.id)
         self.assertEqual(essai["nb_questions"], 3)
         self.assertEqual(essai["subject_code"], "MATHS")
+        # Sans épreuve officielle de la matière, la fréquence est à zéro (l'accueil ne l'affiche alors pas).
+        self.assertEqual((essai["nb_epreuves"], essai["nb_epreuves_matiere"]), (0, 0))
 
     def test_chaque_essai_expose_la_langue_de_son_examen(self):
         """Le frontend filtre les essais sur la langue de l'interface : GCE -> en, BAC -> fr."""

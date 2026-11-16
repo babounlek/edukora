@@ -70,6 +70,7 @@ import type {
   QuizSession,
   CompteARebours,
   CursusContenu,
+  AccueilVitrine,
   PlatformStats,
   QuestionExemple,
   ResumeMatiere,
@@ -542,6 +543,18 @@ export function getThemeExercices(cursusId: number, tagId: number, subjectId: st
 
 export function listCountries() {
   return apiRequest<Country[]>("/catalog/countries/", { auth: false })
+}
+
+/**
+ * Les chiffres et les témoignages de l'accueil visiteur, en un appel au lieu de quatre. Les totaux sont ceux des listes
+ * (/epreuves, /cours, matières) pour ce pays et cette langue : le serveur interroge les mêmes vues.
+ * "optional" comme ces listes : un élève connecté sans abonnement reçoit les mêmes totaux qu'elles.
+ */
+export function getAccueilVitrine(country: string | undefined, langue: string | undefined, signal?: AbortSignal) {
+  const params = new URLSearchParams()
+  if (country) params.set("country", country)
+  if (langue) params.set("langue", langue)
+  return apiRequest<AccueilVitrine>(`/catalog/accueil/?${params.toString()}`, { auth: "optional", signal })
 }
 
 export function listTemoignages() {
