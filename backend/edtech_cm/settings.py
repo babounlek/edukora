@@ -211,10 +211,11 @@ CORS_ALLOW_CREDENTIALS = True
 from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = (*default_headers, "x-parent-token", "x-invite-token")
 
-# Nom et domaine de la plateforme - provisoires tant que le produit est en conception,
-# donc jamais codés en dur ailleurs que via ces deux réglages (voir aussi les
-# variables VITE_SITE_NAME/VITE_SITE_URL côté frontend, qui doivent rester en phase).
-SITE_NAME = config("SITE_NAME", default="EduKamer")
+# Nom et domaine de la plateforme, jamais codés en dur ailleurs que via ces deux réglages (voir aussi les
+# variables VITE_SITE_NAME/VITE_SITE_URL côté frontend, qui doivent rester en phase). Le défaut était l'ancien nom
+# du produit (« EduKamer ») : sans SITE_NAME dans l'environnement - c'est le cas de l'intégration continue - les
+# titres des pages prérendues et le bloc de fin des PDF l'écrivaient, et cinq tests échouaient.
+SITE_NAME = config("SITE_NAME", default="EduKora")
 
 # Identifiant client OAuth Google (« Web application »), celui-là même que le
 # frontend passe à Google Identity Services : les deux DOIVENT correspondre, c'est

@@ -84,6 +84,9 @@ class CoherenceDesCopiesTests(SimpleTestCase):
         if not CADDYFILE.is_file():
             self.skipTest("Caddyfile absent (exécution dans le conteneur)")
         regles = re.findall(r"path_regexp (\^/\(en/\)\?.*\$)", CADDYFILE.read_text(encoding="utf-8"))
+        # Le Caddyfile compte aussi deux règles pour les pages SANS identifiant (accueil du pays, listes, tarifs : voir
+        # catalog/pages_statiques.py) : elles ne portent pas les pages de détail, on ne garde que celles qui les portent.
+        regles = [regle for regle in regles if "epreuves-inedites" in regle]
         # Deux règles de mêmes chemins : les aperçus de liens (WhatsApp...) et le prérendu des moteurs de recherche
         # (voir catalog/prerendu.py). Chacune doit couvrir toutes les pages de détail, dans les deux langues.
         self.assertEqual(len(regles), 2, "règles d'aperçu et de prérendu introuvables dans le Caddyfile")

@@ -248,7 +248,9 @@ class ApercuAideTests(TestCase):
         if not chemin.exists():  # dans l'image backend, le dépôt n'est pas là
             self.skipTest("Caddyfile absent de cet environnement")
         caddyfile = chemin.read_text(encoding="utf-8")
-        self.assertIn("mock-papers|aide|help)/[^/]+", caddyfile)
+        # « aide » et « help » dans les segments de détail des robots, d'où qu'ils viennent : la liste a déjà changé
+        # (les pages d'examen s'y sont ajoutées), le test ne doit tenir qu'à ce qui compte.
+        self.assertRegex(caddyfile, r"mock-papers\|aide\|help(\|[a-z-]+)*\)/\[\^/\]\+")
 
 
 class RapportAideTests(TestCase):
