@@ -12,14 +12,21 @@ import { t, tn, useI18n } from "@/lib/i18n"
  * défi relevé, la carte le dit ; le dimanche, elle donne la bande anonyme parmi les participants chronométrés (jamais un rang,
  * jamais une note d'autrui) quand la cohorte est assez grande.
  */
-export function DefiDeLaSemaine({ country, cursusId }: { country: string; cursusId: number | null | undefined }) {
-  useI18n()
+/** Le défi de la semaine d'un examen : même clé de cache que l'accueil, qui la remplit (voir AccueilEleve). */
+export function useDefiSemaine(country: string, cursusId: number | null | undefined) {
   const { data } = useQuery({
     queryKey: ["defi-semaine", cursusId],
     queryFn: ({ signal }) => getDefiSemaine(cursusId as number, signal),
     enabled: Boolean(country) && Boolean(cursusId),
   })
-  const defi = data?.defi
+  return data?.defi ?? null
+}
+
+export function DefiDeLaSemaine({
+  country, cursusId, rangee = false,
+}: { country: string; cursusId: number | null | undefined; rangee?: boolean }) {
+  useI18n()
+  const defi = useDefiSemaine(country, cursusId)
   if (!defi) return null
 
   const fiche = epreuveInediteDetailPath(country, defi.slug || defi.epreuve_id)
@@ -36,6 +43,28 @@ export function DefiDeLaSemaine({ country, cursusId }: { country: string; cursus
     : defi.jours_restants === 0
       ? t("defi.dernier_jour")
       : tn("defi.jours", defi.jours_restants)
+
+  // `rangee` : une ligne du bloc « À continuer » de l'accueil (voir AccueilEleve), sans cadre ni marge à elle, et sans
+  // le lien « Toutes les minis » (la fiche du défi y mène).
+  if (rangee) {
+    return (
+      <Link to={fiche} className="group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-muted/40">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+          {defi.releve ? <CheckCircle2 className="size-4" aria-hidden="true" /> : <Swords className="size-4" aria-hidden="true" />}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {t("defi.titre")}
+            {defi.duree_minutes ? ` · ${t("defi.duree", { n: defi.duree_minutes })}` : ""}
+          </span>
+          <span className="line-clamp-2 text-sm font-medium">{defi.titre}</span>
+          <span className="block text-xs text-muted-foreground">{etat}</span>
+          {precedent && <span className="block text-xs text-muted-foreground">{t(`defi.precedent_${precedent}`)}</span>}
+        </span>
+        <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+      </Link>
+    )
+  }
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("defi.titre")}>

@@ -51,6 +51,11 @@ export function OuJenSuis({
   // élève Gogo). La légende dit pourquoi celles-ci, le bouton dit combien il y en a.
   const matieresMasquees = suivies.length > matieres.length
   const debut = pourcent(preparation.ponderee) < SEUIL_DEBUT_PCT
+  // Ce que l'élève a déjà travaillé, toutes matières confondues : maîtrisé, en révision ou en cours. Au début, la
+  // maîtrise ne dit presque rien (un élève à trois séances et 30 thèmes en révision lisait « 1 », « 0 % », « 0 % » et
+  // « 0/111 maîtrisés » : audit de l'accueil abonné, 2026-11-16). On montre donc l'effort d'abord, sans rien cacher
+  // de la maîtrise, qui reste écrite juste après et reprend la première place dès qu'elle passe le seuil.
+  const travailles = resume.reduce((somme, m) => somme + m.maitrises + m.en_revision + m.en_cours, 0)
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("oujensuis.aria")}>
@@ -68,7 +73,9 @@ export function OuJenSuis({
             </h2>
             {debut ? (
               <p className="mt-1.5 text-sm text-muted-foreground">
-                {t("oujensuis.debut", { m: preparation.maitrises, p: prochainPalier(preparation.maitrises) })}
+                {travailles > 0
+                  ? t("oujensuis.debut_effort", { n: travailles, m: preparation.maitrises, p: prochainPalier(preparation.maitrises) })
+                  : t("oujensuis.debut", { m: preparation.maitrises, p: prochainPalier(preparation.maitrises) })}
               </p>
             ) : (
               <p className="mt-1.5 text-sm text-muted-foreground">
@@ -81,7 +88,8 @@ export function OuJenSuis({
           </div>
           <AnneauProgression
             part={preparation.ponderee}
-            centre={debut ? <span className="tabular-nums">{preparation.maitrises}</span> : undefined}
+            // Le même nombre que celui qui ouvre la phrase à côté : les thèmes travaillés, ou les maîtrisés à défaut.
+            centre={debut ? <span className="tabular-nums">{travailles > 0 ? travailles : preparation.maitrises}</span> : undefined}
           />
         </div>
 
@@ -164,7 +172,10 @@ function BlocTrajectoire({
         <div aria-hidden className="absolute -top-1 bottom-[-0.25rem] w-0.5 rounded bg-gold" style={{ left: `${cible}%` }} />
       </div>
       <div className="relative mt-1.5 h-4 text-[0.65rem] text-muted-foreground">
-        <span className="absolute left-0">{t("oujensuis.aujourdhui", { a: actuelle })}</span>
+        {/* « aujourd'hui 0 % » le premier mois : un zéro de plus, qui ne dit rien que la barre vide ne montre déjà. */}
+        <span className="absolute left-0">
+          {actuelle > 0 ? t("oujensuis.aujourdhui", { a: actuelle }) : t("oujensuis.aujourdhui_debut")}
+        </span>
         <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${cible}%` }}>
           {t("oujensuis.essentiel")}
         </span>
@@ -194,6 +205,10 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
   const Icone = subjectIcon(matiere.subject_code)
   // Une matière pas encore ouverte : « À découvrir » plutôt que « 0 % », qui se lit comme un échec.
   const intacte = matiere.maitrises === 0 && matiere.en_revision === 0 && matiere.en_cours === 0
+  // Travaillée mais rien de maîtrisé encore : « 0 % » et « 0/111 maîtrisés » effaçaient 30 thèmes en révision. On
+  // compte ce qui est en route ; le pourcentage revient dès le premier thème maîtrisé.
+  const enRoute = matiere.en_revision + matiere.en_cours
+  const sansMaitrise = !intacte && matiere.maitrises === 0
   return (
     <Link
       // `?cursus=` est requis par ParcoursSubjectPage.
@@ -211,6 +226,11 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
           <span className="shrink-0 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
             {t("oujensuis.a_decouvrir")}
           </span>
+        ) : sansMaitrise ? (
+          <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
+            {enRoute}
+            <span className="ml-1 font-sans text-xs font-medium text-muted-foreground">{tn("oujensuis.travailles", enRoute)}</span>
+          </span>
         ) : (
           <span className="shrink-0 font-display text-xl font-semibold tabular-nums">
             {pourcent(partMaitrisee(matiere))}
@@ -227,7 +247,9 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
       />
       <div className="mt-2.5 flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <span className="tabular-nums">
-          {t("oujensuis.maitrises", { m: matiere.maitrises, e: exploitables })}
+          {sansMaitrise
+            ? t("oujensuis.sur_themes", { e: exploitables })
+            : t("oujensuis.maitrises", { m: matiere.maitrises, e: exploitables })}
           {matiere.en_revision > 0 && <> · {t("oujensuis.en_revision", { n: matiere.en_revision })}</>}
         </span>
         <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />

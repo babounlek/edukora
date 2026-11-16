@@ -16,12 +16,12 @@ const defi = (extra: Partial<DefiSemaine> = {}): DefiSemaine => ({
   ...extra,
 })
 
-async function afficher(valeur: DefiSemaine | null) {
+async function afficher(valeur: DefiSemaine | null, rangee = false) {
   getDefiSemaine.mockResolvedValue({ defi: valeur })
   render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
       <MemoryRouter>
-        <DefiDeLaSemaine country="cm" cursusId={4} />
+        <DefiDeLaSemaine country="cm" cursusId={4} rangee={rangee} />
       </MemoryRouter>
     </QueryClientProvider>,
   )
@@ -35,6 +35,15 @@ describe("DefiDeLaSemaine", () => {
     expect(await screen.findByText("Mini-inédite Mathématiques BAC C n°1")).toBeTruthy()
     expect(screen.getByText(/Encore 4 jours/)).toBeTruthy()
     expect(getDefiSemaine).toHaveBeenCalledWith(4, expect.anything())
+  })
+
+  it("en rangée du bloc « À continuer » : un seul lien, vers la fiche, avec le même état", async () => {
+    await afficher(defi({ releve: true, resultat_ouvert: false }), true)
+    const lien = await screen.findByRole("link", { name: /Mini-inédite Mathématiques BAC C n°1/ })
+    expect(lien.getAttribute("href")).toContain("mini-bac-c-1")
+    expect(lien.textContent).toContain("Défi relevé")
+    expect(screen.getAllByRole("link")).toHaveLength(1)
+    expect(screen.queryByText("Toutes les minis")).toBeNull()
   })
 
   it("annonce le dernier jour", async () => {

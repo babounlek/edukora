@@ -34,13 +34,17 @@ export function EchecRefaireErreurs({ echec, className }: { echec: EchecRefaire 
  * Rien sans erreur : la ligne n'existe que quand elle a quelque chose à proposer. Le nombre vient de
  * l'accueil lui-même (voir quiz.views.accueil_view), aucune requête de plus.
  */
-export function LigneErreurs({ total, cursusId }: { total: number; cursusId: number }) {
+export function LigneErreurs({
+  total, cursusId, rangee = false,
+}: { total: number; cursusId: number; rangee?: boolean }) {
   useI18n()
   const { lancer, enCours, echec } = useRefaireErreurs(cursusId)
   if (total <= 0) return null
+  // `rangee` : une ligne du bloc « À continuer » de l'accueil (voir AccueilEleve), sans cadre ni marge à elle.
+  const Cadre = rangee ? "div" : "section"
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("erreurs.titre")}>
-      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3">
+    <Cadre className={rangee ? undefined : "mx-auto max-w-5xl px-4 pt-6 sm:px-6"} aria-label={rangee ? undefined : t("erreurs.titre")}>
+      <div className={rangee ? "flex items-center gap-3 px-5 py-3" : "flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3"}>
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-warning/15 text-warning-foreground dark:text-warning">
           <RotateCcw className="size-4" aria-hidden="true" />
         </span>
@@ -61,8 +65,8 @@ export function LigneErreurs({ total, cursusId }: { total: number; cursusId: num
           {enCours === null && <ArrowRight className="size-4" />}
         </Button>
       </div>
-      <EchecRefaireErreurs echec={echec} className="px-1" />
-    </section>
+      <EchecRefaireErreurs echec={echec} className={rangee ? "px-5 pb-3" : "px-1"} />
+    </Cadre>
   )
 }
 

@@ -348,8 +348,8 @@ describe("AccueilEleve", () => {
       afficher()
 
       await screen.findByText(/Dérivées est tombé dans 28 des 44/)
-      // Une seule ligne « Lecture en cours » : celle, déjà là, du bas de page.
-      expect(screen.getAllByText("Lecture en cours")).toHaveLength(1)
+      // Le bouton de la séance y mène déjà : aucune ligne « Lecture en cours », ni sous la séance ni en bas de page.
+      expect(screen.queryByText("Lecture en cours")).not.toBeInTheDocument()
     })
   })
 
@@ -626,11 +626,19 @@ describe("AccueilEleve", () => {
       resume: [
         { subject_id: 1, subject_code: "MATHS", subject_label: "Mathématiques", total: 10, maitrises: 3, en_revision: 0, en_cours: 0, a_decouvrir: 7, sans_contenu: 0, poids_total: 20, poids_maitrise: 7 },
         { subject_id: 2, subject_code: "ANG", subject_label: "Anglais", total: 8, maitrises: 0, en_revision: 0, en_cours: 0, a_decouvrir: 8, sans_contenu: 0, poids_total: 8, poids_maitrise: 0 },
+        { subject_id: 3, subject_code: "CHIMIE", subject_label: "Chimie", total: 9, maitrises: 0, en_revision: 4, en_cours: 1, a_decouvrir: 4, sans_contenu: 0, poids_total: 9, poids_maitrise: 0 },
       ],
     }))
     afficher()
-    expect(await screen.findByText(/Savoirs maîtrisés : 6. Prochain palier : 10./)).toBeInTheDocument()
+    // L'effort d'abord (3 maîtrisés + 5 en route), la maîtrise juste après, sans rien cacher.
+    expect(await screen.findByText(/Thèmes déjà travaillés : 8\. Maîtrisés : 6 ; prochain palier : 10\./)).toBeInTheDocument()
     expect(screen.queryByText(/de ce qui tombe vraiment/)).not.toBeInTheDocument()
+    // Une matière travaillée sans thème maîtrisé : ce qui est en route, jamais « 0 % » ni « 0/9 maîtrisés ».
+    const chimie = screen.getByRole("link", { name: /Chimie/ })
+    expect(chimie).toHaveTextContent("5travaillés")
+    expect(chimie).toHaveTextContent("sur 9 thèmes · 4 en révision")
+    expect(chimie).not.toHaveTextContent("0 %")
+    expect(chimie).not.toHaveTextContent("maîtrisés")
     // Une matière pas encore ouverte : « À découvrir », jamais « 0 % ».
     const anglais = screen.getByRole("link", { name: /Anglais/ })
     expect(anglais).toHaveTextContent("À découvrir")
@@ -826,5 +834,59 @@ describe("AccueilEleve : une seule réponse pour tout l'écran (audit du 2026-11
       afficher()
       expect(await screen.findByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
     })
+  })
+})
+
+describe("AccueilEleve : lot 2 de l'audit du 2026-11-16", () => {
+  it("les réglages de la séance sont repliés sous un seul lien", async () => {
+    getAccueil.mockResolvedValue(accueil())
+    afficher()
+
+    const regler = await screen.findByRole("button", { name: /Régler ma séance/ })
+    expect(regler).toHaveAttribute("aria-expanded", "false")
+    expect(screen.queryByText("Combien de temps as-tu ?")).not.toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Propose-moi autre chose" })).not.toBeInTheDocument()
+    // Le bouton principal et le quiz express, eux, restent à l'écran.
+    expect(screen.getByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Quiz express/ })).toBeInTheDocument()
+
+    await userEvent.click(regler)
+    expect(regler).toHaveAttribute("aria-expanded", "true")
+    expect(screen.getByText("Combien de temps as-tu ?")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "10 min" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Propose-moi autre chose" })).toBeInTheDocument()
+  })
+
+  it("« À continuer » réunit les reprises : trois lignes, dans l'ordre de ce qui presse, le reste à la demande", async () => {
+    getAccueil.mockResolvedValue(accueil({
+      erreurs_total: 5,
+      revisions: [
+        { id: 1, theme: "probabilités", theme_id: 5, subject_id: 1, subject_label: "Mathématiques", cursus: 4, jours_retard: 2 },
+        { id: 2, theme: "suites", theme_id: 6, subject_id: 1, subject_label: "Mathématiques", cursus: 4, jours_retard: 0 },
+      ],
+    }))
+    afficher()
+
+    const bloc = await screen.findByRole("region", { name: "À continuer" })
+    const liens = () => Array.from(bloc.querySelectorAll("li")).map((li) => li.textContent ?? "")
+    // La lecture ouverte passe avant les thèmes à reprendre ; les erreurs attendent derrière le bouton.
+    expect(liens()).toHaveLength(3)
+    expect(liens()[0]).toContain("BAC D Maths 2024")
+    expect(liens()[1]).toContain("Probabilités")
+    expect(liens()[1]).toContain("à revoir depuis 2 j")
+    expect(liens()[2]).toContain("Suites")
+    expect(bloc).not.toHaveTextContent("5 erreurs à corriger")
+
+    await userEvent.click(screen.getByRole("button", { name: "Voir 1 de plus" }))
+    expect(liens()).toHaveLength(4)
+    expect(liens()[3]).toContain("5 erreurs à corriger")
+    expect(screen.getByRole("button", { name: "Réduire" })).toBeInTheDocument()
+  })
+
+  it("« À continuer » ne s'affiche pas quand il n'y a rien à reprendre", async () => {
+    getAccueil.mockResolvedValue(accueil({ revisions: [], lecture: null }))
+    afficher()
+    await screen.findByRole("link", { name: /Commencer :/ })
+    expect(screen.queryByRole("region", { name: "À continuer" })).not.toBeInTheDocument()
   })
 })

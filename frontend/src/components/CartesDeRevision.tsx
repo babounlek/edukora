@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
-import { Layers } from "lucide-react"
+import { ArrowRight, Layers } from "lucide-react"
 
 import { getCartesCours, getCartesDues, noterCarte } from "@/api/endpoints"
 import type { CarteRevision } from "@/api/types"
@@ -78,6 +78,34 @@ export function CartesDuCours({ slug }: { slug: string }) {
  * Sur l'accueil : les cartes dont l'échéance est arrivée, toutes matières. Une ligne, un geste pour les ouvrir ; rien tant
  * qu'aucune carte n'est due (une élève qui n'a jamais révisé de carte ne voit pas cette ligne : elle les découvre en fin de cours).
  */
+/** Les cartes dues aujourd'hui : même clé de cache que l'accueil, qui la remplit (voir AccueilEleve). */
+export function useCartesDues() {
+  return useQuery({ queryKey: CLE_DUES, queryFn: ({ signal }) => getCartesDues(signal) }).data
+}
+
+/**
+ * Les cartes dues, en une ligne du bloc « À continuer » de l'accueil (voir AccueilEleve) : le nombre, et un lien vers
+ * « Mes cartes », où le paquet s'ouvre. La ligne autonome ci-dessous ouvrait le paquet sur place ; dans un bloc de
+ * trois lignes, un paquet de cartes déplié au milieu repoussait tout le reste.
+ */
+export function RangeeCartes({ total }: { total: number }) {
+  useI18n()
+  if (total <= 0) return null
+  return (
+    <Link to="/cartes" className="group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-muted/40">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+        <Layers className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("cartes.titre")}</span>
+        <span className="line-clamp-2 text-sm font-medium">{tn("cartes.dues", total)}</span>
+      </span>
+      <span className="shrink-0 text-sm font-medium text-primary">{t("cartes.reviser")}</span>
+      <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
+  )
+}
+
 export function LigneCartes({ integre = false }: { integre?: boolean }) {
   useI18n()
   const [paquet, setPaquet] = useState<CarteRevision[] | null>(null)

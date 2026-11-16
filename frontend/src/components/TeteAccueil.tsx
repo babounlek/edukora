@@ -234,7 +234,10 @@ function CursusPreparePuce({ cursus, clair = false }: { cursus: Cursus; clair?: 
   const changerProfil = useChangerProfilActif()
 
   if (cursusAbonnes.length < 2 || user?.session_restreinte) {
-    return <> · {formatCursus(cursus)}</>
+    // Masqué à partir de `md` : l'en-tête y affiche déjà la pastille « BEPC · J-196 », et l'examen était dit trois
+    // fois dans le premier écran (audit de l'accueil abonné, 2026-11-16). Sur téléphone l'en-tête ne la montre pas,
+    // il reste donc ici. Avec deux abonnements, le sélecteur ci-dessous reste partout : c'est une commande.
+    return <span className="md:hidden"> · {formatCursus(cursus)}</span>
   }
 
   return (

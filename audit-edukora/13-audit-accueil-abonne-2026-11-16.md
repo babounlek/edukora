@@ -145,3 +145,40 @@ Tests : 1 614 tests frontend ; backend, 2 333 tests (quiz, inedit, synchro, cata
 
 ### Déploiement
 Aucune migration. Rebuild du backend et de caddy. Le cache s'écrit dans le dossier temporaire du conteneur (`PARCOURS_CACHE_DOSSIER` pour le déplacer) et se perd à chaque reconstruction, sans conséquence.
+
+## H. Lot 2 codé (2026-11-16, en local, non committé, non déployé)
+Décision de l'utilisateur du 2026-11-16 : coder le lot 2. Frontend seul : aucun changement côté serveur.
+
+| Mesure, même compte | À l'audit | Après le lot 2 |
+|---------------------|-----------|----------------|
+| Blocs de la page | 10 | 6 |
+| Carte de séance, mobile 375 px | 1 057 px | 925 px (1 109 px réglages ouverts) |
+| Carte de séance, bureau 1 280 px | 702 px | 624 px : elle tient entière dans le premier écran |
+| Reprises sous la séance, mobile | 5 blocs, 694 px | 1 bloc, 420 px |
+| Page entière, mobile | 3 745 px (4,6 écrans) | 3 397 px (4,2 écrans), dont 2 596 px de contenu (3,2 écrans) |
+| Page entière, bureau | 2 783 px | 2 475 px |
+| Zéros dans « Où j'en suis » | « 1 », « aujourd'hui 0 % », « 0 % » deux fois, « 0/111 maîtrisés » | « Thèmes déjà travaillés : 41 », « 31 travaillés », « 1 travaillé », « aujourd'hui » |
+
+| ID | Ce qui est en place | Où |
+|----|---------------------|----|
+| R9 | « Régler ma séance » : la durée, « Propose-moi autre chose » et la matière de la semaine sont repliés sous un seul lien en bas de la carte, fermé au départ. Une matière de la semaine déjà choisie reste visible, parce qu'elle explique le sujet de la séance. La séance verrouillée d'un non-abonné et la séance faite ne changent pas. | `SeanceDuJour.tsx` (`ReglagesSeance`) |
+| R10 | « À continuer » : un seul bloc sous la séance, trois lignes au plus, le reste derrière « Voir N de plus ». Ordre : copie entamée, copie à finir de noter, lecture ouverte ; défi de la semaine non relevé ; prochaine inédite ; thèmes à reprendre, erreurs, cartes dues ; défi déjà relevé. L'épreuve au chrono lancé et le quiz commencé restent au-dessus de la séance. « Depuis la dernière fois » ne garde que ce qui a bougé. | `AccueilEleve.tsx` (`AContinuer`), `DefiDeLaSemaine.tsx`, `MesErreurs.tsx`, `CartesDeRevision.tsx` |
+| R11 | Tant que la maîtrise est sous le seuil de début, la phrase et l'anneau disent les thèmes travaillés, puis les maîtrisés et le prochain palier. Une matière travaillée sans thème maîtrisé affiche « N travaillés, sur E thèmes » au lieu de « 0 % » et « 0/E maîtrisés ». La barre de trajectoire dit « aujourd'hui » sans « 0 % ». | `OuJenSuis.tsx` |
+| R12 | Avec un seul abonnement, l'examen n'est plus redit à côté de « Bonjour » à partir de la largeur où l'en-tête l'affiche. | `TeteAccueil.tsx` (`CursusPreparePuce`) |
+
+Tests : 1 618 tests frontend, dont 4 nouveaux (réglages repliés puis ouverts, ordre et limite des trois lignes, bloc absent sans rien à reprendre, défi en rangée) et 2 mis à jour.
+
+### Écarts par rapport à la recommandation
+- **R9 : 925 px sur mobile, pas « environ 600 ».** L'estimation était trop optimiste : les trois réglages pesaient environ 140 px, pas 450. Le reste de la carte est fait du titre, de la phrase du coach, des pastilles, des deux boutons, de la ligne du jour et du parcours, que la recommandation gardait visibles. Descendre plus bas demande de replier aussi la ligne du jour ou le parcours : c'est une autre décision.
+- **R10 : page de 4,2 écrans sur mobile, pas « environ 3 »** (3,2 écrans hors pied de page).
+- **R12 : non vu à l'écran.** Le compte de test a deux abonnements, donc le sélecteur d'examen, qui reste affiché partout. Le cas à un seul abonnement n'est couvert que par la lecture du code.
+
+### Décisions prises en codant, à valider
+- **Cartes dues : la ligne mène à « Mes cartes »** au lieu d'ouvrir le paquet sur place. Un paquet déplié au milieu d'un bloc de trois lignes repoussait tout le reste. Un toucher de plus.
+- **« Toutes les minis » et « Les 55 » ne sont plus sur l'accueil.** La ligne du défi et celle de l'inédite mènent à leur fiche ; les listes restent dans « Réviser ».
+- **La prochaine épreuve inédite est remontée** juste après le défi de la semaine (validé par l'utilisateur le 2026-11-16) : c'est le contenu que l'abonné paie, il reste visible sans ouvrir « Voir N de plus ». Elle ne passe derrière que si trois choses sont déjà commencées ou à échéance.
+- **Quand la séance du jour est la lecture en cours, cette lecture n'apparaît plus ailleurs sur la page.** Elle était redite en bas, dans « Depuis la dernière fois ».
+- **L'anneau du début affiche les thèmes travaillés** (41) et non plus les maîtrisés (1), pour porter le même nombre que le début de la phrase.
+
+### Déploiement
+Rebuild de caddy seul.

@@ -1,14 +1,14 @@
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, ClipboardCheck, Clock, Crown, Play } from "lucide-react"
+import { ArrowRight, BookOpen, ChevronDown, ClipboardCheck, Clock, Crown, ListChecks, Play, RotateCcw } from "lucide-react"
 
 import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
 import type { Accueil, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
-import { CLE_DUES, LigneCartes } from "@/components/CartesDeRevision"
-import { DefiDeLaSemaine } from "@/components/DefiDeLaSemaine"
+import { CLE_DUES, RangeeCartes, useCartesDues } from "@/components/CartesDeRevision"
+import { DefiDeLaSemaine, useDefiSemaine } from "@/components/DefiDeLaSemaine"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
@@ -23,7 +23,7 @@ import { formatDuration } from "@/lib/duration"
 import { maintenantServeur } from "@/lib/horlogeServeur"
 import { cleQuizEnCours, FRAICHEUR_ACCUEIL_MS } from "@/lib/quizEnCours"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
-import { t, tn, useI18n } from "@/lib/i18n"
+import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { useSeo } from "@/lib/seo"
 
 /**
@@ -185,82 +185,219 @@ export function AccueilEleve({ country }: { country: string }) {
       <ReprendreQuiz enveloppe fraicheurMs={FRAICHEUR_ACCUEIL_MS} />
       {seanceEnAttente ? <SqueletteTete /> : <TeteAccueil accueil={data} country={country} />}
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
-          trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
-      {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
-      {lectureAReprendre && <LigneLecture lecture={lectureAReprendre} />}
-      {!enCours && aNoter && <LigneNotation tentative={aNoter} />}
-      {/* Les questions ratées et pas encore réussies : un geste pour en refaire un paquet (voir quiz.erreurs). */}
-      {cursusAccueil != null && <LigneErreurs total={data.erreurs_total ?? 0} cursusId={cursusAccueil} />}
+          trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). Tout ce qui
+          se reprend ou se fait en plus de la séance tient maintenant dans UN bloc (voir AContinuer). */}
+      <AContinuer
+        accueil={data}
+        country={country}
+        cursusAccueil={cursusAccueil}
+        inedites={inedites}
+        enCours={enCours && !chronoEnCours ? enCours : undefined}
+        aNoter={!enCours ? aNoter : undefined}
+        lecture={lectureAReprendre}
+      />
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
-      <LigneCartes />
-      <DefiDeLaSemaine country={country} cursusId={cursusAccueil} />
       {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
           première séance. */}
       {!data.premiers_pas && <InviteRappels />}
-      <DepuisLaDerniereFois
-        depuis={data.depuis}
-        revisions={data.revisions}
-        lecture={lectureAReprendre ? null : data.lecture}
-      />
+      {/* Ce qui a bougé depuis la dernière visite, et rien d'autre : les thèmes à reprendre et la lecture ouverte
+          sont dans « À continuer », plus haut. */}
+      <DepuisLaDerniereFois depuis={data.depuis} revisions={[]} lecture={null} />
       <OuJenSuis accueil={data} cursusId={cursusId} country={country} />
-      <LigneInedites accueil={data} country={country} inedites={inedites} cursusAccueil={cursusAccueil} />
     </div>
   )
 }
 
-/** Une copie rendue dont la note n'est pas complète : l'élève se note lui-même, un rappel finit le travail. */
-function LigneNotation({ tentative }: { tentative: TentativeInediteListItem }) {
+// Nombre de lignes du bloc « À continuer » montrées d'emblée ; le reste est derrière « Voir N de plus ».
+const LIGNES_A_CONTINUER = 3
+
+const CADRE_RANGEE = "group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-muted/40"
+
+/**
+ * « À continuer » : tout ce qui se reprend ou se fait en plus de la séance du jour, dans UN bloc.
+ *
+ * Avant, six blocs se suivaient sous la séance, chacun avec son cadre et son bouton, sans ordre entre eux : lecture en
+ * cours, mes erreurs, cartes, défi de la semaine, thèmes à reprendre, prochaine inédite. Sur un téléphone ils
+ * occupaient près d'un écran et se disputaient l'attention avec le bouton « Commencer » (audit de l'accueil abonné,
+ * 2026-11-16 : dix blocs, 4,6 écrans). Ici trois lignes au plus sont montrées, dans l'ordre de ce qui presse :
+ *
+ *   1. ce qui est commencé et pas fini (copie entamée, copie à finir de noter, lecture ouverte) ;
+ *   2. ce qui a une échéance (le défi de la semaine, tant qu'il n'est pas relevé) ;
+ *   3. ce qui est neuf (la prochaine épreuve inédite) : c'est le contenu que l'abonné paie pour recevoir, il doit
+ *      le voir sans ouvrir « Voir N de plus » (décision de l'utilisateur, 2026-11-16) ;
+ *   4. ce qui s'entretient (thèmes à reprendre, erreurs à refaire, cartes dues) ;
+ *   5. le défi déjà relevé, qui n'appelle plus de geste.
+ *
+ * Le reste est derrière « Voir N de plus », sur place. Une épreuve au chrono lancé et un quiz commencé ne sont pas
+ * ici : ils passent AVANT la séance (voir AccueilEleve), parce qu'ils ne peuvent pas attendre.
+ */
+function AContinuer({
+  accueil, country, cursusAccueil, inedites, enCours, aNoter, lecture,
+}: {
+  accueil: Accueil
+  country: string
+  cursusAccueil: ReturnType<typeof useCursusAccueil>
+  inedites: ReturnType<typeof useInedites>["data"]
+  enCours?: TentativeInediteListItem
+  aNoter?: TentativeInediteListItem
+  lecture: Accueil["lecture"]
+}) {
+  const [toutVoir, setToutVoir] = useState(false)
+  // Mêmes clés de cache que l'accueil vient de remplir (voir deposerReprises) : aucune requête de plus.
+  const defi = useDefiSemaine(country, cursusAccueil)
+  const cartes = useCartesDues()
+
+  const lignes: { cle: string; rendu: ReactNode }[] = []
+  if (enCours) lignes.push({ cle: "copie", rendu: <RangeeReprise tentative={enCours} /> })
+  if (aNoter) lignes.push({ cle: "notation", rendu: <RangeeNotation tentative={aNoter} /> })
+  if (lecture) lignes.push({ cle: "lecture", rendu: <RangeeLecture lecture={lecture} /> })
+  const rangeeDefi = defi
+    ? { cle: "defi", rendu: <DefiDeLaSemaine country={country} cursusId={cursusAccueil} rangee /> }
+    : null
+  if (rangeeDefi && !defi?.releve) lignes.push(rangeeDefi)
+  if (inedites && inedites.count > 0) {
+    lignes.push({
+      cle: "inedites",
+      rendu: <RangeeInedites country={country} inedites={inedites} cursusAccueil={cursusAccueil} />,
+    })
+  }
+  for (const revision of accueil.revisions) {
+    lignes.push({ cle: `revision-${revision.id}`, rendu: <RangeeRevision revision={revision} /> })
+  }
+  if (cursusAccueil != null && (accueil.erreurs_total ?? 0) > 0) {
+    lignes.push({
+      cle: "erreurs",
+      rendu: <LigneErreurs total={accueil.erreurs_total ?? 0} cursusId={cursusAccueil} rangee />,
+    })
+  }
+  if (cartes && cartes.total > 0) lignes.push({ cle: "cartes", rendu: <RangeeCartes total={cartes.total} /> })
+  if (rangeeDefi && defi?.releve) lignes.push(rangeeDefi)
+
+  if (lignes.length === 0) return null
+  const enPlus = lignes.length - LIGNES_A_CONTINUER
+  const montrees = toutVoir ? lignes : lignes.slice(0, LIGNES_A_CONTINUER)
+
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("abonne.section_notation")}>
-      <Link
-        to={`/inedit/tentative/${tentative.id}`}
-        className="group flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold"
-      >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-          <ClipboardCheck className="size-4" />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {tn("abonne.a_noter", tentative.questions_a_noter ?? 0)}
-          </span>
-          <span className="block truncate text-sm font-medium">{tentative.epreuve_titre}</span>
-        </span>
-        <span className="shrink-0 text-sm font-medium text-gold-text">{t("abonne.finir_notation")}</span>
-        <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
-      </Link>
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-labelledby="a-continuer-titre">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
+        <h2
+          id="a-continuer-titre"
+          className="flex items-center gap-2 px-5 pt-4 pb-1 text-xs font-semibold uppercase tracking-[0.18em] text-primary"
+        >
+          <ListChecks className="size-3.5" aria-hidden="true" />
+          {t("continuer.titre")}
+        </h2>
+        <ul className="divide-y divide-border/60">
+          {montrees.map((ligne) => (
+            <li key={ligne.cle}>{ligne.rendu}</li>
+          ))}
+        </ul>
+        {enPlus > 0 && (
+          <button
+            type="button"
+            aria-expanded={toutVoir}
+            onClick={() => setToutVoir((ouvert) => !ouvert)}
+            className="flex min-h-11 w-full items-center justify-center gap-1.5 border-t border-border/60 px-5 text-sm font-medium text-primary transition-colors hover:bg-muted/40"
+          >
+            {toutVoir ? t("continuer.moins") : tn("continuer.plus", enPlus)}
+            <ChevronDown className={toutVoir ? "size-4 rotate-180 transition-transform" : "size-4 transition-transform"} aria-hidden="true" />
+          </button>
+        )}
+      </div>
     </section>
+  )
+}
+
+/** Une copie rendue dont la note n'est pas complète : l'élève se note lui-même, un rappel finit le travail. */
+function RangeeNotation({ tentative }: { tentative: TentativeInediteListItem }) {
+  return (
+    <Link to={`/inedit/tentative/${tentative.id}`} className={CADRE_RANGEE}>
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+        <ClipboardCheck className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {tn("abonne.a_noter", tentative.questions_a_noter ?? 0)}
+        </span>
+        <span className="line-clamp-2 text-sm font-medium">{tentative.epreuve_titre}</span>
+      </span>
+      <span className="shrink-0 text-sm font-medium text-gold-text">{t("abonne.finir_notation")}</span>
+      <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
   )
 }
 
 /** La lecture ouverte cette semaine (cours ou épreuve), à reprendre là où l'élève s'est arrêté. */
-function LigneLecture({ lecture }: { lecture: NonNullable<Accueil["lecture"]> }) {
+function RangeeLecture({ lecture }: { lecture: NonNullable<Accueil["lecture"]> }) {
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("depuis.lecture_en_cours")}>
-      <Link
-        to={lecture.type === "cours" ? coursReaderPath(lecture.slug) : epreuveReaderPath(lecture.country, lecture.slug)}
-        className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3.5 transition-colors hover:border-primary/40"
-      >
-        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-          <BookOpen className="size-4" />
+    <Link
+      to={lecture.type === "cours" ? coursReaderPath(lecture.slug) : epreuveReaderPath(lecture.country, lecture.slug)}
+      className={CADRE_RANGEE}
+    >
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <BookOpen className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {t("depuis.lecture_en_cours")}
         </span>
-        <span className="min-w-0 flex-1">
-          <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            {t("depuis.lecture_en_cours")}
-          </span>
-          <span className="block truncate text-sm font-medium">{lecture.title}</span>
+        {/* Deux lignes plutôt qu'une coupe : à 375 px, « Allemand BEPC 20… » perdait l'année. */}
+        <span className="line-clamp-2 text-sm font-medium">{lecture.title}</span>
+      </span>
+      <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
+      <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
+  )
+}
+
+/** Une épreuve inédite entamée, sans chrono lancé : à reprendre quand l'élève veut. */
+function RangeeReprise({ tentative }: { tentative: TentativeInediteListItem }) {
+  return (
+    <Link to={`/inedit/tentative/${tentative.id}`} className={CADRE_RANGEE}>
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+        <Play className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {t("abonne.inedite_en_cours")}
         </span>
-        <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
-        <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />
-      </Link>
-    </section>
+        <span className="line-clamp-2 text-sm font-medium">{tentative.epreuve_titre}</span>
+      </span>
+      <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
+      <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
+  )
+}
+
+/** Un thème dont la révision est due (répétition espacée) : un quiz sur ce thème, en un geste. */
+function RangeeRevision({ revision }: { revision: Accueil["revisions"][number] }) {
+  const theme = revision.theme.charAt(0).toLocaleUpperCase(langueCourante()) + revision.theme.slice(1)
+  return (
+    <Link to={`/quiz?cursus=${revision.cursus}&theme=${revision.theme_id}`} className={CADRE_RANGEE}>
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+        <RotateCcw className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {t("depuis.a_reprendre")} · {revision.subject_label}
+        </span>
+        <span className="line-clamp-2 text-sm font-medium">{theme}</span>
+        {/* Un retard se dit, il ne se reproche pas : gris, jamais rouge. */}
+        {revision.jours_retard > 0 && (
+          <span className="block text-xs text-muted-foreground">{t("depuis.jours_retard", { n: revision.jours_retard })}</span>
+        )}
+      </span>
+      <span className="shrink-0 text-sm font-medium text-primary">{t("continuer.reviser")}</span>
+      <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
   )
 }
 
 /**
- * « Reprendre » : l'épreuve inédite entamée passe avant toute proposition d'en commencer une
- * autre. Avec un chrono lancé, on dit ce qu'il reste - c'est l'urgence qui compte ici.
+ * « Reprendre » : l'épreuve inédite entamée AU CHRONO LANCÉ, seule ligne qui passe avant la séance du jour (voir
+ * AccueilEleve) : la copie est rendue à zéro à l'échéance, on dit donc ce qu'il reste.
  */
 function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
   const reste = tentative.echeance
@@ -289,49 +426,37 @@ function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
 }
 
 /**
- * Le seul bloc "produit" conservé, réduit à une ligne : une inédite n'est pas un
- * argumentaire, c'est du contenu neuf que l'abonné a payé pour recevoir - sans ça, il
- * ne sait pas qu'il est arrivé.
+ * La prochaine épreuve inédite à FAIRE (accessible, jamais rendue), pas toujours la plus récente : une ligne qui
+ * remontait l'épreuve déjà passée n'invitait à rien. Elle mène droit à sa fiche ; quand tout est fait, à la liste.
+ * Une inédite n'est pas un argumentaire, c'est du contenu neuf que l'abonné a payé pour recevoir - sans cette ligne,
+ * il ne sait pas qu'il est arrivé.
  */
-function LigneInedites({
+function RangeeInedites({
   country, inedites, cursusAccueil,
 }: {
-  accueil: Accueil
   country: string
-  inedites: ReturnType<typeof useInedites>["data"]
+  inedites: NonNullable<ReturnType<typeof useInedites>["data"]>
   cursusAccueil: ReturnType<typeof useCursusAccueil>
 }) {
-  if (!inedites || inedites.count === 0) return null
   const liste = `${epreuvesListPath(country)}?${requeteInedites(cursusAccueil)}`
-  // La prochaine à FAIRE (accessible, jamais rendue), pas toujours la plus récente : une
-  // ligne qui remontait l'épreuve déjà passée n'invitait à rien. Elle mène droit à sa fiche.
   const suivante = inedites.results.find((e) => e.has_access && !e.is_read)
   const fiche = suivante ? epreuveInediteDetailPath(country, suivante.slug ?? suivante.id) : null
   const intitule = suivante?.title ?? inedites.results[0]?.title ?? t("abonne.inedites_generique")
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("abonne.section_inedites")}>
-      <div className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
-        <Link to={fiche ?? liste} className="group flex min-w-0 flex-1 items-center gap-3">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
-            <Crown className="size-4" />
-          </span>
-          <span className="min-w-0 flex-1">
-            <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              {fiche ? t("abonne.prochaine_inedite") : tn("abonne.inedites_nombre", inedites.count)}
-            </span>
-            {/* Deux lignes plutôt qu'une coupe : à 375 px, « Mini-inédite Franç… » perdait la matière, le mot utile. */}
-            <span className="line-clamp-2 text-sm font-medium">{intitule}</span>
-          </span>
-          <Clock className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-        </Link>
-        {fiche && (
-          <Link to={liste} className="flex min-h-11 shrink-0 items-center text-xs font-medium text-gold-text underline-offset-2 hover:underline">
-            {t("abonne.inedites_toutes", { n: inedites.count })}
-          </Link>
-        )}
-      </div>
-    </section>
+    <Link to={fiche ?? liste} className={CADRE_RANGEE}>
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
+        <Crown className="size-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          {fiche ? t("abonne.prochaine_inedite") : tn("abonne.inedites_nombre", inedites.count)}
+        </span>
+        {/* Deux lignes plutôt qu'une coupe : à 375 px, « Mini-inédite Franç… » perdait la matière, le mot utile. */}
+        <span className="line-clamp-2 text-sm font-medium">{intitule}</span>
+      </span>
+      <Clock className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+      <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+    </Link>
   )
 }
 

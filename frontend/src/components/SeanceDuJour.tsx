@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import { useEffect, useId, useRef, useState, type ReactNode } from "react"
 import { Link } from "react-router-dom"
 import { usePublierContextePage } from "@/lib/guides/contextePage"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
   ArrowRight, BookOpen, Check, ChevronDown, Clock, Lock, PenLine, RotateCcw,
-  Shuffle, Sparkles, Target, Zap, type LucideIcon,
+  Shuffle, SlidersHorizontal, Sparkles, Target, Zap, type LucideIcon,
 } from "lucide-react"
 
 import {
@@ -202,6 +202,37 @@ export function SeanceCorps({
   // Pas verrouillée : le bouton était grisé sans un mot (test élève 2026-11-07, compte libre). Ce qu'on ne peut
   // pas faire ne se montre pas ; ce que l'abonnement ouvre se dit une fois, près du bouton « Débloquer ».
   const afficherSecours = data.etat === "plan_pret" && !data.seance?.verrouillee
+  // Séance à faire et ouverte : la durée, « autre chose » et la matière de la semaine se replient sous un seul
+  // lien (voir ReglagesSeance). La matière de la semaine, une fois choisie, reste dehors : elle explique pourquoi
+  // la séance porte sur cette matière. Séance verrouillée ou déjà faite : rien ne change.
+  const replier = afficherSecours
+  const objectifChoisi = Boolean(data.objectif_matiere)
+  const secours = afficherSecours && (
+    <SortieDeSecours
+      country={country}
+      onAutreChose={() => {
+        // L'évènement part du refus lui-même, jamais du succès du
+        // remplacement : c'est le refus qui est le contre-indicateur à
+        // surveiller (au-delà d'environ 30 % des séances affichées, la
+        // sélection n'est pas crédible).
+        trackEvent("plan_theme_ignore", { origine: data.seance?.origine })
+        autreChose.mutate()
+      }}
+      remplacementEnCours={autreChose.isPending}
+      plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
+      verrouillee={Boolean(data.seance?.verrouillee)}
+    />
+  )
+  const controleObjectif = afficherObjectif && (
+    <ObjectifMatiereControle
+      plan={data}
+      enCours={objectif.isPending}
+      onChoisir={(subject) => {
+        trackEvent("objectif_matiere", { action: subject === null ? "retire" : "definit" })
+        objectif.mutate(subject)
+      }}
+    />
+  )
 
   return (
     <>
@@ -228,39 +259,75 @@ export function SeanceCorps({
           secondaire={secondaire}
           phraseDuCoach={phraseDuCoach}
           apresDuree={apresDuree}
+          dureeDansLesReglages={replier}
         />
       )}
-      {(afficherSecours || afficherObjectif) && (
-        <div className="mt-4 flex flex-col gap-3 border-t border-border/60 pt-3">
-          {afficherSecours && (
-            <SortieDeSecours
-              country={country}
-              onAutreChose={() => {
-                // L'évènement part du refus lui-même, jamais du succès du
-                // remplacement : c'est le refus qui est le contre-indicateur à
-                // surveiller (au-delà d'environ 30 % des séances affichées, la
-                // sélection n'est pas crédible).
-                trackEvent("plan_theme_ignore", { origine: data.seance?.origine })
-                autreChose.mutate()
-              }}
-              remplacementEnCours={autreChose.isPending}
-              plusRienAProposer={autreChose.isSuccess && autreChose.data?.etat === "rien_a_proposer"}
-              verrouillee={Boolean(data.seance?.verrouillee)}
-            />
+      {replier ? (
+        <>
+          {objectifChoisi && controleObjectif && (
+            <div className="mt-4 border-t border-border/60 pt-3">{controleObjectif}</div>
           )}
-          {afficherObjectif && (
-            <ObjectifMatiereControle
-              plan={data}
-              enCours={objectif.isPending}
-              onChoisir={(subject) => {
-                trackEvent("objectif_matiere", { action: subject === null ? "retire" : "definit" })
-                objectif.mutate(subject)
-              }}
-            />
-          )}
-        </div>
+          <ReglagesSeance sansFilet={objectifChoisi && Boolean(controleObjectif)}>
+            {data.seance && (
+              <ChoixDuree
+                seance={data.seance as Seance}
+                onChoisir={(minutes) => duree.mutate(minutes)}
+                enCours={duree.isPending}
+              />
+            )}
+            {secours}
+            {!objectifChoisi && controleObjectif}
+          </ReglagesSeance>
+        </>
+      ) : (
+        (afficherSecours || afficherObjectif) && (
+          <div className="mt-4 flex flex-col gap-3 border-t border-border/60 pt-3">
+            {secours}
+            {controleObjectif}
+          </div>
+        )
       )}
     </>
+  )
+}
+
+/**
+ * « Régler ma séance » : la durée, « propose-moi autre chose » et la matière de la semaine, repliés sous un seul lien
+ * en bas de la carte.
+ *
+ * Ces trois réglages occupaient environ 210 px en permanence sous le bouton, dans une carte qui mesurait 1 057 px sur
+ * un téléphone (audit de l'accueil abonné, 2026-11-16 : douze commandes dans la carte). Ils servent à qui veut
+ * changer quelque chose, pas à chaque ouverture : le bouton principal, le quiz express, la fréquence et la ligne du
+ * jour restent seuls visibles. Fermé au départ, et il reste ouvert tant que l'élève ne le referme pas (changer de
+ * durée ou de thème ne le replie pas).
+ */
+function ReglagesSeance({ children, sansFilet = false }: { children: ReactNode; sansFilet?: boolean }) {
+  const [ouvert, setOuvert] = useState(false)
+  const id = useId()
+  return (
+    <div className={cn("mt-4", !sansFilet && "border-t border-border/60 pt-1")}>
+      <button
+        type="button"
+        aria-expanded={ouvert}
+        aria-controls={id}
+        onClick={() => setOuvert((o) => !o)}
+        className="flex min-h-11 w-full flex-wrap items-center gap-x-2 gap-y-0.5 py-1.5 text-left text-sm font-medium transition-colors hover:text-primary"
+      >
+        <SlidersHorizontal className="size-4 shrink-0 text-primary" aria-hidden="true" />
+        {t("seance.regler")}
+        <span className="text-xs font-normal text-muted-foreground">{t("seance.regler_detail")}</span>
+        <ChevronDown
+          className={cn("ml-auto size-4 shrink-0 text-muted-foreground transition-transform", ouvert && "rotate-180")}
+          aria-hidden="true"
+        />
+      </button>
+      {ouvert && (
+        // Le choix de durée porte sa propre marge haute (mt-5), pensée pour sa place d'avant, sous le bouton.
+        <div id={id} className="flex flex-col gap-3 pb-1 [&>*:first-child]:mt-1">
+          {children}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -277,7 +344,7 @@ const XP_MAX_PAR_QUESTION = 10
 
 function SeanceAFaire({
   plan, country, onOuvrirEtape, onTerminer, terminaisonEnCours, onChoisirDuree, ajustementEnCours, secondaire,
-  phraseDuCoach, apresDuree,
+  phraseDuCoach, apresDuree, dureeDansLesReglages = false,
 }: {
   plan: PlanDuJour
   country: string
@@ -289,6 +356,8 @@ function SeanceAFaire({
   secondaire?: ReactNode
   phraseDuCoach?: string
   apresDuree?: ReactNode
+  /** Le choix de durée est rendu plus bas, replié avec les autres réglages (voir ReglagesSeance). */
+  dureeDansLesReglages?: boolean
 }) {
   const seance = plan.seance as Seance
   // Les années derrière la pastille de fréquence : la preuve est un clic, pas une ligne
@@ -538,12 +607,14 @@ function SeanceAFaire({
         {/* Le réglage de durée vient APRÈS le bouton : sur téléphone, il repoussait
             "Commencer" sous le pli, et une page dont l'action principale n'est pas
             visible n'a pas d'action principale. */}
-        <ChoixDuree
-          seance={seance}
-          onChoisir={onChoisirDuree}
-          enCours={ajustementEnCours}
-          desactive={seance.verrouillee}
-        />
+        {!dureeDansLesReglages && (
+          <ChoixDuree
+            seance={seance}
+            onChoisir={onChoisirDuree}
+            enCours={ajustementEnCours}
+            desactive={seance.verrouillee}
+          />
+        )}
         {apresDuree && <div className="mt-5 [&>div]:mb-0">{apresDuree}</div>}
         </div>
       </div>
