@@ -33,6 +33,14 @@ TEXTES = {
         FR: "Il n'y a pas de question plus difficile sur ce thème pour l'instant.",
         EN: "There are no harder questions on this topic yet.",
     },
+    "quiz.reponds_d_abord": {
+        FR: "Réponds d'abord à la question : la correction s'affiche ensuite.",
+        EN: "Answer the question first: the correction is shown afterwards.",
+    },
+    "quiz.seance_quiz_requis": {
+        FR: "Ta séance se termine par son quiz : fais-le pour la valider.",
+        EN: "Your session ends with its quiz: complete it to finish the session.",
+    },
     "quiz.deja_repondue": {
         FR: "Tu as déjà répondu à cette question.",
         EN: "You have already answered this question.",

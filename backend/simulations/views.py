@@ -115,7 +115,10 @@ def _revision_paper(simulation, bilan, exercices):
 def _complete(simulation):
     if simulation.submitted_at:
         return _resultat_payload(simulation)
-    simulation.submitted_at = timezone.now()
+    # Jamais après la fin du temps imparti : le verrouillage à l'échéance est paresseux, et une copie abandonnée
+    # puis rouverte deux jours plus tard affichait 48 h de temps utilisé (même règle que inedit.views).
+    maintenant, echeance = timezone.now(), _deadline(simulation)
+    simulation.submitted_at = echeance if echeance is not None and echeance < maintenant else maintenant
     simulation.save(update_fields=["submitted_at"])
     bilan, exercices = _bilan(simulation)
     notation.enregistrer_note(simulation, bilan)

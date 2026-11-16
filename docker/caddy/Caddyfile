@@ -1,5 +1,33 @@
+{
+    servers {
+        # Le site est derrière Cloudflare : sans cette liste, l'adresse que Caddy tient pour celle du client est
+        # celle du nœud Cloudflare, la même pour tous les élèves qui sortent par lui - et tous les plafonds par
+        # adresse (codes de connexion, comptes invités, quota de PDF, quiz d'essai) deviennent collectifs.
+        # Ces plages sont celles que Cloudflare publie (https://www.cloudflare.com/ips/) ; elles changent
+        # rarement. Une requête qui n'en vient pas (accès direct au serveur, développement local) garde
+        # l'adresse de son pair : l'en-tête CF-Connecting-IP n'est cru que venant de Cloudflare.
+        trusted_proxies static 173.245.48.0/20 103.21.244.0/22 103.22.200.0/22 103.31.4.0/22 141.101.64.0/18 108.162.192.0/18 190.93.240.0/20 188.114.96.0/20 197.234.240.0/22 198.41.128.0/17 162.158.0.0/15 104.16.0.0/13 104.24.0.0/14 172.64.0.0/13 131.0.72.0/22 2400:cb00::/32 2606:4700::/32 2803:f800::/32 2405:b500::/32 2405:8100::/32 2a06:98c0::/29 2c0f:f248::/32
+        client_ip_headers CF-Connecting-IP
+    }
+}
+
 {$SITE_DOMAIN::80} {
     encode zstd gzip
+
+    # L'adresse du client, transmise à Django dans un en-tête que Caddy ÉCRASE sur chaque requête : un client ne
+    # peut donc pas le forger (voir backend/users/ip.py, seul lecteur). X-Forwarded-For ne suffit plus : derrière
+    # un proxy de confiance, Caddy y garde ce que le client a envoyé et y ajoute l'adresse de Cloudflare.
+    request_header X-Client-IP {client_ip}
+
+    # En-têtes de sécurité, posés seulement quand la réponse ne les porte pas déjà (« ? » : Django pose les siens
+    # sur l'API et l'admin, il ne faut pas les doubler). Aucun n'était envoyé sur les pages de l'application.
+    # HSTS sans includeSubDomains ni preload : il n'engage que ce nom, et se retire en 180 jours.
+    header {
+        ?Strict-Transport-Security "max-age=15552000"
+        ?X-Content-Type-Options "nosniff"
+        ?Referrer-Policy "strict-origin-when-cross-origin"
+        ?X-Frame-Options "SAMEORIGIN"
+    }
 
     # Indexable par défaut (prod). Un environnement de recette/staging qui ne doit pas être
     # référencé définit ROBOTS_TAG="noindex, nofollow, noarchive" dans son .env (lu par ce

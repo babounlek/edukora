@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext"
 import { cheminDansLangue, langueDuChemin, t } from "@/lib/i18n"
 import { cibleApresChangementCursus } from "@/lib/pageApresChangementCursus"
 import { demanderPinProfil, PinAnnule } from "@/lib/pinPrompts"
+import { viderCacheHorsLigne } from "@/lib/pwa"
 
 /**
  * Les profils (enfants) du compte - même rôle que useCursusAbonnes
@@ -85,9 +86,13 @@ export function useChangerProfilActif() {
       }
       return activerProfilProtege(profilId, prenom ?? "ce profil", cursusId)
     },
-    onSuccess: (response, { profilId }) => {
+    onSuccess: async (response, { profilId }) => {
+      const autreProfil = !memeProfil(profilId)
       login(response.access, response.user)
-      if (!memeProfil(profilId)) {
+      if (autreProfil) {
+        // Attendu avant de recharger : `login` lance déjà ce vidage, mais un rechargement immédiat pourrait
+        // l'interrompre, et le cache de l'enfant précédent survivrait (voir AuthContext.login).
+        await viderCacheHorsLigne()
         rechargerSurAccueil()
         return
       }

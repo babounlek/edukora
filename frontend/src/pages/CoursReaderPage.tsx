@@ -88,22 +88,25 @@ export function CoursReaderPage() {
       .catch(() => setCoursFailed(true))
   }, [slug])
 
+  // Un visiteur attend la fiche du cours pour savoir s'il peut le lire ; un élève connecté n'en a pas besoin.
+  // Réduit à un booléen pour les dépendances de l'effet : avec `cours` lui-même, l'arrivée de la fiche relançait
+  // l'effet, et un élève connecté téléchargeait deux fois le contenu de chaque cours.
+  //
+  // Un visiteur anonyme peut lire un cours vitrine sans connexion (voir catalog.Cours.est_vitrine, dérivé de
+  // sa/ses épreuve(s) source(s)) - il faut d'abord savoir si c'en est un (voir l'effet ci-dessus) avant de
+  // trancher ; en cas d'échec de cette requête, on retombe sur le comportement d'origine (connexion requise)
+  // plutôt que de rester bloqué indéfiniment. Même patron que EpreuveReaderPage.
+  const ficheConnue = Boolean(cours) || coursFailed
+  const visiteurEnAttente = !isAuthenticated && !ficheConnue
+  const visiteurRefuse = !isAuthenticated && ficheConnue && !cours?.has_access
+
   useEffect(() => {
     if (isLoading) return
     if (!slug) return
-
-    if (!isAuthenticated) {
-      // Un visiteur anonyme peut lire un cours vitrine sans connexion (voir
-      // catalog.Cours.est_vitrine, dérivé de sa/ses épreuve(s) source(s)) - il faut
-      // d'abord savoir si c'en est un (voir l'effet ci-dessus) avant de trancher ; en
-      // cas d'échec de cette requête, on retombe sur le comportement d'origine
-      // (connexion requise) plutôt que de rester bloqué indéfiniment. Même patron
-      // que EpreuveReaderPage.
-      if (!cours && !coursFailed) return
-      if (!cours?.has_access) {
-        navigate("/connexion", { state: { from: coursReaderPath(slug) } })
-        return
-      }
+    if (visiteurEnAttente) return
+    if (visiteurRefuse) {
+      navigate("/connexion", { state: { from: coursReaderPath(slug) } })
+      return
     }
 
     readCours(slug)
@@ -116,7 +119,7 @@ export function CoursReaderPage() {
         }
         setError(err instanceof ApiError ? err.message : t("ed.contenu_erreur"))
       })
-  }, [slug, isLoading, isAuthenticated, navigate, cours, coursFailed])
+  }, [slug, isLoading, navigate, visiteurEnAttente, visiteurRefuse])
 
   useEffect(() => {
     // Même raison que dans EpreuveReaderPage : le contenu arrive en asynchrone, le #hash

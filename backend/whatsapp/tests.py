@@ -18,7 +18,8 @@ from django.utils import timezone
 from rest_framework.test import APIClient
 
 from catalog.models import Cursus, Examen, Subject, Tag
-from quiz.models import RevisionSchedule
+from quiz.models import OrigineSeance, RevisionSchedule, SeanceJournaliere, StatutSeance
+from subscriptions.models import Subscription
 from users.models import User
 
 from .backends import ConsoleWhatsAppBackend, MetaCloudAPIBackend, get_whatsapp_backend
@@ -32,6 +33,13 @@ from .services import (
     traiter_payload_entrant,
     utilisateurs_a_relancer,
 )
+
+
+def _abonner(user, cursus):
+    """Un rappel de révision ne part qu'à un abonné actif : la révision est verrouillée sans abonnement."""
+    return Subscription.objects.create(
+        user=user, profil=user.profils.first(), cursus=cursus, expires_at=timezone.now() + timedelta(days=30),
+    )
 
 
 class OptInServiceTests(TestCase):
@@ -96,6 +104,7 @@ class UtilisateursARelancerTests(TestCase):
     def test_includes_opted_in_users_with_something_due(self):
         user = User.objects.create_user(phone_number="677400013", password="x")
         opt_in(user)
+        _abonner(user, self.cursus)
         schedule = self._make_schedule(user, timezone.localdate())
 
         result = list(utilisateurs_a_relancer())
@@ -105,6 +114,33 @@ class UtilisateursARelancerTests(TestCase):
         self.assertEqual(got_user, user)
         self.assertEqual(schedules, [schedule])
 
+    def test_exclut_qui_n_a_pas_d_abonnement_actif(self):
+        user = User.objects.create_user(phone_number="677400014", password="x")
+        opt_in(user)
+        self._make_schedule(user, timezone.localdate())
+
+        self.assertEqual(list(utilisateurs_a_relancer()), [])
+
+    def test_exclut_qui_a_deja_termine_sa_seance_du_jour(self):
+        user = User.objects.create_user(phone_number="677400015", password="x")
+        opt_in(user)
+        _abonner(user, self.cursus)
+        self._make_schedule(user, timezone.localdate())
+        SeanceJournaliere.objects.create(
+            profil=user.profils.first(), cursus=self.cursus, date=timezone.localdate(),
+            origine=OrigineSeance.DIAGNOSTIC, ordre=1, statut=StatutSeance.TERMINEE, termine_at=timezone.now(),
+        )
+
+        self.assertEqual(list(utilisateurs_a_relancer()), [])
+
+    def test_exclut_un_compte_sans_numero(self):
+        user = User.objects.create_user(None, email="sans-numero@example.com", password="x")
+        OptIn.objects.create(user=user)
+        _abonner(user, self.cursus)
+        self._make_schedule(user, timezone.localdate())
+
+        self.assertEqual(list(utilisateurs_a_relancer()), [])
+
 
 class EnvoyerRappelsDuJourTests(TestCase):
     def setUp(self):
@@ -112,6 +148,7 @@ class EnvoyerRappelsDuJourTests(TestCase):
         self.cursus = Cursus.objects.get(country__code="CM", examen=Examen.BAC, series__code="C")
         self.user = User.objects.create_user(phone_number="677400020", password="x")
         opt_in(self.user)
+        _abonner(self.user, self.cursus)
         theme = Tag.objects.create(name="dérivation")
         RevisionSchedule.objects.create(
             profil=self.user.profils.first(), cursus=self.cursus, subject=self.subject, theme=theme,
@@ -129,6 +166,7 @@ class EnvoyerRappelsDuJourTests(TestCase):
         mock_backend.send_template.assert_called_once()
         phone_number, template_name, params = mock_backend.send_template.call_args[0]
         self.assertEqual(phone_number, self.user.phone_number)
+        self.assertEqual(mock_backend.send_template.call_args.kwargs, {"langue": "fr"})
         self.assertEqual(params[0], 1)  # nombre de notions dues
         self.assertIn("dérivation", params[1])
 
@@ -143,6 +181,7 @@ class EnvoyerRappelsDuJourTests(TestCase):
     def test_un_envoi_en_echec_est_retente_et_n_arrete_pas_les_autres(self, mock_get_backend):
         autre = User.objects.create_user(phone_number="677400021", password="x")
         opt_in(autre)
+        _abonner(autre, self.cursus)
         RevisionSchedule.objects.create(
             profil=autre.profils.first(), cursus=self.cursus, subject=self.subject,
             theme=Tag.objects.create(name="limites"), due_at=timezone.localdate(),

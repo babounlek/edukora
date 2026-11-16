@@ -4,11 +4,24 @@ from rest_framework import serializers
 
 from subscriptions.models import Campagne, Plan
 from subscriptions.serializers import PlanSerializer
+from users.ip import client_ip
 from users.models import phone_validator
 from users.phone import to_e164, to_local
 from users.profils import profil_actif
 
 from .models import ManualPayment, MobileMoneyAccount, MobileMoneyOperator
+
+# Capture du SMS de confirmation jointe à une déclaration (facultative).
+PREUVE_TAILLE_MAX = 5 * 1024 * 1024
+_JPEG = (b"\xff\xd8\xff",)
+PREUVE_SIGNATURES = {
+    "jpg": _JPEG,
+    "jpeg": _JPEG,
+    "png": (b"\x89PNG\r\n\x1a\n",),
+    "webp": (b"RIFF",),
+    "pdf": (b"%PDF-",),
+}
+PREUVE_EXTENSIONS = frozenset(PREUVE_SIGNATURES)
 
 
 class PayerPhoneField(serializers.CharField):
@@ -97,6 +110,27 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
     # Nombre de mois achetés (plan au mois) : borné par Plan.mois_max dans validate, jamais fait confiance.
     mois = serializers.IntegerField(min_value=1, required=False, default=1)
 
+    def validate_proof(self, fichier):
+        """Une capture du SMS de confirmation : une image ou un PDF, de taille raisonnable. Le champ acceptait
+        n'importe quel fichier, de n'importe quel poids, sous n'importe quel nom."""
+        if fichier is None:
+            return fichier
+        if fichier.size > PREUVE_TAILLE_MAX:
+            raise serializers.ValidationError(
+                f"Fichier trop lourd : {PREUVE_TAILLE_MAX // (1024 * 1024)} Mo au plus.",
+            )
+        extension = fichier.name.rsplit(".", 1)[-1].lower() if "." in fichier.name else ""
+        if extension not in PREUVE_EXTENSIONS:
+            raise serializers.ValidationError("Envoie une image (JPG, PNG, WebP) ou un PDF.")
+        # Le nom ne prouve rien : on lit la signature du fichier.
+        debut = fichier.read(12)
+        fichier.seek(0)
+        if not any(debut.startswith(signature) for signature in PREUVE_SIGNATURES[extension]):
+            raise serializers.ValidationError("Ce fichier n'est pas une image ni un PDF lisible.")
+        # Nom d'origine écarté du chemin de stockage : seul le type est gardé (voir _manual_payment_proof_path).
+        fichier.name = f"preuve.{extension}"
+        return fichier
+
     def validate(self, attrs):
         if not MobileMoneyAccount.objects.filter(operator=attrs["operator"], active=True).exists():
             raise serializers.ValidationError({
@@ -145,7 +179,10 @@ class ManualPaymentDeclareSerializer(serializers.Serializer):
         try:
             return ManualPayment.objects.declare(
                 user=request.user,
-                ip=request.META.get("REMOTE_ADDR"),
+                # L'adresse du client, pas celle du proxy (REMOTE_ADDR vaut l'IP du conteneur Caddy, la même
+                # pour tous : trois clients d'un revendeur en 24 h déclenchaient à tort le signal de fraude
+                # « même adresse », voir revendeurs.fraude).
+                ip=client_ip(request),
                 **validated_data,
             )
         except IntegrityError as exc:

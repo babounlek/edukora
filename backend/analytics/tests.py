@@ -4,6 +4,8 @@ analytics.views.track_event) doit rester un vocabulaire fermé (EventName), jama
 sink de texte libre arbitraire - voir la docstring d'AnalyticsEvent.
 """
 
+from unittest import mock
+
 from django.test import TestCase
 from rest_framework.test import APIClient
 
@@ -104,3 +106,43 @@ class TrackEventApiTests(TestCase):
         response = self.client.post("/analytics/events/", {"name": EventName.SEARCH_NO_RESULTS}, format="json")
 
         self.assertEqual(response.status_code, 201)
+
+
+class TrackEventGardeFousTests(TestCase):
+    """Audit du 2026-11-16 (D2) : la route est ouverte à tous ; elle n'avait ni plafond de débit ni plafond de taille."""
+
+    def setUp(self):
+        self.client = APIClient()
+
+    def _envoyer(self, properties=None, **entetes):
+        corps = {"name": EventName.SEARCH_NO_RESULTS}
+        if properties is not None:
+            corps["properties"] = properties
+        return self.client.post("/analytics/events/", corps, format="json", **entetes)
+
+    def test_rejette_une_valeur_trop_longue(self):
+        self.assertEqual(self._envoyer({"requete": "x" * 201}).status_code, 400)
+        self.assertEqual(AnalyticsEvent.objects.count(), 0)
+
+    def test_rejette_une_valeur_qui_n_est_pas_simple(self):
+        self.assertEqual(self._envoyer({"liste": ["a", "b"]}).status_code, 400)
+        self.assertEqual(self._envoyer({"objet": {"a": 1}}).status_code, 400)
+
+    def test_accepte_les_valeurs_simples(self):
+        reponse = self._envoyer({"cursus_id": 3, "verrouillee": True, "cible": "quiz", "vide": None, "taux": 0.5})
+        self.assertEqual(reponse.status_code, 201)
+
+    def test_le_debit_est_plafonne_par_adresse(self):
+        from django.core.cache import cache
+        from django.test import override_settings
+
+        from .views import EvenementsThrottle
+
+        cache.clear()
+        with override_settings(THROTTLE_PDF_ACTIF=True), mock.patch.object(EvenementsThrottle, "rate", "3/min"):
+            statuts = [self._envoyer(HTTP_X_CLIENT_IP="41.202.20.20").status_code for _ in range(4)]
+            autre = self._envoyer(HTTP_X_CLIENT_IP="41.202.20.21").status_code
+        cache.clear()
+
+        self.assertEqual(statuts, [201, 201, 201, 429])
+        self.assertEqual(autre, 201)

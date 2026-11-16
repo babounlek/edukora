@@ -95,6 +95,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [user])
 
   function login(access: string, newUser: User) {
+    // Un autre enfant du même compte prend la main : ce que le précédent a lu ou téléchargé pour le hors-ligne
+    // est gardé par adresse, pas par profil - hors connexion ou sur un réseau lent, un enfant sans abonnement
+    // relisait le corrigé gardé par son frère abonné. Le cache n'était vidé qu'à la déconnexion.
+    const profilPrecedent = user?.profil_actif?.id
+    if (profilPrecedent !== undefined && profilPrecedent !== newUser.profil_actif?.id) void viderCacheHorsLigne()
     setAccessToken(access)
     // Les filtres de liste de la session venaient d'avant la connexion (ou d'un autre compte) : ils ne doivent pas être
     // restaurés par-dessus l'examen de ce compte.

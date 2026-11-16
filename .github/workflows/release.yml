@@ -9,7 +9,9 @@
 # Prérequis (une fois) :
 #   - Settings > Actions > General > Workflow permissions : « Read and write » (pour pousser sur GHCR).
 #   - Variables du dépôt (Settings > Secrets and variables > Actions > Variables) :
-#       SITE_DOMAIN, VITE_GOOGLE_CLIENT_ID (public par nature : c'est l'identifiant client OAuth).
+#       SITE_DOMAIN, VITE_GOOGLE_CLIENT_ID (public par nature : c'est l'identifiant client OAuth),
+#       VITE_SENTRY_DSN (public par nature aussi : la clé d'envoi du projet Sentry du frontend). Tant qu'elle
+#       est absente, le suivi d'erreurs du navigateur reste inerte (voir frontend/src/lib/sentry.ts).
 
 name: Release (build des images)
 
@@ -54,8 +56,26 @@ jobs:
       - name: Tests backend
         run: python manage.py test
 
+  # Les tests du frontend (vitest) ne tournaient nulle part : une régression d'interface partait en production
+  # sans rien pour l'arrêter. Le contrôle de types, lui, est déjà fait par le build de l'image (`tsc -b`).
+  test-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - name: Tests frontend
+        run: npx vitest run
+
   build:
-    needs: test
+    needs: [test, test-frontend]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -98,5 +118,6 @@ jobs:
             VITE_SITE_URL=https://${{ vars.SITE_DOMAIN || 'edukora.africa' }}
             VITE_SITE_NAME=EduKora
             VITE_GOOGLE_CLIENT_ID=${{ vars.VITE_GOOGLE_CLIENT_ID }}
+            VITE_SENTRY_DSN=${{ vars.VITE_SENTRY_DSN }}
           cache-from: type=gha,scope=${{ matrix.image }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image }}

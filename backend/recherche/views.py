@@ -3,6 +3,8 @@ from rest_framework.decorators import api_view, permission_classes, throttle_cla
 from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
+from users.ip import client_ip
+
 from catalog.models import Country, Langue
 
 from . import moteur
@@ -21,7 +23,7 @@ class RechercheThrottle(SimpleRateThrottle):
     rate = "240/min"
 
     def get_cache_key(self, request, view):
-        ident = request.user.pk if request.user.is_authenticated else self.get_ident(request)
+        ident = request.user.pk if request.user.is_authenticated else (client_ip(request) or "inconnu")
         return self.cache_format % {"scope": self.scope, "ident": ident}
 
 

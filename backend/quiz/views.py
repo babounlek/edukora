@@ -589,9 +589,17 @@ def reveal_corrige(request, session_id, quiz_question_id):
     (Réussi/Partiel/Échec). Le QCM n'en a pas besoin : la correction y est automatique
     dès la réponse."""
     quiz_question = get_object_or_404(
-        QuizQuestion.objects.select_related("question", "competence_item"),
+        QuizQuestion.objects.select_related("question", "competence_item", "session__cursus"),
         pk=quiz_question_id, session_id=session_id, session__profil=profil_actif(request),
     )
+    # Un QCM se corrige en répondant : tant qu'il n'a pas de réponse, cette route ne dit rien. Sans ce refus,
+    # l'appeler à la main rendait la bonne lettre avant de répondre - donc des points et de la maîtrise sans
+    # rien savoir.
+    if instantane.type_et_cle(quiz_question)[0] == TypeReponse.QCM and _get_answer(quiz_question) is None:
+        return Response(
+            {"error": textes.texte("quiz.reponds_d_abord", textes.langue_de(quiz_question.session.cursus)), "code": "reponse_requise"},
+            status=409,
+        )
     donnees = instantane.donnees(quiz_question)
     corrige_markdown = (
         _corrige_de_la_question(quiz_question, donnees) if donnees["source"] == "competence_item" else donnees["corrige_markdown"]
@@ -707,7 +715,30 @@ def answer_question(request, session_id, quiz_question_id):
                 {"error": textes.texte("quiz.chrono_ecoule", textes.langue_de(session.cursus)), "chrono_ecoule": True, "code": "chrono_ecoule"},
                 status=409,
             )
-        answer, creee = QuizAnswer.objects.update_or_create(quiz_question=quiz_question, defaults=defaults)
+        # Une question ne se répond qu'une fois : la réponse était réécrite tant que le quiz restait ouvert, donc
+        # après avoir vu la correction (l'interface l'empêche, l'appel direct non), et la maîtrise lisait la
+        # réponse réécrite. La MÊME réponse renvoyée (requête rejouée sur un réseau lent) est acceptée sans
+        # rien refaire ; une réponse différente est refusée.
+        existante = QuizAnswer.objects.filter(quiz_question=quiz_question).first()
+        if existante is not None:
+            champ = "reponse_choisie" if type_reponse == TypeReponse.QCM else "resultat_declare"
+            if getattr(existante, champ) != defaults[champ]:
+                return Response(
+                    {"error": textes.texte("quiz.deja_repondue", textes.langue_de(session.cursus)), "code": "deja_repondue"},
+                    status=409,
+                )
+            rejouee = True
+        else:
+            answer = QuizAnswer.objects.create(quiz_question=quiz_question, **defaults)
+            rejouee = False
+
+    if rejouee:
+        payload = _question_payload(quiz_question)
+        payload["xp_jour"] = xp.etat_du_jour(profil)
+        payload["objectif_atteint_maintenant"] = False
+        return Response(payload)
+
+    creee = True
 
     if quiz_question.competence_item_id:
         item = quiz_question.competence_item
@@ -786,11 +817,10 @@ def complete_session(request, session_id):
         if cloture_ici:
             session.completed_at = timezone.now()
             session.save(update_fields=["completed_at"])
-    # Un quiz où tout a été passé (aucune réponse) n'a rien fait faire : il ne valide pas la séance du jour.
-    tout_passe = (
-        session.quiz_questions.filter(passee=True).exists() and not session.quiz_questions.filter(answer__isnull=False).exists()
-    )
-    if cloture_ici and not tout_passe:
+    # Un quiz sans aucune réponse (tout passé, ou clos sans y toucher) n'a rien fait faire : il ne valide pas la
+    # séance du jour. La règle ne couvrait que « tout passé » ; clore un quiz intact validait la séance.
+    rien_fait = not session.quiz_questions.filter(answer__isnull=False).exists()
+    if cloture_ici and not rien_fait:
         # Le quiz est toujours la dernière étape d'une séance : le boucler, c'est
         # avoir fait la séance. Sous le `if` : une session rouverte plus tard ne doit
         # pas reclôturer quoi que ce soit.
@@ -1281,6 +1311,16 @@ def terminer_seance_view(request):
     seance = seance_du_jour(profil, cursus)
     if seance is None:
         return Response({"error": "Aucune séance aujourd'hui."}, status=404)
+
+    # « J'ai fini » ne vaut que pour une séance SANS quiz (un cours, un exercice : rien ne dit quand on a fini de
+    # lire). Avec un quiz, c'est le quiz bouclé qui clôt la séance (voir cloturer_seance_si_quiz_termine) :
+    # l'interface ne montre pas le bouton, mais l'appel direct validait la journée, ses points et la série,
+    # sans une seule question.
+    if seance.statut != StatutSeance.TERMINEE and any(etape.get("type") == "quiz" for etape in seance.etapes):
+        return Response(
+            {"error": textes.texte("quiz.seance_quiz_requis", textes.langue_de(cursus)), "code": "quiz_requis"},
+            status=409,
+        )
 
     # Uniquement si elle ne l'était pas déjà : reconfirmer une séance close (double
     # clic, onglet resté ouvert) ne doit pas la compter une seconde fois.

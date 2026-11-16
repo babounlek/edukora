@@ -1,6 +1,10 @@
-from rest_framework.decorators import api_view, permission_classes
+from django.conf import settings
+from rest_framework.decorators import api_view, permission_classes, throttle_classes
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.throttling import SimpleRateThrottle
+
+from users.ip import client_ip
 
 from .funnel import entonnoir
 from .models import AnalyticsEvent, EventName
@@ -9,10 +13,39 @@ from .models import AnalyticsEvent, EventName
 # largement dedans ; au-delà, c'est le signe que ce point d'entrée est détourné vers
 # autre chose que ce pour quoi il est prévu (voir AnalyticsEvent.properties).
 _MAX_PROPERTIES_KEYS = 10
+# Une valeur est un identifiant, un nombre, un mot : jamais un texte. Sans ce plafond, dix clés pouvaient
+# porter chacune un texte de taille arbitraire.
+_MAX_VALEUR = 200
+
+
+class EvenementsThrottle(SimpleRateThrottle):
+    """Plafond par compte, sinon par adresse : la route est ouverte à tous et écrit une ligne par appel. Elle
+    n'avait aucune limite - un tiers pouvait remplir la table. 120 par minute laissent passer la navigation la
+    plus rapide d'un élève, pas un script. Compteur en mémoire de chaque processus, comme les autres garde-fous
+    de débit (voir access.quota.QuotaThrottle) ; coupé pendant les tests pour la même raison."""
+
+    scope = "analytics_evenements"
+    rate = "120/min"
+
+    def allow_request(self, request, view):
+        if not getattr(settings, "THROTTLE_PDF_ACTIF", True):
+            return True
+        return super().allow_request(request, view)
+
+    def get_cache_key(self, request, view):
+        ident = f"u{request.user.pk}" if request.user.is_authenticated else (client_ip(request) or "inconnu")
+        return self.cache_format % {"scope": self.scope, "ident": ident}
+
+
+def _valeur_acceptable(valeur):
+    if valeur is None or isinstance(valeur, (bool, int, float)):
+        return True
+    return isinstance(valeur, str) and len(valeur) <= _MAX_VALEUR
 
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@throttle_classes([EvenementsThrottle])
 def track_event(request):
     """
     Point d'entrée unique de la reco 5.3 de l'audit UX - volontairement permissif sur
@@ -29,6 +62,11 @@ def track_event(request):
     properties = request.data.get("properties", {})
     if not isinstance(properties, dict) or len(properties) > _MAX_PROPERTIES_KEYS:
         return Response({"error": f"properties doit être un objet d'au plus {_MAX_PROPERTIES_KEYS} clés."}, status=400)
+    if not all(len(str(cle)) <= _MAX_VALEUR and _valeur_acceptable(valeur) for cle, valeur in properties.items()):
+        return Response(
+            {"error": f"properties : valeurs simples (texte de {_MAX_VALEUR} caractères au plus, nombre, booléen)."},
+            status=400,
+        )
 
     AnalyticsEvent.objects.create(
         name=name,

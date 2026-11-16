@@ -26,6 +26,7 @@ from django.utils import timezone
 
 from catalog.models import ExamSession
 from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
+from quiz import textes
 from quiz.models import SeanceJournaliere, StatutSeance
 from quiz.serie import serie_de_jours
 from quiz.services import revisions_dues
@@ -74,8 +75,19 @@ def _prenom(user):
     return nom.split()[0] if nom else ""
 
 
-def _salutation(user):
+def langue_du_compte(user):
+    """'en' dès que le compte a choisi l'anglais ou prépare un examen anglophone (GCE), 'fr' sinon -
+    même règle que le rappel push (voir relances.push.composer_push). Un élève du GCE et son parent
+    recevaient leurs e-mails en français."""
+    if getattr(user, "langue", textes.FR) == textes.EN:
+        return textes.EN
+    return textes.langue_de(getattr(user, "cursus_prepare", None))
+
+
+def _salutation(user, langue=textes.FR):
     prenom = _prenom(user)
+    if langue == textes.EN:
+        return f"Hello {prenom}," if prenom else "Hello,"
     return f"Bonjour {prenom}," if prenom else "Bonjour,"
 
 
@@ -104,15 +116,57 @@ def _abonnement_actif(user):
 # --------------------------------------------------------------------------- rappel de séance
 
 
-def _formule_examen(cursus):
+def _formule_examen(cursus, langue=textes.FR):
     compte = ExamSession.compte_a_rebours_pour(cursus)
     if not compte or compte["jours_restants"] < 0:
         return ""
     jours = compte["jours_restants"]
     libelle = str(cursus)
+    if langue == textes.EN:
+        if compte.get("estimee"):
+            return f"Your exam ({libelle}) is coming up: about {round(jours / 30)} months left."
+        return f"{jours} day{'s' if jours != 1 else ''} until your exam ({libelle})."
     if compte.get("estimee"):
         return f"Ton examen ({libelle}) approche : il reste environ {round(jours / 30)} mois."
     return f"Il reste {jours} jour{'s' if jours > 1 else ''} avant ton examen ({libelle})."
+
+
+# Les textes fixes du rappel quotidien, dans les deux langues : le texte brut et le gabarit HTML
+# (relances/emails/rappel_seance.html) lisent les mêmes.
+_TEXTES_RAPPEL = {
+    textes.FR: {
+        "lang": "fr",
+        "sujet": "Ta séance du jour est prête",
+        "slogan": "Réussis ton examen",
+        "titre": "Ta séance du jour t'attend",
+        "intro": "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi.",
+        "intro_avant": "Environ",
+        "intro_duree": "25 minutes",
+        "intro_apres": ", choisies pour toi parmi ce qui te fera le plus progresser aujourd'hui.",
+        "apercu": "Environ 25 minutes, choisies pour toi.",
+        "bouton": "Ouvrir ma séance",
+        "secours": "Le bouton ne s'affiche pas ? Copie ce lien dans ton navigateur :",
+        "raison": "Tu reçois ce message parce que tu as activé les rappels quotidiens.",
+        "arret": "Les arrêter en un clic",
+        "question": "Une question ? Réponds simplement à ce message ou écris à",
+    },
+    textes.EN: {
+        "lang": "en",
+        "sujet": "Your daily session is ready",
+        "slogan": "Pass your exam",
+        "titre": "Your daily session is waiting",
+        "intro": "Your daily session is waiting: about 25 minutes, chosen for you.",
+        "intro_avant": "About",
+        "intro_duree": "25 minutes",
+        "intro_apres": ", chosen for you from what will move you forward the most today.",
+        "apercu": "About 25 minutes, chosen for you.",
+        "bouton": "Open my session",
+        "secours": "Can't see the button? Copy this link into your browser:",
+        "raison": "You receive this message because you turned on daily reminders.",
+        "arret": "Stop them in one click",
+        "question": "A question? Just reply to this message or write to",
+    },
+}
 
 
 def composer_rappel_seance(user):
@@ -125,43 +179,47 @@ def composer_rappel_seance(user):
     # hors requête HTTP.
     profil = user.profils.first()
     cursus = user.cursus_prepare
+    langue = langue_du_compte(user)
+    anglais = langue == textes.EN
+    t = _TEXTES_RAPPEL[langue]
     faits = []
 
-    formule = _formule_examen(cursus)
+    formule = _formule_examen(cursus, langue)
     if formule:
         faits.append(formule)
 
     serie = serie_de_jours(profil)
     if serie["jours"] >= 2:
-        faits.append(f"Ta série est à {serie['jours']} jours de suite.")
+        faits.append(
+            f"Your streak is at {serie['jours']} days in a row." if anglais
+            else f"Ta série est à {serie['jours']} jours de suite."
+        )
 
     dues = revisions_dues(profil, cursus).count()
     if dues:
-        faits.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui pour qu'il{'s' if dues > 1 else ''} restent en mémoire.")
+        faits.append(
+            f"{dues} topic{'s' if dues > 1 else ''} to review today so {'they stay' if dues > 1 else 'it stays'} in memory."
+            if anglais
+            else f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui pour qu'il{'s' if dues > 1 else ''} "
+                 f"reste{'nt' if dues > 1 else ''} en mémoire."
+        )
 
     pays = cursus.country.code.lower()
-    lien = f"{settings.FRONTEND_URL}/{pays}"
+    lien = f"{settings.FRONTEND_URL}/en/{pays}" if anglais else f"{settings.FRONTEND_URL}/{pays}"
     lien_arret = lien_desabonnement(user)
-    salutation = _salutation(user)
-    sujet = "Ta séance du jour est prête"
+    salutation = _salutation(user, langue)
 
-    texte = [salutation, "", "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi.", *faits]
-    texte += [
-        "",
-        f"Ouvrir ma séance : {lien}",
-        "",
-        "Tu reçois ce message parce que tu as activé les rappels quotidiens.",
-        f"Les arrêter en un clic : {lien_arret}",
-    ]
+    texte = [salutation, "", t["intro"], *faits]
+    texte += ["", f"{t['bouton']} : {lien}", "", t["raison"], f"{t['arret']} : {lien_arret}"]
     html = render_to_string(
         "relances/emails/rappel_seance.html",
         {
             "site_name": settings.SITE_NAME, "salutation": salutation, "faits": faits, "lien": lien,
-            "lien_desabonnement": lien_arret, "apercu": "Environ 25 minutes, choisies pour toi.",
+            "lien_desabonnement": lien_arret, "apercu": t["apercu"], "t": t,
             "site_url": settings.FRONTEND_URL, "support_email": settings.SUPPORT_EMAIL,
         },
     )
-    return sujet, "\n".join(texte), html
+    return t["sujet"], "\n".join(texte), html
 
 
 def destinataires_rappel_seance(maintenant=None):
@@ -175,7 +233,7 @@ def destinataires_rappel_seance(maintenant=None):
     deja_relance = RelanceEnvoyee.objects.filter(
         type=TypeRelance.RAPPEL_SEANCE, reference=aujourdhui.isoformat(),
     ).values("user_id")
-    return (
+    destinataires = (
         User.objects.filter(
             rappels_actifs=True, email_verified=True, email__isnull=False, cursus_prepare__isnull=False,
             cursus_prepare__country__actif=True,
@@ -186,6 +244,15 @@ def destinataires_rappel_seance(maintenant=None):
         .select_related("cursus_prepare__country", "cursus_prepare__series")
         .distinct()
     )
+    # Un seul rappel par jour, tous canaux confondus, et la notification d'abord : elle part à l'heure où
+    # l'élève travaille d'habitude (voir relances.push.heure_habituelle). L'e-mail de 17 h posait sa trace
+    # avant elle, et un élève qui travaille à 20 h ne recevait jamais sa notification. Qui a un appareil
+    # abonné est donc servi par la notification, pas par l'e-mail.
+    from .push import push_configure
+
+    if push_configure():
+        destinataires = destinataires.exclude(abonnements_push__isnull=False)
+    return destinataires
 
 
 def envoyer_rappels_seance(maintenant=None, *, dry_run=False):

@@ -35,9 +35,9 @@ class ConsoleWhatsAppBackend:
     raisonnement que users.sms_backends.ConsoleSMSBackend.
     """
 
-    def send_template(self, phone_number, template_name, params):
-        print(f"\n[WHATSAPP -> {phone_number}] template={template_name} params={params}\n", flush=True)
-        logger.info("[WHATSAPP -> %s] template=%s params=%s", phone_number, template_name, params)
+    def send_template(self, phone_number, template_name, params, langue="fr"):
+        print(f"\n[WHATSAPP -> {phone_number}] template={template_name} langue={langue} params={params}\n", flush=True)
+        logger.info("[WHATSAPP -> %s] template=%s langue=%s params=%s", phone_number, template_name, langue, params)
 
 
 class MetaCloudAPIBackend:
@@ -48,7 +48,10 @@ class MetaCloudAPIBackend:
     un rappel proactif (jamais initié par une réponse de l'utilisateur).
     """
 
-    def send_template(self, phone_number, template_name, params):
+    def send_template(self, phone_number, template_name, params, langue="fr"):
+        # `langue` : la version du modèle à envoyer ("fr" ou "en"). Chaque version doit être approuvée par Meta ;
+        # tant que l'anglaise ne l'est pas, l'envoi à un élève du GCE échoue proprement (trace retirée, voir
+        # whatsapp.services.envoyer_rappels_du_jour) au lieu de lui écrire en français.
         phone_number_id = config("WHATSAPP_PHONE_NUMBER_ID")
         token = config("WHATSAPP_ACCESS_TOKEN")
         url = f"https://graph.facebook.com/{GRAPH_API_VERSION}/{phone_number_id}/messages"
@@ -67,7 +70,7 @@ class MetaCloudAPIBackend:
                     "type": "template",
                     "template": {
                         "name": template_name,
-                        "language": {"code": "fr"},
+                        "language": {"code": langue},
                         "components": [{
                             "type": "body",
                             "parameters": [{"type": "text", "text": str(p)} for p in params],

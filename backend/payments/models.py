@@ -1,5 +1,7 @@
+import logging
 import uuid
 
+from django.core.mail import send_mail
 from django.db import connection, models
 from django.db import transaction as db_transaction
 from django.utils import timezone
@@ -17,6 +19,8 @@ from subscriptions.models import (
 from users.models import phone_validator
 
 from .providers import fournisseur_par_defaut, get_provider
+
+logger = logging.getLogger("payments")
 
 
 class StatutTransaction(models.TextChoices):
@@ -248,6 +252,15 @@ class Transaction(models.Model):
 
             enregistrer_commission_securise(self)
 
+        # Le reçu, une seule fois (la branche « déjà activé » est sortie plus haut) et hors de la transaction
+        # d'activation : un succès CamPay n'envoyait rien, alors qu'il peut être constaté longtemps après que
+        # le payeur a fermé la page (voir payments.rattrapage).
+        montant = f"ton paiement de {self.amount} FCFA est confirmé" if self.amount else "ton achat est confirmé"
+        _prevenir_du_paiement(
+            self.user,
+            f"Edukora : {montant}. Ton accès « {_libelle_achat(self.plan, self.mois)} » est actif.",
+            numero_payeur=self.phone_number,
+        )
         return self
 
 
@@ -317,6 +330,33 @@ def _notifier_utilisateur(phone_number, message):
     get_sms_backend().send(phone_number, message)
 
 
+def _prevenir_du_paiement(user, message, *, numero_payeur=""):
+    """
+    Prévient le payeur d'une étape de son paiement (déclaration reçue, validée, rejetée, paiement confirmé).
+
+    - SMS au numéro du compte, à défaut au numéro qui a payé : un compte ouvert par e-mail ou par Google n'a
+      pas de numéro, et l'écran promet pourtant un SMS (le message partait dans le vide, ou faisait échouer
+      l'envoi).
+    - E-mail en plus quand l'adresse est confirmée : c'est le reçu que l'on retrouve.
+
+    Jamais bloquant : la déclaration est enregistrée, l'accès est activé ; un fournisseur de SMS en panne ne
+    doit ni renvoyer une erreur 500 à quelqu'un qui vient de payer, ni annuler une validation.
+    """
+    numero = user.phone_number or numero_payeur
+    if numero:
+        try:
+            _notifier_utilisateur(numero, message)
+        except Exception:
+            logger.exception("SMS de paiement non envoyé au compte %s", user.pk)
+    if user.email and getattr(user, "email_verified", False):
+        try:
+            send_mail(
+                "Ton paiement EduKora", message, None, [user.email], fail_silently=False,
+            )
+        except Exception:
+            logger.exception("E-mail de paiement non envoyé au compte %s", user.pk)
+
+
 class ManualPaymentManager(models.Manager):
     def declare(self, *, user, plan, operator, amount_declared, payer_phone_number,
                 transaction_reference, paid_at=None, proof=None, ip=None, profil=None,
@@ -342,10 +382,11 @@ class ManualPaymentManager(models.Manager):
             payer_phone_number=payer_phone_number, transaction_reference=reference,
             paid_at=paid_at, proof=proof, declared_ip=ip, paye_par_revendeur=paye_par_revendeur,
         )
-        _notifier_utilisateur(
-            user.phone_number,
+        _prevenir_du_paiement(
+            user,
             f"Edukora : ta déclaration de paiement de {payment.amount_declared} FCFA ({_libelle_achat(plan, mois)}) "
             "a bien été enregistrée. Elle est en cours de vérification par notre équipe.",
+            numero_payeur=payment.payer_phone_number,
         )
         return payment
 
@@ -494,10 +535,11 @@ class ManualPayment(models.Model):
 
             enregistrer_commission_securise(locked)
 
-        _notifier_utilisateur(
-            locked.user.phone_number,
+        _prevenir_du_paiement(
+            locked.user,
             f"Edukora : ton paiement de {locked.amount_declared} FCFA est validé ! "
             f"Ton accès « {_libelle_achat(locked.plan, locked.mois)} » est actif.",
+            numero_payeur=locked.payer_phone_number,
         )
         return locked
 
@@ -521,10 +563,11 @@ class ManualPayment(models.Model):
                 "status", "rejection_reason", "admin_comment", "reviewed_by", "reviewed_at", "updated_at",
             ])
 
-        _notifier_utilisateur(
-            locked.user.phone_number,
+        _prevenir_du_paiement(
+            locked.user,
             f"Edukora : ton paiement de {locked.amount_declared} FCFA ({_libelle_achat(locked.plan, locked.mois)}) "
             f"a été rejeté ({locked.get_rejection_reason_display()}). "
             "Tu peux déclarer un nouveau paiement.",
+            numero_payeur=locked.payer_phone_number,
         )
         return locked

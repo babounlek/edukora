@@ -30,7 +30,9 @@ from subscriptions.models import Subscription
 from users.models import User
 
 from .models import RelanceEnvoyee, TypeRelance
-from .services import _envoyer_email, _salutation, _tracer
+from quiz import textes
+
+from .services import _envoyer_email, _salutation, _tracer, langue_du_compte
 
 logger = logging.getLogger("relances")
 
@@ -77,9 +79,11 @@ def _pluriel(n, singulier, pluriel=None):
     return f"{n} {singulier if n <= 1 else (pluriel or singulier + 's')}"
 
 
-def _prenom_profil(profil, user):
+def _prenom_profil(profil, user, langue=textes.FR):
     nom = (profil.prenom or user.full_name or user.pseudo or "").strip()
-    return nom.split()[0] if nom else "Ton enfant"
+    if nom:
+        return nom.split()[0]
+    return "Your child" if langue == textes.EN else "Ton enfant"
 
 
 def bilan_du_profil(profil, maintenant=None):
@@ -102,7 +106,9 @@ def bilan_du_profil(profil, maintenant=None):
     return {**bilan, "xp": xp, "serie": serie_de_jours(profil, aujourdhui)["jours"]}
 
 
-def _bloc_profil(prenom, bilan):
+def _bloc_profil(prenom, bilan, langue=textes.FR):
+    if langue == textes.EN:
+        return _bloc_profil_en(prenom, bilan)
     if not bilan["a_de_l_activite"] and bilan["xp"] == 0:
         return [
             f"■ {prenom}",
@@ -126,31 +132,68 @@ def _bloc_profil(prenom, bilan):
     return lignes
 
 
+def _bloc_profil_en(prenom, bilan):
+    """Le même bloc, mêmes faits et même ton, pour un compte en anglais (familles du GCE)."""
+    if not bilan["a_de_l_activite"] and bilan["xp"] == 0:
+        return [
+            f"■ {prenom}",
+            f"  {prenom} did not revise this week. A daily session takes about 25 minutes: "
+            "the plan is ready in the app.",
+        ]
+    faits = [
+        f"{bilan['jours_actifs']} day{'s' if bilan['jours_actifs'] != 1 else ''} of revision out of 7",
+        _pluriel(bilan["seances"], "session"),
+        _pluriel(bilan["questions"], "question")
+        + (f" ({bilan['taux_reussite']}% correct)" if bilan["taux_reussite"] is not None else ""),
+    ]
+    if bilan["xp"]:
+        faits.append(f"{bilan['xp']} points")
+    lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
+    if bilan["themes_consolides"]:
+        citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])
+        lignes.append(f"  Topics consolidated: {citations}.")
+    if bilan["serie"] >= 2:
+        lignes.append(f"  Current streak: {bilan['serie']} days in a row.")
+    return lignes
+
+
 def composer_bilan_parent(user, maintenant=None):
     """(sujet, corps) du bilan de la semaine pour tous les profils abonnés du compte, ou None s'il
-    n'y en a aucun - un compte sans abonnement actif n'a rien à raconter."""
+    n'y en a aucun - un compte sans abonnement actif n'a rien à raconter. Dans la langue du compte
+    (voir relances.services.langue_du_compte)."""
+    langue = langue_du_compte(user)
     blocs = []
     prenoms = []
     for profil in user.profils.all():
         bilan = bilan_du_profil(profil, maintenant)
         if bilan is None:
             continue
-        prenom = _prenom_profil(profil, user)
+        prenom = _prenom_profil(profil, user, langue)
         prenoms.append(prenom)
-        blocs.append(_bloc_profil(prenom, bilan))
+        blocs.append(_bloc_profil(prenom, bilan, langue))
     if not blocs:
         return None
 
-    lignes = [_salutation(user), "", "Voici la semaine qui vient de s'écouler :", ""]
+    anglais = langue == textes.EN
+    lignes = [_salutation(user, langue), "", "Here is the week that just ended:" if anglais else "Voici la semaine qui vient de s'écouler :", ""]
     for bloc in blocs:
         lignes += bloc + [""]
-    lignes += [
-        f"Ouvrir {settings.SITE_NAME} : {settings.FRONTEND_URL}",
-        "",
-        "Tu reçois ce message parce que tu as activé le bilan de la semaine.",
-        f"L'arrêter en un clic : {lien_desabonnement_bilan(user)}",
-    ]
-    sujet = f"Bilan de la semaine de {prenoms[0]}" if len(prenoms) == 1 else "Bilan de la semaine de tes enfants"
+    if anglais:
+        lignes += [
+            f"Open {settings.SITE_NAME}: {settings.FRONTEND_URL}/en",
+            "",
+            "You receive this message because you turned on the weekly report.",
+            f"Stop it in one click: {lien_desabonnement_bilan(user)}",
+        ]
+        sujet = f"{prenoms[0]}'s week" if len(prenoms) == 1 else "Your children's week"
+    else:
+        lignes += [
+            f"Ouvrir {settings.SITE_NAME} : {settings.FRONTEND_URL}",
+            "",
+            "Tu reçois ce message parce que tu as activé le bilan de la semaine.",
+            f"L'arrêter en un clic : {lien_desabonnement_bilan(user)}",
+        ]
+        sujet = f"Bilan de la semaine de {prenoms[0]}" if len(prenoms) == 1 else "Bilan de la semaine de tes enfants"
     return sujet, "\n".join(lignes)
 
 

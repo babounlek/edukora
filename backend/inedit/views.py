@@ -157,6 +157,19 @@ def _deadline(tentative):
     return tentative.exam_mode_started_at + timezone.timedelta(minutes=duree)
 
 
+def _instant_du_rendu(echeance, maintenant=None):
+    """
+    L'heure à laquelle une copie est rendue : maintenant, mais jamais APRÈS la fin du temps imparti.
+
+    Le verrouillage à l'échéance est paresseux (voir _auto_complete_if_expired : il a lieu à la requête
+    suivante, pas à l'heure dite). Une copie abandonnée puis rouverte deux jours plus tard était datée de
+    ce moment-là : 48 h de « temps utilisé », toutes attribuées au dernier exercice, et une copie comptée
+    dans la mauvaise semaine du défi. Même règle dans simulations.views._complete.
+    """
+    maintenant = maintenant or timezone.now()
+    return echeance if echeance is not None and echeance < maintenant else maintenant
+
+
 def _complete(tentative):
     """Logique de complétion partagée entre l'endpoint explicite complete_tentative et
     l'auto-verrouillage à expiration (_auto_complete_if_expired) - une seule voie de
@@ -166,7 +179,7 @@ def _complete(tentative):
     première réponse qui vient de compléter la tentative, et `definitive` (note terminée
     ET épreuve rendue) serait faux."""
     if not tentative.submitted_at:
-        tentative.submitted_at = timezone.now()
+        tentative.submitted_at = _instant_du_rendu(_deadline(tentative))
         tentative.save(update_fields=["submitted_at"])
         exercices = _exercices_pour_notation(tentative.epreuve)
         bilan = notation.calculer(tentative, exercices)

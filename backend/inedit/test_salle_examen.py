@@ -71,3 +71,36 @@ class ModeDansLeResultatTests(NotationAPITestCase):
         EpreuveInedite.objects.filter(pk=self.epreuve.pk).update(sujet_pdf="cm/sujet-test.pdf")
         self.client.post(self.url("mode-examen"), {"papier": True}, format="json")
         self.assertEqual(self.rendre()["mode"], "papier")
+
+
+class RenduALEcheanceTests(NotationAPITestCase):
+    """Audit du 2026-11-16 (Q4) : le verrouillage à l'échéance est paresseux, il a lieu à la requête suivante.
+    Une copie abandonnée puis rouverte deux jours après était datée de ce moment-là : 48 h de « temps utilisé »."""
+
+    def test_une_copie_rouverte_longtemps_apres_est_datee_de_son_echeance(self):
+        from datetime import timedelta
+
+        from django.utils import timezone
+
+        from .models import TentativeInedite
+
+        self.client.post(self.url("mode-examen"), {}, format="json")
+        duree = timedelta(minutes=self.epreuve.blueprint.duree_minutes)
+        debut = timezone.now() - duree - timedelta(days=2)
+        TentativeInedite.objects.filter(pk=self.tentative.pk).update(exam_mode_started_at=debut)
+
+        self.client.get(self.detail_url)
+
+        self.tentative.refresh_from_db()
+        self.assertEqual(self.tentative.submitted_at, debut + duree)
+
+    def test_une_copie_rendue_dans_les_temps_est_datee_du_rendu(self):
+        from django.utils import timezone
+
+        self.client.post(self.url("mode-examen"), {}, format="json")
+        avant = timezone.now()
+
+        self.client.post(self.url("completer"))
+
+        self.tentative.refresh_from_db()
+        self.assertGreaterEqual(self.tentative.submitted_at, avant)

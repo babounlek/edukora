@@ -16,6 +16,7 @@ import { estVisiteurAnonymeConnu, marquerVisiteurAnonyme } from "@/lib/sessionAn
 import { COUNTRY_STORAGE_KEY } from "@/lib/countryPath"
 import { FILTERS_SESSION_KEY } from "@/lib/filtresListe"
 import { LANGUE_STORAGE_KEY } from "@/lib/i18n"
+import { viderCacheHorsLigne } from "@/lib/pwa"
 
 function Etat() {
   const { isLoading, isAuthenticated } = useAuth()
@@ -122,5 +123,55 @@ describe("AuthProvider : traces du compte précédent", () => {
     screen.getByText("sortir").click()
     await waitFor(() => expect(localStorage.getItem(LANGUE_STORAGE_KEY)).toBeNull())
     expect(sessionStorage.getItem(FILTERS_SESSION_KEY)).toBeNull()
+  })
+})
+
+describe("AuthProvider : changement d'enfant sur le même compte", () => {
+  // Le cache de lecture hors ligne est gardé par adresse, pas par profil : sans ce vidage, un enfant sans
+  // abonnement relisait hors connexion le corrigé gardé par son frère abonné (audit du 2026-11-16).
+  function Profils() {
+    const { login, isAuthenticated } = useAuth()
+    const entrer = (profil: number) => login("jeton", { id: 1, cursus_prepare: null, profil_actif: { id: profil } } as never)
+    return (
+      <>
+        {isAuthenticated && <p>connecté</p>}
+        <button onClick={() => entrer(11)}>aîné</button>
+        <button onClick={() => entrer(12)}>cadet</button>
+      </>
+    )
+  }
+
+  beforeEach(() => vi.mocked(viderCacheHorsLigne).mockClear())
+
+  it("vide le cache hors ligne quand un autre enfant prend la main", async () => {
+    getMe.mockResolvedValue({ id: 1, cursus_prepare: null, profil_actif: { id: 11 } })
+    render(<AuthProvider><Profils /></AuthProvider>)
+    await screen.findByText("connecté")
+
+    screen.getByText("cadet").click()
+
+    await waitFor(() => expect(viderCacheHorsLigne).toHaveBeenCalledTimes(1))
+  })
+
+  it("ne le vide pas quand le même enfant change seulement d'examen", async () => {
+    getMe.mockResolvedValue({ id: 1, cursus_prepare: null, profil_actif: { id: 11 } })
+    render(<AuthProvider><Profils /></AuthProvider>)
+    await screen.findByText("connecté")
+
+    screen.getByText("aîné").click()
+
+    await waitFor(() => expect(screen.getByText("connecté")).toBeInTheDocument())
+    expect(viderCacheHorsLigne).not.toHaveBeenCalled()
+  })
+
+  it("ne le vide pas à la première connexion", async () => {
+    getMe.mockRejectedValue(new ApiError(401, { detail: "non authentifié" }))
+    render(<AuthProvider><Profils /></AuthProvider>)
+    await waitFor(() => expect(estVisiteurAnonymeConnu()).toBe(true))
+
+    screen.getByText("aîné").click()
+
+    await screen.findByText("connecté")
+    expect(viderCacheHorsLigne).not.toHaveBeenCalled()
   })
 })

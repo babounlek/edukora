@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html lang="{{ t.lang }}" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -59,7 +59,7 @@
                   </td>
                   <td valign="middle">
                     <span style="display:block; color:#ffffff; font-size:21px; line-height:24px; font-weight:700; letter-spacing:0.01em;">{{ site_name }}</span>
-                    <span style="display:block; color:#a7e3c9; font-size:11px; line-height:16px; letter-spacing:0.12em; text-transform:uppercase;">Réussis ton examen</span>
+                    <span style="display:block; color:#a7e3c9; font-size:11px; line-height:16px; letter-spacing:0.12em; text-transform:uppercase;">{{ t.slogan }}</span>
                   </td>
                 </tr>
               </table>
@@ -74,9 +74,9 @@
             <td class="carte" bgcolor="#ffffff" style="background-color:#ffffff; border:1px solid #dce6e1; border-top:0; border-radius:0 0 14px 14px; padding:34px 36px 36px 36px;">
 
               <p class="texte" style="margin:0 0 8px 0; color:#161d1a; font-size:15px; line-height:1.5;">{{ salutation }}</p>
-              <h1 class="titre" style="margin:0 0 14px 0; color:#07492f; font-size:25px; line-height:1.25; font-weight:700;">Ta séance du jour t'attend</h1>
+              <h1 class="titre" style="margin:0 0 14px 0; color:#07492f; font-size:25px; line-height:1.25; font-weight:700;">{{ t.titre }}</h1>
               <p class="texte" style="margin:0 0 24px 0; color:#161d1a; font-size:15px; line-height:1.65;">
-                Environ <strong>25&nbsp;minutes</strong>, choisies pour toi parmi ce qui te fera le plus progresser aujourd'hui.
+                {{ t.intro_avant }} <strong>{{ t.intro_duree }}</strong>{{ t.intro_apres }}
               </p>
 
               {% if faits %}
@@ -98,18 +98,18 @@
                     <!--[if mso]>
                     <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ lien }}" style="height:50px; v-text-anchor:middle; width:448px;" arcsize="16%" stroke="f" fillcolor="#0a6745">
                       <w:anchorlock/>
-                      <center style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; font-weight:bold;">Ouvrir ma séance</center>
+                      <center style="color:#ffffff; font-family:Arial,sans-serif; font-size:16px; font-weight:bold;">{{ t.bouton }}</center>
                     </v:roundrect>
                     <![endif]-->
                     <!--[if !mso]><!-->
-                    <a href="{{ lien }}" style="display:block; background-color:#0a6745; border-radius:8px; padding:15px 24px; color:#ffffff; font-size:16px; line-height:20px; font-weight:600; text-align:center; text-decoration:none;">Ouvrir ma séance&nbsp;&nbsp;&rarr;</a>
+                    <a href="{{ lien }}" style="display:block; background-color:#0a6745; border-radius:8px; padding:15px 24px; color:#ffffff; font-size:16px; line-height:20px; font-weight:600; text-align:center; text-decoration:none;">{{ t.bouton }}&nbsp;&nbsp;&rarr;</a>
                     <!--<![endif]-->
                   </td>
                 </tr>
               </table>
 
               <p class="discret" style="margin:22px 0 0 0; color:#576159; font-size:12px; line-height:1.6; overflow-wrap:anywhere;">
-                Le bouton ne s'affiche pas&nbsp;? Copie ce lien dans ton navigateur&nbsp;: <a class="lien" href="{{ lien }}" style="color:#0a6745;">{{ lien }}</a>
+                {{ t.secours }} <a class="lien" href="{{ lien }}" style="color:#0a6745;">{{ lien }}</a>
               </p>
 
             </td>
@@ -119,11 +119,11 @@
           <tr>
             <td style="padding:22px 8px 0 8px;">
               <p class="discret" style="margin:0; color:#576159; font-size:12px; line-height:1.65;">
-                Tu reçois ce message parce que tu as activé les rappels quotidiens.
-                <a class="lien" href="{{ lien_desabonnement }}" style="color:#0a6745; text-decoration:underline;">Les arrêter en un clic</a>.
+                {{ t.raison }}
+                <a class="lien" href="{{ lien_desabonnement }}" style="color:#0a6745; text-decoration:underline;">{{ t.arret }}</a>.
               </p>
               <p class="discret" style="margin:10px 0 0 0; color:#8a948d; font-size:12px; line-height:1.6;">
-                Une question&nbsp;? Réponds simplement à ce message ou écris à <a class="lien" href="mailto:{{ support_email }}" style="color:#8a948d; text-decoration:underline;">{{ support_email }}</a>.
+                {{ t.question }} <a class="lien" href="mailto:{{ support_email }}" style="color:#8a948d; text-decoration:underline;">{{ support_email }}</a>.
               </p>
               <p class="discret" style="margin:10px 0 0 0; color:#8a948d; font-size:12px; line-height:1.5;">
                 <a href="{{ site_url }}" style="color:#8a948d; text-decoration:none;">{{ site_name }}</a>

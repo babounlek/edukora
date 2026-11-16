@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_ipv46_address
 from django.utils import timezone
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -44,6 +43,7 @@ from .email_service import consume_email_code
 from .otp_service import (
     OTPCapReached, OTPInvalid, OTPSendFailed, OTPThrottled, consume_otp, request_otp, verify_otp,
 )
+from .ip import client_ip
 from .models import AuthIdentity, AuthProvider, Profil, User
 from .parent import creer_jeton, exiger_mode_parent, jeton_parent_valide, session_restreinte
 from .phone import to_e164
@@ -105,35 +105,9 @@ def _set_refresh_cookie(response, refresh_token):
 
 
 def _client_ip(request):
-    """
-    IP réelle du demandeur, pour le plafond par source de users.otp_service.request_otp.
-
-    REMOTE_ADDR ne sert à rien en production : derrière Caddy (voir
-    docker/caddy/Caddyfile), Django ne voit jamais que l'IP du conteneur reverse proxy,
-    identique pour tout le monde. On lit donc X-Forwarded-For - mais l'entrée la plus à
-    DROITE, pas la première : Caddy AJOUTE l'IP du pair qu'il constate à la valeur
-    éventuellement déjà présente dans la requête entrante. Les entrées de gauche sont
-    donc fournies par le client, librement falsifiables, et le seul maillon de confiance
-    est la dernière, écrite par notre propre proxy. Ce raisonnement ne tient que tant
-    qu'il y a exactement un proxy de confiance devant Django (le cas ici : gunicorn
-    n'est joignable que sur le réseau interne Docker, jamais exposé) - il serait à
-    revoir en insérant un CDN ou un second proxy devant Caddy.
-
-    Retourne None plutôt qu'une valeur douteuse si rien d'exploitable n'est trouvé :
-    request_otp sait traiter ce cas (il saute le plafond par IP, le plafond global
-    couvrant toujours), là où une chaîne non validée ferait échouer l'écriture en base
-    (GenericIPAddressField = type `inet` côté PostgreSQL) et transformerait un en-tête
-    malformé en erreur 500.
-    """
-    forwarded = request.META.get("HTTP_X_FORWARDED_FOR", "")
-    candidate = forwarded.split(",")[-1].strip() if forwarded else request.META.get("REMOTE_ADDR", "")
-    if not candidate:
-        return None
-    try:
-        validate_ipv46_address(candidate)
-    except ValidationError:
-        return None
-    return candidate
+    """IP réelle du demandeur, pour le plafond par source de users.otp_service.request_otp - voir
+    users.ip.client_ip, lecture unique pour tout le projet (derrière Cloudflare comprise)."""
+    return client_ip(request)
 
 
 def _reponse_session_enfant(request, profil):

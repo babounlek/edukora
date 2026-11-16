@@ -462,7 +462,12 @@ export function CoursListPage() {
         <AideContextuelle guide="cours-liste" className="mt-1" />
       </div>
       {/* Même hero compact que /epreuves : les résultats doivent apparaître sans défiler, et le
-          volume du catalogue est la preuve qu'il y a de quoi chercher. */}
+          volume du catalogue est la preuve qu'il y a de quoi chercher. Pas pour un abonné, comme sur
+          /epreuves et /quiz : il n'a plus à être convaincu, et son premier cours n'apparaissait qu'à
+          730 px sur un téléphone (audit du 2026-11-16). Il garde un titre pour les lecteurs d'écran. */}
+      {abonne ? (
+        <h1 className="sr-only">{t("co.seo_liste")}</h1>
+      ) : (
       <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
         <div
           aria-hidden
@@ -508,6 +513,7 @@ export function CoursListPage() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Reprise de lecture juste sous le hero, avant les filtres : pour qui revient,
           c'est l'action la plus probable de la page - la faire chercher au milieu

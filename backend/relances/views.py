@@ -5,6 +5,8 @@ from django.views.decorators.http import require_http_methods
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from payments.rattrapage import rattraper_paiements_en_attente
+
 from .models import AbonnementPush
 from .push import push_configure
 from .bilan_parent import utilisateur_du_jeton_bilan
@@ -67,7 +69,12 @@ def _page_minimale(titre, message, statut):
 def paiement_a_reprendre_view(request):
     """La tentative de paiement que l'élève connecté n'a pas menée à terme, s'il y en a une
     - alimente la bannière « reprendre mon paiement » (voir services.paiement_a_reprendre,
-    même règle que la relance par e-mail : les deux ne peuvent pas se contredire)."""
+    même règle que la relance par e-mail : les deux ne peuvent pas se contredire).
+
+    L'application appelle cette route à l'ouverture : c'est là qu'un paiement validé après la fermeture de la
+    page d'abonnement est relu auprès de l'agrégateur (voir payments.rattrapage), avant de proposer de le
+    « reprendre » - le reprendre serait payer deux fois."""
+    rattraper_paiements_en_attente(user=request.user)
     transaction = paiement_a_reprendre(request.user)
     if transaction is None:
         return Response({"a_reprendre": False})

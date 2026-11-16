@@ -17,8 +17,11 @@ import unicodedata
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 
+from quiz.models import SeanceJournaliere, StatutSeance
 from quiz.services import revisions_dues
 from relances.models import CanalRelance, RelanceEnvoyee, TypeRelance
+from relances.services import langue_du_compte
+from subscriptions.models import Subscription
 from users.models import User
 from users.phone import to_e164, to_local
 
@@ -72,18 +75,34 @@ def _format_themes(schedules):
     return texte
 
 
-def utilisateurs_a_relancer():
+def utilisateurs_a_relancer(maintenant=None):
     """Génère (user, schedules) pour chaque utilisateur actuellement opt-in ayant au
     moins une révision due aujourd'hui (voir quiz.services.revisions_dues) - jamais
-    un utilisateur opt-in sans rien à réviser, un rappel vide n'aurait aucun sens."""
-    for optin in OptIn.objects.filter(opted_out_at__isnull=True).select_related("user"):
+    un utilisateur opt-in sans rien à réviser, un rappel vide n'aurait aucun sens.
+
+    Mêmes règles que le rappel par e-mail (voir relances.services.destinataires_rappel_seance) :
+    un numéro où écrire, un abonnement actif (la révision est verrouillée sans), et la séance du
+    jour pas déjà terminée - on ne rappelle pas à quelqu'un ce qu'il vient de faire."""
+    maintenant = maintenant or timezone.now()
+    aujourdhui = timezone.localtime(maintenant).date()
+    seance_faite = set(
+        SeanceJournaliere.objects.filter(date=aujourdhui, statut=StatutSeance.TERMINEE)
+        .values_list("profil__compte_id", flat=True),
+    )
+    abonnes = set(
+        Subscription.objects.filter(expires_at__gt=maintenant).values_list("user_id", flat=True),
+    )
+    for optin in OptIn.objects.filter(opted_out_at__isnull=True).select_related("user__cursus_prepare"):
+        user = optin.user
+        if not user.phone_number or user.pk not in abonnes or user.pk in seance_faite:
+            continue
         # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui
         # qu'un seul profil, la vraie bascule (JWT claim) n'étant pas encore branchée
         # sur ce canal hors requête HTTP.
-        profil = optin.user.profils.first()
+        profil = user.profils.first()
         schedules = list(revisions_dues(profil)) if profil is not None else []
         if schedules:
-            yield optin.user, schedules
+            yield user, schedules
 
 
 def envoyer_rappels_du_jour(maintenant=None):
@@ -99,14 +118,16 @@ def envoyer_rappels_du_jour(maintenant=None):
     partir : le tour suivant le retentera.
     """
     aujourdhui = (timezone.localtime(maintenant).date() if maintenant else timezone.localdate()).isoformat()
+    # Un seul rappel par jour, TOUS canaux confondus (voir relances.push) : qui a déjà reçu sa notification
+    # ou son e-mail aujourd'hui ne reçoit pas en plus un message WhatsApp.
     deja_envoyes = set(
         RelanceEnvoyee.objects.filter(
-            type=TypeRelance.RAPPEL_SEANCE, canal=CanalRelance.WHATSAPP, reference=aujourdhui,
+            type=TypeRelance.RAPPEL_SEANCE, reference=aujourdhui,
         ).values_list("user_id", flat=True)
     )
     backend = get_whatsapp_backend()
     envoyes = 0
-    for user, schedules in utilisateurs_a_relancer():
+    for user, schedules in utilisateurs_a_relancer(maintenant):
         if user.pk in deja_envoyes:
             continue
         trace = RelanceEnvoyee.objects.create(
@@ -117,6 +138,8 @@ def envoyer_rappels_du_jour(maintenant=None):
                 user.phone_number,
                 REMINDER_TEMPLATE_NAME,
                 [len(schedules), _format_themes(schedules)],
+                # Le modèle approuvé par Meta existe par langue : un élève du GCE reçoit la version anglaise.
+                langue=langue_du_compte(user),
             )
         except Exception:
             trace.delete()
