@@ -31,8 +31,10 @@ from users.profils import profil_actif
 from .libelles import libelle_cursus
 from .models import ORIGINES_DANS_L_APPLICATION, Langue, OrigineTemoignage, Temoignage
 
-# Nombre de quiz terminés à partir duquel on demande : le troisième, quand l'élève a de quoi juger.
-SEUIL_QUIZ = 3
+# Nombre de quiz terminés à partir duquel on demande. Un seul pour le moment (décision de l'utilisateur du
+# 2026-11-16, après un premier réglage à trois) : au lancement, peu d'élèves atteignent le troisième quiz, et il faut
+# d'abord recueillir des avis. À relever quand il y en aura assez : un avis donné après un seul quiz juge peu de chose.
+SEUIL_QUIZ = 1
 LONGUEUR_MAX_PRENOM = 30
 LONGUEUR_MAX_CONTENU = 600
 

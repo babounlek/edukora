@@ -39,7 +39,7 @@ class AvisTests(TestCase):
 
     # --- quand demander -----------------------------------------------------------------------
 
-    def test_rien_n_est_demande_avant_le_troisieme_quiz(self):
+    def test_rien_n_est_demande_avant_le_seuil_de_quiz(self):
         self._quiz_termines(SEUIL_QUIZ - 1)
         etat = self.client.get("/catalog/avis/").json()
         self.assertEqual((etat["eleve"], etat["parent"]), (False, False))
@@ -51,7 +51,7 @@ class AvisTests(TestCase):
         QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE)
         self.assertFalse(self.client.get("/catalog/avis/").json()["eleve"])
 
-    def test_au_troisieme_quiz_l_avis_est_demande_avec_le_prenom_et_l_examen(self):
+    def test_au_seuil_de_quiz_l_avis_est_demande_avec_le_prenom_et_l_examen(self):
         self._quiz_termines(SEUIL_QUIZ)
         etat = self.client.get("/catalog/avis/").json()
         self.assertTrue(etat["eleve"])

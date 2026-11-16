@@ -193,6 +193,10 @@ parent sur /mes-paiements, mobile sans débordement. Les lignes d'essai ont ét�
 
 Tests : 1 603 tests frontend, 1 001 tests backend (catalog, purge et seed des comptes de test, essais).
 
+**Mise à jour du 2026-11-16 : le seuil est ramené à un quiz terminé**, pour l'élève comme pour le parent (décision
+de l'utilisateur, « pour le moment »). Partout où cette section dit « troisième quiz » ou « trois quiz », lire « premier
+quiz » et « un quiz ». Réglage : `SEUIL_QUIZ` dans `backend/catalog/avis.py`.
+
 ### Décisions prises en codant, à valider
 - **Avis du parent après usage seulement.** La proposition disait « après un paiement réussi ». L'invitation n'apparaît
   que si le compte a déjà terminé trois quiz : un premier paiement n'a encore rien à juger, et l'écran du nouvel abonné

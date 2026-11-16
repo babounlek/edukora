@@ -30,8 +30,8 @@ function lireEcarte(cle: string): boolean {
  * « Ça t'a aidé ? » : l'avis d'un élève à la fin d'un quiz, ou d'un parent sur la page de ses paiements (audit de
  * l'accueil du 2026-11-15, R8 : preuve sociale réelle ou absente, jamais fabriquée).
  *
- * C'est le serveur qui dit s'il y a lieu de demander (voir catalog.avis côté backend) : à partir du troisième quiz
- * terminé, une seule fois, jamais à un compte invité. Un « Non merci » est retenu sur cet appareil.
+ * C'est le serveur qui dit s'il y a lieu de demander (voir catalog.avis côté backend, SEUIL_QUIZ) : à partir d'un
+ * nombre de quiz terminés qu'il fixe, une seule fois, jamais à un compte invité. Un « Non merci » est retenu sur cet appareil.
  *
  * Les auteurs sont mineurs : rien n'est affiché sans la case de consentement, non cochée d'office, et seul un prénom
  * accompagne le texte. Tout avis est relu dans l'admin avant d'être public ; l'écran le dit.
