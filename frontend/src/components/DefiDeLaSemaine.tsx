@@ -38,9 +38,11 @@ export function DefiDeLaSemaine({ country, cursusId }: { country: string; cursus
       : tn("defi.jours", defi.jours_restants)
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
-      <div className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
-        <Link to={fiche} className="group flex min-w-0 flex-1 items-center gap-3">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("defi.titre")}>
+      {/* Sur téléphone, « Toutes les minis » passe sous la carte : à côté, il ne laissait au titre que la place de
+          « Mini-inédite … », sans la matière, et le libellé tenait sur trois lignes. */}
+      <div className="flex flex-wrap items-center gap-x-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
+        <Link to={fiche} className="group flex min-w-0 flex-1 basis-full items-center gap-3 sm:basis-0">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
             {defi.releve ? <CheckCircle2 className="size-4" aria-hidden="true" /> : <Swords className="size-4" aria-hidden="true" />}
           </span>
@@ -49,13 +51,13 @@ export function DefiDeLaSemaine({ country, cursusId }: { country: string; cursus
               {t("defi.titre")}
               {defi.duree_minutes ? ` · ${t("defi.duree", { n: defi.duree_minutes })}` : ""}
             </span>
-            <span className="block truncate text-sm font-medium">{defi.titre}</span>
+            <span className="line-clamp-2 text-sm font-medium">{defi.titre}</span>
             <span className="block text-xs text-muted-foreground">{etat}</span>
             {precedent && <span className="block text-xs text-muted-foreground">{t(`defi.precedent_${precedent}`)}</span>}
           </span>
           <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
         </Link>
-        <Link to={liste} className="shrink-0 text-xs font-medium text-gold-text underline-offset-2 hover:underline">
+        <Link to={liste} className="ml-12 flex min-h-11 shrink-0 items-center text-xs font-medium text-gold-text underline-offset-2 hover:underline sm:ml-0">
           {t("defi.toutes")}
         </Link>
       </div>

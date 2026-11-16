@@ -455,6 +455,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "abonne.inedites_nombre_other": "{n} original papers",
   "abonne.inedites_toutes": "All {n}",
   "abonne.chargement": "Loading your home page",
+  "abonne.section_notation": "Paper to finish marking",
+  "abonne.section_inedites": "Original papers",
   "abonne.erreur_avant": "Unable to load your home page right now. Check your connection, then",
   "abonne.erreur_lien": "try again",
 
@@ -494,7 +496,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "depuis.revisions_one": "revision that held: what you got wrong has stuck.",
   "depuis.revisions_other": "revisions that held: what you got wrong has stuck.",
   "depuis.a_reprendre": "To pick up again",
-  "depuis.jours_retard": "+{n} d",
+  "depuis.jours_retard": "due {n} d ago",
   "depuis.lecture_en_cours": "Reading in progress",
 
   "oujensuis.aria": "Where I stand",
@@ -550,6 +552,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "jalon.defis_4": "4 weekly challenges taken",
   "reussites.famille_defis": "Weekly challenge",
   "cartes.mes": "My flashcards",
+  "cartes.chargement": "Loading the flashcards",
   "cartes.toutes": "All my decks",
   "cartes.h1": "Your revision cards",
   "cartes.intro": "The rule and the traps of each lesson, as cards. A card you knew comes back later and later; a card you missed comes back tomorrow.",
@@ -627,6 +630,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "quiz_en_cours.terminer": "Finish",
   "quiz_en_cours.oublier_aria": "Stop suggesting to resume this quiz",
   "quiz_en_cours.oublier_titre": "Stop suggesting",
+  "quiz_en_cours.section": "Quiz in progress",
 
   "ligne.initiales": "M,T,W,T,F,S,S",
   "ligne.objectif_atteint": "Goal reached",

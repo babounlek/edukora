@@ -167,19 +167,21 @@ export function InviteRappels() {
           {user.email_verified ? (
             <Button
               size="sm"
+              className="min-h-11"
               disabled={enCours}
               onClick={() => modifier({ rappels_actifs: true }, t("rappels.active"))}
             >
               {t("rappels.activer")}
             </Button>
           ) : (
-            <Button asChild size="sm">
+            <Button asChild size="sm" className="min-h-11">
               <Link to="/compte">{t("rappels.ajouter_email")}</Link>
             </Button>
           )}
           <Button
             size="sm"
             variant="ghost"
+            className="min-h-11"
             disabled={enCours}
             onClick={() => modifier({ rappels_invite_refusee: true })}
           >

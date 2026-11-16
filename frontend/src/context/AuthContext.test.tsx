@@ -3,13 +3,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 import { ApiError } from "@/api/client"
 
-const getMe = vi.hoisted(() => vi.fn())
+const { getMe, restaurerSession } = vi.hoisted(() => ({ getMe: vi.fn(), restaurerSession: vi.fn() }))
 
 vi.mock("@/api/endpoints", () => ({ getMe, updateMe: vi.fn() }))
 vi.mock("@/lib/pwa", () => ({ viderCacheHorsLigne: vi.fn() }))
 vi.mock("@/lib/push", () => ({ oublierPushLocal: vi.fn() }))
 vi.mock("sonner", () => ({ toast: { error: vi.fn() } }))
-vi.mock("@/api/client", async (importOriginal) => ({ ...(await importOriginal<typeof import("@/api/client")>()), logoutRequest: vi.fn() }))
+vi.mock("@/api/client", async (importOriginal) => ({ ...(await importOriginal<typeof import("@/api/client")>()), logoutRequest: vi.fn(), restaurerSession }))
 
 import { AuthProvider, useAuth } from "./AuthContext"
 import { estVisiteurAnonymeConnu, marquerVisiteurAnonyme } from "@/lib/sessionAnonyme"
@@ -32,6 +32,7 @@ function afficher() {
 
 beforeEach(() => {
   getMe.mockReset()
+  restaurerSession.mockReset().mockResolvedValue("ouverte")
   localStorage.clear()
   sessionStorage.clear()
 })
@@ -43,7 +44,24 @@ describe("AuthProvider : session au chargement", () => {
     expect(await screen.findByText("connecté")).toBeInTheDocument()
   })
 
-  it("retient qu'un visiteur est anonyme après un 401", async () => {
+  it("demande le jeton avant le compte : plus de 401 sur le compte à chaque chargement", async () => {
+    const ordre: string[] = []
+    restaurerSession.mockImplementation(async () => { ordre.push("jeton"); return "ouverte" })
+    getMe.mockImplementation(async () => { ordre.push("compte"); return { id: 1 } })
+    afficher()
+    expect(await screen.findByText("connecté")).toBeInTheDocument()
+    expect(ordre).toEqual(["jeton", "compte"])
+  })
+
+  it("retient qu'un visiteur est anonyme quand le serveur dit qu'il n'y a pas de session", async () => {
+    restaurerSession.mockResolvedValue("absente")
+    afficher()
+    expect(await screen.findByText("anonyme")).toBeInTheDocument()
+    expect(estVisiteurAnonymeConnu()).toBe(true)
+    expect(getMe).not.toHaveBeenCalled()
+  })
+
+  it("retient aussi l'anonymat quand la session existe mais plus le compte", async () => {
     getMe.mockRejectedValue(new ApiError(401, { detail: "non authentifié" }))
     afficher()
     expect(await screen.findByText("anonyme")).toBeInTheDocument()
@@ -54,10 +72,19 @@ describe("AuthProvider : session au chargement", () => {
     marquerVisiteurAnonyme()
     afficher()
     expect(await screen.findByText("anonyme")).toBeInTheDocument()
+    expect(restaurerSession).not.toHaveBeenCalled()
     expect(getMe).not.toHaveBeenCalled()
   })
 
   it("ne conclut rien d'une simple panne réseau", async () => {
+    restaurerSession.mockResolvedValue("inconnue")
+    afficher()
+    await waitFor(() => expect(screen.getByText("anonyme")).toBeInTheDocument())
+    expect(estVisiteurAnonymeConnu()).toBe(false)
+    expect(getMe).not.toHaveBeenCalled()
+  })
+
+  it("ni d'une panne survenue après le jeton", async () => {
     getMe.mockRejectedValue(new TypeError("Failed to fetch"))
     afficher()
     await waitFor(() => expect(screen.getByText("anonyme")).toBeInTheDocument())

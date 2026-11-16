@@ -11,10 +11,12 @@ import { traduireLibelleSerie } from "@/lib/cursus"
  * La liste vient du serveur (voir lib/quizEnCours) : elle suit l'élève d'un appareil à l'autre. Rien ne
  * s'affiche s'il n'y en a pas, ou si l'élève a demandé à ne plus se voir proposer celle-ci.
  */
-export function ReprendreQuiz({ className, enveloppe = false }: { className?: string; enveloppe?: boolean }) {
+export function ReprendreQuiz({
+  className, enveloppe = false, fraicheurMs,
+}: { className?: string; enveloppe?: boolean; fraicheurMs?: number }) {
   useI18n()
   const cle = useCleQuizEnCours()
-  const { data } = useQuizEnCours()
+  const { data } = useQuizEnCours({ fraicheurMs })
   // Relit le stockage quand l'élève ferme la carte (le stockage seul ne déclenche aucun rendu).
   const [, setVersion] = useState(0)
 
@@ -66,5 +68,7 @@ export function ReprendreQuiz({ className, enveloppe = false }: { className?: st
   )
 
   // Même gabarit que la reprise d'une épreuve inédite sur l'accueil.
-  return enveloppe ? <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">{carte}</section> : carte
+  return enveloppe
+    ? <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("quiz_en_cours.section")}>{carte}</section>
+    : carte
 }

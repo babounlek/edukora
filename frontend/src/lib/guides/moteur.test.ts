@@ -12,7 +12,8 @@ const contexteEleve = (surcharges: Partial<ContexteGuide> = {}): ContexteGuide =
   onboardingOuvert: false,
   enExamen: false,
   dialogueOuvert: false,
-  ciblePresente: () => true,
+  // Tout est à l'écran, sauf le repère d'un élève qui a déjà terminé une séance (voir AccueilEleve).
+  ciblePresente: (nom) => nom !== "eleve-installe",
   ...surcharges,
 })
 
@@ -156,6 +157,16 @@ describe("peutDeclencherAuto", () => {
 
   it("le tutoriel de l'élève attend que le bouton de séance soit à l'écran", () => {
     expect(peutDeclencherAuto(bienvenue, contexteEleve({ ciblePresente: () => false }), situation())).toBe(false)
+  })
+
+  it("le tutoriel de l'élève ne se rejoue pas pour qui a déjà terminé une séance", () => {
+    // Nouvel appareil, mémoire des guides vide : sans le repère, un abonné de longue date revoyait « Bienvenue ».
+    // Un abonné : le bouton de la séance est là, pas celui de la séance verrouillée.
+    const installe = contexteEleve({ ciblePresente: (nom) => nom !== "seance-debloquer" })
+    expect(peutDeclencherAuto(bienvenue, installe, situation())).toBe(false)
+    expect(guideAutomatique(installe, situation())).toBeNull()
+    // Et l'aide de la séance ne prend pas sa place.
+    expect(peutDeclencherAuto(aideSeance, installe, situation())).toBe(false)
   })
 
   it("l'aide de la séance cède la place au tutoriel de bienvenue encore à faire", () => {

@@ -324,7 +324,13 @@ def en_cours(request):
 
     Une session sans aucune réponse n'est pas une tentative interrompue : elle n'est pas listée.
     """
-    profil = profil_actif(request)
+    return Response(quiz_en_cours(profil_actif(request), request.user))
+
+
+def quiz_en_cours(profil, user):
+    """La liste que rend GET /quiz/en-cours/ (voir `en_cours`). L'accueil d'un abonné la sert aussi dans sa propre
+    réponse (quiz.views.accueil_view) : la carte « Quiz en cours » s'affiche alors en même temps que la séance, au
+    lieu de s'insérer au-dessus d'elle un instant plus tard."""
     limite = timezone.now() - timedelta(days=EN_COURS_JOURS)
     sessions = list(
         QuizSession.objects.filter(profil=profil, completed_at__isnull=True)
@@ -337,9 +343,9 @@ def en_cours(request):
         .filter(nb_repondues__gt=0, derniere_reponse__gte=limite)
         .order_by("-derniere_reponse", "-pk")[: EN_COURS_MAX * 4]
     )
-    sessions = _sessions_jouables(profil, request.user, sessions)[:EN_COURS_MAX]
+    sessions = _sessions_jouables(profil, user, sessions)[:EN_COURS_MAX]
     libelles = {}
-    return Response([
+    return [
         {
             "id": s.id,
             "mode": s.mode,
@@ -360,4 +366,4 @@ def en_cours(request):
             "rejeu_de": s.rejeu_de_id,
         }
         for s in sessions
-    ])
+    ]

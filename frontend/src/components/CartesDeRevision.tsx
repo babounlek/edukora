@@ -1,15 +1,24 @@
-import { useState } from "react"
+import { lazy, Suspense, useState } from "react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Link } from "react-router-dom"
 import { Layers } from "lucide-react"
 
 import { getCartesCours, getCartesDues, noterCarte } from "@/api/endpoints"
 import type { CarteRevision } from "@/api/types"
-import { PaquetDeCartes } from "@/components/PaquetDeCartes"
+// Chargé à l'ouverture d'un paquet seulement : PaquetDeCartes tire le moteur de rendu des formules (147 Ko compressés,
+// 27 % du JavaScript de l'accueil d'un abonné), alors que la ligne de l'accueil n'affiche qu'un nombre et un bouton, et
+// rien du tout quand aucune carte n'est due (audit de l'accueil abonné, 2026-11-16).
+const PaquetDeCartes = lazy(() => import("@/components/PaquetDeCartes").then((m) => ({ default: m.PaquetDeCartes })))
 import { Button } from "@/components/ui/button"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 
-const CLE_DUES = ["cartes-dues"] as const
+/** Clé de cache des cartes dues : la même pour la route seule et pour l'accueil, qui la remplit (voir AccueilEleve). */
+export const CLE_DUES = ["cartes-dues"] as const
+
+/** La place du paquet pendant son chargement : à peu près la hauteur d'une carte, pour que la page ne saute pas. */
+function AttentePaquet() {
+  return <div className="h-40 rounded-2xl bg-muted/50" aria-busy="true" aria-label={t("cartes.chargement")} />
+}
 
 /**
  * Fin d'un cours (audit produit 2026-11-13, R18) : « Réviser en cartes » ouvre les cartes du cours (la règle, puis ses erreurs
@@ -48,15 +57,17 @@ export function CartesDuCours({ slug }: { slug: string }) {
       </div>
       {paquet && (
         <div className="mt-4">
-          <PaquetDeCartes
-            cartes={paquet}
-            noter={(carte, savais) => noterCarte(slug, carte.cle, savais)}
-            onTermine={() => {
-              client.invalidateQueries({ queryKey: ["cartes-cours", slug] })
-              client.invalidateQueries({ queryKey: CLE_DUES })
-              client.invalidateQueries({ queryKey: ["cartes-paquets"] })
-            }}
-          />
+          <Suspense fallback={<AttentePaquet />}>
+            <PaquetDeCartes
+              cartes={paquet}
+              noter={(carte, savais) => noterCarte(slug, carte.cle, savais)}
+              onTermine={() => {
+                client.invalidateQueries({ queryKey: ["cartes-cours", slug] })
+                client.invalidateQueries({ queryKey: CLE_DUES })
+                client.invalidateQueries({ queryKey: ["cartes-paquets"] })
+              }}
+            />
+          </Suspense>
         </div>
       )}
     </section>
@@ -95,10 +106,12 @@ export function LigneCartes({ integre = false }: { integre?: boolean }) {
         </div>
         {paquet && (
           <div className="mt-4">
-            <PaquetDeCartes
-              cartes={paquet}
-              noter={(carte, savais) => noterCarte(carte.cours?.slug ?? "", carte.cle, savais)}
-            />
+            <Suspense fallback={<AttentePaquet />}>
+              <PaquetDeCartes
+                cartes={paquet}
+                noter={(carte, savais) => noterCarte(carte.cours?.slug ?? "", carte.cle, savais)}
+              />
+            </Suspense>
           </div>
         )}
       </div>

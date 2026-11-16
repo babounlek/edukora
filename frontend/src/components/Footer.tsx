@@ -8,6 +8,7 @@ import type { Cursus, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { ouvrirCentre } from "@/lib/guides/etat"
 import { useAbonneActif } from "@/lib/abonneActif"
+import { accueilEleveProbable } from "@/lib/indiceAccueil"
 import { useCountry } from "@/context/CountryContext"
 import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, examenPath, themesFrequentsPath } from "@/lib/countryPath"
@@ -159,13 +160,16 @@ export function Footer() {
   // sur toutes les pages, et un total des deux langues y contredisait la page. (« À propos » reste global.)
   const langueStats = langueDeListe("", false)
   const abonne = useAbonneActif()
+  const { isLoading: sessionEnLecture } = useAuth()
   // Un élève abonné ne voit pas le total de la plateforme : « 512 épreuves, 785 cours » contredisait sa propre liste (96 épreuves,
   // 162 cours pour son examen et ses matières). Ces chiffres sont un argument pour un visiteur, pas une information pour lui.
   const { data: statsPlateforme } = useQuery({
     queryKey: ["platform-stats", langueStats],
     queryFn: () => getPlatformStats(langueStats),
     staleTime: 60 * 60 * 1000,
-    enabled: !abonne,
+    // Tant que la session se retrouve, un abonné probable (voir lib/indiceAccueil) n'est pas encore « abonné » :
+    // la requête partait pour rien, juste avant d'être désactivée.
+    enabled: !abonne && !(sessionEnLecture && accueilEleveProbable()),
   })
   const stats = abonne ? undefined : statsPlateforme
   // Même clé que /epreuves et /themes-frequents : déjà en cache la plupart du temps.

@@ -857,6 +857,11 @@ def _cloturer(lot):
         lot.statut = StatutLot.REUSSI
     lot.compteurs, lot.fin_le = compteurs, timezone.now()
     lot.save(update_fields=["statut", "compteurs", "fin_le"])
+    # Le classement des thèmes par matière est gardé en cache (voir quiz.services.squelette_par_frequence) :
+    # ce lot vient peut-être d'y ajouter des épreuves, des quiz ou des cours.
+    from quiz.services import oublier_squelettes
+
+    oublier_squelettes()
     return {"batch_id": lot.batch_id, "statut": lot.statut, "compteurs": compteurs, "avertissements": avertissements}
 
 

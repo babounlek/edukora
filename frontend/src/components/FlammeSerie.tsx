@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query"
 import { Flame } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 import { getPlanDuJour } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath } from "@/lib/countryPath"
+import { estAccueilCatalogue } from "@/lib/guides/contenu"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
@@ -19,10 +20,15 @@ export function FlammeSerie() {
   const { isAuthenticated, user } = useAuth()
   const { country } = useCountry()
   const actif = isAuthenticated && Boolean(user?.cursus_prepare)
+  // Sur l'accueil d'un abonné, le plan du jour arrive dans la réponse de l'accueil, qui le dépose sous cette même clé
+  // (voir AccueilEleve) : le demander ici aussi le faisait calculer deux fois à chaque ouverture. La flamme lit donc
+  // ce que l'accueil dépose ; sur toute autre page, elle fait sa requête comme avant.
+  const { pathname } = useLocation()
+  const servieParLAccueil = estAccueilCatalogue(pathname) && Boolean(user?.a_un_abonnement_actif)
   const { data: plan } = useQuery({
     queryKey: ["plan-du-jour"],
     queryFn: ({ signal }) => getPlanDuJour(signal),
-    enabled: actif,
+    enabled: actif && !servieParLAccueil,
     staleTime: 5 * 60_000,
   })
   const jours = plan?.serie?.jours ?? 0

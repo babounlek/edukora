@@ -62,7 +62,11 @@ export const GUIDES: readonly DefinitionGuide[] = [
     route: estAccueilCatalogue,
     // Le tutoriel parle de la séance du jour : sans le bouton de séance à l'écran (élève sans
     // abonnement, séance du jour absente), il décrirait quelque chose qu'on ne voit pas.
-    condition: (contexte) => contexte.ciblePresente("seance-commencer"),
+    // Et jamais de lui-même pour un élève qui a déjà terminé une séance (repère `eleve-installe`, posé par
+    // AccueilEleve) : la mémoire des guides est gardée par appareil, donc un abonné de longue date revoyait
+    // « Bienvenue sur EduKora » sur chaque nouveau téléphone, par-dessus 40 % de l'écran (audit de l'accueil
+    // abonné, 2026-11-16). Il reste disponible à la demande dans le centre d'aide.
+    condition: (contexte) => contexte.ciblePresente("seance-commencer") && !contexte.ciblePresente("eleve-installe"),
     etapes: [
       ETAPE_INTERET,
       {
@@ -150,6 +154,10 @@ export const GUIDES: readonly DefinitionGuide[] = [
     cheminRelance: "accueil",
     contextePage: "seance",
     route: estAccueilCatalogue,
+    // Même règle que la bienvenue : cette aide ne s'ouvre pas d'elle-même pour un élève qui a déjà terminé une
+    // séance. Sinon elle prenait la place du tutoriel sur un nouvel appareil : 400 px d'explication dans la carte de
+    // séance, à quelqu'un qui s'en sert depuis des semaines. Le bouton d'aide de la carte la rouvre à la demande.
+    condition: (contexte) => !contexte.ciblePresente("eleve-installe"),
     etapes: [
       {
         id: "fonctionnement",

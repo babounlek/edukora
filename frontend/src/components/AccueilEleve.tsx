@@ -1,13 +1,13 @@
 import { useEffect, useMemo } from "react"
 import { Link } from "react-router-dom"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, ClipboardCheck, Clock, Crown, Play } from "lucide-react"
 
 import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
 import type { Accueil, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
-import { LigneCartes } from "@/components/CartesDeRevision"
+import { CLE_DUES, LigneCartes } from "@/components/CartesDeRevision"
 import { DefiDeLaSemaine } from "@/components/DefiDeLaSemaine"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
@@ -21,9 +21,42 @@ import { marquerAffichageAccueil } from "@/lib/accueilChrono"
 import { coursReaderPath, epreuveInediteDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 import { formatDuration } from "@/lib/duration"
 import { maintenantServeur } from "@/lib/horlogeServeur"
+import { cleQuizEnCours, FRAICHEUR_ACCUEIL_MS } from "@/lib/quizEnCours"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { useSeo } from "@/lib/seo"
+
+/**
+ * Dépose les reprises reçues avec l'accueil dans le cache de la route de chacune (voir quiz.views._reprises côté
+ * serveur) : la carte « Quiz en cours », la ligne des cartes et le défi de la semaine lisent ces clés et s'affichent
+ * donc avec la séance, sans requête à eux. Avant, chacun arrivait un instant après : la carte « Quiz en cours »,
+ * placée au-dessus de la séance, faisait descendre « Commencer » de 128 px (audit de l'accueil abonné, 2026-11-16).
+ *
+ * `seulementSiAbsent` : pour un accueil relu dans le navigateur (version de la dernière visite), on ne remplace
+ * jamais une donnée que la page tient déjà du serveur, forcément plus récente.
+ */
+function deposerReprises(
+  queryClient: QueryClient,
+  accueil: Accueil,
+  profilId: number | null | undefined,
+  cursusId: number,
+  { seulementSiAbsent = false }: { seulementSiAbsent?: boolean } = {},
+) {
+  const reprises = accueil.reprises
+  if (!reprises) return
+  const deposer = (cle: readonly unknown[], valeur: unknown) => {
+    if (seulementSiAbsent && queryClient.getQueryData(cle) !== undefined) return
+    queryClient.setQueryData(cle, valeur)
+  }
+  if (profilId != null) deposer(cleQuizEnCours(profilId), reprises.quiz_en_cours)
+  deposer(CLE_DUES, reprises.cartes_dues)
+  deposer(["defi-semaine", cursusId], { defi: reprises.defi })
+}
+
+/** Deux instants tombent-ils le même jour, à l'heure de l'appareil ? */
+function memeJour(a: number, b: number): boolean {
+  return new Date(a).toDateString() === new Date(b).toDateString()
+}
 
 /**
  * L'accueil d'un élève ABONNÉ, en trois zones et pas plus :
@@ -54,6 +87,7 @@ export function AccueilEleve({ country }: { country: string }) {
   const queryClient = useQueryClient()
   const cursusId = user?.cursus_prepare?.id
   const userId = user?.id
+  const profilId = user?.profil_actif?.id
 
   // Le chrono du seul chiffre qui juge cette page : le délai jusqu'à "Commencer".
   useEffect(() => {
@@ -61,11 +95,16 @@ export function AccueilEleve({ country }: { country: string }) {
   }, [])
 
   const enCache = useMemo(
-    () => (userId && cursusId ? lireAccueilEnCache(userId, cursusId) : null),
-    [userId, cursusId],
+    () => {
+      const entree = userId && cursusId ? lireAccueilEnCache(userId, cursusId) : null
+      // Avant le premier rendu des blocs : ils trouvent leurs données en montant, sans requête.
+      if (entree && cursusId) deposerReprises(queryClient, entree.data, profilId, cursusId, { seulementSiAbsent: true })
+      return entree
+    },
+    [userId, cursusId, profilId, queryClient],
   )
 
-  const { data, isError } = useQuery({
+  const { data, isError, isFetchedAfterMount, fetchStatus } = useQuery({
     queryKey: ["accueil", cursusId],
     queryFn: async ({ signal }) => {
       const accueil = await getAccueil(signal)
@@ -76,6 +115,7 @@ export function AccueilEleve({ country }: { country: string }) {
       queryClient.setQueryData(["plan-du-jour"], accueil.plan)
       if (accueil.bilan_semaine) queryClient.setQueryData(["bilan-periode", cursusId, 7], accueil.bilan_semaine)
       queryClient.setQueryData(["parcours-resume", cursusId], accueil.resume)
+      if (cursusId) deposerReprises(queryClient, accueil, profilId, cursusId)
       if (userId && cursusId) ecrireAccueilEnCache(userId, cursusId, accueil)
       return accueil
     },
@@ -93,18 +133,21 @@ export function AccueilEleve({ country }: { country: string }) {
     enabled: Boolean(cursusId),
   })
 
-  // Les inédites de SON cursus uniquement - même clé de cache que la vitrine.
-  const cursusAccueil = useCursusAccueil(country)
+  // Les inédites de SON cursus uniquement - même clé de cache que la vitrine. L'examen du compte, quelle que soit
+  // la langue de l'interface (voir `toutesLangues` dans useCursusAccueil).
+  const cursusAccueil = useCursusAccueil(country, { toutesLangues: true })
   const { data: inedites } = useInedites(country, cursusAccueil)
   // Une épreuve inédite commencée et pas rendue : la seule porte d'entrée vers elle était
-  // le menu du compte > Mon historique. staleTime 0 : l'accueil rouvert après avoir rendu sa
-  // copie ne doit pas proposer de la reprendre.
-  const { data: tentatives } = useQuery({
+  // le menu du compte > Mon historique. La liste arrive avec l'accueil (voir `reprises`), qui est relu à chaque
+  // ouverture : l'accueil rouvert après avoir rendu sa copie ne propose donc pas de la reprendre. La requête à part
+  // ne sert plus qu'à un accueil gardé en cache d'avant ce champ (staleTime 0, pour la même raison).
+  const { data: tentativesSeules } = useQuery({
     queryKey: ["inedit-tentatives"],
     queryFn: () => listMyTentativesInedites(),
     staleTime: 0,
-    enabled: Boolean(cursusId),
+    enabled: Boolean(cursusId) && Boolean(data) && !data?.reprises,
   })
+  const tentatives = data?.reprises?.tentatives ?? tentativesSeules
   const enCours = tentatives?.find((t) => t.submitted_at === null)
   // La dernière copie rendue dont il reste des questions à noter (voir questions_a_noter côté serveur).
   const aNoter = tentatives?.find((t) => t.submitted_at !== null && (t.questions_a_noter ?? 0) > 0)
@@ -121,14 +164,26 @@ export function AccueilEleve({ country }: { country: string }) {
   // à ~1 380 px du haut (test élève 2026-11-07). Elle remonte sous la séance, avec les autres reprises. Sauf si la
   // séance du jour EST cette lecture : le bouton de la tête de page y mène déjà, un second serait un doublon.
   const lectureAReprendre = data.lecture && data.plan?.seance?.origine !== "LECTURE_EN_COURS" ? data.lecture : null
+  // La page de la dernière visite s'affiche avant la réponse du serveur (voir lib/accueilCache). Si cette visite
+  // date d'un autre jour, sa carte de séance est fausse : « Séance faite », ou le thème de la veille, le temps du
+  // chargement (audit de l'accueil abonné, 2026-11-16). On garde donc le reste de la page et on met la carte en
+  // attente tant que le serveur n'a pas répondu. Hors connexion (requête en pause) ou après un échec, la page
+  // d'hier vaut mieux que rien : elle reste affichée en entier.
+  const seanceEnAttente = enCache != null && !memeJour(enCache.date, Date.now())
+    && !isFetchedAfterMount && fetchStatus === "fetching"
 
   return (
-    <div className="pb-4">
+    // `eleve-installe` : repère lu par le tutoriel de bienvenue (voir lib/guides/contenu.ts), posé dès que l'élève a
+    // terminé une séance. Sans lui, le tutoriel se rejouait à un abonné de longue date sur chaque nouvel appareil.
+    <div className="pb-4" data-guide={data.premiers_pas ? undefined : "eleve-installe"}>
+      {/* Le titre de la page, pour les lecteurs d'écran et le plan du document : la salutation visible contient un
+          sélecteur d'examen, qui n'a pas sa place dans un titre. */}
+      <h1 className="sr-only">{t("seance.aujourdhui")}</h1>
       {enCours && chronoEnCours && <LigneReprise tentative={enCours} />}
       {/* Un quiz commencé passe lui aussi avant la tête de page (test élève 2026-11-07, deux testeurs : « Quiz en cours »
           à ~1 180 px du haut, sous le premier écran). Ordre : chrono d'examen, puis quiz, puis la séance du jour. */}
-      <ReprendreQuiz enveloppe />
-      <TeteAccueil accueil={data} country={country} />
+      <ReprendreQuiz enveloppe fraicheurMs={FRAICHEUR_ACCUEIL_MS} />
+      {seanceEnAttente ? <SqueletteTete /> : <TeteAccueil accueil={data} country={country} />}
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). */}
       {enCours && !chronoEnCours && <LigneReprise tentative={enCours} />}
@@ -158,7 +213,7 @@ export function AccueilEleve({ country }: { country: string }) {
 /** Une copie rendue dont la note n'est pas complète : l'élève se note lui-même, un rappel finit le travail. */
 function LigneNotation({ tentative }: { tentative: TentativeInediteListItem }) {
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("abonne.section_notation")}>
       <Link
         to={`/inedit/tentative/${tentative.id}`}
         className="group flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold"
@@ -182,7 +237,7 @@ function LigneNotation({ tentative }: { tentative: TentativeInediteListItem }) {
 /** La lecture ouverte cette semaine (cours ou épreuve), à reprendre là où l'élève s'est arrêté. */
 function LigneLecture({ lecture }: { lecture: NonNullable<Accueil["lecture"]> }) {
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("depuis.lecture_en_cours")}>
       <Link
         to={lecture.type === "cours" ? coursReaderPath(lecture.slug) : epreuveReaderPath(lecture.country, lecture.slug)}
         className="group flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-3.5 transition-colors hover:border-primary/40"
@@ -212,7 +267,7 @@ function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
     ? Math.max(0, Math.round((new Date(tentative.echeance).getTime() - maintenantServeur()) / 1000))
     : null
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("abonne.inedite_en_cours")}>
       <Link
         to={`/inedit/tentative/${tentative.id}`}
         className="group flex items-center gap-3 rounded-2xl border border-primary/40 bg-primary/5 px-5 py-3.5 transition-colors hover:border-primary"
@@ -254,7 +309,7 @@ function LigneInedites({
   const fiche = suivante ? epreuveInediteDetailPath(country, suivante.slug ?? suivante.id) : null
   const intitule = suivante?.title ?? inedites.results[0]?.title ?? t("abonne.inedites_generique")
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("abonne.section_inedites")}>
       <div className="flex items-center gap-3 rounded-2xl border border-gold/30 bg-gold/5 px-5 py-3.5 transition-colors hover:border-gold/60">
         <Link to={fiche ?? liste} className="group flex min-w-0 flex-1 items-center gap-3">
           <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
@@ -264,13 +319,14 @@ function LigneInedites({
             <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {fiche ? t("abonne.prochaine_inedite") : tn("abonne.inedites_nombre", inedites.count)}
             </span>
-            <span className="block truncate text-sm font-medium">{intitule}</span>
+            {/* Deux lignes plutôt qu'une coupe : à 375 px, « Mini-inédite Franç… » perdait la matière, le mot utile. */}
+            <span className="line-clamp-2 text-sm font-medium">{intitule}</span>
           </span>
-          <Clock className="size-4 shrink-0 text-muted-foreground" />
-          <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" />
+          <Clock className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
         </Link>
         {fiche && (
-          <Link to={liste} className="shrink-0 text-xs font-medium text-gold-text underline-offset-2 hover:underline">
+          <Link to={liste} className="flex min-h-11 shrink-0 items-center text-xs font-medium text-gold-text underline-offset-2 hover:underline">
             {t("abonne.inedites_toutes", { n: inedites.count })}
           </Link>
         )}
@@ -287,25 +343,38 @@ function LigneInedites({
 export function SqueletteAccueil() {
   return (
     <div className="pb-4" aria-busy="true" aria-label={t("abonne.chargement")}>
-      <div className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6">
-        <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
-          <div className="h-44 bg-primary/10 sm:h-40" />
-          <div className="space-y-4 p-5 sm:p-8">
-            <div className="h-4 w-24 rounded bg-muted" />
-            <div className="h-9 w-3/4 rounded bg-muted" />
-            <div className="flex gap-2">
-              <div className="h-7 w-24 rounded-full bg-muted" />
-              <div className="h-7 w-16 rounded-full bg-muted" />
-            </div>
-            <div className="h-12 w-52 rounded-full bg-muted" />
-          </div>
-        </div>
-      </div>
+      <SqueletteTete seul={false} />
       <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
         <div className="h-36 rounded-3xl border border-border/70 bg-card" />
       </div>
       <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
         <div className="h-64 rounded-3xl border border-border/70 bg-card" />
+      </div>
+    </div>
+  )
+}
+
+/**
+ * La place de la carte de séance, vide. `seul` : affichée à la place de la carte dans une page par ailleurs
+ * remplie (accueil d'un autre jour relu dans le navigateur) ; elle s'annonce alors elle-même aux lecteurs d'écran.
+ */
+function SqueletteTete({ seul = true }: { seul?: boolean }) {
+  return (
+    <div
+      className="mx-auto max-w-5xl px-4 pt-5 sm:px-6 sm:pt-6"
+      {...(seul ? { "aria-busy": true, "aria-label": t("abonne.chargement") } : {})}
+    >
+      <div className="overflow-hidden rounded-3xl border border-border/70 bg-card">
+        <div className="h-44 bg-primary/10 sm:h-40" />
+        <div className="space-y-4 p-5 sm:p-8">
+          <div className="h-4 w-24 rounded bg-muted" />
+          <div className="h-9 w-3/4 rounded bg-muted" />
+          <div className="flex gap-2">
+            <div className="h-7 w-24 rounded-full bg-muted" />
+            <div className="h-7 w-16 rounded-full bg-muted" />
+          </div>
+          <div className="h-12 w-52 rounded-full bg-muted" />
+        </div>
       </div>
     </div>
   )

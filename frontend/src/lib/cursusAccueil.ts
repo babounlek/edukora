@@ -54,8 +54,16 @@ export function useCursusPrepareDeclare(country: string | undefined): Cursus | n
  * `undefined` tant que cette vérification n'a pas pu se faire (liste pas encore
  * chargée) : répondre `null` d'ici là ferait afficher un instant les inédites de tout
  * le pays avant de les restreindre.
+ *
+ * `toutesLangues` : l'accueil d'un ABONNÉ est fait de ses propres affaires, pas du catalogue. La règle de langue
+ * ci-dessous (un examen de l'autre langue ne restreint pas la page) y faisait disparaître « Mes erreurs » et le défi
+ * de la semaine, et proposait à un élève du BEPC les inédites du GCE dès qu'il lisait l'interface en anglais (audit
+ * de l'accueil abonné, 2026-11-16). Cet accueil garde donc l'examen du compte, quelle que soit la langue affichée.
  */
-export function useCursusAccueil(country: string): number | null | undefined {
+export function useCursusAccueil(
+  country: string,
+  { toutesLangues = false }: { toutesLangues?: boolean } = {},
+): number | null | undefined {
   const { data: cursusList, isError } = useQuery({
     queryKey: ["cursus", country],
     queryFn: ({ signal }) => listCursus(country, signal),
@@ -68,7 +76,7 @@ export function useCursusAccueil(country: string): number | null | undefined {
   if (!cursusList) return undefined
   // Un examen déclaré dans l'autre langue que l'interface ne restreint pas l'accueil (voir lib/cursusLangue).
   const examen = cursusList.find((c) => c.id === declare)
-  return examen && estDeLangue(examen, langueCourante()) ? declare : null
+  return examen && (toutesLangues || estDeLangue(examen, langueCourante())) ? declare : null
 }
 
 /**

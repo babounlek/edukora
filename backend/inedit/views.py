@@ -530,6 +530,13 @@ def list_my_tentatives_inedites(request):
     la sienne."""
     profil = profil_actif(request)
     cursus = request.user.cursus_prepare if profil is not None else None
+    return Response(tentatives_inedites(profil, cursus))
+
+
+def tentatives_inedites(profil, cursus):
+    """La liste que rend GET /inedit/mes-tentatives/ (voir `list_my_tentatives_inedites`). L'accueil d'un abonné la
+    sert aussi dans sa propre réponse (quiz.views.accueil_view), pour proposer de reprendre une épreuve ou de finir
+    sa notation sans requête de plus."""
     tentatives = (
         TentativeInedite.objects.filter(profil=profil)
         .select_related("epreuve__subject", "epreuve__blueprint")
@@ -556,7 +563,7 @@ def list_my_tentatives_inedites(request):
     ids_defis = set(
         DefiSemaine.objects.filter(epreuve_id__in={t.epreuve_id for t in tentatives}).values_list("epreuve_id", flat=True),
     )
-    return Response([
+    return [
         {
             "id": tentative.id,
             "epreuve": tentative.epreuve_id,
@@ -574,7 +581,7 @@ def list_my_tentatives_inedites(request):
             "questions_a_noter": a_noter.get(tentative.id),
         }
         for tentative in tentatives
-    ])
+    ]
 
 
 @api_view(["POST"])

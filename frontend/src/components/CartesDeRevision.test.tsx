@@ -33,7 +33,8 @@ describe("CartesDuCours", () => {
     monter(<CartesDuCours slug="c" />)
     expect(await screen.findByText(/2 cartes à réviser/)).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Réviser" }))
-    expect(screen.getByText("Dérivée d'un produit")).toBeTruthy()
+    // Le paquet de cartes se charge à l'ouverture (voir CartesDeRevision) : on l'attend.
+    expect(await screen.findByText("Dérivée d'un produit")).toBeTruthy()
     expect(screen.queryByText("u'v + uv'")).toBeNull() // le verso attend « Voir la réponse »
   })
 
@@ -41,7 +42,7 @@ describe("CartesDuCours", () => {
     getCartesCours.mockResolvedValue({ cours: { slug: "c", titre: "C" }, cartes: [carte(), carte({ cle: "erreur-0", type: "erreur", recto: "Piège", verso: "Faux" })] })
     monter(<CartesDuCours slug="c" />)
     fireEvent.click(await screen.findByRole("button", { name: "Réviser" }))
-    fireEvent.click(screen.getByRole("button", { name: "Voir la réponse" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Voir la réponse" }))
     expect(screen.getByText("u'v + uv'")).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Je savais" }))
     await waitFor(() => expect(noterCarte).toHaveBeenCalledWith("c", "regle", true))
@@ -63,7 +64,7 @@ describe("CartesDuCours", () => {
     getCartesCours.mockResolvedValue({ cours: { slug: "c", titre: "C" }, cartes: [carte()] })
     monter(<CartesDuCours slug="c" />)
     fireEvent.click(await screen.findByRole("button", { name: "Réviser" }))
-    fireEvent.click(screen.getByRole("button", { name: "Voir la réponse" }))
+    fireEvent.click(await screen.findByRole("button", { name: "Voir la réponse" }))
     fireEvent.click(screen.getByRole("button", { name: "Je savais" }))
     expect(await screen.findByRole("alert")).toBeTruthy()
     expect(screen.getByText("Dérivée d'un produit")).toBeTruthy()
@@ -96,7 +97,7 @@ describe("LigneCartes", () => {
     monter(<LigneCartes />)
     expect(await screen.findByText("1 carte à revoir aujourd'hui")).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Réviser" }))
-    expect(screen.getByText(/Dérivées/)).toBeTruthy()
+    expect(await screen.findByText(/Dérivées/)).toBeTruthy()
     fireEvent.click(screen.getByRole("button", { name: "Voir la réponse" }))
     fireEvent.click(screen.getByRole("button", { name: "À revoir" }))
     await waitFor(() => expect(noterCarte).toHaveBeenCalledWith("derivees", "regle", false))

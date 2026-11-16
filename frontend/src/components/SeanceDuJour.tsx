@@ -19,7 +19,7 @@ import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { lienEtape, ouvrirEtapeDeSeance, seanceAffichable } from "@/lib/seance"
 import { delaiDepuisAffichageAccueil } from "@/lib/accueilChrono"
 import { trackEvent } from "@/lib/analytics"
-import { lireQuizIgnores, useCleQuizEnCours, useQuizEnCours } from "@/lib/quizEnCours"
+import { FRAICHEUR_ACCUEIL_MS, lireQuizIgnores, useCleQuizEnCours, useQuizEnCours } from "@/lib/quizEnCours"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
@@ -317,7 +317,7 @@ function SeanceAFaire({
   // bas, retrouvée en 25 à 30 s). Même liste que la carte « en cours » (le serveur la tient à jour), mêmes quiz
   // écartés par l'élève ; ni test de niveau, ni rejeu, ni chrono écoulé, et seulement dans l'examen de la séance.
   const cleQuizEnCours = useCleQuizEnCours()
-  const { data: quizEnCours } = useQuizEnCours()
+  const { data: quizEnCours } = useQuizEnCours({ fraicheurMs: FRAICHEUR_ACCUEIL_MS })
   const ignores = cleQuizEnCours ? lireQuizIgnores(cleQuizEnCours) : []
   const quizAReprendre = quizEnCours?.find(
     (s) => !ignores.includes(s.id) && s.mode !== "DIAGNOSTIC" && s.rejeu_de === null && !s.chrono_ecoule
@@ -598,7 +598,8 @@ function SortieDeSecours({
           type="button"
           onClick={onAutreChose}
           disabled={remplacementEnCours || verrouillee}
-          className="underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
+          // Zone de toucher agrandie sans déplacer le texte : le lien faisait 18 px de haut (audit du 2026-11-16).
+          className="relative after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] underline underline-offset-4 transition-colors hover:text-primary disabled:opacity-60"
         >
           {remplacementEnCours ? t("seance.je_cherche") : t("seance.autre_chose")}
         </button>
@@ -658,7 +659,7 @@ function ObjectifMatiereControle({
         <button
           type="button"
           onClick={() => setOuvert(true)}
-          className="underline underline-offset-4 transition-colors hover:text-primary"
+          className="relative after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] underline underline-offset-4 transition-colors hover:text-primary"
         >
           {t("seance.changer")}
         </button>
@@ -674,7 +675,7 @@ function ObjectifMatiereControle({
         <button
           type="button"
           onClick={() => setOuvert(true)}
-          className="underline underline-offset-4 transition-colors hover:text-primary"
+          className="relative after:absolute after:inset-x-0 after:-inset-y-2.5 after:content-[''] underline underline-offset-4 transition-colors hover:text-primary"
         >
           {t("seance.me_concentrer")}
         </button>
@@ -1001,7 +1002,7 @@ function ChoixDuree({
             aria-pressed={minutes === seance.budget_minutes}
             onClick={() => onChoisir(minutes)}
             className={cn(
-              "min-h-9 rounded-full px-3.5 py-1 text-xs font-medium tabular-nums transition-all disabled:opacity-60",
+              "min-h-11 rounded-full px-3.5 py-1 text-xs font-medium tabular-nums transition-all disabled:opacity-60",
               minutes === seance.budget_minutes
                 ? "bg-background text-primary shadow-sm ring-1 ring-primary/25"
                 : "text-muted-foreground hover:text-foreground",
@@ -1100,7 +1101,7 @@ function EtapesParPhase({
           type="button"
           aria-expanded={false}
           onClick={() => setDetailOuvert(true)}
-          className="ml-auto text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
+          className="relative after:absolute after:inset-x-0 after:-inset-y-3.5 after:content-[''] ml-auto text-xs text-muted-foreground underline underline-offset-4 transition-colors hover:text-primary"
         >
           {t("seance.voir_detail")}
         </button>

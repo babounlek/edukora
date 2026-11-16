@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import sys
+import tempfile
 from datetime import timedelta
 from pathlib import Path
 from decouple import config, Csv
@@ -155,6 +156,29 @@ REST_FRAMEWORK = {
 # processus gunicorn, donc approximatif ; le vrai plafond est le quota quotidien en base. Coupés pendant `manage.py test`
 # (le cache en mémoire survit d'un test à l'autre) ; les tests qui les vérifient les réactivent.
 THROTTLE_PDF_ACTIF = config("THROTTLE_PDF_ACTIF", default="test" not in sys.argv, cast=bool)
+
+# Durée, en secondes, pendant laquelle le classement des thèmes d'un (cursus, matière) est gardé en cache
+# (voir quiz.services.squelette_par_frequence) : il est le même pour tous les élèves et ne change qu'à
+# l'ingestion d'un lot (qui vide ce cache), alors que l'accueil d'un abonné le recalculait pour chacune de ses matières. 0 le
+# désactive : c'est le défaut des tests, où le contenu change d'un test à l'autre dans le même processus.
+PARCOURS_CONTENU_CACHE_SECONDES = config(
+    "PARCOURS_CONTENU_CACHE_SECONDES", default=0 if "test" in sys.argv else 3600, cast=int,
+)
+
+# « default » : en mémoire, par processus (garde-fous de débit, plafonds de création d'invités), comme avant.
+# « parcours » : des fichiers, communs aux processus gunicorn, pour que le classement calculé par l'un serve aux
+# autres. Vidé à chaque lot de contenu appliqué (voir synchro.moteur) ; perdu à la reconstruction de l'image, sans
+# conséquence : il se recalcule à la première visite.
+CACHES = {
+    "default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"},
+    "parcours": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": config(
+            "PARCOURS_CACHE_DOSSIER", default=str(Path(tempfile.gettempdir()) / "edukora-cache-parcours"),
+        ),
+        "OPTIONS": {"MAX_ENTRIES": 3000},
+    },
+}
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),

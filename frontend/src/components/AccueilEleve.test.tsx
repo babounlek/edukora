@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
 import type { Accueil, EtapeSeance } from "@/api/types"
 
@@ -730,5 +730,101 @@ describe("AccueilEleve", () => {
     expect(await screen.findByRole("region", { name: "7 jours de suite" })).toBeInTheDocument()
     await userEvent.click(screen.getByRole("button", { name: "Fermer" }))
     expect(screen.queryByRole("region", { name: "7 jours de suite" })).not.toBeInTheDocument()
+  })
+})
+
+describe("AccueilEleve : une seule réponse pour tout l'écran (audit du 2026-11-16)", () => {
+  const quizEnCours = {
+    id: 9, mode: "PRATIQUE", cursus: 4, cursus_display: "BAC D", subject: 1, subject_label: "Maths", theme: "x",
+    started_at: "2026-11-07T06:00:00Z", derniere_reponse_at: "2026-11-07T06:05:00Z", nb_repondues: 2, total_questions: 5,
+    a_terminer: false, rejeu_de: null,
+  }
+  const copieEnCours = {
+    id: 31, epreuve: 3, epreuve_titre: "Mathématiques BAC D – Épreuve blanche n°1", subject_label: "Mathématiques",
+    cursus_display: "BAC - Série D", started_at: "2026-10-03T08:00:00Z", exam_mode_started_at: null, echeance: null,
+    submitted_at: null, score_obtenu: null, note_obtenue: null, bareme_snapshot: null,
+  }
+  const reprises = {
+    quiz_en_cours: [quizEnCours], cartes_dues: { total: 0, cartes: [] }, defi: null, tentatives: [copieEnCours],
+  }
+
+  beforeEach(() => {
+    // Un vrai compte a toujours un profil actif : c'est lui qui nomme le cache des quiz en cours.
+    ;(auth.user as Record<string, unknown>).profil_actif = { id: 3, prenom: "Awa" }
+  })
+  afterEach(() => {
+    delete (auth.user as Record<string, unknown>).profil_actif
+  })
+
+  it("les reprises arrivent avec l'accueil : ni la carte du quiz ni la copie ne refont de requête", async () => {
+    getAccueil.mockResolvedValue(accueil({ reprises } as Partial<Accueil>))
+    afficher()
+
+    expect(await screen.findByRole("link", { name: /Quiz en cours · 2 \/ 5/ })).toHaveAttribute("href", "/quiz/session/9")
+    expect(screen.getByRole("link", { name: /Épreuve blanche n°1/ })).toHaveAttribute("href", "/inedit/tentative/31")
+    expect(listQuizEnCours).not.toHaveBeenCalled()
+    expect(listMyTentativesInedites).not.toHaveBeenCalled()
+  })
+
+  it("un accueil d'avant ce champ garde ses requêtes à part", async () => {
+    getAccueil.mockResolvedValue(accueil())
+    listQuizEnCours.mockResolvedValue([quizEnCours])
+    listMyTentativesInedites.mockResolvedValue([copieEnCours])
+    afficher()
+
+    expect(await screen.findByRole("link", { name: /Quiz en cours/ })).toBeInTheDocument()
+    expect(await screen.findByRole("link", { name: /Épreuve blanche n°1/ })).toBeInTheDocument()
+  })
+
+  it("la page a un titre de niveau 1", async () => {
+    getAccueil.mockResolvedValue(accueil())
+    afficher()
+    expect(await screen.findByRole("heading", { level: 1, name: "Aujourd'hui" })).toBeInTheDocument()
+  })
+
+  describe("page de la dernière visite, relue dans le navigateur", () => {
+    function garderEnCache(date: number) {
+      localStorage.setItem(
+        "edukora:accueil:v1",
+        JSON.stringify({ userId: 7, cursusId: 4, date, data: accueil({ reprises } as Partial<Accueil>) }),
+      )
+    }
+
+    it("d'un autre jour : la séance attend le serveur, le reste s'affiche", async () => {
+      garderEnCache(Date.now() - 26 * 3600 * 1000)
+      // Le serveur ne répond pas encore.
+      getAccueil.mockReturnValue(new Promise(() => {}))
+      afficher()
+
+      // Le reste de la page d'hier est là, quiz en cours compris, sans requête à part.
+      expect(await screen.findByRole("link", { name: /Quiz en cours/ })).toBeInTheDocument()
+      expect(screen.getByText("Où j'en suis")).toBeInTheDocument()
+      // Mais pas sa carte de séance : elle dirait « Séance faite » ou le thème de la veille.
+      expect(screen.queryByRole("link", { name: /Commencer :/ })).not.toBeInTheDocument()
+      expect(screen.getByLabelText("Chargement de ton accueil")).toBeInTheDocument()
+      expect(listQuizEnCours).not.toHaveBeenCalled()
+    })
+
+    it("d'un autre jour, une fois le serveur entendu : la séance du jour", async () => {
+      garderEnCache(Date.now() - 26 * 3600 * 1000)
+      getAccueil.mockResolvedValue(accueil({ reprises } as Partial<Accueil>))
+      afficher()
+      expect(await screen.findByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
+      expect(screen.queryByLabelText("Chargement de ton accueil")).not.toBeInTheDocument()
+    })
+
+    it("d'un autre jour, serveur injoignable : la page d'hier vaut mieux que rien", async () => {
+      garderEnCache(Date.now() - 26 * 3600 * 1000)
+      getAccueil.mockRejectedValue(new Error("réseau"))
+      afficher()
+      expect(await screen.findByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
+    })
+
+    it("du jour même : la séance s'affiche tout de suite", async () => {
+      garderEnCache(Date.now())
+      getAccueil.mockReturnValue(new Promise(() => {}))
+      afficher()
+      expect(await screen.findByRole("link", { name: /Commencer :/ })).toBeInTheDocument()
+    })
   })
 })

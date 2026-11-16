@@ -1169,7 +1169,7 @@ def accueil_view(request):
             "phase": "normal", "absence_jours": 0, "premiers_pas": True, "nouvelle_visite": False,
             "phrase_coach": "", "depuis": None, "trajectoire": None, "resume": [], "preparation": None,
             "revisions": [], "lecture": None, "simulation_suggeree": None, "bilan_semaine": None,
-            "erreurs_total": 0,
+            "erreurs_total": 0, "reprises": None,
         })
 
     profil = profil_actif(request)
@@ -1234,7 +1234,34 @@ def accueil_view(request):
         # Les questions ratées et pas encore réussies (voir quiz.erreurs) : l'accueil en fait une ligne
         # « Refaire mes N erreurs », sans requête de plus.
         "erreurs_total": compter_erreurs(profil, cursus),
+        "reprises": _reprises(request.user, profil, cursus),
     })
+
+
+def _reprises(user, profil, cursus):
+    """
+    Ce que l'accueil propose de reprendre ou de faire en plus de la séance : quiz commencés, cartes à revoir, défi de
+    la semaine, épreuves inédites entamées ou à finir de noter.
+
+    Chaque entrée a exactement la forme de la route qui la servait seule (/quiz/en-cours/, /quiz/cartes/dues/,
+    /inedit/defi-semaine/, /inedit/mes-tentatives/) : le frontend la dépose dans le cache de cette route, et le bloc
+    correspondant s'affiche sans requête. Avant, ces quatre blocs arrivaient un à un après la séance ; la carte « Quiz
+    en cours », placée au-dessus d'elle, faisait descendre le bouton « Commencer » de 128 px sous le doigt de l'élève
+    (audit de l'accueil abonné, 2026-11-16).
+    """
+    from inedit import defi
+    from inedit.views import tentatives_inedites
+
+    from . import cartes
+    from .historique import quiz_en_cours
+
+    total, liste = cartes.cartes_dues(profil)
+    return {
+        "quiz_en_cours": quiz_en_cours(profil, user),
+        "cartes_dues": {"total": total, "cartes": liste},
+        "defi": defi.etat_du_defi(profil, cursus),
+        "tentatives": tentatives_inedites(profil, cursus),
+    }
 
 
 @api_view(["POST"])

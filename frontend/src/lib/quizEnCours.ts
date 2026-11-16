@@ -19,16 +19,33 @@ export function useCleQuizEnCours(): string | null {
   return `${PREFIXE}${user.id}:${user.profil_actif?.id ?? 0}`
 }
 
-/** Les tentatives interrompues du profil actif (ou de l'invité), la dernière réponse en tête. */
-export function useQuizEnCours() {
+/**
+ * Sur l'accueil, la liste des quiz en cours arrive dans la réponse de l'accueil (voir AccueilEleve) : pendant ce
+ * délai, la carte « Quiz en cours » et le bouton « Quiz express » s'en contentent au lieu de la redemander.
+ */
+export const FRAICHEUR_ACCUEIL_MS = 30_000
+
+/** Clé de cache des quiz en cours d'un profil : la même pour la route seule et pour l'accueil, qui la remplit. */
+export function cleQuizEnCours(profilId: number | "invite" | null) {
+  return ["quiz-en-cours", profilId] as const
+}
+
+/**
+ * Les tentatives interrompues du profil actif (ou de l'invité), la dernière réponse en tête.
+ *
+ * `fraicheurMs` : l'accueil d'un abonné reçoit cette liste dans sa propre réponse et la dépose dans ce cache (voir
+ * AccueilEleve). Il passe quelques secondes ici pour que la carte s'en serve sans refaire la requête ; partout
+ * ailleurs la liste est relue à chaque montage, comme avant.
+ */
+export function useQuizEnCours({ fraicheurMs = 0 }: { fraicheurMs?: number } = {}) {
   const { user } = useAuth()
   const invite = useEssaiSansCompte()
   return useQuery({
-    queryKey: ["quiz-en-cours", user?.profil_actif?.id ?? (invite ? "invite" : null)],
+    queryKey: cleQuizEnCours(user?.profil_actif?.id ?? (invite ? "invite" : null)),
     queryFn: ({ signal }) => listQuizEnCours(signal),
     enabled: Boolean(user) || invite,
     // Une séance finie dans un autre onglet ne doit plus être proposée.
-    staleTime: 0,
+    staleTime: fraicheurMs,
     retry: false,
   })
 }

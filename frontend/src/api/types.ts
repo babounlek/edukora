@@ -1506,6 +1506,15 @@ export interface Accueil {
   // Questions de quiz ratées et pas encore réussies (voir quiz.erreurs côté serveur). Facultatif :
   // absent d'un accueil gardé en cache d'avant ce champ.
   erreurs_total?: number
+  // Ce que l'accueil propose de reprendre, chaque entrée sous la forme exacte de la route qui la servait seule
+  // (voir quiz.views._reprises) : AccueilEleve les dépose dans le cache de ces routes. Facultatif : absent d'un
+  // accueil gardé en cache d'avant ce champ, les blocs font alors leur propre requête, comme avant.
+  reprises?: {
+    quiz_en_cours: QuizEnCoursItem[]
+    cartes_dues: { total: number; cartes: CarteRevision[] }
+    defi: DefiSemaine | null
+    tentatives: TentativeInediteListItem[]
+  } | null
 }
 
 /** Une matière de la banque d'erreurs : combien de questions, et les thèmes où elles se concentrent. */

@@ -484,6 +484,21 @@ class AccueilApiTests(AccueilFixture):
         self.assertIn(data["plan"]["etat"], ("plan_pret", "rien_a_proposer"))
         self.assertTrue(VisiteAccueil.objects.filter(profil=self.profil).exists())
 
+    def test_les_reprises_ont_la_forme_des_routes_qu_elles_remplacent(self):
+        # Le frontend dépose chaque entrée dans le cache de sa route : la forme doit être exactement la même.
+        self._examen_dans(90)
+        self._repondre(True)  # un quiz commencé et pas terminé
+        reprises = self.client.get(reverse("quiz:accueil")).json()["reprises"]
+        self.assertEqual(set(reprises), {"quiz_en_cours", "cartes_dues", "defi", "tentatives"})
+        self.assertEqual(reprises["quiz_en_cours"], self.client.get(reverse("quiz:en-cours")).json())
+        self.assertEqual([s["id"] for s in reprises["quiz_en_cours"]], [self.session.id])
+        self.assertEqual(reprises["cartes_dues"], self.client.get(reverse("quiz:cartes-dues")).json())
+        self.assertEqual(
+            {"defi": reprises["defi"]},
+            self.client.get(reverse("inedit:defi-semaine"), {"cursus": self.cursus.id}).json(),
+        )
+        self.assertEqual(reprises["tentatives"], self.client.get(reverse("inedit:mes-tentatives")).json())
+
     def test_une_nouvelle_visite_trace_app_ouverte_une_seule_fois(self):
         self._examen_dans(90)
         for _ in range(3):

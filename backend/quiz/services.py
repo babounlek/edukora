@@ -1,3 +1,4 @@
+import logging
 import random
 import re
 import unicodedata
@@ -5,6 +6,8 @@ from collections import Counter, defaultdict, namedtuple
 from functools import lru_cache
 from datetime import timedelta
 
+from django.conf import settings
+from django.core.cache import caches
 from django.db.models import Count, Q
 from django.utils import timezone
 
@@ -16,6 +19,8 @@ from programme.models import Module, Savoir
 
 from .gratuits import themes_gratuits_par_matiere
 from .matieres import restreindre_items, restreindre_matieres
+
+logger = logging.getLogger(__name__)
 
 # Miroir volontaire de lib/maitrise.ts SEUIL_MAITRISE (frontend) - resume_parcours a
 # besoin de classer chaque savoir pour produire un histogramme (voir sa docstring), ce
@@ -1009,7 +1014,7 @@ def groupes_par_frequence(cursus, subject, force_mince=False):
     return mince, lessons, nb_sessions, groupes, tous_tag_ids
 
 
-def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False):
+def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False, progression=None):
     """
     Variante de construire_parcours pour SUBJECTS_PARCOURS_PAR_FREQUENCE : au lieu du
     programme officiel (Module→Savoir), classe les thèmes réels (catalog.Tag) par
@@ -1038,7 +1043,144 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
     N+1 sur 400-600 tags par matière) : chaque étape calcule sa donnée pour TOUS les
     thèmes candidats d'un coup, puis les résultats sont recombinés en Python par
     groupe d'alias.
+
+    En deux moitiés : ce qui ne dépend d'aucun élève (squelette_par_frequence, gardé en cache)
+    et ce que cet élève a fait (progression_par_theme). `progression` permet à un appelant qui
+    parcourt plusieurs matières (resume_parcours) de ne lire la seconde qu'une fois.
     """
+    squelette = squelette_par_frequence(cursus, subject, force_mince=force_mince)
+    if not squelette:
+        # None (corpus trop mince pour un classement) ou [] (aucun thème tombé).
+        return squelette
+    if progression is None:
+        progression = progression_par_theme(
+            profil, cursus, {tag_id for theme in squelette for tag_id in theme["tag_ids"]},
+        )
+    stats_par_tag, tags_en_revision, tags_lus = progression
+
+    resultat = []
+    for theme in squelette:
+        tag_ids = theme["tag_ids"]
+        total = sum(stats_par_tag[tid]["total"] for tid in tag_ids if tid in stats_par_tag)
+        reussies = sum(stats_par_tag[tid]["reussies"] for tid in tag_ids if tid in stats_par_tag)
+        taux = round(100 * reussies / total) if total else None
+        resultat.append({
+            "id": theme["id"],
+            "theme_id": theme["theme_id"],
+            "numero": theme["numero"],
+            "intitule": theme["intitule"],
+            "savoir_label": theme["savoir_label"],
+            "nb_epreuves": theme["nb_epreuves"],
+            "frequence_pct": theme["frequence_pct"],
+            "taux": taux,
+            "nb_reponses": total,
+            "maitrise": est_maitrise(taux, total),
+            "niveau": niveau_theme(taux, total),
+            "en_revision": bool(tag_ids & tags_en_revision),
+            "a_lu_le_cours": bool(tag_ids & tags_lus),
+            "has_quiz": theme["has_quiz"],
+            # Copie : le squelette est partagé entre les élèves (voir squelette_par_frequence).
+            "cours": [dict(cours) for cours in theme["cours"]],
+        })
+    return resultat
+
+
+def progression_par_theme(profil, cursus, tag_ids=None):
+    """
+    Ce qu'un élève a fait, par thème (catalog.Tag) : la seconde moitié de
+    construire_parcours_par_frequence, la seule qui dépende de lui. Renvoie
+    (stats_par_tag, tags_en_revision, tags_lus).
+
+    `tag_ids` restreint aux thèmes d'une matière (la page d'une matière). Sans lui, tout ce
+    que l'élève a fait sur ce cursus est lu en une fois : c'est ce que fait resume_parcours,
+    qui passe ensuite le même résultat à chaque matière, soit trois requêtes pour tout le
+    résumé au lieu de trois par matière. Le résultat est le même dans les deux cas, parce que
+    l'appelant ne lit que les thèmes de sa matière.
+    """
+    # Même source que maitrise_par_savoir (QuizAnswer via CompetenceItem), mais gardée par
+    # Tag brut (avant regroupement par alias) puisque le thème EST le tag, pas un Savoir.
+    reponses = QuizAnswer.objects.filter(
+        quiz_question__session__profil=profil,
+        quiz_question__session__cursus=cursus,
+        quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
+        quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
+    )
+    revisions = RevisionSchedule.objects.filter(profil=profil, cursus=cursus)
+    lectures = LectureProgress.objects.filter(profil=profil)
+    if tag_ids is None:
+        # Une réponse d'avant la bascule vers CompetenceItem n'a pas de thème à créditer.
+        reponses = reponses.filter(quiz_question__competence_item__isnull=False)
+    else:
+        reponses = reponses.filter(quiz_question__competence_item__theme_id__in=tag_ids)
+        revisions = revisions.filter(theme_id__in=tag_ids)
+        lectures = lectures.filter(cours__tags__id__in=tag_ids)
+
+    stats_par_tag = defaultdict(lambda: {"total": 0, "reussies": 0})
+    for reponse in reponses.select_related("quiz_question__competence_item"):
+        s = stats_par_tag[reponse.quiz_question.competence_item.theme_id]
+        s["total"] += 1
+        if reponse.est_correcte:
+            s["reussies"] += 1
+    tags_en_revision = set(revisions.values_list("theme_id", flat=True))
+    tags_lus = set(lectures.values_list("cours__tags__id", flat=True))
+    return stats_par_tag, tags_en_revision, tags_lus
+
+
+# Préfixe des clés du cache du squelette. À incrémenter si la forme d'une entrée change.
+_CLE_SQUELETTE = "parcours-squelette:v1"
+
+
+def squelette_par_frequence(cursus, subject, force_mince=False):
+    """
+    Le classement des thèmes d'un (cursus, matière) SANS rien qui dépende d'un élève : nom,
+    fréquence, savoir dominant, présence d'un quiz, cours proposés. Même valeur pour tous les
+    élèves de ce cursus, donc gardée en cache (settings.PARCOURS_CONTENU_CACHE_SECONDES ; 0 le
+    désactive, c'est le cas des tests). Le cache « parcours » est un dossier de fichiers, commun
+    aux processus du serveur ; il est vidé quand un lot de contenu est appliqué (oublier_squelettes).
+
+    Pourquoi un cache : l'accueil d'un abonné appelle resume_parcours, qui construit ce
+    classement pour chacune de ses matières. Mesuré le 2026-11-16 sur un élève du BEPC
+    (11 matières) : 172 requêtes SQL et environ une seconde, dont 86 % ici, pour un contenu
+    qui ne change qu'à l'ingestion d'un lot. Conséquence assumée : un thème, un quiz ou un
+    cours modifié hors d'un lot (dans l'admin) met jusqu'à cette durée à apparaître dans le parcours.
+
+    Renvoie None (corpus trop mince), [] (aucun thème tombé) ou la liste des thèmes, chacun
+    avec ses `tag_ids` (les Tag regroupés par alias), que construire_parcours_par_frequence
+    croise avec la progression de l'élève. La liste rendue est partagée : ne jamais la modifier.
+    """
+    duree = settings.PARCOURS_CONTENU_CACHE_SECONDES
+    if not duree:
+        return _calculer_squelette_par_frequence(cursus, subject, force_mince)
+    cle = f"{_CLE_SQUELETTE}:{cursus.pk}:{subject.pk}:{int(bool(force_mince))}"
+    # Rangé dans un tuple : None est une valeur légitime, à distinguer d'une clé absente.
+    # Un cache illisible ou plein ne doit jamais empêcher l'accueil de s'afficher : on calcule, comme avant.
+    try:
+        en_cache = caches["parcours"].get(cle)
+    except Exception:
+        logger.exception("Cache du parcours illisible")
+        en_cache = None
+    if en_cache is None:
+        en_cache = (_calculer_squelette_par_frequence(cursus, subject, force_mince),)
+        try:
+            caches["parcours"].set(cle, en_cache, duree)
+        except Exception:
+            logger.exception("Cache du parcours non écrit")
+    return en_cache[0]
+
+
+def oublier_squelettes():
+    """Vide le cache de squelette_par_frequence. Appelé quand un lot de contenu vient d'être appliqué
+    (voir synchro.moteur) : les thèmes, quiz et cours qu'il apporte apparaissent alors tout de suite
+    dans le parcours, sans attendre la fin de la durée de cache. Ne lève jamais."""
+    try:
+        caches["parcours"].clear()
+    except Exception:
+        logger.exception("Cache du parcours non vidé")
+
+
+def _calculer_squelette_par_frequence(cursus, subject, force_mince=False):
+    """Le calcul derrière squelette_par_frequence, sans cache. Voir construire_parcours_par_frequence
+    pour le schéma de liaison (une seule requête par étape, jamais une boucle par thème)."""
     contexte = groupes_par_frequence(cursus, subject, force_mince=force_mince)
     if contexte is None:
         return None
@@ -1093,34 +1235,6 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
             if tag.id in tous_tag_ids:
                 cours_par_tag_id[tag.id].append(cours)
 
-    # Progression de l'utilisateur, par tag brut (avant regroupement par alias) -
-    # même source que maitrise_par_savoir (QuizAnswer via CompetenceItem), mais
-    # gardée par Tag ici puisque le thème EST le tag, pas un Savoir.
-    stats_par_tag = defaultdict(lambda: {"total": 0, "reussies": 0})
-    for reponse in (
-        QuizAnswer.objects.filter(
-            quiz_question__session__profil=profil,
-            quiz_question__session__cursus=cursus,
-            quiz_question__competence_item__theme_id__in=tous_tag_ids,
-            quiz_question__session__rejeu_de__isnull=True,  # D4 : un rejeu est neutre pour la maîtrise
-            quiz_question__session__chrono_actif=False,  # neutre pour la maîtrise aussi (voir quiz.chrono)
-        )
-        .select_related("quiz_question__competence_item")
-    ):
-        s = stats_par_tag[reponse.quiz_question.competence_item.theme_id]
-        s["total"] += 1
-        if reponse.est_correcte:
-            s["reussies"] += 1
-
-    tags_en_revision = set(
-        RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme_id__in=tous_tag_ids)
-        .values_list("theme_id", flat=True),
-    )
-    tags_lus = set(
-        LectureProgress.objects.filter(profil=profil, cours__tags__id__in=tous_tag_ids)
-        .values_list("cours__tags__id", flat=True),
-    )
-
     plancher = plancher_occurrences(groupes, mince, nb_sessions)
 
     resultat = []
@@ -1139,25 +1253,18 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
                     candidats.append(c)
         cours_finaux = cours_prioritaires_du_theme(candidats, groupe["nom"])
 
-        total = sum(stats_par_tag[tid]["total"] for tid in tag_ids if tid in stats_par_tag)
-        reussies = sum(stats_par_tag[tid]["reussies"] for tid in tag_ids if tid in stats_par_tag)
         savoir = savoirs_par_id.get(groupe["savoir_id"])
         theme_id = min(tag_ids)
 
         resultat.append({
             "id": theme_id,
             "theme_id": theme_id,
+            "tag_ids": frozenset(tag_ids),
             "numero": "",
             "intitule": groupe["nom"],
             "savoir_label": savoir.intitule if savoir else None,
             "nb_epreuves": groupe["nb_epreuves"],
             "frequence_pct": round(100 * groupe["nb_epreuves"] / nb_sessions),
-            "taux": round(100 * reussies / total) if total else None,
-            "nb_reponses": total,
-            "maitrise": est_maitrise(round(100 * reussies / total) if total else None, total),
-            "niveau": niveau_theme(round(100 * reussies / total) if total else None, total),
-            "en_revision": bool(tag_ids & tags_en_revision),
-            "a_lu_le_cours": bool(tag_ids & tags_lus),
             "has_quiz": bool(tag_ids & tags_avec_quiz),
             "cours": [{"slug": c.slug, "titre": c.titre, "sous_theme": c.sous_theme} for c in cours_finaux],
         })
@@ -1168,7 +1275,7 @@ def construire_parcours_par_frequence(profil, cursus, subject, force_mince=False
     return resultat
 
 
-def parcours_par_theme(profil, cursus, subject):
+def parcours_par_theme(profil, cursus, subject, progression=None):
     """
     Les thèmes classés d'un (cursus, matière), quelle que soit la matière : le parcours de
     TOUTES les matières est par thème, le Module→Savoir n'étant plus qu'un repli.
@@ -1182,13 +1289,15 @@ def parcours_par_theme(profil, cursus, subject):
     Renvoie None quand aucun thème n'est tombé (matière sans question étiquetée : EPS, dessin) -
     l'appelant retombe alors sur le programme.
     """
-    themes = construire_parcours_par_frequence(profil, cursus, subject)
+    themes = construire_parcours_par_frequence(profil, cursus, subject, progression=progression)
     if themes is None:
-        themes = construire_parcours_par_frequence(profil, cursus, subject, force_mince=True)
+        themes = construire_parcours_par_frequence(
+            profil, cursus, subject, force_mince=True, progression=progression,
+        )
     return themes or None
 
 
-def construire_parcours(profil, cursus, subject):
+def construire_parcours(profil, cursus, subject, progression=None):
     """
     Vue séquencée du programme officiel (voir programme.Module/Savoir) pour un
     cursus/matière donnés, enrichie savoir par savoir avec la progression réelle de
@@ -1210,7 +1319,7 @@ def construire_parcours(profil, cursus, subject):
     fonctionner sans changement. Ne retombe sur le Module→Savoir que si aucun thème n'est
     tombé pour ce cursus (matière sans question étiquetée).
     """
-    themes = parcours_par_theme(profil, cursus, subject)
+    themes = parcours_par_theme(profil, cursus, subject, progression=progression)
     if themes is not None:
         return [{
             "numero": "",
@@ -1352,9 +1461,15 @@ def resume_parcours(profil, cursus):
     subjects = restreindre_matieres(profil, subjects)
 
     coefficients = _coefficient_par_subject(cursus)
+    # Ce que l'élève a fait, lu une fois pour toutes ses matières (voir progression_par_theme).
+    progression = progression_par_theme(profil, cursus)
     resume = []
     for subject in subjects:
-        savoirs = [s for module in construire_parcours(profil, cursus, subject) for s in module["savoirs"]]
+        savoirs = [
+            s
+            for module in construire_parcours(profil, cursus, subject, progression=progression)
+            for s in module["savoirs"]
+        ]
         if not savoirs and subject.pk not in avec_programme:
             continue
         # Un seul bucket par savoir, jamais un chevauchement à retrancher après coup -

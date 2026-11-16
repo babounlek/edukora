@@ -53,9 +53,9 @@ export function Moments({ accueil, userId }: { accueil: Accueil; userId: number 
           type="button"
           onClick={fermer}
           aria-label={t("moments.fermer")}
-          className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-gold/15 hover:text-foreground"
+          className="-my-1 -mr-2 flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-gold/15 hover:text-foreground"
         >
-          <X className="size-4" />
+          <X className="size-4" aria-hidden="true" />
         </button>
       </div>
     </section>

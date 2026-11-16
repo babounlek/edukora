@@ -461,6 +461,8 @@ export const fr = {
   "abonne.inedites_nombre_other": "{n} épreuves inédites",
   "abonne.inedites_toutes": "Les {n}",
   "abonne.chargement": "Chargement de ton accueil",
+  "abonne.section_notation": "Copie à finir de noter",
+  "abonne.section_inedites": "Épreuves inédites",
   "abonne.erreur_avant": "Impossible de charger ton accueil pour le moment. Vérifie ta connexion, puis",
   "abonne.erreur_lien": "réessaie",
 
@@ -500,7 +502,7 @@ export const fr = {
   "depuis.revisions_one": "révision qui a tenu : ce que tu avais raté est resté.",
   "depuis.revisions_other": "révisions qui ont tenu : ce que tu avais raté est resté.",
   "depuis.a_reprendre": "À reprendre",
-  "depuis.jours_retard": "+{n} j",
+  "depuis.jours_retard": "à revoir depuis {n} j",
   "depuis.lecture_en_cours": "Lecture en cours",
 
   "oujensuis.aria": "Où j'en suis",
@@ -556,6 +558,7 @@ export const fr = {
   "jalon.defis_4": "4 défis de la semaine relevés",
   "reussites.famille_defis": "Le défi de la semaine",
   "cartes.mes": "Mes cartes",
+  "cartes.chargement": "Chargement des cartes",
   "cartes.toutes": "Tous mes paquets",
   "cartes.h1": "Tes cartes de révision",
   "cartes.intro": "La règle et les pièges de chaque cours, en cartes. Une carte sue revient de plus en plus tard ; une carte ratée revient demain.",
@@ -633,6 +636,7 @@ export const fr = {
   "quiz_en_cours.terminer": "Terminer",
   "quiz_en_cours.oublier_aria": "Ne plus proposer de reprendre ce quiz",
   "quiz_en_cours.oublier_titre": "Ne plus proposer",
+  "quiz_en_cours.section": "Quiz en cours",
 
   "ligne.initiales": "L,M,M,J,V,S,D",
   "ligne.objectif_atteint": "Objectif atteint",

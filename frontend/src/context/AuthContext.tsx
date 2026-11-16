@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { toast } from "sonner"
 
 import { getMe, updateMe } from "@/api/endpoints"
-import { ApiError, clearAccessToken, logoutRequest, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
+import { ApiError, clearAccessToken, logoutRequest, restaurerSession, setAccessToken, SESSION_EXPIRED_EVENT } from "@/api/client"
 import type { User } from "@/api/types"
 import { lireCursusPrepareEnAttente, oublierCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { viderCacheHorsLigne } from "@/lib/pwa"
@@ -29,10 +29,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Pas de vérification préalable "a-t-on un access token" : il n'existe qu'en
   // mémoire (voir api/client.ts) et ne survit jamais à un rechargement de page. On
-  // tente donc systématiquement getMe() au montage - sans token, le premier appel
-  // répond 401, ce qui déclenche déjà le mécanisme de refresh intégré à apiRequest
-  // (voir client.ts) : le cookie httpOnly du refresh token, lui, a bien survécu au
-  // rechargement. Résultat silencieux dans les deux cas : reconnecté si le cookie
+  // demande donc systématiquement un nouveau jeton au montage (restaurerSession) : le
+  // cookie httpOnly du refresh token, lui, a bien survécu au rechargement. Puis, s'il
+  // y a une session, getMe(). Résultat silencieux dans les deux cas : reconnecté si le cookie
   // est encore valide, sinon simplement déconnecté (catch vide, rien à faire de plus
   // - clearAccessToken() a déjà été appelé par refreshAccessToken() en cas d'échec).
   //
@@ -43,10 +42,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsLoading(false)
       return
     }
-    getMe()
-      .then(setUser)
+    // Le jeton d'abord, le compte ensuite (voir restaurerSession) : deux allers-retours au lieu de trois, et plus
+    // de 401 systématique sur /auth/me/ à chaque rechargement.
+    restaurerSession()
+      .then((etat) => {
+        if (etat === "absente") marquerVisiteurAnonyme()
+        // « inconnue » (panne réseau, serveur en erreur) : on ne conclut rien, la page reste anonyme pour ce chargement.
+        if (etat !== "ouverte") return undefined
+        return getMe().then(setUser)
+      })
       .catch((err) => {
-        // 401 seulement : une panne réseau ne dit rien de l'état de la session.
+        // 401 seulement (session ouverte mais compte disparu) : une panne réseau ne dit rien de l'état de la session.
         if (err instanceof ApiError && err.status === 401) marquerVisiteurAnonyme()
       })
       .finally(() => setIsLoading(false))

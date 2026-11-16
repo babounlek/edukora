@@ -234,6 +234,37 @@ async function refreshAccessToken(): Promise<string | null> {
 }
 
 /**
+ * Au démarrage de l'application (voir AuthContext) : y a-t-il une session à retrouver ?
+ *
+ * Le jeton d'accès ne survit pas à un rechargement de page ; seul le cookie de rafraîchissement, illisible d'ici,
+ * dit si une session existe. Avant, le démarrage appelait /auth/me/ sans jeton, recevait un 401 à coup sûr, puis
+ * rafraîchissait, puis rappelait /auth/me/ : trois allers-retours en série, dont un perdu, avant que la page d'un
+ * abonné puisse s'afficher (audit de l'accueil abonné, 2026-11-16). On demande donc le jeton d'abord.
+ *
+ * « absente » : le serveur a répondu qu'il n'y a pas de session (401). « inconnue » : panne de réseau ou erreur du
+ * serveur, qui ne disent rien de l'état de la session ; l'appelant ne doit rien en conclure.
+ */
+export async function restaurerSession(): Promise<"ouverte" | "absente" | "inconnue"> {
+  let response: Response
+  try {
+    response = await fetchAvecDelai(
+      `${API_BASE_URL}/auth/token/refresh/`,
+      { method: "POST", credentials: "include" },
+      undefined,
+      DELAI_REQUETE_MS,
+    )
+  } catch {
+    return "inconnue"
+  }
+  if (response.ok) {
+    const data = await response.json()
+    setAccessToken(data.access)
+    return "ouverte"
+  }
+  return response.status === 401 ? "absente" : "inconnue"
+}
+
+/**
  * Best-effort : côté serveur, logout_view efface le cookie quoi qu'il arrive (voir sa
  * docstring, AllowAny) - un échec réseau ici ne doit jamais empêcher la déconnexion
  * locale (voir AuthContext.logout, qui appelle ceci sans attendre le résultat).
