@@ -442,6 +442,28 @@ export interface Temoignage {
   note: number | null
 }
 
+/** Ce que l'application peut encore demander comme avis à la personne connectée (voir catalog.avis côté backend). */
+export interface EtatAvis {
+  /** Le profil actif peut donner son avis d'élève : trois quiz terminés, pas encore d'avis, pas un compte invité. */
+  eleve: boolean
+  /** Le titulaire du compte peut donner son avis de parent. */
+  parent: boolean
+  /** Prénom du profil actif, proposé à l'élève ; vide s'il n'en a pas saisi. */
+  prenom: string
+  /** L'examen préparé, tel qu'il sera affiché sous l'avis (« BAC - Série D »). */
+  examen: string
+}
+
+export interface AvisEnvoye {
+  origine: "ELEVE" | "PARENT"
+  note: number
+  contenu: string
+  prenom: string
+  /** La case « j'accepte que mon avis soit affiché » : sans elle, l'avis reste interne. */
+  consentement: boolean
+  langue: string
+}
+
 /** L'accueil visiteur en un appel (voir catalog.accueil_api côté backend) : les totaux des listes et les témoignages publiés. */
 export interface AccueilVitrine {
   epreuves: number

@@ -71,6 +71,8 @@ import type {
   CompteARebours,
   CursusContenu,
   AccueilVitrine,
+  AvisEnvoye,
+  EtatAvis,
   PlatformStats,
   QuestionExemple,
   ResumeMatiere,
@@ -557,8 +559,20 @@ export function getAccueilVitrine(country: string | undefined, langue: string | 
   return apiRequest<AccueilVitrine>(`/catalog/accueil/?${params.toString()}`, { auth: "optional", signal })
 }
 
-export function listTemoignages() {
-  return apiRequest<Temoignage[]>("/catalog/temoignages/", { auth: false })
+/** Les avis publiés, dans la langue de l'interface : un avis n'est montré qu'aux visiteurs de sa langue. */
+export function listTemoignages(langue?: string) {
+  const suffixe = langue ? `?langue=${encodeURIComponent(langue)}` : ""
+  return apiRequest<Temoignage[]>(`/catalog/temoignages/${suffixe}`, { auth: false })
+}
+
+/** Y a-t-il lieu de demander son avis à la personne connectée ? Voir catalog.avis côté backend. */
+export function getEtatAvis(signal?: AbortSignal) {
+  return apiRequest<EtatAvis>("/catalog/avis/", { signal })
+}
+
+/** Enregistre l'avis en brouillon : rien n'est public avant relecture dans l'admin. */
+export function envoyerAvis(avis: AvisEnvoye) {
+  return apiRequest<{ enregistre: boolean }>("/catalog/avis/", { method: "POST", body: avis })
 }
 
 /** Le décompte jusqu'à l'examen d'un cursus, pour un visiteur qui a choisi son examen sans compte (un compte le reçoit

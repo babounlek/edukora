@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { catalogueHomePath } from "@/lib/countryPath"
 import { LienAide } from "@/components/aide/LienAide"
+import { InviteAvis } from "@/components/InviteAvis"
 import { useSeo } from "@/lib/seo"
 import { cn, formatAmount } from "@/lib/utils"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
@@ -143,6 +144,10 @@ export function MesPaiementsPage() {
           ))}
         </ul>
       )}
+
+      {/* L'avis du parent : cette page est celle de la personne qui paie, y compris par dépôt déclaré (qui ne passe
+          jamais par l'écran « paiement réussi »). Le serveur ne le propose qu'à un compte qui a déjà servi. */}
+      <InviteAvis role="parent" className="mt-8" />
 
       <p className="mt-8 text-center text-xs leading-relaxed text-muted-foreground">
         {t("pm.note_campay")}

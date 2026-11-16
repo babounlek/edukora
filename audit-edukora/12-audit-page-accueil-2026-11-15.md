@@ -170,3 +170,43 @@ Les 9 appels restants : inédites récentes, campagne, statistiques et examens d
 
 Tests : 1 591 tests frontend ; tests backend de la route, du prérendu, des segments et des essais au vert.
 Déploiement : inchangé (migration `analytics 0018`, rebuild du backend et de caddy). Le Caddyfile change : la redirection de `/` prend effet au rebuild de caddy.
+
+## K. Preuve sociale, volet 2 : avis recueillis dans l'application (2026-11-16, en local, non committé, non déployé)
+Décision de l'utilisateur du 2026-11-16 : coder le volet 2 de la proposition R8. Le compteur d'activité (volet 1) et le
+bloc « Comment sont faits nos corrigés » (volet 3) ne sont pas codés.
+
+| Règle | Ce qui est en place | Où |
+|-------|---------------------|----|
+| Quand on demande | À partir du troisième quiz terminé, une seule fois par profil et par rôle (contrainte en base). Jamais à un compte invité. « Ne plus me demander » est retenu sur l'appareil. | `backend/catalog/avis.py`, `frontend/src/components/InviteAvis.tsx` |
+| Où | Élève : page de résultat d'un quiz, sous les boutons pour continuer. Parent : page « Mes paiements » et écran « paiement réussi ». | `QuizResultPage`, `MesPaiementsPage`, `SubscribePage` |
+| Consentement | Case non cochée d'office. Sans elle, l'avis est gardé pour l'équipe et sa publication est refusée (modèle, admin et liste publique). | `Temoignage.clean`, `TemoignageQuerySet.publies` |
+| Ce qui s'affiche | Prénom et examen préparé (élève), prénom et « Parent d'élève » (parent). Le prénom n'accepte que des lettres. | `catalog/avis.py` |
+| Modération | Tout avis arrive en brouillon. L'admin montre la provenance, la langue, le texte et « Publiable » ; provenance et consentement y sont en lecture seule. | `catalog/admin.py` |
+| Langue | Un avis n'est montré qu'aux visiteurs de sa langue (`?langue=`), sur l'accueil et sur /tarifs. | `TemoignageListView`, `accueil_api.py` |
+| Seuil d'affichage | La section n'apparaît qu'à partir de trois avis publiés, avec le titre « Ce qu'en disent les élèves et les parents ». | `SocialProofSection.tsx` |
+| Retrait | Supprimer le profil ou le compte dépublie l'avis ; la ligne reste, détachée, pour que la purge des comptes de test garde ses comptages. | signal `pre_delete` dans `catalog/avis.py` |
+| Confidentialité | Une puce « Avis » ajoutée à la politique de confidentialité (fr et en), date de mise à jour 2026-11-16. | `conf.d9`, `PrivacyPage.tsx` |
+
+Vérifié en local : avis envoyé depuis le compte de test (201, brouillon, prénom et « BEPC »), absent de la liste
+publique avant publication, section visible sur /cm avec trois avis publiés et absente avec un seul, invitation du
+parent sur /mes-paiements, mobile sans débordement. Les lignes d'essai ont été supprimées.
+
+Tests : 1 603 tests frontend, 1 001 tests backend (catalog, purge et seed des comptes de test, essais).
+
+### Décisions prises en codant, à valider
+- **Avis du parent après usage seulement.** La proposition disait « après un paiement réussi ». L'invitation n'apparaît
+  que si le compte a déjà terminé trois quiz : un premier paiement n'a encore rien à juger, et l'écran du nouvel abonné
+  reste consacré à son démarrage. Elle est aussi sur « Mes paiements », seule page vue par ceux qui paient par dépôt
+  déclaré.
+- **« Troisième séance » = troisième quiz terminé**, quel que soit son lancement (plan du jour ou quiz libre).
+- **Une note seule est acceptée.** Sans texte elle n'est pas publiable, mais elle donne à l'équipe une mesure de
+  satisfaction.
+- **Pas de mesure d'audience ajoutée** : le nombre d'avis se lit dans l'admin.
+
+### À relire par l'utilisateur
+- La formule de consentement et la puce de la politique de confidentialité : ce sont des textes à portée juridique,
+  les auteurs sont mineurs.
+- Avant chaque publication, vérifier dans l'admin que « Auteur » est un prénom seul et que le texte ne nomme personne,
+  ni établissement, ni ville.
+
+Déploiement : migration `catalog 0071` (après `users 0020`), puis rebuild du backend et de caddy.

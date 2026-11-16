@@ -109,10 +109,32 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Temoignage)
 class TemoignageAdmin(admin.ModelAdmin):
-    list_display = ["auteur_nom", "auteur_description", "note", "est_publie", "created_at"]
-    list_filter = ["est_publie", "note"]
+    """
+    Relecture des avis. Ceux de l'application arrivent en brouillon (voir catalog.avis) : avant de publier, vérifier
+    que « Auteur » est un prénom seul et que le texte ne nomme ni personne, ni établissement, ni ville - les auteurs
+    sont mineurs. Un avis sans consentement ne se publie pas (Temoignage.clean le refuse, y compris dans la liste).
+    """
+
+    list_display = [
+        "auteur_nom", "auteur_description", "origine", "langue", "note", "apercu", "consenti", "est_publie", "created_at",
+    ]
+    list_filter = ["est_publie", "origine", "langue", "note"]
     list_editable = ["est_publie"]
     search_fields = ["auteur_nom", "contenu"]
+    # Ni la provenance ni le consentement ne se modifient à la main : un accord ne se fabrique pas dans l'admin.
+    readonly_fields = ["origine", "profil", "cursus", "consentement_at", "created_at"]
+    fields = [
+        "origine", "profil", "cursus", "consentement_at", "created_at",
+        "auteur_nom", "auteur_description", "langue", "contenu", "note", "est_publie",
+    ]
+
+    @admin.display(description="Texte")
+    def apercu(self, obj):
+        return (obj.contenu[:80] + "…") if len(obj.contenu) > 80 else obj.contenu
+
+    @admin.display(description="Publiable", boolean=True)
+    def consenti(self, obj):
+        return obj.publiable
 
 
 class ExerciseInline(admin.TabularInline):

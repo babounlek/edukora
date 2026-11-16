@@ -38,5 +38,6 @@ class AccueilView(APIView):
             "epreuves": _donnees(LessonListView, request, **perimetre)["count"],
             "cours": _donnees(CoursListView, request, **perimetre)["count"],
             "matieres": len(_donnees(SubjectListView, request, **perimetre)),
-            "temoignages": _donnees(TemoignageListView, request),
+            # Dans la langue de l'interface, comme les chiffres : un avis écrit en anglais ne s'affiche pas sur /cm.
+            "temoignages": _donnees(TemoignageListView, request, langue=perimetre["langue"]),
         })

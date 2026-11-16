@@ -750,10 +750,14 @@ class CountryListView(generics.ListAPIView):
 
 
 class TemoignageListView(generics.ListAPIView):
-    queryset = Temoignage.objects.publies()
     serializer_class = TemoignageSerializer
     permission_classes = [permissions.AllowAny]
     pagination_class = None
+
+    def get_queryset(self):
+        # ?langue=fr|en : un avis n'est montré qu'aux visiteurs de sa langue (un élève du GCE écrit en anglais).
+        # Sans le paramètre, tous les avis publiés, comme avant.
+        return Temoignage.objects.publies().filter(**_filtre_langue(self.request, "langue"))
 
 
 class PlatformStatsView(APIView):

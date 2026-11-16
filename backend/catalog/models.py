@@ -1497,26 +1497,71 @@ class RappelDeMethode(models.Model):
         return self.cours_id is not None
 
 
+class OrigineTemoignage(models.TextChoices):
+    """Qui a écrit l'avis, et par où il est arrivé."""
+
+    ADMIN = "ADMIN", "Saisi dans l'admin"
+    ELEVE = "ELEVE", "Élève, dans l'application"
+    PARENT = "PARENT", "Parent, dans l'application"
+
+
+# Les avis écrits dans l'application : ils portent le consentement de leur auteur, contrairement à ceux que l'équipe
+# saisit elle-même dans l'admin (reçus par message, avec un accord donné hors de l'application).
+ORIGINES_DANS_L_APPLICATION = (OrigineTemoignage.ELEVE, OrigineTemoignage.PARENT)
+
+
 class TemoignageQuerySet(models.QuerySet):
     def publies(self):
-        return self.filter(est_publie=True)
+        """
+        Ce que le public peut lire. Un avis écrit dans l'application sans la case de consentement n'en fait jamais
+        partie, même coché « publié » par erreur (import, script) : `Temoignage.clean` le refuse déjà dans l'admin, ce
+        filtre est la deuxième barrière.
+        """
+        return self.filter(est_publie=True).exclude(
+            origine__in=ORIGINES_DANS_L_APPLICATION, consentement_at__isnull=True,
+        )
 
 
 class Temoignage(models.Model):
     """
-    Avis d'un élève, saisi et publié à la main depuis l'admin - jamais généré ni
-    déduit automatiquement (voir l'audit UX, reco 8.3 : preuve sociale réelle ou
-    absente, jamais fabriquée). `est_publie` par défaut à False : un témoignage
-    récolté (ex. par message) reste invisible du public tant qu'un admin ne l'a pas
-    relu et publié explicitement - même logique que Country.actif pour seed_country.
+    Avis d'un élève ou d'un parent - jamais généré ni déduit automatiquement (voir l'audit UX, reco 8.3 : preuve
+    sociale réelle ou absente, jamais fabriquée). `est_publie` par défaut à False : un avis reste invisible du public
+    tant qu'un admin ne l'a pas relu et publié explicitement - même logique que Country.actif pour seed_country.
+
+    Deux provenances (`origine`) : saisi dans l'admin (reçu par message), ou écrit dans l'application en fin de quiz
+    (voir catalog.avis, audit de l'accueil du 2026-11-15, R8). Les élèves sont mineurs : un avis de l'application ne
+    porte qu'un prénom et l'examen préparé, jamais de nom, de photo, d'établissement ni de ville, et il n'est publiable
+    que si son auteur a coché « j'accepte que mon avis soit affiché » (`consentement_at`). Sans la case, il sert à
+    l'équipe et ne sort jamais.
     """
+
+    origine = models.CharField(max_length=10, choices=OrigineTemoignage.choices, default=OrigineTemoignage.ADMIN)
+    profil = models.ForeignKey(
+        "users.Profil", null=True, blank=True, on_delete=models.SET_NULL, related_name="temoignages",
+        help_text="Le profil qui a écrit l'avis dans l'application. Vide pour un avis saisi dans l'admin. Jamais "
+                  "exposé au public. Quand le profil est supprimé, l'avis est dépublié (voir catalog.avis).",
+    )
+    cursus = models.ForeignKey(
+        "catalog.Cursus", null=True, blank=True, on_delete=models.SET_NULL, related_name="temoignages",
+        help_text="L'examen que l'auteur préparait en écrivant (celui de son profil).",
+    )
+    langue = models.CharField(
+        max_length=2, choices=Langue.choices, default=Langue.FR,
+        help_text="Langue dans laquelle l'avis est écrit : il n'est montré qu'aux visiteurs de cette langue.",
+    )
+    consentement_at = models.DateTimeField(
+        null=True, blank=True,
+        help_text="Moment où l'auteur a coché « j'accepte que mon avis soit affiché avec mon prénom ». Vide : "
+                  "l'avis n'est pas publiable.",
+    )
 
     auteur_nom = models.CharField(max_length=100)
     auteur_description = models.CharField(
         max_length=150, blank=True,
         help_text="Ex : « Terminale D, Cameroun » ou « Bachelière 2025 » - jamais de numéro de téléphone ni d'identifiant.",
     )
-    contenu = models.TextField(max_length=600)
+    # Vide possible : un avis de l'application peut n'être qu'une note (il n'est alors pas publiable, voir clean).
+    contenu = models.TextField(max_length=600, blank=True)
     note = models.PositiveSmallIntegerField(
         null=True, blank=True,
         help_text="Note sur 5, optionnelle - laisser vide si le témoignage n'en comporte pas.",
@@ -1528,10 +1573,29 @@ class Temoignage(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        constraints = [
+            # Un avis par profil et par rôle : l'application ne redemande jamais (voir catalog.avis).
+            models.UniqueConstraint(
+                fields=["profil", "origine"], condition=models.Q(profil__isnull=False),
+                name="temoignage_un_par_profil_et_origine",
+            ),
+        ]
 
     def __str__(self):
         return f"{self.auteur_nom} ({'publié' if self.est_publie else 'brouillon'})"
 
+    @property
+    def publiable(self):
+        """Faux pour un avis de l'application sans consentement, ou sans texte : rien à montrer."""
+        if not (self.contenu or "").strip():
+            return False
+        return self.origine not in ORIGINES_DANS_L_APPLICATION or self.consentement_at is not None
+
     def clean(self):
         if self.note is not None and not (1 <= self.note <= 5):
             raise ValidationError({"note": "La note doit être comprise entre 1 et 5."})
+        if self.est_publie and not self.publiable:
+            raise ValidationError({
+                "est_publie": "Cet avis ne peut pas être publié : son auteur n'a pas coché la case de consentement, "
+                              "ou il n'a pas écrit de texte.",
+            })

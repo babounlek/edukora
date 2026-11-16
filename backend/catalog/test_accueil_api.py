@@ -43,7 +43,12 @@ class AccueilApiTests(TestCase):
         self.assertEqual(self._accueil("en")["epreuves"], 1)
 
     def test_les_temoignages_sont_ceux_de_la_route_publique(self):
-        self.assertEqual(self._accueil("fr")["temoignages"], self.client.get("/catalog/temoignages/").json())
+        Temoignage.objects.create(auteur_nom="Awa", contenu="Très utile.", est_publie=True)
+        Temoignage.objects.create(auteur_nom="Ndi", contenu="Very useful.", est_publie=True, langue="en")
+        for langue, auteur in (("fr", "Awa"), ("en", "Ndi")):
+            recus = self._accueil(langue)["temoignages"]
+            self.assertEqual(recus, self.client.get(f"/catalog/temoignages/?langue={langue}").json())
+            self.assertEqual([t["auteur_nom"] for t in recus], [auteur])
 
     def test_ouverte_sans_connexion(self):
         self.assertEqual(self.client.get("/catalog/accueil/?country=cm&langue=fr").status_code, 200)

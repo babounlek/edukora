@@ -31,6 +31,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { BienvenueAbonne } from "@/components/BienvenueAbonne"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ContenuDebloque } from "@/components/ContenuDebloque"
+import { InviteAvis } from "@/components/InviteAvis"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
@@ -937,6 +938,10 @@ export function SubscribePage() {
               </Button>
             </div>
           )}
+
+          {/* L'avis du parent, quand le compte a déjà servi (trois quiz terminés, le serveur en décide) : un premier
+              paiement n'y a donc pas droit, et l'accueil du nouvel abonné reste seul à l'écran. Voir InviteAvis. */}
+          {phase === "success" && <InviteAvis role="parent" className="mt-2 text-left" />}
 
           {phase === "failed" && (
             <div className="flex flex-col items-center gap-3 py-6 text-center">

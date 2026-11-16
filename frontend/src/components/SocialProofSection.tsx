@@ -5,33 +5,37 @@ import { listTemoignages } from "@/api/endpoints"
 import type { Temoignage } from "@/api/types"
 import { t, useI18n } from "@/lib/i18n"
 
+/** En dessous, la section ne s'affiche pas : un avis seul sur la page fait plus douter qu'aucun. */
+export const SEUIL_AVIS_AFFICHES = 3
+
 /**
- * Preuve sociale publique (page d'accueil catalogue) - voir l'audit UX, reco 8.3.
- * Disparaît silencieusement tant qu'aucun témoignage n'est publié depuis l'admin
- * (jamais générés ni fabriqués - voir catalog.models.Temoignage).
+ * Preuve sociale publique (page d'accueil catalogue, /tarifs) - voir l'audit UX, reco 8.3.
+ * Disparaît silencieusement tant que SEUIL_AVIS_AFFICHES avis ne sont pas publiés depuis l'admin
+ * (jamais générés ni fabriqués - voir catalog.models.Temoignage et catalog.avis).
  */
 export function SocialProofSection({ fournis }: {
   /** Les témoignages déjà reçus par la page (l'accueil les a avec ses chiffres, voir getAccueilVitrine) : la section ne les
    * redemande pas. `null` tant que la page les attend. Sans cette prop, la section les charge elle-même (/tarifs). */
   fournis?: Temoignage[] | null
 } = {}) {
-  useI18n()
+  const { langue } = useI18n()
   const [charges, setCharges] = useState<Temoignage[]>([])
   const autonome = fournis === undefined
 
   useEffect(() => {
     if (!autonome) return
-    listTemoignages().then(setCharges).catch(() => {})
-  }, [autonome])
+    listTemoignages(langue).then(setCharges).catch(() => {})
+  }, [autonome, langue])
 
   const temoignages = autonome ? charges : (fournis ?? [])
 
-  const hasTemoignages = temoignages.length > 0
-
-  if (!hasTemoignages) return null
+  if (temoignages.length < SEUIL_AVIS_AFFICHES) return null
 
   return (
-    <section className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+    <section aria-labelledby="avis-publies-titre" className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
+      <h2 id="avis-publies-titre" className="mb-4 font-display text-xl font-semibold">
+        {t("avis.section_titre")}
+      </h2>
       <div className="grid gap-4 sm:grid-cols-3">
         {temoignages.slice(0, 3).map((temoignage) => (
           <div key={temoignage.id} className="rounded-xl border border-border p-5">

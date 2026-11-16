@@ -17,6 +17,7 @@ import { NiveauXp } from "@/components/NiveauXp"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
+import { InviteAvis } from "@/components/InviteAvis"
 import { InvitePush } from "@/components/ReglagesSeance"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { SemaineDeSerie } from "@/components/SemaineDeSerie"
@@ -613,6 +614,11 @@ export function QuizResultPage() {
           </Button>
         </div>
       )}
+
+      {/* « Ça t'a aidé ? » : l'avis de l'élève, à partir de son troisième quiz terminé et une seule fois (le serveur en
+          décide, voir InviteAvis). Sous les gestes pour continuer, jamais au-dessus : réviser passe avant. Pas pour un
+          invité, qui n'a pas de compte. */}
+      {!invite && <InviteAvis role="eleve" className="mb-6" />}
 
       {/* Par thème, du plus fragile au plus solide : c'est là que se décide la suite. */}
       {result.par_theme.length > 0 && (
