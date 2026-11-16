@@ -138,6 +138,15 @@ def _item_payload(theme="dérivation", **overrides):
     return payload
 
 
+def _seance_sans_quiz(profil):
+    """Retire l'étape quiz de la séance du jour : « J'ai fini » ne vaut que pour une séance sans quiz (un cours, un
+    exercice) - avec un quiz, c'est le quiz bouclé qui la clôt, et la clôture à la main est refusée (audit du
+    2026-11-16, voir quiz.views.terminer_seance_view)."""
+    for seance in SeanceJournaliere.objects.filter(profil=profil):
+        seance.etapes = [etape for etape in seance.etapes if etape.get("type") != "quiz"]
+        seance.save(update_fields=["etapes"])
+
+
 class IngestCompetenceItemTests(TestCase):
     """quiz.ingestion.ingest_competence_item - traduit le JSON du skill
     concepteur-quiz-competence vers CompetenceItem, en réutilisant les résolveurs de
@@ -3645,6 +3654,7 @@ class PlanDuJourTests(TestCase):
             palier=0, due_at=timezone.localdate(),
         )
         self.client.get("/quiz/plan-du-jour/")
+        _seance_sans_quiz(self.profil)
 
         reponse = self.client.post("/quiz/plan-du-jour/terminer/")
 
@@ -3660,6 +3670,7 @@ class PlanDuJourTests(TestCase):
             palier=0, due_at=timezone.localdate(),
         )
         self.client.get("/quiz/plan-du-jour/")
+        _seance_sans_quiz(self.profil)
         self.client.post("/quiz/plan-du-jour/terminer/")
 
         self.client.post("/quiz/plan-du-jour/terminer/")
@@ -3883,6 +3894,7 @@ class FinDeSeanceTests(TestCase):
 
     def test_la_cloture_manuelle_enregistre_le_meme_evenement_une_seule_fois(self):
         plan_du_jour(self.profil, self.cursus)
+        _seance_sans_quiz(self.profil)
 
         self.client.post("/quiz/plan-du-jour/terminer/")
         self.client.post("/quiz/plan-du-jour/terminer/")

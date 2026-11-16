@@ -139,6 +139,25 @@ Vérifications : voir 4.7.
 6. Contrôler `CAMPAY_ENVIRONMENT` et `OTP_DAILY_GLOBAL_CAP` dans le `.env`.
 7. Le premier push vers `main` lancera les tests du frontend dans le flux de publication (environ deux minutes de plus).
 
+### 4.7 Vérifications
+
+- **Tests Django** des applications touchées (quiz, inedit, simulations, access, aide, recherche, revendeurs, subscriptions, users, analytics, whatsapp, payments, relances), lancés dans le conteneur backend : 2 384 tests, tous verts après adaptation de trois tests de séance qui terminaient à la main une séance avec quiz. 60 tests ajoutés pour les correctifs.
+- **Tests du frontend** : 1 621 verts (trois ajoutés pour le changement d'enfant).
+- **Navigateur**, site local, 375 px, compte de test abonné : un cours lu une seule fois ; liste des cours remontée ; révélation du corrigé puis réponse à une question de quiz acceptées ; en-têtes de sécurité présents sur les pages et non doublés sur l'API. Configuration Caddy validée par `caddy validate`.
+- **Non vérifié** : l'adresse du client derrière Cloudflare (seulement en production), un vrai paiement CamPay rattrapé (agrégateur simulé dans les tests), l'envoi réel des SMS, e-mails et messages WhatsApp, la suite `catalog` (non touchée).
+
+**La publication sur GitHub échouait déjà avant ces correctifs.** Le flux `release.yml` est rouge sur `main` depuis le matin du 16 novembre : 8 tests en échec, images non construites, donc rien de déployable depuis. Aucun ne vient de ce lot :
+
+| Test | Cause apparente |
+|---|---|
+| `catalog.test_segments_url` (règle d'aperçu de Caddy) | Le Caddyfile compte 4 règles `path_regexp ^/(en/)?…` depuis le commit de l'accueil visiteur ; le test en attend 2 |
+| `aide.tests` (robots vers l'aperçu des articles) | Même commit, même fichier |
+| `catalog.test_pages_statiques` (4 tests) | Pages prérendues de l'accueil et des listes |
+| `catalog.test_pdf_fin` (bloc de fin en anglais du GCE) | Bloc de fin des PDF |
+| `access.test_quota` (requêtes simultanées) | À examiner |
+
+Tant qu'ils échouent, aucun commit, celui-ci compris, ne produit d'image.
+
 ## 5. Écarts par domaine et recommandations
 
 ### 5.1 Faire revenir et faire renouveler
