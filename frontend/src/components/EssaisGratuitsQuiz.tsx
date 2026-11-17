@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, Gift } from "lucide-react"
+import { ArrowRight, Check, Gift, RotateCcw } from "lucide-react"
 
 import { listQuizEssais } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -13,6 +13,7 @@ import { estDeLangue } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { lancerQuizGratuit } from "@/lib/quizGratuit"
+import { cleSeance, scoresDesSeances } from "@/lib/seancesGratuites"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
@@ -36,6 +37,8 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
   const [choisi, setChoisi] = useState<number | null>(null)
   const [enCours, setEnCours] = useState<string | null>(null)
   const [erreur, setErreur] = useState("")
+  // Lu une fois au montage : un quiz se joue sur une autre page, la liste est remontée au retour.
+  const [scores] = useState(scoresDesSeances)
 
   // Les essais proposés suivent la langue de l'interface, comme les listes (voir lib/cursusLangue) : en anglais le
   // GCE, en français BEPC, Probatoire et BAC. Un examen de l'autre langue (même déclaré sur le compte) n'est pas
@@ -103,6 +106,11 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
         {lignes.map((essai) => {
           const Icone = subjectIcon(essai.subject_code)
           const cle = `${essai.cursus}-${essai.subject}-${essai.theme}`
+          // Déjà joué sur cet appareil (voir lib/seancesGratuites) : la ligne le dit, avec le score à battre, et son
+          // bouton passe en contour - ce qui reste à essayer se voit d'abord.
+          const cleJouee = cleSeance(essai.cursus, essai.theme)
+          const fait = scores.has(cleJouee)
+          const record = scores.get(cleJouee) ?? null
           return (
             <li key={cle} className="flex items-center justify-between gap-3 bg-card px-3.5 py-3">
               <span className="flex min-w-0 items-center gap-2.5">
@@ -114,11 +122,23 @@ export function EssaisGratuitsQuiz({ cursusInitial }: { cursusInitial?: number |
                   <span className="block break-words text-sm font-medium leading-snug">{essai.subject_label}</span>
                   <span className="line-clamp-2 text-xs text-muted-foreground">{capitaliserTheme(essai.theme_name)}</span>
                   <span className="block text-xs text-muted-foreground">{tn("quiz.n_questions", essai.nb_questions)}</span>
+                  {fait && (
+                    <span className="mt-0.5 flex items-center gap-1 text-xs font-medium text-success">
+                      <Check className="size-3.5 shrink-0" aria-hidden="true" />
+                      {record ? t("essais.deja_fait_score", { a: record.reussies, b: record.total }) : t("essais.deja_fait")}
+                    </span>
+                  )}
                 </span>
               </span>
-              <Button size="sm" disabled={enCours !== null} onClick={() => lancer(essai)} className="shrink-0 rounded-full">
-                {enCours === cle ? t("quiz.preparation") : t("essais.essayer")}
-                {enCours !== cle && <ArrowRight />}
+              <Button
+                size="sm"
+                variant={fait ? "outline" : "default"}
+                disabled={enCours !== null}
+                onClick={() => lancer(essai)}
+                className="shrink-0 rounded-full"
+              >
+                {enCours === cle ? t("quiz.preparation") : t(fait ? "essais.refaire" : "essais.essayer")}
+                {enCours !== cle && (fait ? <RotateCcw /> : <ArrowRight />)}
               </Button>
             </li>
           )

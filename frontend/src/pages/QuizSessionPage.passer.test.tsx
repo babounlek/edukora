@@ -18,6 +18,7 @@ vi.mock("@/components/BoutonPartager", () => ({ BoutonPartager: () => null }))
 vi.mock("@/components/ObjectifXp", () => ({ ObjectifXp: () => null }))
 vi.mock("@/components/QuizFichePdfButtons", () => ({ QuizFichePdfButtons: () => null }))
 
+import { marquerSeancesJouees } from "@/lib/seancesGratuites"
 import { QuizSessionPage } from "./QuizSessionPage"
 
 const question = (id: number, extra = {}) => ({
@@ -43,10 +44,38 @@ function afficher() {
 
 beforeEach(() => {
   vi.clearAllMocks()
+  localStorage.clear()
   invite.actif = false
   window.scrollTo = vi.fn()
   passerQuizQuestion.mockImplementation((_s: number, id: number) => Promise.resolve(question(id, { passee: true })))
   completeQuizSession.mockResolvedValue({})
+})
+
+describe("QuizSessionPage : un quiz gratuit déjà joué sur cet appareil", () => {
+  const deTheme = (id: number, theme_id: number) => question(id, { theme_id })
+
+  it("jamais joué : aucune mention", async () => {
+    getQuizSession.mockResolvedValue(session([deTheme(1, 77), deTheme(2, 77)]))
+    afficher()
+    expect(await screen.findByText("Énoncé 1")).toBeInTheDocument()
+    expect(screen.queryByText(/déjà joué/)).not.toBeInTheDocument()
+  })
+
+  it("déjà joué : le dit, avec le meilleur score à battre", async () => {
+    marquerSeancesJouees(14, [77], { reussies: 3, total: 5 })
+    getQuizSession.mockResolvedValue(session([deTheme(1, 77), deTheme(2, 77)]))
+    afficher()
+    expect(await screen.findByText("Tu as déjà joué ce quiz. Ton meilleur score : 3 sur 5.")).toBeInTheDocument()
+  })
+
+  it("joué pour un autre examen, ou quiz de plusieurs thèmes : aucune mention", async () => {
+    marquerSeancesJouees(3, [77], { reussies: 3, total: 5 })
+    marquerSeancesJouees(14, [78], { reussies: 3, total: 5 })
+    getQuizSession.mockResolvedValue(session([deTheme(1, 77), deTheme(2, 78)]))
+    afficher()
+    expect(await screen.findByText("Énoncé 1")).toBeInTheDocument()
+    expect(screen.queryByText(/déjà joué/)).not.toBeInTheDocument()
+  })
 })
 
 describe("QuizSessionPage : passer une question", () => {

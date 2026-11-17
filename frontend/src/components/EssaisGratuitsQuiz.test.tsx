@@ -9,6 +9,7 @@ vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ isAuthenticated: false, user: null }) }))
 
 import { definirLangue } from "@/lib/i18n"
+import { marquerSeancesJouees } from "@/lib/seancesGratuites"
 import { EssaisGratuitsQuiz } from "./EssaisGratuitsQuiz"
 
 const essai = (cursus: number, display: string, langue: "fr" | "en", subject: string, theme = "Theme") => ({
@@ -34,10 +35,36 @@ function afficher(cursusInitial?: number | null) {
   )
 }
 
-beforeEach(() => listQuizEssais.mockResolvedValue(ESSAIS))
+beforeEach(() => {
+  localStorage.clear()
+  listQuizEssais.mockResolvedValue(ESSAIS)
+})
 afterEach(async () => {
   await definirLangue("fr", { persister: false })
   listQuizEssais.mockReset()
+})
+
+describe("EssaisGratuitsQuiz : un quiz déjà joué sur cet appareil", () => {
+  it("jamais joué : « Essayer », aucune mention", async () => {
+    afficher()
+    expect(await screen.findByRole("button", { name: "Essayer" })).toBeInTheDocument()
+    expect(screen.queryByText(/Déjà fait/)).not.toBeInTheDocument()
+  })
+
+  it("déjà joué : la ligne le dit avec le meilleur score, et le bouton devient « Refaire »", async () => {
+    marquerSeancesJouees(3, [300], { reussies: 4, total: 6 })
+    afficher()
+    expect(await screen.findByText("Déjà fait · 4 sur 6")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Refaire" })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Essayer" })).not.toBeInTheDocument()
+  })
+
+  it("joué pour un autre examen : la ligne de celui-ci reste à essayer", async () => {
+    marquerSeancesJouees(4, [300], { reussies: 4, total: 6 })
+    afficher()
+    expect(await screen.findByRole("button", { name: "Essayer" })).toBeInTheDocument()
+    expect(screen.queryByText(/Déjà fait/)).not.toBeInTheDocument()
+  })
 })
 
 describe("EssaisGratuitsQuiz : examens de la langue de l'interface", () => {

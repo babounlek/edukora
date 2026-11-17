@@ -370,12 +370,6 @@ export function QuizResultPage() {
     completeQuizSession(Number(id))
       .then((resultat) => {
         setResult(resultat)
-        // Une séance d'un seul thème, jouée (au moins une réponse) : si c'est une séance gratuite, la carte de l'accueil
-        // avance à la matière suivante (voir components/PremiereSeance). Un test de niveau qui effleure dix thèmes ne
-        // compte pas pour avoir « fait » l'un d'eux.
-        if (resultat.par_theme.length === 1 && resultat.questions_repondues > 0) {
-          marquerSeancesJouees(resultat.cursus, [resultat.par_theme[0].theme_id])
-        }
         // Terminer un quiz change TOUT ce qui se calcule à partir des réponses :
         // le taux de maîtrise d'un thème dans le parcours, l'histogramme par matière,
         // la file de révision espacée, et la séance du jour - que ce quiz vient
@@ -400,6 +394,17 @@ export function QuizResultPage() {
         setError(err instanceof ApiError ? err.message : t("qr.err_charger"))
       })
   }, [id, queryClient])
+
+  // Un quiz GRATUIT joué (un seul thème, celui qu'offre cet examen, au moins une réponse) est noté sur l'appareil avec
+  // son score : la carte de l'accueil avance à la matière suivante (voir components/PremiereSeance) et le même quiz
+  // relancé dira « déjà joué » (voir lib/seancesGratuites). Seulement un quiz gratuit : son thème n'a que quelques
+  // questions, le rejouer redonne les mêmes. Un thème d'abonné en compte des dizaines, « déjà joué » y serait faux.
+  useEffect(() => {
+    if (!result || !essais || result.par_theme.length !== 1 || result.questions_repondues === 0) return
+    const theme = result.par_theme[0].theme_id
+    if (!essais.some((e) => e.cursus === result.cursus && e.theme === theme)) return
+    marquerSeancesJouees(result.cursus, [theme], { reussies: result.score, total: result.total_questions })
+  }, [result, essais])
 
   if (error) {
     return (

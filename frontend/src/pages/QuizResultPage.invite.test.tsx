@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
@@ -50,6 +50,7 @@ beforeEach(() => {
   api.completeQuizSession.mockResolvedValue(resultat())
   api.listQuizEssais.mockResolvedValue([])
   sessionStorage.clear()
+  localStorage.clear()
   auth.user = null
 })
 afterEach(() => clearJetonInvite())
@@ -99,6 +100,32 @@ describe("QuizResultPage : un visiteur qui a joué avec un compte invité", () =
 
     await screen.findByText("Garde ton quiz et tes points.")
     expect(screen.queryByText(/Défi relevé/)).not.toBeInTheDocument()
+  })
+})
+
+describe("QuizResultPage : un quiz gratuit joué est noté sur l'appareil", () => {
+  const unTheme = { par_theme: [{ theme: "identité remarquable", theme_id: 77, subject_code: "MATHS", total: 5, reussies: 4 }] }
+  const essaiGratuit = {
+    cursus: 4, cursus_display: "BEPC", langue: "fr", subject: 5, subject_label: "Mathématiques", subject_code: "MATHS",
+    theme: 77, theme_name: "identité remarquable", nb_questions: 5,
+  }
+
+  it("le thème gratuit de l'examen : noté avec son score", async () => {
+    auth.user = { id: 1, referral_code: "ABC" }
+    api.completeQuizSession.mockResolvedValue(resultat(unTheme))
+    api.listQuizEssais.mockResolvedValue([essaiGratuit])
+    afficher()
+    await waitFor(() => expect(localStorage.getItem("edukora:seances-jouees")).toBe('{"4:77":[4,5]}'))
+  })
+
+  it("un thème d'abonné (pas le quiz gratuit) : rien n'est noté", async () => {
+    auth.user = { id: 1, referral_code: "ABC" }
+    api.completeQuizSession.mockResolvedValue(resultat(unTheme))
+    api.listQuizEssais.mockResolvedValue([{ ...essaiGratuit, theme: 78 }])
+    afficher()
+    await screen.findByText("Invitation aux rappels")
+    await waitFor(() => expect(api.listQuizEssais).toHaveBeenCalled())
+    expect(localStorage.getItem("edukora:seances-jouees")).toBeNull()
   })
 })
 

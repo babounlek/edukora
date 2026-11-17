@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypeRaw from "rehype-raw"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, Sparkles, Swords, Target, X, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, Check, FileText, Flame, Lightbulb, Loader2, RotateCcw, Sparkles, Swords, Target, X, Zap } from "lucide-react"
 
 import {
   answerQuizEssai, answerQuizQuestion, completeQuizSession, passerQuizQuestion, getQuizSession, revealQuizCorrige, revealQuizEssaiCorrige,
@@ -29,6 +29,7 @@ import { themeExercicesPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { jouerRetour } from "@/lib/retours"
 import { useSecondesRestantes } from "@/lib/quizChrono"
+import { seanceJouee } from "@/lib/seancesGratuites"
 import { MascotteDessin } from "@/components/MascotteDessin"
 import { MASCOTTE_ACTIVE } from "@/lib/mascotte"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -104,6 +105,12 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const invite = useEssaiSansCompte()
   // Le score à battre d'un défi reçu par lien, mémorisé pour CETTE séance (voir lib/defiEssai).
   const [defi] = useState(() => lireDefiMemorise(essai ? 0 : Number(id)))
+  // Ce quiz gratuit a-t-il déjà été joué sur cet appareil (voir lib/seancesGratuites) ? Un thème gratuit n'a que quelques
+  // questions : le relancer redonne les mêmes, et rien ne le disait. Seulement pour un quiz d'un seul thème : c'est ce
+  // qu'est un quiz gratuit, et seuls les quiz gratuits sont notés. Relu à chaque rendu (une petite entrée de
+  // localStorage) : la mémoire ne s'écrit qu'à l'écran de résultat, donc c'est bien le score d'AVANT cette séance.
+  const themeSeul = session && new Set(session.questions.map((q) => q.theme_id)).size === 1 ? session.questions[0].theme_id : null
+  const dejaJoue = session && themeSeul != null ? seanceJouee(session.cursus, themeSeul) : null
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
   // (réponse, correction, fin du quiz) ne doit jamais effacer un quiz en cours - l'élève
   // garde ses réponses sous les yeux et peut simplement réessayer.
@@ -431,6 +438,16 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         <p className="mb-4 flex items-center gap-2 rounded-xl bg-gold/15 px-3 py-2 text-sm font-medium">
           <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
           {t("defi.en_cours", { a: defi.reussies, b: defi.total })}
+        </p>
+      )}
+
+      {/* Le défi reçu passe devant : c'est lui, le score à battre de cette séance. */}
+      {dejaJoue?.jouee && !defi && (
+        <p className="mb-4 flex items-center gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm">
+          <RotateCcw className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          {dejaJoue.record
+            ? t("qs.deja_joue_record", { a: dejaJoue.record.reussies, b: dejaJoue.record.total })
+            : t("qs.deja_joue")}
         </p>
       )}
 

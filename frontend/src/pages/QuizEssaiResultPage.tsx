@@ -65,8 +65,9 @@ export function QuizEssaiResultPage() {
     if (!aRepondu || !session || !score) return
     jouerRetour("fin")
     memoriserRecord(session, score.reussies, score.total)
-    // La carte de l'accueil avance à la matière gratuite suivante (voir components/PremiereSeance).
-    marquerSeancesJouees(session.cursus, session.questions.map((q) => q.theme_id))
+    // La carte de l'accueil avance à la matière gratuite suivante (voir components/PremiereSeance), et le quiz relancé
+    // dira « déjà joué » avec ce score à battre (voir lib/seancesGratuites).
+    marquerSeancesJouees(session.cursus, session.questions.map((q) => q.theme_id), { reussies: score.reussies, total: score.total })
   }, [aRepondu, session, score])
 
   if (!session || !score || !aRepondu) return null
