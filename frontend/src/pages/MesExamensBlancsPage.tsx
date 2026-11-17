@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { epreuvesListPath } from "@/lib/countryPath"
+import { aUnEssaiSansCompte } from "@/lib/invite"
 import { formatNote } from "@/lib/notation"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
@@ -77,19 +78,22 @@ export function MesExamensBlancsPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
 
+  // Un visiteur qui a fait l'essai d'une inédite gratuite sans compte (compte invité, voir lib/invite.ts) retrouve
+  // sa copie ici : seules les inédites lui sont ouvertes, les annales en conditions d'examen demandent un compte.
+  const essaiSansCompte = !isAuthenticated && aUnEssaiSansCompte()
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ["mes-simulations"],
     queryFn: listMySimulations,
     enabled: isAuthenticated,
   })
   const { data: inedites, isLoading: inedChargent } = useQuery({
-    queryKey: ["mes-tentatives-inedites"],
+    queryKey: ["mes-tentatives-inedites", essaiSansCompte ? "invite" : "compte"],
     queryFn: listMyTentativesInedites,
-    enabled: isAuthenticated,
+    enabled: isAuthenticated || essaiSansCompte,
     retry: false,
   })
 
-  if (!authLoading && !isAuthenticated) {
+  if (!authLoading && !isAuthenticated && !essaiSansCompte) {
     return <ConnexionRequise from="/examens-blancs" titre={t("blancs.h1")} explication={t("blancs.intent")} />
   }
 
@@ -117,6 +121,19 @@ export function MesExamensBlancsPage() {
       </p>
       <h1 className="mt-2 font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t("blancs.h1")}</h1>
       <p className="mt-2 text-sm text-muted-foreground">{t("blancs.texte")}</p>
+
+      {essaiSansCompte && (
+        <div className="mt-6 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3.5">
+          <p className="text-sm">
+            <strong>{t("rp.invite_titre")}</strong> {t("rp.invite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full sm:w-auto" size="lg">
+            <Link to="/connexion" state={{ from: "/examens-blancs", intent: t("ine.invite_intent") }}>
+              {t("rp.invite_cta")}
+            </Link>
+          </Button>
+        </div>
+      )}
 
       {authLoading || isLoading || inedChargent ? (
         <div className="mt-8 flex flex-col gap-3">

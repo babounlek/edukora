@@ -7,7 +7,7 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { NiveauXp } from "@/components/NiveauXp"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
-import { t, useI18n, type CleI18n } from "@/lib/i18n"
+import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
 const FAMILLES = ["quiz", "themes", "examens", "defis", "serie"] as const
 
@@ -73,9 +73,9 @@ export function BlocReussites({ className }: { className?: string }) {
       <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5">
         <Flame className="size-6 shrink-0 text-gold-text" aria-hidden="true" />
         <div>
-          <p className="font-display text-xl font-semibold tabular-nums">{t("reussites.record", { n: data.serie.record })}</p>
+          <p className="font-display text-xl font-semibold tabular-nums">{tn("reussites.record", data.serie.record)}</p>
           <p className="text-xs text-muted-foreground">
-            {t("reussites.serie_actuelle", { n: data.serie.actuelle })}
+            {tn("reussites.serie_actuelle", data.serie.actuelle)}
             {data.serie.repos_pris ? ` · ${t("reussites.repos")}` : ""}
           </p>
           <p className="mt-1 text-xs text-muted-foreground">{t("reussites.repos_regle")}</p>

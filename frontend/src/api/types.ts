@@ -2069,6 +2069,8 @@ export interface QuizHistoriqueItem {
   duree_secondes: number | null
   score: number
   total_questions: number
+  /** Questions répondues : le résultat note sur elles, l'historique aussi (les passées ne comptent pas). */
+  questions_repondues: number
   pourcentage: number
   // Session d'origine quand c'est un rejeu, sinon null.
   rejeu_de: number | null

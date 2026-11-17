@@ -139,7 +139,7 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
 /** Statistique du hero - même gabarit que les puces de /quiz, /fiches et /cours. */
 function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; libelle: string }) {
   return (
-    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+    <span className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-sm">
       {icon}
       <span className="font-medium tabular-nums">{valeur}</span>
       <span className="text-muted-foreground">{libelle}</span>
@@ -493,7 +493,7 @@ export function EpreuvesListPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauVue />
-      <div className="mb-4">
+      <div className="mb-2 sm:mb-4">
         <BoutonAide guide="annales" className="-ml-2.5" />
         <AideContextuelle guide="annales" className="mt-1" />
       </div>
@@ -510,8 +510,8 @@ export function EpreuvesListPage() {
       ) : (
       <div
         className={cn(
-          "relative mb-6 overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06]",
-          pageInedites ? "border-gold/40 p-5 sm:p-6" : "border-border p-5 sm:p-8",
+          "relative mb-4 overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] sm:mb-6",
+          pageInedites ? "border-gold/40 p-4 sm:p-6" : "border-border p-4 sm:p-8",
         )}
       >
         <div
@@ -524,7 +524,7 @@ export function EpreuvesListPage() {
         />
         <BookOpen aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <p className="mb-2 font-display text-sm italic text-primary">
+          <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">
             {pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste")}
             {countryLabel ? ` - ${countryLabel}` : ""}
           </p>
@@ -550,7 +550,7 @@ export function EpreuvesListPage() {
 
           {/* Sur la page des inédites, le compte vit déjà dans « N épreuves trouvées » : une rangée
               de pastilles de plus ne faisait que repousser les résultats vers le bas. */}
-          <div className={cn("mt-4 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "flex")}>
+          <div className={cn("mt-3 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "flex")}>
             {totalEpreuves !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}
@@ -578,7 +578,7 @@ export function EpreuvesListPage() {
 
       {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
           de la page, comme sur /cours. */}
-      <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
+      <div className="mb-4 rounded-2xl border border-border bg-card p-3.5 shadow-lg shadow-primary/5 sm:mb-6 sm:p-6">
         {/* Une vingtaine d'inédites se parcourent aux pastilles : sans champ de recherche, les
             résultats remontent d'une soixantaine de pixels. */}
         <div className={cn("group relative", pageInedites && "hidden")}>

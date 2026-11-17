@@ -140,7 +140,10 @@ def _resume(session, reponses, numeros, libelles):
         "duree_secondes": _duree_secondes(reponses, total),
         "score": score,
         "total_questions": total,
-        "pourcentage": round(100 * score / total) if total else 0,
+        # Le résultat note sur les questions auxquelles l'élève a répondu (les passées ne comptent
+        # ni en réussite ni en échec) : l'historique dit la même chose, sinon « 3/5 » contre « 3/4 ».
+        "questions_repondues": len(reponses),
+        "pourcentage": round(100 * score / len(reponses)) if reponses else 0,
         "rejeu_de": session.rejeu_de_id,
         "numero_tentative": numero,
         "nb_tentatives": nombre,

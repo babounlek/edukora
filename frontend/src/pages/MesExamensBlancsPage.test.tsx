@@ -47,6 +47,19 @@ const inedite = (surcharges: Record<string, unknown>) => ({
 })
 
 describe("MesExamensBlancsPage", () => {
+  it("un visiteur qui a fait un essai sans compte retrouve sa copie, sans les annales", async () => {
+    auth.isAuthenticated = false
+    localStorage.setItem("edukora-invite", "jeton-invite")
+    listMyTentativesInedites.mockResolvedValue([inedite({ id: 71, epreuve_titre: "Inédite offerte" })])
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: /Inédite offerte/ })
+    expect(lien).toHaveAttribute("href", "/inedit/tentative/71/resultat")
+    expect(screen.getByText("Garde ta copie et ta note.")).toBeInTheDocument()
+    expect(listMySimulations).not.toHaveBeenCalled()
+    localStorage.removeItem("edukora-invite")
+  })
+
   it("met la copie dont le chrono tourne en tête, avec de quoi la reprendre", async () => {
     listMySimulations.mockResolvedValue([
       copie({ id: 9, epreuve_titre: "Physique BEPC 2024", submitted_at: null, note_obtenue: null, bareme_snapshot: null, chrono_en_cours: true }),

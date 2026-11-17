@@ -209,7 +209,7 @@ export function QuizHistoriquePage() {
       <section className="mb-5 flex flex-col gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div>
           <p className="font-display text-2xl font-semibold">
-            {t("hq.score", { score: detail.score, total: detail.total_questions })}
+            {t("hq.score", { score: detail.score, total: detail.questions_repondues || detail.total_questions })}
             <Badge className="ml-2 align-middle" variant={detail.pourcentage >= SEUIL_REUSSITE ? "success" : "outline"}>
               {detail.pourcentage}%
             </Badge>

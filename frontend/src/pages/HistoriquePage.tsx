@@ -154,7 +154,7 @@ function ListeQuiz({
                 </span>
               </span>
               <Badge variant={q.pourcentage >= SEUIL_REUSSITE ? "success" : "outline"}>
-                {q.score}/{q.total_questions}
+                {q.score}/{q.questions_repondues || q.total_questions}
               </Badge>
             </Link>
           </li>
