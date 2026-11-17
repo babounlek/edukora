@@ -8,6 +8,7 @@ import { getResumeParcours, listMySubscriptions } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { Cursus, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
+import { BlocReussites } from "@/components/BlocReussites"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { Button } from "@/components/ui/button"
@@ -279,6 +280,8 @@ export function ParcoursPage() {
         <BoutonAide guide="progression" className="-ml-2.5" />
         <AideContextuelle guide="progression" className="mt-1" />
       </div>
+      {/* Niveau, série, record et jalons : ce que l'élève cherche en ouvrant « Ma progression ». */}
+      <BlocReussites className="mb-6" />
       <Ecrin>
         <div className="flex items-start justify-between gap-6">
           <div className="min-w-0">

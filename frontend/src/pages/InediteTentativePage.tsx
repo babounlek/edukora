@@ -719,8 +719,8 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
             {tentative.epreuve_titre}
           </p>
         )}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-1 sm:gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+          <div className="flex items-center gap-1 sm:gap-2">
             {source !== "inedit" && (
               <Badge variant="secondary" className="hidden max-w-[16rem] truncate md:inline-flex">
                 {traduireLibelleSerie(tentative.cursus_display)}

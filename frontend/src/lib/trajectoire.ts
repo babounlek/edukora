@@ -15,6 +15,9 @@ export function phraseTrajectoire(t: Trajectoire, phase: PhaseExamen): string {
   const projetee = pourcent(t.couverture_projetee)
   const rythme = t.seances_par_semaine === null ? "" : ` (${formatRythme(t.seances_par_semaine)})`
   const variables = { rythme, pct: projetee }
+  // « Tu couvres 1 % de l'essentiel » le jour même d'une séance faite décourage et contredit le compteur de la semaine :
+  // sous 10 %, le rythme mesuré ne dit encore rien de fiable, on le dit plutôt que de projeter un chiffre.
+  if (projetee < 10) return tr("traj.debut")
   if (t.suffisant) {
     if (phase === "derniere_ligne_droite" || phase === "simulation") {
       return tr("traj.final", variables)

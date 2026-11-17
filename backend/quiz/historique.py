@@ -272,7 +272,7 @@ def rejouer(request, session_id):
             CompetenceItem.objects.filter(pk__in=ids, est_vitrine=True).count() == len(set(ids))
         )
         if not tous_vitrine:
-            return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+            return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     # Chrono au choix du rejeu (voir quiz.chrono) ; sans précision, on reprend le réglage de la tentative rejouée.
     chronometre = request.data.get("chrono", session.chrono_actif) in (True, "true", "True", 1, "1")

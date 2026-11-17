@@ -29,7 +29,7 @@ from catalog.models import Cursus, Examen, Lesson, Origine, StatutContenu, Subje
 
 from .models import CompetenceItem, ModeQuiz, ResultatDeclare
 from .gratuits import themes_gratuits_par_matiere
-from .services import _items_eligibles, perimetre_est_vitrine
+from .services import _items_eligibles, ordonner_pour_jouer, perimetre_est_vitrine
 from .views import _competence_item_corrige, _cursus_display
 
 # Même ordre pédagogique que le frontend (lib/cursus.ts, EXAMEN_ORDER) : collège, intermédiaire, lycée, puis le GCE.
@@ -187,7 +187,7 @@ def demarrer_essai(request):
     items = _items_eligibles(cursus, subject=subject, theme=theme)
     tires = random.sample([i.id for i in items], min(n, len(items)))
     par_id = CompetenceItem.objects.filter(pk__in=tires).select_related("theme", "subject").in_bulk()
-    selection = [par_id[i] for i in tires]
+    selection = ordonner_pour_jouer([par_id[i] for i in tires])
     return Response({
         "id": 0,
         "essai": True,

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ArrowUp, ChevronDown, Mail, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
 
 import { getPlatformStats, listExamens } from "@/api/endpoints"
-import type { Cursus, User } from "@/api/types"
+import type { Cursus, PlanDuJour, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { ouvrirCentre } from "@/lib/guides/etat"
 import { useAbonneActif } from "@/lib/abonneActif"
@@ -54,7 +54,7 @@ function phraseCompteARebours(user: User) {
  * Aucune requête de plus : tout vient de l'utilisateur déjà chargé (compte à rebours,
  * cursus déclaré, abonnement actif).
  */
-function invitationPour(user: User | null, country: string): Invitation {
+function invitationPour(user: User | null, country: string, seanceFaite = false): Invitation {
   if (!user) {
     return {
       message: (
@@ -81,6 +81,19 @@ function invitationPour(user: User | null, country: string): Invitation {
       ),
       bouton: t("ft.voir_prix"),
       lien: "/tarifs",
+    }
+  }
+  if (seanceFaite) {
+    // « Ta séance est prête » après une séance faite : le pied de page disait le contraire de l'accueil.
+    return {
+      message: (
+        <>
+          {compteARebours ? `${compteARebours} · ` : ""}
+          <span className="text-primary">{t("ft.seance_faite")}</span>
+        </>
+      ),
+      bouton: t("ft.encore_un_quiz"),
+      lien: "/quiz",
     }
   }
   return {
@@ -189,7 +202,9 @@ export function Footer() {
     return page ? examenPath(country as string, page.slug) : `${epreuvesListPath(country)}?cursus=${c.id}`
   }
 
-  const invitation = invitationPour(isAuthenticated ? user : null, country)
+  // Le plan du jour est lu dans le cache seulement (aucune requête de plus) : il y est dès que l'élève a vu son accueil.
+  const { data: plan } = useQuery<PlanDuJour | null>({ queryKey: ["plan-du-jour"], queryFn: () => Promise.resolve(null), enabled: false })
+  const invitation = invitationPour(isAuthenticated ? user : null, country, plan?.etat === "deja_fait_aujourdhui")
   // Pas d'invitation vers la page où l'on est déjà (les tarifs sur /tarifs, la séance
   // sur l'accueil) : un bouton qui ne mène nulle part affaiblit tous les autres.
   const cible = invitation.lien.split("?")[0]

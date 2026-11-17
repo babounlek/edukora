@@ -23,7 +23,7 @@ const MS_PAR_LETTRE = 28
 export function Mascotte({ contexte: contexteBrut, className }: { contexte: ContexteMascotte; className?: string }) {
   useI18n()
   // Ce que Kora savait AVANT ce quiz : lu une fois au montage, avant que l'effet plus bas n'écrive le nouveau résultat.
-  const [souvenir] = useState(() => lireSouvenir())
+  const [souvenir] = useState(() => lireSouvenir(Date.now(), contexteBrut.matiere))
   const [premiereFois] = useState(pasEncorePresentee)
   const contexte = useMemo(() => ({ souvenir, ...contexteBrut }), [souvenir, contexteBrut])
   const situation = situationMascotte(contexte)
@@ -42,7 +42,7 @@ export function Mascotte({ contexte: contexteBrut, className }: { contexte: Cont
   useEffect(() => {
     if (!MASCOTTE_ACTIVE) return
     memoriserPresentee()
-    memoriserSouvenir(contexteBrut.pourcentage)
+    memoriserSouvenir(contexteBrut.pourcentage, Date.now(), contexteBrut.matiere)
     // Une seule écriture, au montage : le résultat de ce quiz devient le « dernier » du suivant.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

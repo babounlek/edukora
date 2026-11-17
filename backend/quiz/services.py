@@ -13,7 +13,7 @@ from django.utils import timezone
 
 from access.models import ExerciceFait, LectureProgress
 from catalog.models import (
-    Cours, Difficulte, Examen, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag, q_cours_du_cursus,
+    Cours, Difficulte, Examen, ExamSession, Lesson, Origine, Question, StatutContenu, Subject, Tag, TypeReponse, q_cours_du_cursus,
 )
 from programme.models import Module, Savoir
 
@@ -571,6 +571,22 @@ class AucuneQuestionPlusFacile(ValueError):
     """Le périmètre existe mais n'a aucune question de difficulté faible ou moyenne (voir `plus_facile`)."""
 
 
+_RANG_DIFFICULTE = {Difficulte.FAIBLE: 0, Difficulte.MOYENNE: 1, Difficulte.ELEVEE: 2}
+
+
+def ordonner_pour_jouer(items):
+    """
+    L'ordre dans lequel un élève rencontre les questions : les questions à choix d'abord (un toucher), les plus simples en tête,
+    les questions à rédiger ensuite. Une première question « Difficile » à rédiger sur son brouillon fait quitter le quiz (passes
+    élève du 2026-11-17, visiteur et abonné) ; une première question à toucher, courte, donne le premier succès tout de suite.
+    Tri stable : à rang égal, le tirage reste tel quel. Ne change jamais QUELLES questions sont posées.
+    """
+    return sorted(
+        items,
+        key=lambda i: (i.type_reponse != TypeReponse.QCM, _RANG_DIFFICULTE.get(i.difficulte_estimee, 1)),
+    )
+
+
 def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None, n=10, plus_dur=False, plus_facile=False):
     """
     Sélectionne jusqu'à n CompetenceItem et crée une QuizSession. Lève ValueError si
@@ -635,6 +651,8 @@ def generer_session(profil, cursus, mode, subject=None, theme=None, savoir=None,
         poids_par_theme = _poids_par_theme(profil, cursus)
         selection = _selection_par_reprise(items, historique, poids_par_theme, n)
     selection = list(reservees) + list(selection) if (plus_dur or plus_facile) else selection
+    if not plus_dur:
+        selection = ordonner_pour_jouer(selection)
 
     session = QuizSession.objects.create(profil=profil, cursus=cursus, subject=subject, theme=theme, mode=mode)
     creer_questions(session, selection)

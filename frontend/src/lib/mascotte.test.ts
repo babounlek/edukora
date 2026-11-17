@@ -31,6 +31,20 @@ describe("situationMascotte", () => {
     expect(situationMascotte({ pourcentage: 30, recordBattu: true, souvenir: { pourcentage: 10, jours: 9 } })).toBe("record")
   })
 
+  it("ne cite pas un score d'avant sous 30 % : « la dernière fois, c'était 0 % » ne console personne", () => {
+    expect(situationMascotte({ pourcentage: 60, souvenir: { pourcentage: 0, jours: 1 } })).toBe("moyen")
+    expect(situationMascotte({ pourcentage: 80, souvenir: { pourcentage: 20, jours: 1 } })).toBe("succes")
+    expect(situationMascotte({ pourcentage: 60, souvenir: { pourcentage: 30, jours: 1 } })).toBe("progres")
+  })
+
+  it("ne dit jamais « frère » ni « mate » : Kora parle à toutes les élèves", () => {
+    for (const dico of [fr, en]) {
+      for (const [cle, texte] of Object.entries(dico)) {
+        if (cle.startsWith("mascotte.")) expect(String(texte)).not.toMatch(/frère|mate/)
+      }
+    }
+  })
+
   it("donne une humeur à chaque situation", () => {
     expect(humeurMascotte("record")).toBe("fete")
     expect(humeurMascotte("succes")).toBe("content")

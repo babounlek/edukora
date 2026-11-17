@@ -231,10 +231,10 @@ describe("AccueilEleve", () => {
     }))
     afficher()
 
-    expect(await screen.findByText("10 / 20 points")).toBeInTheDocument()
+    expect(await screen.findByText("10 points · objectif 20")).toBeInTheDocument()
     // Sous le bouton principal, pas avant lui : en tête de carte, elle le repoussait sous le pli.
     const commencer = screen.getByRole("link", { name: /Commencer :/ })
-    expect(commencer.compareDocumentPosition(screen.getByText("10 / 20 points"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(commencer.compareDocumentPosition(screen.getByText("10 points · objectif 20"))).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(screen.getByText("3 jours de suite")).toBeInTheDocument()
     expect(screen.getAllByRole("img", { name: /, Travaillé$/ })).toHaveLength(2)
   })

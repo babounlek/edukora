@@ -27,6 +27,7 @@ from catalog.slugs_renommes import slug_actuel
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
 from quiz.models import CompetenceItem, ResultatDeclare
+from quiz import xp
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
 from users.parent import portee_famille
@@ -184,6 +185,9 @@ def _complete(tentative):
         exercices = _exercices_pour_notation(tentative.epreuve)
         bilan = notation.calculer(tentative, exercices)
         notation.enregistrer_note(tentative, bilan)
+        # Rendue en conditions réelles (ou sur papier) et réellement entamée : la copie rapporte des points, comme un examen blanc.
+        if tentative.exam_mode_started_at is not None and tentative.reponses.exists():
+            xp.crediter_inedite(tentative.profil, tentative.pk)
         _planifier_revisions_des_questions_non_traitees(tentative, exercices)
         return _tentative_resultat_payload(tentative, bilan)
     return _tentative_resultat_payload(tentative)
@@ -386,6 +390,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
         "country": tentative.epreuve.cursus.first().country.code,
         # De quelle épreuve on lit le résultat : la page ne le disait nulle part.
         "epreuve_titre": tentative.epreuve.titre,
+        "xp_gagne": xp.gain_inedite(tentative.profil, tentative.pk),
         "total_questions": bilan["questions_total"],
         # Questions traitées (et non plus « répondues ») : seules les QCM se répondent
         # dans l'application, une question ouverte est traitée sur brouillon ou papier.

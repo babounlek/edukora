@@ -55,7 +55,6 @@ const AccesPage = lazy(() => import("@/pages/AccesPage").then((m) => ({ default:
 const HistoriquePage = lazy(() => import("@/pages/HistoriquePage").then((m) => ({ default: m.HistoriquePage })))
 const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ default: m.CarnetPage })))
 const MesExamensBlancsPage = lazy(() => import("@/pages/MesExamensBlancsPage").then((m) => ({ default: m.MesExamensBlancsPage })))
-const MesReussitesPage = lazy(() => import("@/pages/MesReussitesPage").then((m) => ({ default: m.MesReussitesPage })))
 const MesCartesPage = lazy(() => import("@/pages/MesCartesPage").then((m) => ({ default: m.MesCartesPage })))
 const MesErreursPage = lazy(() => import("@/pages/MesErreursPage").then((m) => ({ default: m.MesErreursPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
@@ -199,7 +198,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/erreurs" element={<MesErreursPage />} />
                       <Route path="/cartes" element={<MesCartesPage />} />
-                      <Route path="/reussites" element={<MesReussitesPage />} />
+                      <Route path="/reussites" element={<Navigate to="/parcours" replace />} />
                       <Route path="/examens-blancs" element={<MesExamensBlancsPage />} />
                       <Route path="/mes-paiements" element={<MesPaiementsPage />} />
                       <Route path="/espace-revendeur" element={<EspaceRevendeurPage />} />

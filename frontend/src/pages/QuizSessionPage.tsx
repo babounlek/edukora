@@ -85,6 +85,18 @@ function segmentClass(q: QuizSession["questions"][number], isCurrent: boolean) {
  * même écran, mais le quiz vient du navigateur (voir lib/quizEssai.ts) et chaque réponse est
  * corrigée par les routes publiques /quiz/essais/*, sans XP, série ni PDF (rien n'est enregistré).
  */
+/**
+ * Où reprendre un quiz : la première question sans réponse ni passage ; sinon la première question PASSÉE (« Reprendre » sur un
+ * quiz où deux questions ont été laissées de côté arrivait sur la dernière, déjà corrigée, avec « Voir mon résultat » pour seul
+ * bouton) ; sinon la dernière, d'où « Voir mon résultat » est à portée.
+ */
+function indexDeReprise(questions: { reponse?: unknown; passee?: boolean }[]): number {
+  const sansReponse = questions.findIndex((q) => !q.reponse && !q.passee)
+  if (sansReponse !== -1) return sansReponse
+  const passee = questions.findIndex((q) => !q.reponse && q.passee)
+  return passee !== -1 ? passee : Math.max(0, questions.length - 1)
+}
+
 export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   useI18n()
   useSeo({ title: essai ? t("qs.seo_essai") : t("qs.seo") })
@@ -166,8 +178,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         return
       }
       setSession(enCours)
-      const premiere = enCours.questions.findIndex((q) => !q.reponse && !q.passee)
-      setCurrentIndex(premiere === -1 ? Math.max(0, enCours.questions.length - 1) : premiere)
+      setCurrentIndex(indexDeReprise(enCours.questions))
       return
     }
     if (!id) return
@@ -181,7 +192,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         const firstUnanswered = data.questions.findIndex((q) => !q.reponse && !q.passee)
         // Tout répondu mais pas rendu (reprise après coup) : on arrive sur la dernière question,
         // d'où « Voir mon résultat » est à portée, plutôt qu'au début d'un quiz fini.
-        setCurrentIndex(firstUnanswered === -1 ? Math.max(0, data.questions.length - 1) : firstUnanswered)
+        setCurrentIndex(firstUnanswered === -1 ? indexDeReprise(data.questions) : firstUnanswered)
       })
       .catch((err) => {
         setError(err instanceof ApiError ? err.message : t("qs.charger_erreur"))
@@ -445,9 +456,17 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
       {dejaJoue?.jouee && !defi && (
         <p className="mb-4 flex items-center gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2 text-sm">
           <RotateCcw className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          {dejaJoue.record
+          {/* Un score sous la moitié n'est pas un « score à battre » : le citer juste après un 0 sur 6 enfonce. */}
+          {dejaJoue.record && dejaJoue.record.total > 0 && 2 * dejaJoue.record.reussies >= dejaJoue.record.total
             ? t("qs.deja_joue_record", { a: dejaJoue.record.reussies, b: dejaJoue.record.total })
-            : t("qs.deja_joue")}
+            : dejaJoue.record ? t("qs.deja_joue_bas") : t("qs.deja_joue")}
+        </p>
+      )}
+
+      {/* Dit d'avance ce qui attend l'élève : des questions à rédiger sur un brouillon surprennent dans un quiz qu'il croyait « à toucher ». */}
+      {currentIndex === 0 && answeredCount === 0 && session.questions.some((q) => q.type_reponse !== "QCM") && (
+        <p className="mb-4 rounded-xl bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+          {tn("qs.annonce_redigees", session.questions.filter((q) => q.type_reponse !== "QCM").length)}
         </p>
       )}
 
@@ -474,11 +493,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           />
         ))}
       </div>
-      <div className="mb-5 flex items-center justify-between text-sm">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-sm">
         <p className="font-medium text-muted-foreground">
           {t("qs.question_sur", { n: currentIndex + 1, total })}
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
           {chronoActif && restant !== null && session.duree_limite_secondes != null && (
             <ChronoQuiz restant={chronoEcoule ? 0 : restant} duree={session.duree_limite_secondes} />
           )}
@@ -677,7 +696,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             ) : (
               <BookOpenText className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
             )}
-            <div className="text-sm">
+            <div className="min-w-0 flex-1 text-sm">
               <p className={cn("font-display font-semibold", correct && "text-lg")}>
                 {correct
                   ? pick(MESSAGES_BONNE, question.id)
@@ -700,7 +719,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             {(question.reponse?.xp_gagne ?? 0) > 0 && (
               <span
                 key={question.id}
-                className="animate-xp-pop ml-auto inline-flex shrink-0 items-center gap-1 rounded-full bg-gold/20 px-3 py-1 text-sm font-bold tabular-nums text-gold-text"
+                className="animate-xp-pop ml-auto inline-flex shrink-0 items-center whitespace-nowrap gap-1 rounded-full bg-gold/20 px-3 py-1 text-sm font-bold tabular-nums text-gold-text"
               >
                 <Zap className="size-4" aria-hidden="true" />
                 +{libellePoints(question.reponse?.xp_gagne ?? 0)}

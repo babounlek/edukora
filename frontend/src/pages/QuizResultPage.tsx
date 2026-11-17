@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { ArrowRight, BookOpen, CalendarCheck, CheckCircle2, ChevronDown, FileText, Flame, ListChecks, RotateCcw, Share2, Sprout, Swords, Timer, Trophy, Zap } from "lucide-react"
 
 import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, startQuizSession } from "@/api/endpoints"
@@ -24,6 +25,7 @@ import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useCountry } from "@/context/CountryContext"
 import { useAuth } from "@/context/AuthContext"
+import { useCursusAbonne } from "@/lib/abonneActif"
 import { formatDureeEcoulee } from "@/lib/duration"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
@@ -103,6 +105,9 @@ function BilanXp({
   const niveauMonte = jour.niveau ? aChangeDeNiveau(jour.niveau, xp.session.total) : false
   useEffect(() => {
     jouerRetour(niveauMonte ? "objectif" : "fin")
+    // Visible tout de suite, où que l'élève en soit dans la page : le bandeau du bilan est sous le pli sur téléphone.
+    if (niveauMonte && jour.niveau) toast.success(t("niveau.nouveau", { nom: nomNiveau(jour.niveau.rang) }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [niveauMonte])
 
   async function partager() {
@@ -125,10 +130,15 @@ function BilanXp({
     >
       <div className="text-center sm:text-left">
         <p className="text-sm text-muted-foreground">{t("qr.gagne")}</p>
-        <p className="flex items-center justify-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text sm:justify-start">
-          <Zap className="size-7" aria-hidden="true" />
-          {t("gl.partage_points", { n: gagne })}
-        </p>
+        {xp.session.total > 0 ? (
+          <p className="flex items-center justify-center gap-1.5 font-display text-4xl font-semibold tabular-nums text-gold-text sm:justify-start">
+            <Zap className="size-7" aria-hidden="true" />
+            {t("gl.partage_points", { n: gagne })}
+          </p>
+        ) : (
+          // Un rejeu ou un quiz chronométré ne rapporte rien : pas de « +0 points » en gros sous un « Sans faute ! ».
+          <p className="font-display text-lg font-semibold">{t("qr.zero_titre")}</p>
+        )}
         {xp.session.seance > 0 && (
           <p className="text-xs text-muted-foreground">{t("qr.dont_seance", { n: xp.session.seance })}</p>
         )}
@@ -212,10 +222,20 @@ function AnneauScore({ pourcentage, score, total }: { pourcentage: number; score
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="font-display text-4xl font-semibold tabular-nums">{pourcentage}%</span>
-        <span className="text-xs text-muted-foreground">
-          {score} / {total}
-        </span>
+        {/* Sous 40 %, le pourcentage en gros enfonce : on met en avant ce qui a été réussi (« 1 / 6 »). */}
+        {pourcentage < 40 && total > 0 ? (
+          <>
+            <span className="font-display text-4xl font-semibold tabular-nums">{score} / {total}</span>
+            <span className="text-xs text-muted-foreground">{pourcentage}%</span>
+          </>
+        ) : (
+          <>
+            <span className="font-display text-4xl font-semibold tabular-nums">{pourcentage}%</span>
+            <span className="text-xs text-muted-foreground">
+              {score} / {total}
+            </span>
+          </>
+        )}
       </div>
     </div>
   )
@@ -227,13 +247,15 @@ function AnneauScore({ pourcentage, score, total }: { pourcentage: number; score
  * tout de suite - le même trio que sur /themes-frequents.
  */
 function LigneTheme({
-  theme, cursusId, country, onQuiz, lancement,
+  theme, cursusId, country, onQuiz, lancement, quizCible = true,
 }: {
   theme: QuizThemeScore
   cursusId: number
   country: string
   onQuiz: () => void
   lancement: boolean
+  /** Faux pour qui n'a pas l'accès : le serveur refuserait un quiz sur ce thème. */
+  quizCible?: boolean
 }) {
   useI18n()
   const taux = theme.total > 0 ? Math.round((100 * theme.reussies) / theme.total) : 0
@@ -274,7 +296,7 @@ function LigneTheme({
             </Link>
           </Button>
         )}
-        {theme.subject_code && (
+        {theme.subject_code && quizCible && (
           <Button size="sm" variant={taux < 70 ? "default" : "outline"} className="h-8 px-2.5 text-xs" onClick={onQuiz} disabled={lancement}>
             <ListChecks className="size-3.5" />
             {lancement ? t("pc.preparation") : t("qr.quiz_cible")}
@@ -297,12 +319,19 @@ function messageDeFin(pourcentage: number, diagnostic: boolean, chrono = false) 
   return { titre: t("qr.fin0_titre"), texte: t("qr.fin0_texte") }
 }
 
+/** Un refus d'accès dit ce qui reste ouvert, dans les mots de l'élève ; le texte brut du serveur (« Abonnement requis pour ce cursus. ») ne dit rien. */
+function messageErreur(err: unknown, cleDefaut: "qr.err_lancer" | "qr.err_relancer"): string {
+  if (err instanceof ApiError && err.status === 403) return t("qr.err_abonnement")
+  return err instanceof ApiError ? err.message : t(cleDefaut)
+}
+
 export function QuizResultPage() {
   useI18n()
   const queryClient = useQueryClient()
   useSeo({ title: t("qr.seo") })
   // Un visiteur qui a joué avec un compte invité (voir lib/invite) : une vraie séance, mais pas de compte à montrer.
   const invite = useEssaiSansCompte()
+  const cursusAbonne = useCursusAbonne()
 
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -332,7 +361,7 @@ export function QuizResultPage() {
           : await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 5, plus_dur: mode === "dur", plus_facile: mode === "facile" })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setErreurEncore(err instanceof ApiError ? err.message : t("qr.err_lancer"))
+      setErreurEncore(messageErreur(err, "qr.err_lancer"))
       setEncoreEnCours(null)
     }
   }
@@ -345,7 +374,7 @@ export function QuizResultPage() {
       const session = await startQuizSession({ cursus: result.cursus, theme: themeId, mode: "PRATIQUE", n: 10 })
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setErreurQuizCible(err instanceof ApiError ? err.message : t("qr.err_lancer"))
+      setErreurQuizCible(messageErreur(err, "qr.err_lancer"))
       setThemeEnLancement(null)
     }
   }
@@ -358,7 +387,7 @@ export function QuizResultPage() {
       const session = await refaireLesRatees(Number(id))
       navigate(`/quiz/session/${session.id}`)
     } catch (err) {
-      setErreurRefaire(err instanceof ApiError ? err.message : t("qr.err_relancer"))
+      setErreurRefaire(messageErreur(err, "qr.err_relancer"))
       setRefaisant(false)
     }
   }
@@ -428,6 +457,9 @@ export function QuizResultPage() {
 
   const pourcentage = result.questions_repondues > 0 ? Math.round((result.score / result.questions_repondues) * 100) : 0
   const diagnostic = result.mode === "DIAGNOSTIC"
+  // Qui n'est pas abonné à cet examen n'a que les quiz gratuits : « encore 5 questions » sur son thème lui rendrait les mêmes
+  // questions (ou un refus), et « plus accessible » ou un quiz ciblé seraient refusés.
+  const acces = cursusAbonne !== null && cursusAbonne === result.cursus
   // Le thème le plus faible qui a un cours à relire : c'est LE cours à recommander en premier.
   const aRevoir = result.par_theme
     .filter((theme) => theme.cours && 100 * theme.reussies / theme.total < 70)
@@ -471,29 +503,29 @@ export function QuizResultPage() {
             {(result.questions_passees ?? 0) > 0 && (
               <p className="mt-1 max-w-md text-sm text-muted-foreground">{tn("qr.passees", result.questions_passees ?? 0)}</p>
             )}
-            {!diagnostic && (
+            {!diagnostic && (result.meilleure_serie > 0 || result.seances_cette_semaine > 0) && (
               <div className="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
-                <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
+                {result.meilleure_serie > 0 && <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
                   <Flame className="size-4 text-warning" />
                   <span className="font-medium tabular-nums">{result.meilleure_serie}</span>
                   <span className="text-muted-foreground">
                     {tn("qr.serie", result.meilleure_serie)}
                   </span>
-                </span>
-                <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
+                </span>}
+                {result.seances_cette_semaine > 0 && <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm shadow-xs">
                   <CalendarCheck className="size-4 text-primary" />
                   <span className="font-medium tabular-nums">{result.seances_cette_semaine}</span>
                   <span className="text-muted-foreground">
                     {tn("qr.seances", result.seances_cette_semaine)}
                   </span>
-                </span>
+                </span>}
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {!diagnostic && <Mascotte className="mb-6" contexte={{ pourcentage, serieJours: result.serie?.jours }} />}
+      {!diagnostic && <Mascotte className="mb-6" contexte={{ pourcentage, serieJours: result.serie?.jours, matiere: result.par_theme[0]?.subject_code ?? result.subject ?? undefined }} />}
 
       {/* Un quiz chronométré ne rapporte ni points ni maîtrise (voir quiz.chrono) : le bilan dit le temps, pas l'XP. */}
       {result.chrono_actif && <BilanChrono result={result} />}
@@ -537,15 +569,24 @@ export function QuizResultPage() {
       {!diagnostic && result.par_theme.length > 0 && (
         <section aria-label={t("qr.encore_aria")} className="mb-6">
           <div className="flex flex-col gap-2 sm:flex-row">
-            <Button
-              size="lg"
-              className="rounded-full"
-              disabled={encoreEnCours !== null}
-              onClick={() => rebondir("encore", pireTheme?.theme_id)}
-            >
-              <Zap />
-              {encoreEnCours === "encore" ? t("quiz.preparation") : t("qr.encore_cinq")}
-            </Button>
+            {acces ? (
+              <Button
+                size="lg"
+                className="rounded-full"
+                disabled={encoreEnCours !== null}
+                onClick={() => rebondir("encore", pireTheme?.theme_id)}
+              >
+                <Zap />
+                {encoreEnCours === "encore" ? t("quiz.preparation") : t("qr.encore_cinq")}
+              </Button>
+            ) : (
+              <Button asChild size="lg" className="rounded-full">
+                <Link to="/quiz">
+                  <Zap />
+                  {t("qr.autre_matiere_gratuite")}
+                </Link>
+              </Button>
+            )}
           </div>
           {/* Un seul geste en avant ; les variantes sont repliées (audit du 2026-11-13 : plus de dix boutons de même poids). */}
           <details className="group mt-3 rounded-xl border border-border bg-card">
@@ -564,7 +605,7 @@ export function QuizResultPage() {
             <RotateCcw />
             {encoreEnCours === "score" ? t("quiz.preparation") : t("qr.bats_score", { score: result.score, total: result.questions_repondues })}
           </Button>
-          {meilleurTheme && pourcentage >= 70 && (
+          {acces && meilleurTheme && pourcentage >= 70 && (
             <Button
               size="lg"
               variant="outline"
@@ -576,7 +617,7 @@ export function QuizResultPage() {
               {encoreEnCours === "dur" ? t("quiz.preparation") : t("qr.plus_dur")}
             </Button>
           )}
-          {pireTheme && pourcentage < 50 && (
+          {acces && pireTheme && pourcentage < 50 && (
             <Button
               size="lg"
               variant="outline"
@@ -644,6 +685,7 @@ export function QuizResultPage() {
               .sort((a, b) => a.reussies / a.total - b.reussies / b.total)
               .map((theme) => (
                 <LigneTheme
+                quizCible={acces}
                   key={theme.theme}
                   theme={theme}
                   cursusId={result.cursus}
@@ -713,7 +755,7 @@ export function QuizResultPage() {
       <div className="flex flex-col gap-2 sm:flex-row">
         <Button
           onClick={() => navigate("/quiz")}
-          className="flex-1"
+          className="sm:flex-1"
           size="lg"
           variant={!diagnostic && (aRevoir || result.nb_ratees > 0) ? "outline" : "default"}
         >
@@ -721,7 +763,7 @@ export function QuizResultPage() {
         </Button>
         {/* Parcours et compte n'existent pas pour un invité : ses deux liens menaient à la page de connexion. */}
         {result.subject && !invite && (
-          <Button asChild variant="outline" className="flex-1" size="lg">
+          <Button asChild variant="outline" className="sm:flex-1" size="lg">
             <Link to={`/parcours/${result.subject}?cursus=${result.cursus}`}>{t("qr.retour_parcours")}</Link>
           </Button>
         )}

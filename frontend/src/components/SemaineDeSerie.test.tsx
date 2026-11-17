@@ -58,7 +58,7 @@ describe("ObjectifXp", () => {
 
   it("montre la progression vers l'objectif", () => {
     render(<ObjectifXp etat={etat()} />)
-    expect(screen.getByText("12 / 20 points")).toBeInTheDocument()
+    expect(screen.getByText("12 points · objectif 20")).toBeInTheDocument()
     expect(screen.getByRole("progressbar", { name: "Objectif de points du jour" })).toHaveAttribute("aria-valuenow", "12")
   })
 

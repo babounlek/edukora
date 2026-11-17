@@ -1747,6 +1747,8 @@ export interface Fiche {
 
 export interface TentativeInediteResult {
   id: number
+  /** Points rapportés par cette copie (conditions réelles ou papier) ; 0 ou absent sinon. */
+  xp_gagne?: number
   epreuve: number
   // Titre de l'épreuve (ou de l'annale simulée) dont c'est le résultat.
   epreuve_titre: string

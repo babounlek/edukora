@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Check, Eye, RotateCcw } from "lucide-react"
 
 import type { CarteRevision } from "@/api/types"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { Button } from "@/components/ui/button"
+import { MascotteDessin } from "@/components/MascotteDessin"
+import { MASCOTTE_ACTIVE } from "@/lib/mascotte"
+import { jouerRetour } from "@/lib/retours"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
@@ -24,10 +27,22 @@ export function PaquetDeCartes({
   const [sues, setSues] = useState(0)
   const [enCours, setEnCours] = useState(false)
   const [erreur, setErreur] = useState(false)
+  const haut = useRef<HTMLDivElement>(null)
+  const termine = index >= cartes.length
 
-  if (index >= cartes.length) {
+  // Après une carte, la suivante doit être sous les yeux : sinon l'écran restait au bas d'un verso de plusieurs écrans,
+  // dans le pied de page. Rien à faire au premier rendu.
+  useEffect(() => {
+    if (index > 0) haut.current?.scrollIntoView({ block: "start", behavior: "smooth" })
+  }, [index])
+  useEffect(() => {
+    if (termine) jouerRetour("fin")
+  }, [termine])
+
+  if (termine) {
     return (
-      <div className="rounded-2xl border border-success/40 bg-success/5 px-5 py-5 text-center" role="status">
+      <div ref={haut} className="scroll-mt-20 rounded-2xl border border-success/40 bg-success/5 px-5 py-5 text-center" role="status">
+        {MASCOTTE_ACTIVE && <MascotteDessin humeur="fete" saut={cartes.length} taille={64} className="mx-auto mb-2" />}
         <p className="font-display text-lg font-semibold">{t("cartes.fini")}</p>
         <p className="mt-1 text-sm text-muted-foreground">{t("cartes.bilan", { sues, rates: cartes.length - sues })}</p>
       </div>
@@ -52,7 +67,7 @@ export function PaquetDeCartes({
   }
 
   return (
-    <div>
+    <div ref={haut} className="scroll-mt-20">
       <p className="text-xs font-medium text-muted-foreground">
         {t("cartes.progression", { i: index + 1, n: cartes.length })}
         {carte.cours ? ` · ${carte.cours.titre}` : ""}
@@ -65,13 +80,13 @@ export function PaquetDeCartes({
           <EpreuveMarkdown markdown={carte.recto} />
         </article>
         {revele && (
-          <article className="prose prose-neutral mt-4 max-w-none border-t border-border pt-4 dark:prose-invert">
+          <article tabIndex={0} className="prose prose-neutral mt-4 max-h-[55vh] max-w-none overflow-y-auto border-t border-border pt-4 dark:prose-invert">
             <EpreuveMarkdown markdown={carte.verso} />
           </article>
         )}
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="sticky bottom-[var(--bottom-tab-bar,0px)] z-10 -mx-1 mt-3 flex flex-wrap gap-2 bg-background/95 px-1 py-2 backdrop-blur-sm">
         {!revele ? (
           <Button type="button" className="min-h-11 rounded-full" onClick={() => setRevele(true)}>
             <Eye className="size-4" aria-hidden="true" />

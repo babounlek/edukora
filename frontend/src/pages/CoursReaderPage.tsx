@@ -225,7 +225,7 @@ export function CoursReaderPage() {
             <Badge variant="secondary">{content.header.matiere}</Badge>
             {libelleSerieEntete(content.header) && <Badge variant="outline">{libelleSerieEntete(content.header)}</Badge>}
             {content.header.sous_theme && <Badge variant="outline">{capitaliserTheme(content.header.sous_theme)}</Badge>}
-            {content.header.duree_estimee_min && <Badge variant="outline">{content.header.duree_estimee_min} min</Badge>}
+            {content.header.duree_estimee_min && <Badge variant="outline">{t("cours.duree_etude", { n: content.header.duree_estimee_min })}</Badge>}
           </div>
         )}
         {slug && (

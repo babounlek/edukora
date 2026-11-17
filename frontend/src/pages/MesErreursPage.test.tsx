@@ -126,7 +126,7 @@ describe("MesErreursPage", () => {
     auth.user.cursus_prepare = null
     afficher()
 
-    expect(screen.getByRole("link", { name: "Choisir mon cursus" })).toHaveAttribute("href", "/compte")
+    expect(screen.getByRole("link", { name: "Choisir mon examen" })).toHaveAttribute("href", "/compte")
     expect(getErreurs).not.toHaveBeenCalled()
   })
 

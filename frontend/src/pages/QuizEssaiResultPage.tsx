@@ -109,7 +109,7 @@ export function QuizEssaiResultPage() {
       <h1 className="font-display text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{titre}</h1>
       <p className="mt-2 text-muted-foreground">{texte}</p>
 
-      <Mascotte className="mt-4" contexte={{ pourcentage, recordBattu: recordBattu && Boolean(recordAvant) }} />
+      <Mascotte className="mt-4" contexte={{ pourcentage, recordBattu: recordBattu && Boolean(recordAvant), matiere: subjectCode }} />
 
       <div className="mt-4 flex items-center gap-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
         <div className="font-display text-5xl font-semibold tabular-nums">

@@ -142,7 +142,7 @@ TEXTES = {
         FR: "Tu as choisi de te concentrer sur {matiere} jusqu'au {date}.",
         EN: "You chose to focus on {matiere} until {date}.",
     },
-    "raison.echec": {FR: "Tu as raté ce thème {quand}.", EN: "You got this topic wrong {quand}."},
+    "raison.echec": {FR: "Ce thème t'a résisté {quand}.", EN: "This topic gave you trouble {quand}."},
     "raison.echec_aujourdhui": {FR: "aujourd'hui", EN: "today"},
     "raison.echec_hier": {FR: "hier", EN: "yesterday"},
     "raison.echec_jours": {FR: "il y a {jours} jours", EN: "{jours} days ago"},

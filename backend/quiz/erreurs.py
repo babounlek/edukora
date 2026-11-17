@@ -174,7 +174,7 @@ def refaire_erreurs_view(request):
         paquet = [item for item, _jour in banque_d_erreurs(profil, cursus, subject)[:n]]
         # Banque vide : on laisse session_des_erreurs répondre « rien à refaire » (400), plutôt qu'un faux « abonnement requis ».
         if paquet and not all(item.est_vitrine for item in paquet):
-            return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+            return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
     try:
         session = session_des_erreurs(profil, cursus, subject, n)
     except ValueError as exc:

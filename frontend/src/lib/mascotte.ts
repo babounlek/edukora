@@ -19,6 +19,9 @@ export const SERIE_MASCOTTE_MIN = 3
 /** Jours d'absence à partir desquels Kora dit qu'elle est contente de revoir l'élève. */
 export const ABSENCE_MASCOTTE_MIN = 3
 
+/** Score d'avant sous lequel Kora ne le cite pas : « la dernière fois, c'était 0 % » ne console personne. */
+export const SOUVENIR_CITE_MIN = 30
+
 /** Points de pourcentage gagnés sur le dernier quiz pour qu'elle le relève. */
 export const PROGRES_MASCOTTE_MIN = 10
 
@@ -29,6 +32,8 @@ export interface ContexteMascotte {
   serieJours?: number
   /** Ce que Kora a retenu du quiz précédent de cet appareil (voir lib/memoireMascotte.ts). */
   souvenir?: { pourcentage: number; jours: number } | null
+  /** La matière du quiz : Kora ne compare qu'à un quiz de la même matière. */
+  matiere?: string | number
 }
 
 /** La situation la plus parlante d'abord : un record ou une série valent mieux qu'un simple pourcentage. */
@@ -36,7 +41,7 @@ export function situationMascotte({ pourcentage, recordBattu, serieJours, souven
   if (recordBattu) return "record"
   if (serieJours !== undefined && serieJours >= SERIE_MASCOTTE_MIN) return "serie"
   if (souvenir && souvenir.jours >= ABSENCE_MASCOTTE_MIN) return "retour"
-  if (souvenir && pourcentage >= souvenir.pourcentage + PROGRES_MASCOTTE_MIN) return "progres"
+  if (souvenir && souvenir.pourcentage >= SOUVENIR_CITE_MIN && pourcentage >= souvenir.pourcentage + PROGRES_MASCOTTE_MIN) return "progres"
   if (pourcentage >= 70) return "succes"
   if (pourcentage >= 40) return "moyen"
   return "faible"

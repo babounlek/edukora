@@ -17,21 +17,23 @@ export interface SouvenirMascotte {
   jours: number
 }
 
-export function lireSouvenir(maintenant = Date.now()): SouvenirMascotte | null {
+export function lireSouvenir(maintenant = Date.now(), matiere?: string | number): SouvenirMascotte | null {
   try {
     const brut = localStorage.getItem(CLE_MEMOIRE)
     if (!brut) return null
-    const { pourcentage, date } = JSON.parse(brut) as { pourcentage?: unknown; date?: unknown }
+    const { pourcentage, date, matiere: gardee } = JSON.parse(brut) as { pourcentage?: unknown; date?: unknown; matiere?: unknown }
     if (typeof pourcentage !== "number" || typeof date !== "number") return null
+    // Un score d'une autre matière ne se compare pas : « la dernière fois, c'était 20 % » venait des maths.
+    if (matiere !== undefined && gardee !== undefined && String(gardee) !== String(matiere)) return null
     return { pourcentage, jours: Math.max(0, Math.floor((maintenant - date) / JOUR_MS)) }
   } catch {
     return null
   }
 }
 
-export function memoriserSouvenir(pourcentage: number, maintenant = Date.now()): void {
+export function memoriserSouvenir(pourcentage: number, maintenant = Date.now(), matiere?: string | number): void {
   try {
-    localStorage.setItem(CLE_MEMOIRE, JSON.stringify({ pourcentage, date: maintenant }))
+    localStorage.setItem(CLE_MEMOIRE, JSON.stringify({ pourcentage, date: maintenant, matiere }))
   } catch {
     /* stockage indisponible : elle ne se souviendra pas, le quiz marche */
   }

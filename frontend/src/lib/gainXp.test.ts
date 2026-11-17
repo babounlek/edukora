@@ -22,7 +22,7 @@ describe("annoncerGain", () => {
 
     annoncerGain(client, 5, jour)
 
-    expect(toast.success).toHaveBeenCalledWith("+5 points", { description: "12 / 20 points" })
+    expect(toast.success).toHaveBeenCalledWith("+5 points", { description: "12 points · objectif 20" })
     expect(jouerRetour).toHaveBeenCalledWith("juste")
     expect(invalidate).toHaveBeenCalledWith({ queryKey: ["plan-du-jour"] })
   })

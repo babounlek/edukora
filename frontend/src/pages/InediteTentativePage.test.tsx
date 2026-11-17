@@ -254,7 +254,7 @@ describe("InediteTentativePage", () => {
     })
     afficher()
 
-    await userEvent.click(await screen.findByRole("button", { name: /Réussi/ }))
+    await userEvent.click(await screen.findByRole("button", { name: /Je l'avais/ }))
 
     await waitFor(() => expect(api.noterTentativeQuestion).toHaveBeenCalledWith(7, 1, { points_obtenus: 4 }))
     expect(await screen.findByText(/Notation terminée/)).toBeInTheDocument()

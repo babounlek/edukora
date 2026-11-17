@@ -173,6 +173,28 @@ def crediter_simulation(profil, simulation_id):
     return _crediter(profil, jour, SourceXP.SIMULATION, XP_SIMULATION, reference=reference)
 
 
+def crediter_inedite(profil, tentative_id):
+    """
+    Crédite une copie d'épreuve inédite ou de mini-inédite (défi de la semaine compris) rendue en conditions réelles ou sur
+    papier (voir inedit.views._complete) : une copie rendue sans le moindre mal ne rapportait rien, alors qu'un examen blanc
+    sur annale rapporte XP_SIMULATION (passe élève du 2026-11-17). Même garde que crediter_simulation : une seule copie
+    par jour et par copie, pour que rendre dix copies à la suite ne gonfle pas le compteur. Compte pour la série comme tout gain.
+    """
+    reference = f"inedite:{tentative_id}"
+    jour = timezone.localdate()
+    if GainXP.objects.filter(profil=profil, source=SourceXP.SIMULATION, reference__startswith="inedite:").filter(
+        Q(reference=reference) | Q(jour=jour),
+    ).exists():
+        return None
+    return _crediter(profil, jour, SourceXP.SIMULATION, XP_SIMULATION, reference=reference)
+
+
+def gain_inedite(profil, tentative_id):
+    """Les points que cette copie a rapportés (0 si aucun) : de quoi les annoncer dans le résultat."""
+    gain = GainXP.objects.filter(profil=profil, source=SourceXP.SIMULATION, reference=f"inedite:{tentative_id}").first()
+    return gain.points if gain else 0
+
+
 def niveau_du_profil(profil):
     """
     Le niveau atteint : rang (1 à len(NIVEAUX)), XP cumulée depuis le début, seuil du rang et du suivant (None au sommet).

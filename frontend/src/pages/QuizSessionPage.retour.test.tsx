@@ -78,7 +78,7 @@ describe("QuizSessionPage : le retour après l'auto-évaluation est amené à l'
   async function jusquAuxBoutons() {
     afficher()
     fireEvent.click(await screen.findByRole("button", { name: /Voir la correction/ }))
-    return screen.findByRole("button", { name: "Réussi" })
+    return screen.findByRole("button", { name: "Je l'avais" })
   }
 
   it("fait défiler jusqu'au message dès que la réponse est enregistrée", async () => {

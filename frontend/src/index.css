@@ -195,7 +195,9 @@
 }
 
 .animate-fade-up {
-  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* `backwards` et non `both` : le dernier état de l'animation ne doit pas rester (un `transform` même neutre devient le
+     repère des éléments `fixed` du bloc : la barre « Précédente / Suivante » se posait sur le bouton du contenu). */
+  animation: fade-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
 
 /* Une seule passe au montage, mais c'est encore du mouvement : pour qui en a demandé

@@ -590,6 +590,8 @@ function FinExercice({
     try {
       const reponse = await marquerExerciceFait(exerciseId, cible)
       annoncerGain(queryClient, reponse.xp_gagne, reponse.xp_jour)
+      // Rien de gagné (déjà compté, plafond du jour) : un retour quand même, pour que le toucher ne reste pas sans réponse.
+      if (cible && !(reponse.xp_gagne && reponse.xp_gagne > 0)) toast.success(t("tl.fait_sans_points"))
       // La liste et sa barre d'avancement doivent refléter la validation au retour. Le parcours
       // et le reste de l'app lisent la même progression (["progression"]), et la lecture
       // elle-même garde `fait` en cache : sans l'invalider, rouvrir l'exercice rendait l'ancien état.

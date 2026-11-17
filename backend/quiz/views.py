@@ -527,7 +527,7 @@ def start_session(request):
     savoir = get_object_or_404(Savoir, pk=request.data["savoir"]) if request.data.get("savoir") else None
 
     if not _has_active_subscription(request.user, cursus, profil_actif(request)) and not perimetre_est_vitrine(cursus, subject=subject, theme=theme, savoir=savoir):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     try:
         n = int(request.data.get("n") or 10)
@@ -855,7 +855,7 @@ def quiz_fiche_pdf(request, session_id):
     """
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     if request.method == "POST" and session.fiche_pdf_statut not in (StatutFichePdf.EN_COURS, StatutFichePdf.PRETE):
         session.fiche_pdf_statut = StatutFichePdf.EN_COURS
@@ -870,7 +870,7 @@ def quiz_fiche_pdf(request, session_id):
 def download_quiz_sujet_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
     if not session.sujet_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
     return quota.livrer_pdf(
@@ -884,7 +884,7 @@ def download_quiz_sujet_pdf(request, session_id):
 def download_quiz_corrige_pdf(request, session_id):
     session = get_object_or_404(QuizSession, pk=session_id, profil=profil_actif(request))
     if not _has_active_subscription(request.user, session.cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
     if not session.corrige_pdf:
         return Response({"error": "PDF pas encore généré."}, status=404)
     return quota.livrer_pdf(
@@ -1305,7 +1305,7 @@ def terminer_seance_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     profil = profil_actif(request)
     seance = seance_du_jour(profil, cursus)
@@ -1351,7 +1351,7 @@ def continuer_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     profil = profil_actif(request)
     seance = seance_supplementaire(profil, cursus)
@@ -1532,7 +1532,7 @@ def objectif_matiere_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     profil = profil_actif(request)
     if request.method == "DELETE":
@@ -1560,7 +1560,7 @@ def autre_chose_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     profil = profil_actif(request)
     seance = remplacer_seance(profil, cursus)
@@ -1581,7 +1581,7 @@ def etape_ouverte_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     seance = marquer_etape_ouverte(profil_actif(request), cursus, str(request.data.get("cle") or ""))
     if seance is None:
@@ -1602,7 +1602,7 @@ def duree_seance_view(request):
     if cursus is None:
         return Response({"error": "Aucun cursus déclaré."}, status=400)
     if not _has_active_subscription(request.user, cursus, profil_actif(request)):
-        return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+        return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
 
     try:
         minutes = int(request.data.get("minutes"))
@@ -1680,7 +1680,7 @@ def refaire_ratees_view(request, session_id):
         ratees = items_rates(session)
         # Rien de raté : on laisse session_des_ratees répondre « rien à refaire » (400), plutôt qu'un faux « abonnement requis ».
         if ratees and not all(item.est_vitrine for item in ratees):
-            return Response({"error": "Abonnement requis pour ce cursus."}, status=403)
+            return Response({"error": "Ce quiz est réservé aux abonnés de cet examen."}, status=403)
     try:
         refaite = session_des_ratees(profil, session)
     except ValueError as exc:

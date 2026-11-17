@@ -53,4 +53,9 @@ describe("formatDepuis", () => {
     expect(formatDepuis("2026-09-25", aujourdhui)).toBe("vendredi")
     expect(formatDepuis("2026-09-12", aujourdhui)).toBe("le 12 septembre")
   })
+
+  it("ne projette pas un pourcentage minuscule : sous 10 %, une phrase de début", () => {
+    const t = trajectoire({ couverture_projetee: 0.01, suffisant: false, seances_de_plus_par_semaine: null, seances_par_semaine: 1 })
+    expect(phraseTrajectoire(t, "normal")).toBe("Tu viens de te lancer : chaque séance compte. Vise d'abord ce qui tombe le plus.")
+  })
 })

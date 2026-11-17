@@ -4,7 +4,7 @@ import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuel
 import { toast } from "sonner"
 import {
   BookOpen, Check, Copy, Crown, GraduationCap,
-  Award, Layers, MessageCircle, NotebookPen, Pencil, RefreshCw, RotateCcw, Settings2, Share2, Sparkles, Timer, TrendingUp, Zap, type LucideIcon,
+  Layers, MessageCircle, NotebookPen, Pencil, RefreshCw, RotateCcw, Settings2, Share2, Sparkles, Timer, TrendingUp, Zap, type LucideIcon,
 } from "lucide-react"
 
 import { getWhatsAppStatus, optInWhatsApp, optOutWhatsApp, updateMe } from "@/api/endpoints"
@@ -221,7 +221,6 @@ export function AccountPage() {
           <Raccourci to="/carnet" icone={NotebookPen} libelle={t("cpt.carnet")} />
           <Raccourci to="/erreurs" icone={RotateCcw} libelle={t("erreurs.titre")} />
           <Raccourci to="/cartes" icone={Layers} libelle={t("cartes.mes")} />
-          <Raccourci to="/reussites" icone={Award} libelle={t("reussites.titre")} />
           <Raccourci to="/examens-blancs" icone={Timer} libelle={t("blancs.titre")} />
           <Raccourci to="/parcours" icone={TrendingUp} libelle={t("nav.progression")} />
           <Raccourci to={`${epreuvesListPath(country)}?origine=INEDITE`} icone={Crown} libelle={t("cpt.inedites")} />

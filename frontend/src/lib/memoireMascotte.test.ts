@@ -16,6 +16,14 @@ describe("mémoire de Kora", () => {
     expect(lireSouvenir(hier)).toEqual({ pourcentage: 60, jours: 0 })
   })
 
+  it("ne compare pas deux matières : le score de maths ne sert pas au français", () => {
+    const t0 = Date.UTC(2026, 10, 1, 12)
+    memoriserSouvenir(20, t0, "MATHS")
+    expect(lireSouvenir(t0, "FR")).toBeNull()
+    expect(lireSouvenir(t0, "MATHS")).toEqual({ pourcentage: 20, jours: 0 })
+    expect(lireSouvenir(t0)).toEqual({ pourcentage: 20, jours: 0 })
+  })
+
   it("ignore un contenu abîmé", () => {
     localStorage.setItem("edukora:mascotte-memoire", "{pas du json")
     expect(lireSouvenir()).toBeNull()

@@ -1,15 +1,11 @@
 import { render, screen } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const getReussites = vi.hoisted(() => vi.fn())
-const auth = vi.hoisted(() => ({ isAuthenticated: true, isLoading: false, user: { id: 1 } }))
 vi.mock("@/api/endpoints", () => ({ getReussites }))
-vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
-vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 
-import { MesReussitesPage } from "./MesReussitesPage"
+import { BlocReussites } from "./BlocReussites"
 
 const jalon = (code: string, famille: string, cible: number, valeur: number) => ({ code, famille, cible, valeur, obtenu: valeur >= cible })
 const donnees = {
@@ -29,29 +25,24 @@ function afficher() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
   return render(
     <QueryClientProvider client={client}>
-      <MemoryRouter initialEntries={["/reussites"]}>
-        <Routes>
-          <Route path="/reussites" element={<MesReussitesPage />} />
-          <Route path="/connexion" element={<p>Écran de connexion</p>} />
-        </Routes>
-      </MemoryRouter>
+      <BlocReussites />
     </QueryClientProvider>,
   )
 }
 
 beforeEach(() => {
   vi.clearAllMocks()
-  auth.isAuthenticated = true
 })
 
-describe("MesReussitesPage", () => {
+describe("BlocReussites", () => {
   it("montre le niveau, le record de série et les jalons, atteints ou non", async () => {
     getReussites.mockResolvedValue(donnees)
     afficher()
 
     expect(await screen.findByText("Niveau 6 · Stratège")).toBeInTheDocument()
     expect(screen.getByText("Record : 9 jours de suite")).toBeInTheDocument()
-    expect(screen.getByText("40 sur 100 · Prochain jalon")).toBeInTheDocument()
+    // Le prochain jalon est mis en avant hors du dépliant, et se retrouve dans la liste complète.
+    expect(screen.getAllByText("40 sur 100 · Prochain jalon")).toHaveLength(2)
     expect(screen.getAllByText("Atteint")).toHaveLength(2)
   })
 
@@ -62,11 +53,4 @@ describe("MesReussitesPage", () => {
     expect(await screen.findByRole("alert")).toBeInTheDocument()
   })
 
-  it("montre à un visiteur pourquoi se connecter, avec un lien vers la connexion", () => {
-    auth.isAuthenticated = false
-    afficher()
-
-    // Un visiteur voit ce que la page contient et pourquoi un compte est nécessaire, puis un lien vers la connexion (plus de redirection sèche).
-    expect(screen.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/connexion")
-  })
 })

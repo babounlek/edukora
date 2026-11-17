@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
-import { ClipboardCheck, Info, Trophy } from "lucide-react"
+import { ClipboardCheck, Info, Trophy, Zap } from "lucide-react"
 
 import { ApiError } from "@/api/client"
 import type { TentativeInediteResult } from "@/api/types"
@@ -201,6 +201,17 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
               {result.score !== null && <span className="font-normal text-muted-foreground">{t("rp.du_bareme", { score: result.score })}</span>}
             </p>
           </>
+        )}
+
+        {/* Un retour tout de suite après la copie rendue, avant l'auto-notation : des points, et un mot qui encourage. */}
+        {(result.xp_gagne ?? 0) > 0 && (
+          <div className="mt-4">
+            <p className="animate-quiz-bravo inline-flex items-center gap-1.5 rounded-full bg-gold/15 px-4 py-1.5 font-display text-lg font-semibold tabular-nums text-gold-text">
+              <Zap className="size-5" aria-hidden="true" />
+              {t("gl.partage_points", { n: result.xp_gagne ?? 0 })}
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">{t("rp.bravo_copie")}</p>
+          </div>
         )}
 
         <p className="mt-3 text-sm text-muted-foreground">
@@ -414,9 +425,12 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
               {source === "officielle" ? t("rp.voir_epreuves") : t("rp.voir_inedites")}
             </Link>
           </Button>
-          <Button asChild variant="outline" className="flex-1" size="lg">
-            <Link to="/parcours">{t("rp.voir_parcours")}</Link>
-          </Button>
+          {/* « Ma progression » est l'écran d'un compte : un visiteur n'y trouverait qu'une page de connexion sans explication. */}
+          {user && (
+            <Button asChild variant="outline" className="flex-1" size="lg">
+              <Link to="/parcours">{t("rp.voir_parcours")}</Link>
+            </Button>
+          )}
         </div>
       </div>
     </div>
