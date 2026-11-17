@@ -95,6 +95,8 @@ describe("QuizEssaiResultPage : le gain du visiteur", () => {
     // Premier essai : pas d'exploit à annoncer, mais le record est gardé pour la prochaine fois.
     expect(screen.queryByText(/Nouveau record/)).not.toBeInTheDocument()
     expect(localStorage.getItem("edukora:records-essai")).toContain('"reussies":3')
+    // Et la séance est notée comme jouée : la carte de l'accueil avancera à la matière gratuite suivante.
+    expect(localStorage.getItem("edukora:seances-jouees")).toBe('["1:77"]')
   })
 
   it("annonce un record battu", async () => {

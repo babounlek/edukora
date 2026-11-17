@@ -17,6 +17,7 @@ import {
 } from "@/lib/quizEssai"
 import { lancerQuizGratuit } from "@/lib/quizGratuit"
 import { jouerRetour } from "@/lib/retours"
+import { marquerSeancesJouees } from "@/lib/seancesGratuites"
 import { useCompteur } from "@/lib/useCompteur"
 import { useSeo } from "@/lib/seo"
 import { capitaliserTheme, cn } from "@/lib/utils"
@@ -64,6 +65,8 @@ export function QuizEssaiResultPage() {
     if (!aRepondu || !session || !score) return
     jouerRetour("fin")
     memoriserRecord(session, score.reussies, score.total)
+    // La carte de l'accueil avance à la matière gratuite suivante (voir components/PremiereSeance).
+    marquerSeancesJouees(session.cursus, session.questions.map((q) => q.theme_id))
   }, [aRepondu, session, score])
 
   if (!session || !score || !aRepondu) return null

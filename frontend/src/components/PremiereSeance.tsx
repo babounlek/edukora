@@ -20,6 +20,7 @@ import { langueDeListe } from "@/lib/discipline"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { lancerQuizGratuit } from "@/lib/quizGratuit"
+import { cleSeance, seancesJouees } from "@/lib/seancesGratuites"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
@@ -29,11 +30,30 @@ import { capitaliserTheme, cn } from "@/lib/utils"
  * « le thème le plus fréquent de sa matière » (voir quiz.gratuits côté backend).
  */
 export function choisirEssai(essais: QuizEssai[], cursusId: number): QuizEssai | null {
-  const duCursus = essais.filter((e) => e.cursus === cursusId)
-  if (duCursus.length === 0) return null
-  const maths = duCursus.find((e) => /MATH/.test(e.subject_code))
-  if (maths) return maths
-  return [...duCursus].sort((a, b) => (b.nb_epreuves ?? 0) - (a.nb_epreuves ?? 0))[0]
+  return ordonnerEssais(essais, cursusId)[0] ?? null
+}
+
+/** Les séances gratuites d'un examen, dans l'ordre où la carte les propose : les mathématiques, puis du thème le plus tombé au moins tombé. */
+function ordonnerEssais(essais: QuizEssai[], cursusId: number): QuizEssai[] {
+  const maths = (e: QuizEssai) => Number(/MATH/.test(e.subject_code))
+  return essais
+    .filter((e) => e.cursus === cursusId)
+    .sort((a, b) => maths(b) - maths(a) || (b.nb_epreuves ?? 0) - (a.nb_epreuves ?? 0) || a.subject_label.localeCompare(b.subject_label))
+}
+
+/**
+ * Où en est ce visiteur dans les séances gratuites de son examen : la prochaine qu'il n'a pas encore jouée sur cet
+ * appareil (voir lib/seancesGratuites), combien il en a fait, combien l'examen en offre. `essai` est null quand il a
+ * fait le tour - ou quand l'examen n'en a aucune (`total` vaut alors 0).
+ *
+ * La carte répétait « Ta première séance » sur le même thème à chaque visite : un visiteur qui hésite plusieurs jours
+ * retrouvait les mêmes questions, sous un titre qui promet « chaque jour, on te dit quoi réviser ». Rien de plus n'est
+ * offert pour autant : ce sont les thèmes gratuits qui existent déjà, un par matière (voir quiz.gratuits).
+ */
+export function seanceSuivante(essais: QuizEssai[], cursusId: number, jouees: ReadonlySet<string>) {
+  const ordonnes = ordonnerEssais(essais, cursusId)
+  const restantes = ordonnes.filter((e) => !jouees.has(cleSeance(e.cursus, e.theme)))
+  return { essai: restantes[0] ?? null, faites: ordonnes.length - restantes.length, total: ordonnes.length }
 }
 
 /**
@@ -42,7 +62,9 @@ export function choisirEssai(essais: QuizEssai[], cursusId: number): QuizEssai |
  *
  *   - sans examen déclaré : elle pose la seule question dont dépend tout le reste (« Tu prépares quel examen ? ») ;
  *   - examen déclaré : elle montre une vraie première séance (thème, matière, fréquence aux épreuves officielles,
- *     compte à rebours) et la lance en un toucher, sans compte (voir lib/quizGratuit).
+ *     compte à rebours) et la lance en un toucher, sans compte (voir lib/quizGratuit) ;
+ *   - séance déjà jouée sur cet appareil : elle avance à la matière gratuite suivante (« Ta séance suivante · 2 sur 7 »),
+ *     puis, le tour fait, dit ce que l'abonnement ajoute (voir seanceSuivante).
  *
  * Rien n'est inventé : le thème et ses chiffres viennent de l'API des essais gratuits. Sans essai pour l'examen
  * choisi, la carte renvoie vers les corrigés gratuits plutôt que de promettre une séance qui n'existe pas.
@@ -66,8 +88,10 @@ export function PremiereSeance({ country }: { country: string }) {
   })
   const [lancement, setLancement] = useState(false)
   const [erreur, setErreur] = useState("")
+  // Lu une fois au montage : la séance se joue sur une autre page, la carte est remontée au retour sur l'accueil.
+  const [jouees] = useState(seancesJouees)
 
-  const essai = choisi && essais ? choisirEssai(essais, choisi.id) : null
+  const { essai, faites, total } = choisi && essais ? seanceSuivante(essais, choisi.id, jouees) : { essai: null, faites: 0, total: 0 }
 
   async function commencer(seance: QuizEssai) {
     if (lancement) return
@@ -98,7 +122,17 @@ export function PremiereSeance({ country }: { country: string }) {
             {essaisEnAttente ? (
               <Squelette />
             ) : essai ? (
-              <Seance essai={essai} cursus={choisi} connecte={isAuthenticated} lancement={lancement} onCommencer={() => commencer(essai)} />
+              <Seance
+                essai={essai}
+                cursus={choisi}
+                rang={faites + 1}
+                total={total}
+                connecte={isAuthenticated}
+                lancement={lancement}
+                onCommencer={() => commencer(essai)}
+              />
+            ) : total > 0 ? (
+              <TourFait cursus={choisi} total={total} />
             ) : (
               <>
                 <p className="text-sm text-muted-foreground">{t("premiere.aucune", { cursus: libelleCursus(choisi) })}</p>
@@ -168,25 +202,32 @@ function EnTete({ cursus }: { cursus: Cursus }) {
 function Seance({
   essai,
   cursus,
+  rang,
+  total,
   connecte,
   lancement,
   onCommencer,
 }: {
   essai: QuizEssai
   cursus: Cursus
+  /** Place de cette séance parmi les séances gratuites de l'examen : 1 pour un visiteur qui n'a encore rien joué. */
+  rang: number
+  total: number
   connecte: boolean
   lancement: boolean
   onCommencer: () => void
 }) {
   const Icone = subjectIcon(essai.subject_code)
   const nb = essai.nb_epreuves ?? 0
-  const total = essai.nb_epreuves_matiere ?? 0
+  const nbMatiere = essai.nb_epreuves_matiere ?? 0
   // Une fréquence d'une seule épreuve ne prouve rien : on ne l'affiche qu'à partir de deux.
-  const frequence = nb >= 2 && total >= nb ? tn("seance.frequence", nb, { total }) : null
+  const frequence = nb >= 2 && nbMatiere >= nb ? tn("seance.frequence", nb, { total: nbMatiere }) : null
 
   return (
     <>
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{t("premiere.etiquette")}</p>
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+        {rang > 1 ? t("premiere.etiquette_suivante", { n: rang, total }) : t("premiere.etiquette")}
+      </p>
       <h2 className="mt-2 font-display text-2xl font-semibold leading-tight">{capitaliserTheme(essai.theme_name)}</h2>
       <ul className="mt-3 flex flex-wrap gap-2 text-sm">
         <li className={cn("inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium", couleurMatiere(essai.subject_code).puce)}>
@@ -215,6 +256,35 @@ function Seance({
           className="mt-3 block text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
         >
           {t("premiere.autre_matiere")}
+        </Link>
+      </div>
+    </>
+  )
+}
+
+/**
+ * Toutes les séances gratuites de l'examen sont jouées : la carte ne repropose pas la première comme si de rien n'était.
+ * Elle dit ce qui vient ensuite (la séance de chaque jour, avec l'abonnement) et laisse rejouer ce qui est gratuit.
+ */
+function TourFait({ cursus, total }: { cursus: Cursus; total: number }) {
+  return (
+    <>
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{t("premiere.tour_etiquette")}</p>
+      <h2 className="mt-2 font-display text-2xl font-semibold leading-tight">{tn("premiere.tour_titre", total)}</h2>
+      <p className="mt-3 text-sm text-muted-foreground">{t("premiere.tour_texte")}</p>
+      <div className="mt-auto pt-5">
+        <Button size="lg" asChild className="w-full">
+          <Link to="/tarifs" onClick={() => trackEvent("accueil_bouton_clic", { cible: "prix" })}>
+            {t("essai.voir_abonnements")}
+            <ArrowRight />
+          </Link>
+        </Button>
+        <Link
+          to={`/quiz?cursus=${cursus.id}`}
+          onClick={() => trackEvent("accueil_bouton_clic", { cible: "quiz" })}
+          className="mt-3 block text-center text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline"
+        >
+          {t("premiere.tour_refaire")}
         </Link>
       </div>
     </>

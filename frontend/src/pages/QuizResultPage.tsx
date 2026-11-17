@@ -27,6 +27,7 @@ import { useAuth } from "@/context/AuthContext"
 import { formatDureeEcoulee } from "@/lib/duration"
 import { partagerScore } from "@/lib/partageScore"
 import { jouerRetour } from "@/lib/retours"
+import { marquerSeancesJouees } from "@/lib/seancesGratuites"
 import { aChangeDeNiveau, nomNiveau } from "@/lib/niveau"
 import { comparerDefi, lireDefiMemorise, parametresDefi } from "@/lib/defiEssai"
 import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
@@ -369,6 +370,12 @@ export function QuizResultPage() {
     completeQuizSession(Number(id))
       .then((resultat) => {
         setResult(resultat)
+        // Une séance d'un seul thème, jouée (au moins une réponse) : si c'est une séance gratuite, la carte de l'accueil
+        // avance à la matière suivante (voir components/PremiereSeance). Un test de niveau qui effleure dix thèmes ne
+        // compte pas pour avoir « fait » l'un d'eux.
+        if (resultat.par_theme.length === 1 && resultat.questions_repondues > 0) {
+          marquerSeancesJouees(resultat.cursus, [resultat.par_theme[0].theme_id])
+        }
         // Terminer un quiz change TOUT ce qui se calcule à partir des réponses :
         // le taux de maîtrise d'un thème dans le parcours, l'histogramme par matière,
         // la file de révision espacée, et la séance du jour - que ce quiz vient
