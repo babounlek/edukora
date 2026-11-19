@@ -1288,6 +1288,8 @@ export interface QuizResult {
   // Où se situe l'élève parmi les candidats de son cursus cette semaine (voir quiz.classement) :
   // une bande, jamais un rang. `bande` est null presque tout le temps, c'est voulu.
   classement?: { disponible: boolean; bande: "quart" | "moitie" | null }
+  // Une inédite publiée du même cursus pour prolonger le quiz ; null = aucune, le bloc disparaît.
+  inedite_suggeree?: { id: number; slug: string; titre: string; country: string; meme_matiere: boolean } | null
   // Quiz chronométré : neutre pour la progression (ni XP, ni maîtrise), temps utilisé et record personnel.
   chrono_actif?: boolean
   neutre_progression?: boolean

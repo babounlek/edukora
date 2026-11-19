@@ -59,6 +59,7 @@ urlpatterns = [
     # Essai gratuit sans compte : routes publiques, rien n'est enregistré (voir quiz.essai).
     # Sous /quiz/essais/ (avec le S) : /quiz/essai est une page du frontend, voir le Caddyfile.
     path("essais/", essai.liste_essais, name="essais"),
+    path("essais/inedite/", essai.inedite_offerte_essai, name="essai-inedite"),
     path("essais/demarrer/", essai.demarrer_essai, name="essai-demarrer"),
     path("essais/corrige/", essai.corrige_essai, name="essai-corrige"),
     path("essais/repondre/", essai.repondre_essai, name="essai-repondre"),

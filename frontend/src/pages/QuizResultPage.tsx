@@ -9,7 +9,7 @@ import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { oublierAccueilEnCache } from "@/lib/accueilCache"
 import { ProgressionNiveau } from "@/components/JaugeNiveau"
-import { themeExercicesPath } from "@/lib/countryPath"
+import { epreuveInediteDetailPath, themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
@@ -645,6 +645,21 @@ export function QuizResultPage() {
           </details>
           {erreurEncore && <p role="alert" className="mt-2 text-sm text-destructive">{erreurEncore}</p>}
         </section>
+      )}
+      {/* Prolongement du quiz vers l'épreuve entière : seulement quand le quiz est réussi (le thème faible a déjà son cours) et
+          qu'une inédite existe vraiment pour ce cursus - sinon le bloc n'apparaît pas. */}
+      {!diagnostic && !result.chrono_actif && result.inedite_suggeree && pourcentage >= 70 && (
+        <div className="mb-6 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5" data-testid="quiz-vers-inedite">
+          <p className="text-sm">
+            <strong>{t("qr.inedite_titre")}</strong> {t("qr.inedite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg" variant="outline">
+            <Link to={epreuveInediteDetailPath(result.inedite_suggeree.country, result.inedite_suggeree.slug || result.inedite_suggeree.id)}>
+              <Trophy />
+              {t("qr.inedite_cta")}
+            </Link>
+          </Button>
+        </div>
       )}
 
       {/* Le diagnostic ouvre sur ses priorités : c'est ce que l'élève venait chercher. */}

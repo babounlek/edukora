@@ -246,3 +246,32 @@ def repondre_essai(request):
             "est_correcte": resultat == ResultatDeclare.REUSSI, "xp_gagne": 0,
         }
     return Response(_payload_item(item, _entier(request.data.get("ordre")) or 0, cursus_id, reponse))
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+@throttle_classes([EssaiThrottle])
+def inedite_offerte_essai(request):
+    """Prolongement de l'essai d'un visiteur : l'épreuve inédite OFFERTE (est_gratuite) du cursus joué, celle qu'il peut
+    tenter sans abonnement. Jamais une épreuve payante, jamais une mini : le visiteur ne doit pas buter sur un mur de
+    paiement un clic après avoir joué. Vide (null) quand le cursus n'en a pas - l'écran masque alors le bloc."""
+    from inedit.models import EpreuveInedite
+
+    try:
+        cursus_id = int(request.query_params.get("cursus", ""))
+    except ValueError:
+        return Response(None)
+    epreuve = (
+        EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, est_gratuite=True, est_mini=False, cursus=cursus_id)
+        .select_related("subject__country")
+        .order_by("-id")
+        .first()
+    )
+    if epreuve is None:
+        return Response(None)
+    return Response({
+        "id": epreuve.id,
+        "slug": epreuve.slug,
+        "titre": epreuve.titre,
+        "country": epreuve.subject.country.code.lower(),
+    })

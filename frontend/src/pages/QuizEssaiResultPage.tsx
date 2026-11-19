@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { ArrowRight, BookOpen, FileText, Lock, RotateCcw, Sparkles, Swords, Trophy, Zap } from "lucide-react"
 
 import { ApiError } from "@/api/client"
+import { getInediteOfferteEssai } from "@/api/endpoints"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
@@ -10,7 +11,7 @@ import { Mascotte } from "@/components/Mascotte"
 import { comparerDefi, lireDefiMemorise, memoriserDefi, parametresDefi } from "@/lib/defiEssai"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
-import { coursListPath, themeExercicesPath } from "@/lib/countryPath"
+import { coursListPath, epreuveInediteDetailPath, themeExercicesPath } from "@/lib/countryPath"
 import {
   bat, cheminEssai, lireEssai, lireRecord, memoriserRecord, oublierEssai, pointsEssai, scoreEssai,
   texteDeDefiEssai,
@@ -69,6 +70,17 @@ export function QuizEssaiResultPage() {
     // dira « déjà joué » avec ce score à battre (voir lib/seancesGratuites).
     marquerSeancesJouees(session.cursus, session.questions.map((q) => q.theme_id), { reussies: score.reussies, total: score.total })
   }, [aRepondu, session, score])
+
+  // Prolongement vers l'inédite offerte du cursus, seulement après un bon score (même seuil que la fin de quiz connectée).
+  const [inedite, setInedite] = useState<{ id: number; slug: string; country: string } | null>(null)
+  const cursusJoue = session?.cursus
+  const bonScore = Boolean(score && score.total > 0 && (100 * score.reussies) / score.total >= 70)
+  useEffect(() => {
+    if (!bonScore || cursusJoue == null) return
+    const ctrl = new AbortController()
+    getInediteOfferteEssai(cursusJoue, ctrl.signal).then(setInedite).catch(() => {})
+    return () => ctrl.abort()
+  }, [bonScore, cursusJoue])
 
   if (!session || !score || !aRepondu) return null
 
@@ -230,6 +242,20 @@ export function QuizEssaiResultPage() {
         <p role="alert" className="mt-3 text-sm text-destructive">
           {erreur}
         </p>
+      )}
+
+      {inedite && bonScore && (
+        <div className="mt-8 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5" data-testid="essai-vers-inedite">
+          <p className="text-sm">
+            <strong>{t("essai.inedite_titre")}</strong> {t("essai.inedite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg" variant="outline">
+            <Link to={epreuveInediteDetailPath(inedite.country, inedite.slug || inedite.id)}>
+              <Trophy />
+              {t("qr.inedite_cta")}
+            </Link>
+          </Button>
+        </div>
       )}
 
       {/* L'invitation : ce que le visiteur vient de goûter sur UN thème, ce qu'il y a derrière. */}

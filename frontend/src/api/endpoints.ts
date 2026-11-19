@@ -768,6 +768,13 @@ export function listQuizEssais(signal?: AbortSignal) {
   return apiRequest<QuizEssai[]>("/quiz/essais/", { auth: false, signal })
 }
 
+/** L'inédite offerte du cursus joué, pour prolonger un essai de visiteur ; null quand il n'y en a pas. */
+export function getInediteOfferteEssai(cursus: number, signal?: AbortSignal) {
+  return apiRequest<{ id: number; slug: string; titre: string; country: string } | null>(
+    `/quiz/essais/inedite/?cursus=${cursus}`, { auth: false, signal },
+  )
+}
+
 export interface StartQuizEssaiParams {
   cursus: number
   subject: number

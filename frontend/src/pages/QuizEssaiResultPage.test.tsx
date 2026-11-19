@@ -6,7 +6,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import type { QuizQuestion, QuizSession } from "@/api/types"
 
 const auth = vi.hoisted(() => ({ isAuthenticated: false }))
-vi.mock("@/api/endpoints", () => ({ startQuizEssai: vi.fn() }))
+const getInediteOfferteEssai = vi.hoisted(() => vi.fn())
+vi.mock("@/api/endpoints", () => ({ startQuizEssai: vi.fn(), getInediteOfferteEssai }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/retours", () => ({ jouerRetour: vi.fn() }))
@@ -47,6 +48,7 @@ beforeEach(() => {
   sessionStorage.clear()
   localStorage.clear()
   auth.isAuthenticated = false
+  getInediteOfferteEssai.mockReset().mockResolvedValue(null)
 })
 
 describe("QuizEssaiResultPage : le thème à revoir", () => {
@@ -195,5 +197,36 @@ describe("QuizEssaiResultPage : la mascotte", () => {
 
     await userEvent.click(await screen.findByRole("button", { name: "Kora : une autre phrase" }))
     expect(trackEvent).toHaveBeenCalledWith("mascotte_touchee", { surface: "resultat", situation: "succes" })
+  })
+})
+
+describe("QuizEssaiResultPage : prolongement vers l'inédite offerte", () => {
+  const offerte = { id: 9, slug: "bepc-maths-inedite", titre: "BEPC Maths", country: "cm" }
+
+  it("propose l'inédite offerte après un bon score", async () => {
+    getInediteOfferteEssai.mockResolvedValue(offerte)
+    memoriserEssai(essai([true, true, true, true, false]))
+    afficher()
+
+    const bloc = await screen.findByTestId("essai-vers-inedite")
+    expect(bloc.querySelector("a")).toHaveAttribute("href", "/cm/epreuves-inedites/bepc-maths-inedite")
+    expect(getInediteOfferteEssai).toHaveBeenCalledWith(1, expect.anything())
+  })
+
+  it("ne propose rien sous 70 %, sans même interroger le serveur", async () => {
+    memoriserEssai(essai([true, false, false, false, false]))
+    afficher()
+
+    await screen.findByText("À revoir en premier")
+    expect(screen.queryByTestId("essai-vers-inedite")).toBeNull()
+    expect(getInediteOfferteEssai).not.toHaveBeenCalled()
+  })
+
+  it("ne montre rien quand le cursus n'a pas d'inédite offerte", async () => {
+    memoriserEssai(essai([true, true, true, true, true]))
+    afficher()
+
+    await vi.waitFor(() => expect(getInediteOfferteEssai).toHaveBeenCalled())
+    expect(screen.queryByTestId("essai-vers-inedite")).toBeNull()
   })
 })

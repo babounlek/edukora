@@ -381,6 +381,34 @@ def _items_rates(session):
     return items_rates(session)
 
 
+def _inedite_suggeree(session, matiere_ids):
+    """Une épreuve inédite publiée du même cursus pour prolonger un quiz : celle de la matière jouée si elle existe,
+    jamais une que le profil a déjà commencée. None quand il n'y en a pas - le bouton disparaît côté interface plutôt
+    que de mener à une impasse."""
+    from catalog.models import StatutContenu
+    from inedit.models import EpreuveInedite
+
+    candidates = (
+        EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus=session.cursus_id, est_mini=False)
+        .exclude(tentatives__profil=session.profil)
+        .select_related("subject__country")
+        .order_by("-est_gratuite", "-id")  # l'offerte d'abord : un non-abonné ne doit pas buter sur un paiement
+    )
+    epreuve = None
+    if matiere_ids:
+        epreuve = candidates.filter(subject_id__in=matiere_ids).first()
+    epreuve = epreuve or candidates.first()
+    if epreuve is None:
+        return None
+    return {
+        "id": epreuve.id,
+        "slug": epreuve.slug,
+        "titre": epreuve.titre,
+        "country": epreuve.subject.country.code.lower(),
+        "meme_matiere": bool(matiere_ids) and epreuve.subject_id in matiere_ids,
+    }
+
+
 def _resultat_payload(session, request):
     quiz_questions = (
         session.quiz_questions
@@ -486,6 +514,11 @@ def _resultat_payload(session, request):
         "xp": {"session": xp.bilan_session(session), "jour": xp.etat_du_jour(session.profil)},
         "serie": serie_de_jours(session.profil),
         "classement": classement_hebdo(session.profil, session.cursus),
+        "inedite_suggeree": _inedite_suggeree(
+            session,
+            ({session.subject_id} - {None})
+            | {qq.competence_item.subject_id for qq in quiz_questions if qq.competence_item_id},
+        ),
         **_chrono_resultat(session),
     }
 
