@@ -21,7 +21,8 @@ import { ObjectifXp } from "@/components/ObjectifXp"
 import { RythmeRapide } from "@/components/RythmeRapide"
 import { PrioritesExamen } from "@/components/PrioritesExamen"
 import { InviteAvis } from "@/components/InviteAvis"
-import { InvitePush } from "@/components/ReglagesSeance"
+import { InviteInstallation } from "@/components/InviteInstallation"
+import { InvitePush, invitePushRepondue } from "@/components/ReglagesSeance"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { SemaineDeSerie } from "@/components/SemaineDeSerie"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -543,6 +544,9 @@ export function QuizResultPage() {
       <BilanErreurs bilan={result.erreurs} cursus={result.cursus} acces={acces} className="mb-6" />
       {result.xp && !result.chrono_actif && <JalonsAtteints className="mb-6" />}
       {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
+      {/* Installer l'application : une invitation à la fois. Elle attend que celle des rappels ait eu sa réponse ; un
+          visiteur sans compte, à qui les rappels ne sont pas proposés, la voit tout de suite. */}
+      {result.xp && !result.chrono_actif && (invite || invitePushRepondue()) && <InviteInstallation className="mb-6" />}
 
       {/* Un quiz joué sans compte (voir lib/invite) : ses points et sa séance ne sont gardés que sur cet appareil, le temps
           d'un mois. Le compte les reprend, comme la copie d'une épreuve inédite. */}

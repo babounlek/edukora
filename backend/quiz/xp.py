@@ -13,7 +13,7 @@ leur préparation. Donc :
 - finir la séance du jour rapporte un bonus, une fois par jour (pas par séance supplémentaire) ;
 - une même question ne rapporte qu'une fois par jour, et rejouer la requête ne crédite rien.
 
-L'objectif du jour (10, 20 ou 30 points, choisi par l'élève) est atteint quand le total du jour
+L'objectif du jour (30, 50 ou 80 points, choisi par l'élève) est atteint quand le total du jour
 le rejoint. Un jour atteint compte pour la série comme une séance terminée (voir quiz.serie) :
 un élève très actif en quiz libre ne perd pas sa série parce qu'il n'a pas suivi le plan.
 """
@@ -30,8 +30,12 @@ from .models import GainXP, JourXP, ResultatDeclare, RevisionSchedule, SourceXP
 
 logger = logging.getLogger(__name__)
 
-OBJECTIFS_POSSIBLES = (10, 20, 30)
-OBJECTIF_DEFAUT = 20
+# Relevés le 2026-11-20 (10 / 20 / 30 jusque-là) : à 10 points par QCM, l'objectif par défaut tombait à la DEUXIÈME bonne
+# réponse, et les cartes de révision, les exercices et les cours rapportent eux aussi. Un objectif atteint en deux touchers
+# ne donnait plus aucune raison de finir son quiz. À 50, le rythme par défaut demande un quiz de cinq questions réussi, ou
+# une séance du jour entière ; les rythmes existants ont été convertis (voir users.migrations.0021).
+OBJECTIFS_POSSIBLES = (30, 50, 80)
+OBJECTIF_DEFAUT = 50
 
 XP_QCM_JUSTE = 10
 XP_OUVERTE = {ResultatDeclare.REUSSI: 5, ResultatDeclare.PARTIEL: 2}
@@ -55,7 +59,7 @@ SOURCES_ACTIVITE = (SourceXP.COURS, SourceXP.EXERCICE, SourceXP.CARTE)
 # Un examen blanc passé en conditions réelles (chrono ou papier) puis rendu : le plus exigeant des efforts, jusqu'ici le seul
 # qui ne rapportait rien. Vaut l'objectif par défaut : le jour compte pour la série (voir quiz.serie). Une fois par jour,
 # jamais pour un entraînement libre ni une copie rendue vide ; hors plafond d'activité, qui ne vise que les cases cochées.
-XP_SIMULATION = 20
+XP_SIMULATION = OBJECTIF_DEFAUT
 
 # Seuils d'XP cumulée des niveaux (rang 1 à 15). Les NOMS sont côté interface, par langue : le serveur ne dit que le rang.
 # Cinq rangs jusqu'au 2026-11-14 : le dernier tombait au bout de quelques semaines à l'objectif par défaut, et plus rien

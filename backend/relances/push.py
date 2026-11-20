@@ -147,7 +147,7 @@ def destinataires_push(maintenant=None):
     deja_relance = RelanceEnvoyee.objects.filter(
         type=TypeRelance.RAPPEL_SEANCE, reference=aujourdhui.isoformat(),
     ).values("user_id")
-    return (
+    destinataires = (
         User.objects.filter(
             abonnements_push__isnull=False, cursus_prepare__isnull=False, cursus_prepare__country__actif=True,
             subscriptions__expires_at__gt=maintenant,
@@ -157,6 +157,11 @@ def destinataires_push(maintenant=None):
         .select_related("cursus_prepare__country", "cursus_prepare__series")
         .distinct()
     )
+    # Même règle que l'e-mail : plus de rappel quotidien après deux jours pleins manqués (voir relances.activite).
+    from .activite import comptes_en_pause
+
+    en_pause = comptes_en_pause(destinataires.values_list("pk", flat=True), aujourdhui)
+    return destinataires.exclude(pk__in=en_pause) if en_pause else destinataires
 
 
 def _webpush(abonnement, charge):

@@ -92,9 +92,13 @@ def utilisateurs_a_relancer(maintenant=None):
     abonnes = set(
         Subscription.objects.filter(expires_at__gt=maintenant).values_list("user_id", flat=True),
     )
+    # Même règle que l'e-mail et la notification : plus de rappel quotidien après deux jours pleins manqués.
+    from relances.activite import comptes_en_pause
+
+    en_pause = comptes_en_pause(abonnes, aujourdhui)
     for optin in OptIn.objects.filter(opted_out_at__isnull=True).select_related("user__cursus_prepare"):
         user = optin.user
-        if not user.phone_number or user.pk not in abonnes or user.pk in seance_faite:
+        if not user.phone_number or user.pk not in abonnes or user.pk in seance_faite or user.pk in en_pause:
             continue
         # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui
         # qu'un seul profil, la vraie bascule (JWT claim) n'étant pas encore branchée

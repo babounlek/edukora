@@ -252,6 +252,13 @@ def destinataires_rappel_seance(maintenant=None):
 
     if push_configure():
         destinataires = destinataires.exclude(abonnements_push__isnull=False)
+    # Le rappel quotidien accompagne un élève qui travaille : deux jours pleins manqués et il se tait, les relances
+    # d'absence prennent le relais (deux messages, puis le silence - voir relances.activite et relances.absence).
+    from .activite import comptes_en_pause
+
+    en_pause = comptes_en_pause(destinataires.values_list("pk", flat=True), aujourdhui)
+    if en_pause:
+        destinataires = destinataires.exclude(pk__in=en_pause)
     return destinataires
 
 

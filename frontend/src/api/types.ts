@@ -132,6 +132,8 @@ export interface PlanDuJour {
   // Matières qu'on peut choisir (celles qui ont un quiz sur ce cursus).
   matieres_objectif?: { id: number; label: string }[]
   serie?: SerieDeJours
+  /** Séance du jour faite : ce qui sera dû demain (thèmes en révision, cartes), voir quiz.services.apercu_de_demain. */
+  demain?: { themes: { theme: string; subject_label: string }[]; themes_total: number; cartes: number }
 }
 
 /** Voir quiz.serie : jours de suite avec une séance terminée, un jour de repos pardonné par

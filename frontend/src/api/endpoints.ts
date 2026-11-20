@@ -827,7 +827,7 @@ export function definirReglageChrono(quizChronometres: boolean) {
   return apiRequest<ReglageChrono>("/quiz/chrono/", { method: "PUT", body: { quiz_chronometres: quizChronometres } })
 }
 
-/** Change le rythme quotidien (10, 20 ou 30 points d'XP) - voir quiz.xp côté backend. */
+/** Change le rythme quotidien (30, 50 ou 80 points d'XP) - voir quiz.xp côté backend. */
 export function definirObjectifXp(objectif: number) {
   return apiRequest<EtatXp>("/quiz/xp/objectif/", { method: "POST", body: { objectif } })
 }

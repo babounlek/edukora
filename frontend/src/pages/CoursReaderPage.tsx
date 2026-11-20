@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
+import { RepriseLecture } from "@/components/RepriseLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonPdfCours } from "@/components/BoutonPdfCours"
@@ -280,6 +281,11 @@ export function CoursReaderPage() {
         </div>
       )}
 
+      {/* Un cours commencé se reprend à sa section (voir RepriseLecture). Pas quand la page s'ouvre sur une ancre du carnet. */}
+      <RepriseLecture
+        cibleRef={articleRef} cle={slug} pret={Boolean(content) && hasSections}
+        actif={!window.location.hash} className="mb-6"
+      />
       {hasSections && content ? (
         hasSommaire ? (
           <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start lg:gap-10">

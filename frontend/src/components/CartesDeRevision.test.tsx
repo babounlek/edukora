@@ -10,6 +10,7 @@ const { getCartesCours, getCartesDues, noterCarte } = vi.hoisted(() => ({
 }))
 vi.mock("@/api/endpoints", () => ({ getCartesCours, getCartesDues, noterCarte }))
 vi.mock("@/components/EpreuveMarkdown", () => ({ EpreuveMarkdown: ({ markdown }: { markdown: string }) => <span>{markdown}</span> }))
+vi.mock("@/components/JalonsAtteints", () => ({ JalonsAtteints: () => <p>Jalons du paquet</p> }))
 
 import { CartesDuCours, LigneCartes } from "./CartesDeRevision"
 
@@ -137,6 +138,8 @@ describe("CartesDuCours : les points des cartes", () => {
     expect(await screen.findByText("Paquet terminé")).toBeTruthy()
     expect(screen.getByText("+2 points")).toBeTruthy()
     expect(screen.getByText("7 points · objectif 20")).toBeTruthy()
+    // Un jalon gagné avec ce paquet se fête ici (voir JalonsAtteints), pas au prochain quiz.
+    expect(screen.getByText("Jalons du paquet")).toBeTruthy()
   })
 
   it("ne parle pas de points quand le paquet n'en a rapporté aucun", async () => {

@@ -6,6 +6,8 @@ class TypeRelance(models.TextChoices):
     PAIEMENT_ABANDONNE_1 = "paiement_abandonne_1", "Paiement non abouti - premier message"
     PAIEMENT_ABANDONNE_2 = "paiement_abandonne_2", "Paiement non abouti - dernier message"
     BILAN_PARENT = "bilan_parent", "Bilan de la semaine au parent"
+    ABSENCE_1 = "absence_1", "Absence - deux jours sans séance"
+    ABSENCE_2 = "absence_2", "Absence - une semaine sans séance, dernier message"
 
 
 class CanalRelance(models.TextChoices):

@@ -37,7 +37,7 @@ from .serie import serie_de_jours
 from . import textes
 from .erreurs import bilan_des_erreurs
 from .progression import progression_par_matiere
-from .services import libelle_etape
+from .services import apercu_de_demain, libelle_etape
 from .services import (
     EPREUVES_MINIMUM_FREQUENCE,
     SEUIL_MAITRISE, AucuneQuestionPlusDure, AucuneQuestionPlusFacile, niveaux_avant_apres, cloturer_seance_si_quiz_termine, construire_parcours, enregistrer_resultat_pour_revision,
@@ -1251,7 +1251,11 @@ def _charge_utile_plan(profil, cursus, seance, compte):
 
     verrouillee = not _has_active_subscription(profil.compte, cursus, profil)
     etat = "deja_fait_aujourdhui" if seance.statut == StatutSeance.TERMINEE else "plan_pret"
-    return {**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)}
+    charge = {**base, "etat": etat, "seance": _serialiser_seance(seance, verrouillee)}
+    if etat == "deja_fait_aujourdhui":
+        # Séance faite : ce qui attend l'élève demain, pour qu'il ait une raison précise de revenir.
+        charge["demain"] = apercu_de_demain(profil, cursus)
+    return charge
 
 
 @api_view(["GET"])
@@ -1437,7 +1441,7 @@ def continuer_view(request):
 def objectif_xp_view(request):
     """
     GET : où en est le profil aujourd'hui (XP, objectif, atteint). POST {objectif} : change son
-    rythme quotidien (10, 20 ou 30 points, voir quiz.xp). Pas réservé au mode parent : c'est
+    rythme quotidien (30, 50 ou 80 points, voir quiz.xp). Pas réservé au mode parent : c'est
     l'élève qui se fixe son propre rythme, y compris sur une session enfant.
     """
     profil = profil_actif(request)

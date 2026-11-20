@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import { usePublierContextePage } from "@/lib/guides/contextePage"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import {
-  ArrowRight, BookOpen, Check, ChevronDown, Clock, Lock, PenLine, RotateCcw,
+  ArrowRight, BookOpen, CalendarClock, Check, ChevronDown, Clock, Lock, PenLine, RotateCcw,
   Shuffle, SlidersHorizontal, Sparkles, Target, Zap, type LucideIcon,
 } from "lucide-react"
 
@@ -14,6 +14,7 @@ import {
 import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { BoutonParents } from "@/components/BoutonParents"
+import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Button } from "@/components/ui/button"
 import { themeExercicesPath, themesFrequentsPath } from "@/lib/countryPath"
 import { lienEtape, ouvrirEtapeDeSeance, seanceAffichable } from "@/lib/seance"
@@ -262,6 +263,9 @@ export function SeanceCorps({
           dureeDansLesReglages={replier}
         />
       )}
+      {/* Une séance close ICI (« J'ai fini », sans quiz final) peut ouvrir un jalon de régularité : fêté tout de suite, comme
+          sur le résultat d'un quiz. Seulement après ce geste : l'accueil ne relit pas « Mes réussites » à chaque ouverture. */}
+      {terminer.isSuccess && <JalonsAtteints className="mt-3" />}
       {replier ? (
         <>
           {objectifChoisi && controleObjectif && (
@@ -822,6 +826,19 @@ function majuscule(texte: string): string {
   return texte.charAt(0).toLocaleUpperCase(langueCourante()) + texte.slice(1)
 }
 
+/** « Demain : "Dérivation" revient en révision, avec 4 cartes. » - ou rien, quand aucune échéance ne tombe demain. */
+export function phraseDeDemain(demain: PlanDuJour["demain"]): string | null {
+  if (!demain) return null
+  const premier = demain.themes[0]
+  const cartes = demain.cartes > 0 ? tn("seance.demain_cartes", demain.cartes) : ""
+  if (!premier) return cartes ? t("seance.demain_cartes_seules", { cartes }) : null
+  const themes =
+    demain.themes_total > 1
+      ? t("seance.demain_themes", { n: demain.themes_total, theme: majuscule(premier.theme) })
+      : t("seance.demain_theme", { theme: majuscule(premier.theme) })
+  return cartes ? t("seance.demain_avec_cartes", { themes, cartes }) : `${themes}.`
+}
+
 function SeanceFaite({
   plan, country, onContinuer, continuationEnCours, plusRienAProposer, phraseDuCoach,
 }: {
@@ -865,6 +882,18 @@ function SeanceFaite({
           {t("seance.repropose", { quand: formatEcheance(seance.prochaine_revision) })}
         </p>
       )}
+
+      {/* Une raison précise de revenir demain : ce qui sera réellement dû (voir quiz.services.apercu_de_demain), jamais
+          une promesse de séance. Rien quand rien n'est dû : « Prochaine séance demain » suffit. */}
+      {(() => {
+        const phrase = phraseDeDemain(plan.demain)
+        return phrase ? (
+          <p className="mt-3 flex items-start gap-2 rounded-xl bg-primary/5 px-3 py-2 text-sm">
+            <CalendarClock className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+            <span>{phrase}</span>
+          </p>
+        ) : null
+      })()}
 
       {/* "Continuer" enchaîne sur une VRAIE séance suivante, jamais sur la liste des
           thèmes : renvoyer au catalogue quelqu'un qui vient de faire ce qu'on lui a

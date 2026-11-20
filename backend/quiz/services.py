@@ -682,9 +682,13 @@ def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte)
     uniquement pour une réponse sourcée depuis un CompetenceItem (thème unique et sans
     ambiguïté, même restriction que _poids_par_theme).
 
-    Échec : (ré)ouvre le suivi de ce thème au palier 0 (J+1), même s'il n'était pas
-    encore suivi - un thème raté doit toujours revenir demain, qu'il s'agisse d'une
-    première alerte ou d'une rechute après un palier plus avancé.
+    Échec : le thème revient DEMAIN, toujours - qu'il s'agisse d'une première alerte (suivi
+    ouvert au palier 0) ou d'une rechute. Mais une rechute ne fait reculer que d'UN palier,
+    une fois par jour : jusqu'au 2026-11-20, une seule erreur renvoyait au palier 0 un thème
+    arrivé à J+35, et il fallait le regagner sur cinq séances (J+1, 3, 7, 16, 35) pour une
+    étourderie (audit 14, M1). Désormais, réussi le lendemain, il reprend au palier qu'il
+    avait ; raté de nouveau, il recule encore d'un cran - un thème réellement perdu redescend
+    donc jusqu'en bas, un faux pas ne coûte qu'une vérification.
 
     Réussite : ne crée jamais de suivi pour un thème qui n'a jamais posé problème (rien
     à corriger) ; fait avancer d'un palier un thème déjà suivi - au dernier palier, une
@@ -697,18 +701,22 @@ def enregistrer_resultat_pour_revision(profil, cursus, subject, theme, correcte)
     file le jour même, sans qu'il ait jamais été revu à J+1, J+3 ni J+7. Comme une avancée
     repousse l'échéance, un thème ne franchit aussi qu'un palier par jour.
     """
+    schedule = RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme=theme).first()
     if not correcte:
-        RevisionSchedule.objects.update_or_create(
-            profil=profil, cursus=cursus, theme=theme,
-            defaults={
-                "subject": subject,
-                "palier": 0,
-                "due_at": timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0]),
-            },
-        )
+        demain = timezone.localdate() + timedelta(days=LEITNER_INTERVALS_JOURS[0])
+        if schedule is None:
+            RevisionSchedule.objects.create(profil=profil, cursus=cursus, theme=theme, subject=subject, palier=0, due_at=demain)
+            return
+        # Déjà ramené à demain aujourd'hui par une autre erreur : deux fautes dans le même quiz ne font pas reculer de
+        # deux paliers. Seul un échec du jour pose « dû demain » (une réussite repousse d'au moins trois jours).
+        if schedule.due_at == demain and timezone.localtime(schedule.updated_at).date() == timezone.localdate():
+            return
+        schedule.subject = subject
+        schedule.palier = max(schedule.palier - 1, 0)
+        schedule.due_at = demain
+        schedule.save(update_fields=["subject", "palier", "due_at", "updated_at"])
         return
 
-    schedule = RevisionSchedule.objects.filter(profil=profil, cursus=cursus, theme=theme).first()
     if not schedule:
         return
     if schedule.due_at > timezone.localdate():
@@ -737,6 +745,32 @@ def revisions_dues(profil, cursus=None):
     if cursus:
         qs = qs.filter(cursus=cursus)
     return qs
+
+
+# Thèmes cités dans l'aperçu de demain : de quoi donner envie de revenir, pas une liste à lire.
+APERCU_DEMAIN_THEMES_MAX = 2
+
+
+def apercu_de_demain(profil, cursus):
+    """
+    Ce qui attendra l'élève DEMAIN, dit une fois sa séance du jour faite : les thèmes dont l'échéance de révision sera
+    arrivée (les plus en retard d'abord) et le nombre de cartes de révision dues. Rien que des faits déjà écrits en base -
+    jamais une prédiction de la séance : le thème servi demain dépend aussi de la rotation des matières et de ce que
+    l'élève fera d'ici là, et annoncer un thème qui ne vient pas serait pire que se taire. Un thème dû demain, lui, le sera.
+    """
+    from .models import CarteRevue  # import local : quiz.cartes importe ce module
+
+    demain = timezone.localdate() + timedelta(days=1)
+    dus = (
+        RevisionSchedule.objects.filter(profil=profil, cursus=cursus, due_at__lte=demain)
+        .select_related("subject", "theme")
+    )
+    themes = [{"theme": s.theme.name, "subject_label": s.subject.label} for s in dus[:APERCU_DEMAIN_THEMES_MAX]]
+    return {
+        "themes": themes,
+        "themes_total": dus.count(),
+        "cartes": CarteRevue.objects.filter(profil=profil, due_at__lte=demain, cours__statut=StatutContenu.VALIDE).count(),
+    }
 
 
 def maitrise_par_theme(profil, cursus=None):

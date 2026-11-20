@@ -330,8 +330,8 @@ class Profil(models.Model):
     )
     rappels_invite_refusee_at = models.DateTimeField(null=True, blank=True)
     objectif_xp_quotidien = models.PositiveSmallIntegerField(
-        default=20,
-        help_text="Rythme que ce profil se fixe, en points d'XP par jour (voir quiz.xp : 10, 20 ou 30). "
+        default=50,
+        help_text="Rythme que ce profil se fixe, en points d'XP par jour (voir quiz.xp : 30, 50 ou 80). "
                   "Un jour où il est atteint compte pour la série, comme une séance du jour terminée.",
     )
     # Code PIN facultatif (4 chiffres) : sans lui, tout le monde sur l'appareil peut ouvrir

@@ -17,6 +17,7 @@ import './index.css'
 import App from './App.tsx'
 import { captureReferralCode } from '@/lib/referral'
 import { initialiserPwa } from '@/lib/pwa'
+import { ecouterInstallation } from "@/lib/installation"
 import { initSentry } from '@/lib/sentry'
 import { initialiserLangue, t } from '@/lib/i18n'
 import { installerIndiceDefilementFormules } from '@/lib/indiceDefilementFormules'
@@ -84,3 +85,5 @@ void initialiserLangue().then((basename) => createRoot(document.getElementById('
 // Service worker (lecture hors connexion) : voir lib/pwa.ts, qui gère aussi le nettoyage
 // des anciens workers quand la PWA est coupée (VITE_DISABLE_PWA=1, mode économie de données).
 initialiserPwa()
+// Installation sur l'écran d'accueil : garder l'annonce du navigateur dès qu'elle arrive (voir lib/installation).
+ecouterInstallation()

@@ -13,13 +13,13 @@ import { cn } from "@/lib/utils"
 import { t, useI18n, type CleI18n } from "@/lib/i18n"
 
 const LIBELLES: Record<number, { nom: CleI18n; detail: CleI18n }> = {
-  10: { nom: "rythme.tranquille", detail: "rythme.detail_10" },
-  20: { nom: "rythme.regulier", detail: "rythme.detail_20" },
-  30: { nom: "rythme.intense", detail: "rythme.detail_30" },
+  30: { nom: "rythme.tranquille", detail: "rythme.detail_30" },
+  50: { nom: "rythme.regulier", detail: "rythme.detail_50" },
+  80: { nom: "rythme.intense", detail: "rythme.detail_80" },
 }
 
 /**
- * Le rythme quotidien que l'élève se fixe (10, 20 ou 30 points d'XP) : un jour où il est
+ * Le rythme quotidien que l'élève se fixe (30, 50 ou 80 points d'XP) : un jour où il est
  * atteint compte pour la série, comme une séance du jour terminée. C'est l'élève qui le
  * choisit - jamais une exigence posée d'en haut - et il peut le changer à tout moment.
  */
@@ -161,6 +161,16 @@ export function InterrupteurPush() {
  * voir son objectif du jour. Écartée, elle ne revient plus ; le réglage reste dans le compte.
  * Jamais affichée à qui a déjà bloqué les notifications ou ne peut pas en recevoir.
  */
+/** L'élève a-t-il déjà répondu à l'invitation aux rappels sur cet appareil (activés, ou écartés) ? Sert à ne pas empiler
+ * deux invitations sur le même écran : celle d'installer l'application attend son tour (voir QuizResultPage). */
+export function invitePushRepondue(): boolean {
+  try {
+    return localStorage.getItem(CLE_INVITE_PUSH) === "1"
+  } catch {
+    return false
+  }
+}
+
 export function InvitePush({ className }: { className?: string }) {
   useI18n()
   const queryClient = useQueryClient()

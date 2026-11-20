@@ -4,6 +4,7 @@ import { Check, Eye, RotateCcw, Zap } from "lucide-react"
 
 import type { CarteRevision, EtatXp } from "@/api/types"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Button } from "@/components/ui/button"
 import { MascotteDessin } from "@/components/MascotteDessin"
 import { MASCOTTE_ACTIVE } from "@/lib/mascotte"
@@ -87,6 +88,8 @@ export function PaquetDeCartes({
           </p>
         )}
         <p className="mt-1 text-sm text-muted-foreground">{t("cartes.bilan", { sues, rates: cartes.length - sues })}</p>
+        {/* « 10 cartes travaillées » se gagne ici : fêté à la fin du paquet, sans attendre le prochain quiz. */}
+        <JalonsAtteints className="mt-4 text-left" />
       </div>
     )
   }

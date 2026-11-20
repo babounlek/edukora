@@ -155,42 +155,55 @@ class SeanceEtObjectifTests(XpFixture):
         self.assertEqual(self.xp_du_jour(), xp.XP_SEANCE)
 
     def test_atteindre_l_objectif_est_note_une_seule_fois(self):
-        xp.definir_objectif(self.profil, 10)
-        self.repondre(self.question(self.qcm("1")), reponse_choisie="a")
-        self.repondre(self.question(self.qcm("2")), reponse_choisie="a")
+        xp.definir_objectif(self.profil, 30)
+        for numero in ("1", "2", "3", "4"):  # atteint à la troisième, dépassé à la quatrième
+            self.repondre(self.question(self.qcm(numero)), reponse_choisie="a")
         etat = xp.etat_du_jour(self.profil)
         self.assertTrue(etat["atteint"])
-        self.assertEqual(etat["xp"], 20)
+        self.assertEqual(etat["xp"], 40)
         self.assertEqual(AnalyticsEvent.objects.filter(name=EventName.OBJECTIF_XP_ATTEINT).count(), 1)
 
     def test_la_reponse_dit_si_elle_a_fait_franchir_l_objectif(self):
-        xp.definir_objectif(self.profil, 10)
-        premiere = self.repondre(self.question(self.qcm("1")), reponse_choisie="a").json()
-        seconde = self.repondre(self.question(self.qcm("2")), reponse_choisie="a").json()
-        fausse = self.repondre(self.question(self.qcm("3")), reponse_choisie="b").json()
-        self.assertTrue(premiere["objectif_atteint_maintenant"])
-        self.assertEqual(premiere["xp_jour"]["xp"], 10)
-        self.assertFalse(seconde["objectif_atteint_maintenant"])
+        xp.definir_objectif(self.profil, 30)
+        avant = [self.repondre(self.question(self.qcm(n)), reponse_choisie="a").json() for n in ("1", "2")]
+        celle_qui_franchit = self.repondre(self.question(self.qcm("3")), reponse_choisie="a").json()
+        apres = self.repondre(self.question(self.qcm("4")), reponse_choisie="a").json()
+        fausse = self.repondre(self.question(self.qcm("5")), reponse_choisie="b").json()
+        self.assertFalse(any(r["objectif_atteint_maintenant"] for r in avant))
+        self.assertTrue(celle_qui_franchit["objectif_atteint_maintenant"])
+        self.assertEqual(celle_qui_franchit["xp_jour"]["xp"], 30)
+        self.assertFalse(apres["objectif_atteint_maintenant"])
         self.assertFalse(fausse["objectif_atteint_maintenant"])
 
     def test_la_session_expose_l_xp_du_jour(self):
-        self.assertEqual(self.client.get(f"/quiz/sessions/{self.session.id}/").json()["xp_jour"]["objectif"], 20)
+        self.assertEqual(self.client.get(f"/quiz/sessions/{self.session.id}/").json()["xp_jour"]["objectif"], xp.OBJECTIF_DEFAUT)
 
-    def test_objectif_par_defaut_vingt(self):
+    def test_objectif_par_defaut_cinquante(self):
         etat = xp.etat_du_jour(self.profil)
-        self.assertEqual((etat["objectif"], etat["xp"], etat["atteint"]), (20, 0, False))
-        self.assertEqual(etat["objectifs_possibles"], [10, 20, 30])
+        self.assertEqual((etat["objectif"], etat["xp"], etat["atteint"]), (50, 0, False))
+        self.assertEqual(etat["objectifs_possibles"], [30, 50, 80])
+
+    def test_les_anciennes_valeurs_ne_sont_plus_acceptees(self):
+        for ancienne in (10, 20):
+            with self.assertRaises(ValueError):
+                xp.definir_objectif(self.profil, ancienne)
+
+    def test_un_examen_blanc_rendu_fait_toujours_compter_le_jour_au_rythme_par_defaut(self):
+        # La promesse faite à l'élève (voir simulations.views) : sa copie rendue compte pour la série.
+        self.assertGreaterEqual(xp.XP_SIMULATION, xp.OBJECTIF_DEFAUT)
 
     def test_monter_l_objectif_ne_retire_pas_un_jour_deja_atteint(self):
-        xp.definir_objectif(self.profil, 10)
-        self.repondre(self.question(self.qcm("1")), reponse_choisie="a")
         xp.definir_objectif(self.profil, 30)
+        for numero in ("1", "2", "3"):
+            self.repondre(self.question(self.qcm(numero)), reponse_choisie="a")
+        xp.definir_objectif(self.profil, 80)
         self.assertTrue(xp.etat_du_jour(self.profil)["atteint"])
 
     def test_baisser_l_objectif_peut_faire_atteindre_le_jour(self):
-        self.repondre(self.question(self.qcm("1")), reponse_choisie="a")
-        self.assertFalse(xp.etat_du_jour(self.profil)["atteint"])
-        xp.definir_objectif(self.profil, 10)
+        for numero in ("1", "2", "3"):
+            self.repondre(self.question(self.qcm(numero)), reponse_choisie="a")
+        self.assertFalse(xp.etat_du_jour(self.profil)["atteint"])  # 30 points sur 50
+        xp.definir_objectif(self.profil, 30)
         self.assertTrue(xp.etat_du_jour(self.profil)["atteint"])
 
     def test_les_jours_passes_gardent_leur_objectif(self):
@@ -251,5 +264,5 @@ class SerieEtXpTests(XpFixture):
 
     def test_le_plan_du_jour_expose_l_xp(self):
         plan = self.client.get("/quiz/plan-du-jour/").json()
-        self.assertEqual(plan["xp"]["objectif"], 20)
+        self.assertEqual(plan["xp"]["objectif"], xp.OBJECTIF_DEFAUT)
         self.assertIn("semaine", plan["serie"])
