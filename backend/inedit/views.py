@@ -377,6 +377,30 @@ def _tentative_payload(tentative):
     }
 
 
+def _epreuve_suivante(tentative):
+    """Après une MINI : l'épreuve entière du même cursus à tenter ensuite (la mini est la porte d'entrée vers elle). L'offerte
+    d'abord, la même matière ensuite, jamais une épreuve déjà commencée. None après une épreuve entière ou sans candidate."""
+    if not tentative.epreuve.est_mini:
+        return None
+    candidates = (
+        EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, est_mini=False, cursus__in=tentative.epreuve.cursus.all())
+        .exclude(tentatives__profil=tentative.profil)
+        .select_related("subject__country")
+        .distinct()
+    )
+    meme_matiere = candidates.filter(subject_id=tentative.epreuve.subject_id).order_by("-est_gratuite", "-id").first()
+    epreuve = meme_matiere or candidates.order_by("-est_gratuite", "-id").first()
+    if epreuve is None:
+        return None
+    return {
+        "id": epreuve.id,
+        "slug": epreuve.slug,
+        "titre": epreuve.titre,
+        "country": epreuve.subject.country.code.lower(),
+        "meme_matiere": epreuve.subject_id == tentative.epreuve.subject_id,
+    }
+
+
 def _tentative_resultat_payload(tentative, bilan=None):
     if bilan is None:
         bilan = notation.calculer(tentative, _exercices_pour_notation(tentative.epreuve))
@@ -429,6 +453,7 @@ def _tentative_resultat_payload(tentative, bilan=None):
         # Ce que devient cette épreuve dans la suite du travail : les thèmes ratés ou
         # laissés de côté reviennent dans la séance du jour (voir _themes_a_reviser).
         "themes_a_reviser": _themes_a_reviser(tentative, bilan),
+        "epreuve_suivante": _epreuve_suivante(tentative),
         "par_theme": [
             {
                 "theme": nom,
