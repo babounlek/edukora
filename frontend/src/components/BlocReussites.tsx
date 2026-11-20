@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
-const FAMILLES = ["quiz", "themes", "cartes", "examens", "defis", "serie"] as const
+const FAMILLES = ["quiz", "themes", "cartes", "erreurs", "examens", "defis", "serie"] as const
 
 /** Une ligne de jalon : le titre, ce qu'il demande, et où l'élève en est. Un jalon atteint reste affiché, plein. */
 function LigneJalon({ jalon, prochain }: { jalon: Jalon; prochain: boolean }) {

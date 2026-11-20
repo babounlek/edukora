@@ -29,7 +29,7 @@ from users.profils import profil_actif
 
 from . import textes
 from .matieres import sujets_effectifs
-from .models import CompetenceItem, ModeQuiz, QuizSession
+from .models import CompetenceItem, ModeQuiz, QuizAnswer, QuizSession
 from .services import _historique_des_items, creer_questions
 
 # Un paquet tient en une dizaine de minutes : assez pour avancer, assez court pour être relancé.
@@ -65,6 +65,56 @@ def banque_d_erreurs(profil, cursus, subject=None):
 def compter_erreurs(profil, cursus):
     """Le nombre de questions dans la banque - pour l'accueil, qui n'a besoin que de ce chiffre."""
     return len(banque_d_erreurs(profil, cursus))
+
+
+def erreurs_corrigees(session):
+    """
+    Combien de questions de la banque CETTE session a corrigées : les items qu'elle a réussis et dont la réponse précédente
+    (d'une autre session) était fausse. Vaut pour tout quiz, pas seulement « Refaire mes erreurs » : une question ratée la
+    semaine dernière et réussie dans la séance du jour sort de la banque de la même façon. 0 pour un rejeu ou un quiz
+    chronométré, qui ne comptent pas pour la banque (voir quiz.services._historique_des_items).
+    """
+    if session.rejeu_de_id or session.chrono_actif:
+        return 0
+    reussies_ici = {}
+    ici = QuizAnswer.objects.filter(
+        quiz_question__session=session, quiz_question__competence_item__isnull=False,
+    ).select_related("quiz_question__competence_item")
+    for reponse in ici:
+        if reponse.est_correcte:
+            reussies_ici[reponse.quiz_question.competence_item_id] = reponse.answered_at
+    if not reussies_ici:
+        return 0
+    avant = (
+        QuizAnswer.objects.filter(
+            quiz_question__session__profil=session.profil,
+            quiz_question__session__cursus=session.cursus,
+            quiz_question__competence_item_id__in=reussies_ici,
+            quiz_question__session__rejeu_de__isnull=True,
+            quiz_question__session__chrono_actif=False,
+        )
+        .exclude(quiz_question__session=session)
+        .select_related("quiz_question__competence_item")
+        .order_by("answered_at")
+    )
+    reussie_avant = {}
+    for reponse in avant:  # chronologique : la dernière réponse d'avant écrase les précédentes
+        item_id = reponse.quiz_question.competence_item_id
+        if reponse.answered_at < reussies_ici[item_id]:
+            reussie_avant[item_id] = reponse.est_correcte
+    return sum(1 for reussie in reussie_avant.values() if not reussie)
+
+
+def bilan_des_erreurs(session):
+    """
+    Pour l'écran de résultat : ce que le quiz a retiré de la banque, et ce qu'il y reste. `restantes` n'est calculé que s'il
+    y a quelque chose à annoncer (la banque se relit sur tout l'historique du profil).
+    """
+    corrigees = erreurs_corrigees(session)
+    return {
+        "corrigees": corrigees,
+        "restantes": compter_erreurs(session.profil, session.cursus) if corrigees else None,
+    }
 
 
 def resume_des_erreurs(profil, cursus):

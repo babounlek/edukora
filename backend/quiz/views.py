@@ -35,6 +35,7 @@ from .gratuits import themes_gratuits_par_matiere
 from .pdf import queue_quiz_fiche_pdf_generation
 from .serie import serie_de_jours
 from . import textes
+from .erreurs import bilan_des_erreurs
 from .progression import progression_par_matiere
 from .services import libelle_etape
 from .services import (
@@ -535,6 +536,8 @@ def _resultat_payload(session, request):
         "questions_passees": sum(1 for qq in quiz_questions if qq.passee and not _get_answer(qq)),
         "mode": session.mode,
         "nb_ratees": len(_items_rates(session)),
+        # Les questions de « Mes erreurs » que ce quiz a corrigées, et ce qu'il reste dans la banque (voir quiz.erreurs).
+        "erreurs": bilan_des_erreurs(session),
         "score": reussies,
         "meilleure_serie": meilleure_serie,
         "seances_cette_semaine": seances_terminees_cette_semaine(session.profil, session.cursus),

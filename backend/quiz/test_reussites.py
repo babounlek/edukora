@@ -69,7 +69,7 @@ class JalonsTests(ErreursFixture):
 
         self.assertEqual(reponse.status_code, 200)
         self.assertEqual(reponse.data["niveau"]["rang"], 1)
-        self.assertEqual(len(reponse.data["jalons"]), 20)
+        self.assertEqual(len(reponse.data["jalons"]), 23)
 
 
 class JalonsRapprochesTests(ErreursFixture):
@@ -156,3 +156,25 @@ class JalonsRapprochesTests(ErreursFixture):
         codes = [j["code"] for j in donnees["jalons"]]
         self.assertLess(codes.index("bonnes_10"), codes.index("bonnes_100"))
         self.assertLess(codes.index("serie_3"), codes.index("serie_7"))
+
+
+class JalonsErreursCorrigeesTests(ErreursFixture):
+    def _jalon(self, code):
+        return next(j for j in reussites_du_profil(self.profil)["jalons"] if j["code"] == code)
+
+    def test_une_erreur_corrigee_reste_acquise_meme_apres_une_rechute(self):
+        a = self.item("a")
+        self.repondre(a, "ECHEC", il_y_a_jours=3)
+        self.assertFalse(self._jalon("erreurs_1")["obtenu"])
+
+        self.repondre(a, "REUSSI", il_y_a_jours=2)
+        self.assertTrue(self._jalon("erreurs_1")["obtenu"])
+
+        self.repondre(a, "ECHEC", il_y_a_jours=1)  # rechute : la question revient dans la banque, le jalon reste
+        self.assertTrue(self._jalon("erreurs_1")["obtenu"])
+        self.assertEqual(self._jalon("erreurs_10")["valeur"], 1)
+
+    def test_une_question_reussie_du_premier_coup_n_est_pas_une_erreur_corrigee(self):
+        self.repondre(self.item("a"), "REUSSI")
+
+        self.assertEqual(self._jalon("erreurs_1")["valeur"], 0)

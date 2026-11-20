@@ -252,3 +252,62 @@ class ApiTests(ErreursFixture):
         self.repondre(self.item("a1"), "PARTIEL")
 
         self.assertEqual(self.client.get("/quiz/accueil/").data["erreurs_total"], 2)
+
+
+class ErreursCorrigeesTests(ErreursFixture):
+    """Ce qu'un quiz retire de la banque (voir quiz.erreurs.erreurs_corrigees) : annoncé sur l'écran de résultat."""
+
+    def test_une_question_ratee_puis_reussie_est_corrigee(self):
+        from .erreurs import erreurs_corrigees
+
+        a = self.item("a")
+        self.repondre(a, "ECHEC", il_y_a_jours=2)
+        quiz = self.repondre(a, "REUSSI")
+
+        self.assertEqual(erreurs_corrigees(quiz), 1)
+
+    def test_une_question_jamais_ratee_ou_deja_reussie_ne_compte_pas(self):
+        from .erreurs import erreurs_corrigees
+
+        a, b, c = self.item("a"), self.item("b"), self.item("c")
+        self.assertEqual(erreurs_corrigees(self.repondre(a, "REUSSI")), 0)  # jamais vue avant
+        self.repondre(b, "REUSSI", il_y_a_jours=2)
+        self.assertEqual(erreurs_corrigees(self.repondre(b, "REUSSI")), 0)  # déjà réussie
+        self.repondre(c, "ECHEC", il_y_a_jours=3)
+        self.repondre(c, "REUSSI", il_y_a_jours=2)
+        self.assertEqual(erreurs_corrigees(self.repondre(c, "REUSSI")), 0)  # déjà corrigée par un quiz d'avant
+        self.repondre(c, "ECHEC", il_y_a_jours=1)
+        self.assertEqual(erreurs_corrigees(self.repondre(c, "PARTIEL")), 0)  # « en partie » ne corrige rien
+
+    def test_ni_un_rejeu_ni_un_quiz_chronometre_ne_corrigent(self):
+        from .erreurs import erreurs_corrigees
+
+        a = self.item("a")
+        original = self.repondre(a, "ECHEC", il_y_a_jours=2)
+
+        self.assertEqual(erreurs_corrigees(self.repondre(a, "REUSSI", rejeu_de=original)), 0)
+        self.assertEqual(erreurs_corrigees(self.repondre(a, "REUSSI", chrono_actif=True)), 0)
+        self.assertEqual(compter_erreurs(self.profil, self.cursus), 1)  # la question est toujours dans la banque
+
+    def test_le_bilan_dit_ce_qui_est_corrige_et_ce_qu_il_reste(self):
+        from .erreurs import bilan_des_erreurs
+
+        a, b = self.item("a"), self.item("b")
+        self.repondre(a, "ECHEC", il_y_a_jours=2)
+        self.repondre(b, "ECHEC", il_y_a_jours=2)
+
+        self.assertEqual(bilan_des_erreurs(self.repondre(a, "REUSSI")), {"corrigees": 1, "restantes": 1})
+        self.assertEqual(bilan_des_erreurs(self.repondre(b, "REUSSI")), {"corrigees": 1, "restantes": 0})
+        # Rien de corrigé : rien à annoncer, la banque n'est même pas relue.
+        self.assertEqual(bilan_des_erreurs(self.repondre(self.item("c"), "ECHEC")), {"corrigees": 0, "restantes": None})
+
+    def test_le_resultat_du_quiz_porte_le_bilan(self):
+        self.abonner()
+        a = self.item("a")
+        self.repondre(a, "ECHEC", il_y_a_jours=2)
+        quiz = self.repondre(a, "REUSSI")
+
+        reponse = self.client.post(f"/quiz/sessions/{quiz.pk}/completer/")
+
+        self.assertEqual(reponse.status_code, 200)
+        self.assertEqual(reponse.data["erreurs"], {"corrigees": 1, "restantes": 0})

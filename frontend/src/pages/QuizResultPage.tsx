@@ -12,6 +12,7 @@ import { ProgressionNiveau } from "@/components/JaugeNiveau"
 import { epreuveInediteDetailPath, themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
+import { BilanErreurs } from "@/components/BilanErreurs"
 import { Confettis } from "@/components/Confettis"
 import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Mascotte } from "@/components/Mascotte"
@@ -538,6 +539,8 @@ export function QuizResultPage() {
       )}
       {/* Les jalons que ce quiz vient d'ouvrir (premier sans-faute, 10 bonnes réponses...) : fêtés ici, pas seulement rangés
           dans « Ma progression ». Pas pour un quiz chronométré, qui ne compte pas pour les jalons. */}
+      {/* Ce que ce quiz a retiré de « Mes erreurs » (voir quiz.erreurs) : la liste baisse sous les yeux de l'élève. */}
+      <BilanErreurs bilan={result.erreurs} cursus={result.cursus} acces={acces} className="mb-6" />
       {result.xp && !result.chrono_actif && <JalonsAtteints className="mb-6" />}
       {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
 

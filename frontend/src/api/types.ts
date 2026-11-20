@@ -243,7 +243,7 @@ export interface DefiSemaine {
 /** Un jalon d'étude de « Mes réussites » (voir quiz.reussites) : `valeur` est plafonnée à `cible`. */
 export interface Jalon {
   code: string
-  famille: "quiz" | "themes" | "cartes" | "examens" | "defis" | "serie"
+  famille: "quiz" | "themes" | "cartes" | "erreurs" | "examens" | "defis" | "serie"
   cible: number
   valeur: number
   obtenu: boolean
@@ -1272,6 +1272,8 @@ export interface QuizResult {
   questions_repondues: number
   /** Questions passées et jamais répondues : ni points ni échec (R22). */
   questions_passees?: number
+  /** Ce que ce quiz a retiré de « Mes erreurs » et ce qu'il y reste (`restantes` : null quand rien n'a été corrigé). */
+  erreurs?: { corrigees: number; restantes: number | null }
   score: number
   meilleure_serie: number
   seances_cette_semaine: number

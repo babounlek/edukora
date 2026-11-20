@@ -42,6 +42,9 @@ JALONS = (
     ("themes_solides_25", "themes", "themes", 25),
     ("cartes_10", "cartes", "cartes", 10),
     ("cartes_50", "cartes", "cartes", 50),
+    ("erreurs_1", "erreurs", "erreurs", 1),
+    ("erreurs_10", "erreurs", "erreurs", 10),
+    ("erreurs_50", "erreurs", "erreurs", 50),
     ("premier_examen_blanc", "examens", "examens", 1),
     ("examens_blancs_5", "examens", "examens", 5),
     ("premier_defi", "defis", "defis", 1),
@@ -57,15 +60,23 @@ def _valeurs(profil):
     hors_rejeu = {"session__profil": profil, "session__rejeu_de__isnull": True, "session__chrono_actif": False}
     reponses = QuizAnswer.objects.filter(
         **{f"quiz_question__{cle}": valeur for cle, valeur in hors_rejeu.items()},
-    ).select_related("quiz_question")
+    ).select_related("quiz_question").order_by("answered_at", "pk")
     total = bonnes = 0
     bonnes_par_session = {}
+    # Une erreur corrigée : une question ratée puis, plus tard, réussie (voir quiz.erreurs). Le fait reste acquis même si
+    # elle est ratée de nouveau ensuite : un jalon ne se perd pas. Les réponses sont lues dans l'ordre du temps pour cela.
+    ratees, corrigees = set(), set()
     for reponse in reponses:
         total += 1
+        item_id = reponse.quiz_question.competence_item_id
         if reponse.est_correcte:
             bonnes += 1
             session_id = reponse.quiz_question.session_id
             bonnes_par_session[session_id] = bonnes_par_session.get(session_id, 0) + 1
+            if item_id in ratees:
+                corrigees.add(item_id)
+        elif item_id is not None:
+            ratees.add(item_id)
     # Sans faute : TOUTES les questions du quiz ont une bonne réponse - une question passée ou laissée en plan l'exclut.
     questions_par_session = dict(
         QuizQuestion.objects.filter(**hors_rejeu, session_id__in=bonnes_par_session)
@@ -82,6 +93,7 @@ def _valeurs(profil):
         "quiz": total, "bonnes": bonnes, "sans_faute": sans_faute, "themes": themes_solides, "examens": examens,
         # Une carte compte dès sa première revue, une fois pour toutes : c'est le nombre de cartes travaillées.
         "cartes": CarteRevue.objects.filter(profil=profil).count(),
+        "erreurs": len(corrigees),
         "defis": defis_releves(profil),
         "serie": etat_serie["record"],
     }, etat_serie
