@@ -16,7 +16,7 @@ import { useEssaiSansCompte } from "@/lib/useEssaiSansCompte"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { useSeo } from "@/lib/seo"
 import { apiPour, cheminEpreuve, cheminRetour, type SourceEpreuve } from "@/lib/apiEpreuve"
-import { coursListPath, epreuvesListPath } from "@/lib/countryPath"
+import { coursListPath, epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 import { tnu, uniteDe } from "@/lib/vocabulaire"
 import { t, useI18n } from "@/lib/i18n"
 import { capitaliserTheme, cn } from "@/lib/utils"
@@ -410,6 +410,20 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
               )}
             >
               {t("rp.debloquer_autres")}
+            </Link>
+          </Button>
+        </div>
+      )}
+
+      {/* La mini est la porte d'entrée de l'épreuve entière : c'est le moment où l'élève vient d'en voir le format. */}
+      {source === "inedit" && result.epreuve_suivante && (
+        <div className="mb-6 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5" data-testid="mini-vers-epreuve">
+          <p className="text-sm">
+            <strong>{t("rp.suite_titre")}</strong> {t("rp.suite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg" variant="outline">
+            <Link to={epreuveInediteDetailPath(result.epreuve_suivante.country, result.epreuve_suivante.slug || result.epreuve_suivante.id)}>
+              {t("rp.suite_cta")}
             </Link>
           </Button>
         </div>

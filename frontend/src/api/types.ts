@@ -1787,6 +1787,8 @@ export interface TentativeInediteResult {
   regles_choix?: RegleChoix[]
   par_theme: TentativeInediteResultTheme[]
   themes_a_reviser: ThemeARevoir[]
+  // Après une mini-inédite : l'épreuve entière du même cursus à tenter ensuite ; null sinon (épreuve entière, ou aucune candidate).
+  epreuve_suivante?: { id: number; slug: string; titre: string; country: string; meme_matiere: boolean } | null
 }
 
 /** Un thème de l'épreuve qui revient dans la séance du jour (ou revient déjà). */

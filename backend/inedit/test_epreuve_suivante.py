@@ -1,7 +1,8 @@
 """Après une mini, le résultat propose l'épreuve entière du même cursus (l'offerte d'abord, jamais déjà commencée)."""
+from catalog.models import StatutContenu
+
 from .models import EpreuveInedite, TentativeInedite
 from .test_notation import NotationAPITestCase
-from .tests import _make_published_epreuve
 
 
 class EpreuveSuivanteTests(NotationAPITestCase):
@@ -12,8 +13,12 @@ class EpreuveSuivanteTests(NotationAPITestCase):
         EpreuveInedite.objects.filter(pk=self.epreuve.pk).update(est_mini=True)
 
     def _autre_epreuve(self, **champs):
-        autre = _make_published_epreuve(self.country)
-        EpreuveInedite.objects.filter(pk=autre.pk).update(**champs)
+        # Une VRAIE seconde épreuve : le helper de test est idempotent et renverrait toujours la première.
+        autre = EpreuveInedite.objects.create(
+            blueprint=self.epreuve.blueprint, subject=self.epreuve.subject, titre=f"Autre {EpreuveInedite.objects.count()}",
+            statut=StatutContenu.VALIDE, **champs,
+        )
+        autre.cursus.set(self.epreuve.cursus.all())
         return autre
 
     def test_apres_une_epreuve_entiere_rien_n_est_propose(self):

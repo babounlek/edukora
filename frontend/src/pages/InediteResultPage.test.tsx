@@ -451,3 +451,31 @@ describe("InediteResultPage", () => {
     })
   })
 })
+
+describe("InediteResultPage, après une mini-inédite", () => {
+  const suivante = { id: 9, slug: "bac-maths-inedite", titre: "BAC Maths", country: "cm", meme_matiere: true }
+
+  it("propose l'épreuve entière suivante", async () => {
+    completeTentative.mockResolvedValue(resultat({ epreuve_suivante: suivante }))
+    afficher()
+
+    const bloc = await screen.findByTestId("mini-vers-epreuve")
+    expect(bloc.querySelector("a")).toHaveAttribute("href", "/cm/epreuves-inedites/bac-maths-inedite")
+  })
+
+  it("ne propose rien quand il n'y a pas d'épreuve suivante", async () => {
+    completeTentative.mockResolvedValue(resultat({ epreuve_suivante: null }))
+    afficher()
+
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByTestId("mini-vers-epreuve")).not.toBeInTheDocument()
+  })
+
+  it("n'en parle pas pour une épreuve officielle simulée", async () => {
+    completeSimulation.mockResolvedValue(resultat({ epreuve_suivante: suivante }))
+    afficher("officielle")
+
+    await screen.findByLabelText("Note : 12,5 sur 20")
+    expect(screen.queryByTestId("mini-vers-epreuve")).not.toBeInTheDocument()
+  })
+})
