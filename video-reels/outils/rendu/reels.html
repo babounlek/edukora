@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>EduKora - vidéos verticales 1080x1920</title>
+<style>
+@font-face{font-family:"Fraunces";font-weight:600;src:url("../../../video-facebook/sources/polices/fraunces-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Fraunces";font-weight:700;src:url("../../../video-facebook/sources/polices/fraunces-latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:500;src:url("../../../video-facebook/sources/polices/work-sans-latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:600;src:url("../../../video-facebook/sources/polices/work-sans-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Work Sans";font-weight:700;src:url("../../../video-facebook/sources/polices/work-sans-latin-700-normal.woff2") format("woff2")}
+:root{--vert:#006837;--vert-fonce:#073f2a;--vert-nuit:#052c1e;--vif:#39B54A;--menthe:#E3F2E8;--creme:#FBF8F1;--ambre:#F2B134;--encre:#12211a;--gris:#5b6b62}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+body{font-family:"Work Sans",system-ui,sans-serif;color:var(--encre);-webkit-font-smoothing:antialiased}
+#racine{position:relative;width:1080px;height:1920px;overflow:hidden}
+.scene{position:absolute;inset:0;overflow:hidden;display:none}
+.abs{position:absolute}
+
+/* accroche */
+.hook{background:radial-gradient(120% 70% at 50% 40%,#0b5a3a 0%,var(--vert-fonce) 55%,var(--vert-nuit) 100%)}
+.hook .q{left:420px;top:380px;font:700 1500px/1 "Fraunces";color:rgba(255,255,255,.045)}
+.hook .marque{left:80px;top:250px;width:92px;height:92px}
+.hook .bloc{left:80px;right:120px;top:420px;bottom:420px;display:flex;flex-direction:column;justify-content:center;font:700 112px/1.13 "Fraunces";color:#fff}
+.hook .mot{display:inline-block;opacity:.16;white-space:pre}
+.hook .mot.accent{color:var(--ambre)}
+.hook .ligne{display:block;white-space:nowrap}
+
+/* captures */
+.clair{background:var(--creme)}
+.legende{left:80px;right:120px;top:236px;height:140px;display:flex;align-items:center;gap:26px}
+.num{flex:none;width:84px;height:84px;border-radius:50%;background:var(--vert);color:#fff;font:700 48px/84px "Work Sans";text-align:center}
+.txt{font:700 60px/1.06 "Fraunces";color:var(--vert);letter-spacing:-.01em}
+.kicker{position:absolute;left:80px;top:190px;font:700 30px "Work Sans";letter-spacing:.16em;text-transform:uppercase;color:#1f7d37}
+.points{position:absolute;left:80px;top:384px;display:flex;gap:12px}
+.points i{display:block;width:64px;height:8px;border-radius:4px;background:#cfdcd3}
+.points i.on{background:var(--vert)}
+.carte{position:absolute;left:80px;top:416px;width:880px;height:880px;background:#e4ece6;border-radius:32px;overflow:hidden;
+  box-shadow:0 18px 50px rgba(5,44,30,.22),0 2px 6px rgba(5,44,30,.12)}
+.carte img{position:absolute;left:0;top:0;transform-origin:0 0;display:block}
+.surlign{position:absolute;left:0;top:0;border:5px solid var(--ambre);border-radius:12px;transform-origin:0 0;pointer-events:none;opacity:0}
+
+/* appel à l'action */
+.cta .logo{left:260px;top:300px;width:560px;height:364px}
+.cta .ligne1{left:80px;right:120px;top:720px;text-align:center;font:700 64px/1.1 "Fraunces";color:var(--vert)}
+.cta .bouton{left:110px;right:150px;top:860px;height:136px;border-radius:68px;background:var(--vert);color:#fff;display:flex;align-items:center;justify-content:center;gap:22px;
+  font:700 50px "Work Sans";box-shadow:0 16px 40px rgba(0,104,55,.35)}
+.cta .bouton svg{width:54px;height:54px;fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.cta .lien{left:80px;right:120px;top:1030px;text-align:center;font:700 62px "Work Sans";color:var(--vert)}
+.cta .lien span{border-bottom:6px solid var(--vif);padding-bottom:4px}
+
+/* sous-titres : zone sûre Reels / TikTok (bas ≥ 420 px du bord) */
+#sous-titre{z-index:100;position:absolute;left:80px;right:120px;bottom:430px;display:flex;justify-content:center;pointer-events:none}
+#sous-titre span{display:block;max-width:880px;padding:16px 30px 18px;border-radius:24px;background:rgba(5,44,30,.93);color:#fff;font:700 56px/1.14 "Work Sans";text-align:center;white-space:pre-line}
+</style>
+</head>
+<body>
+<div id="racine"><div id="sous-titre"><span id="st" style="display:none"></span></div></div>
+<script>
+const D = window.DATA;
+const $ = (s, r = document) => r.querySelector(s);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const eo = x => 1 - Math.pow(1 - clamp(x), 3);
+const eio = x => { x = clamp(x); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+const prog = (t, a, d) => clamp((t - a) / d);
+const lerp = (a, b, k) => a + (b - a) * k;
+const racine = $('#racine');
+const CW = 880, CH = 880;
+
+function tMot(sc, re) { const m = sc.mots.find(w => new RegExp(re).test(w.texte)); return m ? m.t0 : null; }
+function el(html) { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
+
+/* ---------- construction des scènes ---------- */
+D.scenes.forEach((sc, i) => {
+  let s;
+  if (sc.type === 'hook') {
+    s = el(`<section class="scene hook" id="sc${i}"><div class="abs q">?</div><img class="abs marque" src="${D.fichiers.icone}" alt=""><div class="abs bloc"></div></section>`);
+    const bloc = $('.bloc', s);
+    sc.lignes.forEach(ids => {
+      const l = document.createElement('span'); l.className = 'ligne';
+      ids.forEach((k, j) => {
+        const w = document.createElement('span');
+        w.className = 'mot' + ((sc.accent || []).includes(k) ? ' accent' : '');
+        w.textContent = sc.mots[k].texte + (j < ids.length - 1 ? ' ' : ''); w.dataset.i = k; l.appendChild(w);
+      });
+      bloc.appendChild(l);
+    });
+  } else if (sc.type === 'shot') {
+    s = el(`<section class="scene clair" id="sc${i}">
+      ${sc.kicker ? `<div class="kicker">${sc.kicker}</div>` : ''}
+      <div class="abs legende"><div class="num"></div><div class="txt"></div></div>
+      <div class="points"></div>
+      <div class="carte"><img src="${sc.imageUrl}" alt=""><div class="surlign"></div></div></section>`);
+    const pts = $('.points', s);
+    if (sc.beats.length > 1) sc.beats.forEach(() => pts.appendChild(document.createElement('i')));
+    const img = $('.carte img', s);
+    img.style.width = sc.W0 + 'px'; img.style.height = sc.H0 + 'px';
+  } else if (sc.type === 'cta') {
+    s = el(`<section class="scene clair cta" id="sc${i}"><img class="abs logo" src="${D.fichiers.logo}" alt="EduKora">
+      <div class="abs ligne1">${sc.ligne1 || ''}</div>
+      <div class="abs bouton"><span>${sc.bouton}</span><svg viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></svg></div>
+      <div class="abs lien"><span>${D.lien}</span></div></section>`);
+  }
+  racine.insertBefore(s, $('#sous-titre'));
+});
+
+/* ---------- caméra des scènes « capture » ---------- */
+function camera(sc, box) {
+  const m = 24;
+  let s = Math.min((CW - 2 * m) / box.w, (CH - 2 * m) / box.h);
+  s = clamp(s, 0.7, 2.6);
+  let tx = CW / 2 - s * (box.x + box.w / 2), ty = CH / 2 - s * (box.y + box.h / 2);
+  const iw = s * sc.W0, ih = s * sc.H0;
+  tx = iw <= CW ? (CW - iw) / 2 : clamp(tx, CW - iw, 0);
+  ty = ih <= CH ? (CH - ih) / 2 : clamp(ty, CH - ih, 0);
+  return { s, tx, ty };
+}
+D.scenes.forEach(sc => {
+  if (sc.type !== 'shot') return;
+  sc.cams = sc.beats.map(b => camera(sc, b.cadre));
+  const d = sc.depart || { x: 0, y: 0, w: sc.W0, h: Math.min(sc.H0, CH / (CW / sc.W0)) };
+  sc.cam0 = camera(sc, d);
+});
+
+function sceneShot(sc, i, lt, t) {
+  const e = $('#sc' + i);
+  const n = sc.beats.length;
+  const marks = sc.beats.map((b, k) => k === 0 ? 0 : (tMot(sc, b.cue) ?? (sc.duree * k / n)) - 0.12 - sc.debut);
+  let b = 0; marks.forEach((m, k) => { if (lt >= m) b = k; });
+  const debutB = marks[b];
+  const de = b === 0 ? sc.cam0 : sc.cams[b - 1], a = sc.cams[b];
+  const k = b === 0 ? eio(prog(lt, 0.3, 1.1)) : eio(prog(lt, debutB - 0.15, 0.85));
+  const cam = { s: lerp(de.s, a.s, k), tx: lerp(de.tx, a.tx, k), ty: lerp(de.ty, a.ty, k) };
+  $('.carte img', e).style.transform = `translate(${cam.tx}px,${cam.ty}px) scale(${cam.s})`;
+  const hl = $('.surlign', e), m = sc.beats[b].mise;
+  if (m) {
+    hl.style.width = (m.w + 12) + 'px'; hl.style.height = (m.h + 12) + 'px';
+    hl.style.transform = `translate(${cam.tx + cam.s * (m.x - 6)}px,${cam.ty + cam.s * (m.y - 6)}px) scale(${cam.s})`;
+    hl.style.borderWidth = (5 / cam.s) + 'px'; hl.style.borderRadius = (12 / cam.s) + 'px';
+    hl.style.opacity = eo(prog(lt, debutB + (b === 0 ? 1.2 : 0.6), 0.3));
+  } else hl.style.opacity = 0;
+  const leg = $('.legende', e), kk = eo(prog(lt, debutB, 0.35));
+  leg.style.opacity = kk; leg.style.transform = `translateY(${lerp(16, 0, kk)}px)`;
+  const num = $('.num', leg);
+  if (sc.num) { num.style.display = 'block'; num.textContent = String(sc.num); }
+  else if (sc.beats.length > 1) { num.style.display = 'block'; num.textContent = String(b + 1); } else num.style.display = 'none';
+  $('.txt', leg).textContent = sc.beats[b].legende;
+  $('.points', e).querySelectorAll('i').forEach((p, j) => p.className = j <= b ? 'on' : '');
+  $('.carte', e).style.opacity = eo(prog(lt, 0.05, 0.5));
+}
+
+function sceneHook(sc, i, lt, t) {
+  const e = $('#sc' + i), bloc = $('.bloc', e);
+  bloc.style.transform = `scale(${1 + 0.035 * clamp(lt / sc.duree)})`; bloc.style.transformOrigin = '30% 50%';
+  e.querySelectorAll('.mot').forEach(w => {
+    const m = sc.mots[+w.dataset.i], k = eo(prog(t, m.t0 - 0.04, 0.22));
+    w.style.opacity = lerp(.16, 1, k); w.style.transform = `translateY(${lerp(14, 0, k)}px)`;
+  });
+}
+
+function sceneCta(sc, i, lt, t) {
+  const e = $('#sc' + i);
+  const kl = eo(prog(lt, 0.1, 0.7));
+  $('.logo', e).style.opacity = kl; $('.logo', e).style.transform = `scale(${lerp(.9, 1, kl)})`;
+  const k1 = eo(prog(lt, 0.5, 0.5)); $('.ligne1', e).style.opacity = k1; $('.ligne1', e).style.transform = `translateY(${lerp(20, 0, k1)}px)`;
+  const tIns = (sc.cue && tMot(sc, sc.cue)) || sc.debut + 1.4;
+  const kb = eo(prog(t, tIns - 0.1, 0.45)), pulse = 1 + 0.025 * Math.sin(Math.max(0, t - tIns) * 5.2) * kb;
+  $('.bouton', e).style.opacity = kb; $('.bouton', e).style.transform = `translateY(${lerp(30, 0, kb)}px) scale(${pulse})`;
+  const kk = eo(prog(t, tIns + 0.5, 0.5)); $('.lien', e).style.opacity = kk; $('.lien', e).style.transform = `translateY(${lerp(20, 0, kk)}px)`;
+}
+
+window.render = function (t) {
+  D.scenes.forEach((sc, i) => {
+    const e = $('#sc' + i);
+    const vis = t >= sc.debut && (i === D.scenes.length - 1 || t < D.scenes[i + 1].debut + 0.35);
+    e.style.display = vis ? 'block' : 'none'; e.style.zIndex = i + 1;
+    if (!vis) return;
+    e.style.opacity = i === 0 ? 1 : eo(prog(t, sc.debut, 0.28));
+    const lt = t - sc.debut;
+    if (sc.type === 'hook') sceneHook(sc, i, lt, t);
+    else if (sc.type === 'shot') sceneShot(sc, i, lt, t);
+    else sceneCta(sc, i, lt, t);
+  });
+  const st = $('#st'), s = D.subs.find(x => t >= x.t0 && t < x.t1);
+  const sceneCourante = D.scenes.filter(sc => t >= sc.debut).pop();
+  if (!s || (sceneCourante && sceneCourante.type === 'hook')) st.style.display = 'none';
+  else { st.style.display = 'block'; st.textContent = s.affiche; }
+  return true;
+};
+window.pret = Promise.all([...document.images].map(i => i.decode ? i.decode().catch(() => {}) : 0)).then(() => document.fonts.ready).then(() => true);
+</script>
+</body>
+</html>

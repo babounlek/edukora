@@ -75,3 +75,7 @@ Aucune musique : la vidéo est pensée pour être regardée sans son et la voix 
 - Le chiffre « Plus de 1 500 épreuves corrigées » (scène 4) : le compteur du site évolue.
 - Le corrigé montré est-il toujours « en accès libre » ?
 - Les cursus affichés correspondent-ils toujours à la barre « Choisis ton examen » ?
+
+## Versionnement (git)
+
+Les fichiers produits (vidéos, voix, captures, aperçus, `.venv`) sont exclus de git (voir `.gitignore`). Après un clonage, recréer l'environnement Python puis refaire les captures et la voix (`outils/capture*.py`, puis `outils/generer.py` ou `outils/fabrique.py`) avant de générer la vidéo.
