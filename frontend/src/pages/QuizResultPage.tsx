@@ -13,6 +13,7 @@ import { epreuveInediteDetailPath, themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { Confettis } from "@/components/Confettis"
+import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Mascotte } from "@/components/Mascotte"
 import { NiveauXp } from "@/components/NiveauXp"
 import { ObjectifXp } from "@/components/ObjectifXp"
@@ -535,6 +536,9 @@ export function QuizResultPage() {
           score={result.score} total={result.questions_repondues}
         />
       )}
+      {/* Les jalons que ce quiz vient d'ouvrir (premier sans-faute, 10 bonnes réponses...) : fêtés ici, pas seulement rangés
+          dans « Ma progression ». Pas pour un quiz chronométré, qui ne compte pas pour les jalons. */}
+      {result.xp && !result.chrono_actif && <JalonsAtteints className="mb-6" />}
       {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
 
       {/* Un quiz joué sans compte (voir lib/invite) : ses points et sa séance ne sont gardés que sur cet appareil, le temps

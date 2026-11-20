@@ -1,15 +1,18 @@
+import { useEffect } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { Award, Check, Flame } from "lucide-react"
 
 import { getReussites } from "@/api/endpoints"
 import type { Jalon } from "@/api/types"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { useAuth } from "@/context/AuthContext"
+import { marquerJalonsVus } from "@/lib/jalonsVus"
 import { NiveauXp } from "@/components/NiveauXp"
 import { Skeleton } from "@/components/ui/skeleton"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 
-const FAMILLES = ["quiz", "themes", "examens", "defis", "serie"] as const
+const FAMILLES = ["quiz", "themes", "cartes", "examens", "defis", "serie"] as const
 
 /** Une ligne de jalon : le titre, ce qu'il demande, et où l'élève en est. Un jalon atteint reste affiché, plein. */
 function LigneJalon({ jalon, prochain }: { jalon: Jalon; prochain: boolean }) {
@@ -59,6 +62,11 @@ export function BlocReussites({ className }: { className?: string }) {
     queryKey: ["reussites"],
     queryFn: ({ signal }) => getReussites(signal),
   })
+  // Tous les jalons sont montrés ici : aucun n'est à fêter plus tard comme une nouveauté (voir JalonsAtteints).
+  const profilId = useAuth().user?.profil_actif?.id
+  useEffect(() => {
+    if (data && profilId != null) marquerJalonsVus(profilId, data.jalons.filter((j) => j.obtenu).map((j) => j.code))
+  }, [data, profilId])
 
   if (isLoading) return <Skeleton className={cn("h-32 w-full rounded-2xl", className)} />
   if (isError || !data) return <ErreurChargement objet={t("reussites.objet")} onRetry={() => refetch()} className={className} />

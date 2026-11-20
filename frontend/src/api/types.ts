@@ -243,7 +243,7 @@ export interface DefiSemaine {
 /** Un jalon d'étude de « Mes réussites » (voir quiz.reussites) : `valeur` est plafonnée à `cible`. */
 export interface Jalon {
   code: string
-  famille: "quiz" | "themes" | "examens" | "defis" | "serie"
+  famille: "quiz" | "themes" | "cartes" | "examens" | "defis" | "serie"
   cible: number
   valeur: number
   obtenu: boolean
@@ -252,7 +252,7 @@ export interface Jalon {
 export interface Reussites {
   niveau: NiveauXp
   jalons: Jalon[]
-  /** Code du premier jalon pas encore atteint, null quand tous le sont. */
+  /** Code du jalon pas encore atteint le plus proche de l'être (voir quiz.reussites), null quand tous le sont. */
   prochain: string | null
   serie: { actuelle: number; record: number; repos_pris: boolean }
 }

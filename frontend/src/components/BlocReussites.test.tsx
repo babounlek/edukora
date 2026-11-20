@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 
 const getReussites = vi.hoisted(() => vi.fn())
 vi.mock("@/api/endpoints", () => ({ getReussites }))
+vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ user: { profil_actif: { id: 7 } } }) }))
 
 import { BlocReussites } from "./BlocReussites"
 

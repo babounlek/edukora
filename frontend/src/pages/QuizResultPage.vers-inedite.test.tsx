@@ -19,6 +19,7 @@ vi.mock("@/lib/retours", () => ({ jouerRetour: vi.fn() }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 vi.mock("@/lib/useCompteur", () => ({ useCompteur: (cible: number) => cible }))
 vi.mock("@/components/ReglagesSeance", () => ({ InvitePush: () => <p>Invitation aux rappels</p> }))
+vi.mock("@/components/JalonsAtteints", () => ({ JalonsAtteints: () => null }))
 vi.mock("@/components/QuizFichePdfButtons", () => ({ QuizFichePdfButtons: () => <p>Fiches PDF</p> }))
 
 import { QuizResultPage } from "./QuizResultPage"

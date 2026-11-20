@@ -69,4 +69,90 @@ class JalonsTests(ErreursFixture):
 
         self.assertEqual(reponse.status_code, 200)
         self.assertEqual(reponse.data["niveau"]["rang"], 1)
-        self.assertEqual(len(reponse.data["jalons"]), 11)
+        self.assertEqual(len(reponse.data["jalons"]), 20)
+
+
+class JalonsRapprochesTests(ErreursFixture):
+    """Les jalons des débuts, le quiz sans faute, les cartes, et le choix du prochain jalon (le plus proche)."""
+
+    def _donnees(self):
+        return reussites_du_profil(self.profil)
+
+    def _jalon(self, code):
+        return next(j for j in self._donnees()["jalons"] if j["code"] == code)
+
+    def _quiz(self, resultats, **session):
+        """Un quiz d'autant de questions que de résultats ; None laisse la question sans réponse (passée)."""
+        from .models import ModeQuiz, QuizAnswer, QuizQuestion, QuizSession
+
+        quiz = QuizSession.objects.create(profil=self.profil, cursus=self.cursus, mode=ModeQuiz.PRATIQUE, **session)
+        for ordre, resultat in enumerate(resultats, start=1):
+            question = QuizQuestion.objects.create(
+                session=quiz, competence_item=self.item(f"q{quiz.pk}-{ordre}"), ordre=ordre,
+            )
+            if resultat is not None:
+                QuizAnswer.objects.create(quiz_question=question, resultat_declare=resultat)
+        return quiz
+
+    def test_dix_bonnes_reponses_ouvrent_le_premier_palier(self):
+        self._quiz(["REUSSI"] * 9 + ["ECHEC"])
+        self.assertFalse(self._jalon("bonnes_10")["obtenu"])
+        self.assertEqual(self._jalon("bonnes_10")["valeur"], 9)
+
+        self._quiz(["REUSSI"])
+        self.assertTrue(self._jalon("bonnes_10")["obtenu"])
+        self.assertFalse(self._jalon("bonnes_50")["obtenu"])
+
+    def test_un_quiz_sans_faute_demande_toutes_les_questions_justes(self):
+        self._quiz(["REUSSI"] * 4 + ["ECHEC"])  # une erreur
+        self._quiz(["REUSSI"] * 4 + [None])  # une question passée
+        self._quiz(["REUSSI"] * 4 + ["PARTIEL"])  # « en partie » n'est pas juste
+        self.assertEqual(self._jalon("sans_faute_1")["valeur"], 0)
+
+        self._quiz(["REUSSI"] * 5)
+        self.assertTrue(self._jalon("sans_faute_1")["obtenu"])
+        self.assertEqual(self._jalon("sans_faute_5")["valeur"], 1)
+
+    def test_un_quiz_trop_court_un_rejeu_ou_un_quiz_chronometre_ne_comptent_pas_sans_faute(self):
+        self._quiz(["REUSSI"] * 4)  # moins de 5 questions
+        original = self._quiz(["REUSSI"] * 4 + ["ECHEC"])
+        self._quiz(["REUSSI"] * 5, rejeu_de=original)
+        self._quiz(["REUSSI"] * 5, chrono_actif=True)
+
+        self.assertEqual(self._jalon("sans_faute_1")["valeur"], 0)
+
+    def test_le_premier_theme_solide_a_son_jalon(self):
+        self.assertFalse(self._jalon("themes_solides_1")["obtenu"])
+        for i in range(3):
+            self.repondre(self.item(f"s{i}"), "REUSSI")
+
+        self.assertTrue(self._jalon("themes_solides_1")["obtenu"])
+        self.assertFalse(self._jalon("themes_solides_3")["obtenu"])
+
+    def test_les_cartes_travaillees_comptent_une_fois_chacune(self):
+        from catalog.models import Cours
+
+        from . import cartes
+
+        sections = [{"type": "regle", "titre": "Règle", "contenu_markdown": "Texte."}]
+        for n in range(10):
+            cours = Cours.objects.create(
+                external_id=f"carte-{n}", titre=f"Cours {n}", subject=self.maths, sections_raw=sections,
+                statut=StatutContenu.VALIDE,
+            )
+            cartes.noter(self.profil, cours, "regle", n % 2 == 0)
+            if n == 0:
+                cartes.noter(self.profil, cours, "regle", False)  # la même carte, revue deux fois
+        self.assertTrue(self._jalon("cartes_10")["obtenu"])
+        self.assertEqual(self._jalon("cartes_50")["valeur"], 10)
+
+    def test_le_prochain_jalon_est_le_plus_proche_pas_le_premier_de_la_liste(self):
+        self._quiz(["REUSSI"] * 4 + ["ECHEC"])  # première réponse acquise ; 4 bonnes sur 10
+
+        donnees = self._donnees()
+
+        # 4/10 bonnes réponses bat 0/1 sans-faute, 0/1 thème solide et 0/3 jours de série.
+        self.assertEqual(donnees["prochain"], "bonnes_10")
+        codes = [j["code"] for j in donnees["jalons"]]
+        self.assertLess(codes.index("bonnes_10"), codes.index("bonnes_100"))
+        self.assertLess(codes.index("serie_3"), codes.index("serie_7"))

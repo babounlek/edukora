@@ -19,6 +19,7 @@ vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 vi.mock("@/lib/useCompteur", () => ({ useCompteur: (cible: number) => cible }))
 // Les enfants qui parlent au serveur de leur côté : hors sujet ici.
 vi.mock("@/components/ReglagesSeance", () => ({ InvitePush: () => <p>Invitation aux rappels</p> }))
+vi.mock("@/components/JalonsAtteints", () => ({ JalonsAtteints: () => null }))
 vi.mock("@/components/QuizFichePdfButtons", () => ({ QuizFichePdfButtons: () => <p>Fiches PDF</p> }))
 
 import { clearJetonInvite, setJetonInvite } from "@/lib/invite"
