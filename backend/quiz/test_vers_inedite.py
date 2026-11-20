@@ -77,3 +77,29 @@ class OfferteEnPremierTests(VersInediteTests):
         self._epreuve("Payante plus récente")
 
         self.assertEqual(self._resultat()["inedite_suggeree"]["id"], offerte.id)
+
+
+class MiniSuggereeTests(VersInediteTests):
+    """La mini est la marche avant l'épreuve entière : réservée aux abonnés du cursus, jamais déjà commencée."""
+
+    def test_un_abonne_recoit_la_mini_du_cursus(self):
+        self.abonner()
+        mini = self._epreuve("Mini", est_mini=True)
+
+        suggeree = self._resultat()["mini_suggeree"]
+
+        self.assertEqual(suggeree["id"], mini.id)
+        self.assertTrue(suggeree["meme_matiere"])
+
+    def test_sans_abonnement_pas_de_mini(self):
+        self._epreuve("Mini", est_mini=True)
+
+        self.assertIsNone(self._resultat()["mini_suggeree"])
+
+    def test_une_mini_deja_commencee_ou_une_epreuve_entiere_ne_comptent_pas(self):
+        self.abonner()
+        vue = self._epreuve("Mini vue", est_mini=True)
+        TentativeInedite.objects.create(profil=self.profil, epreuve=vue)
+        self._epreuve("Entière")
+
+        self.assertIsNone(self._resultat()["mini_suggeree"])

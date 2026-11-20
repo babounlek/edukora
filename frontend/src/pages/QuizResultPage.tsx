@@ -648,7 +648,21 @@ export function QuizResultPage() {
       )}
       {/* Prolongement du quiz vers l'épreuve entière : seulement quand le quiz est réussi (le thème faible a déjà son cours) et
           qu'une inédite existe vraiment pour ce cursus - sinon le bloc n'apparaît pas. */}
-      {!diagnostic && !result.chrono_actif && result.inedite_suggeree && pourcentage >= 70 && (
+      {!diagnostic && !result.chrono_actif && result.mini_suggeree && pourcentage >= 70 && (
+        <div className="mb-6 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5" data-testid="quiz-vers-mini">
+          <p className="text-sm">
+            <strong>{t("qr.mini_titre")}</strong> {t("qr.mini_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg" variant="outline">
+            <Link to={epreuveInediteDetailPath(result.mini_suggeree.country, result.mini_suggeree.slug || result.mini_suggeree.id)}>
+              <Trophy />
+              {t("qr.mini_cta")}
+            </Link>
+          </Button>
+        </div>
+      )}
+      {/* L'épreuve entière ne passe qu'après la mini : un abonné qui a une mini à faire n'a pas à choisir entre deux blocs. */}
+      {!diagnostic && !result.chrono_actif && !result.mini_suggeree && result.inedite_suggeree && pourcentage >= 70 && (
         <div className="mb-6 rounded-xl border border-gold/40 bg-gold/5 px-4 py-3.5" data-testid="quiz-vers-inedite">
           <p className="text-sm">
             <strong>{t("qr.inedite_titre")}</strong> {t("qr.inedite_texte")}

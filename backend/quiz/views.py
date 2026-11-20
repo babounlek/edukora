@@ -381,6 +381,38 @@ def _items_rates(session):
     return items_rates(session)
 
 
+def _mini_suggeree(session, matiere_ids, user):
+    """Une mini-inédite (2 exercices) du même cursus à proposer après un quiz : la marche entre le quiz et l'épreuve entière.
+    Réservée aux abonnés du cursus (voir access.has_access_inedite) : None pour qui n'y a pas accès, plutôt qu'un lien vers
+    un mur de paiement. Jamais une mini que le profil a déjà commencée."""
+    from access.services import has_access_inedite
+    from catalog.models import StatutContenu
+    from inedit.models import EpreuveInedite
+
+    if not getattr(user, "is_authenticated", False):
+        return None
+    candidates = (
+        EpreuveInedite.objects.filter(statut=StatutContenu.VALIDE, cursus=session.cursus_id, est_mini=True)
+        .exclude(tentatives__profil=session.profil)
+        .select_related("subject__country")
+        .prefetch_related("cursus")
+        .order_by("-id")
+    )
+    epreuve = None
+    if matiere_ids:
+        epreuve = next((e for e in candidates.filter(subject_id__in=matiere_ids)[:10] if has_access_inedite(user, e, session.profil)), None)
+    epreuve = epreuve or next((e for e in candidates[:10] if has_access_inedite(user, e, session.profil)), None)
+    if epreuve is None:
+        return None
+    return {
+        "id": epreuve.id,
+        "slug": epreuve.slug,
+        "titre": epreuve.titre,
+        "country": epreuve.subject.country.code.lower(),
+        "meme_matiere": bool(matiere_ids) and epreuve.subject_id in matiere_ids,
+    }
+
+
 def _inedite_suggeree(session, matiere_ids):
     """Une épreuve inédite publiée du même cursus pour prolonger un quiz : celle de la matière jouée si elle existe,
     jamais une que le profil a déjà commencée. None quand il n'y en a pas - le bouton disparaît côté interface plutôt
@@ -518,6 +550,12 @@ def _resultat_payload(session, request):
             session,
             ({session.subject_id} - {None})
             | {qq.competence_item.subject_id for qq in quiz_questions if qq.competence_item_id},
+        ),
+        "mini_suggeree": _mini_suggeree(
+            session,
+            ({session.subject_id} - {None})
+            | {qq.competence_item.subject_id for qq in quiz_questions if qq.competence_item_id},
+            request.user,
         ),
         **_chrono_resultat(session),
     }

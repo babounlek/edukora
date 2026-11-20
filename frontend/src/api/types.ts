@@ -1290,6 +1290,8 @@ export interface QuizResult {
   classement?: { disponible: boolean; bande: "quart" | "moitie" | null }
   // Une inédite publiée du même cursus pour prolonger le quiz ; null = aucune, le bloc disparaît.
   inedite_suggeree?: { id: number; slug: string; titre: string; country: string; meme_matiere: boolean } | null
+  // Une mini-inédite accessible à cet abonné (2 exercices) : la marche avant l'épreuve entière ; null sinon.
+  mini_suggeree?: { id: number; slug: string; titre: string; country: string; meme_matiere: boolean } | null
   // Quiz chronométré : neutre pour la progression (ni XP, ni maîtrise), temps utilisé et record personnel.
   chrono_actif?: boolean
   neutre_progression?: boolean
