@@ -16,6 +16,12 @@
   "questions": [
     {
       "numero": "1",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "1. Définir : base de données. (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nUne définition de base de données doit mentionner l'organisation structurée des données et leur gestion par un logiciel dédié (le SGBD).\n\n### Corrigé\nUne **base de données** est un ensemble structuré et organisé de données, stockées de manière cohérente et non redondante, destinées à être consultées, gérées et mises à jour par un système de gestion de base de données (SGBD).",
       "themes": [
@@ -38,6 +44,12 @@
     },
     {
       "numero": "2",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "2. Citer un exemple de logiciel d'application pouvant être utilisée pour créer physiquement cette base de données. (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nCréer physiquement une base de données nécessite un logiciel SGBD (Système de Gestion de Base de Données), qui existe sous forme de logiciel serveur (MySQL, PostgreSQL) ou de logiciel de bureau (Microsoft Access).\n\n### Corrigé\nRéponse (exemple) : **MySQL** (ou Microsoft Access, PostgreSQL).",
       "themes": [
@@ -60,6 +72,12 @@
     },
     {
       "numero": "3.a",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "3. Écrire une requête SQL permettant de :\n\na. Créer la base de données OTABD. (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nLa commande CREATE DATABASE crée une nouvelle base de données vide, avant que ses tables ne soient définies avec CREATE TABLE.\n\n### Corrigé\n```sql\nCREATE DATABASE OTABD;\n```",
       "themes": [
@@ -82,6 +100,12 @@
     },
     {
       "numero": "3.b",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "b. Créer la table FACTURE sachant que le champ Num_facture est un entier, le champ description_facture est une chaîne de 255 caractères au plus, le champ Montant_facture est un réel, le champ date_emission est une chaîne de 10 caractères. (1pt)",
       "corrige_markdown": "### Rappel de méthode\nCREATE TABLE définit le nom et le type de chaque colonne. Un entier se déclare INT, une chaîne de caractères de longueur maximale connue se déclare VARCHAR(n), un nombre réel se déclare FLOAT ou DECIMAL.\n\n### Corrigé\nNum_facture est un entier (INT), Description_facture une chaîne d'au plus 255 caractères (VARCHAR(255)), Montant_facture un réel (FLOAT), Date_emission une chaîne de 10 caractères (VARCHAR(10), format JJ/MM/AAAA).\n\n```sql\nCREATE TABLE FACTURE (\n    Num_facture INT PRIMARY KEY,\n    Description_facture VARCHAR(255),\n    Montant_facture FLOAT,\n    Date_emission VARCHAR(10)\n);\n```",
       "themes": [
@@ -105,6 +129,12 @@
     },
     {
       "numero": "3.c",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "c. Supprimer toutes les factures émises avant le \"25/01/2015\". (1pt)",
       "corrige_markdown": "### Rappel de méthode\nLa commande DELETE FROM table WHERE condition supprime toutes les lignes de la table qui vérifient la condition indiquée.\n\n### Corrigé\nOn supprime toutes les factures dont la date d'émission est antérieure au 25/01/2015.\n\n```sql\nDELETE FROM FACTURE WHERE Date_emission < '25/01/2015';\n```\n\n### Conseil\nCette requête reproduit fidèlement la syntaxe attendue au niveau Terminale. En toute rigueur, Date_emission étant stockée comme une simple chaîne de caractères (VARCHAR) au format JJ/MM/AAAA, une comparaison directe avec < compare les dates caractère par caractère et non chronologiquement (par exemple, '05/03/2020' serait lexicographiquement inférieure à '25/01/2015' bien que postérieure). Dans une base de données réelle, on utiliserait un type DATE, ou un format AAAA-MM-JJ, pour garantir un tri chronologique fiable.",
       "themes": [
@@ -128,6 +158,12 @@
     },
     {
       "numero": "3.d",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "d. Afficher toutes les factures de la base de données. (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nSELECT * FROM table affiche toutes les colonnes de toutes les lignes de la table, sans aucune condition de filtrage.\n\n### Corrigé\n```sql\nSELECT * FROM FACTURE;\n```",
       "themes": [
@@ -162,7 +198,9 @@
   "incertitudes": [
     "Le champ serie est fixé à C, comme pour les autres exercices de cette même épreuve.",
     "Le schéma FACTURE(Num_facture, Description_facture, Montant_facture, Date_emission) n'indique pas explicitement par un soulignement lequel des attributs est l'identifiant dans le texte extrait ; Num_facture, premier attribut cité et de type entier, est retenu comme clé primaire par convention Merise standard.",
-    "La question 3.c demande de supprimer les factures antérieures au 25/01/2015, alors que date_emission est définie comme une chaîne de 10 caractères (et non un type DATE) ; une comparaison directe par < sur une chaîne au format JJ/MM/AAAA ne garantit pas un tri chronologique correct (une date de 2020 peut being lexicographiquement inférieure à une date de 2015 selon les chiffres du jour/mois). Le corrigé fournit la requête attendue au niveau Terminale, tout en signalant cette limite technique en Conseil."
+    "La question 3.c demande de supprimer les factures antérieures au 25/01/2015, alors que date_emission est définie comme une chaîne de 10 caractères (et non un type DATE) ; une comparaison directe par < sur une chaîne au format JJ/MM/AAAA ne garantit pas un tri chronologique correct (une date de 2020 peut being lexicographiquement inférieure à une date de 2015 selon les chiffres du jour/mois). Le corrigé fournit la requête attendue au niveau Terminale, tout en signalant cette limite technique en Conseil.",
+    "rattachement faible pour la sous-question 3.c : suppression d'enregistrements en SQL : rattaché à la création d'une base de données simple",
+    "rattachement faible pour la sous-question 3.d : interrogation SQL (SELECT) : rattaché à la création d'une base de données simple"
   ],
   "statut": "brouillon",
   "nature_epreuve": "theorique"

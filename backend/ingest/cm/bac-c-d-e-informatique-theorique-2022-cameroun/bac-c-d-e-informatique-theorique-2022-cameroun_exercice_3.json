@@ -21,11 +21,21 @@
     "SELECT WHERE",
     "VARCHAR"
   ],
-  "incertitudes": [],
+  "incertitudes": [
+    "rattachement faible pour la sous-question 1 : commandes SQL de définition et de manipulation de données",
+    "rattachement faible pour la sous-question 3 : interprétation d'une requête SELECT",
+    "rattachement faible pour la sous-question 4 : requête SELECT"
+  ],
   "statut": "brouillon",
   "questions": [
     {
       "numero": "1",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "Donner deux commandes SQL de définition de données, et deux commandes SQL de manipulation de données de votre choix. (0,25×4 = 1 pt)",
       "corrige_markdown": "### Rappel de méthode\nLe LDD (Langage de Définition de Données) regroupe les commandes qui créent/modifient/suppriment la structure (CREATE, ALTER, DROP). Le LMD (Langage de Manipulation de Données) regroupe les commandes qui agissent sur le contenu des tables (SELECT, INSERT, UPDATE, DELETE).\n\n### Corrigé\n**Commandes SQL de définition de données (LDD)** : `CREATE TABLE`, `ALTER TABLE` (également valables : `DROP TABLE`, `CREATE DATABASE`).\n\n**Commandes SQL de manipulation de données (LMD)** : `SELECT`, `INSERT INTO` (également valables : `UPDATE`, `DELETE`).\n\n### Piège à éviter\nNe pas classer ALTER TABLE parmi les commandes de manipulation : bien qu'elle porte sur une table déjà créée, elle modifie la **structure** (ajout/suppression de colonne), donc elle appartient au LDD, pas au LMD.",
       "themes": [
@@ -49,6 +59,12 @@
     },
     {
       "numero": "2",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "Écrire une requête SQL permettant d'ajouter la colonne Classe (de taille variable et maximale 12). (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nALTER TABLE table ADD nomColonne type; ajoute une nouvelle colonne à une table déjà existante, sans toucher aux lignes déjà présentes (qui recevront une valeur NULL pour cette colonne).\n\n### Corrigé\n```sql\nALTER TABLE Eleve ADD Classe VARCHAR(12);\n```\n\nVARCHAR(12) désigne une chaîne de caractères de longueur **variable**, avec une taille **maximale** de 12 caractères, conformément à l'énoncé.\n\n### Piège à éviter\nNe pas utiliser CHAR(12) : ce type réserve une longueur **fixe** de 12 caractères (avec complément d'espaces), alors que l'énoncé demande explicitement une taille **variable**.",
       "themes": [
@@ -72,6 +88,12 @@
     },
     {
       "numero": "3",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "Donner sous forme de tableau, le résultat de la requête ci-dessus (SELECT Nom, Prenoms, Sexe FROM Eleve WHERE Sexe <> 'F' AND Age = 18). (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nIl faut examiner chaque ligne de la table et ne conserver que celles qui vérifient **simultanément** les deux conditions (AND), puis n'afficher que les colonnes demandées dans le SELECT.\n\n### Corrigé\nExaminons les 3 lignes :\n- 10Y125 (YANN W / MVONDO, 18, M) : Sexe ≠ 'F' ✓ et Age = 18 ✓ → **retenue**.\n- 09T145 (Ebode / Ernest, 17, M) : Sexe ≠ 'F' ✓ mais Age = 18 ✗ (Age=17) → rejetée.\n- 10C124 (Seke / Danielle, 18, F) : Sexe ≠ 'F' ✗ (Sexe='F') → rejetée.\n\nRésultat :\n\n| Nom    | Prenoms | Sexe |\n|--------|---------|------|\n| YANN W | MVONDO  | M    |\n\n### Piège à éviter\nNe pas afficher les colonnes Matricule ou Age dans le résultat : seules Nom, Prenoms et Sexe figurent dans la clause SELECT.",
       "themes": [
@@ -95,6 +117,12 @@
     },
     {
       "numero": "4",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT001",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "Écrire une requête qui affiche la liste de tous les élèves de sexe féminin, ayant moins de 18 ans. (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nPour combiner deux conditions qui doivent être vraies simultanément, on les relie par l'opérateur AND dans la clause WHERE.\n\n### Corrigé\n```sql\nSELECT * FROM Eleve\nWHERE Sexe = 'F' AND Age < 18;\n```\n\n*(Remarque : sur les trois lignes de la table Eleve, aucune ne vérifie actuellement ces deux conditions à la fois — Seke Danielle est de sexe F mais a 18 ans, pas moins de 18 ans. La requête reste néanmoins correcte et s'appliquerait à toute ligne future vérifiant ces conditions.)*\n\n### Piège à éviter\nNe pas écrire Age <= 18 : l'énoncé demande \"moins de 18 ans\", ce qui correspond strictement à Age < 18 (18 ans exclus).",
       "themes": [

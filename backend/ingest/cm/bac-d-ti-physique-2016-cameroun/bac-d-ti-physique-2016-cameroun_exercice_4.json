@@ -26,6 +26,12 @@
   "questions": [
     {
       "numero": "4.1",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "D",
+        "module_numero": "2",
+        "savoir_numero": "IV"
+      },
       "enonce_markdown": "**Exercice 4 : Exploitation des résultats d'une expérience de physique (4 points)**\n\nSur un rail à coussin d'air disposé horizontalement, un chariot de masse M=785g est entraîné par l'intermédiaire d'une ficelle et d'une poulie par une petite masse m, suspendue verticalement et dont on ne connaît pas la valeur. Le tableau ci-dessous rassemble les positions du centre d'inertie du chariot au cours d'intervalles de temps successifs égaux de valeur τ=20ms.\n\n| t | 0 | τ | 2τ | 3τ | 4τ | 5τ | 6τ | 7τ | 8τ | 9τ |\n|---|---|---|---|---|---|---|---|---|---|---|\n| Points | G0 | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9 |\n| x(t) (cm) | 0 | 6,1 | 12,5 | 19,0 | 25,8 | 32,8 | 40,0 | 47,5 | 55,2 | 63,1 |\n\nOn rappelle que pour le point Gi, la vitesse a pour valeur vi=(x_{i+1}-x_{i-1})/(2τ). On admettra que la ficelle et la poulie du système d'entraînement ont des masses négligeables devant les autres masses du dispositif ; le rail étant à coussin d'air, les frottements sont négligés. On prendra g=10m/s².\n\n1. Compléter le tableau en calculant la valeur de la vitesse du centre d'inertie du chariot.",
       "corrige_markdown": "### Rappel de méthode\nLa vitesse instantanée en un point Gi d'un enregistrement est estimée par la méthode des dérivées centrées : vi=(x_{i+1}-x_{i-1})/(2τ), en utilisant les positions du point précédent et du point suivant. Cette formule ne peut s'appliquer qu'aux points intermédiaires G1 à G8 (elle nécessite un point avant et un point après).\n\n### Corrigé\nEn appliquant $v_i=\\dfrac{x_{i+1}-x_{i-1}}{2\\tau}$ avec τ=0,020s (2τ=0,040s), aux positions converties en mètres :\n\n| i | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |\n|---|---|---|---|---|---|---|---|---|\n| vi (m/s) | 3,125 | 3,225 | 3,325 | 3,450 | 3,550 | 3,675 | 3,800 | 3,900 |\n\nDétail du calcul pour G1 : $v_1=\\dfrac{x_2-x_0}{2\\tau}=\\dfrac{0{,}125-0}{0{,}040}=3{,}125\\,m/s$.\n\n### Piège à éviter\nNe pas essayer de calculer v0 et v9 avec cette formule : il manque respectivement le point précédent G_{-1} et le point suivant G10, ces deux vitesses ne sont accessibles que par extrapolation graphique (question suivante).\n\n### Conseil\nRetiens la méthode des dérivées centrées comme technique standard d'exploitation d'un enregistrement chronophotographique ou d'une table à coussin d'air : elle donne une bien meilleure estimation de la vitesse instantanée que la simple différence avant ou arrière.",
       "themes": [
@@ -56,6 +62,12 @@
     },
     {
       "numero": "4.2",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "D",
+        "module_numero": "2",
+        "savoir_numero": "IV"
+      },
       "enonce_markdown": "2. Construire le graphe de vi=f(t). On prendra pour échelle : 1cm pour 20ms ; 1cm pour 0,5m/s.",
       "corrige_markdown": "### Rappel de méthode\nOn place en abscisse les instants ti=iτ (i=1 à 8) et en ordonnée les vitesses vi calculées à la question précédente, selon les échelles imposées, puis on trace la droite qui ajuste au mieux le nuage de points (les vitesses croissant linéairement, signe d'un mouvement uniformément accéléré).\n\n### Corrigé\nLes points (ti;vi) calculés — (0,02;3,125), (0,04;3,225), (0,06;3,325), (0,08;3,450), (0,10;3,550), (0,12;3,675), (0,14;3,800), (0,16;3,900) — s'alignent sur une droite croissante, confirmant un mouvement uniformément accéléré (accélération constante). On trace cette droite (voir figure).\n\n### Piège à éviter\nNe pas relier les points par une ligne brisée : les mesures étant entachées d'incertitudes expérimentales, on doit tracer la droite moyenne qui ajuste au mieux l'ensemble des points, pas les relier point à point.\n\n### Conseil\nRetiens que la construction d'un graphe v=f(t) linéaire, avec extrapolation possible jusqu'à t=0, est l'outil clé pour déterminer à la fois la vitesse initiale v0 (ordonnée à l'origine) et l'accélération a (pente de la droite) d'un mouvement uniformément accéléré.",
       "themes": [
@@ -85,6 +97,12 @@
     },
     {
       "numero": "4.3",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "D",
+        "module_numero": "2",
+        "savoir_numero": "IV"
+      },
       "enonce_markdown": "3. À l'aide du graphe obtenu, déterminer la valeur de la vitesse initiale v0 ainsi que celle de l'accélération a du mouvement du centre d'inertie du mobile.",
       "corrige_markdown": "### Rappel de méthode\nSur le graphe v=f(t), la vitesse initiale v0 est l'ordonnée à l'origine (valeur de v extrapolée à t=0), et l'accélération a est la pente de la droite (coefficient directeur), calculable par régression linéaire sur les points expérimentaux.\n\n### Corrigé\nLa régression linéaire sur les 8 points (ti;vi) donne une droite d'équation v(t)=a·t+v0, avec :\n\n$$a \\approx 5{,}625\\,m/s^2 \\qquad v_0 \\approx 3{,}00\\,m/s$$\n\n**Vérification de cohérence** : en réintégrant x(t)=v0t+½at² avec ces valeurs, on retrouve exactement x(9τ)=3,00×0,18+0,5×5,625×0,18²≈0,6311m=63,1cm, identique à la valeur x9 du tableau, ce qui confirme la précision de la lecture graphique.\n\n### Piège à éviter\nNe pas confondre v0 (vitesse du chariot à l'instant initial t=0, avant même le début effectif de l'enregistrement en G0) avec la vitesse au point G0 lui-même : ici les deux coïncident car t=0 correspond précisément à G0.\n\n### Conseil\nRetiens que la vérification de cohérence — réintégrer les valeurs a et v0 lues graphiquement dans l'équation horaire x(t), et comparer au tableau de mesures fourni — est une excellente méthode pour valider la qualité d'une lecture graphique en travaux pratiques.",
       "themes": [

@@ -14,6 +14,12 @@
   "questions": [
     {
       "numero": "1",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "C-E",
+        "module_numero": "25",
+        "savoir_numero": "I"
+      },
       "enonce_markdown": "1. Démontrer que le reste de la division de $N$ par $100$ est l'entier $r$ dont l'écriture en base $10$ est $r=\\overline{a_1a_0}$.",
       "corrige_markdown": "### Rappel de methode\nUn entier N s'écrit en base 10 comme N = a_n...a_1a_0 = 100*Q + (10a_1+a_0), où Q = a_n...a_2 est l'entier formé par les chiffres restants ; comme 0 <= 10a_1+a_0 <= 99 < 100, ce nombre est exactement le reste de la division euclidienne de N par 100.\n\n### Corrige\nÉcrivons $N=a_na_{n-1}\\cdots a_1a_0$ en base $10$ :\n$$N=\\sum_{k=0}^na_k10^k=a_0+10a_1+100\\sum_{k=2}^na_k10^{k-2}=(10a_1+a_0)+100\\underbrace{\\left(\\sum_{k=2}^na_k10^{k-2}\\right)}_{Q\\in\\mathbb N}$$\n\nPosons $r=10a_1+a_0$. Comme $0\\leq a_0\\leq9$ et $0\\leq a_1\\leq9$, on a $0\\leq r\\leq10\\times9+9=99<100$.\n\nOn a donc $N=100Q+r$ avec $0\\leq r<100$ : par unicité de la division euclidienne, **$r$ est exactement le reste de la division de $N$ par $100$, et $r=\\overline{a_1a_0}$ (le nombre formé par les deux derniers chiffres de $N$).**",
       "themes": [
@@ -36,6 +42,12 @@
     },
     {
       "numero": "2",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "C-E",
+        "module_numero": "25",
+        "savoir_numero": "I"
+      },
       "enonce_markdown": "2. Application : Démontrer que le chiffre des unités et le chiffre des dizaines du nombre $N=7^{7^7}$ sont respectivement $3$ et $4$.",
       "corrige_markdown": "### Rappel de methode\nD'après la question 1, les deux derniers chiffres d'un entier N sont exactement N mod 100 ; on calcule donc N mod 100 en réduisant l'exposant grâce au théorème d'Euler (l'ordre multiplicatif de la base modulo 100).\n\n### Corrige\nOn cherche les deux derniers chiffres de $N=7^{7^7}$ *(remarque : la base est $7$, non $77$ ; la question s'appuie sur le résultat de la question 1 appliqué à $N\\ \\mathrm{mod}\\ 100$)*, c'est-à-dire $N\\bmod100$.\n\n**Ordre de $7$ modulo $100$.** Calculons les puissances successives de $7$ modulo $100$ :\n$$7^1\\equiv7,\\quad7^2\\equiv49,\\quad7^3\\equiv343\\equiv43,\\quad7^4\\equiv7\\times43=301\\equiv1\\ [100]$$\n\nL'ordre de $7$ modulo $100$ est donc $4$ : $7^{4k}\\equiv1\\ [100]$ pour tout entier $k$.\n\n**Réduction de l'exposant $7^7$ modulo $4$.** $7\\equiv-1\\ [4]$, donc $7^7\\equiv(-1)^7\\equiv-1\\equiv3\\ [4]$.\n\n**Conclusion.** $N=7^{7^7}\\equiv7^{7^7\\bmod4}\\equiv7^3\\equiv43\\ [100]$ (en utilisant que $7^{7^7}=7^{4q+3}=(7^4)^q\\times7^3\\equiv1^q\\times43\\equiv43\\ [100]$).\n\nD'après la question 1, les deux derniers chiffres de $N$ sont donc ceux de $43$ : **le chiffre des dizaines est $4$ et le chiffre des unités est $3$.**",
       "themes": [

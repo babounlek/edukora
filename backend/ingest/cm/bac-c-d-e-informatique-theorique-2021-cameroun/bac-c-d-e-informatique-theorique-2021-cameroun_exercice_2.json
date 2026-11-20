@@ -16,6 +16,7 @@
   "questions": [
     {
       "numero": "1",
+      "savoir_officiel": null,
       "enonce_markdown": "1. Définir : propriété. (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nPour définir un terme, on le rattache à la catégorie à laquelle il appartient, puis on précise sa caractéristique propre.\n\nUne propriété (ou attribut) est une caractéristique élémentaire qui décrit une entité ou une association dans un modèle conceptuel de données ; elle prend une valeur pour chaque occurrence de l'entité ou de l'association.\n\n### Corrigé\nUne **propriété** est une donnée élémentaire qui caractérise une entité ou une association d'un modèle conceptuel de données (par exemple, le nom ou l'adresse d'un client), et qui prend une valeur précise pour chaque occurrence de cette entité ou association.",
       "themes": [
@@ -39,6 +40,7 @@
     },
     {
       "numero": "2.a",
+      "savoir_officiel": null,
       "enonce_markdown": "2. Construire le MCD correspondant à cette description en faisant ressortir :\n\na. Les entités du système et pour chaque entité, ses attributs et son identifiant ; (0,5pt)",
       "corrige_markdown": "### Rappel de méthode\nUne entité regroupe les objets de même nature que le système doit mémoriser ; ses attributs sont ses caractéristiques, et l'identifiant est l'attribut (souligné) qui distingue chaque occurrence sans ambiguïté.\n\n### Corrigé\nDeux entités se dégagent des règles de gestion : le Client et la Voiture, chacune avec les attributs qui la caractérisent.\n\n**Client** (**numCNI**, nom, prenom, adresse) - identifiant : numCNI\n\n**Voiture** (**numImmatriculation**, marque, puissance, type) - identifiant : numImmatriculation",
       "themes": [
@@ -62,6 +64,7 @@
     },
     {
       "numero": "2.b",
+      "savoir_officiel": null,
       "enonce_markdown": "b. Les associations, leurs propriétés éventuelles et leurs entités participantes ; (1pt)",
       "corrige_markdown": "### Rappel de méthode\nUne association relie deux entités qui interagissent selon une règle de gestion ; si un fait ne dépend ni de l'une ni de l'autre entité seule, mais de leur mise en relation (ici, une location précise), il devient une propriété portée par l'association elle-même, pas par une entité.\n\n### Corrigé\nLa règle de gestion « les clients louent des voitures » définit une association entre Client et Voiture, qu'on peut nommer **Louer**.\n\nLa date de début et la date de retour sont enregistrées \"lors d'une location\" : elles ne caractérisent ni le client seul, ni la voiture seule (un même client et une même voiture peuvent être associés à plusieurs locations différentes, à des dates différentes) - ce sont donc des propriétés de l'association Louer elle-même, pas des entités Client ou Voiture.\n\n**Association Louer**, entre Client et Voiture, propriétés : dateDebut, dateRetour.\n\n### Piège à éviter\nNe place jamais dateDebut et dateRetour comme attributs de l'entité Voiture ou Client : une voiture peut être louée plusieurs fois, à des dates différentes, donc ces dates ne peuvent pas être des attributs fixes d'une seule occurrence de Voiture.",
       "themes": [
@@ -85,6 +88,7 @@
     },
     {
       "numero": "2.c",
+      "savoir_officiel": null,
       "enonce_markdown": "c. Les différentes cardinalités. (1pt)",
       "corrige_markdown": "### Rappel de méthode\nLa cardinalité, notée (min,max) près de chaque entité, traduit dans le formalisme MCD une règle de gestion énoncée en langage naturel : le minimum indique si la participation est obligatoire (1) ou facultative (0), le maximum indique si l'entité peut participer une seule fois (1) ou plusieurs fois (n) à l'association.\n\n### Corrigé\n« Un client peut louer une ou plusieurs voitures » : côté Voiture (cardinalité lue près de l'entité Client), un client est associé à 1 ou plusieurs voitures → **(1,n)**.\n\n« Une voiture peut être louée par plusieurs clients » : côté Client (cardinalité lue près de l'entité Voiture), une voiture est associée à 1 ou plusieurs clients → **(1,n)**.\n\nSchéma MCD complet :\n\n```\nClient (numCNI, nom, prenom, adresse)\n         (1,n)\n           |\n         Louer  — propriétés : dateDebut, dateRetour\n           |\n         (1,n)\nVoiture (numImmatriculation, marque, puissance, type)\n```\n\nLes deux cardinalités maximales valent n : l'association Louer est de type **N,N** (plusieurs-à-plusieurs).\n\n### Conseil\nUne association N,N (comme ici) devra donner lieu, lors du passage au MLD, à une table intermédiaire portant les deux clés étrangères (numCNI, numImmatriculation) et les propriétés de l'association (dateDebut, dateRetour) - contrairement à une association 1,N où la clé migre simplement dans une des deux tables existantes.",
       "themes": [
@@ -118,7 +122,11 @@
   ],
   "incertitudes": [
     "Le champ serie est fixé à C, comme pour l'exercice 1 de cette même épreuve.",
-    "Les cardinalités de l'association Louer (client-voiture) ne sont pas données explicitement en chiffres par l'énoncé, seulement décrites en langage naturel (« un client peut louer une ou plusieurs voitures », « une voiture peut être louée par plusieurs clients ») ; le corrigé retient (1,n) des deux côtés, lecture la plus directe du texte. Une lecture (0,n) resterait également défensible si l'on considère qu'un client ou une voiture peuvent exister dans le système sans avoir encore été associés à une location - à confirmer avec le barème officiel avant publication."
+    "Les cardinalités de l'association Louer (client-voiture) ne sont pas données explicitement en chiffres par l'énoncé, seulement décrites en langage naturel (« un client peut louer une ou plusieurs voitures », « une voiture peut être louée par plusieurs clients ») ; le corrigé retient (1,n) des deux côtés, lecture la plus directe du texte. Une lecture (0,n) resterait également défensible si l'on considère qu'un client ou une voiture peuvent exister dans le système sans avoir encore été associés à une location - à confirmer avec le barème officiel avant publication.",
+    "savoir_officiel laissé à null pour la sous-question 1 : systèmes d'information, modélisation Merise (MCD, MLD) : aucun savoir des modules Informatique Tle ne la recouvre",
+    "savoir_officiel laissé à null pour la sous-question 2.a : systèmes d'information, modélisation Merise (MCD, MLD) : aucun savoir des modules Informatique Tle ne la recouvre",
+    "savoir_officiel laissé à null pour la sous-question 2.b : systèmes d'information, modélisation Merise (MCD, MLD) : aucun savoir des modules Informatique Tle ne la recouvre",
+    "savoir_officiel laissé à null pour la sous-question 2.c : systèmes d'information, modélisation Merise (MCD, MLD) : aucun savoir des modules Informatique Tle ne la recouvre"
   ],
   "statut": "brouillon",
   "nature_epreuve": "theorique"

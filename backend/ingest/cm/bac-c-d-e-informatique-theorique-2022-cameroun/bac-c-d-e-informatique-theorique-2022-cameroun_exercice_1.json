@@ -38,11 +38,19 @@
     "carte mère",
     "SOMME.SI"
   ],
-  "incertitudes": [],
+  "incertitudes": [
+    "savoir_officiel laissé à null pour la sous-question 1.a : maintenance, protection électrique, sécurité informatique : aucun savoir des modules Informatique Tle ne les recouvre",
+    "savoir_officiel laissé à null pour la sous-question 1.b : maintenance, protection électrique, sécurité informatique : aucun savoir des modules Informatique Tle ne les recouvre",
+    "savoir_officiel laissé à null pour la sous-question 1.c : maintenance, protection électrique, sécurité informatique : aucun savoir des modules Informatique Tle ne les recouvre",
+    "rattachement faible pour la sous-question 2.d : commande ping de vérification de la communication avec le serveur",
+    "savoir_officiel laissé à null pour la sous-question 3 : matériel informatique (carte mère, périphériques) : aucun savoir des modules Informatique Tle ne le recouvre",
+    "savoir_officiel laissé à null pour la sous-question 4 : bureautique (tableur, logiciels d'application, navigateur) : aucun savoir des modules Informatique Tle ne la recouvre"
+  ],
   "statut": "brouillon",
   "questions": [
     {
       "numero": "1.a",
+      "savoir_officiel": null,
       "enonce_markdown": "On voudrait protéger un système informatique :\n\na. Définir : **Système informatique**, **maintenance préventive**. (0,5×2 = 1 pt)",
       "corrige_markdown": "### Rappel de méthode\nUn système informatique est l'ensemble organisé permettant de traiter l'information (matériel, logiciel, données, personnel). La maintenance préventive intervient avant la panne, à la différence de la maintenance corrective qui intervient après.\n\n### Corrigé\n**Système informatique** : ensemble organisé de ressources (matériels, logiciels, données et personnes) permettant d'acquérir, de stocker, de traiter et de diffuser de l'information.\n\n**Maintenance préventive** : ensemble des opérations d'entretien effectuées régulièrement sur un système informatique, avant l'apparition d'une panne, dans le but de prévenir les défaillances et de maintenir le système en bon état de fonctionnement.\n\n### Conseil\nPense toujours à situer la maintenance préventive par rapport à la maintenance corrective (qui, elle, intervient après la panne) : cela montre que tu maîtrises la distinction complète.",
       "themes": [
@@ -72,6 +80,7 @@
     },
     {
       "numero": "1.b",
+      "savoir_officiel": null,
       "enonce_markdown": "b. Nommer un matériel permettant de protéger un système informatique contre les variations électriques. (0,5 pt)",
       "corrige_markdown": "### Rappel de méthode\nLe régulateur de tension stabilise la tension électrique délivrée aux équipements, en la maintenant à une valeur constante malgré les variations du secteur.\n\n### Corrigé\nLe **régulateur de tension** (ou stabilisateur de tension).\n\n### Piège à éviter\nNe pas répondre \"onduleur\" : l'onduleur protège contre les **coupures** de courant (grâce à sa batterie), pas contre les simples **variations** de tension. Ce sont deux rôles distincts.",
       "themes": [
@@ -93,6 +102,7 @@
     },
     {
       "numero": "1.c",
+      "savoir_officiel": null,
       "enonce_markdown": "c. Nommer le logiciel permettant de protéger un système informatique contre les attaques du cheval de Troie. (0,5 pt)",
       "corrige_markdown": "### Rappel de méthode\nUn antivirus est un logiciel de sécurité qui détecte, bloque et supprime les logiciels malveillants (virus, chevaux de Troie, vers) présents sur un système informatique.\n\n### Corrigé\nUn **antivirus** (exemples : Avast, Kaspersky, Windows Defender, ESET...).\n\n### Piège à éviter\nNe pas confondre avec un pare-feu (firewall), qui filtre le trafic réseau entrant/sortant mais ne détecte pas spécifiquement les programmes malveillants déjà présents sur la machine.",
       "themes": [
@@ -115,6 +125,12 @@
     },
     {
       "numero": "2.a",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT002",
+        "savoir_numero": "I"
+      },
       "enonce_markdown": "On considère le réseau LAN illustré par la figure ci-dessous (voir figure). Observez attentivement cette figure et répondez aux questions suivantes :\n\na. Nommer les équipements E1 et E2. (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nE1 est le point central auquel sont reliés individuellement les 5 postes (Sec1 à Sec5) et le serveur : c'est la signature d'un switch. E2 se situe entre le réseau local et \"internet\" : c'est l'équipement qui donne l'accès à l'extérieur, le modem (ou modem-routeur).\n\n### Corrigé\n**E1** est un **switch** (commutateur) : il interconnecte les postes Sec1 à Sec5 ainsi que le serveur au sein du réseau local.\n\n**E2** est un **modem** (ou modem-routeur) : il relie le réseau local à Internet.\n\n### Piège à éviter\nNe pas inverser les deux rôles : le switch relie les équipements **entre eux** à l'intérieur du réseau local, le modem relie le réseau local **vers l'extérieur** (Internet).",
       "themes": [
@@ -145,6 +161,12 @@
     },
     {
       "numero": "2.b",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT002",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "b. Déterminer l'adresse IP de ce réseau. (0,75 pt)",
       "corrige_markdown": "### Rappel de méthode\nL'adresse réseau (network ID) s'obtient en mettant à 0 toute la partie hôte de l'adresse IP donnée, selon le masque de sous-réseau. En notation CIDR /24, les 24 premiers bits (les 3 premiers octets) désignent le réseau, le dernier octet désigne l'hôte.\n\n### Corrigé\nL'adresse 192.168.10.102/24 a un masque /24, soit 255.255.255.0 : les 3 premiers octets (192.168.10) désignent le réseau, le dernier octet est réservé à la partie hôte.\n\nL'adresse de ce réseau est donc : **192.168.10.0/24** (masque 255.255.255.0).\n\n### Piège à éviter\nNe pas confondre l'adresse réseau (192.168.10.0, hôte à 0) avec l'adresse de diffusion/broadcast (192.168.10.255, hôte à 255) : ce sont les deux adresses particulières, non attribuables à un poste, aux extrémités du sous-réseau.",
       "themes": [
@@ -168,6 +190,12 @@
     },
     {
       "numero": "2.c",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT002",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "c. Proposer une adresse IP valide pour la configuration de l'ordinateur Sec1. (0,5 pt)",
       "corrige_markdown": "### Rappel de méthode\nUne adresse IP hôte valide dans un sous-réseau /24 doit appartenir au même réseau (192.168.10.x), être différente de l'adresse réseau (.0), de l'adresse de diffusion (.255) et de toute adresse déjà attribuée (ici .102, déjà utilisée).\n\n### Corrigé\nUne adresse valide pour Sec1 : **192.168.10.10/24** (toute adresse comprise entre 192.168.10.1 et 192.168.10.254, différente de 192.168.10.102, convient).\n\n### Piège à éviter\nNe pas proposer 192.168.10.102 : cette adresse est déjà attribuée (probablement au serveur ou au routeur), l'attribuer à Sec1 créerait un conflit d'adresse IP sur le réseau.",
       "themes": [
@@ -190,6 +218,12 @@
     },
     {
       "numero": "2.d",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "Tronc commun",
+        "module_numero": "TCMT002",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "d. Indiquer la commande complète à saisir sur la machine Sec1 pour vérifier sa communication avec le serveur. (0,75 pt)",
       "corrige_markdown": "### Rappel de méthode\nLa commande ping envoie des paquets de test vers une adresse IP donnée et affiche si une réponse est reçue, ce qui permet de vérifier la connectivité réseau entre deux machines.\n\n### Corrigé\n`ping 192.168.10.102`\n\nCette commande, saisie dans l'invite de commandes de Sec1, envoie des requêtes vers l'adresse IP du serveur (192.168.10.102) et affiche les réponses reçues, confirmant ainsi que la communication réseau fonctionne.\n\n### Piège à éviter\nNe pas oublier l'adresse IP cible dans la commande : \"ping\" seul, sans destination, n'est pas une commande valide/complète.",
       "themes": [
@@ -212,6 +246,7 @@
     },
     {
       "numero": "3",
+      "savoir_officiel": null,
       "enonce_markdown": "Lister deux caractéristiques d'une carte mère. (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nLa carte mère se caractérise notamment par son format (facteur d'encombrement), le socket qu'elle propose pour le processeur, le chipset qui l'équipe, et le nombre/type de ses emplacements d'extension et de connecteurs.\n\n### Corrigé\nDeux caractéristiques d'une carte mère :\n1. Son **format** (facteur d'encombrement) : ATX, Micro-ATX, Mini-ITX...\n2. Le **type de socket** (support) qu'elle propose, qui détermine les processeurs compatibles.\n\n(Également valables : le chipset, le nombre de slots RAM, le nombre et le type de connecteurs d'extension (PCIe), le type de BIOS/UEFI.)",
       "themes": [
@@ -234,6 +269,7 @@
     },
     {
       "numero": "4",
+      "savoir_officiel": null,
       "enonce_markdown": "Expliquer en trois lignes maximum ce que fait la formule `=SOMME.SI(A1:A3, \"<17\")` lorsqu'elle est saisie dans la cellule B1 d'une feuille de calcul. (1 pt)",
       "corrige_markdown": "### Rappel de méthode\nSOMME.SI(plage, critère) additionne uniquement les valeurs de la plage qui vérifient le critère indiqué, et ignore toutes les autres.\n\n### Corrigé\nCette formule additionne uniquement les valeurs des cellules A1, A2 et A3 qui sont **strictement inférieures à 17**, et affiche le résultat de cette somme dans la cellule B1. Les valeurs de A1:A3 supérieures ou égales à 17 sont ignorées dans le calcul.\n\n### Piège à éviter\nNe pas dire que la formule additionne toutes les valeurs de A1:A3 : seul le sous-ensemble vérifiant \"< 17\" est pris en compte.",
       "themes": [

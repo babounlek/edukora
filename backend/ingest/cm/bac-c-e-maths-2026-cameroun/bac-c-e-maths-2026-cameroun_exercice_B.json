@@ -14,6 +14,12 @@
   "questions": [
     {
       "numero": "B1",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "C-E",
+        "module_numero": "26",
+        "savoir_numero": "II"
+      },
       "enonce_markdown": "1) Déterminer le nombre de commerciaux femmes recrutés dans cette PME. (2,25 pts)",
       "corrige_markdown": "### Rappel de methode\\nEn notant E,M,D les ensembles des commerciaux parlant chaque langue, l'union |E u M u D| se calcule par inclusion-exclusion avec l'intersection triple t comme inconnue ; la contrainte que chaque effectif partiel (uniquement E, uniquement D, etc.) soit positif ou nul, combinee a la contrainte que le total (=2*nb_femmes, hommes=femmes) soit un nombre pair, determine une valeur unique de t dans l'intervalle admissible.\\n\\n### Corrige\\nNotons $t=|E\\\\cap M\\\\cap D|$ (commerciaux parlant les 3 langues).\\n\\n$$|E\\\\cup M\\\\cup D|=15+20+10-8-9-7+t=21+t$$\\n\\nLes effectifs \"exclusifs\" doivent rester positifs : uniquement $D$ $=10-9-7+t=t-6\\\\geqslant0\\\\Rightarrow t\\\\geqslant6$ ; et $t\\\\leqslant\\\\min(8,9,7)=7$. Donc $t\\\\in\\\\{6,7\\\\}$.\\n\\nOr le nombre total de commerciaux est pair (autant d'hommes que de femmes) : pour $t=6$, total$=27$ (impair, exclu) ; pour $t=7$, total$=28$ (pair, valide).\\n\\n**$t=7$, total $=28$ commerciaux, donc $\\\\dfrac{28}2=\\\\mathbf{14}$ commerciaux femmes** *(vérifié par recherche exhaustive informatique sur $t$)*.\\n\\n### Piège à éviter\\nL'énoncé ne donne pas directement l'effectif de l'intersection triple ; c'est la contrainte de parité (hommes=femmes) qui permet de trancher entre les deux seules valeurs de $t$ rendant tous les effectifs partiels positifs.",
       "themes": [
@@ -35,6 +41,12 @@
     },
     {
       "numero": "B2",
+      "savoir_officiel": {
+        "classe": "Tle",
+        "serie_label": "C-E",
+        "module_numero": "25",
+        "savoir_numero": "VII"
+      },
       "enonce_markdown": "2) Déterminer le taux maximal de cette hormone contenue dans l'organisme humain. (2,25 pts)",
       "corrige_markdown": "### Rappel de methode\\nphi'(t)=e^(-3t/5)(5-3t) s'annule en t=5/3, positif avant, negatif apres : maximum global en t=5/3, valeur phi(5/3)=25/(3e)+1.\\n\\n### Corrige\\n$\\\\varphi'(t)=5e^{-\\\\frac35t}+5t\\\\times\\\\left(-\\\\dfrac35\\\\right)e^{-\\\\frac35t}=e^{-\\\\frac35t}(5-3t)$.\\n\\n$\\\\varphi'(t)=0\\\\Leftrightarrow t=\\\\dfrac53$ ; $\\\\varphi'>0$ avant, $\\\\varphi'<0$ après : maximum en $t=\\\\dfrac53$.\\n\\n$$\\\\varphi\\\\left(\\\\dfrac53\\\\right)=5\\\\times\\\\dfrac53\\\\times e^{-1}+1=\\\\dfrac{25}{3e}+1\\\\approx4{,}07$$\\n\\n**Taux maximal $\\\\approx4{,}07\\\\ \\\\mu g/ml$, atteint à $t=\\\\dfrac53$ min** *(vérifié par calcul formel)*.",
       "themes": [
@@ -57,6 +69,7 @@
     },
     {
       "numero": "B3",
+      "savoir_officiel": null,
       "enonce_markdown": "3) Évaluer la production minimale de cette matière première sur le terrain acheté. (2,25 pts)",
       "corrige_markdown": "### Rappel de methode\\nLe triangle rectangle a pour cotes de l'angle droit x et 6, et hypotenuse y (cote le plus long) ; y^2-x^2=36 se factorise en (y-x)(y+x)=36, dont la seule solution entiere non degeneree avec y+x et y-x de meme parite est x=8,y=10 (triplet 6-8-10) ; l'aire du triangle est alors (1/2)*x*6=24 hectares, et la production minimale est 7,5*24.\\n\\n### Corrige\\nTriangle rectangle de côtés de l'angle droit $x$ et $6$, hypoténuse $y$ : $y^2=x^2+6^2\\\\Rightarrow y^2-x^2=36\\\\Rightarrow(y-x)(y+x)=36$.\\n\\n$y-x$ et $y+x$ ont même parité et leur produit $36$ est pair, donc tous deux pairs. En testant les couples $(y-x,y+x)=(2p,2q)$ avec $pq=9$ : seul $(p,q)=(1,9)$ donne une solution non dégénérée : $y-x=2,\\\\ y+x=18\\\\Rightarrow\\\\mathbf{x=8,\\\\ y=10}$ (triplet pythagoricien $6$-$8$-$10$) *(vérifié par recherche exhaustive informatique)*.\\n\\nAire du terrain $=\\\\dfrac12\\\\times x\\\\times6=\\\\dfrac12\\\\times8\\\\times6=24$ hm$^2=24$ hectares ($1$ hm$^2=1$ hectare).\\n\\n**Production minimale $=7{,}5\\\\times24=\\\\mathbf{180}$ tonnes.**",
       "themes": [
@@ -90,7 +103,9 @@
       "type": "barème - ligne non rattachée à une question",
       "description": "Le barème officiel de la Partie B attribue 2,25 pts à chacune des 3 tâches (total 6,75) plus 0,25 pt à une ligne 'Présentation' non rattachée à une question précise (soin de la copie, redaction). Pour respecter le total officiel de 7 points, ces 0,25 pt sont inclus dans le 'points' de cet exercice (7 au total) sans etre associes a une question specifique."
     }
-  ],
+  ,
+    {"type":"rattachement savoir_officiel","description":"rattachement faible pour la sous-question B2 : optimisation d'une fonction faisant intervenir l'exponentielle (modélisation)"},
+    {"type":"rattachement savoir_officiel","description":"savoir_officiel laissé à null pour la sous-question B3 : situation de modélisation géométrique (triplet pythagoricien, aire) : aucun savoir unique du module ne la recouvre nettement"}],
   "figures": [],
   "statut": "brouillon"
 }
