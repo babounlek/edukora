@@ -46,6 +46,12 @@ XP_COURS_SECTION = 2
 XP_EXERCICE = 5
 XP_COURS_LU = 3  # un cours lu jusqu'au bout (voir access.views.cours_lu) : le geste de lire, un peu moins que celui de comprendre
 PLAFOND_ACTIVITE_JOUR = 15
+# Une carte de révision revue À SON ÉCHÉANCE (nouvelle, ou due : voir quiz.cartes.est_attendue) : le geste de revenir, que
+# l'élève ait su ou non - récompenser « Je savais » seul pousserait à le toucher sans réfléchir. Auto-déclaré comme les deux
+# gains ci-dessus, donc petit et dans le MÊME plafond du jour : un paquet de vingt cartes ne fait pas l'objectif à lui seul.
+# Une fois par carte et par jour ; une revue anticipée ne rapporte rien (elle ne change pas non plus l'échéance).
+XP_CARTE = 1
+SOURCES_ACTIVITE = (SourceXP.COURS, SourceXP.EXERCICE, SourceXP.CARTE)
 # Un examen blanc passé en conditions réelles (chrono ou papier) puis rendu : le plus exigeant des efforts, jusqu'ici le seul
 # qui ne rapportait rien. Vaut l'objectif par défaut : le jour compte pour la série (voir quiz.serie). Une fois par jour,
 # jamais pour un entraînement libre ni une copie rendue vide ; hors plafond d'activité, qui ne vise que les cases cochées.
@@ -142,7 +148,7 @@ def crediter_seance(seance):
 
 def crediter_activite(profil, source, reference, points):
     """
-    Crédite une activité hors quiz (SourceXP.COURS ou EXERCICE) : None si cet objet a déjà rapporté, si le plafond du jour
+    Crédite une activité hors quiz (SOURCES_ACTIVITE : cours, exercice, carte) : None si cet objet a déjà rapporté, si le plafond du jour
     est atteint ou si une contrainte d'unicité dit que le gain existe. Le plafond ne rogne qu'à son bord : à 3 points de
     marge, un gain de 5 rapporte 3.
     """
@@ -150,13 +156,23 @@ def crediter_activite(profil, source, reference, points):
         return None
     jour = timezone.localdate()
     deja = (
-        GainXP.objects.filter(profil=profil, jour=jour, source__in=(SourceXP.COURS, SourceXP.EXERCICE))
+        GainXP.objects.filter(profil=profil, jour=jour, source__in=SOURCES_ACTIVITE)
         .aggregate(total=Sum("points"))["total"] or 0
     )
     points = min(points, PLAFOND_ACTIVITE_JOUR - deja)
     if points <= 0:
         return None
     return _crediter(profil, jour, source, points, reference=reference)
+
+
+def crediter_carte(profil, cours_id, cle):
+    """
+    Crédite la revue d'une carte de révision. L'appelant garantit que la carte était attendue (voir quiz.cartes.est_attendue).
+    Le jour est dans la référence : la même carte rapporte de nouveau à sa prochaine échéance, jamais deux fois le même jour
+    (ratée puis revue dans la foulée). None si elle a déjà rapporté aujourd'hui ou si le plafond d'activité est atteint.
+    """
+    jour = timezone.localdate()
+    return crediter_activite(profil, SourceXP.CARTE, f"carte:{cours_id}:{cle}:{jour.isoformat()}", XP_CARTE)
 
 
 def crediter_simulation(profil, simulation_id):

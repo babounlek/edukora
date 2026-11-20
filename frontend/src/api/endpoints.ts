@@ -1284,9 +1284,12 @@ export function getCartesDues(signal?: AbortSignal) {
   return apiRequest<{ total: number; cartes: CarteRevision[] }>("/quiz/cartes/dues/", { signal })
 }
 
-/** Note une revue de carte : sue (revient plus tard) ou à revoir (revient demain). */
+/**
+ * Note une revue de carte : sue (revient plus tard) ou à revoir (revient demain). `xp_gagne` : 1 quand la carte était à
+ * revoir (nouvelle ou à son échéance) et que le plafond du jour n'est pas atteint, 0 sinon ; `xp_jour` seulement s'il y a gain.
+ */
 export function noterCarte(slug: string, cle: string, savais: boolean) {
-  return apiRequest<{ cle: string; palier: number; due_at: string }>(`/quiz/cartes/cours/${slug}/${cle}/`, {
+  return apiRequest<{ cle: string; palier: number; due_at: string; xp_gagne?: number; xp_jour?: EtatXp }>(`/quiz/cartes/cours/${slug}/${cle}/`, {
     method: "POST", body: { savais },
   })
 }

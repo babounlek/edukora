@@ -16,6 +16,7 @@ vi.mock("@/components/BoutonPartager", () => ({ BoutonPartager: () => null }))
 vi.mock("@/components/ObjectifXp", () => ({ ObjectifXp: () => null }))
 vi.mock("@/components/QuizFichePdfButtons", () => ({ QuizFichePdfButtons: () => null }))
 
+import { jouerRetour } from "@/lib/retours"
 import { QuizSessionPage } from "./QuizSessionPage"
 
 const CLE_ESSAI = "edukora:quiz-essai"
@@ -157,5 +158,49 @@ describe("QuizSessionPage : la correction d'un QCM", () => {
 
     const resume = await screen.findByText("Comprendre la correction")
     expect(resume.closest("details")).not.toHaveAttribute("open")
+  })
+})
+
+describe("QuizSessionPage : la série de bonnes réponses s'entend", () => {
+  const qcm = (id: number, repondue: boolean) =>
+    question(id, {
+      type_reponse: "QCM",
+      choix: [{ lettre: "a", texte: "Choix A" }, { lettre: "b", texte: "Choix B" }],
+      ...(repondue
+        ? { reponse_correcte: "b", reponse: { reponse_choisie: "b", resultat_declare: "", est_correcte: true, xp_gagne: 0 } }
+        : {}),
+    })
+
+  beforeEach(() => {
+    sessionStorage.clear()
+    Element.prototype.scrollIntoView = vi.fn()
+    vi.mocked(jouerRetour).mockClear()
+    answerQuizEssai.mockReset()
+    answerQuizEssai.mockImplementation((_cursus: number, id: number) => Promise.resolve(qcm(id, true)))
+  })
+  afterEach(() => sessionStorage.clear())
+
+  async function repondreALaDerniere(dejaJustes: number) {
+    const questions = Array.from({ length: dejaJustes }, (_, i) => qcm(i + 1, true))
+    poserEssai([...questions, qcm(dejaJustes + 1, false)])
+    afficher()
+    await screen.findByText(`Énoncé ${dejaJustes + 1}`)
+    fireEvent.click(screen.getByRole("button", { name: /Choix B/ }))
+    await waitFor(() => expect(jouerRetour).toHaveBeenCalled())
+  }
+
+  it("la troisième bonne réponse d'affilée sonne plus haut que la première", async () => {
+    await repondreALaDerniere(2)
+
+    expect(jouerRetour).toHaveBeenCalledWith("juste", { serie: 3 })
+    expect(screen.getByText("3 bonnes réponses d'affilée, tu es en feu.")).toBeInTheDocument()
+  })
+
+  it("la cinquième est un palier : son à part et phrase à elle", async () => {
+    await repondreALaDerniere(4)
+
+    expect(jouerRetour).toHaveBeenCalledWith("palier")
+    expect(screen.getByText("5 d'affilée ! Rien ne t'arrête.")).toBeInTheDocument()
+    expect(screen.queryByText(/tu es en feu/)).not.toBeInTheDocument()
   })
 })

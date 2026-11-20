@@ -103,3 +103,51 @@ describe("LigneCartes", () => {
     await waitFor(() => expect(noterCarte).toHaveBeenCalledWith("derivees", "regle", false))
   })
 })
+
+describe("CartesDuCours : les points des cartes", () => {
+  beforeEach(() => {
+    getCartesCours.mockReset()
+    noterCarte.mockReset()
+    getCartesCours.mockResolvedValue({
+      cours: { slug: "c", titre: "C" },
+      cartes: [carte(), carte({ cle: "erreur-0", type: "erreur", recto: "Piège", verso: "Faux" }), carte({ cle: "erreur-1", type: "erreur", recto: "Autre piège", verso: "Faux aussi" })],
+    })
+  })
+
+  async function revoir(bouton: "Je savais" | "À revoir") {
+    fireEvent.click(await screen.findByRole("button", { name: "Voir la réponse" }))
+    fireEvent.click(screen.getByRole("button", { name: bouton }))
+  }
+
+  it("affiche les points au fil du paquet puis à la fin, tels que le serveur les a crédités", async () => {
+    const jour = (xp: number) => ({ xp, objectif: 20, atteint: false, objectifs_possibles: [10, 20, 30] })
+    noterCarte
+      .mockResolvedValueOnce({ xp_gagne: 1, xp_jour: jour(6) })
+      .mockResolvedValueOnce({ xp_gagne: 1, xp_jour: jour(7) })
+      .mockResolvedValueOnce({ xp_gagne: 0 }) // plafond du jour atteint : rien de promis
+    monter(<CartesDuCours slug="c" />)
+    fireEvent.click(await screen.findByRole("button", { name: "Réviser" }))
+
+    await revoir("Je savais")
+    expect(await screen.findByText("+1 point")).toBeTruthy()
+    await revoir("À revoir") // une carte « à revoir » rapporte aussi : c'est la revue qui compte
+    expect(await screen.findByText("+2 points")).toBeTruthy()
+    await revoir("Je savais")
+
+    expect(await screen.findByText("Paquet terminé")).toBeTruthy()
+    expect(screen.getByText("+2 points")).toBeTruthy()
+    expect(screen.getByText("7 points · objectif 20")).toBeTruthy()
+  })
+
+  it("ne parle pas de points quand le paquet n'en a rapporté aucun", async () => {
+    noterCarte.mockResolvedValue({ xp_gagne: 0 })
+    monter(<CartesDuCours slug="c" />)
+    fireEvent.click(await screen.findByRole("button", { name: "Réviser" }))
+    await revoir("Je savais")
+    await revoir("Je savais")
+    await revoir("Je savais")
+
+    expect(await screen.findByText("Paquet terminé")).toBeTruthy()
+    expect(screen.queryByText(/\+\d+ point/)).toBeNull()
+  })
+})

@@ -65,6 +65,15 @@ def cartes_avec_etat(profil, cours):
     ]
 
 
+def est_attendue(profil, cours, cle):
+    """
+    La carte est-elle à revoir maintenant : jamais vue, ou échéance arrivée ? À lire AVANT `noter`, qui déplace l'échéance.
+    C'est la revue attendue qui rapporte des points (voir quiz.xp.crediter_carte), pas la revue anticipée.
+    """
+    revue = CarteRevue.objects.filter(profil=profil, cours=cours, cle=cle).first()
+    return revue is None or revue.due_at <= timezone.localdate()
+
+
 def noter(profil, cours, cle, savais):
     """
     Enregistre la revue d'une carte. Savais : la carte monte d'un palier (une nouvelle carte sue entre à J+3, pas à J+1) ;

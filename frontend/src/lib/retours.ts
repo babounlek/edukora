@@ -7,7 +7,18 @@
 // Jamais au prix de la réponse : tout est enveloppé, un navigateur sans Web Audio ou sans
 // vibration (iOS) ignore simplement l'appel.
 
-export type Retour = "juste" | "faux" | "objectif" | "fin"
+export type Retour = "juste" | "faux" | "objectif" | "fin" | "palier"
+
+// La série de bonnes réponses s'ENTEND : chaque bonne réponse d'affilée sonne un cran plus haut (gamme pentatonique, donc
+// toujours juste à l'oreille), jusqu'à l'octave. Une erreur fait repartir du bas. Aux paliers (voir lib/serieQuiz), un
+// court arpège à part : le retour « palier ».
+const DEGRES_SERIE = [0, 2, 4, 7, 9, 12]
+
+/** Le facteur de fréquence de la note « juste » pour une série de `serie` bonnes réponses (1 = première, sans montée). */
+export function transposition(serie: number): number {
+  const rang = Math.min(Math.max(Math.trunc(serie) || 1, 1), DEGRES_SERIE.length) - 1
+  return 2 ** (DEGRES_SERIE[rang] / 12)
+}
 
 const CLE = "edukora.retours"
 
@@ -36,6 +47,7 @@ const NOTES: Record<Retour, { freq: number; debut: number; duree: number }[]> = 
     { freq: 784, debut: 0.2, duree: 0.1 }, { freq: 1047, debut: 0.3, duree: 0.22 },
   ],
   fin: [{ freq: 587, debut: 0, duree: 0.1 }, { freq: 784, debut: 0.1, duree: 0.2 }],
+  palier: [{ freq: 784, debut: 0, duree: 0.08 }, { freq: 1047, debut: 0.08, duree: 0.08 }, { freq: 1319, debut: 0.16, duree: 0.2 }],
 }
 
 const VIBRATIONS: Record<Retour, number | number[]> = {
@@ -43,6 +55,7 @@ const VIBRATIONS: Record<Retour, number | number[]> = {
   faux: 40,
   objectif: [20, 40, 20, 40, 60],
   fin: [20, 30, 40],
+  palier: [15, 30, 15, 30, 30],
 }
 
 type FabriqueAudio = typeof AudioContext
@@ -60,7 +73,7 @@ function audio(): AudioContext | null {
   return contexte
 }
 
-function jouerNotes(retour: Retour) {
+function jouerNotes(retour: Retour, facteur = 1) {
   const ctx = audio()
   if (!ctx) return
   // Un contexte créé hors geste utilisateur démarre suspendu : on le réveille ici, appelé depuis
@@ -71,7 +84,7 @@ function jouerNotes(retour: Retour) {
     const oscillateur = ctx.createOscillator()
     const gain = ctx.createGain()
     oscillateur.type = "sine"
-    oscillateur.frequency.value = note.freq
+    oscillateur.frequency.value = note.freq * facteur
     // Enveloppe courte, pour éviter le "clic" de début et de fin de note.
     gain.gain.setValueAtTime(0.0001, t0 + note.debut)
     gain.gain.exponentialRampToValueAtTime(0.07, t0 + note.debut + 0.015)
@@ -82,10 +95,11 @@ function jouerNotes(retour: Retour) {
   }
 }
 
-export function jouerRetour(retour: Retour) {
+/** `serie` : le nombre de bonnes réponses d'affilée, celle-ci comprise. Elle ne fait monter que la note « juste ». */
+export function jouerRetour(retour: Retour, { serie = 1 }: { serie?: number } = {}) {
   if (!retoursActifs()) return
   try {
-    jouerNotes(retour)
+    jouerNotes(retour, retour === "juste" ? transposition(serie) : 1)
   } catch {
     // Pas de son : la couleur et le texte du retour portent déjà l'information.
   }

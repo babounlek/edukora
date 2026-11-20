@@ -28,6 +28,7 @@ import { useCountry } from "@/context/CountryContext"
 import { themeExercicesPath } from "@/lib/countryPath"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { jouerRetour } from "@/lib/retours"
+import { estPalierDeSerie, serieJusqua } from "@/lib/serieQuiz"
 import { useSecondesRestantes } from "@/lib/quizChrono"
 import { seanceJouee } from "@/lib/seancesGratuites"
 import { MascotteDessin } from "@/components/MascotteDessin"
@@ -235,14 +236,13 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     })
     // Le retour sensoriel part avec la réponse : un son et une vibration courts, une fête à
     // part quand c'est cette réponse qui a fait franchir l'objectif du jour. Une réponse
-    // partielle qui a rapporté des points sonne "juste" : ce n'est pas une erreur.
-    jouerRetour(
-      updated.objectif_atteint_maintenant
-        ? "objectif"
-        : updated.reponse?.est_correcte || (updated.reponse?.xp_gagne ?? 0) > 0
-          ? "juste"
-          : "faux",
-    )
+    // partielle qui a rapporté des points sonne "juste" : ce n'est pas une erreur. La série de bonnes réponses s'entend :
+    // la note monte d'un cran à chaque bonne réponse d'affilée, et un palier (5, 10) a son arpège.
+    const serie = serieJusqua(session!.questions.map((q) => (q.id === updated.id ? updated : q)), updated.id)
+    if (updated.objectif_atteint_maintenant) jouerRetour("objectif")
+    else if (updated.reponse?.est_correcte && estPalierDeSerie(serie)) jouerRetour("palier")
+    else if (updated.reponse?.est_correcte || (updated.reponse?.xp_gagne ?? 0) > 0) jouerRetour("juste", { serie })
+    else jouerRetour("faux")
   }
 
   async function handleAnswerQcm(lettre: string) {
@@ -374,10 +374,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const answeredCount = session.questions.filter((q) => q.reponse).length
   const score = session.questions.filter((q) => q.reponse?.est_correcte).length
   // Série en cours : bonnes réponses consécutives jusqu'à la question affichée incluse.
-  let streak = 0
-  for (const q of session.questions.slice(0, currentIndex + 1)) {
-    streak = q.reponse?.est_correcte ? streak + 1 : 0
-  }
+  const streak = serieJusqua(session.questions, question.id)
+  const palier = Boolean(question.reponse?.est_correcte) && estPalierDeSerie(streak)
   // Relecture : on peut revenir sur toute question déjà répondue, et sur la première
   // restée sans réponse - jamais sauter en avant, l'ordre de la séance reste celui du quiz.
   const premiereSansReponse = session.questions.findIndex((q) => !q.reponse && !q.passee)
@@ -504,7 +502,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
           {/* Un quiz chronométré ne rapporte pas de points : l'objectif du jour n'a rien à y montrer. */}
           {session.xp_jour && !chronoActif && <ObjectifXp etat={session.xp_jour} compact />}
           {streak >= 2 && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2.5 py-0.5 font-semibold">
+            // `key` : le badge rebondit à chaque bonne réponse de plus, pas seulement à son apparition.
+            <span key={streak} className="animate-xp-pop inline-flex items-center gap-1 rounded-full bg-gold/15 px-2.5 py-0.5 font-semibold">
               <Flame className="animate-quiz-flame size-4 text-warning" />
               {t("qs.daffilee", { n: streak })}
             </span>
@@ -705,7 +704,10 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
                     : pick(MESSAGES_MAUVAISE, question.id)}
               </p>
               {correct && streak >= 3 && (
-                <p className="text-muted-foreground">{t("qs.en_feu", { n: streak })}</p>
+                // 5 et 10 d'affilée sont des paliers : une phrase à eux, en or, au lieu de la même ligne de 3 à l'infini.
+                <p className={palier ? "font-semibold text-gold-text" : "text-muted-foreground"}>
+                  {palier ? t(`qs.palier_${streak}` as CleI18n) : t("qs.en_feu", { n: streak })}
+                </p>
               )}
               {question.objectif_atteint_maintenant && (
                 <p className="font-semibold text-success">{t("qs.objectif_atteint")}</p>

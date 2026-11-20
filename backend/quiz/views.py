@@ -1784,10 +1784,18 @@ def noter_carte(request, slug, cle):
     if not isinstance(savais, bool):
         return Response({"error": "« savais » doit être vrai ou faux."}, status=400)
     cours = get_object_or_404(Cours.objects.visibles(), slug=slug)
-    revue = cartes.noter(profil_actif(request), cours, cle, savais)
+    profil = profil_actif(request)
+    attendue = cartes.est_attendue(profil, cours, cle)
+    revue = cartes.noter(profil, cours, cle, savais)
     if revue is None:
         return Response({"error": "Carte inconnue."}, status=404)
-    return Response({"cle": cle, "palier": revue.palier, "due_at": revue.due_at.isoformat()})
+    payload = {"cle": cle, "palier": revue.palier, "due_at": revue.due_at.isoformat(), "xp_gagne": 0}
+    # Revenir sur une carte à son échéance rapporte un point, sue ou non ; une revue anticipée, rien (voir quiz.xp.XP_CARTE).
+    gain = xp.crediter_carte(profil, cours.pk, cle) if attendue else None
+    if gain:
+        payload["xp_gagne"] = gain.points
+        payload["xp_jour"] = xp.etat_du_jour(profil)
+    return Response(payload)
 
 
 @api_view(["GET"])

@@ -637,6 +637,7 @@ class SourceXP(models.TextChoices):
     COURS = "COURS", "Section de cours comprise"
     EXERCICE = "EXERCICE", "Exercice déclaré fait"
     SIMULATION = "SIMULATION", "Examen blanc terminé"
+    CARTE = "CARTE", "Carte de révision revue"
 
 
 class GainXP(models.Model):

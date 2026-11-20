@@ -153,3 +153,53 @@ class CartesAPITests(TestCase):
 
     def test_exige_une_connexion(self):
         self.assertIn(APIClient().get("/quiz/cartes/dues/").status_code, (401, 403))
+
+
+class PointsDesCartesTests(TestCase):
+    """Une carte revue à son échéance rapporte un point (quiz.xp.XP_CARTE), dans le plafond d'activité du jour."""
+
+    def setUp(self):
+        self.cours = _cours()
+        self.user = User.objects.create_user(phone_number="677400205", password="x")
+        self.profil = self.user.profils.first()
+        self.client = APIClient()
+        self.client.force_authenticate(user=self.user)
+
+    def noter(self, cle, savais=True, cours=None):
+        return self.client.post(f"/quiz/cartes/cours/{(cours or self.cours).slug}/{cle}/", {"savais": savais}, format="json").json()
+
+    def test_une_carte_nouvelle_rapporte_un_point_sue_ou_non(self):
+        r = self.noter("regle", True)
+        self.assertEqual(r["xp_gagne"], 1)
+        self.assertEqual(r["xp_jour"]["xp"], 1)
+        self.assertEqual(self.noter("erreur-0", False)["xp_gagne"], 1)  # le geste de revoir compte, pas la réponse déclarée
+
+    def test_une_revue_anticipee_ne_rapporte_rien(self):
+        self.noter("regle", True)  # sue : prochaine échéance à J+3
+        r = self.noter("regle", True)
+        self.assertEqual(r["xp_gagne"], 0)
+        self.assertNotIn("xp_jour", r)
+
+    def test_une_carte_ne_rapporte_qu_une_fois_par_jour_puis_de_nouveau_a_son_echeance(self):
+        from .models import GainXP, SourceXP
+
+        self.noter("regle", False)  # ratée : due demain
+        self.assertEqual(self.noter("regle", False)["xp_gagne"], 0)  # revue dans la foulée, le même jour
+        with mock.patch("django.utils.timezone.localdate", return_value=timezone.localdate() + timedelta(days=1)):
+            self.assertEqual(self.noter("regle", True)["xp_gagne"], 1)
+        self.assertEqual(GainXP.objects.filter(profil=self.profil, source=SourceXP.CARTE).count(), 2)
+
+    def test_les_cartes_partagent_le_plafond_d_activite_du_jour(self):
+        from . import xp
+        from .models import SourceXP
+
+        xp.crediter_activite(self.profil, SourceXP.EXERCICE, "exercice:1", xp.PLAFOND_ACTIVITE_JOUR - 1)
+        self.assertEqual(self.noter("regle")["xp_gagne"], 1)
+        self.assertEqual(self.noter("erreur-0")["xp_gagne"], 0)  # plafond atteint : la revue est enregistrée, sans points
+        self.assertEqual(CarteRevue.objects.filter(profil=self.profil).count(), 2)
+
+    def test_une_cle_inconnue_ne_rapporte_rien(self):
+        from .models import GainXP
+
+        self.client.post(f"/quiz/cartes/cours/{self.cours.slug}/erreur-9/", {"savais": True}, format="json")
+        self.assertFalse(GainXP.objects.filter(profil=self.profil).exists())
