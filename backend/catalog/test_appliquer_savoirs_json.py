@@ -128,3 +128,20 @@ class ExportCompactTests(AppliquerSavoirsJsonTests):
 
         self.question.refresh_from_db()
         self.assertEqual(self.question.savoir_officiel_id, self.savoir.pk)
+
+
+class ExportAmbigu(AppliquerSavoirsJsonTests):
+    """Deux fichiers pour le même exercice avec des questions différentes ne doivent jamais partir : savoir sur la mauvaise question."""
+
+    def test_deux_fichiers_meme_exercice_questions_differentes_sont_exclus(self):
+        (self.dossier / "bepc-test-2026_exercice_1.json").write_text(json.dumps(_payload(REF), ensure_ascii=False), encoding="utf-8")
+        autre = _payload(REF)
+        autre["questions"][0]["numero"] = "1a"  # même numero_exercice "1" : un autre exercice dont le numéro a été répété
+        (self.dossier / "bepc-test-2026_exercice_3.json").write_text(json.dumps(autre, ensure_ascii=False), encoding="utf-8")
+        sortie = Path(self.tmp.name) / "export.json"
+
+        out = StringIO()
+        call_command("appliquer_savoirs_json", str(self.dossier), "--exporter-vers", str(sortie), stdout=out)
+
+        self.assertIn("AMBIGU", out.getvalue())
+        self.assertEqual(json.loads(sortie.read_text(encoding="utf-8")), [])

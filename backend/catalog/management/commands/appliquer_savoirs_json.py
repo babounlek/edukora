@@ -107,8 +107,24 @@ class Command(BaseCommand):
                     continue
                 entree = {cle: data[cle] for cle in ("epreuve_source", "numero_exercice", "matiere", "annee", "variante_sujet", "numero_paper") if data.get(cle) not in (None, "")}
                 export.append({**entree, "pays": pays, "fichier": fichier.name, "questions": questions})
+        # Garde-fou : deux fichiers qui désignent le MÊME exercice (même épreuve source, même numéro) mais dont les questions
+        # n'ont pas les mêmes numéros sont ambigus - c'est le cas d'une épreuve dont les exercices se répètent sous les numéros
+        # 1 et 2. Appliquer l'un des deux poserait un savoir sur la question d'un AUTRE exercice : ils sont exclus et signalés.
+        def identite(e):
+            return (e["pays"], e.get("epreuve_source"), e.get("matiere"), e.get("annee"), e.get("variante_sujet"), e.get("numero_paper"), e.get("numero_exercice"))
+
+        groupes = {}
+        for entree in export:
+            groupes.setdefault(identite(entree), []).append(entree)
+        ambigus = set()
+        for cle, entrees in groupes.items():
+            if len(entrees) > 1 and len({tuple(sorted(q["numero"] for q in e["questions"])) for e in entrees}) > 1:
+                ambigus.update(id(e) for e in entrees)
+                self.stdout.write(self.style.WARNING(
+                    f"AMBIGU (même exercice, questions différentes), exclu de l'export : {[e['fichier'] for e in entrees]}"))
+        export = [e for e in export if id(e) not in ambigus]
         Path(sortie).write_text(json.dumps(export, ensure_ascii=False), encoding="utf-8")
-        self.stdout.write(f"Export : {len(export)} exercice(s) avec au moins un savoir -> {sortie}")
+        self.stdout.write(f"Export : {len(export)} exercice(s) avec au moins un savoir -> {sortie} ({len(ambigus)} exclu(s) pour ambiguïté)")
 
     def _traiter(self, fichier, data, ecrire, lier_themes, compteurs, details):
         pays = data.get("pays") or _country_code_from_path(fichier)
