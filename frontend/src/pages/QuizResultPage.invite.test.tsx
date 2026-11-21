@@ -143,3 +143,30 @@ describe("QuizResultPage : un connecté", () => {
     expect(screen.queryByText("Garde ton quiz et tes points.")).not.toBeInTheDocument()
   })
 })
+
+describe("QuizResultPage : l'ordre des blocs sur l'écran d'un téléphone", () => {
+  // Passe élève du 2026-11-21 : le bouton pour continuer était entre 1,3 et 1,9 écran plus bas, sous la carte des points.
+  const avecTheme = { par_theme: [{ theme: "antonymes", theme_id: 7, subject_code: "ANGLAIS", total: 5, reussies: 4, cours: null }] }
+  const avant = (a: HTMLElement, b: HTMLElement) => Boolean(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
+
+  it("visiteur : le bouton pour continuer vient avant les points, la carte du compte et l'invitation à installer", async () => {
+    setJetonInvite("jeton-invite")
+    api.completeQuizSession.mockResolvedValue(resultat(avecTheme))
+    afficher()
+
+    const continuer = await screen.findByRole("link", { name: "Essayer une autre matière gratuite" })
+    expect(avant(continuer, screen.getByText("+40 points"))).toBe(true)
+    expect(avant(screen.getByText("+40 points"), screen.getByText("Garde ton quiz et tes points."))).toBe(true)
+    expect(avant(screen.getByText("Garde ton quiz et tes points."), screen.getByText("Invitation à installer"))).toBe(true)
+  })
+
+  it("visiteur : l'aide ne cite pas un bouton qu'il n'a pas", async () => {
+    setJetonInvite("jeton-invite")
+    api.completeQuizSession.mockResolvedValue(resultat(avecTheme))
+    afficher()
+
+    await screen.findByRole("link", { name: "Essayer une autre matière gratuite" })
+    expect(screen.queryByText(/« Encore 5 questions » reprend/)).not.toBeInTheDocument()
+    expect(screen.getByText("« Bats ton score » rejoue les mêmes questions, sans nouveaux points.")).toBeInTheDocument()
+  })
+})

@@ -3063,6 +3063,7 @@ export const fr = {
   "qr.passees_other": "{n} questions passées : elles ne comptent ni comme réussies ni comme ratées.",
   "qr.plus_dur": "Même thème, plus dur",
   "qr.bats_score_note": "« Encore 5 questions » reprend ton thème le plus fragile. « Bats ton score » rejoue les mêmes questions, sans nouveaux points.",
+  "qr.bats_score_note_visiteur": "« Bats ton score » rejoue les mêmes questions, sans nouveaux points.",
   "qr.dont_seance": "dont {n} de bonus pour la séance du jour terminée",
   "qr.points_bonnes": "Les points se gagnent sur les bonnes réponses.",
   "qr.points_zero_bonnes": "Tes bonnes réponses comptent pour ta maîtrise, mais ce quiz ne rapporte pas de points (rejeu ou quiz chronométré). Un quiz normal en rapporte.",

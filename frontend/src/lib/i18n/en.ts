@@ -3053,6 +3053,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "qr.passees_other": "{n} questions skipped: they count as neither right nor wrong.",
   "qr.plus_dur": "Same topic, harder",
   "qr.bats_score_note": "“5 more questions” goes back to your weakest topic. “Beat your score” replays the same questions, with no new points.",
+  "qr.bats_score_note_visiteur": "“Beat your score” replays the same questions, with no new points.",
   "qr.dont_seance": "of which {n} bonus for completing the daily session",
   "qr.points_bonnes": "Points are earned on correct answers.",
   "qr.points_zero_bonnes": "Your correct answers count towards your mastery, but this quiz earns no points (replay or timed quiz). A regular quiz does.",

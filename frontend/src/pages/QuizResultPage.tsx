@@ -530,52 +530,10 @@ export function QuizResultPage() {
 
       {!diagnostic && <Mascotte className="mb-6" contexte={{ pourcentage, serieJours: result.serie?.jours, matiere: result.par_theme[0]?.subject_code ?? result.subject ?? undefined }} />}
 
-      {/* Un quiz chronométré ne rapporte ni points ni maîtrise (voir quiz.chrono) : le bilan dit le temps, pas l'XP. */}
-      {result.chrono_actif && <BilanChrono result={result} />}
-      {result.xp && !result.chrono_actif && (
-        <BilanXp
-          xp={result.xp} serie={result.serie} classement={result.classement}
-          score={result.score} total={result.questions_repondues}
-        />
-      )}
-      {/* Les jalons que ce quiz vient d'ouvrir (premier sans-faute, 10 bonnes réponses...) : fêtés ici, pas seulement rangés
-          dans « Ma progression ». Pas pour un quiz chronométré, qui ne compte pas pour les jalons. */}
-      {/* Ce que ce quiz a retiré de « Mes erreurs » (voir quiz.erreurs) : la liste baisse sous les yeux de l'élève. */}
-      <BilanErreurs bilan={result.erreurs} cursus={result.cursus} acces={acces} className="mb-6" />
-      {result.xp && !result.chrono_actif && <JalonsAtteints className="mb-6" />}
-      {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
-      {/* Installer l'application : une invitation à la fois. Elle attend que celle des rappels ait eu sa réponse ; un
-          visiteur sans compte, à qui les rappels ne sont pas proposés, la voit tout de suite. */}
-      {result.xp && !result.chrono_actif && (invite || invitePushRepondue()) && <InviteInstallation className="mb-6" />}
-
-      {/* Un quiz joué sans compte (voir lib/invite) : ses points et sa séance ne sont gardés que sur cet appareil, le temps
-          d'un mois. Le compte les reprend, comme la copie d'une épreuve inédite. */}
-      {invite && (
-        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3.5">
-          <p className="text-sm">
-            <strong>{t("qr.invite_titre")}</strong> {t("qr.invite_texte")}
-          </p>
-          <Button asChild className="mt-3 w-full" size="lg">
-            <Link to="/connexion" state={{ from: "/quiz", intent: t("qr.invite_intent") }}>
-              {t("qr.invite_cta")}
-            </Link>
-          </Button>
-        </div>
-      )}
-
-      {defi && issueDefi && (
-        <p
-          role="status"
-          className={cn(
-            "mb-6 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium",
-            issueDefi === "gagne" ? "bg-success/15" : "bg-muted/60",
-          )}
-        >
-          <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
-          {t(`defi.${issueDefi}`, { a: result.score, b: result.questions_repondues, c: defi.reussies, d: defi.total })}
-        </p>
-      )}
-
+      {/* L'ordre de cette page se lit du haut de l'écran d'un téléphone (passe élève du 2026-11-21) : le bouton pour continuer
+          vient juste sous la mascotte, donc sur le premier écran - il était entre 1,3 et 1,9 écran plus bas, sous la carte des
+          points et les blocs ajoutés depuis. Puis ce que le quiz a CHANGÉ (défi, erreurs corrigées, jalon), les points, et
+          seulement ensuite les invitations (rappels, compte, installation), qui ne parlent pas de ce quiz. */}
       {/* Le geste le plus court pour continuer, avant tout menu : un quiz de plus, ou le même pour faire mieux. */}
       {!diagnostic && result.par_theme.length > 0 && (
         <section aria-label={t("qr.encore_aria")} className="mb-6">
@@ -651,12 +609,60 @@ export function QuizResultPage() {
               className="rounded-full"
             />
           )}
-          <p className="text-xs text-muted-foreground">{t("qr.bats_score_note")}</p>
+          <p className="text-xs text-muted-foreground">{t(acces ? "qr.bats_score_note" : "qr.bats_score_note_visiteur")}</p>
             </div>
           </details>
           {erreurEncore && <p role="alert" className="mt-2 text-sm text-destructive">{erreurEncore}</p>}
         </section>
       )}
+
+      {defi && issueDefi && (
+        <p
+          role="status"
+          className={cn(
+            "mb-6 flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium",
+            issueDefi === "gagne" ? "bg-success/15" : "bg-muted/60",
+          )}
+        >
+          <Swords className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
+          {t(`defi.${issueDefi}`, { a: result.score, b: result.questions_repondues, c: defi.reussies, d: defi.total })}
+        </p>
+      )}
+
+      {/* Ce que ce quiz a retiré de « Mes erreurs » (voir quiz.erreurs) et les jalons qu'il vient d'ouvrir (premier sans-faute,
+          10 bonnes réponses...). Les jalons : pas pour un quiz chronométré, qui ne compte pas pour eux. */}
+      <BilanErreurs bilan={result.erreurs} cursus={result.cursus} acces={acces} className="mb-6" />
+      {result.xp && !result.chrono_actif && <JalonsAtteints className="mb-6" />}
+
+      {/* Un quiz chronométré ne rapporte ni points ni maîtrise (voir quiz.chrono) : le bilan dit le temps, pas l'XP. */}
+      {result.chrono_actif && <BilanChrono result={result} />}
+      {result.xp && !result.chrono_actif && (
+        <BilanXp
+          xp={result.xp} serie={result.serie} classement={result.classement}
+          score={result.score} total={result.questions_repondues}
+        />
+      )}
+      {result.xp && !result.chrono_actif && !invite && <InvitePush className="mb-6" />}
+
+      {/* Un quiz joué sans compte (voir lib/invite) : ses points et sa séance ne sont gardés que sur cet appareil, le temps
+          d'un mois. Le compte les reprend, comme la copie d'une épreuve inédite. */}
+      {invite && (
+        <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 px-4 py-3.5">
+          <p className="text-sm">
+            <strong>{t("qr.invite_titre")}</strong> {t("qr.invite_texte")}
+          </p>
+          <Button asChild className="mt-3 w-full" size="lg">
+            <Link to="/connexion" state={{ from: "/quiz", intent: t("qr.invite_intent") }}>
+              {t("qr.invite_cta")}
+            </Link>
+          </Button>
+        </div>
+      )}
+
+      {/* Installer l'application : une invitation à la fois. Elle attend que celle des rappels ait eu sa réponse ; un
+          visiteur sans compte, à qui les rappels ne sont pas proposés, la voit tout de suite. */}
+      {result.xp && !result.chrono_actif && (invite || invitePushRepondue()) && <InviteInstallation className="mb-6" />}
+
       {/* Prolongement du quiz vers l'épreuve entière : seulement quand le quiz est réussi (le thème faible a déjà son cours) et
           qu'une inédite existe vraiment pour ce cursus - sinon le bloc n'apparaît pas. */}
       {!diagnostic && !result.chrono_actif && result.mini_suggeree && pourcentage >= 70 && (
