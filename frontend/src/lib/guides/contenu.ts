@@ -132,7 +132,11 @@ export const GUIDES: readonly DefinitionGuide[] = [
     // Pas par-dessus la carte « première séance » du hero (voir PremiereSeance) : ce tutoriel s'ouvrait à l'instant
     // où le visiteur choisissait son examen, donc sur le bouton « Commencer » que la carte venait d'afficher, pour
     // l'inviter à se connecter. La carte dit déjà la même chose et le fait sans compte (audit de l'accueil du 2026-11-15).
-    condition: (contexte) => !contexte.ciblePresente("premiere-seance"),
+    // « La carte n'est pas là » ne se juge qu'une fois la page d'accueil montée (repère `accueil-vitrine`, posé par
+    // CataloguePage) : elle est chargée à la demande, et la question, posée avant, trouvait toujours « pas de carte ».
+    // Le tutoriel s'ouvrait donc par-dessus le bouton « Commencer » du visiteur qui revient avec son examen déjà choisi
+    // (audit des accueils, 2026-11-21 : trois rechargements sur trois).
+    condition: (contexte) => contexte.ciblePresente("accueil-vitrine") && !contexte.ciblePresente("premiere-seance"),
     etapes: [
       ETAPE_INTERET,
       {

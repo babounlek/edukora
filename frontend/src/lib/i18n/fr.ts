@@ -217,6 +217,8 @@ export const fr = {
   "seance.frequence_other": "Tombé dans {n} épreuves sur {total}",
   "seance.debloquer": "Débloquer ma séance",
   "seance.acces_termine": "Ton accès a pris fin le {date}. Réabonne-toi pour reprendre ta séance.",
+  "seance.reabonner": "Me réabonner",
+  "seance.prix_abonnement": "{prix} FCFA par mois, par Mobile Money (Orange ou MTN), sans engagement.",
   "seance.commencer": "Commencer",
   "seance.bouton_etape": "{verbe} : {action}",
   "seance.reprendre": "Reprendre",
@@ -531,6 +533,8 @@ export const fr = {
   "oujensuis.travailles_one": "travaillé",
   "oujensuis.travailles_other": "travaillés",
   "oujensuis.sur_themes": "sur {e} thèmes",
+  "oujensuis.intacte_one": "{n} thème · commence par celui-ci",
+  "oujensuis.intacte_other": "{n} thèmes · commence par celui qui tombe le plus",
   "oujensuis.aujourdhui_debut": "aujourd'hui",
   "oujensuis.a_decouvrir": "À découvrir",
   "oujensuis.part_examen": "de ce qui tombe vraiment à l'examen ·",
@@ -641,6 +645,8 @@ export const fr = {
     "À ce rythme{rythme}, tu couvres {pct} % de l'essentiel le jour J. Une séance de plus par semaine et tu y es.",
   "traj.plus_other":
     "À ce rythme{rythme}, tu couvres {pct} % de l'essentiel le jour J. {n} séances de plus par semaine et tu y es.",
+  "traj.un_pas":
+    "À ce rythme{rythme}, tu couvres {pct} % de l'essentiel le jour J. Avec une séance de plus par semaine, tu passes à {plus} %.",
   "traj.temps_manque":
     "À ce rythme{rythme}, tu couvres {pct} % de l'essentiel le jour J. Le temps manque pour tout : vise ce qui tombe le plus.",
   "traj.rythme_one": "{texte} séance par semaine",

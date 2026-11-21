@@ -102,7 +102,10 @@ export function OuJenSuis({
                 {t("oujensuis.legende_matieres", { n: matieres.length })}
               </p>
             )}
-            <div className="grid gap-3 sm:grid-cols-2">
+            {/* `grid-cols-1` : une colonne qui ne s'élargit pas au contenu. Sans elle, « Sciences de la Vie et de la
+                Terre » ne se tronquait pas et les cartes faisaient 387 px dans 302 sur un téléphone : pastille coupée,
+                bord droit hors de l'écran (audit des accueils, 2026-11-21). */}
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {matieres.map((matiere) => (
                 <BarreMatiere key={matiere.subject_id} matiere={matiere} cursusId={cursusId} />
               ))}
@@ -171,7 +174,7 @@ function BlocTrajectoire({
         />
         <div aria-hidden className="absolute -top-1 bottom-[-0.25rem] w-0.5 rounded bg-gold" style={{ left: `${cible}%` }} />
       </div>
-      <div className="relative mt-1.5 h-4 text-[0.65rem] text-muted-foreground">
+      <div className="relative mt-1.5 h-4 text-xs text-muted-foreground">
         {/* « aujourd'hui 0 % » le premier mois : un zéro de plus, qui ne dit rien que la barre vide ne montre déjà. */}
         <span className="absolute left-0">
           {actuelle > 0 ? t("oujensuis.aujourdhui", { a: actuelle }) : t("oujensuis.aujourdhui_debut")}
@@ -247,9 +250,13 @@ function BarreMatiere({ matiere, cursusId }: { matiere: ResumeMatiere; cursusId:
       />
       <div className="mt-2.5 flex items-center justify-between gap-2 text-xs text-muted-foreground">
         <span className="tabular-nums">
-          {sansMaitrise
-            ? t("oujensuis.sur_themes", { e: exploitables })
-            : t("oujensuis.maitrises", { m: matiere.maitrises, e: exploitables })}
+          {/* Jamais ouverte : « 0/96 maîtrisés » se lisait comme un échec, à côté de « À découvrir ». On dit ce qu'il
+              y a et par où commencer ; la carte mène au parcours de la matière, classé par fréquence à l'examen. */}
+          {intacte
+            ? tn("oujensuis.intacte", exploitables)
+            : sansMaitrise
+              ? t("oujensuis.sur_themes", { e: exploitables })
+              : t("oujensuis.maitrises", { m: matiere.maitrises, e: exploitables })}
           {matiere.en_revision > 0 && <> · {t("oujensuis.en_revision", { n: matiere.en_revision })}</>}
         </span>
         <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-all group-hover:translate-x-0.5 group-hover:text-primary" />

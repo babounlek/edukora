@@ -56,8 +56,22 @@ export function mettreEnEvidence(nom: string | undefined): () => void {
   if (!element) return () => {}
   element.setAttribute(ATTRIBUT_ACTIF, "true")
   const reduit = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches
-  element.scrollIntoView({ block: "center", behavior: reduit ? "auto" : "smooth" })
+  amenerAuCentre(element, reduit ? "auto" : "smooth")
   return () => element.removeAttribute(ATTRIBUT_ACTIF)
+}
+
+/**
+ * Amène un élément au milieu de l'écran en ne faisant défiler QUE la fenêtre.
+ *
+ * `scrollIntoView` fait défiler tous les ancêtres défilables, y compris une carte en `overflow: hidden` dont un décor
+ * dépasse (les halos de la carte de séance, voir Progression.Ecrin) : à l'étape « Ce que contient une séance », la
+ * carte glissait de 144 px sur elle-même, son titre disparaissait et un vide restait en bas jusqu'au rechargement,
+ * sans que l'élève puisse la remettre en place (audit des accueils, 2026-11-21).
+ */
+function amenerAuCentre(element: HTMLElement, behavior: ScrollBehavior) {
+  const cadre = element.getBoundingClientRect()
+  const marge = Math.max(0, (window.innerHeight - cadre.height) / 2)
+  window.scrollTo({ top: Math.max(0, cadre.top + window.scrollY - marge), behavior })
 }
 
 /**

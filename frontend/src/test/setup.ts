@@ -13,6 +13,9 @@ if (typeof Element !== "undefined") {
     Element.prototype.setPointerCapture = () => {}
     Element.prototype.releasePointerCapture = () => {}
   }
+  // `window.scrollTo` existe dans jsdom mais ne fait qu'écrire « Not implemented » à chaque appel (les guides s'en
+  // servent pour amener leur cible à l'écran, voir lib/guides/cibles.ts).
+  window.scrollTo = (() => {}) as typeof window.scrollTo
   if (!Element.prototype.scrollIntoView) {
     Element.prototype.scrollIntoView = () => {}
   }

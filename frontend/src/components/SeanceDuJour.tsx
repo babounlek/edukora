@@ -23,38 +23,39 @@ import { trackEvent } from "@/lib/analytics"
 import { FRAICHEUR_ACCUEIL_MS, lireQuizIgnores, useCleQuizEnCours, useQuizEnCours } from "@/lib/quizEnCours"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { cn } from "@/lib/utils"
+import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
+import { cn, formatAmount } from "@/lib/utils"
 import { langueCourante, localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { Ecrin } from "@/components/Progression"
 import { LienAide } from "@/components/aide/LienAide"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 
 /**
- * Séance verrouillée parce que l'abonnement est échu (et non parce qu'on n'a jamais acheté) : on le dit en
- * clair, avec la date, et le bouton mène droit au réabonnement du bon profil. Sans cela, l'ancien abonné voyait
- * « Débloquer ma séance » comme un nouvel arrivant et ne savait pas que son accès avait pris fin.
+ * Séance verrouillée parce que l'abonnement est échu (et non parce qu'on n'a jamais acheté) : l'abonnement le plus
+ * récemment terminé, ou null (jamais abonné, abonnement en cours, liste pas encore arrivée). `actif` : la liste n'est
+ * demandée que devant une séance verrouillée.
  */
-function BandeauAccesTermine() {
-  const { data: abonnements } = useQuery({ queryKey: ["mes-abonnements"], queryFn: listMySubscriptions })
-  if (!abonnements || abonnements.some((a) => a.is_active)) return null
-  const echu = [...abonnements].sort((a, b) => b.expires_at.localeCompare(a.expires_at))[0]
-  if (!echu) return null
-  const date = new Date(echu.expires_at).toLocaleDateString(localeCourante(), {
+function useAccesEchu(actif: boolean) {
+  const { data: abonnements } = useQuery({ queryKey: ["mes-abonnements"], queryFn: listMySubscriptions, enabled: actif })
+  if (!actif || !abonnements || abonnements.some((a) => a.is_active)) return null
+  return [...abonnements].sort((a, b) => b.expires_at.localeCompare(a.expires_at))[0] ?? null
+}
+
+/**
+ * L'ancien abonné voyait « Débloquer ma séance » comme un nouvel arrivant et ne savait pas que son accès avait pris
+ * fin : on le dit en clair, avec la date. Le message seul : le bouton qui réabonne est le bouton principal de la
+ * carte, juste dessous (voir SeanceAFaire). Ce bandeau portait son propre « Se réabonner », en contour, au-dessus
+ * d'un « Débloquer ma séance » plein qui menait à la page générique des prix : deux boutons pour la même chose, le
+ * moins direct étant le plus visible (audit des accueils, 2026-11-21).
+ */
+function BandeauAccesTermine({ expiresAt }: { expiresAt: string }) {
+  const date = new Date(expiresAt).toLocaleDateString(localeCourante(), {
     day: "numeric", month: "long", year: "numeric",
   })
   return (
-    <div role="status" className="mt-5 flex flex-col gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3.5 sm:flex-row sm:items-center sm:justify-between">
-      <p className="text-sm font-medium">{t("seance.acces_termine", { date })}</p>
-      <Button asChild size="sm" variant="outline" className="h-11 shrink-0 rounded-full sm:h-9">
-        <Link
-          to={`/abonnement?cursus=${echu.cursus.id}&profil=${echu.profil.id}`}
-          onClick={() => trackEvent("plan_verrouille_clic")}
-        >
-          {t("ac.reabonner")}
-          <ArrowRight className="size-3.5" />
-        </Link>
-      </Button>
-    </div>
+    <p role="status" className="mt-5 rounded-lg border border-warning/40 bg-warning/10 p-3.5 text-sm font-medium">
+      {t("seance.acces_termine", { date })}
+    </p>
   )
 }
 
@@ -281,6 +282,7 @@ export function SeanceCorps({
             )}
             {secours}
             {!objectifChoisi && controleObjectif}
+            <BoutonAide guide="seance-du-jour" className="-ml-2.5 self-start" />
           </ReglagesSeance>
         </>
       ) : (
@@ -402,12 +404,18 @@ function SeanceAFaire({
   const lienDeLEtape = (etape: EtapeSeance) =>
     etape.type === "quiz" && quizAReprendre ? `/quiz/session/${quizAReprendre.id}` : lienEtape(etape, country, plan)
 
+  // Séance verrouillée : un seul bouton plein. Pour un ancien abonné il réabonne le bon profil au bon examen, d'un
+  // toucher ; pour qui n'a jamais payé il mène aux prix.
+  const accesEchu = useAccesEchu(seance.verrouillee)
+  const libelleDeblocage = accesEchu ? t("seance.reabonner") : t("seance.debloquer")
+  const lienDeblocage = accesEchu ? `/abonnement?cursus=${accesEchu.cursus.id}&profil=${accesEchu.profil.id}` : "/tarifs"
+
   // Ce que cette séance montre vraiment, publié pour les guides (bienvenue, aide de la séance) : le libellé
   // du bouton, les étapes dans leur ordre, le quiz express. Une aide qui décrit une séance à trois étapes
   // devant une séance à deux ne correspond à rien de visible.
   usePublierContextePage("seance", {
     bouton: seance.verrouillee
-      ? t("seance.debloquer")
+      ? libelleDeblocage
       : prochaine
         ? t("seance.bouton_etape", { verbe: dejaCommencee ? t("seance.reprendre") : t("seance.commencer"), action: actionDeLEtape(prochaine) })
         : undefined,
@@ -473,8 +481,11 @@ function SeanceAFaire({
               onBascule={() => setAnneesOuvertes((ouvert) => !ouvert)}
             />
           )}
-          {/* Pas pour la séance verrouillée : ses étapes ne s'ouvrent pas, l'aide parlerait d'un bouton absent. */}
-          {!seance.verrouillee && <BoutonAide guide="seance-du-jour" className="-ml-1" />}
+          {/* Pas pour la séance verrouillée : ses étapes ne s'ouvrent pas, l'aide parlerait d'un bouton absent. Ni ici
+              quand les réglages sont repliés sous la carte (voir SeanceCorps) : « Revoir cette aide » y est rangé avec eux.
+              À cette place il prenait une ligne de 44 px entre les pastilles et « Commencer », à chaque ouverture, pour
+              un élève qui a dix séances derrière lui (audit des accueils, 2026-11-21). */}
+          {!seance.verrouillee && !dureeDansLesReglages && <BoutonAide guide="seance-du-jour" className="-ml-1" />}
         </div>
         {/* Les années concernées, sous les pastilles quand on les demande : sans elles, le
             chiffre de la pastille est à croire sur parole, mais elles n'ont pas à peser sur
@@ -493,7 +504,7 @@ function SeanceAFaire({
             « Commencer » sous le pli d'un petit téléphone (audit du 2026-11-13 : bouton à 662 px). */}
         {seance.verrouillee && <RaisonsSeance seance={seance} sansRaisonsDites={Boolean(phraseDuCoach)} />}
 
-        {seance.verrouillee && <BandeauAccesTermine />}
+        {seance.verrouillee && accesEchu && <BandeauAccesTermine expiresAt={accesEchu.expires_at} />}
 
         {seance.verrouillee ? (
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -506,11 +517,16 @@ function SeanceAFaire({
               size="lg"
               className="group h-12 rounded-full px-7 text-base shadow-lg shadow-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/30"
             >
-              <Link data-guide="seance-debloquer" to="/tarifs" onClick={() => trackEvent("plan_verrouille_clic")}>
+              <Link data-guide="seance-debloquer" to={lienDeblocage} onClick={() => trackEvent("plan_verrouille_clic")}>
                 <Lock className="size-4" />
-                {t("seance.debloquer")}
+                {libelleDeblocage}
               </Link>
             </Button>
+            {/* Le prix juste sous le bouton qui vend : il n'apparaissait qu'à 1 775 px du haut sur un téléphone, 2,2 écrans
+                plus bas, dans le texte écrit pour le visiteur (audit des accueils, 2026-11-21). */}
+            <p className="basis-full text-sm text-muted-foreground">
+              {t("seance.prix_abonnement", { prix: formatAmount(PRIX_MOIS_FCFA) })}
+            </p>
             {/* Ce sont les parents qui paient : de la séance verrouillée, l'élève leur envoie le prix et le moyen de payer. */}
             <BoutonParents contenu={t("parents.contenu_seance")} className="h-12 rounded-full px-5" />
             <LienAide slug="seance-verrouillee">{t("aide.lien.verrouille")}</LienAide>

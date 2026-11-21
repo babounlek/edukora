@@ -77,15 +77,22 @@ function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; 
  * l'élève, là où la grille précédente listait les rayons qu'il devait parcourir lui-même. */
 function EtapeExplication({ numero, titre, description }: { numero: string; titre: string; description: string }) {
   return (
-    <div className="flex flex-col gap-2 rounded-2xl border border-border bg-card p-5">
-      <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 font-display font-semibold text-primary">
+    // Sur un téléphone, le numéro passe à gauche du texte au lieu de prendre sa propre ligne : les trois étapes
+    // empilées faisaient 841 px (audit des accueils, 2026-11-21). À partir de `sm`, la carte d'avant, en colonne.
+    <div className="flex gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-col sm:gap-2 sm:p-5">
+      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display font-semibold text-primary">
         {numero}
       </span>
-      <h3 className="font-display text-lg font-semibold">{titre}</h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+      <div className="flex min-w-0 flex-col gap-1 sm:gap-2">
+        <h3 className="font-display text-lg font-semibold">{titre}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
     </div>
   )
 }
+
+/** Les matières préférées pour l'épreuve inédite montrée à un visiteur qui n'a pas dit son examen (voir plus bas). */
+const MATIERES_VEDETTE = [/^MATH/, /^FRAN/]
 
 /**
  * La page vitrine : le hero, les chiffres, l'exemple de corrigé, les inédites, la
@@ -189,7 +196,15 @@ function CatalogueVitrine() {
   // Restreinte au cursus déclaré (compte ou onboarding) quand il y en a un : voir
   // useInedites.
   const { data: inediteRecenteData } = useInedites(country ?? "", cursusAccueil, !hasLegacyFilters)
-  const inediteVedetteId = inediteRecenteData?.results[0]?.slug ?? inediteRecenteData?.results[0]?.id
+  // Sans examen choisi, la plus récente du pays peut être d'une matière que peu d'élèves passent (« Travail manuel »
+  // le jour de l'audit des accueils, 2026-11-21) : seul exemple du produit payant sur la page, elle est alors prise
+  // parmi les récentes dans une matière que tous ont, mathématiques puis français. Examen choisi : la plus récente.
+  const ineditesRecentes = inediteRecenteData?.results ?? []
+  const inediteMontree =
+    (cursusAccueil == null
+      ? MATIERES_VEDETTE.map((motif) => ineditesRecentes.find((e) => motif.test(e.subject?.code ?? ""))).find(Boolean)
+      : undefined) ?? ineditesRecentes[0]
+  const inediteVedetteId = inediteMontree?.slug ?? inediteMontree?.id
   // Les inédites de tout le pays (même clé de cache que l'en-tête), demandées seulement quand l'examen déclaré n'en a aucune :
   // c'est ce qui permet de proposer « celles des autres examens » sans promettre une liste vide.
   const aucuneInedite = examenServi != null && inediteRecenteData?.count === 0
@@ -236,7 +251,9 @@ function CatalogueVitrine() {
   }
 
   return (
-    <div>
+    // `accueil-vitrine` : repère lu par le tutoriel du visiteur, qui attend que cette page soit montée pour savoir si
+    // la carte « première séance » est à l'écran (voir lib/guides/contenu.ts).
+    <div data-guide="accueil-vitrine">
       {/* La séance du jour passe AVANT le hero, et seulement pour un élève connecté
           qui a déclaré son cursus (le composant décide seul de s'afficher). Le hero
           reste dessous, intact : /cm est la page la plus indexée du site, elle doit
@@ -412,8 +429,15 @@ function CatalogueVitrine() {
             {/* Corrigé complet de la question 1 (voir exempleCorrigeQ1), jamais tronqué :
                 il commence déjà par l'énoncé de la question 1 lui-même, donc pas de
                 section "Énoncé" séparée qui le répéterait. */}
-            <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
-              <EpreuveMarkdownLazy markdown={exempleCorrigeQ1} />
+            {/* Borné en hauteur, avec un fondu : entier, l'extrait faisait 1 374 px sur un téléphone, 1,7 écran de calcul
+                avant la section suivante (audit des accueils, 2026-11-21). Ce qui reste montre l'énoncé, le rappel de
+                méthode et les premières étapes ; le bouton juste dessous ouvre le corrigé complet, gratuit. Le texte
+                coupé reste dans la page pour les lecteurs d'écran. */}
+            <div className="relative max-h-[26rem] overflow-hidden">
+              <div className="prose prose-neutral max-w-none text-sm dark:prose-invert prose-headings:font-display">
+                <EpreuveMarkdownLazy markdown={exempleCorrigeQ1} />
+              </div>
+              <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-card to-transparent" />
             </div>
             <div className="mt-4 flex justify-center border-t border-border pt-4">
               <Button asChild variant="outline">
@@ -440,7 +464,7 @@ function CatalogueVitrine() {
         {/* Ce qui distingue le produit des annales gratuites, dit une fois, ici : la grille « Pourquoi EduKora ? » qui
             suivait redisait ces trois étapes en quatre cartes (audit de l'accueil du 2026-11-15, R4). */}
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("accueil.pourquoi_texte", { site: SITE_NAME })}</p>
-        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-5">
           <EtapeExplication
             numero="1"
             titre={t("accueil.etape1_titre")}

@@ -105,6 +105,14 @@ describe("peutDeclencherAuto", () => {
     expect(peutDeclencherAuto(bienvenueVisiteur, contexteEleve({ public: "visiteur" }), situation())).toBe(false)
   })
 
+  it("le tutoriel du visiteur attend que la page d'accueil soit montée", () => {
+    // La page est chargée à la demande : avant son premier rendu, ni la carte ni le repère de la page ne sont là.
+    // « Pas de carte » ne veut alors rien dire, et le tutoriel recouvrait le bouton « Commencer » au rendu suivant.
+    const avantLeRendu = contexteEleve({ public: "visiteur", ciblePresente: () => false })
+    expect(peutDeclencherAuto(bienvenueVisiteur, avantLeRendu, situation())).toBe(false)
+    expect(guideAutomatique(avantLeRendu, situation())).toBeNull()
+  })
+
   it("rien tant qu'on ne sait pas qui regarde", () => {
     expect(peutDeclencherAuto(bienvenue, contexteEleve({ public: null }), situation())).toBe(false)
   })

@@ -43,10 +43,11 @@ export function GuideHost() {
 
   // 2. Le tutoriel de bienvenue. Il attend ce dont il parle : pour un élève, que le bouton de la
   // séance du jour soit arrivé à l'écran (l'accueil se charge après le premier rendu), d'où
-  // l'observation de la page - uniquement tant qu'il y a quelque chose à attendre.
+  // l'observation de la page - uniquement tant qu'il y a quelque chose à attendre. Pour un visiteur aussi :
+  // son tutoriel ne se décide qu'une fois l'accueil monté (voir sa condition dans lib/guides/contenu.ts).
   const { identite, ouvert, autoDejaMontre, revision } = etat
   const enAttente =
-    identite !== null && ouvert === null && !autoDejaMontre && publicGuide === "eleve" && estAccueilCatalogue(pathname)
+    identite !== null && ouvert === null && !autoDejaMontre && publicGuide !== null && estAccueilCatalogue(pathname)
   const changementsDePage = useChangementsDePage(enAttente)
   useEffect(() => {
     if (!identite) return

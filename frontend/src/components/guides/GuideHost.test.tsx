@@ -45,7 +45,8 @@ function PageAccueil({ avecSeance = true, phases = TROIS_PHASES, bouton = "Comme
   bouton?: string
 }) {
   return (
-    <main>
+    // `accueil-vitrine` : le repère de la page d'accueil montée, que le tutoriel du visiteur attend (voir contenu.ts).
+    <main data-guide="accueil-vitrine">
       {avecSeance && (
         <PublierContexte cle="seance" contexte={{ bouton, phases, quiz: phases.includes("Vérifier"), quizExpress: true, verrouillee: false }} />
       )}
@@ -250,6 +251,35 @@ describe("tutoriel du visiteur", () => {
   it("rien pour un visiteur qui n'a pas encore choisi son examen", async () => {
     monter()
     await waitFor(() => expect(lireEtat().identite).toBe("anonyme"))
+    expect(screen.queryByText("Bienvenue sur EduKora")).toBeNull()
+  })
+
+  it("rien par-dessus la carte « première séance », même quand l'accueil arrive après le premier rendu", async () => {
+    // L'accueil réel est chargé à la demande : au premier rendu la page est vide, puis la carte arrive. Le tutoriel se
+    // décidait sur la page vide et recouvrait « Commencer, sans compte » (audit des accueils, 2026-11-21).
+    memoriserCursusPrepareEnAttente(4)
+    const arrivee = { montrer: () => {} }
+    function AccueilQuiCharge() {
+      const [pret, setPret] = useState(false)
+      useEffect(() => {
+        arrivee.montrer = () => setPret(true)
+      }, [])
+      return pret ? (
+        <main data-guide="accueil-vitrine">
+          <section data-guide="premiere-seance">Ta première séance</section>
+        </main>
+      ) : null
+    }
+    render(
+      <MemoryRouter initialEntries={["/cm"]}>
+        <AccueilQuiCharge />
+        <GuideHost />
+      </MemoryRouter>,
+    )
+    await waitFor(() => expect(lireEtat().identite).toBe("anonyme"))
+    expect(screen.queryByText("Bienvenue sur EduKora")).toBeNull()
+    await act(async () => arrivee.montrer())
+    await act(async () => { await new Promise((resolve) => setTimeout(resolve, 50)) })
     expect(screen.queryByText("Bienvenue sur EduKora")).toBeNull()
   })
 

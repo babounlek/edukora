@@ -32,14 +32,19 @@ export function SectionParents() {
         {t("parents.titre")}
       </h2>
       <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("parents.sous_titre")}</p>
-      <div className="mt-4 grid gap-5 sm:grid-cols-3">
+      {/* Sur un téléphone, une seule carte à trois lignes, l'icône à gauche : trois cartes empilées faisaient 793 px,
+          presque un écran, pour un bloc que l'élève ne lit pas (audit des accueils, 2026-11-21). Le texte est entier
+          dans les deux cas. À partir de `sm`, les trois cartes côte à côte. */}
+      <div className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card sm:grid sm:grid-cols-3 sm:gap-5 sm:divide-y-0 sm:rounded-none sm:border-0 sm:bg-transparent">
         {cartes.map(({ Icone, titre, texte }) => (
-          <div key={titre} className="rounded-2xl border border-border bg-card p-5">
-            <span className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <div key={titre} className="flex gap-3 p-4 sm:block sm:rounded-2xl sm:border sm:border-border sm:bg-card sm:p-5">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
               <Icone className="size-5" aria-hidden="true" />
             </span>
-            <h3 className="mt-3 font-display text-base font-semibold">{titre}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{texte}</p>
+            <div className="min-w-0">
+              <h3 className="font-display text-base font-semibold sm:mt-3">{titre}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{texte}</p>
+            </div>
           </div>
         ))}
       </div>

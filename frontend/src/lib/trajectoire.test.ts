@@ -42,6 +42,26 @@ describe("phraseTrajectoire", () => {
     expect(phraseTrajectoire(t, "normal")).toMatch(/vise ce qui tombe le plus/)
     expect(phraseTrajectoire(t, "normal")).not.toMatch(/retard/)
   })
+
+  it("quand la cible est hors de portée, dit le pas suivant plutôt qu'un verdict", () => {
+    const plan = {
+      jour_j: "2027-05-31", themes_a_consolider: 90, par_semaine: 4,
+      cette_semaine: { debut: "2026-11-16", fin: "2026-11-22", cible: 4, faits: 1 },
+      etapes: [],
+      une_seance_de_plus: { couverture_projetee: 0.24 },
+    }
+    const t = trajectoire({
+      couverture_projetee: 0.17, suffisant: false, seances_de_plus_par_semaine: null, atteignable: false,
+      seances_par_semaine: 2.3, plan,
+    })
+    expect(phraseTrajectoire(t, "normal")).toBe(
+      "À ce rythme (2,3 séances par semaine), tu couvres 17 % de l'essentiel le jour J. "
+        + "Avec une séance de plus par semaine, tu passes à 24 %.",
+    )
+    // Une séance de plus qui ne change pas le chiffre arrondi : l'ancien texte, pas « tu passes à 17 % ».
+    const sansGain = { ...t, plan: { ...plan, une_seance_de_plus: { couverture_projetee: 0.171 } } }
+    expect(phraseTrajectoire(sansGain, "normal")).toMatch(/vise ce qui tombe le plus/)
+  })
 })
 
 describe("formatDepuis", () => {

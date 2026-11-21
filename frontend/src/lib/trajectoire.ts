@@ -28,6 +28,11 @@ export function phraseTrajectoire(t: Trajectoire, phase: PhaseExamen): string {
     const n = t.seances_de_plus_par_semaine
     return tn("traj.plus", n, variables)
   }
+  // La cible entière n'est plus à portée. Plutôt qu'un verdict (« Le temps manque pour tout », lu par un élève actif à
+  // six mois de l'examen : audit des accueils, 2026-11-21), le pas suivant : ce qu'une séance de plus par semaine
+  // ajoute, calculé par le serveur au même rendement (voir quiz.accueil.trajectoire). Sans gain lisible, l'ancien texte.
+  const plus = t.plan?.une_seance_de_plus ? pourcent(t.plan.une_seance_de_plus.couverture_projetee) : null
+  if (plus !== null && plus > projetee) return tr("traj.un_pas", { ...variables, plus })
   return tr("traj.temps_manque", variables)
 }
 

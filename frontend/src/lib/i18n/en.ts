@@ -211,6 +211,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "seance.frequence_other": "Came up in {n} of {total} papers",
   "seance.debloquer": "Unlock my session",
   "seance.acces_termine": "Your access ended on {date}. Renew it to pick up your session again.",
+  "seance.reabonner": "Renew my access",
+  "seance.prix_abonnement": "{prix} FCFA a month, by Mobile Money (Orange or MTN), no commitment.",
   "seance.commencer": "Start",
   "seance.bouton_etape": "{verbe}: {action}",
   "seance.reprendre": "Resume",
@@ -525,6 +527,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "oujensuis.travailles_one": "worked on",
   "oujensuis.travailles_other": "worked on",
   "oujensuis.sur_themes": "out of {e} topics",
+  "oujensuis.intacte_one": "{n} topic · start with this one",
+  "oujensuis.intacte_other": "{n} topics · start with the one that comes up most",
   "oujensuis.aujourdhui_debut": "today",
   "oujensuis.a_decouvrir": "To discover",
   "oujensuis.part_examen": "of what really comes up in the exam ·",
@@ -635,6 +639,8 @@ export const en: Partial<Record<CleI18n, string>> = {
     "At this pace{rythme}, you'll cover {pct}% of the essentials by exam day. One more session a week and you're there.",
   "traj.plus_other":
     "At this pace{rythme}, you'll cover {pct}% of the essentials by exam day. {n} more sessions a week and you're there.",
+  "traj.un_pas":
+    "At this pace{rythme}, you'll cover {pct}% of the essentials by exam day. With one more session a week, you get to {plus}%.",
   "traj.temps_manque":
     "At this pace{rythme}, you'll cover {pct}% of the essentials by exam day. There isn't time for everything: aim for what comes up most.",
   "traj.rythme_one": "{texte} session a week",

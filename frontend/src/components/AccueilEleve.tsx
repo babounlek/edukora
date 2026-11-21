@@ -393,7 +393,9 @@ function RangeeReprise({ tentative, defi }: { tentative: TentativeInediteListIte
         <span className="block text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {t("abonne.inedite_en_cours")}
         </span>
-        <span className="line-clamp-2 text-sm font-medium">{tentative.epreuve_titre}</span>
+        {/* Trois lignes : à 375 px, à côté de « Reprendre », « Mini-inédite Mathématiques BEPC n°2 » en demande trois ;
+            sur deux, la matière restait mais l'examen et le numéro étaient coupés (audit des accueils, 2026-11-21). */}
+        <span className="line-clamp-3 text-sm font-medium">{tentative.epreuve_titre}</span>
         {defi && <span className="block text-xs text-muted-foreground">{mentionDefi(defi)}</span>}
       </span>
       <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>

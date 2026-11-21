@@ -23,9 +23,16 @@ import { localeCourante, t, useI18n } from "@/lib/i18n"
 export function CompteAReboursBadge({
   className,
   variant = "texte",
+  examenACote = false,
 }: {
   className?: string
   variant?: "texte" | "pilule"
+  /**
+   * L'examen est déjà écrit juste à côté (pastille de l'en-tête, sélecteur de la carte « première séance ») : on ne le
+   * répète pas. Un compte sans abonnement lisait « BAC C · vers mai 2027 » puis « BAC C », la seconde pastille réduite
+   * à « B. » faute de place (audit des accueils, 2026-11-21).
+   */
+  examenACote?: boolean
 }) {
   // Abonne le badge au changement de langue : formatCompteARebours lit la langue courante.
   useI18n()
@@ -49,7 +56,7 @@ export function CompteAReboursBadge({
       title={titreDetaille(decompte.cursus, decompte.compte)}
     >
       {/* Un visiteur a déjà son examen dans la pastille juste à côté (PastilleExamen) : on ne le répète pas. */}
-      {decompte.visiteur ? texte : `${formatCursus(decompte.cursus)} · ${texte}`}
+      {decompte.visiteur || examenACote ? texte : `${formatCursus(decompte.cursus)} · ${texte}`}
     </span>
   )
 }

@@ -194,7 +194,7 @@ function EnTete({ cursus }: { cursus: Cursus }) {
           <ChevronDown className="size-4 opacity-70" aria-hidden="true" />
         </button>
       </SelecteurExamen>
-      <CompteAReboursBadge variant="pilule" />
+      <CompteAReboursBadge variant="pilule" examenACote />
     </div>
   )
 }

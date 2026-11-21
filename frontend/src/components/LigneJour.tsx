@@ -97,7 +97,7 @@ export function LigneJour({ etat, serie }: { etat: EtatXp; serie: SerieDeJours }
                 aria-label={`${noms[i]}, ${jour.fait ? t("ligne.travaille") : jour.aujourdhui ? t("ligne.aujourdhui_pas_encore") : t("ligne.non_travaille")}`}
                 title={noms[i]}
                 className={cn(
-                  "flex size-5 items-center justify-center rounded-full border text-[0.6rem] font-semibold",
+                  "flex size-6 items-center justify-center rounded-full border text-xs font-semibold",
                   jour.fait ? "border-gold/50 bg-gold/20 text-gold-text" : "border-border bg-card text-muted-foreground",
                   jour.aujourdhui && !jour.fait && "border-dashed border-primary/60",
                 )}
