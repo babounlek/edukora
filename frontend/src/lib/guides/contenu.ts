@@ -1,6 +1,6 @@
 import {
   texteAideCours, texteAideExercice, texteAideSeance, texteBienvenueEtapes, texteBienvenueSeance,
-  texteDecouverteContenu, titreBienvenueEtapes,
+  texteDecouverteAbonnement, titreBienvenueEtapes,
 } from "./textes"
 import type { DefinitionGuide, EtapeGuide } from "./types"
 
@@ -86,10 +86,11 @@ export const GUIDES: readonly DefinitionGuide[] = [
     ],
   },
   {
-    // Un élève connecté SANS abonnement : sa séance est verrouillée, il n'y a pas de bouton « Commencer »
-    // mais un bouton qui explique comment l'ouvrir. Même rôle que la bienvenue, texte adapté.
+    // Un élève connecté SANS abonnement : sa page ouvre sur une séance gratuite, la séance complète du jour est
+    // fermée dessous (voir AccueilDecouverte). Même rôle que la bienvenue, texte adapté.
+    // Version 2 : étapes réécrites le 2026-11-21 (ce qui est gratuit, puis ce que l'abonnement ajoute et son prix).
     id: "bienvenue-decouverte",
-    version: 1,
+    version: 2,
     type: "parcours",
     titre: "guide.decouverte.titre",
     description: "guide.decouverte.description",
@@ -98,21 +99,25 @@ export const GUIDES: readonly DefinitionGuide[] = [
     cheminRelance: "accueil",
     contextePage: "seance",
     route: estAccueilCatalogue,
-    condition: (contexte) => contexte.ciblePresente("seance-debloquer"),
+    // Ce qu'il peut faire d'abord, ce que l'abonnement ajoute ensuite. Les trois phrases d'avant décrivaient la
+    // porte fermée (« Elle reste fermée tant que tu n'es pas abonné ») sans dire ce qui est gratuit, ni le prix
+    // (audit des accueils, 2026-11-21). Chaque étape est sautée si sa cible n'est pas à l'écran : séances
+    // gratuites toutes jouées, ou séance verrouillée d'un abonné qui regarde un autre examen.
+    condition: (contexte) => contexte.ciblePresente("seance-gratuite") || contexte.ciblePresente("seance-debloquer"),
     etapes: [
       ETAPE_INTERET,
       {
-        id: "verrouillee",
-        titre: "guide.decouverte.seance.titre",
-        texte: "guide.decouverte.seance.texte",
-        cible: "seance-debloquer",
+        id: "gratuit",
+        titre: "guide.decouverte.gratuit.titre",
+        texte: "guide.decouverte.gratuit.texte",
+        cible: "seance-gratuite",
         cibleObligatoire: true,
       },
       {
-        id: "contenu",
-        titre: "guide.decouverte.contenu.titre",
-        texte: texteDecouverteContenu,
-        cible: "seance-parcours",
+        id: "abonnement",
+        titre: "guide.decouverte.abonnement.titre",
+        texte: texteDecouverteAbonnement,
+        cible: "seance-debloquer",
         cibleObligatoire: true,
       },
     ],

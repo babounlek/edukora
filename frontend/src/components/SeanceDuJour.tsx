@@ -8,11 +8,10 @@ import {
 } from "lucide-react"
 
 import {
-  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getPlanDuJour, listMySubscriptions,
+  ajusterDureeSeance, continuerSeanceDuJour, definirObjectifMatiere, getAccueil, listMySubscriptions,
   proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour,
 } from "@/api/endpoints"
 import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
-import { useAuth } from "@/context/AuthContext"
 import { BoutonParents } from "@/components/BoutonParents"
 import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Button } from "@/components/ui/button"
@@ -26,7 +25,6 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
 import { cn, formatAmount } from "@/lib/utils"
 import { langueCourante, localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
-import { Ecrin } from "@/components/Progression"
 import { LienAide } from "@/components/aide/LienAide"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 
@@ -60,43 +58,123 @@ function BandeauAccesTermine({ expiresAt }: { expiresAt: string }) {
 }
 
 /**
- * "Aujourd'hui : Limites de fonctions - 25 min" : une seule chose à faire, et un seul
- * bouton pour la commencer.
+ * La séance complète du jour, FERMÉE, en version courte : le second étage de l'accueil d'un élève connecté sans
+ * abonnement (voir AccueilDecouverte), sous la séance gratuite qu'il peut faire.
  *
- * C'est le cœur du passage de bibliothèque à coach. Tout le reste de l'accueil (hero,
- * rails, catalogue) continue d'exister DESSOUS, inchangé - ce bloc s'ajoute en tête,
- * il ne remplace rien : `/cm` reste la page la plus indexée du site et doit rester
- * riche pour un visiteur anonyme comme pour un robot.
- *
- * Silencieusement absent pour qui n'a pas déclaré de cursus, dont l'examen est passé,
- * ou dont le cursus n'a rien d'exploitable : un bloc vide serait pire que pas de bloc.
+ * Avant, cette séance verrouillée était la première chose de sa page, en grand, et ce qu'il pouvait faire gratuitement
+ * se trouvait deux écrans plus bas, sous un autre thème (audit des accueils, 2026-11-21). Ici elle dit seulement ce que
+ * l'abonnement ajoute, avec les faits qui la rendent crédible (le thème, sa fréquence à l'examen, les trois temps de
+ * la séance), le prix, et un seul bouton. Pour un ancien abonné : la date de fin, ce qui l'attend, et le réabonnement
+ * du bon profil.
  */
-export function SeanceDuJour({ country }: { country: string }) {
-  const { isAuthenticated } = useAuth()
+export function SeanceCompleteVerrouillee({ plan }: { plan: PlanDuJour }) {
+  useI18n()
+  const seance = plan.seance as Seance
+  const accesEchu = useAccesEchu(true)
+  const libelleDeblocage = accesEchu ? t("seance.reabonner") : t("seance.debloquer")
+  const lienDeblocage = accesEchu ? `/abonnement?cursus=${accesEchu.cursus.id}&profil=${accesEchu.profil.id}` : "/tarifs"
+  const phases = PHASES.filter((phase) => seance.etapes.some((e) => e.type === phase.cle))
 
-  const { data } = useQuery({
-    queryKey: ["plan-du-jour"],
-    queryFn: ({ signal }) => getPlanDuJour(signal),
-    enabled: isAuthenticated,
+  // Ce que la carte montre, publié pour le tutoriel de ce public (voir lib/guides/textes.ts).
+  usePublierContextePage("seance", {
+    bouton: libelleDeblocage,
+    phases: phases.map((phase) => t(phase.titre)),
+    quiz: phases.some((phase) => phase.cle === "quiz"),
+    quizExpress: false,
+    verrouillee: true,
   })
 
-  if (!isAuthenticated || !data || !seanceAffichable(data)) return null
-
   return (
-    <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6">
-      <Ecrin>
-        <SeanceCorps plan={data} country={country} />
-      </Ecrin>
-    </section>
+    <div>
+      <h2 className="font-display">
+        <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <Lock className="size-3.5" aria-hidden="true" />
+          {t("decouverte.complete")}
+          <span className="font-medium normal-case tracking-normal">{t("decouverte.complete_abonnement")}</span>
+        </span>
+        <span className="mt-1.5 block text-xl font-semibold leading-tight tracking-tight sm:text-2xl">
+          {majuscule(titreDeLaSeance(seance))}
+        </span>
+      </h2>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {seance.subject && <PastilleMatiere code={seance.subject.code} label={seance.subject.label} />}
+        <Pastille icone={Clock}>{seance.duree_estimee_min} min</Pastille>
+        {seance.frequence && <PastilleFrequence frequence={seance.frequence} onBascule={() => {}} />}
+      </div>
+      {/* Les trois temps de la séance, sur une ligne : ce que l'abonnement ouvre, sans le parcours détaillé. */}
+      {phases.length > 0 && (
+        <ol data-guide="seance-parcours" className="mt-3 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-sm text-muted-foreground">
+          {phases.map((phase, i) => (
+            <li key={phase.cle} className="flex items-center gap-1.5">
+              {i > 0 && <ArrowRight className="size-3.5 text-muted-foreground/60" aria-hidden="true" />}
+              <span className="font-medium text-foreground">{t(phase.titre)}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+      <RaisonsSeance seance={seance} sansRaisonsDites={false} />
+
+      {accesEchu && <BandeauAccesTermine expiresAt={accesEchu.expires_at} />}
+      {accesEchu && <CeQuiAttend />}
+
+      <div className="mt-5 flex flex-wrap items-center gap-3">
+        <Button asChild size="lg" className="h-12 rounded-full px-7 text-base">
+          <Link data-guide="seance-debloquer" to={lienDeblocage} onClick={() => trackEvent("plan_verrouille_clic")}>
+            <Lock className="size-4" />
+            {libelleDeblocage}
+          </Link>
+        </Button>
+        <p className="basis-full text-sm text-muted-foreground">
+          {t("seance.prix_abonnement", { prix: formatAmount(PRIX_MOIS_FCFA) })}
+        </p>
+        <BoutonParents contenu={t("parents.contenu_seance")} className="h-11 rounded-full px-5" />
+        <LienAide slug="seance-verrouillee">{t("aide.lien.verrouille")}</LienAide>
+      </div>
+    </div>
   )
 }
 
 /**
+ * Ce qu'un ancien abonné a construit et retrouve en se réabonnant : ses thèmes en révision, ses thèmes maîtrisés, ses
+ * erreurs à refaire. Des faits à lui, jamais un reproche, et rien quand il n'y a rien à dire. Les chiffres sont ceux
+ * de l'accueil d'un abonné (voir quiz.accueil), demandés seulement ici.
+ */
+function CeQuiAttend() {
+  const { data } = useQuery({
+    queryKey: ["accueil-ancien-abonne"],
+    queryFn: ({ signal }) => getAccueil(signal),
+    staleTime: 5 * 60_000,
+  })
+  if (!data) return null
+  const somme = (cle: "en_revision" | "maitrises") => data.resume.reduce((total, matiere) => total + matiere[cle], 0)
+  const enRevision = somme("en_revision")
+  const maitrises = somme("maitrises")
+  const erreurs = data.erreurs_total ?? 0
+  const elements = [
+    enRevision > 0 ? tn("decouverte.attend_revision", enRevision) : null,
+    maitrises > 0 ? tn("decouverte.attend_maitrises", maitrises) : null,
+    erreurs > 0 ? tn("decouverte.attend_erreurs", erreurs) : null,
+  ].filter((element): element is string => element !== null)
+  if (elements.length === 0) return null
+  return (
+    <p className="mt-3 flex items-start gap-2 text-sm">
+      <RotateCcw className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+      <span>{t("decouverte.attend", { liste: enumerer(elements) })}</span>
+    </p>
+  )
+}
+
+/** « a », « a et b », « a, b et c » dans la langue de l'interface. */
+function enumerer(elements: string[]): string {
+  return new Intl.ListFormat(langueCourante(), { style: "long", type: "conjunction" }).format(elements)
+}
+
+/**
  * Le corps de la séance - à faire ou faite, avec ses actions - sans la carte qui
- * l'entoure. Partagé entre la vitrine (SeanceDuJour, ci-dessus, dans son Ecrin) et
- * l'accueil d'un abonné (TeteAccueil, où il vit sous le bandeau du coach) : une seule
- * implémentation des mutations, pour que "Commencer", "Propose-moi autre chose" et
- * "J'ai fini" se comportent pareil des deux côtés.
+ * l'entoure. Rendu par l'accueil d'un abonné (TeteAccueil, où il vit sous le bandeau du
+ * coach). Il vivait aussi dans la vitrine, pour un élève connecté sans abonnement, qui a
+ * maintenant sa propre carte (voir SeanceCompleteVerrouillee, ci-dessus). La séance peut
+ * encore y être verrouillée : un compte abonné à un examen qui en regarde un autre.
  *
  * `secondaire` : une action de second rang à côté de "Commencer" (l'annale en
  * conditions d'examen, à un mois du jour J - voir TeteAccueil).

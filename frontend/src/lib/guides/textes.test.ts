@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "vitest"
 import { definirLangue } from "@/lib/i18n"
 import {
   texteAideCours, texteAideExercice, texteAideSeance, texteBienvenueEtapes, texteBienvenueSeance,
-  texteDecouverteContenu, titreBienvenueEtapes,
+  texteDecouverteAbonnement, titreBienvenueEtapes,
 } from "./textes"
 
 afterEach(async () => {
@@ -34,7 +34,11 @@ describe("textes dynamiques : ce que la page montre", () => {
     expect(texteBienvenueSeance(undefined)).toContain("ce bouton")
     expect(titreBienvenueEtapes(undefined)).toBe("Les étapes de ta séance")
     expect(texteBienvenueEtapes(undefined)).toContain("Comprendre le cours")
-    expect(texteDecouverteContenu(undefined)).toContain("Comprendre le cours")
+    expect(texteDecouverteAbonnement(undefined)).toContain("le cours, un exercice tombé à l'examen, puis le quiz")
+    // Le prix est dit dans le tutoriel de l'élève sans abonnement, avec ou sans parcours publié par la page.
+    expect(texteDecouverteAbonnement(undefined)).toContain("2 000 FCFA par mois")
+    expect(texteDecouverteAbonnement({ phases: ["Comprendre", "Vérifier"], verrouillee: true }))
+      .toContain("Comprendre → Vérifier. 2 000 FCFA par mois")
     expect(texteAideCours(undefined)).toContain("règle à retenir")
     expect(texteAideExercice(undefined)).toContain("Essaie d'abord")
   })

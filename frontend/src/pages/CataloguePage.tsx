@@ -37,7 +37,7 @@ import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { useCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
-import { SeanceDuJour } from "@/components/SeanceDuJour"
+import { AccueilDecouverte } from "@/components/AccueilDecouverte"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
@@ -96,14 +96,18 @@ const MATIERES_VEDETTE = [/^MATH/, /^FRAN/]
 
 /**
  * La page vitrine : le hero, les chiffres, l'exemple de corrigé, les inédites, la
- * preuve sociale. Ce que voient un visiteur anonyme, un robot d'indexation, et un
- * élève qui n'a pas encore d'abonnement - c'est pour ce dernier sa page de
- * conversion, la lui retirer coûterait des abonnements.
+ * preuve sociale. Ce que voient un visiteur anonyme et un robot d'indexation.
+ *
+ * `decouverte` : un élève connecté qui n'a pas encore d'abonnement. C'est toujours sa page de conversion, mais plus
+ * celle d'un inconnu : sa carte « Aujourd'hui » (voir AccueilDecouverte) remplace le hero, et il ne garde de la vitrine
+ * que les preuves (extrait de corrigé, épreuve inédite de son examen, avis) et le rappel du prix. La promesse,
+ * « Comment ça marche », le bloc parent et les questions fréquentes ne lui sont plus montrés (audit des accueils,
+ * 2026-11-21 : 8,2 écrans, la seule action possible au troisième).
  *
  * Un élève ABONNÉ voit AccueilEleve à la place (voir CataloguePage en bas de
  * fichier) : plus aucun argumentaire, seulement ses affaires.
  */
-function CatalogueVitrine() {
+function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
   // S'abonne au changement de langue : les `t(...)` ci-dessous se relisent à chaque bascule.
   useI18n()
   const { country } = useParams<{ country: string }>()
@@ -231,20 +235,26 @@ function CatalogueVitrine() {
   const examLevelsHero = examLevels.length > 0 ? examLevels.join(" · ") : langueDeListe("", false) === "en" ? "GCE O Level · GCE A Level" : "BEPC · Probatoire · BAC"
   const examLevelsProse = examLevels.length > 0 ? joinExamLevelsProse(examLevels) : t("accueil.examens_repli")
 
-  useSeo({
-    // Le titre porte ce que les élèves tapent dans Google ("corrigés BAC Cameroun"),
-    // jamais la promesse du produit - personne ne cherche "quoi réviser". C'est la
-    // description, affichée sous le titre dans les résultats, qui porte la promesse.
-    // "{examens} - {pays}" plutôt que "... au {pays}" : même raison que ci-dessous.
-    title: countryLabel
-      ? t("accueil.seo_titre_pays", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC", pays: countryLabel })
-      : t("accueil.seo_titre", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC" }),
-    // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
-    // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
-    description: countryLabel
-      ? t("accueil.seo_description", { pays: countryLabel, examens: examLevelsProse })
-      : undefined,
-  })
+  useSeo(
+    // Un élève connecté sans abonnement voit sa page « Aujourd'hui » (voir AccueilDecouverte) : même titre que celle
+    // d'un abonné, et jamais indexée - les robots n'ont pas de session, ils voient la vitrine.
+    decouverte
+      ? { title: t("accueil.seo_eleve"), description: t("accueil.seo_eleve_description"), noindex: true }
+      : {
+          // Le titre porte ce que les élèves tapent dans Google ("corrigés BAC Cameroun"),
+          // jamais la promesse du produit - personne ne cherche "quoi réviser". C'est la
+          // description, affichée sous le titre dans les résultats, qui porte la promesse.
+          // "{examens} - {pays}" plutôt que "... au {pays}" : même raison que ci-dessous.
+          title: countryLabel
+            ? t("accueil.seo_titre_pays", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC", pays: countryLabel })
+            : t("accueil.seo_titre", { examens: examLevels.length > 0 ? examLevels.join(", ") : "BEPC, Probatoire, BAC" }),
+          // "{pays} : ..." plutôt que "... au {pays}" - évite l'accord de genre de la
+          // préposition ("au Cameroun" vs "en Côte d'Ivoire") qui varie par pays.
+          description: countryLabel
+            ? t("accueil.seo_description", { pays: countryLabel, examens: examLevelsProse })
+            : undefined,
+        },
+  )
 
   if (hasLegacyFilters) {
     return <Navigate to={`${epreuvesListPath(country ?? "")}?${searchParams.toString()}`} replace />
@@ -254,11 +264,10 @@ function CatalogueVitrine() {
     // `accueil-vitrine` : repère lu par le tutoriel du visiteur, qui attend que cette page soit montée pour savoir si
     // la carte « première séance » est à l'écran (voir lib/guides/contenu.ts).
     <div data-guide="accueil-vitrine">
-      {/* La séance du jour passe AVANT le hero, et seulement pour un élève connecté
-          qui a déclaré son cursus (le composant décide seul de s'afficher). Le hero
-          reste dessous, intact : /cm est la page la plus indexée du site, elle doit
-          rester complète pour un visiteur anonyme comme pour un robot. */}
-      <SeanceDuJour country={country ?? ""} />
+      {/* Un élève connecté sans abonnement : sa carte « Aujourd'hui » (séance gratuite, points, séance complète
+          fermée) à la place du hero. La vitrine reste entière pour un visiteur comme pour un robot : /cm est la page
+          la plus indexée du site. */}
+      {decouverte && <AccueilDecouverte country={country ?? ""} />}
       {/* Reprise de lecture juste sous la séance du jour : pour qui revient, c'est l'action la
           plus probable de la page - groupée avec sa séance, AVANT la vitrine : tout
           ce qui lui est personnel en haut, l'argumentaire ensuite. Elle vivait tout en
@@ -297,6 +306,9 @@ function CatalogueVitrine() {
           </Link>
         </div>
       )}
+      {/* Le hero du visiteur : la promesse, la carte « première séance », les chiffres. Pas pour un élève connecté sans
+          abonnement, qui a sa carte au-dessus et connaît déjà la promesse (audit des accueils, 2026-11-21). */}
+      {!decouverte && (
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="absolute inset-0 opacity-[0.05]"
@@ -399,6 +411,7 @@ function CatalogueVitrine() {
           </div>
         )}
       </section>
+      )}
 
       {/* La promesse du H1 ("la méthode qui t'apprend à réussir") était affirmée,
           jamais montrée. Extrait réel d'un corrigé publié (voir EXEMPLES_CORRIGE),
@@ -451,7 +464,10 @@ function CatalogueVitrine() {
         </section>
       )}
 
-
+      {/* « Comment ça marche » s'adresse à qui ne connaît pas le produit : un élève connecté a déjà dit son examen et
+          sa carte lui montre la séance. Pour lui, seulement l'espace que cette section laissait avant les inédites. */}
+      {decouverte && <div aria-hidden="true" className="h-6" />}
+      {!decouverte && (
       <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
         {/* Le récit du plan, à la place d'une grille de quatre portes (Épreuves,
             Cours, Parcours, Quiz). Cette grille décrivait notre modèle de données -
@@ -499,6 +515,7 @@ function CatalogueVitrine() {
           </p>
         )}
       </section>
+      )}
 
       {/* Les épreuves inédites n'ont plus qu'une présentation sur cette page : l'encart ci-dessous, avec une vraie
           question (ou son repli compact). Le bandeau « Exclusif » et la carte « Tu te testes sur l'inconnu » qui les
@@ -605,11 +622,13 @@ function CatalogueVitrine() {
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
       <SocialProofSection fournis={accueil ? accueil.temoignages : null} />
 
-      {/* Le parent qui paie : voir SectionParents (audit du 2026-11-12, UX-03). */}
-      <SectionParents />
+      {/* Le parent qui paie : voir SectionParents (audit du 2026-11-12, UX-03). Pas pour un élève connecté : sa carte
+          porte « Montrer à mes parents », qui leur envoie le prix et le moyen de payer. */}
+      {!decouverte && <SectionParents />}
 
-      {/* Les questions qu'on se pose avant d'essayer : voir FaqAccueil (audit de l'accueil du 2026-11-15, R10). */}
-      <FaqAccueil />
+      {/* Les questions qu'on se pose avant d'essayer : voir FaqAccueil (audit de l'accueil du 2026-11-15, R10). Un élève
+          connecté a déjà essayé (« Faut-il créer un compte ? ») ; le centre d'aide reste dans l'en-tête. */}
+      {!decouverte && <FaqAccueil />}
 
       {/* Dernière section avant le footer (audit UX externe, 2026-09-04) : la page
           démontrait la valeur du produit (démo de corrigé, inédites, preuve sociale)
@@ -662,8 +681,9 @@ function CatalogueVitrine() {
  *                               robots, qui n'ont jamais de session : le contenu
  *                               indexé de la page la plus référencée du site ne
  *                               bouge pas) ;
- *   - élève SANS abonnement  -> la vitrine aussi, avec sa séance verrouillée en
- *                               tête : c'est sa page de conversion ;
+ *   - élève SANS abonnement  -> sa carte « Aujourd'hui » (séance gratuite, points,
+ *                               séance complète fermée), puis les preuves et le prix :
+ *                               c'est sa page de conversion (voir `decouverte`) ;
  *   - élève ABONNÉ           -> ses affaires, et rien d'autre.
  *
  * Le branchement vit ici, dans un composant qui n'appelle qu'un seul hook, et pas
@@ -678,17 +698,22 @@ function CatalogueVitrine() {
 export function CataloguePage() {
   const { isAuthenticated, isLoading, user } = useAuth()
   const { country } = useParams<{ country: string }>()
-  const abonne = Boolean(isAuthenticated && user?.cursus_prepare && user.a_un_abonnement_actif)
+  const aUnExamen = Boolean(isAuthenticated && user?.cursus_prepare)
+  const abonne = aUnExamen && Boolean(user?.a_un_abonnement_actif)
+  // Connecté, examen déclaré, pas d'abonnement en cours : la vitrine, mais avec sa carte « Aujourd'hui » à la place
+  // du hero et sans l'argumentaire écrit pour un inconnu (voir AccueilDecouverte).
+  const decouverte = aUnExamen && !abonne
 
-  // L'indice mémorisé annoncé plus haut (voir lib/indiceAccueil) : posé quand l'accueil de l'élève s'affiche, retiré dès
-  // que la session est connue et que ce n'est pas un abonné. Tant que la session se retrouve, un abonné probable voit
-  // un squelette et non la vitrine ; un visiteur ou un robot, qui n'ont jamais l'indice, voient la vitrine d'emblée.
+  // L'indice mémorisé annoncé plus haut (voir lib/indiceAccueil) : posé quand l'accueil d'un élève s'affiche, abonné ou
+  // non, retiré dès que la session est connue et que ce n'est pas un élève. Tant que la session se retrouve, un élève
+  // probable voit un squelette et non le hero du visiteur ; un visiteur ou un robot, qui n'ont jamais l'indice, voient
+  // la vitrine d'emblée.
   useEffect(() => {
-    if (abonne) marquerAccueilEleve()
+    if (aUnExamen) marquerAccueilEleve()
     else if (!isLoading) oublierAccueilEleve()
-  }, [abonne, isLoading])
+  }, [aUnExamen, isLoading])
 
   if (abonne) return <AccueilEleve country={country ?? ""} />
   if (isLoading && accueilEleveProbable()) return <SqueletteDePage />
-  return <CatalogueVitrine />
+  return <CatalogueVitrine decouverte={decouverte} />
 }

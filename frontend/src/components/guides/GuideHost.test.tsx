@@ -607,27 +607,54 @@ describe("mesure d'usage", () => {
   })
 })
 
-describe("élève non abonné : séance verrouillée", () => {
-  function PageVerrouillee() {
+describe("élève non abonné : séance gratuite, puis séance complète verrouillée", () => {
+  /** Les mêmes cibles que l'accueil d'un élève connecté sans abonnement (voir AccueilDecouverte). */
+  function PageDecouverte({ gratuite = true }: { gratuite?: boolean }) {
     return (
       <main>
-        <a href="#debloquer" data-guide="seance-debloquer">Débloquer la séance</a>
-        <div data-guide="seance-parcours">Ton parcours</div>
+        {gratuite && <button type="button" data-guide="seance-gratuite">Commencer</button>}
+        <PublierContexte
+          cle="seance"
+          contexte={{ bouton: "Débloquer ma séance", phases: TROIS_PHASES, quiz: true, quizExpress: false, verrouillee: true }}
+        />
+        <a href="#debloquer" data-guide="seance-debloquer">Débloquer ma séance</a>
       </main>
     )
   }
 
-  it("reçoit la bienvenue de découverte, pas celle qui parle du bouton « Commencer »", async () => {
-    render(
+  function monterDecouverte(props: { gratuite?: boolean } = {}) {
+    return render(
       <MemoryRouter initialEntries={["/cm"]}>
-        <PageVerrouillee />
+        <PageDecouverte {...props} />
         <GuideHost />
       </MemoryRouter>,
     )
+  }
+
+  it("dit d'abord ce qui est gratuit, puis ce que l'abonnement ajoute et son prix", async () => {
+    monterDecouverte()
     expect(await screen.findByText("Bienvenue sur EduKora")).toBeInTheDocument()
+    expect(screen.getByText("Étape 1 sur 3")).toBeInTheDocument()
+
     fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
-    expect(screen.getByText("Ta séance du jour t'attend")).toBeInTheDocument()
+    expect(screen.getByText("Ta séance gratuite")).toBeInTheDocument()
+    expect(screen.getByText(/Ce bouton lance un quiz gratuit/)).toBeInTheDocument()
+    expect(document.querySelector('[data-guide="seance-gratuite"]')).toHaveAttribute("data-guide-actif", "true")
+
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    expect(screen.getByText("Ce que l'abonnement ajoute")).toBeInTheDocument()
+    expect(screen.getByText(/Comprendre → S'entraîner → Vérifier\. 2 000 FCFA par mois, par Mobile Money\./)).toBeInTheDocument()
     expect(document.querySelector('[data-guide="seance-debloquer"]')).toHaveAttribute("data-guide-actif", "true")
+    // Plus de phrase sur la porte fermée.
+    expect(screen.queryByText(/Elle reste fermée/)).toBeNull()
+  })
+
+  it("séances gratuites toutes jouées : l'étape « gratuit » est sautée", async () => {
+    monterDecouverte({ gratuite: false })
+    expect(await screen.findByText("Bienvenue sur EduKora")).toBeInTheDocument()
+    expect(screen.getByText("Étape 1 sur 2")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Suivant" }))
+    expect(screen.getByText("Ce que l'abonnement ajoute")).toBeInTheDocument()
   })
 })
 

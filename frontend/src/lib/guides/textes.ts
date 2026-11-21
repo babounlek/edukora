@@ -1,4 +1,6 @@
 import { t } from "@/lib/i18n"
+import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
+import { formatAmount } from "@/lib/utils"
 import type { ContextePage } from "./contextePage"
 
 /**
@@ -71,10 +73,13 @@ export function texteBienvenueEtapes(page: ContextePage | undefined): string {
   return p.quiz ? `${base} ${t("guide.seance.dyn.quiz_valide")}` : base
 }
 
-/** Découverte (séance verrouillée) : ce que l'abonnement ouvre, d'après le parcours affiché. */
-export function texteDecouverteContenu(page: ContextePage | undefined): string {
+/** Découverte (élève connecté sans abonnement) : ce que l'abonnement ajoute, d'après le parcours affiché, et son prix. */
+export function texteDecouverteAbonnement(page: ContextePage | undefined): string {
   const { phases } = (page ?? {}) as PageSeance
-  return phases?.length ? t("guide.decouverte.contenu.dyn", { parcours: parcours(phases) }) : t("guide.decouverte.contenu.texte")
+  const prix = formatAmount(PRIX_MOIS_FCFA)
+  return phases?.length
+    ? t("guide.decouverte.abonnement.dyn", { parcours: parcours(phases), prix })
+    : t("guide.decouverte.abonnement.texte", { prix })
 }
 
 export function texteAideCours(page: ContextePage | undefined): string {

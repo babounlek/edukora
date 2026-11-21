@@ -169,8 +169,8 @@ describe("peutDeclencherAuto", () => {
 
   it("le tutoriel de l'élève ne se rejoue pas pour qui a déjà terminé une séance", () => {
     // Nouvel appareil, mémoire des guides vide : sans le repère, un abonné de longue date revoyait « Bienvenue ».
-    // Un abonné : le bouton de la séance est là, pas celui de la séance verrouillée.
-    const installe = contexteEleve({ ciblePresente: (nom) => nom !== "seance-debloquer" })
+    // Un abonné : le bouton de la séance est là, ni la séance gratuite ni la séance verrouillée d'un élève sans abonnement.
+    const installe = contexteEleve({ ciblePresente: (nom) => nom !== "seance-debloquer" && nom !== "seance-gratuite" })
     expect(peutDeclencherAuto(bienvenue, installe, situation())).toBe(false)
     expect(guideAutomatique(installe, situation())).toBeNull()
     // Et l'aide de la séance ne prend pas sa place.

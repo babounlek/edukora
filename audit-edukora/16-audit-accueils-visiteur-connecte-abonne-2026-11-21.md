@@ -258,3 +258,54 @@ Vérifié à l'écran sur l'image `caddy` reconstruite : visiteur (première vis
 
 ### Déploiement
 Rebuild de `caddy` seul.
+
+## 12. Lot 2 codé (2026-11-21, en local, non committé, non déployé)
+
+Décision de l'utilisateur du 2026-11-21 : coder le lot 2, la page du connecté sans abonnement. Frontend seul : le serveur donnait déjà tout (plan du jour, points, niveau, série, erreurs, révisions) à un compte sans abonnement. Aucune migration.
+
+| Mesure, compte `[TEST] Élève sans abonnement`, mobile 375 x 812 | À l'audit | Après le lot 2 |
+|---|---|---|
+| Première chose de la page | Séance verrouillée, « Débloquer ma séance » | « Bonjour Test · BAC C », puis sa séance gratuite |
+| Bouton « Commencer » (la seule action gratuite) | 1 654 px du haut, 3e écran | 395 px, premier écran |
+| Séances proposées | 2 qui se contredisent | 1 gratuite à faire, 1 complète fermée dessous |
+| Ses points, son niveau, sa semaine | Absents | Sous le bouton (« 2 points · objectif 50 » après une réponse) |
+| Premier prix | 1 775 px | 960 px, sous « Débloquer ma séance » |
+| Page entière | 6 638 px (8,2 écrans) | 4 220 px (5,2 écrans), dont 983 px de pied de page |
+| Titre de la page | « Corrigés BEPC, Probatoire, BAC - Cameroun » | « Aujourd'hui » |
+| Bureau 1 366 x 800 | Carte verrouillée sur tout le premier écran | Les deux étages et le prix dans le premier écran |
+
+| ID | Ce qui est en place | Où |
+|---|---|---|
+| N1 | Une carte « Aujourd'hui » : la salutation, l'examen (qu'il peut changer) et le compte à rebours ; puis « Ta séance gratuite · 1 sur 10 », le thème gratuit suivant de son examen, lancée en un toucher. C'est le seul bouton plein du premier écran. Toutes jouées : il le lit, peut en refaire une. | `components/AccueilDecouverte.tsx` |
+| N1 | Dessous, dans la même carte : « La séance complète du jour · avec l'abonnement », en version courte (thème, fréquence, « Comprendre → S'entraîner → Vérifier », deux raisons), le bouton, le prix, « Montrer à mes parents ». | `SeanceCompleteVerrouillee` dans `components/SeanceDuJour.tsx` |
+| N3 | Pour ce public, la page ne garde de la vitrine que la reprise de lecture, l'extrait de corrigé de son examen, l'épreuve inédite de son examen, les avis et « Prêt à commencer ? ». Le hero, les chiffres, « Comment ça marche », « Tu es parent ? » et les questions fréquentes ne lui sont plus montrés. La vitrine du visiteur et des robots est inchangée. | `pages/CataloguePage.tsx` (`decouverte`) |
+| N4 | Ses points du jour, son niveau, sa série et sa semaine, par le même composant que chez l'abonné. Un quiz commencé se reprend en tête de page (« Quiz en cours · 1 / 6 répondues »). | `AccueilDecouverte.tsx` (`LigneJour`, `ReprendreQuiz`) |
+| N6 | Ancien abonné : la date de fin, « Tu retrouves ce que tu as construit : 12 thèmes en révision, 3 thèmes maîtrisés et 18 erreurs à refaire. » quand il y a de quoi dire, et un seul bouton « Me réabonner » vers le bon profil. Les chiffres viennent de `/quiz/accueil/`, demandé seulement pour lui. | `SeanceCompleteVerrouillee`, `CeQuiAttend` |
+| N7 | Tutoriel réécrit, en trois étapes : la bienvenue, « Ta séance gratuite » sur le bouton « Commencer », « Ce que l'abonnement ajoute » sur le bouton « Débloquer », avec le prix. Version 2 : il sera reproposé une fois à qui avait vu l'ancien. | `lib/guides/contenu.ts`, `lib/guides/textes.ts`, textes |
+| D6 | « Ta première séance » et « sans compte » ne sont plus dits à un connecté. | `AccueilDecouverte.tsx` |
+| - | Pendant que la session se retrouve, un élève connecté, abonné ou non, voit un squelette et non le hero du visiteur. | `pages/CataloguePage.tsx` (indice `edukora:accueil-eleve`) |
+| - | Nouvelle valeur de mesure : `accueil_bouton_clic` avec `cible: seance_gratuite`, distincte de `premiere_seance` (visiteur). Répond à la ligne 2 du tableau « À mesurer » de la section 8. | `AccueilDecouverte.tsx` ; commentaire dans `backend/analytics/models.py` |
+
+Tests : 1 714 tests frontend au vert, contrôle des types sans erreur. Huit tests de plus qu'après le lot 1 : sept pour la nouvelle page (séance gratuite lancée, points et séance complète avec prix, matière suivante, tour fait, ancien abonné avec et sans historique, plan sans séance), et le test du tutoriel de ce public remplacé par deux (les trois étapes avec le prix ; l'étape « gratuit » sautée quand tout est joué). Deux autres tests des guides adaptés.
+
+Vérifié à l'écran sur l'image `caddy` reconstruite : compte sans abonnement en mobile et sur bureau, tutoriel rejoué en vrais clics (cibles amenées à l'écran, carte non décalée), « Commencer » qui ouvre la question 1 sur 6, retour avec la ligne « Quiz en cours » et les points à jour, compte expiré, puis visiteur et profil Guyguy pour contrôle : inchangés (5 579 px et 3 493 px).
+
+### Écarts par rapport à la recommandation
+- **N1 : le titre est « Ta séance gratuite · 1 sur 10 », pas « Ta séance gratuite d'aujourd'hui ».** Les séances gratuites sont une liste finie, une par matière : elles avancent quand on en joue une, pas chaque jour. Le nom ne promet pas une nouveauté quotidienne.
+- **N3 : 5,2 écrans, pas 3 à 4.** Le pied de page pèse 983 px ; le contenu propre fait 4 écrans. « Tu es parent ? » est retiré en entier plutôt que réduit : « Montrer à mes parents » est dans la carte.
+- **N4 : « 3 sur 10 séances faites » se lit dans le titre de la carte** (« · 4 sur 10 »), pas dans une ligne à part. Ce compte reste gardé sur l'appareil, comme pour le visiteur : sur un autre téléphone il repart de 1.
+- **N5 non fait** (laisser ouverte la première étape de la séance complète) : c'est une décision de produit, toujours en attente.
+- **N6 : non vu à l'écran avec des chiffres.** Le compte de test expiré n'a aucun historique ; la phrase est couverte par deux tests, pas par une capture.
+
+### Décisions prises en codant, à valider
+- **La séance complète est montrée en version courte** : plus de parcours détaillé à trois cartes, plus de « Avec l'abonnement, tu choisis la durée », plus de « Un devoir bientôt ? Me concentrer sur une matière » (réglage inutile sur une séance fermée, constat C6).
+- **Deux liens gratuits sous la carte** : « Lire un corrigé gratuit » et « Les thèmes qui tombent le plus à ton examen ». Ils étaient dans le hero retiré.
+- **Le tutoriel passe en version 2**, donc se rejoue une fois pour un élève sans abonnement qui avait fermé l'ancien.
+- **L'ancienne carte verrouillée en grand reste dans le code** pour un seul cas : un compte abonné à un examen qui en regarde un autre.
+
+### Vu en passant, non traité
+- En base locale, le quiz gratuit de mathématiques du BAC C est fait de six questions à rédiger (« garde un brouillon ») : c'est la première chose que lance le bouton « Commencer ». La base locale est en retard sur la production pour les questions à choix (noté le 2026-11-17) : à contrôler en production avant de juger.
+- Avec un quiz gratuit en cours sur le thème de la carte, « Commencer » et « Reprendre » coexistent. Non étudié : ce que fait le serveur d'un second lancement du même thème.
+
+### Déploiement
+Rebuild de `caddy` seul. Le changement de `backend/analytics/models.py` est un commentaire.
