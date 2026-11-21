@@ -2171,6 +2171,12 @@ class RevisionsDuesApiTests(TestCase):
             profil=self.profil, cursus=self.cursus, subject=self.subject, theme=self.theme,
             due_at=timezone.localdate(),
         )
+        # La matière se passe bien à cet examen (une révision naît d'un item de quiz) : c'est ce qui rattache un cours
+        # sans source à l'examen (voir q_cours_du_cursus).
+        _make_competence_item(
+            self.subject, self.cursus, theme=self.theme, numero="1",
+            type_reponse=TypeReponse.QCM, choix=[{"lettre": "a", "texte": "x"}], reponse_correcte="a",
+        )
         cours = _make_cours(self.subject, cursus=None, tags=[self.theme], titre="Notion commune")
 
         response = self.client.get("/quiz/revisions/")

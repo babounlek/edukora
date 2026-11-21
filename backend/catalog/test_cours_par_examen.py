@@ -91,6 +91,32 @@ class CoursParExamenTests(TestCase):
             self.assertEqual(pastille, liste, cursus.examen)
             self.assertGreater(liste, 0)
 
+    def test_un_cours_sans_source_d_une_matiere_absente_de_l_examen_n_y_est_pas_propose(self):
+        """Régression : « Réseaux », « Systèmes d'information »... (cours de BAC sans épreuve source) remontaient dans
+        les pastilles du BEPC. Un cours sans source n'est proposé qu'aux examens où sa matière a du contenu."""
+        reseaux = Subject.objects.create(
+            country=self.maths.country, code="RESEAUX_TEST", label="Réseaux test", langue=self.maths.langue,
+        )
+        orphelin = Cours.objects.create(
+            external_id="ext-reseaux", titre="Adressage IP", subject=reseaux, statut=StatutContenu.VALIDE,
+        )
+        lesson_bac = Lesson.objects.create(
+            title="Réseaux BAC C", subject=reseaux, year=2024, lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE, origine=Origine.OFFICIEL,
+        )
+        lesson_bac.cursus.add(self.bac_c)
+
+        self.assertNotIn(orphelin.titre, self._titres(cursus=self.bepc.id))
+        self.assertIn(orphelin.titre, self._titres(cursus=self.bac_c.id))
+        codes_bepc = {
+            m["code"]
+            for m in self.client.get(
+                reverse("catalog:subject-list"), {"country": "cm", "cursus": self.bepc.id, "langue": "fr"},
+            ).json()
+        }
+        self.assertNotIn("RESEAUX_TEST", codes_bepc)
+        self.assertIn("MATHS", codes_bepc)
+
     def test_un_examen_du_gce_ne_propose_aucune_matiere_francaise_meme_avec_des_cours_sans_source(self):
         """Régression : un cours français sans épreuve source est proposé à tout examen ; ses matières ne doivent pas
         remonter sous un examen du GCE (558 « cours » dans les pastilles pour 119 dans la liste)."""

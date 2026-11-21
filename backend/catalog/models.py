@@ -1425,11 +1425,28 @@ def q_cours_du_cursus(cursus_ids):
     )
     source = RappelDeMethode.objects.filter(cours_id=models.OuterRef("pk"))
     source_inedite = RappelDeMethodeInedite.objects.filter(cours_id=models.OuterRef("pk"))
+    # Un cours sans aucune source n'a aucune lignée qui le situe : on le garde seulement si SA MATIÈRE se passe à cet
+    # examen (une épreuve, une inédite ou une banque de quiz y est publiée - même critère que
+    # quiz.matieres.matieres_disponibles). Sans cela, « Réseaux », « Systèmes d'information », « Philosophie »...
+    # remontaient dans les pastilles du BEPC (60 cours de BAC sans source proposés à tout examen).
+    CompetenceItem = apps.get_model("quiz", "CompetenceItem")
+    EpreuveInedite = apps.get_model("inedit", "EpreuveInedite")
+    matiere_de_l_examen = (
+        models.Q(models.Exists(Lesson.objects.filter(
+            subject_id=models.OuterRef("subject_id"), statut=StatutContenu.VALIDE, cursus__in=cursus_ids,
+        )))
+        | models.Q(models.Exists(EpreuveInedite.objects.filter(
+            subject_id=models.OuterRef("subject_id"), statut=StatutContenu.VALIDE, cursus__in=cursus_ids,
+        )))
+        | models.Q(models.Exists(CompetenceItem.objects.filter(
+            subject_id=models.OuterRef("subject_id"), statut=StatutContenu.VALIDE, cursus__in=cursus_ids,
+        )))
+    )
     return models.Q(models.Exists(lien_cursus.filter(cursus_id__in=cursus_ids))) | models.Q(models.Exists(recommande)) | (
         ~models.Q(models.Exists(lien_cursus)) & (
             models.Q(models.Exists(source.filter(exercise__lesson__cursus__in=cursus_ids)))
             | models.Q(models.Exists(source_inedite.filter(exercice__epreuve__cursus__in=cursus_ids)))
-            | (~models.Q(models.Exists(source)) & ~models.Q(models.Exists(source_inedite)))
+            | (~models.Q(models.Exists(source)) & ~models.Q(models.Exists(source_inedite)) & matiere_de_l_examen)
         )
     )
 
