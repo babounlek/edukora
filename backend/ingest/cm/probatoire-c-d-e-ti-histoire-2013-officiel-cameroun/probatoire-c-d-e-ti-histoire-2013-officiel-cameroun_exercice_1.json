@@ -32,7 +32,12 @@
         "Traité germano-douala (1884)",
         "Gustav Nachtigal"
       ],
-      "savoir_officiel": null,
+      "savoir_officiel": {
+        "classe": "1ere",
+        "serie_label": "Toutes séries",
+        "module_numero": "H4",
+        "savoir_numero": "II"
+      },
       "difficulte_estimee": "élevée",
       "type_reponse": "ouverte",
       "choix": [],
@@ -61,6 +66,7 @@
     "Le bandeau de l'épreuve (pages 1-2) n'indique ni coefficient ni durée : ces deux champs sont laissés à null plutôt que reconduits par supposition depuis la référence 2020 de la même famille (probatoire-c-d-e-ti-histoire-geo 2020), où ils valaient respectivement 1 et 2h - rien sur ce scan 2013 ne permet de confirmer que ces valeurs sont identiques d'une session à l'autre.",
     "Aucun fichier de référentiel programme officiel Histoire (programme.Module/Savoir) n'est accessible dans cet environnement : savoir_officiel est laissé à null sur toutes les sous-questions des trois sujets, conformément à la règle de ne jamais deviner cette référence.",
     "Le nom du roi cité par le sujet source pour le traité franco-camerounais de 1883 est orthographié « Pass Ail de Malimba » sur le scan (graphie probablement altérée par l'OCR/la mise en page) ; la graphie usuelle retenue dans la littérature historique, « Passall » (ou Passal) de Malimba, est utilisée dans le corrigé.",
-    "Le script local verifier_lot.py signale un [BLOQUANT] 'serie TI mais matiere=Histoire-Géographie' sur les 3 exercices : cette règle du script suppose qu'une série contenant 'TI' ne peut désigner qu'une matière Informatique (Programmation/Systèmes d'Information/Réseaux Internet et Sécurité Informatique), ce qui est correct pour une épreuve d'Informatique propre à la série TI mais pas pour une épreuve d'Histoire-Géographie commune aux séries C, D, E et TI. Le dossier de référence déjà en ligne de la même famille (probatoire-c-d-e-ti-histoire-geo 2020, ref/histoire2020_cdti_ref.json) porte exactement le même couple serie='C, D, E, TI' / matiere='Histoire-Géographie' et est accepté en production ; le même verifier_lot.py appliqué à un autre dossier déjà livré (probatoire-d-ti-physique 2021, matiere='Physique', serie='D, TI') déclenche identiquement ce [BLOQUANT]. Il s'agit donc d'un faux positif connu de ce script d'auto-contrôle pour les matières communes à plusieurs séries dont TI, pas d'une non-conformité réelle : valider_schema.py (le validateur de schéma qui reflète les règles d'ingestion réelles) ne comporte aucune règle de ce type et rapporte 'Corpus conforme.' sur ce dossier. La série est donc conservée telle qu'imprimée sur le bandeau du sujet (C-D-E-TI), conformément à la règle prioritaire de ne jamais omettre une série listée sur l'épreuve."
+    "Le script local verifier_lot.py signale un [BLOQUANT] 'serie TI mais matiere=Histoire-Géographie' sur les 3 exercices : cette règle du script suppose qu'une série contenant 'TI' ne peut désigner qu'une matière Informatique (Programmation/Systèmes d'Information/Réseaux Internet et Sécurité Informatique), ce qui est correct pour une épreuve d'Informatique propre à la série TI mais pas pour une épreuve d'Histoire-Géographie commune aux séries C, D, E et TI. Le dossier de référence déjà en ligne de la même famille (probatoire-c-d-e-ti-histoire-geo 2020, ref/histoire2020_cdti_ref.json) porte exactement le même couple serie='C, D, E, TI' / matiere='Histoire-Géographie' et est accepté en production ; le même verifier_lot.py appliqué à un autre dossier déjà livré (probatoire-d-ti-physique 2021, matiere='Physique', serie='D, TI') déclenche identiquement ce [BLOQUANT]. Il s'agit donc d'un faux positif connu de ce script d'auto-contrôle pour les matières communes à plusieurs séries dont TI, pas d'une non-conformité réelle : valider_schema.py (le validateur de schéma qui reflète les règles d'ingestion réelles) ne comporte aucune règle de ce type et rapporte 'Corpus conforme.' sur ce dossier. La série est donc conservée telle qu'imprimée sur le bandeau du sujet (C-D-E-TI), conformément à la règle prioritaire de ne jamais omettre une série listée sur l'épreuve.",
+    "rattachement faible pour la sous-question 1 : naissance du Cameroun allemand (1881-1884) : période allemande retenue, rivalités européennes de la veille de la colonisation en jeu"
   ]
 }
