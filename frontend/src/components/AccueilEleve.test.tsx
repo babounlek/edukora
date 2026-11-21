@@ -859,7 +859,7 @@ describe("AccueilEleve : lot 2 de l'audit du 2026-11-16", () => {
 
   it("« À continuer » réunit les reprises : trois lignes, dans l'ordre de ce qui presse, le reste à la demande", async () => {
     getAccueil.mockResolvedValue(accueil({
-      erreurs_total: 5,
+      erreurs_total: 2,
       revisions: [
         { id: 1, theme: "probabilités", theme_id: 5, subject_id: 1, subject_label: "Mathématiques", cursus: 4, jours_retard: 2 },
         { id: 2, theme: "suites", theme_id: 6, subject_id: 1, subject_label: "Mathématiques", cursus: 4, jours_retard: 0 },
@@ -869,18 +869,106 @@ describe("AccueilEleve : lot 2 de l'audit du 2026-11-16", () => {
 
     const bloc = await screen.findByRole("region", { name: "À continuer" })
     const liens = () => Array.from(bloc.querySelectorAll("li")).map((li) => li.textContent ?? "")
-    // La lecture ouverte passe avant les thèmes à reprendre ; les erreurs attendent derrière le bouton.
+    // Les erreurs à refaire se voient sans déplier, devant la lecture ouverte ; les thèmes à reprendre suivent.
     expect(liens()).toHaveLength(3)
-    expect(liens()[0]).toContain("BAC D Maths 2024")
-    expect(liens()[1]).toContain("Probabilités")
-    expect(liens()[1]).toContain("à revoir depuis 2 j")
-    expect(liens()[2]).toContain("Suites")
-    expect(bloc).not.toHaveTextContent("5 erreurs à corriger")
+    expect(liens()[0]).toContain("2 erreurs à corriger")
+    expect(liens()[1]).toContain("BAC D Maths 2024")
+    expect(liens()[2]).toContain("Probabilités")
+    expect(liens()[2]).toContain("à revoir depuis 2 j")
+    expect(bloc).not.toHaveTextContent("Suites")
 
     await userEvent.click(screen.getByRole("button", { name: "Voir 1 de plus" }))
     expect(liens()).toHaveLength(4)
-    expect(liens()[3]).toContain("5 erreurs à corriger")
+    expect(liens()[3]).toContain("Suites")
     expect(screen.getByRole("button", { name: "Réduire" })).toBeInTheDocument()
+  })
+
+  describe("« À continuer » : les erreurs remontent, le défi entamé ne se dit qu'une fois (2026-11-21)", () => {
+    const copie = {
+      id: 31, epreuve: 3, epreuve_titre: "Mini-inédite Mathématiques BAC D n°2", subject_label: "Mathématiques",
+      cursus_display: "BAC - Série D", started_at: "2026-11-20T08:00:00Z", exam_mode_started_at: null, echeance: null,
+      submitted_at: null, score_obtenu: null, note_obtenue: null, bareme_snapshot: null,
+    }
+    const defi = {
+      epreuve_id: 3, slug: "mini-bac-d-2", titre: "Mini-inédite Mathématiques BAC D n°2", duree_minutes: 25,
+      debut: "2026-11-16", fin: "2026-11-22", jours_restants: 1, releve: false, resultat_ouvert: false, bande: null,
+      precedent: null,
+    }
+    const lignes = (bloc: HTMLElement) => Array.from(bloc.querySelectorAll("li")).map((li) => li.textContent ?? "")
+    // Le défi et la copie arrivent avec l'accueil, comme en production (voir `reprises`) : une seule réponse, un seul rendu.
+    const reprises = (leDefi: typeof defi, tentatives: unknown[]) => ({
+      quiz_en_cours: [], cartes_dues: { total: 0, cartes: [] }, defi: leDefi, tentatives,
+    })
+
+    async function avecDefi(valeur: typeof defi) {
+      const { getDefiSemaine } = await import("@/api/endpoints")
+      vi.mocked(getDefiSemaine).mockResolvedValue({ defi: valeur } as never)
+    }
+    afterEach(async () => {
+      const { getDefiSemaine } = await import("@/api/endpoints")
+      vi.mocked(getDefiSemaine).mockResolvedValue({ defi: null } as never)
+    })
+
+    it("une erreur passe en deuxième ligne, juste après la copie entamée", async () => {
+      getAccueil.mockResolvedValue(accueil({ erreurs_total: 1 }))
+      listMyTentativesInedites.mockResolvedValue([copie])
+      afficher()
+
+      const bloc = await screen.findByRole("region", { name: "À continuer" })
+      await vi.waitFor(() => expect(lignes(bloc)[0]).toContain("Épreuve inédite en cours"))
+      expect(lignes(bloc)[1]).toContain("1 erreur à corriger")
+      expect(lignes(bloc)[2]).toContain("BAC D Maths 2024")
+    })
+
+    it("à partir de 5 erreurs, elles passent devant la copie entamée", async () => {
+      getAccueil.mockResolvedValue(accueil({ erreurs_total: 5 }))
+      listMyTentativesInedites.mockResolvedValue([copie])
+      afficher()
+
+      const bloc = await screen.findByRole("region", { name: "À continuer" })
+      await vi.waitFor(() => expect(lignes(bloc)[1]).toContain("Épreuve inédite en cours"))
+      expect(lignes(bloc)[0]).toContain("5 erreurs à corriger")
+    })
+
+    it("la copie entamée EST le défi de la semaine : une seule ligne, qui porte l'échéance du défi", async () => {
+      await avecDefi(defi)
+      getAccueil.mockResolvedValue(accueil({ revisions: [], lecture: null, reprises: reprises(defi, [copie]) } as Partial<Accueil>))
+      afficher()
+
+      const reprise = await screen.findByRole("link", { name: /Mini-inédite Mathématiques BAC D n°2/ })
+      expect(reprise).toHaveTextContent("Défi de la semaine · Encore 1 jour, le même sujet pour tous")
+      expect(reprise).toHaveAttribute("href", "/inedit/tentative/31")
+      expect(screen.getAllByText("Mini-inédite Mathématiques BAC D n°2")).toHaveLength(1)
+    })
+
+    it("un défi qui n'est pas la copie entamée garde sa ligne", async () => {
+      await avecDefi({ ...defi, epreuve_id: 8, slug: "mini-bac-d-3", titre: "Mini-inédite Physique BAC D n°3" })
+      getAccueil.mockResolvedValue(accueil({ revisions: [], lecture: null }))
+      listMyTentativesInedites.mockResolvedValue([copie])
+      afficher()
+
+      const lienDefi = await screen.findByRole("link", { name: /Mini-inédite Physique BAC D n°3/ })
+      expect(lienDefi).toHaveTextContent("Défi de la semaine")
+      expect(screen.getByRole("link", { name: /Mini-inédite Mathématiques BAC D n°2/ })).not.toHaveTextContent("Défi de la semaine")
+    })
+
+    it("chrono lancé sur le défi : la reprise d'avant la séance le dit, « À continuer » ne le répète pas", async () => {
+      await avecDefi(defi)
+      const auChrono = {
+        ...copie, exam_mode_started_at: "2026-11-21T08:00:00Z", echeance: new Date(Date.now() + 20 * 60_000).toISOString(),
+      }
+      getAccueil.mockResolvedValue(
+        accueil({ revisions: [], lecture: null, erreurs_total: 1, reprises: reprises(defi, [auChrono]) } as Partial<Accueil>),
+      )
+      afficher()
+
+      const reprise = await screen.findByRole("link", { name: /Mini-inédite Mathématiques BAC D n°2/ })
+      expect(reprise).toHaveTextContent("Défi de la semaine · Encore 1 jour")
+      expect(reprise).toHaveTextContent("Chrono en cours")
+      const bloc = screen.getByRole("region", { name: "À continuer" })
+      expect(bloc).not.toHaveTextContent("Mini-inédite Mathématiques BAC D n°2")
+      expect(bloc).toHaveTextContent("1 erreur à corriger")
+    })
   })
 
   it("« À continuer » ne s'affiche pas quand il n'y a rien à reprendre", async () => {

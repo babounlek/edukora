@@ -4,11 +4,11 @@ import { useQuery, useQueryClient, type QueryClient } from "@tanstack/react-quer
 import { ArrowRight, BookOpen, ChevronDown, ClipboardCheck, Clock, Crown, ListChecks, Play, RotateCcw } from "lucide-react"
 
 import { getAccueil, listMyTentativesInedites } from "@/api/endpoints"
-import type { Accueil, TentativeInediteListItem } from "@/api/types"
+import type { Accueil, DefiSemaine, TentativeInediteListItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
 import { CLE_DUES, RangeeCartes, useCartesDues } from "@/components/CartesDeRevision"
-import { DefiDeLaSemaine, useDefiSemaine } from "@/components/DefiDeLaSemaine"
+import { DefiDeLaSemaine, mentionDefi, useDefiSemaine } from "@/components/DefiDeLaSemaine"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
@@ -179,7 +179,7 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* Le titre de la page, pour les lecteurs d'écran et le plan du document : la salutation visible contient un
           sélecteur d'examen, qui n'a pas sa place dans un titre. */}
       <h1 className="sr-only">{t("seance.aujourdhui")}</h1>
-      {enCours && chronoEnCours && <LigneReprise tentative={enCours} />}
+      {enCours && chronoEnCours && <LigneReprise tentative={enCours} country={country} cursusAccueil={cursusAccueil} />}
       {/* Un quiz commencé passe lui aussi avant la tête de page (test élève 2026-11-07, deux testeurs : « Quiz en cours »
           à ~1 180 px du haut, sous le premier écran). Ordre : chrono d'examen, puis quiz, puis la séance du jour. */}
       <ReprendreQuiz enveloppe fraicheurMs={FRAICHEUR_ACCUEIL_MS} />
@@ -193,6 +193,7 @@ export function AccueilEleve({ country }: { country: string }) {
         cursusAccueil={cursusAccueil}
         inedites={inedites}
         enCours={enCours && !chronoEnCours ? enCours : undefined}
+        epreuveEnCours={enCours?.epreuve}
         aNoter={!enCours ? aNoter : undefined}
         lecture={lectureAReprendre}
       />
@@ -213,6 +214,18 @@ export function AccueilEleve({ country }: { country: string }) {
 // Nombre de lignes du bloc « À continuer » montrées d'emblée ; le reste est derrière « Voir N de plus ».
 const LIGNES_A_CONTINUER = 3
 
+// À partir de ce nombre d'erreurs à refaire, leur ligne passe en tête du bloc, devant la copie entamée : en dessous,
+// la deuxième place suffit (une erreur se corrige en une minute, elle ne presse pas plus qu'une copie à finir).
+const SEUIL_ERREURS_EN_TETE = 5
+
+/**
+ * Le défi de la semaine, quand la copie entamée est la sienne et qu'il n'est pas encore relevé (il l'est une fois la
+ * copie rendue, voir inedit.defi côté serveur) ; null sinon.
+ */
+function defiDeLaCopie(defi: DefiSemaine | null, epreuve: number | undefined): DefiSemaine | null {
+  return defi && !defi.releve && epreuve != null && defi.epreuve_id === epreuve ? defi : null
+}
+
 const CADRE_RANGEE = "group flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-muted/40"
 
 /**
@@ -223,24 +236,34 @@ const CADRE_RANGEE = "group flex items-center gap-3 px-5 py-3.5 transition-color
  * occupaient près d'un écran et se disputaient l'attention avec le bouton « Commencer » (audit de l'accueil abonné,
  * 2026-11-16 : dix blocs, 4,6 écrans). Ici trois lignes au plus sont montrées, dans l'ordre de ce qui presse :
  *
- *   1. ce qui est commencé et pas fini (copie entamée, copie à finir de noter, lecture ouverte) ;
- *   2. ce qui a une échéance (le défi de la semaine, tant qu'il n'est pas relevé) ;
- *   3. ce qui est neuf (la prochaine épreuve inédite) : c'est le contenu que l'abonné paie pour recevoir, il doit
- *      le voir sans ouvrir « Voir N de plus » (décision de l'utilisateur, 2026-11-16) ;
- *   4. ce qui s'entretient (thèmes à reprendre, erreurs à refaire, cartes dues) ;
- *   5. le défi déjà relevé, qui n'appelle plus de geste.
+ *   1. la copie d'épreuve inédite entamée, ou la copie rendue à finir de noter ;
+ *   2. les erreurs à refaire : c'est le geste le plus rentable de la liste et le plus court, il ne doit pas attendre
+ *      derrière « Voir N de plus » (décision de l'utilisateur, 2026-11-21 ; il était avant-dernier). Il ne prend pas
+ *      la première ligne, pour que l'accueil ne s'ouvre pas sur un reproche, sauf quand les erreurs s'accumulent
+ *      (voir SEUIL_ERREURS_EN_TETE) ;
+ *   3. la lecture ouverte ;
+ *   4. ce qui a une échéance (le défi de la semaine, tant qu'il n'est pas relevé) ;
+ *   5. ce qui est neuf (la prochaine épreuve inédite) : c'est le contenu que l'abonné paie pour recevoir, elle reste
+ *      devant ce qui s'entretient (décision de l'utilisateur, 2026-11-16) ;
+ *   6. ce qui s'entretient (thèmes à reprendre, cartes dues) ;
+ *   7. le défi déjà relevé, qui n'appelle plus de geste.
+ *
+ * Quand la copie entamée EST le défi de la semaine, les deux ne font qu'une ligne : la reprise, qui porte l'échéance
+ * du défi (voir mentionDefi). Avant, le même titre se lisait deux fois, à deux lignes d'écart.
  *
  * Le reste est derrière « Voir N de plus », sur place. Une épreuve au chrono lancé et un quiz commencé ne sont pas
  * ici : ils passent AVANT la séance (voir AccueilEleve), parce qu'ils ne peuvent pas attendre.
  */
 function AContinuer({
-  accueil, country, cursusAccueil, inedites, enCours, aNoter, lecture,
+  accueil, country, cursusAccueil, inedites, enCours, epreuveEnCours, aNoter, lecture,
 }: {
   accueil: Accueil
   country: string
   cursusAccueil: ReturnType<typeof useCursusAccueil>
   inedites: ReturnType<typeof useInedites>["data"]
   enCours?: TentativeInediteListItem
+  /** L'épreuve de la copie entamée, que sa ligne soit ici ou avant la séance (chrono lancé). */
+  epreuveEnCours?: number
   aNoter?: TentativeInediteListItem
   lecture: Accueil["lecture"]
 }) {
@@ -248,12 +271,22 @@ function AContinuer({
   // Mêmes clés de cache que l'accueil vient de remplir (voir deposerReprises) : aucune requête de plus.
   const defi = useDefiSemaine(country, cursusAccueil)
   const cartes = useCartesDues()
+  // Le défi est la copie déjà entamée : sa ligne de reprise le dit, il n'a pas de ligne à lui.
+  const defiEntame = defiDeLaCopie(defi, epreuveEnCours)
+
+  const erreurs = accueil.erreurs_total ?? 0
+  const rangeeErreurs = cursusAccueil != null && erreurs > 0
+    ? { cle: "erreurs", rendu: <LigneErreurs total={erreurs} cursusId={cursusAccueil} rangee /> }
+    : null
+  const erreursEnTete = erreurs >= SEUIL_ERREURS_EN_TETE
 
   const lignes: { cle: string; rendu: ReactNode }[] = []
-  if (enCours) lignes.push({ cle: "copie", rendu: <RangeeReprise tentative={enCours} /> })
+  if (rangeeErreurs && erreursEnTete) lignes.push(rangeeErreurs)
+  if (enCours) lignes.push({ cle: "copie", rendu: <RangeeReprise tentative={enCours} defi={defiEntame} /> })
   if (aNoter) lignes.push({ cle: "notation", rendu: <RangeeNotation tentative={aNoter} /> })
+  if (rangeeErreurs && !erreursEnTete) lignes.push(rangeeErreurs)
   if (lecture) lignes.push({ cle: "lecture", rendu: <RangeeLecture lecture={lecture} /> })
-  const rangeeDefi = defi
+  const rangeeDefi = defi && !defiEntame
     ? { cle: "defi", rendu: <DefiDeLaSemaine country={country} cursusId={cursusAccueil} rangee /> }
     : null
   if (rangeeDefi && !defi?.releve) lignes.push(rangeeDefi)
@@ -265,12 +298,6 @@ function AContinuer({
   }
   for (const revision of accueil.revisions) {
     lignes.push({ cle: `revision-${revision.id}`, rendu: <RangeeRevision revision={revision} /> })
-  }
-  if (cursusAccueil != null && (accueil.erreurs_total ?? 0) > 0) {
-    lignes.push({
-      cle: "erreurs",
-      rendu: <LigneErreurs total={accueil.erreurs_total ?? 0} cursusId={cursusAccueil} rangee />,
-    })
   }
   if (cartes && cartes.total > 0) lignes.push({ cle: "cartes", rendu: <RangeeCartes total={cartes.total} /> })
   if (rangeeDefi && defi?.releve) lignes.push(rangeeDefi)
@@ -352,8 +379,11 @@ function RangeeLecture({ lecture }: { lecture: NonNullable<Accueil["lecture"]> }
   )
 }
 
-/** Une épreuve inédite entamée, sans chrono lancé : à reprendre quand l'élève veut. */
-function RangeeReprise({ tentative }: { tentative: TentativeInediteListItem }) {
+/**
+ * Une épreuve inédite entamée, sans chrono lancé : à reprendre quand l'élève veut. `defi` : cette copie est le défi de
+ * la semaine, la ligne en porte l'échéance à la place d'une seconde ligne au même titre.
+ */
+function RangeeReprise({ tentative, defi }: { tentative: TentativeInediteListItem; defi?: DefiSemaine | null }) {
   return (
     <Link to={`/inedit/tentative/${tentative.id}`} className={CADRE_RANGEE}>
       <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
@@ -364,6 +394,7 @@ function RangeeReprise({ tentative }: { tentative: TentativeInediteListItem }) {
           {t("abonne.inedite_en_cours")}
         </span>
         <span className="line-clamp-2 text-sm font-medium">{tentative.epreuve_titre}</span>
+        {defi && <span className="block text-xs text-muted-foreground">{mentionDefi(defi)}</span>}
       </span>
       <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
       <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
@@ -397,9 +428,18 @@ function RangeeRevision({ revision }: { revision: Accueil["revisions"][number] }
 
 /**
  * « Reprendre » : l'épreuve inédite entamée AU CHRONO LANCÉ, seule ligne qui passe avant la séance du jour (voir
- * AccueilEleve) : la copie est rendue à zéro à l'échéance, on dit donc ce qu'il reste.
+ * AccueilEleve) : la copie est rendue à zéro à l'échéance, on dit donc ce qu'il reste. Quand cette copie est le défi de
+ * la semaine, la ligne le dit aussi : le défi n'a alors plus de ligne à lui dans « À continuer ».
  */
-function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
+function LigneReprise({
+  tentative, country, cursusAccueil,
+}: {
+  tentative: TentativeInediteListItem
+  country: string
+  cursusAccueil: ReturnType<typeof useCursusAccueil>
+}) {
+  // Même clé de cache que l'accueil vient de remplir (voir deposerReprises) : aucune requête de plus.
+  const defi = defiDeLaCopie(useDefiSemaine(country, cursusAccueil), tentative.epreuve)
   const reste = tentative.echeance
     ? Math.max(0, Math.round((new Date(tentative.echeance).getTime() - maintenantServeur()) / 1000))
     : null
@@ -417,6 +457,7 @@ function LigneReprise({ tentative }: { tentative: TentativeInediteListItem }) {
             {reste !== null ? t("abonne.chrono_en_cours", { duree: formatDuration(reste) }) : t("abonne.inedite_en_cours")}
           </span>
           <span className="block truncate text-sm font-medium">{tentative.epreuve_titre}</span>
+          {defi && <span className="block text-xs text-muted-foreground">{mentionDefi(defi)}</span>}
         </span>
         <span className="shrink-0 text-sm font-medium text-primary">{t("seance.reprendre")}</span>
         <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" />

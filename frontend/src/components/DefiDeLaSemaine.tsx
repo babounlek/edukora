@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, CheckCircle2, Swords } from "lucide-react"
 
 import { getDefiSemaine } from "@/api/endpoints"
+import type { DefiSemaine } from "@/api/types"
 import { epreuveInediteDetailPath, epreuvesListPath } from "@/lib/countryPath"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -20,6 +21,19 @@ export function useDefiSemaine(country: string, cursusId: number | null | undefi
     enabled: Boolean(country) && Boolean(cursusId),
   })
   return data?.defi ?? null
+}
+
+/** Ce qu'il reste pour relever le défi : « Dernier jour pour le relever », ou « Encore 3 jours, le même sujet pour tous ». */
+export function echeanceDefi(defi: DefiSemaine): string {
+  return defi.jours_restants === 0 ? t("defi.dernier_jour") : tn("defi.jours", defi.jours_restants)
+}
+
+/**
+ * Le défi de la semaine dit sur la ligne d'une copie déjà entamée (voir AccueilEleve) : « Défi de la semaine · Encore 1
+ * jour, le même sujet pour tous ». La copie et le défi sont alors la même épreuve : une ligne, pas deux.
+ */
+export function mentionDefi(defi: DefiSemaine): string {
+  return `${t("defi.titre")} · ${echeanceDefi(defi)}`
 }
 
 export function DefiDeLaSemaine({
@@ -40,9 +54,7 @@ export function DefiDeLaSemaine({
         ? t(`defi.bande_${bande}`)
         : t("defi.releve")
       : `${t("defi.releve")} · ${t("defi.resultat_dimanche")}`
-    : defi.jours_restants === 0
-      ? t("defi.dernier_jour")
-      : tn("defi.jours", defi.jours_restants)
+    : echeanceDefi(defi)
 
   // `rangee` : une ligne du bloc « À continuer » de l'accueil (voir AccueilEleve), sans cadre ni marge à elle, et sans
   // le lien « Toutes les minis » (la fiche du défi y mène).
