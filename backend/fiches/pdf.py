@@ -26,7 +26,14 @@ from django.utils.text import slugify
 
 from catalog.libelles import libelle_cursus
 from catalog.pdf_fin import adresse_du_site, contexte_fin
-from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
+from catalog.pdf_textes import (
+    EXTENSIONS_MARKDOWN_QUIZ,
+    adapter_markdown,
+    bonne_reponse_markdown,
+    langue_du_contenu,
+    propositions_markdown,
+    textes_pdf,
+)
 from catalog.sujet_pdf import (
     _italicize_quotes,
     _protect_math,
@@ -75,23 +82,35 @@ def _corrige_deep_link(fiche):
     return f"{settings.PDF_SITE_URL}/fiches?ref=pdf_fiche_corrige"
 
 
-def _bloc_question(item, *, avec_corrige, titre_corrige="Corrigé"):
+def _bloc_question(item, *, avec_corrige, tx):
     """
     Un bloc "Question N" du PDF. Le corrigé reprend l'énoncé AVANT la solution : le
     répétiteur travaille sur le seul document qu'il garde (voir _corrige_deep_link), il
     ne doit pas avoir à le lire à côté du PDF sujet distribué à ses élèves pour savoir
-    de quoi parle la solution qu'il relit.
+    de quoi parle la solution qu'il relit. L'énoncé d'une QCM vient avec ses propositions
+    (voir catalog.pdf_textes.propositions_markdown), et son corrigé nomme la bonne lettre.
     """
     competence_item = item.competence_item
     blocs = [f"## Question {item.ordre}", competence_item.enonce_markdown.strip()]
+    # Le sujet laisse les cases vides, à cocher ; le corrigé coche celle de la bonne réponse.
+    propositions = propositions_markdown(
+        competence_item.choix, cochee=competence_item.reponse_correcte if avec_corrige else None,
+    )
+    if propositions:
+        blocs.append(propositions)
     if avec_corrige:
+        bonne_reponse = propositions and bonne_reponse_markdown(
+            competence_item.choix, competence_item.reponse_correcte, tx,
+        )
+        if bonne_reponse:
+            blocs.append(bonne_reponse)
         corrige = competence_item.corrige_markdown.strip()
         # Les items générés par concepteur-quiz-competence ouvrent déjà sur leurs propres
         # titres ("### Rappel de méthode", puis "### Corrigé") ; les plus anciens n'en ont
         # aucun - sans ce repli, l'énoncé et sa solution se toucheraient sans démarcation
         # visible, exactement ce que l'ordre voulu ci-dessus cherche à éviter.
         if not corrige.startswith("#"):
-            corrige = f"### {titre_corrige}\n\n{corrige}"
+            corrige = f"### {tx['titre_corrige']}\n\n{corrige}"
         blocs.append(corrige)
     return "\n\n".join(blocs)
 
@@ -100,7 +119,7 @@ def _combined_markdown(fiche, *, avec_corrige):
     items = fiche.items.select_related("competence_item").order_by("ordre")
     tx, _ = _textes(fiche)
     return adapter_markdown(
-        "\n\n".join(_bloc_question(item, avec_corrige=avec_corrige, titre_corrige=tx["titre_corrige"]) for item in items),
+        "\n\n".join(_bloc_question(item, avec_corrige=avec_corrige, tx=tx) for item in items),
         tx["langue"],
     )
 
@@ -109,7 +128,7 @@ def _render_html(fiche, *, avec_corrige, template_name, deep_link):
     markdown_text = _resolve_media_paths(_combined_markdown(fiche, avec_corrige=avec_corrige))
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
-    content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
+    content_html = markdown.markdown(protected_markdown, extensions=EXTENSIONS_MARKDOWN_QUIZ)
     content_html = _restore_math(content_html, math_spans)
 
     tx, prepared_by = _textes(fiche)

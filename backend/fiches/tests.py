@@ -33,9 +33,10 @@ def _make_competence_item(subject, cursus, theme, difficulte=Difficulte.MOYENNE,
     kwargs.setdefault("statut", StatutContenu.VALIDE)
     kwargs.setdefault("enonce_markdown", f"Énoncé {numero}.")
     kwargs.setdefault("corrige_markdown", f"Corrigé {numero}.")
+    kwargs.setdefault("type_reponse", TypeReponse.OUVERTE)
     item = CompetenceItem.objects.create(
         theme=theme, subject=subject,
-        difficulte_estimee=difficulte, type_reponse=TypeReponse.OUVERTE, **kwargs,
+        difficulte_estimee=difficulte, **kwargs,
     )
     item.cursus.add(cursus)
     return item
@@ -171,6 +172,44 @@ class CombinedMarkdownTests(TestCase):
         markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
 
         self.assertLess(markdown_text.index("## Question 1"), markdown_text.index("## Question 2"))
+
+    def _ajouter_qcm(self, **kwargs):
+        return self._ajouter_item(
+            type_reponse=TypeReponse.QCM, reponse_correcte="b",
+            choix=[{"lettre": "a", "texte": "$2x$"}, {"lettre": "b", "texte": "$3x^2$"}],
+            **kwargs,
+        )
+
+    def test_sujet_imprime_les_propositions_dune_qcm_sans_la_bonne_reponse(self):
+        # Sans elles, l'élève du répétiteur recevait « Quelle est la dérivée ? » sans rien à choisir.
+        self._ajouter_qcm()
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=False)
+
+        self.assertLess(markdown_text.index("Énoncé 1."), markdown_text.index("**A.** $2x$"))
+        self.assertIn("**B.** $3x^2$", markdown_text)
+        self.assertNotIn("Bonne réponse", markdown_text)
+        # Deux cases vides à cocher, aucune déjà cochée : le sujet part chez les élèves.
+        self.assertEqual(markdown_text.count("<span class='case'></span>"), 2)
+        self.assertNotIn("cochee", markdown_text)
+
+    def test_corrige_nomme_la_bonne_lettre_entre_les_propositions_et_la_solution(self):
+        self._ajouter_qcm()
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
+
+        self.assertLess(markdown_text.index("**B.** $3x^2$"), markdown_text.index("**Bonne réponse : B**"))
+        self.assertLess(markdown_text.index("**Bonne réponse : B**"), markdown_text.index("### Corrigé"))
+        self.assertEqual(markdown_text.count("cochee"), 1)
+        self.assertIn("<span class='case cochee'></span>**B.**", markdown_text)
+
+    def test_question_ouverte_sans_proposition_ni_bonne_reponse(self):
+        self._ajouter_item()
+
+        markdown_text = _combined_markdown(self.fiche, avec_corrige=True)
+
+        self.assertNotIn("propositions", markdown_text)
+        self.assertNotIn("Bonne réponse", markdown_text)
 
 
 class FichesApiTests(TestCase):

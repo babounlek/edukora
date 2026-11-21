@@ -31,7 +31,14 @@ from django.template.loader import render_to_string
 
 from catalog.libelles import libelle_cursus
 from catalog.pdf_fin import adresse_du_site, contexte_fin
-from catalog.pdf_textes import adapter_markdown, langue_du_contenu, textes_pdf
+from catalog.pdf_textes import (
+    EXTENSIONS_MARKDOWN_QUIZ,
+    adapter_markdown,
+    bonne_reponse_markdown,
+    langue_du_contenu,
+    propositions_markdown,
+    textes_pdf,
+)
 from catalog.segments_url import chemin_public
 from catalog.sujet_pdf import (
     _italicize_quotes,
@@ -91,11 +98,13 @@ def _corrige_deep_link(session):
     return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_quiz_correction"
 
 
-def _bloc_question(quiz_question, *, avec_corrige, titre_corrige="Corrigé"):
+def _bloc_question(quiz_question, *, avec_corrige, tx):
     """
     Un bloc "Question N" du PDF - énoncé seul si avec_corrige=False (le PDF "Fiche"),
     énoncé puis corrigé sinon (le PDF "Correction") ; jamais la réponse donnée par
-    l'élève ni une indication correct/incorrect (voir la docstring de module). Import
+    l'élève ni une indication correct/incorrect (voir la docstring de module). L'énoncé
+    d'une QCM vient avec ses propositions (voir catalog.pdf_textes.propositions_markdown),
+    et sa correction nomme la bonne lettre avant de l'expliquer. Import
     différé de quiz.views : quiz.views importe ce module au niveau top-level (voir
     queue_quiz_fiche_pdf_generation, appelée depuis quiz.views.quiz_fiche_pdf), un
     import top-level symétrique ici créerait un cycle.
@@ -111,7 +120,15 @@ def _bloc_question(quiz_question, *, avec_corrige, titre_corrige="Corrigé"):
         enonce = _clean_quiz_markdown(donnees["enonce_markdown"]).strip()
 
     blocs = [f"## Question {quiz_question.ordre}", enonce]
+    choix = donnees.get("choix")
+    # La Fiche laisse les cases vides, à cocher ; la Correction coche celle de la bonne réponse.
+    propositions = propositions_markdown(choix, cochee=donnees.get("reponse_correcte") if avec_corrige else None)
+    if propositions:
+        blocs.append(propositions)
     if avec_corrige:
+        bonne_reponse = propositions and bonne_reponse_markdown(choix, donnees.get("reponse_correcte"), tx)
+        if bonne_reponse:
+            blocs.append(bonne_reponse)
         if donnees["source"] == "competence_item":
             corrige = _corrige_de_la_question(quiz_question, donnees).strip()
         else:
@@ -122,7 +139,7 @@ def _bloc_question(quiz_question, *, avec_corrige, titre_corrige="Corrigé"):
         # solution se toucheraient sans démarcation visible (même logique que
         # fiches.pdf._bloc_question).
         if not corrige.startswith("#"):
-            corrige = f"### {titre_corrige}\n\n{corrige}"
+            corrige = f"### {tx['titre_corrige']}\n\n{corrige}"
         blocs.append(corrige)
 
     return "\n\n".join(blocs)
@@ -136,9 +153,7 @@ def _combined_markdown(session, *, avec_corrige):
         .order_by("ordre")
     )
     return adapter_markdown(
-        "\n\n".join(
-            _bloc_question(qq, avec_corrige=avec_corrige, titre_corrige=tx["titre_corrige"]) for qq in quiz_questions
-        ),
+        "\n\n".join(_bloc_question(qq, avec_corrige=avec_corrige, tx=tx) for qq in quiz_questions),
         tx["langue"],
     )
 
@@ -150,7 +165,7 @@ def _render_html(session, *, avec_corrige, template_name, deep_link):
     )
     protected_markdown, math_spans = _protect_math(markdown_text)
     protected_markdown = _italicize_quotes(protected_markdown)
-    content_html = markdown.markdown(protected_markdown, extensions=["tables", "fenced_code", "nl2br"])
+    content_html = markdown.markdown(protected_markdown, extensions=EXTENSIONS_MARKDOWN_QUIZ)
     content_html = _restore_math(content_html, math_spans)
 
     return render_to_string(template_name, {

@@ -21,6 +21,7 @@ TEXTES = {
         # Commun
         "scan_me": "Scanne-moi",
         "titre_corrige": "Corrigé",
+        "bonne_reponse": "Bonne réponse : {lettre}",
         "un_repetiteur": "un répétiteur",
         # Bloc de fin commun (catalog.pdf_fin) : ce qui s'ajoute au bandeau quand la dernière page a de la place.
         # AUCUN montant ni chiffre du catalogue ici non plus : ils seraient faux au premier changement.
@@ -112,6 +113,7 @@ TEXTES = {
     "en": {
         "scan_me": "Scan me",
         "titre_corrige": "Solution",
+        "bonne_reponse": "Correct answer: {lettre}",
         "un_repetiteur": "a tutor",
         "fin_aussi_titre": "On {site} you will also find",
         "fin_aussi": [
@@ -237,6 +239,68 @@ def nom_pays(code, libelle, langue):
     if langue == "en":
         return PAYS_EN.get((code or "").upper(), libelle)
     return libelle
+
+
+# Extensions Markdown des PDF qui impriment des questions de quiz : `md_in_html` laisse le Markdown (gras, code,
+# formules protégées) vivre dans le bloc `<div class="propositions">` de propositions_markdown.
+EXTENSIONS_MARKDOWN_QUIZ = ["tables", "fenced_code", "nl2br", "md_in_html"]
+
+_SAUT_DE_LIGNE_RE = re.compile(r"\s*\n\s*")
+# Attributs entre apostrophes, comme le bloc des propositions (voir propositions_markdown).
+_CASE = "<span class='case'></span>"
+_CASE_COCHEE = "<span class='case cochee'></span>"
+
+
+def _lettre(valeur):
+    return str(valeur or "").strip().upper()
+
+
+def propositions_markdown(choix, cochee=None):
+    """
+    Les propositions d'une QCM, à poser sous son énoncé : « A. … », « B. … », dans l'ordre et avec les lettres
+    enregistrés - ceux du quiz en ligne, qui ne mélange pas, et ceux que cite le corrigé (« Réponse **D** »).
+    Chaîne vide pour une question ouverte.
+
+    Chaque proposition ouvre sur une case à cocher : la fiche s'imprime et l'élève y marque sa réponse. `cochee`
+    est la lettre dont la case sort déjà cochée - la bonne réponse, dans un PDF de correction seulement. La case
+    est un élément vide que le gabarit dessine, pas un caractère « ☐ » : la police du serveur peut ne pas l'avoir.
+
+    Sans elles, la fiche imprimait « Quelle phrase est exacte ? » sans aucune phrase : l'énoncé d'une QCM ne se
+    lit pas seul, ses propositions vivent dans un champ à part (`choix`) que les PDF ignoraient.
+
+    Une liste dans un bloc à part, pour que le gabarit la mette en retrait sans puce (voir
+    catalog/_pdf_propositions_styles.html). Un saut de ligne dans une proposition devient une espace : il
+    sortirait le texte de son élément de liste, et l'écran rend déjà chaque proposition sur une ligne.
+    """
+    cochee = _lettre(cochee)
+    lignes = []
+    for proposition in choix or []:
+        if not isinstance(proposition, dict):
+            continue
+        texte = _SAUT_DE_LIGNE_RE.sub(" ", str(proposition.get("texte") or "").strip())
+        if not texte:
+            continue
+        lettre = _lettre(proposition.get("lettre"))
+        case = _CASE_COCHEE if cochee and lettre == cochee else _CASE
+        lignes.append(f"- {case}**{lettre}.** {texte}")
+    if not lignes:
+        return ""
+    # Attributs entre apostrophes : _italicize_quotes (catalog.sujet_pdf) met en italique tout ce qui est entre
+    # guillemets droits, et casserait une balise écrite class="propositions".
+    return "<div class='propositions' markdown='1'>\n\n" + "\n".join(lignes) + "\n\n</div>"
+
+
+def bonne_reponse_markdown(choix, reponse_correcte, tx):
+    """
+    « Bonne réponse : D », pour le PDF de correction : beaucoup de corrigés expliquent sans jamais nommer la
+    lettre. Chaîne vide quand la clé ne désigne aucune des propositions imprimées - mieux vaut ne rien dire
+    qu'annoncer une lettre que la liste ne porte pas.
+    """
+    lettre = _lettre(reponse_correcte)
+    lettres = {_lettre(p.get("lettre")) for p in choix or [] if isinstance(p, dict)}
+    if not lettre or lettre not in lettres:
+        return ""
+    return "**" + tx["bonne_reponse"].replace("{lettre}", lettre) + "**"
 
 
 # Repères de structure que l'ingestion a écrits en français dans le contenu du GCE (« **Exercice 3 (6 points)** »,

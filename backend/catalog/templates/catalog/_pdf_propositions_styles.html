@@ -1,0 +1,62 @@
+<style>
+    /* Propositions d'une QCM (catalog.pdf_textes.propositions_markdown) : pas de puce, la lettre en tête et le
+       texte en retrait sous lui-même quand il passe à la ligne. Un saut de page ne les sépare ni de leur énoncé
+       ni entre elles : A en bas d'une page et B, C, D en haut de la suivante ne se lisent pas. */
+    .propositions {
+        margin: 8px 0 14px 0;
+        break-before: avoid;
+        page-break-before: avoid;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    .propositions ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    /* Le retrait de 3em = la case (0.85em + 0.45em de marge) + la lettre (1.45em) + l'espace qui la suit :
+       une deuxième ligne s'aligne sous le texte, ni sous la case ni sous la lettre. */
+    .propositions li {
+        margin: 0 0 6px 0;
+        padding-left: 3em;
+        text-indent: -3em;
+        text-align: left;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    /* La case à cocher : dessinée, pas un caractère « ☐ » que la police du serveur peut ne pas avoir. En bordures
+       seulement, pour sortir pareil à l'impression en noir et blanc. */
+    .propositions .case {
+        display: inline-block;
+        width: 0.85em;
+        height: 0.85em;
+        margin-right: 0.45em;
+        border: 1.2px solid #333;
+        border-radius: 2px;
+        vertical-align: -0.1em;
+        text-indent: 0;
+    }
+    /* La bonne réponse, dans un PDF de correction : la coche est un angle de deux bordures, tourné. */
+    .propositions .case.cochee::after {
+        content: "";
+        display: block;
+        width: 0.26em;
+        height: 0.52em;
+        margin: 0.02em auto 0 auto;
+        border: solid #111;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    /* La lettre à largeur fixe : « A. » et « I. » laissent le texte partir du même point. */
+    .propositions .case + strong {
+        display: inline-block;
+        min-width: 1.45em;
+        text-indent: 0;
+    }
+    /* Le retrait négatif s'hérite dans les boîtes internes de KaTeX (des inline-block) et y décalerait
+       fractions et exposants : une formule repart de zéro. */
+    .propositions li .katex,
+    .propositions li .katex-display {
+        text-indent: 0;
+    }
+</style>
