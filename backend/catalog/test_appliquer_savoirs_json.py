@@ -163,3 +163,41 @@ class HistoireGeoTests(TestCase):
         self.assertEqual(_matiere_du_referentiel(hg, {"module_numero": "7"}).code, "HISTOIRE_GEO")  # sans préfixe : inchangé
         maths = Subject.objects.get(country=cm, code="MATHS")
         self.assertEqual(_matiere_du_referentiel(maths, {"module_numero": "G2"}).code, "MATHS")  # jamais pour une autre matière
+
+
+class LierThemesTests(AppliquerSavoirsJsonTests):
+    """--lier-themes : le savoir gagne aussi les thèmes de la question (ceux que lisent les écrans de l'élève)."""
+
+    def _tag(self):
+        return Tag.objects.get(name="fractions")
+
+    def test_la_simulation_compte_sans_rien_ecrire(self):
+        sortie = self._lancer("--lier-themes")
+
+        self.assertIn("themes_lies", sortie)
+        self.assertRegex(sortie, r"themes_lies\s+1")
+        self.assertIsNone(self._tag().savoir_officiel_id)
+        self.assertIsNone(self.question.savoir_officiel_id)
+
+    def test_ecrire_lie_le_theme(self):
+        self._lancer("--ecrire", "--lier-themes")
+
+        self.assertEqual(self._tag().savoir_officiel_id, self.savoir.pk)
+
+    def test_une_question_deja_rattachee_lie_aussi_son_theme(self):
+        self._lancer("--ecrire")  # savoir posé, thème non lié
+        self.assertIsNone(self._tag().savoir_officiel_id)
+
+        sortie = self._lancer("--ecrire", "--lier-themes")
+
+        self.assertRegex(sortie, r"deja_ok\s+1")
+        self.assertEqual(self._tag().savoir_officiel_id, self.savoir.pk)
+
+    def test_un_theme_deja_lie_n_est_jamais_ecrase(self):
+        tag = self._tag()
+        tag.savoir_officiel = self.autre
+        tag.save()
+
+        self._lancer("--ecrire", "--lier-themes")
+
+        self.assertEqual(self._tag().savoir_officiel_id, self.autre.pk)

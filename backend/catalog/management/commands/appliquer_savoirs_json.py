@@ -74,7 +74,7 @@ class Command(BaseCommand):
 
         compteurs = {
             "fichiers": 0, "exercices_introuvables": 0, "questions_vides_json": 0, "appliquees": 0,
-            "deja_ok": 0, "conserve_different": 0, "question_introuvable": 0, "reference_invalide": 0,
+            "deja_ok": 0, "conserve_different": 0, "question_introuvable": 0, "reference_invalide": 0, "themes_lies": 0,
         }
         details = []
         for fichier in fichiers:
@@ -140,6 +140,22 @@ class Command(BaseCommand):
         Path(sortie).write_text(json.dumps(export, ensure_ascii=False), encoding="utf-8")
         self.stdout.write(f"Export : {len(export)} exercice(s) avec au moins un savoir -> {sortie} ({len(ambigus)} exclu(s) pour ambiguïté)")
 
+    def _lier_themes(self, question, savoir, ecrire, compteurs):
+        """Propage le savoir aux THÈMES (Tag) de la question, avec les gardes de l'ingestion (jamais d'écrasement, tags structurels, tags
+        partagés entre cursus, conflit avec un autre savoir). Ce sont eux que lisent les écrans de l'élève (cours proposé, chapitre,
+        parcours). En simulation, la liaison est faite puis ANNULÉE : le compteur dit ce qui serait lié, rien n'est écrit."""
+        tags = list(question.themes.all())
+        sans_savoir = {t.pk for t in tags if t.savoir_officiel_id is None}
+        if not sans_savoir:
+            return
+        point = transaction.savepoint()
+        _link_tags_to_savoir(tags, savoir, exclude_question=question)
+        compteurs["themes_lies"] += sum(1 for t in tags if t.pk in sans_savoir and t.savoir_officiel_id is not None)
+        if ecrire:
+            transaction.savepoint_commit(point)
+        else:
+            transaction.savepoint_rollback(point)
+
     def _traiter(self, fichier, data, ecrire, lier_themes, compteurs, details):
         pays = data.get("pays") or _country_code_from_path(fichier)
         try:
@@ -175,6 +191,8 @@ class Command(BaseCommand):
                     continue
                 if question.savoir_officiel_id == savoir.pk:
                     compteurs["deja_ok"] += 1
+                    if lier_themes:
+                        self._lier_themes(question, savoir, ecrire, compteurs)
                     continue
                 if question.savoir_officiel_id is not None:
                     compteurs["conserve_different"] += 1
@@ -184,5 +202,5 @@ class Command(BaseCommand):
                 if ecrire:
                     question.savoir_officiel = savoir
                     question.save(update_fields=["savoir_officiel", "updated_at"])
-                    if lier_themes:
-                        _link_tags_to_savoir(list(question.themes.all()), savoir, exclude_question=question)
+                if lier_themes:
+                    self._lier_themes(question, savoir, ecrire, compteurs)
