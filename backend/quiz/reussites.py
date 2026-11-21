@@ -16,6 +16,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from inedit.defi import defis_releves
+from inedit.models import TentativeInedite
 from simulations.models import SimulationEpreuve
 from users.profils import profil_actif
 
@@ -47,6 +48,10 @@ JALONS = (
     ("erreurs_50", "erreurs", "erreurs", 50),
     ("premier_examen_blanc", "examens", "examens", 1),
     ("examens_blancs_5", "examens", "examens", 5),
+    # L'échelle quiz -> mini-inédite -> épreuve entière : un jalon par barreau, pour que franchir le suivant se voie.
+    ("premiere_mini", "examens", "minis", 1),
+    ("premiere_inedite", "examens", "inedites", 1),
+    ("inedites_3", "examens", "inedites", 3),
     ("premier_defi", "defis", "defis", 1),
     ("defis_4", "defis", "defis", 4),
     ("serie_3", "serie", "serie", 3),
@@ -88,9 +93,14 @@ def _valeurs(profil):
     )
     themes_solides = sum(1 for t in maitrise_par_theme(profil) if est_maitrise(t["taux"], t["total"]))
     examens = SimulationEpreuve.objects.filter(profil=profil, submitted_at__isnull=False).count()
+    # Une copie RENDUE (submitted_at), jamais une copie commencée ; une même épreuve rendue deux fois compte une fois.
+    rendues = TentativeInedite.objects.filter(profil=profil, submitted_at__isnull=False)
+    minis = rendues.filter(epreuve__est_mini=True).values("epreuve_id").distinct().count()
+    inedites = rendues.filter(epreuve__est_mini=False).values("epreuve_id").distinct().count()
     etat_serie = serie.serie_de_jours(profil)
     return {
         "quiz": total, "bonnes": bonnes, "sans_faute": sans_faute, "themes": themes_solides, "examens": examens,
+        "minis": minis, "inedites": inedites,
         # Une carte compte dès sa première revue, une fois pour toutes : c'est le nombre de cartes travaillées.
         "cartes": CarteRevue.objects.filter(profil=profil).count(),
         "erreurs": len(corrigees),

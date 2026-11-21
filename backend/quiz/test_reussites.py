@@ -69,7 +69,7 @@ class JalonsTests(ErreursFixture):
 
         self.assertEqual(reponse.status_code, 200)
         self.assertEqual(reponse.data["niveau"]["rang"], 1)
-        self.assertEqual(len(reponse.data["jalons"]), 23)
+        self.assertEqual(len(reponse.data["jalons"]), 26)
 
 
 class JalonsRapprochesTests(ErreursFixture):
@@ -178,3 +178,53 @@ class JalonsErreursCorrigeesTests(ErreursFixture):
         self.repondre(self.item("a"), "REUSSI")
 
         self.assertEqual(self._jalon("erreurs_1")["valeur"], 0)
+
+
+class EchelleQuizMiniEpreuveTests(ErreursFixture):
+    """Les jalons de l'échelle : une mini terminée, une épreuve inédite entière terminée. Une copie commencée ne compte pas."""
+
+    def _jalon(self, code):
+        return next(j for j in reussites_du_profil(self.profil)["jalons"] if j["code"] == code)
+
+    def _epreuve(self, titre, est_mini):
+        from inedit.models import Blueprint, EpreuveInedite
+
+        blueprint = Blueprint.objects.create(
+            external_id=f"bp-{titre}", subject=self.maths, titre=titre, sections_plan=[], duree_minutes=30, statut=StatutContenu.VALIDE,
+        )
+        return EpreuveInedite.objects.create(
+            blueprint=blueprint, external_id=f"ep-{titre}", subject=self.maths, titre=titre, statut=StatutContenu.VALIDE,
+            est_mini=est_mini, published_at=timezone.now(),
+        )
+
+    def _rendre(self, epreuve, rendue=True):
+        from inedit.models import TentativeInedite
+
+        return TentativeInedite.objects.create(
+            profil=self.profil, epreuve=epreuve, submitted_at=timezone.now() if rendue else None,
+        )
+
+    def test_une_mini_rendue_ouvre_son_jalon_pas_une_copie_commencee(self):
+        mini = self._epreuve("Mini", est_mini=True)
+        self._rendre(mini, rendue=False)
+        self.assertFalse(self._jalon("premiere_mini")["obtenu"])
+
+        self._rendre(mini)
+        self.assertTrue(self._jalon("premiere_mini")["obtenu"])
+        self.assertFalse(self._jalon("premiere_inedite")["obtenu"])
+
+    def test_une_mini_ne_compte_pas_comme_epreuve_entiere_et_trois_epreuves_ouvrent_le_dernier_jalon(self):
+        self._rendre(self._epreuve("Mini", est_mini=True))
+        self.assertFalse(self._jalon("premiere_inedite")["obtenu"])
+
+        for n in range(3):
+            self._rendre(self._epreuve(f"Entière {n}", est_mini=False))
+        self.assertTrue(self._jalon("premiere_inedite")["obtenu"])
+        self.assertTrue(self._jalon("inedites_3")["obtenu"])
+
+    def test_la_meme_epreuve_rendue_deux_fois_ne_compte_qu_une_fois(self):
+        entiere = self._epreuve("Entière", est_mini=False)
+        self._rendre(entiere)
+        self._rendre(entiere)
+
+        self.assertEqual(self._jalon("inedites_3")["valeur"], 1)
