@@ -30,8 +30,20 @@ vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" 
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/sentry", () => ({ Sentry: { captureException: vi.fn() } }))
 vi.mock("@/components/BilanDePeriode", () => ({ BilanDePeriode: () => null }))
-vi.mock("@/components/CodeRevendeur", () => ({ CodeRevendeur: () => null }))
-vi.mock("@/components/ManualPaymentPanel", () => ({ ManualPaymentPanel: () => null }))
+// Ces deux blocs appellent des routes réservées aux comptes dès leur montage : on compte les montages.
+const blocsReserves = vi.hoisted(() => ({ codeRevendeur: vi.fn(), paiementManuel: vi.fn() }))
+vi.mock("@/components/CodeRevendeur", () => ({
+  CodeRevendeur: () => {
+    blocsReserves.codeRevendeur()
+    return null
+  },
+}))
+vi.mock("@/components/ManualPaymentPanel", () => ({
+  ManualPaymentPanel: () => {
+    blocsReserves.paiementManuel()
+    return null
+  },
+}))
 
 import { SubscribePage } from "./SubscribePage"
 
@@ -70,6 +82,44 @@ beforeEach(() => {
   auth.isAuthenticated = true
   auth.isLoading = false
   auth.user = { phone_number: "677000000" }
+  blocsReserves.codeRevendeur.mockClear()
+  blocsReserves.paiementManuel.mockClear()
+})
+
+describe("SubscribePage : rien de réservé aux comptes n'est monté sans session", () => {
+  it("n'appelle aucun bloc réservé pour un visiteur, qui part vers la connexion sans « Session expirée »", async () => {
+    auth.isAuthenticated = false
+    getPaymentConfig.mockResolvedValue({ campay_active: false })
+    afficher("/abonnement?cursus=4&mois=3")
+
+    expect(await screen.findByText("Page de connexion")).toBeInTheDocument()
+    expect(blocsReserves.codeRevendeur).not.toHaveBeenCalled()
+    expect(blocsReserves.paiementManuel).not.toHaveBeenCalled()
+  })
+
+  it("attend la session avant de monter le formulaire (lien ouvert directement)", async () => {
+    auth.isAuthenticated = false
+    auth.isLoading = true
+    getPaymentConfig.mockResolvedValue({ campay_active: false })
+    afficher("/abonnement?cursus=4&mois=3")
+
+    expect(await screen.findByLabelText("Chargement de l'offre")).toBeInTheDocument()
+    await waitFor(() => expect(getPaymentConfig).toHaveBeenCalled())
+    expect(screen.queryByText("Page de connexion")).not.toBeInTheDocument()
+    expect(screen.queryByText(/Paiement sécurisé/)).not.toBeInTheDocument()
+    expect(blocsReserves.codeRevendeur).not.toHaveBeenCalled()
+    expect(blocsReserves.paiementManuel).not.toHaveBeenCalled()
+  })
+
+  it("monte le code revendeur et le paiement manuel pour un compte connecté", async () => {
+    getPaymentConfig.mockResolvedValue({ campay_active: false })
+    listPlans.mockResolvedValue([planAuMois()])
+    afficher("/abonnement?cursus=4&mois=3")
+
+    await screen.findByText(/Paiement sécurisé/)
+    await waitFor(() => expect(blocsReserves.paiementManuel).toHaveBeenCalled())
+    expect(blocsReserves.codeRevendeur).toHaveBeenCalled()
+  })
 })
 
 describe("SubscribePage : pour quel enfant le parent paie", () => {

@@ -550,6 +550,19 @@ export function SubscribePage() {
     )
   }
 
+  // Rien de cette page n'est monté tant que la session n'est pas établie. Ses blocs (code revendeur, moyens de
+  // paiement manuel) appellent des routes réservées aux comptes : sans session, leur 401 faisait afficher
+  // « Session expirée » à un visiteur qui n'en a jamais eu, juste avant l'écran de connexion où l'effet plus haut
+  // l'envoie (vu chez trois visiteurs le 2026-11-21, au clic sur « Continuer » de /tarifs).
+  if (!isAuthenticated) {
+    if (!isLoading) return null
+    return (
+      <div className="mx-auto flex max-w-5xl justify-center px-4 py-24 sm:px-6">
+        <Loader2 className="size-6 animate-spin text-primary" aria-label={t("sb.chargement_offre")} />
+      </div>
+    )
+  }
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
       {/* Même gabarit de hero que /tarifs (voir PricingPage.tsx) : fond dégradé, trame
