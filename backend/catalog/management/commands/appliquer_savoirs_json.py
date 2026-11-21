@@ -31,6 +31,20 @@ from catalog.ingestion import (
 )
 
 
+def _matiere_du_referentiel(subject, brut):
+    """Matière sous laquelle le référentiel range ce module. Les épreuves dont la matière est « Histoire-Géographie » (HISTOIRE_GEO)
+    n'ont aucun module : le référentiel range l'Histoire sous HISTOIRE (modules H…) et la Géographie sous GEOGRAPHIE (modules G…).
+    Le préfixe du module décide, jamais autre chose ; sans préfixe reconnu, la matière de l'exercice reste inchangée."""
+    from catalog.models import Subject
+
+    if subject.code != "HISTOIRE_GEO" or not isinstance(brut, dict):
+        return subject
+    code = {"H": "HISTOIRE", "G": "GEOGRAPHIE"}.get(str(brut.get("module_numero") or "").strip()[:1].upper())
+    if code is None:
+        return subject
+    return Subject.objects.filter(country=subject.country, code=code).first() or subject
+
+
 class Command(BaseCommand):
     help = "Applique le seul champ savoir_officiel des JSON d'ingestion aux questions déjà en base (simulation par défaut)."
 
@@ -148,7 +162,7 @@ class Command(BaseCommand):
                     compteurs["questions_vides_json"] += 1
                     continue
                 try:
-                    savoir = _resolve_savoir_officiel(brut, subject)
+                    savoir = _resolve_savoir_officiel(brut, _matiere_du_referentiel(subject, brut))
                 except IngestionError as exc:
                     compteurs["reference_invalide"] += 1
                     details.append({"fichier": fichier.name, "question": str(q_data.get("numero") or ordre), "probleme": str(exc)[:200]})

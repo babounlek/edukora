@@ -145,3 +145,21 @@ class ExportAmbigu(AppliquerSavoirsJsonTests):
 
         self.assertIn("AMBIGU", out.getvalue())
         self.assertEqual(json.loads(sortie.read_text(encoding="utf-8")), [])
+
+
+class HistoireGeoTests(TestCase):
+    """Matière « Histoire-Géographie » : le référentiel range H sous HISTOIRE et G sous GEOGRAPHIE (préfixe du module)."""
+
+    def test_le_prefixe_du_module_choisit_la_matiere_du_referentiel(self):
+        from catalog.models import Country
+
+        from .management.commands.appliquer_savoirs_json import _matiere_du_referentiel
+
+        cm = Country.objects.get(code="CM")
+        hg = Subject.objects.get(country=cm, code="HISTOIRE_GEO")
+
+        self.assertEqual(_matiere_du_referentiel(hg, {"module_numero": "G2"}).code, "GEOGRAPHIE")
+        self.assertEqual(_matiere_du_referentiel(hg, {"module_numero": "H4"}).code, "HISTOIRE")
+        self.assertEqual(_matiere_du_referentiel(hg, {"module_numero": "7"}).code, "HISTOIRE_GEO")  # sans préfixe : inchangé
+        maths = Subject.objects.get(country=cm, code="MATHS")
+        self.assertEqual(_matiere_du_referentiel(maths, {"module_numero": "G2"}).code, "MATHS")  # jamais pour une autre matière
