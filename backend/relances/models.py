@@ -8,6 +8,8 @@ class TypeRelance(models.TextChoices):
     BILAN_PARENT = "bilan_parent", "Bilan de la semaine au parent"
     ABSENCE_1 = "absence_1", "Absence - deux jours sans séance"
     ABSENCE_2 = "absence_2", "Absence - une semaine sans séance, dernier message"
+    FIN_ABONNEMENT_1 = "fin_abonnement_1", "Fin d'abonnement - trois jours avant"
+    FIN_ABONNEMENT_2 = "fin_abonnement_2", "Fin d'abonnement - le jour même, dernier message"
 
 
 class CanalRelance(models.TextChoices):

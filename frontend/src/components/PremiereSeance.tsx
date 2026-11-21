@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, ChevronDown, ListChecks, Target } from "lucide-react"
+import { ArrowRight, Check, ChevronDown, ListChecks, Target } from "lucide-react"
 
 import { listQuizEssais } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -20,7 +20,7 @@ import { langueDeListe } from "@/lib/discipline"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { lancerQuizGratuit } from "@/lib/quizGratuit"
-import { cleSeance, seancesJouees } from "@/lib/seancesGratuites"
+import { cleSeance, scoresDesSeances, seancesJouees, type ScoreSeance } from "@/lib/seancesGratuites"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 
@@ -71,13 +71,28 @@ export function seanceSuivante(essais: QuizEssai[], cursusId: number, jouees: Re
  *
  * Hauteur minimale réservée : la carte change de contenu (question, puis séance) sans pousser la page.
  */
-export function PremiereSeance({ country }: { country: string }) {
-  useI18n()
+/**
+ * Le meilleur score du visiteur parmi les séances gratuites qu'il a jouées pour cet examen sur cet appareil (voir
+ * lib/seancesGratuites) : celui dont la part de bonnes réponses est la plus haute. Null sans score connu.
+ */
+export function meilleurScore(scores: ReadonlyMap<string, ScoreSeance | null>, cursusId: number): ScoreSeance | null {
+  let meilleur: ScoreSeance | null = null
+  for (const [cle, score] of scores) {
+    if (!score || !cle.startsWith(`${cursusId}:`)) continue
+    if (!meilleur || score.reussies / score.total > meilleur.reussies / meilleur.total) meilleur = score
+  }
+  return meilleur
+}
+
+/**
+ * Où en est le visiteur et de quoi lancer sa séance : partagé par la carte du hero et par la barre « Commencer » qui
+ * suit le défilement sur un téléphone (voir BarreCommencer). Chacune a son propre état de lancement ; les requêtes,
+ * elles, sont partagées par leur clé de cache.
+ */
+export function usePremiereSeance(country: string, cible: "premiere_seance" | "barre_commencer" = "premiere_seance") {
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
   const choisi = useCursusPrepareDeclare(country)
-  const { data: cursusList, isPending: listeEnAttente } = useCursusListe(country, { langue: langueDeListe("", false) })
-  const { declarer, enCours: declarationEnCours } = useDeclarerCursus()
   // Même clé de cache que /quiz (EssaisGratuitsQuiz) : la liste n'est demandée qu'une fois, et seulement quand
   // un examen est choisi - la question « quel examen ? » n'a besoin d'aucune requête de plus.
   const { data: essais, isPending: essaisEnAttente } = useQuery({
@@ -88,8 +103,9 @@ export function PremiereSeance({ country }: { country: string }) {
   })
   const [lancement, setLancement] = useState(false)
   const [erreur, setErreur] = useState("")
-  // Lu une fois au montage : la séance se joue sur une autre page, la carte est remontée au retour sur l'accueil.
+  // Lus une fois au montage : la séance se joue sur une autre page, la carte est remontée au retour sur l'accueil.
   const [jouees] = useState(seancesJouees)
+  const [scores] = useState(scoresDesSeances)
 
   const { essai, faites, total } = choisi && essais ? seanceSuivante(essais, choisi.id, jouees) : { essai: null, faites: 0, total: 0 }
 
@@ -97,7 +113,7 @@ export function PremiereSeance({ country }: { country: string }) {
     if (lancement) return
     setLancement(true)
     setErreur("")
-    trackEvent("accueil_bouton_clic", { cible: "premiere_seance" })
+    trackEvent("accueil_bouton_clic", { cible })
     try {
       navigate(await lancerQuizGratuit({
         cursus: seance.cursus, subject: seance.subject, theme: seance.theme, connecte: isAuthenticated, source: "accueil_seance",
@@ -107,6 +123,19 @@ export function PremiereSeance({ country }: { country: string }) {
       setLancement(false)
     }
   }
+
+  return {
+    choisi, connecte: isAuthenticated, essaisEnAttente: choisi !== null && essaisEnAttente, essai, faites, total,
+    meilleur: choisi ? meilleurScore(scores, choisi.id) : null,
+    lancement, erreur, commencer,
+  }
+}
+
+export function PremiereSeance({ country }: { country: string }) {
+  useI18n()
+  const { choisi, connecte, essaisEnAttente, essai, faites, total, meilleur, lancement, erreur, commencer } = usePremiereSeance(country)
+  const { data: cursusList, isPending: listeEnAttente } = useCursusListe(country, { langue: langueDeListe("", false) })
+  const { declarer, enCours: declarationEnCours } = useDeclarerCursus()
 
   return (
     <section
@@ -127,12 +156,13 @@ export function PremiereSeance({ country }: { country: string }) {
                 cursus={choisi}
                 rang={faites + 1}
                 total={total}
-                connecte={isAuthenticated}
+                connecte={connecte}
                 lancement={lancement}
                 onCommencer={() => commencer(essai)}
+                dejaFait={<DejaFait faites={faites} meilleur={meilleur} connecte={connecte} />}
               />
             ) : total > 0 ? (
-              <TourFait cursus={choisi} total={total} />
+              <TourFait cursus={choisi} total={total} dejaFait={<DejaFait faites={faites} meilleur={meilleur} connecte={connecte} />} />
             ) : (
               <>
                 <p className="text-sm text-muted-foreground">{t("premiere.aucune", { cursus: libelleCursus(choisi) })}</p>
@@ -207,6 +237,7 @@ function Seance({
   connecte,
   lancement,
   onCommencer,
+  dejaFait,
 }: {
   essai: QuizEssai
   cursus: Cursus
@@ -216,6 +247,8 @@ function Seance({
   connecte: boolean
   lancement: boolean
   onCommencer: () => void
+  /** Ce que le visiteur a déjà fait sur cet appareil (voir DejaFait) ; rien à la première visite. */
+  dejaFait?: ReactNode
 }) {
   const Icone = subjectIcon(essai.subject_code)
   const nb = essai.nb_epreuves ?? 0
@@ -257,8 +290,47 @@ function Seance({
         >
           {t("premiere.autre_matiere")}
         </Link>
+        {/* Sous le bouton : au-dessus, ces deux lignes le faisaient descendre de 95 px chez le visiteur qui revient
+            (566 px du haut, puis 660, mesuré à 375 x 812). */}
+        {dejaFait}
+        {/* Ce que la carte lance est le quiz d'une séance, pas la séance : le titre de la page promet « un cours, un vrai
+            exercice, un quiz », on dit donc ce que l'abonnement ajoute (audit des accueils, 2026-11-21, V4). */}
+        <p className="mt-3 text-center text-xs text-muted-foreground">{t("premiere.avec_abonnement")}</p>
       </div>
     </>
+  )
+}
+
+/**
+ * « 2 séances gratuites déjà faites · meilleur score : 4 sur 5 » : le visiteur qui revient retrouve ce qu'il a fait.
+ * Ses scores sont gardés sur l'appareil (voir lib/seancesGratuites) et la carte n'en disait rien. À partir de la
+ * troisième séance, on lui propose de créer son compte : ses points y sont repris, alors qu'un autre téléphone ou un
+ * stockage vidé les lui ferait perdre. Pas avant : il n'a encore rien à garder.
+ */
+const SEANCES_AVANT_INVITATION_COMPTE = 3
+
+function DejaFait({ faites, meilleur, connecte }: { faites: number; meilleur: ScoreSeance | null; connecte: boolean }) {
+  if (faites < 1) return null
+  return (
+    <p className="mt-4 border-t border-border/60 pt-3 text-sm text-muted-foreground">
+      <span className="flex items-start gap-1.5">
+        <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden="true" />
+        <span>
+          {tn("premiere.deja_fait", faites)}
+          {meilleur && <> · {t("premiere.meilleur_score", { r: meilleur.reussies, n: meilleur.total })}</>}
+        </span>
+      </span>
+      {!connecte && faites >= SEANCES_AVANT_INVITATION_COMPTE && (
+        <Link
+          to="/connexion"
+          onClick={() => trackEvent("accueil_bouton_clic", { cible: "creer_compte" })}
+          className="mt-1.5 inline-flex min-h-9 items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+        >
+          {t("premiere.garder_points")}
+          <ArrowRight className="size-3.5" aria-hidden="true" />
+        </Link>
+      )}
+    </p>
   )
 }
 
@@ -266,12 +338,13 @@ function Seance({
  * Toutes les séances gratuites de l'examen sont jouées : la carte ne repropose pas la première comme si de rien n'était.
  * Elle dit ce qui vient ensuite (la séance de chaque jour, avec l'abonnement) et laisse rejouer ce qui est gratuit.
  */
-function TourFait({ cursus, total }: { cursus: Cursus; total: number }) {
+function TourFait({ cursus, total, dejaFait }: { cursus: Cursus; total: number; dejaFait?: ReactNode }) {
   return (
     <>
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{t("premiere.tour_etiquette")}</p>
       <h2 className="mt-2 font-display text-2xl font-semibold leading-tight">{tn("premiere.tour_titre", total)}</h2>
       <p className="mt-3 text-sm text-muted-foreground">{t("premiere.tour_texte")}</p>
+      {dejaFait}
       <div className="mt-auto pt-5">
         <Button size="lg" asChild className="w-full">
           <Link to="/tarifs" onClick={() => trackEvent("accueil_bouton_clic", { cible: "prix" })}>

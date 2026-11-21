@@ -12,7 +12,8 @@ import { DefiDeLaSemaine, mentionDefi, useDefiSemaine } from "@/components/DefiD
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
 import { ReprendreQuiz } from "@/components/ReprendreQuiz"
-import { InviteRappels } from "@/components/RappelsEmail"
+import { FinAccesProche } from "@/components/FinAccesProche"
+import { InviteBilan, InviteRappels } from "@/components/RappelsEmail"
 import { InvitationMatieres } from "@/components/ChoixMatieres"
 import { LigneErreurs } from "@/components/MesErreurs"
 import { TeteAccueil } from "@/components/TeteAccueil"
@@ -184,6 +185,8 @@ export function AccueilEleve({ country }: { country: string }) {
           à ~1 180 px du haut, sous le premier écran). Ordre : chrono d'examen, puis quiz, puis la séance du jour. */}
       <ReprendreQuiz enveloppe fraicheurMs={FRAICHEUR_ACCUEIL_MS} />
       {seanceEnAttente ? <SqueletteTete /> : <TeteAccueil accueil={data} country={country} />}
+      {/* La fin de l'accès, annoncée une semaine avant, SOUS la séance : elle ne repousse jamais « Commencer ». */}
+      <FinAccesProche accueil={data} />
       {/* Ce qui est commencé et pas fini passe juste sous la séance : placé après « Où j'en suis », il se
           trouvait à 2 ou 3 écrans de défilement sur téléphone (test élève 2026-10-24, reprise > 10 s). Tout ce qui
           se reprend ou se fait en plus de la séance tient maintenant dans UN bloc (voir AContinuer). */}
@@ -203,6 +206,8 @@ export function AccueilEleve({ country }: { country: string }) {
       {/* Proposé une fois, quand l'élève sait ce qu'on lui rappellerait : après sa
           première séance. */}
       {!data.premiers_pas && <InviteRappels />}
+      {/* Puis, une fois les rappels tranchés (acceptés ou écartés), le bilan de la semaine : une invitation à la fois. */}
+      {!data.premiers_pas && (user?.rappels_actifs || user?.rappels_invite_refusee) && <InviteBilan />}
       {/* Ce qui a bougé depuis la dernière visite, et rien d'autre : les thèmes à reprendre et la lecture ouverte
           sont dans « À continuer », plus haut. */}
       <DepuisLaDerniereFois depuis={data.depuis} revisions={[]} lecture={null} />

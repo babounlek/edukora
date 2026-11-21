@@ -10,6 +10,7 @@ from django.utils import timezone
 from payments.rattrapage import rattraper_paiements_en_attente
 from relances.absence import envoyer_relances_absence
 from relances.bilan_parent import HEURE_DEBUT_BILAN, HEURE_FIN_BILAN, JOUR_ENVOI, envoyer_bilans_parent
+from relances.fin_abonnement import envoyer_relances_fin_abonnement
 from relances.push import envoyer_rappels_push
 from relances.services import envoyer_relances_paiement, envoyer_rappels_seance
 from whatsapp.services import envoyer_rappels_du_jour as envoyer_rappels_whatsapp
@@ -36,7 +37,7 @@ def passer_une_fois(maintenant=None):
     rattrapes = rattraper_paiements_en_attente(maintenant)
     resultat = {
         "rattrapage": rattrapes, "paiement": envoyer_relances_paiement(maintenant),
-        "rappel": 0, "push": 0, "bilan": 0, "whatsapp": 0, "absence": 0, "purge": 0,
+        "rappel": 0, "push": 0, "bilan": 0, "whatsapp": 0, "absence": 0, "fin_abonnement": 0, "purge": 0,
     }
     # Le bilan du parent : le dimanche en fin d'après-midi, une fois par semaine (la trace par
     # semaine ISO empêche tout doublon si plusieurs tours tombent dans la fenêtre).
@@ -55,6 +56,9 @@ def passer_une_fois(maintenant=None):
         # Les deux relances d'absence (deux jours, puis une semaine sans séance) : mêmes heures, autres élèves - ceux
         # que le rappel quotidien ne sert plus (voir relances.absence).
         resultat["absence"] = envoyer_relances_absence(maintenant)
+        # La fin d'un accès payé : trois jours avant, puis le jour même, au compte qui a payé (voir
+        # relances.fin_abonnement). Aux mêmes heures : un message lu en fin de journée, quand le parent est joignable.
+        resultat["fin_abonnement"] = envoyer_relances_fin_abonnement(maintenant)
     if local.hour == HEURE_PURGE:
         resultat["purge"] = purger_donnees_perimees()
     return resultat

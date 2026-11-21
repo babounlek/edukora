@@ -309,3 +309,66 @@ Vérifié à l'écran sur l'image `caddy` reconstruite : compte sans abonnement 
 
 ### Déploiement
 Rebuild de `caddy` seul. Le changement de `backend/analytics/models.py` est un commentaire.
+
+## 13. Lot 3 codé : le renouvellement (2026-11-21, en local, non committé, non déployé)
+
+Décision de l'utilisateur du 2026-11-21 : enchaîner les lots. Les questions de la section 10 (à qui parle-t-on, à combien de jours) ont été tranchées par défaut, voir « Décisions prises en codant ».
+
+| ID | Ce qui est en place | Où |
+|---|---|---|
+| A1, serveur | Deux e-mails au compte qui a payé : trois jours avant la fin de l'accès (deux jours si l'envoi de la veille a manqué), puis le jour même, « dernier message ». Chacun dit la date, le prénom de l'enfant quand ce n'est pas le titulaire, le nombre de séances terminées, et porte le lien direct `/abonnement?cursus=…&profil=…`. Ni prix ni décompte ; il dit que rien n'est prélevé. En français ou en anglais selon le compte. | `backend/relances/fin_abonnement.py` |
+| A1, serveur | Rien ne part si l'examen est passé, si un paiement par transfert est en cours de vérification pour ce profil et cet examen, si l'adresse n'est pas confirmée, ou si l'accès a été prolongé entre-temps. Un accès prolongé retrouve ses deux messages à sa nouvelle échéance. Un envoi raté n'est pas marqué fait. | idem |
+| A1, serveur | L'ordonnanceur l'appelle dans sa fenêtre de fin d'après-midi ; `envoyer_relances --seulement fin_abonnement --dry-run` compte sans envoyer. Deux types de relance de plus. | `planifier_relances.py`, `envoyer_relances.py`, `relances/models.py`, migration `relances 0006` |
+| A1, accueil | « Ton accès se termine le 24 novembre », sept jours avant, sous la carte de séance : ce que l'élève a construit (thèmes maîtrisés, thèmes en révision), « Prolonger » vers le bon profil et le bon examen, « Montrer à mes parents » dont le message tout prêt dit la date. Ni rouge ni « plus que N jours ». | `components/FinAccesProche.tsx`, `AccueilEleve.tsx` |
+| A4 | Invitation au bilan de la semaine, une fois, quand celle des rappels a eu sa réponse. Elle se tait dans la session d'un enfant ouverte par son parent et sur un compte protégé par un code parent : le réglage y appartient au parent. | `components/RappelsEmail.tsx` (`InviteBilan`) |
+| J+1 | Fait au lot 2 : la page de l'ancien abonné (date de fin, ce qu'il retrouve, « Me réabonner »). | section 12 |
+
+Tests : 17 tests serveur pour la relance (sélection, fenêtres, prolongation, paiement en cours, examen passé, échec d'envoi, textes, ordonnanceur) ; les suites `relances` et `payments.tests` passent dans le conteneur (182 tests). Côté interface : 6 tests pour la ligne de fin d'accès, 4 pour l'invitation au bilan.
+
+Vérifié à l'écran : la ligne de fin d'accès, en mobile (991 px du haut, « Commencer » toujours à 440 px) et sur bureau (une ligne de 106 px), sur le compte de test abonné dont la date de fin a été rapprochée à trois jours le temps de la vérification, puis remise à sa valeur. L'e-mail a été composé pour ce compte et relu : « L'accès de Test à EduKora (BAC - Série C (Maths)) se termine le 24 novembre 2026. »
+
+### Non vu, non fait
+- **Aucun e-mail n'est réellement parti** : le compte de test n'a pas d'adresse confirmée, la sélection l'a donc écarté, comme prévu. L'envoi réel reste à constater en production (`--dry-run` d'abord).
+- **L'invitation au bilan n'a pas été vue à l'écran** : le compte Guyguy a un code parent (elle s'y tait, comme prévu), le compte de test abonné n'a pas terminé de séance. Couverte par ses tests.
+- **WhatsApp** : non branché, les modèles ne sont pas approuvés.
+- **Mesure** : seul le clic « Prolonger » est mesuré (`accueil_bouton_clic`, cible `prolonger`). L'affichage de la ligne ne l'est pas : il demanderait un nouveau nom d'évènement, donc une migration `analytics`.
+
+### Décisions prises en codant, à valider
+- **Le message ne dépend pas du réglage « rappels » de l'élève.** C'est le suivi d'un accès payé, comme la relance d'un paiement non abouti. Il exige une adresse confirmée et part au compte.
+- **Deux messages, J-3 et le jour même.** Pas de message après la fin : la page de l'ancien abonné prend le relais.
+- **L'annonce sur l'accueil commence à sept jours.** Sur un abonnement d'un mois, c'est un quart du temps ; ramener à cinq se règle par `JOURS_ANNONCE_FIN`.
+- **« Après la troisième séance » n'est pas la règle du bilan** : l'accueil ne sait pas compter les séances. La règle retenue est « une fois les rappels tranchés ».
+
+## 14. Lot 4 codé : le visiteur (2026-11-21, en local, non committé, non déployé)
+
+| ID | Ce qui est en place | Où |
+|---|---|---|
+| RV3 | Barre « Commencer » collée en bas de l'écran sur un téléphone, entre la carte du hero et le dernier bloc : « BEPC · Allemand / Antonymes / Commencer ». Même action que la carte. Sans examen choisi, « Choisir mon examen » ramène à la question ; séances gratuites toutes jouées, « Voir les abonnements ». Absente à partir de `md`. | `components/BarreCommencer.tsx`, `pages/CataloguePage.tsx` |
+| RV4 | Sous le bouton de la carte : « C'est le quiz d'une séance. Avec l'abonnement, chaque jour : le cours et un exercice tombé à l'examen en plus. » | `components/PremiereSeance.tsx` |
+| RV5 | Le visiteur qui revient lit ce qu'il a fait : « 4 séances gratuites déjà faites · meilleur score : 5 sur 6 ». À partir de la troisième séance, « Crée ton compte pour garder tes points ». | `PremiereSeance.tsx` (`DejaFait`, `meilleurScore`) |
+| RV6 | L'invite d'installation, qui n'existait que sur le résultat d'un quiz, apparaît aussi sur l'accueil du visiteur qui a déjà joué une séance. | `pages/CataloguePage.tsx` |
+
+Tests : 5 pour la barre (avec un observateur d'écran factice), 3 pour la carte, 2 pour le meilleur score. Suite complète du frontend : 1 734 tests au vert, contrôle des types sans erreur.
+
+Vérifié à l'écran, mobile 375 px : la carte du visiteur qui revient (bouton « Commencer » à 566 px du haut, comme avant) ; la barre, absente en haut de page, présente après la carte (65 px de haut), absente au dernier bloc.
+
+### Écarts, non vu, non fait
+- **RV1 (premiers avis) : hors code**, toujours à faire. Zéro avis publié en production.
+- **RV6 non vu à l'écran** : le navigateur d'audit n'émet pas l'évènement d'installation. Le composant est celui du résultat de quiz, déjà en service.
+- **RV4 est une phrase, pas un aperçu du parcours** : montrer les trois temps de la séance au visiteur reste la décision 2 de la section 10.
+- **La carte du visiteur qui revient fait 509 px** (332 px à la première visite) : la ligne « déjà fait » et la phrase sur l'abonnement s'ajoutent sous le bouton, sans le déplacer.
+
+### Décisions prises en codant, à valider
+- **La barre dit « Commencer »**, pas « Commencer, sans compte » : à 375 px, la version longue ne laissait plus de place au thème.
+- **Trois séances avant de parler de compte** (`SEANCES_AVANT_INVITATION_COMPTE`).
+- **La ligne « déjà fait » est sous le bouton** : au-dessus, elle le faisait descendre de 566 à 660 px (mesuré).
+
+### Vu en passant, non traité
+- **Le compte des séances gratuites peut être faux d'une unité.** La mémoire de l'appareil range une séance sous « examen:thème », sans la matière. Au BEPC, le thème « connecteurs logiques » est gratuit en français et en anglais : en jouer un marque les deux. Vu à l'écran : trois séances posées, « 4 séances gratuites déjà faites ». Défaut antérieur à ce lot (`lib/seancesGratuites.ts`, `cleSeance`).
+- Le compte de test abonné reçoit le tutoriel de bienvenue alors qu'un « palier franchi » s'affiche : il a travaillé des questions sans terminer de séance.
+
+## 15. Déploiement des quatre lots
+
+- Lots 1 et 2 (committés, `f2718822` et `771dbbe4`) : rebuild de `caddy` seul.
+- Lots 3 et 4 (non committés) : migration `relances 0006` (aucun changement de table), rebuild de `backend` et de `caddy`, puis relancer le service `relances` qui porte l'ordonnanceur. Avant le premier tour réel : `envoyer_relances --seulement fin_abonnement --dry-run` pour lire combien de comptes sont concernés.
+- En local, les fichiers de la relance ont été copiés dans le conteneur `backend` (non reconstruit) et la migration y est appliquée.

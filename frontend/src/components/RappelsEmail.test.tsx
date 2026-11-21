@@ -13,7 +13,7 @@ vi.mock("@/api/endpoints", () => ({ updateMe }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 vi.mock("sonner", () => ({ toast }))
 
-import { InterrupteurRappelsEmail, InviteRappels } from "./RappelsEmail"
+import { InterrupteurRappelsEmail, InviteBilan, InviteRappels } from "./RappelsEmail"
 
 function eleve(extra: Partial<User> = {}): User {
   return {
@@ -98,5 +98,49 @@ describe("InterrupteurRappelsEmail", () => {
     auth.user = eleve({ rappels_actifs: true, email_verified: false })
     afficher(<InterrupteurRappelsEmail />)
     expect(screen.getByRole("switch")).toBeEnabled()
+  })
+})
+
+describe("InviteBilan", () => {
+  beforeEach(() => localStorage.clear())
+
+  it("propose le bilan de la semaine et l'active d'un toucher", async () => {
+    auth.user = eleve({ rappels_actifs: true })
+    updateMe.mockResolvedValue(eleve({ rappels_actifs: true, bilan_parent_actif: true }))
+    afficher(<InviteBilan />)
+
+    expect(screen.getByText("Ton bilan de la semaine, chaque dimanche ?")).toBeInTheDocument()
+    await userEvent.click(screen.getByRole("button", { name: "Activer le bilan" }))
+
+    await waitFor(() => expect(updateMe).toHaveBeenCalledWith({ bilan_parent_actif: true }))
+  })
+
+  it("écartée, elle ne revient pas sur cet appareil, et rien n'est envoyé au serveur", async () => {
+    auth.user = eleve()
+    const { unmount } = afficher(<InviteBilan />)
+
+    await userEvent.click(screen.getByRole("button", { name: "Non merci" }))
+
+    expect(screen.queryByText("Ton bilan de la semaine, chaque dimanche ?")).not.toBeInTheDocument()
+    expect(updateMe).not.toHaveBeenCalled()
+    unmount()
+    afficher(<InviteBilan />)
+    expect(screen.queryByText("Ton bilan de la semaine, chaque dimanche ?")).not.toBeInTheDocument()
+  })
+
+  it("renvoie vers l'ajout de l'e-mail quand il manque", () => {
+    auth.user = eleve({ email: "", email_verified: false })
+    afficher(<InviteBilan />)
+
+    expect(screen.getByRole("link", { name: "Ajouter mon e-mail" })).toHaveAttribute("href", "/compte")
+  })
+
+  it("se tait quand le réglage appartient au parent, ou quand le bilan est déjà actif", () => {
+    for (const cas of [{ bilan_parent_actif: true }, { session_restreinte: true }, { pin_parent_actif: true }]) {
+      auth.user = eleve(cas)
+      const { unmount } = afficher(<InviteBilan />)
+      expect(screen.queryByText("Ton bilan de la semaine, chaque dimanche ?")).not.toBeInTheDocument()
+      unmount()
+    }
   })
 })

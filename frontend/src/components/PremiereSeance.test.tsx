@@ -152,4 +152,36 @@ describe("PremiereSeance : la carte du hero de l'accueil", () => {
     expect(await screen.findByText(/Pas encore de séance d'essai pour BEPC/)).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /Lire un corrigé gratuit/ })).toHaveAttribute("href", "/cm/epreuves?gratuit=true")
   })
+
+  it("première visite : dit ce que l'abonnement ajoute au quiz, et rien sur un passé qui n'existe pas", async () => {
+    etat.choisi = BEPC
+    afficher()
+    expect(await screen.findByText(/C'est le quiz d'une séance. Avec l'abonnement, chaque jour/)).toBeInTheDocument()
+    expect(screen.queryByText(/déjà faite/)).toBeNull()
+  })
+
+  it("visiteur qui revient : la carte dit ce qu'il a fait et son meilleur score, sans encore parler de compte", async () => {
+    etat.choisi = BEPC
+    marquerSeancesJouees(14, ["identité remarquable".length], { reussies: 4, total: 5 })
+    afficher()
+    expect(await screen.findByText(/1 séance gratuite déjà faite/)).toBeInTheDocument()
+    expect(screen.getByText(/meilleur score : 4 sur 5/)).toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /Crée ton compte/ })).toBeNull()
+  })
+
+  it("à partir de la troisième séance gratuite : propose de créer un compte pour garder ses points", async () => {
+    etat.choisi = BEPC
+    listQuizEssais.mockResolvedValue([
+      ...ESSAIS,
+      essai(14, "PCT", "Physique-Chimie-Technologie", "vitesse", 4, 19),
+      essai(14, "HISTOIRE", "Histoire", "décolonisation", 9, 13),
+    ])
+    marquerSeancesJouees(14, ["identité remarquable".length, "connecteurs".length, "vitesse".length], { reussies: 3, total: 5 })
+    afficher()
+    expect(await screen.findByText(/3 séances gratuites déjà faites/)).toBeInTheDocument()
+    const lien = screen.getByRole("link", { name: /Crée ton compte pour garder tes points/ })
+    expect(lien).toHaveAttribute("href", "/connexion")
+    fireEvent.click(lien)
+    expect(trackEvent).toHaveBeenCalledWith("accueil_bouton_clic", { cible: "creer_compte" })
+  })
 })

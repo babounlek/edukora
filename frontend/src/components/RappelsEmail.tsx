@@ -192,3 +192,70 @@ export function InviteRappels() {
     </section>
   )
 }
+
+const CLE_INVITE_BILAN = "edukora:invite-bilan-ecartee"
+
+function inviteBilanEcartee(compteId: number): boolean {
+  try {
+    return localStorage.getItem(`${CLE_INVITE_BILAN}:${compteId}`) !== null
+  } catch {
+    return false
+  }
+}
+
+/**
+ * L'invitation au bilan de la semaine, une fois : c'est le parent qui paiera le mois suivant, et rien ne lui montrait
+ * le travail fait - le bilan du dimanche existe, éteint par défaut, rangé dans les réglages (audit des accueils,
+ * 2026-11-21, A4).
+ *
+ * Jamais en même temps que l'invitation aux rappels (voir AccueilEleve : une invitation à la fois), et seulement là où
+ * l'élève peut décider seul : ni dans la session d'un enfant ouverte par son parent, ni sur un compte protégé par un
+ * code parent, où ce réglage appartient au parent (le serveur redemande alors le code). Écartée, elle ne revient pas
+ * sur cet appareil ; le réglage reste dans « Notifications ».
+ */
+export function InviteBilan() {
+  const { user, enCours, modifier } = useRappelsEmail()
+  const [ecartee, setEcartee] = useState(false)
+  if (!user || user.bilan_parent_actif || user.session_restreinte || user.pin_parent_actif) return null
+  if (ecartee || inviteBilanEcartee(user.id)) return null
+
+  function ecarter() {
+    try {
+      localStorage.setItem(`${CLE_INVITE_BILAN}:${user!.id}`, "1")
+    } catch {
+      // Stockage indisponible : l'invitation reviendra à la prochaine ouverture, sans autre conséquence.
+    }
+    setEcartee(true)
+  }
+
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("rappels.bilan_invite_aria")}>
+      <div className="rounded-2xl border border-border bg-card px-5 py-4">
+        <p className="flex items-center gap-2 font-display font-medium">
+          <CalendarCheck className="size-4 shrink-0 text-primary" aria-hidden="true" />
+          {t("rappels.bilan_invite_titre")}
+        </p>
+        <p className="mt-1 text-sm text-muted-foreground">{t("rappels.bilan_invite_texte")}</p>
+        <div className="mt-3 flex flex-wrap items-center gap-2">
+          {user.email_verified ? (
+            <Button
+              size="sm"
+              className="min-h-11"
+              disabled={enCours}
+              onClick={() => modifier({ bilan_parent_actif: true }, t("rappels.bilan_active"))}
+            >
+              {t("rappels.bilan_activer")}
+            </Button>
+          ) : (
+            <Button asChild size="sm" className="min-h-11">
+              <Link to="/compte">{t("rappels.ajouter_email")}</Link>
+            </Button>
+          )}
+          <Button size="sm" variant="ghost" className="min-h-11" disabled={enCours} onClick={ecarter}>
+            {t("rappels.non_merci")}
+          </Button>
+        </div>
+      </div>
+    </section>
+  )
+}

@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from "react"
+import { useEffect, useState, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, TrendingUp } from "lucide-react"
@@ -38,12 +38,16 @@ import { useCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { AccueilDecouverte } from "@/components/AccueilDecouverte"
+import { BarreCommencer } from "@/components/BarreCommencer"
+import { InviteInstallation } from "@/components/InviteInstallation"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 import { PremiereSeance } from "@/components/PremiereSeance"
 import { SqueletteDePage } from "@/components/RouteFallback"
 import { accueilEleveProbable, marquerAccueilEleve, oublierAccueilEleve } from "@/lib/indiceAccueil"
+import { useInstallationPossible } from "@/lib/installation"
+import { seancesJouees } from "@/lib/seancesGratuites"
 
 // Clés de filtre reconnues par /epreuves (voir EpreuvesListPage) - un lien déjà en
 // circulation qui les porte encore sur cette URL (recherche sauvegardée en session,
@@ -116,6 +120,9 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
   const { isAuthenticated } = useAuth()
   const campagne = useCampagne()
   const [searchParams] = useSearchParams()
+  // Lu une fois au montage : a-t-il déjà joué une séance gratuite sur cet appareil (voir lib/seancesGratuites) ?
+  const [aDejaJoue] = useState(() => seancesJouees().size > 0)
+  const installationPossible = useInstallationPossible()
 
   // Mesure des clics de la vitrine (audit de l'accueil du 2026-11-15, R5) : seul le nom du bouton part (`cible`),
   // jamais de texte ni d'identité - voir analytics.models.EventName.ACCUEIL_BOUTON_CLIC. Sans elle, impossible de
@@ -413,6 +420,15 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
       </section>
       )}
 
+      {/* Le visiteur qui revient après une séance gratuite : garder le site sur son téléphone est le rappel le moins
+          cher qui soit, et rien d'autre ne le fait revenir (ni compte, ni rappel). L'invitation n'existait que sur le
+          résultat d'un quiz ; elle se tait pour de bon dès qu'il a répondu (voir lib/installation). */}
+      {!decouverte && !isAuthenticated && aDejaJoue && installationPossible && (
+        <div className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
+          <InviteInstallation />
+        </div>
+      )}
+
       {/* La promesse du H1 ("la méthode qui t'apprend à réussir") était affirmée,
           jamais montrée. Extrait réel d'un corrigé publié (voir EXEMPLES_CORRIGE),
           rendu par le même composant que la lecture complète (EpreuveMarkdown) - donc
@@ -636,7 +652,8 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           n'avait que le menu du header pour trouver /tarifs. Pas de prix ici : ils
           dépendent du cursus (voir PricingPage/Plan.effective_price), les répéter en
           dur ici les désynchroniserait silencieusement de la vraie grille. */}
-      <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
+      {/* `data-fin-vitrine` : repère de la barre « Commencer » du visiteur, qui s'efface en arrivant ici (voir BarreCommencer). */}
+      <section data-fin-vitrine className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
         <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 text-center sm:p-10">
           <div
             className="absolute inset-0 opacity-[0.04]"
@@ -669,6 +686,9 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           </div>
         </div>
       </section>
+      {/* Sur un téléphone, le bouton « Commencer » suit le visiteur entre la carte du hero et ce dernier bloc. Pas pour
+          un élève connecté sans abonnement : sa carte est en tête et la barre d'onglets occupe déjà le bas de l'écran. */}
+      {!decouverte && <BarreCommencer country={country ?? ""} />}
     </div>
   )
 }
