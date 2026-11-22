@@ -1,10 +1,11 @@
-import { useEffect, useState, type FormEvent } from "react"
+import { useEffect, useRef, useState, type FormEvent } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 
 import { googleSignIn, listProfils, requestEmailCode, requestOtp, verifyEmailCode, verifyOtp } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { User } from "@/api/types"
 import { dureeAttente } from "@/lib/messagesEnvoiCode"
+import { usePaymentConfig } from "@/lib/paymentConfig"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { GoogleSignInButton } from "@/components/GoogleSignInButton"
@@ -142,6 +143,17 @@ export function LoginPage() {
   // Le choix d'abonnement fait juste avant (« BEPC · 3 mois · 6 000 FCFA ») : le parent le retrouve ici au lieu
   // d'un écran de connexion muet sur ce qu'il vient de décider.
   const recapChoix = navigationState?.recap
+
+  // Sur le chemin d'achat (on arrive de /tarifs avec un choix fait), le numéro de téléphone passe devant l'e-mail :
+  // celui qui paie a un numéro Mobile Money, pas toujours une boîte qu'il relève (audit du tunnel visiteur → abonné,
+  // 2026-11-21, trois visiteurs sur trois). Seulement si un SMS peut réellement partir (voir payments.views.payment_config)
+  // et tant que la personne n'a pas choisi elle-même sa méthode. Partout ailleurs l'e-mail reste devant : le coût d'un SMS
+  // se justifie devant une vente, pas devant une simple connexion.
+  const { smsActif } = usePaymentConfig()
+  const methodeChoisie = useRef(false)
+  useEffect(() => {
+    if (recapChoix && smsActif && !methodeChoisie.current) setMethode("phone")
+  }, [recapChoix, smsActif])
 
   // Après une connexion réussie : direct vers la destination, sauf si le compte a
   // déjà déclaré 2+ enfants, auquel cas "Qui étudie ?" s'intercale une fois (voir
@@ -299,6 +311,7 @@ export function LoginPage() {
   }
 
   function basculerMethode() {
+    methodeChoisie.current = true
     setMethode(methode === "phone" ? "email" : "phone")
     setError(null)
   }
@@ -307,7 +320,11 @@ export function LoginPage() {
     <div className="flex min-h-[80vh] items-center justify-center px-4">
       <Card className="w-full max-w-sm animate-fade-up shadow-lg shadow-primary/5">
         <CardHeader>
-          <h1 className="font-display text-2xl font-semibold leading-none tracking-tight">{t("login.titre")}</h1>
+          {/* Sur le chemin d'achat, le titre dit qu'un compte se crée ici : « Connexion » seul faisait croire à un
+              nouveau venu qu'il lui en fallait déjà un. */}
+          <h1 className="font-display text-2xl font-semibold leading-tight tracking-tight">
+            {recapChoix ? t("login.titre_achat") : t("login.titre")}
+          </h1>
           {/* Ne nomme plus la méthode : cette page ne peut pas savoir si le bouton
               Google s'est affiché (il disparaît de lui-même quand VITE_GOOGLE_CLIENT_ID
               n'est pas configuré), donc toute phrase citant une méthode serait fausse
@@ -425,6 +442,13 @@ export function LoginPage() {
               >
                 {isSubmitting ? t("login.envoi") : t("login.recevoir_code")}
               </Button>
+              {/* Par où arrive le code : le bouton ne le disait pas (un parent ne sait pas s'il doit ouvrir ses SMS ou
+                  une boîte e-mail). */}
+              {!(methode === "phone" && !isSupported) && (
+                <p className="-mt-2 text-center text-xs text-muted-foreground">
+                  {t(methode === "phone" ? "login.code_arrive_sms" : "login.code_arrive_email")}
+                </p>
+              )}
               {envoiLent && (
                 <p role="status" className="text-center text-xs text-muted-foreground">
                   {t("login.envoi_lent")}

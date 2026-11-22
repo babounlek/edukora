@@ -10,6 +10,8 @@ class TypeRelance(models.TextChoices):
     ABSENCE_2 = "absence_2", "Absence - une semaine sans séance, dernier message"
     FIN_ABONNEMENT_1 = "fin_abonnement_1", "Fin d'abonnement - trois jours avant"
     FIN_ABONNEMENT_2 = "fin_abonnement_2", "Fin d'abonnement - le jour même, dernier message"
+    INSCRIT_SANS_PAIEMENT_1 = "inscrit_sans_paiement_1", "Inscrit sans paiement - écran d'abonnement ouvert, premier message"
+    INSCRIT_SANS_PAIEMENT_2 = "inscrit_sans_paiement_2", "Inscrit sans paiement - dernier message"
 
 
 class CanalRelance(models.TextChoices):
@@ -44,6 +46,36 @@ class RelanceEnvoyee(models.Model):
 
     def __str__(self):
         return f"{self.get_type_display()} - {self.user} ({self.reference})"
+
+
+class FamilleRelance(models.TextChoices):
+    INSCRIT_SANS_PAIEMENT = "inscrit_sans_paiement", "Inscrit sans paiement"
+
+
+class RefusRelance(models.Model):
+    """
+    Le compte a ouvert le lien d'arrêt d'une famille de relances qui ne dépend d'aucun réglage du compte : plus aucun
+    message de cette famille ne lui part, pour toujours.
+
+    Le rappel quotidien et le bilan du parent ont chacun leur interrupteur sur le compte (User.rappels_actifs,
+    User.bilan_parent_actif), que leur lien d'arrêt coupe. La relance d'un inscrit qui n'a pas payé (voir
+    relances.inscrit_sans_paiement) part sans que le compte ait rien activé : il n'y a pas d'interrupteur à couper, et
+    `rappels_actifs` à faux ne distingue pas « n'a jamais rien demandé » de « ne veut plus rien recevoir ». Le refus
+    s'écrit donc ici.
+    """
+
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="refus_relances")
+    famille = models.CharField(max_length=30, choices=FamilleRelance.choices)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["user", "famille"], name="unique_refus_relance_par_famille"),
+        ]
+
+    def __str__(self):
+        return f"Refus {self.get_famille_display()} - {self.user}"
 
 
 class AbonnementPush(models.Model):

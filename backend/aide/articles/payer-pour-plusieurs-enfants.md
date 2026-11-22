@@ -6,7 +6,7 @@ titre: Abonner plusieurs enfants de la même famille
 resume: Chaque enfant a son profil et son abonnement, au même prix.
 mots_cles: enfants, famille, frère, soeur, deuxième enfant, ajouter un enfant, plusieurs abonnements, prix, parent
 ---
-Chaque enfant a son **propre profil**, avec sa progression et son abonnement.
+Dans ton compte, chaque enfant a son **propre profil** : son espace à lui, avec son examen, sa progression et son abonnement.
 
 ## Ajouter un enfant
 
@@ -14,7 +14,7 @@ Depuis [Mes accès](/mes-acces), choisis « Ajouter un enfant ». Tu renseignes 
 
 ## Prix
 
-Chaque enfant paie **le même prix** : il n'y a pas de réduction pour le deuxième enfant ni pour les suivants. Le montant exact est affiché sur la page [Tarifs](/tarifs) : il change avec les offres, c'est donc toujours cette page qui fait foi.
+Chaque enfant paie **le même prix par mois** : il n'y a pas de réduction pour le deuxième enfant ni pour les suivants. Pour chaque enfant, tu choisis le nombre de mois. Le montant exact est affiché sur la page [Prix](/tarifs) : il change avec les offres, c'est donc toujours cette page qui fait foi.
 
 ## Payer pour un enfant
 

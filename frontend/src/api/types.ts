@@ -1107,6 +1107,10 @@ export type MobileMoneyOperator = "ORANGE" | "MTN"
 /** État des moyens de paiement (backend : settings.CAMPAY_ACTIVE). */
 export interface PaymentConfig {
   campay_active: boolean
+  /** À qui part un transfert manuel : le nom et l'opérateur, jamais le numéro (réservé à l'écran de paiement d'un compte). */
+  beneficiaires?: { operator: MobileMoneyOperator; operator_display: string; account_name: string }[]
+  /** Un code de connexion peut réellement partir par SMS (faux tant que le serveur n'a pas de fournisseur). */
+  sms_active?: boolean
 }
 
 export interface MobileMoneyAccount {

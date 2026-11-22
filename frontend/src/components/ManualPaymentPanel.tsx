@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react"
 import { toast } from "sonner"
-import { AlertTriangle, Check, Copy, Loader2, ShieldAlert } from "lucide-react"
+import { AlertTriangle, Check, Copy, Loader2, ShieldAlert, Smartphone } from "lucide-react"
 
 import { declareManualPayment, getRattachementRevendeur, listManualPaymentMethods } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -27,6 +27,12 @@ interface ManualPaymentPanelProps {
   // Numéro du compte, proposé d'office comme numéro payeur (le plus souvent le même).
   defaultPayerPhone?: string
 }
+
+/**
+ * Le code qui ouvre le menu Mobile Money de chaque opérateur au Cameroun, à composer comme un numéro. Codes publics
+ * (vérifiés le 2026-11-22) ; à corriger ici si un opérateur change le sien.
+ */
+const CODE_MENU_OPERATEUR: Record<MobileMoneyOperator, string> = { ORANGE: "#150#", MTN: "*126#" }
 
 // Mêmes couleurs de marque que le sélecteur de moyen de paiement (SubscribePage) -
 // l'utilisateur doit reconnaître d'un coup d'oeil qu'il est toujours sur le même
@@ -210,6 +216,15 @@ export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, 
           </Button>
         </div>
         <p className="mt-2 text-xs text-muted-foreground">{t("mp.beneficiaire", { nom: account.account_name })}</p>
+        {/* Sur un téléphone, un toucher ouvre le menu Mobile Money de l'opérateur : celui qui paie n'a pas à quitter la
+            page pour retrouver le code. Le menu seulement (codes publics des opérateurs), jamais un transfert
+            pré-rempli : le montant et le numéro se saisissent dans le menu, sous les yeux de celui qui paie. */}
+        <Button asChild variant="secondary" size="sm" className="mt-3 w-full sm:hidden">
+          <a href={`tel:${encodeURIComponent(CODE_MENU_OPERATEUR[operator])}`}>
+            <Smartphone className="size-3.5" aria-hidden="true" />
+            {t("mp.ouvrir_menu", { code: CODE_MENU_OPERATEUR[operator], operateur: account.operator_display })}
+          </a>
+        </Button>
 
         <p className="mt-3.5 flex items-start gap-1.5 text-xs text-muted-foreground">
           <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />

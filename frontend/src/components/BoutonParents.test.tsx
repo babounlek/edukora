@@ -48,3 +48,23 @@ describe("BoutonParents", () => {
     expect(text).toMatch(/\/tarifs\?ref=GUY123$/)
   })
 })
+
+describe("ApercuMessageParents : le message se lit avant de l'envoyer", () => {
+  it("montre exactement le texte qui partira, replié tant qu'on ne l'ouvre pas", async () => {
+    const { ApercuMessageParents } = await import("./BoutonParents")
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    render(
+      <QueryClientProvider client={client}>
+        <ApercuMessageParents examen="BEPC" contenu="lire le corrigé de « SVT BEPC 2025 »" />
+      </QueryClientProvider>,
+    )
+
+    const resume = screen.getByText("Lire le message avant de l'envoyer")
+    expect(resume.closest("details")).not.toHaveAttribute("open")
+    const message = resume.closest("details")?.textContent ?? ""
+    expect(message).toContain("Bonjour, je prépare le BEPC")
+    expect(message).toContain("lire le corrigé de « SVT BEPC 2025 »")
+    expect(message).toContain("2 000 FCFA par mois")
+    expect(message).toContain("Le lien vers la page des prix est ajouté à la fin.")
+  })
+})

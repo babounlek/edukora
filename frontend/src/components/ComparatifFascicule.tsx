@@ -127,7 +127,7 @@ export function ComparatifFascicule() {
         </table>
       </div>
 
-      <p className="mt-3 max-w-2xl text-xs text-muted-foreground">{t("comparatif.note")}</p>
+      <p className="mt-3 max-w-2xl text-xs text-muted-foreground">{t("comparatif.note", { site: SITE_NAME })}</p>
     </section>
   )
 }

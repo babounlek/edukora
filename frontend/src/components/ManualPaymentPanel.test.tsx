@@ -28,6 +28,30 @@ beforeEach(() => {
   getRattachementRevendeur.mockReset()
 })
 
+describe("ManualPaymentPanel : ouvrir le menu Mobile Money depuis le téléphone", () => {
+  it("propose de composer le code du bon opérateur, sans rien pré-remplir du transfert", async () => {
+    getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })
+    render(<ManualPaymentPanel plan={plan} mois={1} montant={2000} operator="ORANGE" onDeclared={vi.fn()} />)
+
+    const lien = await screen.findByRole("link", { name: "Composer #150# pour ouvrir Orange Money" })
+    expect(lien).toHaveAttribute("href", "tel:%23150%23")
+    expect(lien.getAttribute("href")).not.toMatch(/699000000|2000/)
+  })
+
+  it("donne le code de MTN à qui paie par MTN", async () => {
+    listManualPaymentMethods.mockResolvedValue([
+      { operator: "MTN", operator_display: "MTN Mobile Money", phone_number: "677000000", account_name: "Edukora" },
+    ])
+    getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })
+    render(<ManualPaymentPanel plan={plan} mois={1} montant={2000} operator="MTN" onDeclared={vi.fn()} />)
+
+    expect(await screen.findByRole("link", { name: "Composer *126# pour ouvrir MTN Mobile Money" })).toHaveAttribute(
+      "href",
+      "tel:*126%23",
+    )
+  })
+})
+
 describe("ManualPaymentPanel : paiement avancé par le revendeur", () => {
   it("n'affiche pas la case sans revendeur rattaché", async () => {
     getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })

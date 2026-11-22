@@ -16,6 +16,9 @@ vi.mock("@/context/AuthContext", () => ({ useAuth: () => ({ login: vi.fn() }) })
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm", countries: [] }) }))
 vi.mock("@/components/GoogleSignInButton", () => ({ GoogleSignInButton: () => null }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
+vi.mock("@/lib/paymentConfig", () => ({
+  usePaymentConfig: () => ({ campayActif: true, pret: true, beneficiaires: [], smsActif: false }),
+}))
 
 import { ApiError } from "@/api/client"
 import { definirLangue } from "@/lib/i18n"

@@ -15,4 +15,4 @@ Open [My account](/compte): the exam you are preparing is shown there, and you c
 
 ## Be careful
 
-A subscription is tied to **one specific exam**, until the day of that exam. Before paying, make sure it is the right one: see [What does the subscription include?](/aide/contenu-abonnement).
+A subscription is tied to **one specific exam**, for the number of months you paid for. Before paying, make sure it is the right one: see [What does the subscription include?](/aide/contenu-abonnement).

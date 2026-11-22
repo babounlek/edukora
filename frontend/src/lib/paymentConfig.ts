@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
 import { getPaymentConfig } from "@/api/endpoints"
+import type { PaymentConfig } from "@/api/types"
 
 export const PAYMENT_CONFIG_KEY = ["payment-config"] as const
 
@@ -13,12 +14,24 @@ export const PAYMENT_CONFIG_KEY = ["payment-config"] as const
  * avant de le retirer. En cas d'erreur réseau on retombe sur « actif » (comportement
  * historique) - le backend refuse de toute façon une demande Campay quand il est coupé.
  */
-export function usePaymentConfig(): { campayActif: boolean; pret: boolean } {
+export function usePaymentConfig(): {
+  campayActif: boolean
+  pret: boolean
+  /** À qui part un transfert manuel (nom et opérateur). Vide si le serveur ne le dit pas. */
+  beneficiaires: NonNullable<PaymentConfig["beneficiaires"]>
+  /** Un code peut partir par SMS. Faux sans réponse : on ne met jamais en avant une méthode qui ne marcherait pas. */
+  smsActif: boolean
+} {
   const { data, isPending } = useQuery({
     queryKey: PAYMENT_CONFIG_KEY,
     queryFn: getPaymentConfig,
     staleTime: 60_000,
     retry: false,
   })
-  return { campayActif: data?.campay_active ?? true, pret: !isPending }
+  return {
+    campayActif: data?.campay_active ?? true,
+    pret: !isPending,
+    beneficiaires: data?.beneficiaires ?? [],
+    smsActif: data?.sms_active ?? false,
+  }
 }

@@ -1,20 +1,20 @@
 ---
 titre: When is my access activated after payment?
-resume: Immediately with automatic payment; usually within a few hours with manual payment, after verification.
+resume: After our team has checked your transfer; as soon as the operator confirms when automatic payment is offered.
 mots_cles: delay, activation, when, how long, access activated, wait, instant, confirmation sms
 ---
-It depends on the payment method you chose.
+It depends on the way of paying that the payment screen offered you.
 
-## Automatic payment
+## You made the transfer yourself
 
-Your access is activated **as soon as the operator confirms**, usually within seconds. If confirmation is slow, the payment page updates by itself: you can leave it open.
+Once your declaration is sent, our team checks your transfer before activating access, **usually within {{delai_verification}}**. You receive a confirmation SMS and your access activates by itself.
 
-## Manual payment
+## You used automatic payment
 
-Our team checks your transfer before activating access, **usually within {{delai_verification}}**. You receive a confirmation SMS and your access activates by itself.
+This method is not always offered. When it is, your access is activated **as soon as the operator confirms**, usually within seconds. If confirmation is slow, the payment page updates by itself: you can leave it open.
 
 ## How do I know where I am?
 
-Open [My payments](/mes-paiements): each payment has its status (being verified, validated, refused).
+Open [My payments](/mes-paiements): each transfer you declared has its status there (being checked, approved, rejected).
 
 See also [My payment is being verified](/aide/paiement-en-verification).

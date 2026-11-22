@@ -11,8 +11,12 @@ import { localeCourante } from "@/lib/i18n"
 export const PRIX_MOIS_FCFA = 2000
 /** Un mois d'accès = 30 jours, comme côté serveur (subscriptions.models.JOURS_PAR_MOIS). */
 export const JOURS_PAR_MOIS = 30
-/** Durée proposée d'office quand l'élève n'en a pas encore choisi : un trimestre, ou tout ce qui reste avant l'examen. */
-export const MOIS_PAR_DEFAUT = 3
+/**
+ * Durée proposée d'office quand l'élève n'en a pas encore choisi : UN mois, le prix annoncé partout sur le site
+ * (2 000 FCFA). Trois mois présélectionnés affichaient 6 000 FCFA à quelqu'un qui venait de lire « 2 000 FCFA par mois »
+ * (audit du tunnel visiteur → abonné, 2026-11-21, décision du 2026-11-22). « Jusqu'à l'examen » reste à un toucher.
+ */
+export const MOIS_PAR_DEFAUT = 1
 
 /** Un plan que l'élève achète au mois (le prix du plan est celui d'UN mois). */
 export function estAuMois(plan: Pick<Plan, "duration_mode">): boolean {
@@ -23,7 +27,7 @@ export function estAuMois(plan: Pick<Plan, "duration_mode">): boolean {
 export function moisValides(plan: Pick<Plan, "duration_mode" | "mois_max">, mois: number): number {
   if (!estAuMois(plan)) return 1
   const maximum = Math.max(plan.mois_max, 1)
-  // +Infinity : « tous les mois qui restent » (ancien lien duree=examen). NaN : rien de lisible, on propose un trimestre.
+  // +Infinity : « tous les mois qui restent » (ancien lien duree=examen). NaN : rien de lisible, on propose la durée d'office.
   if (mois === Number.POSITIVE_INFINITY) return maximum
   if (!Number.isFinite(mois)) return Math.min(MOIS_PAR_DEFAUT, maximum)
   return Math.min(Math.max(Math.round(mois), 1), maximum)

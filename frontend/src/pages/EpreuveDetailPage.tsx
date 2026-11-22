@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { ArrowLeft, ArrowRight, BookOpenText, Check, ChevronDown, Crown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpenText, ChevronDown, Crown, Lock, Sparkles, Unlock, Zap } from "lucide-react"
 
 import { getEpreuve, previewEpreuve } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -23,8 +23,7 @@ import {
 } from "@/components/EpreuveSommaire"
 import { EnTeteSection } from "@/components/EnTeteSection"
 import { ReglesChoix } from "@/components/inedit/ReglesChoix"
-import { BoutonParents } from "@/components/BoutonParents"
-import { ParrainageHint } from "@/components/ParrainageHint"
+import { BlocCorrigeVerrouille } from "@/components/BlocCorrigeVerrouille"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
 import { SITE_NAME } from "@/lib/site"
@@ -306,62 +305,7 @@ export function EpreuveDetailPage() {
         {/* Pas d'accès : la proposition vient tout de suite après l'en-tête, avec ce qu'elle
             débloque - et non en bas de page, après un sujet entier, quand l'envie est retombée. Le
             sujet reste en libre accès, dit franchement. */}
-        {!epreuve.has_access && (
-          <section className="relative overflow-hidden rounded-3xl border border-primary/25 bg-gradient-to-br from-primary/[0.08] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-7">
-            <div className="flex items-start gap-4">
-              <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                <Lock className="size-6" aria-hidden="true" />
-              </span>
-              <div className="min-w-0">
-                <h2 className="font-display text-xl font-semibold sm:text-2xl">{t("ed.debloque")}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {epreuve.cursus.length > 1 ? t("ed.bloc_texte_multi") : t("ed.bloc_texte")}
-                </p>
-              </div>
-            </div>
-            <ul className="mt-5 grid gap-2 sm:grid-cols-3">
-              {(["ed.avantage1", "ed.avantage2", "ed.avantage3"] as const).map((avantage) => (
-                <li key={avantage} className="flex items-start gap-2 rounded-xl bg-background/70 px-3 py-2.5 text-sm">
-                  <Check className="mt-0.5 size-4 shrink-0 text-primary" strokeWidth={3} aria-hidden="true" />
-                  {t(avantage)}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-5 flex flex-wrap gap-2">
-              {epreuve.cursus.map((c) => (
-                <Button key={c.id} asChild size="lg" className="h-12 rounded-full px-6 shadow-lg shadow-primary/25">
-                  <Link to={`/abonnement?cursus=${c.id}`}>
-                    {epreuve.cursus.length > 1
-                      ? t("ed.sabonner_cursus", { cursus: c.series ? c.series.code : c.examen_display })
-                      : t("prix.sabonner")}
-                    <ArrowRight />
-                  </Link>
-                </Button>
-              ))}
-              {/* « S'abonner » mène à la connexion avant tout prix (voir SubscribePage) : sans ce lien, un
-                  visiteur devait deviner que la page des prix existe, ou la chercher au bas de l'accueil. */}
-              <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
-                <Link to="/tarifs">{t("ed.voir_prix")}</Link>
-              </Button>
-            </div>
-            {/* Ce sont les parents qui paient : un message tout prêt avec le prix et le moyen de payer. */}
-            <div className="mt-4 flex flex-col items-start gap-1">
-              <BoutonParents
-                examen={epreuve.cursus.length === 1 ? epreuve.cursus[0].examen_display : undefined}
-                contenu={t("parents.contenu_epreuve", { titre: epreuve.title })}
-                className="h-11 rounded-full px-5"
-              />
-              <p className="text-xs text-muted-foreground">{t("parents.aide")}</p>
-            </div>
-            <div className="mt-4">
-              <ParrainageHint
-                chemin={epreuveDetailPath(countryCode, epreuve.slug as string)}
-                texte={t("ed.partage", { titre: epreuve.title, site: SITE_NAME })}
-                type="epreuve"
-              />
-            </div>
-          </section>
-        )}
+        {!epreuve.has_access && <BlocCorrigeVerrouille epreuve={epreuve} pays={countryCode} />}
 
         {/* Au programme : les exercices d'un coup d'œil, chacun un lien vers son énoncé (et vers son
             corrigé pour un abonné). C'est ce qui donne envie d'ouvrir : on voit ce qu'on va travailler. */}

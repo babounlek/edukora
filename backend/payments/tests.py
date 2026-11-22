@@ -473,11 +473,34 @@ class PaymentFlowAPITests(TestCase):
     def test_payment_config_is_public_and_reports_campay_state(self):
         anonyme = APIClient()
         with override_settings(CAMPAY_ACTIVE=True):
-            self.assertEqual(anonyme.get("/payments/config/").data, {"campay_active": True})
+            self.assertIs(anonyme.get("/payments/config/").data["campay_active"], True)
         with override_settings(CAMPAY_ACTIVE=False):
             response = anonyme.get("/payments/config/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, {"campay_active": False})
+        self.assertIs(response.data["campay_active"], False)
+
+    def test_payment_config_names_the_beneficiary_without_publishing_the_number(self):
+        MobileMoneyAccount.objects.update_or_create(
+            operator="ORANGE", defaults={"phone_number": "690000001", "account_name": "Kora SARL", "active": True},
+        )
+        MobileMoneyAccount.objects.update_or_create(
+            operator="MTN", defaults={"phone_number": "670000002", "account_name": "Ancien compte", "active": False},
+        )
+
+        response = APIClient().get("/payments/config/")
+
+        self.assertEqual(
+            response.data["beneficiaires"],
+            [{"operator": "ORANGE", "operator_display": "Orange Money", "account_name": "Kora SARL"}],
+        )
+        self.assertNotIn("690000001", str(response.data))
+
+    def test_payment_config_says_whether_a_login_code_can_really_go_by_sms(self):
+        anonyme = APIClient()
+        with override_settings(SMS_BACKEND="users.sms_backends.ConsoleSMSBackend"):
+            self.assertIs(anonyme.get("/payments/config/").data["sms_active"], False)
+        with override_settings(SMS_BACKEND="users.sms_backends.LMTSMSBackend"):
+            self.assertIs(anonyme.get("/payments/config/").data["sms_active"], True)
 
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_marks_transaction_failed_on_campay_error(self, mock_init):

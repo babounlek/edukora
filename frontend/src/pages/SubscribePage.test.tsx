@@ -279,13 +279,13 @@ describe("SubscribePage : l'élève choisit le nombre de mois", () => {
     listPlans.mockResolvedValue([planAuMois()])
   })
 
-  it("propose un trimestre d'office et écrit le total en toutes lettres", async () => {
+  it("propose un mois d'office, le prix annoncé partout, et écrit le total en toutes lettres", async () => {
     afficher("/abonnement?cursus=4")
 
     expect(await screen.findByText("Pour combien de mois ?")).toBeInTheDocument()
-    expect(screen.getByRole("radio", { name: /^3/ })).toHaveAttribute("aria-checked", "true")
-    expect(screen.getByText("3 mois × 2 000 FCFA par mois")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: /Payer 6 000 FCFA/ })).toBeInTheDocument()
+    expect(screen.getByRole("radio", { name: /^1/ })).toHaveAttribute("aria-checked", "true")
+    expect(screen.getByText("1 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 2 000 FCFA/ })).toBeInTheDocument()
   })
 
   it("reprend la durée choisie sur la page des tarifs (?mois=)", async () => {
@@ -307,7 +307,21 @@ describe("SubscribePage : l'élève choisit le nombre de mois", () => {
     afficher("/abonnement?cursus=4&mois=9")
 
     expect(await screen.findByText("2 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Changer le nombre de mois" }))
     expect(within(screen.getByRole("radiogroup")).getAllByRole("radio")).toHaveLength(2)
+  })
+
+  it("ne redemande pas la durée choisie sur les prix : elle est rappelée, un bouton rouvre le choix", async () => {
+    afficher("/abonnement?cursus=4&mois=5")
+
+    expect(await screen.findByText("5 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.queryByRole("radiogroup")).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole("button", { name: "Changer le nombre de mois" }))
+    fireEvent.click(within(screen.getByRole("radiogroup")).getByRole("radio", { name: /^2/ }))
+
+    expect(screen.getByText("2 mois × 2 000 FCFA par mois")).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /Payer 4 000 FCFA/ })).toBeInTheDocument()
   })
 
   it("change le total quand l'élève touche un autre mois", async () => {

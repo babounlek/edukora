@@ -43,8 +43,9 @@ describe("tarification au mois", () => {
     expect(moisValides(plan, 2.6)).toBe(3)
   })
 
-  it("le défaut ne dépasse jamais le maximum : il en reste parfois moins de trois", () => {
-    expect(moisValides(mensuel({ mois_max: 2 }), Number.NaN)).toBe(2)
+  it("le défaut est un mois, et aucun choix ne dépasse le maximum du plan", () => {
+    expect(MOIS_PAR_DEFAUT).toBe(1)
+    expect(moisValides(mensuel({ mois_max: 2 }), Number.NaN)).toBe(1)
     expect(moisValides(mensuel({ mois_max: 1 }), 5)).toBe(1)
   })
 

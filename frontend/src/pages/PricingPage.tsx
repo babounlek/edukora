@@ -302,7 +302,7 @@ export function PricingPage() {
   const navigate = useNavigate()
   const { country } = useCountry()
   // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
-  const { campayActif } = usePaymentConfig()
+  const { campayActif, beneficiaires } = usePaymentConfig()
   const { isAuthenticated } = useAuth()
   const campagne = useCampagne()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
@@ -476,6 +476,15 @@ export function PricingPage() {
       teinte: "bg-gold/10 text-gold-text",
       q: t("prix.faq6_q"),
       r: t("prix.faq6_r"),
+    },
+    // La règle de remboursement se lit ICI, avant de payer, et pas seulement dans les conditions d'utilisation
+    // (audit du tunnel visiteur → abonné, 2026-11-21). Le texte reprend l'article des conditions, sans rien y ajouter.
+    {
+      cle: "remboursement",
+      icone: <ShieldCheck className="size-4" />,
+      teinte: "bg-primary/10 text-primary",
+      q: t("prix.faq7_q"),
+      r: t("prix.faq7_r"),
     },
     {
       cle: "echec",
@@ -663,6 +672,15 @@ export function PricingPage() {
                 {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
                 {!isAuthenticated && (
                   <p className="text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                )}
+                {/* À qui part l'argent, dit avant la création du compte (un parent le demande avant de donner son
+                    numéro). Le numéro lui-même ne s'affiche qu'à l'écran de paiement, là où la déclaration se fait. */}
+                {!campayActif && beneficiaires.length > 0 && (
+                  <p className="text-center text-xs text-muted-foreground">
+                    {t("prix.beneficiaire", {
+                      noms: beneficiaires.map((b) => `${b.account_name} (${b.operator_display})`).join(", "),
+                    })}
+                  </p>
                 )}
                 {/* L'essai gratuit se lit ici, à côté du bouton. Jamais "/cm/cours" en dur : /tarifs n'est pas une
                     route préfixée par pays, le pays courant vient du contexte (voir CountryContext et coursListPath). */}

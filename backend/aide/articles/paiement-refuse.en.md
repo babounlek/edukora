@@ -8,7 +8,7 @@ A refused payment is not a dead end: the **reason** is shown in [My payments](/m
 ## Depending on the reason
 
 - **Transaction not found**: the declared ID matches no transfer. Re-read your operator's SMS and copy the ID exactly.
-- **Wrong amount**: the transferred amount is not the offer's price. Check the price on the [Pricing](/tarifs) page.
+- **Wrong amount**: the transferred amount is not the total shown on the payment screen (the monthly price times the number of months chosen).
 - **Wrong operator**: the declared operator (Orange or MTN) is not the one used for the transfer.
 - **Transaction already used**: this transaction was already used for another access.
 - **Payment not received**: the transfer did not reach our number. Check that you sent it to the number shown.
@@ -16,7 +16,7 @@ A refused payment is not a dead end: the **reason** is shown in [My payments](/m
 ## What next?
 
 1. Fix the cause and **declare your transaction again** from the payment page.
-2. If automatic payment failed, switch to **manual payment** (Orange Money or MTN MoMo): you don't lose your selection.
+2. If you used automatic payment (when it is offered) and it failed, **make the transfer yourself** by Orange Money or MTN MoMo: you don't lose your selection. See [How to pay](/aide/comment-payer).
 3. If you are sure you paid correctly and the refusal seems wrong, write to us on WhatsApp at {{whatsapp}} with your support code and your operator's SMS.
 
 **Money debited but nothing received?** Keep your operator's SMS: it is the proof of your transfer.

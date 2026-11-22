@@ -413,6 +413,9 @@ export function Header() {
         // commentaire ci-dessus, qui ne vaut que pour l'élève qui suit un plan).
         { to: "/quiz", label: t("nav.quiz"), active: pathname.startsWith("/quiz"), badge: false },
         { to: "/tarifs", label: t("nav.prix"), active: isTarifsSection, badge: false },
+        // « À propos » dans le menu mobile du visiteur : un parent qui veut savoir qui est derrière le site ne le trouvait
+        // que dans un tiroir fermé du pied de page (audit du tunnel visiteur → abonné, 2026-11-21).
+        { to: "/a-propos", label: t("ft.a_propos"), active: pathname === "/a-propos", badge: false, menuSeulement: true },
       ]
 
   return (

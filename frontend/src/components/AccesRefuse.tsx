@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, Check, Lock } from "lucide-react"
 
 import type { Cursus } from "@/api/types"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
-import { BoutonParents } from "@/components/BoutonParents"
+import { ApercuMessageParents, BoutonParents } from "@/components/BoutonParents"
 import { LienAide } from "@/components/aide/LienAide"
 import { Button } from "@/components/ui/button"
 import { ParrainageHint } from "@/components/ParrainageHint"
@@ -120,6 +120,17 @@ export function AccesRefuse({
               className="h-11 rounded-full px-5"
             />
             <p className="max-w-xs text-xs text-muted-foreground">{t("parents.aide")}</p>
+            <ApercuMessageParents
+              examen={cursus.length === 1 ? cursus[0].examen_display : undefined}
+              contenu={
+                nature === "cours"
+                  ? t("parents.contenu_cours")
+                  : titre
+                    ? t("parents.contenu_epreuve", { titre })
+                    : t("parents.contenu_corrige")
+              }
+              className="max-w-xs text-left"
+            />
           </div>
 
           <div className="mt-4 flex justify-center">

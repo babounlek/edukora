@@ -5,6 +5,8 @@ titre: Que contient l'abonnement et combien de temps dure-t-il ?
 resume: L'abonnement se prend au mois : tu choisis le nombre de mois, de 1 mois jusqu'à la fin de ton examen, et tu vois le total avant de payer.
 mots_cles: abonnement, durée, mois, au mois, contenu, offre, formule, expire, fin d'accès, renouveler, prix, jusqu'à l'examen
 ---
+Il n'y a qu'**une seule formule** : l'abonnement **au mois**. Tu choisis le nombre de mois et tu paies en une fois.
+
 ## Ce qu'il ouvre
 
 - Les **corrigés complets** des annales, en illimité.
@@ -17,9 +19,11 @@ Tout est inclus, quel que soit le nombre de mois que tu choisis.
 
 ## Combien de temps ?
 
-Tu choisis le nombre de mois au moment de payer : **de 1 mois jusqu'à la fin de ton examen**. Un mois, c'est 30 jours d'accès. Le total à payer et la **date de fin de ton accès** sont affichés avant le paiement, sur la page [Tarifs](/tarifs) comme sur la page d'abonnement.
+Tu choisis le nombre de mois au moment de payer : **de 1 mois jusqu'à la fin de ton examen**. Un mois, c'est 30 jours d'accès. Le total à payer et la **date de fin de ton accès** sont affichés avant le paiement, sur la page [Prix](/tarifs) comme sur l'écran de paiement.
 
-Le nombre maximal de mois s'arrête à la fin de ton examen : tu ne paies jamais des mois qui tombent après. L'option la plus longue s'appelle « Jusqu'à l'examen ».
+Le nombre maximal de mois s'arrête à la fin de ton examen : tu ne paies jamais des mois qui tombent après. L'option la plus longue s'appelle « Jusqu'à l'examen » : ce n'est pas une autre formule, c'est le même abonnement au mois, avec tous les mois qui restent avant la fin de ton examen.
+
+Si tu as acheté l'ancien abonnement « Jusqu'à l'examen » avant le 11 novembre 2026, il reste valable jusqu'à sa date de fin prévue.
 
 ## Un seul examen
 
@@ -31,4 +35,4 @@ Il n'y en a pas : le paiement n'est jamais prélevé automatiquement. Quand ton 
 
 ## Le prix
 
-Le prix est **par mois et par enfant**, le même pour tous les examens. Il est sur la page [Tarifs](/tarifs), qui affiche aussi les offres en cours avec leur date de fin.
+Le prix est **par mois et par enfant**, le même pour tous les examens. Chaque enfant d'une même famille paie le même prix. Il est sur la page [Prix](/tarifs), qui affiche aussi les offres en cours avec leur date de fin.

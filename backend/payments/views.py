@@ -84,8 +84,24 @@ def payment_config(request):
     État public des moyens de paiement, lu par /tarifs et /abonnement pour n'afficher
     que ce qui est réellement utilisable (voir settings.CAMPAY_ACTIVE). Public : la page
     des tarifs est ouverte aux visiteurs non connectés.
+
+    `beneficiaires` : à qui part l'argent d'un transfert manuel, dit AVANT la création du compte (un parent veut le
+    savoir avant de donner son numéro : audit du tunnel visiteur → abonné, 2026-11-21). Le nom et l'opérateur
+    seulement : le numéro à créditer ne s'affiche qu'à un compte, sur l'écran de paiement, là où la déclaration se
+    fait - publié ici, il inviterait à payer sans compte, donc sans pouvoir déclarer.
+
+    `sms_active` : un code de connexion peut réellement partir par SMS (le backend console ne fait qu'écrire dans
+    les journaux). L'écran de connexion ne propose le téléphone en premier que dans ce cas.
     """
-    return Response({"campay_active": bool(settings.CAMPAY_ACTIVE)})
+    comptes = MobileMoneyAccount.objects.filter(active=True).order_by("operator")
+    return Response({
+        "campay_active": bool(settings.CAMPAY_ACTIVE),
+        "beneficiaires": [
+            {"operator": c.operator, "operator_display": c.get_operator_display(), "account_name": c.account_name}
+            for c in comptes
+        ],
+        "sms_active": settings.SMS_BACKEND != "users.sms_backends.ConsoleSMSBackend",
+    })
 
 
 @api_view(["POST"])

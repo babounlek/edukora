@@ -191,6 +191,51 @@ Répond en partie au constat T1 (aucun nom de personne sur le site). Texte chois
 - **À revoir** : « Depuis trois mois » est vrai au 2026-11-22 et vieillira ; le remplacer par le mois d'arrêt du répétiteur. Ce mot ne remplace pas les trois avis extérieurs (C1), toujours à obtenir.
 - **Déploiement** : rebuild de `caddy` seul.
 
+## 7 quater. Recommandations validées, première tranche (2026-11-22, en local, non committé, non déployé)
+
+Décision de l'utilisateur du 2026-11-22 : « je valide toutes tes autres recommandations ». Codé dans cette tranche :
+
+| ID | Ce qui est en place | Où |
+|---|---|---|
+| A7 | La durée proposée d'office est **1 mois** (2 000 FCFA), sur les prix et sur l'écran d'abonnement. | `lib/tarifs.ts` |
+| A9 | Une seule phrase sur le délai, celle du mode choisi : sous un transfert manuel, « s'active dès que notre équipe a vérifié ton transfert, généralement sous 3 heures ». | `SubscribePage.tsx`, textes |
+| A6 | Chemin d'achat : titre « Crée ton compte ou connecte-toi », « Ton compte d'abord, le paiement juste après », le **téléphone avant l'e-mail** (seulement si un SMS peut réellement partir, et tant que la personne n'a pas choisi elle-même), et sous le bouton « Tu reçois un code par SMS (ou par e-mail), à saisir à l'écran suivant ». Partout : « Pas encore de compte ? Il se crée ici, sans mot de passe. » | `LoginPage.tsx`, `lib/paymentConfig.ts` |
+| A4 | Écran d'abonnement : la durée choisie sur les prix est rappelée, pas redemandée (« Changer le nombre de mois ») ; le code revendeur passe sous le paiement ; sur un téléphone, un bouton « Composer #150# pour ouvrir Orange Money » (ou `*126#` pour MTN) ouvre le menu de l'opérateur, sans rien pré-remplir. | `SubscribePage.tsx`, `ManualPaymentPanel.tsx` |
+| A5 | Le nom du bénéficiaire et l'opérateur sont dits sur la page des prix, avant le compte. Le numéro reste réservé à l'écran de paiement. | `payments/views.py` (`/payments/config/`), `PricingPage.tsx` |
+| A8 | Relance par e-mail de l'inscrit qui a ouvert l'écran d'abonnement sans payer ni déclarer : un message entre 20 heures et 3 jours, un dernier entre 3 et 7 jours, deux au plus par 30 jours. Jamais si un paiement existe, si la relance de paiement abandonné s'applique, si l'examen est passé. Lien d'arrêt propre (table `RefusRelance`). | `relances/inscrit_sans_paiement.py`, migration `relances 0007` |
+| B1 | Bloc cadenas des annales : le prix, « Lis d'abord un corrigé gratuit du BAC C » vers la liste filtrée, un seul bouton pour l'examen déjà choisi, « cursus » retiré du texte. | `components/BlocCorrigeVerrouille.tsx` |
+| B2 | « Lire le message avant de l'envoyer » sous « Montrer à mes parents » : le texte exact qui partira. Sur les deux murs payants des corrigés. | `components/BoutonParents.tsx`, `AccesRefuse.tsx` |
+| B4 | Le comparatif de la page des prix vise « un fascicule ou des PDF gratuits », et dit ce qui est gratuit aussi sur EduKora. | textes |
+| B5 | Page Quiz : « un compte gratuit garde tes points et ton historique. Avec l'abonnement, chaque séance s'adapte à tes erreurs ». | textes |
+| C2 | Articles d'aide réécrits (comment payer, délai d'activation, choisir son examen, contenu de l'abonnement, paiement refusé, plusieurs enfants), en français et en anglais. **Constat** : les phrases fausses vues par les visiteurs n'étaient plus dans les fichiers depuis le 13 novembre ; elles restaient en base parce que `charger_aide` n'avait pas été relancé. La production est probablement dans le même état. | `backend/aide/articles/` |
+| C3 | « Puis-je être remboursé ? » dans « Avant de payer », avec la règle des conditions d'utilisation, sans rien y ajouter. | `PricingPage.tsx`, textes |
+| C4 | Le bloc parents de l'accueil cite le bilan du dimanche, et ne dit plus « tu peux tout voir ». | textes |
+| C5 | « À propos » dans le menu mobile du visiteur. | `Header.tsx` |
+| - | « Comment ça se passe » dit l'ordre vrai : l'examen et les mois, puis le compte. L'évènement `abonnement_ouvert` porte l'examen visé. Le mot du fondateur calcule sa durée (« depuis trois mois », puis quatre...). | textes, `SubscribePage.tsx`, `MotDuFondateur.tsx` |
+
+**Tests** : interface 1 759 tests au vert (dont une vingtaine de nouveaux), compilation de production sans erreur ; serveur : `payments` 95 tests, `relances` 160 tests (39 nouveaux), `aide` 24 tests.
+
+**Mesuré à l'écran**, image locale reconstruite, mobile 375 x 812 :
+
+| Mesure | Avant | Après |
+|---|---|---|
+| Page des prix, BEPC choisi : bouton | « Continuer · 3 mois · 6 000 FCFA » | « Continuer · 1 mois · 2 000 FCFA » |
+| Écran de connexion après « Continuer » | « Connexion », e-mail d'abord, bandeau rouge | « Crée ton compte ou connecte-toi », téléphone d'abord, aucun bandeau |
+| Écran d'abonnement : « Numéro à créditer » | 1 691 px du haut | 1 304 px |
+| Écran d'abonnement : « J'ai effectué le paiement » | 1 869 px | 1 536 px |
+| Bloc cadenas (Maths BAC C et E 2024) | ni prix ni lien | prix, lien vers les corrigés gratuits du BAC C, message aux parents lisible |
+
+**Écarts et limites**
+- **A4 : le numéro est encore à 1,6 écran du haut**, pas au premier. Il reste devant lui l'en-tête décoré, le bilan, la carte de l'offre et le choix de l'opérateur. Le remonter davantage demande de revoir l'ordre des deux cartes sur mobile.
+- **A5 : le nom seulement, pas le numéro**, pour ne pas inviter à payer sans compte (donc sans pouvoir déclarer). En local les deux bénéficiaires sont des personnes : le passage à un compte au nom de la société reste une démarche.
+- **A6 dépend du serveur** : le téléphone ne passe devant que si `SMS_BACKEND` n'est pas la console. À vérifier en production.
+- **A8 ajoute une table** (`RefusRelance`) et une route d'arrêt, au-delà des deux types de relance prévus : le réglage « rappels » ne permettait pas de distinguer « n'a rien demandé » de « ne veut plus rien ». Aucun envoi réel n'a été fait ; aucun évènement local ne porte encore l'examen visé.
+- **B1 sans extrait du corrigé** : il demande au serveur de servir une partie d'un corrigé payant, donc une décision sur ce qui est gratuit.
+- **Codes des opérateurs** `#150#` et `*126#` : relevés sur des guides publics, non composés sur un téléphone.
+- **Non fait dans cette tranche** : A2 et A5 (démarches), A3 (accès dès la déclaration), B3 (essai du payant), B6 (examen déduit de la page), C1 (avis), le vouvoiement du parent, les chiffres différents selon la page, tout le lot D (contenu), les évènements de mesure de l'écran de connexion.
+
+**Déploiement** : `migrate relances` (0007, une table), rebuild de `backend`, de `relances` et de `caddy`, puis **`charger_aide`** en production après avoir vérifié qu'aucun article n'y a été retouché à la main. Avant le premier tour réel : `envoyer_relances --seulement inscrit_sans_paiement --dry-run`.
+
 ## 8. Décisions à prendre
 
 1. Accès ouvert dès la déclaration d'un transfert (A3) : oui ou non, et pour combien d'heures ?

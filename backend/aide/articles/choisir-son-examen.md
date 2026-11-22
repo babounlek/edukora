@@ -18,4 +18,4 @@ Ouvre [Mon compte](/compte) : l'examen préparé y est affiché, avec la possibi
 
 ## Attention
 
-Un abonnement est lié à **un examen précis**, jusqu'au jour de cet examen. Avant de payer, vérifie bien que c'est le bon : voir [Que contient l'abonnement ?](/aide/contenu-abonnement).
+Un abonnement est lié à **un examen précis**, pour le nombre de mois que tu as payé. Avant de payer, vérifie bien que c'est le bon : voir [Que contient l'abonnement ?](/aide/contenu-abonnement).

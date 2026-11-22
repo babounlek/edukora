@@ -192,11 +192,15 @@ export const en: Partial<Record<CleI18n, string>> = {
   "parents.c2_titre": "Mobile Money payment, no surprises",
   "parents.c2_texte": "{prix} FCFA a month, you choose the number of months. Orange Money or MTN MoMo, no bank card and no automatic charges: the total is shown before you pay.",
   "parents.c3_titre": "You stay in control",
-  "parents.c3_texte": "A parent code reserves payments and managing children. The papers stay free: you can see everything before paying.",
+  "parents.c3_texte": "A parent code reserves payments and managing children. Every Sunday you can get a summary of their week by email. The papers, the lessons and some of the solutions stay free: you judge before paying.",
   "parents.comment_payer": "How to pay?",
   "fondateur.titre": "Why I built {site}",
   "fondateur.citation":
-    "“I built {site} for my son, who is preparing for the BEPC. I wanted to follow his work myself instead of paying a home tutor without knowing what was being done. For three months now we have not had one, and every week I can see where he stands.”",
+    "“I built {site} for my son, who is preparing for the BEPC. I wanted to follow his work myself instead of paying a home tutor without knowing what was being done. For {duree} now we have not had one, and every week I can see where he stands.”",
+  "fondateur.mois_en_lettres": "three,four,five,six,seven,eight,nine,ten,eleven",
+  "fondateur.duree_mois": "{n} months",
+  "fondateur.duree_un_an": "over a year",
+  "fondateur.duree_ans": "over {n} years",
   "fondateur.nom": "Serge G. Babounlek",
   "fondateur.role": "parent of a BEPC candidate and founder of {site}",
   "accueil.pret_texte":
@@ -359,11 +363,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.inclus4_texte": "Original papers, never seen elsewhere, in the format of your exam.",
   "prix.inclus5_titre": "The topics that come up most",
   "prix.inclus5_texte": "A ranking of the most frequently set topics, calculated from the real past papers.",
-  "comparatif.titre": "{site} or a booklet of solutions: what's the difference?",
-  "comparatif.intro": "A booklet of solutions is a document you read. {site} is a platform where you practise, and that tracks your progress.",
+  "comparatif.titre": "{site}, a booklet or free PDFs: what's the difference?",
+  "comparatif.intro": "A booklet of solutions, or a PDF found online, is a document you read. {site} is a platform where you practise, and that tracks your progress.",
   "comparatif.colonne_critere": "Feature",
-  "comparatif.fascicule": "A booklet of solutions",
-  "comparatif.fascicule_court": "Booklet",
+  "comparatif.fascicule": "A booklet or a free PDF",
+  "comparatif.fascicule_court": "Booklet or PDF",
   "comparatif.oui": "Yes",
   "comparatif.non": "No",
   "comparatif.rarement": "Rarely",
@@ -379,7 +383,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "comparatif.suivi_detail": "You see what you've mastered and what is left to work on.",
   "comparatif.maj": "Content that keeps growing",
   "comparatif.maj_detail": "New papers and lessons are added during the year.",
-  "comparatif.note": "Compared with a typical booklet of solutions: a fixed document, bought once. Every booklet is different; check what the one you are comparing contains.",
+  "comparatif.note": "Compared with a typical booklet of solutions or free PDF: a fixed document. Every document is different; check what the one you are comparing contains. On {site} too, the papers, the lessons and some of the solutions are free to read: the subscription adds everything else.",
   "prix.objet_tarifs": "the pricing",
   "prix.formule":
     "Monthly subscription",
@@ -408,6 +412,8 @@ export const en: Partial<Record<CleI18n, string>> = {
     "What happens when my months run out?",
   "prix.faq5_r":
     "Your access stops on the date shown before you pay. Nothing is renewed automatically: you extend whenever you like, and the new months are added after the current ones.",
+  "prix.faq7_q": "Can I get a refund?",
+  "prix.faq7_r": "A confirmed payment is final: it is not refunded, unless a proven technical fault on the platform stops you from accessing what you paid for. In that case, write to us. The papers, the lessons and some of the solutions are free: try before you pay.",
   "prix.faq6_q":
     "Can I take more months than are left before the exam?",
   "prix.faq6_r":
@@ -415,9 +421,10 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.compte_a_rebours": "access for {n} days, until the end of your {examen} ({date})",
   "prix.sabonner": "Subscribe",
   "prix.avant_connexion": "You sign in first (email, phone or Google), then you see the Mobile Money number to send your payment to.",
+  "prix.beneficiaire": "The transfer goes to: {noms}. The number is shown at the next step.",
   "prix.etapes_titre": "How it works",
   "prix.etape1":
-    "You sign in and choose how many months.",
+    "You choose your exam and how many months, then you create your account (or log in).",
   "prix.etape2":
     "You pay in one go by Mobile Money (MTN or Orange).",
   "prix.etape3_immediat": "Your access is activated as soon as you pay.",
@@ -862,6 +869,9 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ed.bloc_texte": "The paper below is free to read. The detailed solution is reserved for subscribers.",
   "ed.bloc_texte_multi":
     "The paper below is free to read. The detailed solution is reserved for subscribers (any one of the following exams is enough).",
+  "ed.pas_sur": "Not sure yet?",
+  "ed.corriges_gratuits": "Read a free solution first",
+  "ed.corriges_gratuits_examen": "Read a free {examen} solution first",
   "ed.avantage1": "Step-by-step solutions, exercise by exercise",
   "ed.avantage2": "Linked lessons and method reminders",
   "ed.avantage3": "Quizzes and progress tracking",
@@ -963,6 +973,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   // --- "Show my parents": the message sent from a paywall (see lib/messageParents) ---
   "parents.bouton": "Show my parents",
   "parents.aide": "We send them a ready-made message: the price, what it unlocks, how to pay.",
+  "parents.voir_message": "Read the message before sending it",
+  "parents.voir_message_lien": "The link to the pricing page is added at the end.",
   "parents.intro": "Hello, I'm preparing for my exam with {site}.",
   "parents.intro_examen": "Hello, I'm preparing for the {examen} with {site}.",
   "parents.besoin": "To see the full solutions and do the exercises, I need the subscription.",
@@ -1692,7 +1704,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "tl.fin": "End of the list: back to the topic",
 
   "sb.seo": "Subscription",
-  "sb.intent": "One more step to complete your subscription.",
+  "sb.intent": "Your account first, the payment right after.",
   "login.recap": "Your choice: {recap}",
   "prix.recap_choix_one": "{cursus} · {n} month · {montant} FCFA",
   "prix.recap_choix_other": "{cursus} · {n} months · {montant} FCFA",
@@ -1704,6 +1716,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.formule_mois": "Monthly subscription",
   "sb.tout_inclus": "Everything included: solutions, lessons, quizzes and original exams",
   "sb.duree_titre": "For how many months?",
+  "sb.changer_duree": "Change the number of months",
   "sb.unite_mois_one": "month",
   "sb.unite_mois_other": "months",
   "sb.jusqua_examen_one": "Until the exam ({n} month)",
@@ -1766,6 +1779,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.abonnement_active": "Subscription activated!",
   "sb.echec": "The payment failed",
   "sb.securise": "Secure payment - your subscription activates as soon as the payment is confirmed.",
+  "sb.securise_manuel": "Secure payment - your subscription activates once our team has checked your transfer, usually within {delai}.",
 
   "bv.prolonge": "Your access is extended",
   "bv.bienvenue": "Welcome, your access is open",
@@ -1803,6 +1817,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "mp.envoie": "Send exactly {prix} FCFA to the number below.",
   "mp.numero_a_crediter": "Number to credit",
   "mp.beneficiaire": "Beneficiary: {nom}",
+  "mp.ouvrir_menu": "Dial {code} to open {operateur}",
   "mp.sms": "Keep the confirmation SMS sent by your operator - it will be useful in case of verification.",
   "mp.jai_paye": "I've made the payment",
   "mp.declare": "Declare your payment",
@@ -2016,7 +2031,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "qd.complet_titre_accent": "your weak topics",
   "qd.complet_titre_fin": " for you.",
   "qd.complet_texte":
-    "The free try-out is a taste. With an account, every session adapts to your mistakes and weak topics come back by themselves, until you've got them.",
+    "The free try-out is a taste, and a free account keeps your points and your history. With a subscription, every session adapts to your mistakes and weak topics come back by themselves, until you've got them.",
   "qd.complet_cta": "Create my account",
   "qd.complet_deja": "Already have an account? Log in",
   "qd.complet_prix": "See pricing",
@@ -2060,8 +2075,11 @@ export const en: Partial<Record<CleI18n, string>> = {
 
   "login.seo": "Log in",
   "login.titre": "Log in",
-  "login.description": "It only takes a few seconds.",
-  "login.description_intent": "{intent} It only takes a few seconds.",
+  "login.titre_achat": "Create your account or log in",
+  "login.code_arrive_sms": "You get a code by SMS, to enter on the next screen.",
+  "login.code_arrive_email": "You get a code by email, to enter on the next screen.",
+  "login.description": "It only takes a few seconds. No account yet? It is created here, no password needed.",
+  "login.description_intent": "{intent} No account yet? It is created here, no password needed.",
   "login.code_recu_pour": "Enter the code you received for {destination}.",
   "login.code_envoye_tel": "Code sent to {destination}.",
   "login.code_envoye_email": "Code sent to {destination}.",

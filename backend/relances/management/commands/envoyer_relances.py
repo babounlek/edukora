@@ -3,6 +3,7 @@ from django.core.management.base import BaseCommand
 from relances.absence import envoyer_relances_absence
 from relances.bilan_parent import envoyer_bilans_parent
 from relances.fin_abonnement import envoyer_relances_fin_abonnement
+from relances.inscrit_sans_paiement import envoyer_relances_inscrit_sans_paiement
 from relances.push import envoyer_rappels_push
 from relances.services import envoyer_relances_paiement, envoyer_rappels_seance
 
@@ -19,7 +20,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("--dry-run", action="store_true", help="Compte les envois sans rien envoyer.")
         parser.add_argument(
-            "--seulement", choices=["rappel", "paiement", "push", "bilan", "absence", "fin_abonnement"],
+            "--seulement",
+            choices=["rappel", "paiement", "push", "bilan", "absence", "fin_abonnement", "inscrit_sans_paiement"],
             help="Ne traiter qu'un seul type de message.",
         )
 
@@ -44,3 +46,7 @@ class Command(BaseCommand):
         if options["seulement"] in (None, "paiement"):
             n = envoyer_relances_paiement(dry_run=dry_run)
             self.stdout.write(self.style.SUCCESS(f"{prefixe}{n} relance(s) de paiement."))
+        # Après la relance de paiement : un compte qu'elle vient de servir n'est pas relancé une seconde fois ici.
+        if options["seulement"] in (None, "inscrit_sans_paiement"):
+            n = envoyer_relances_inscrit_sans_paiement(dry_run=dry_run)
+            self.stdout.write(self.style.SUCCESS(f"{prefixe}{n} relance(s) d'inscrit sans paiement."))

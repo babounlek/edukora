@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import RelanceEnvoyee
+from .models import RefusRelance, RelanceEnvoyee
 
 
 @admin.register(RelanceEnvoyee)
@@ -9,3 +9,11 @@ class RelanceEnvoyeeAdmin(admin.ModelAdmin):
     list_filter = ("type", "canal")
     search_fields = ("user__email", "user__phone_number")
     readonly_fields = ("user", "type", "reference", "canal", "envoyee_at")
+
+
+@admin.register(RefusRelance)
+class RefusRelanceAdmin(admin.ModelAdmin):
+    list_display = ("user", "famille", "created_at")
+    list_filter = ("famille",)
+    search_fields = ("user__email", "user__phone_number")
+    readonly_fields = ("user", "famille", "created_at")

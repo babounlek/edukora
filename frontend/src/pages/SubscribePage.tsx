@@ -21,7 +21,7 @@ import { cheminRetourSur } from "@/lib/retourAchat"
 import { PAYMENT_CONFIG_KEY, usePaymentConfig } from "@/lib/paymentConfig"
 import { dateLimiteCampagne, nomCampagne } from "@/lib/campagne"
 import { MOIS_PAR_DEFAUT, estAuMois, moisValides, prixTotal } from "@/lib/tarifs"
-import { SelecteurDuree } from "@/components/SelecteurDuree"
+import { RecapDuree, SelecteurDuree } from "@/components/SelecteurDuree"
 import { Button } from "@/components/ui/button"
 import { CodeRevendeur } from "@/components/CodeRevendeur"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -163,6 +163,9 @@ export function SubscribePage() {
   const [accesActuelJusqua, setAccesActuelJusqua] = useState<Date | null>(null)
   // Le nombre de mois que l'élève a choisi lui-même (null : il n'a encore rien touché, voir `mois` plus bas).
   const [moisChoisi, setMoisChoisi] = useState<number | null>(null)
+  // Le lien porte déjà une durée (choisie sur /tarifs, ou « jusqu'à l'examen ») : l'écran la rappelle au lieu de la redemander.
+  const dureeVenueDuLien = moisParam > 0 || dureeParam === "examen"
+  const [choixDureeOuvert, setChoixDureeOuvert] = useState(false)
   const [phoneNumber, setPhoneNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CAMPAY")
   // Replié par défaut - voir la note sur CAMPAY_METHOD/MANUAL_METHODS ci-dessus.
@@ -180,7 +183,9 @@ export function SubscribePage() {
   const optionsManuellesVisibles = !campayActif || showManualOptions
 
   useEffect(() => {
-    trackEvent("abonnement_ouvert")
+    // `cursus_id` : la relance de l'inscrit qui n'a pas payé (relances.inscrit_sans_paiement) y lit l'examen visé.
+    trackEvent("abonnement_ouvert", { cursus_id: cursusId ? Number(cursusId) : undefined })
+    // Une fois, à l'ouverture de l'écran : l'examen ne change pas sans changer de page.
   }, [])
 
   useEffect(() => {
@@ -460,7 +465,19 @@ export function SubscribePage() {
             {t("sb.tout_inclus")}
           </span>
         </div>
-        <SelecteurDuree plan={plan} mois={mois} onChoisir={choisir} accesActuelJusqua={accesActuelJusqua} />
+        {/* La durée a déjà été choisie sur la page des prix : on ne la redemande pas, on la rappelle, et un bouton
+            rouvre le choix. Sur un téléphone, la grille des mois repoussait le numéro à créditer à plus de deux écrans
+            du haut (audit du tunnel visiteur → abonné, 2026-11-21). Lien direct sans durée : le choix reste ouvert. */}
+        {dureeVenueDuLien && !choixDureeOuvert ? (
+          <>
+            <RecapDuree plan={plan} mois={mois} accesActuelJusqua={accesActuelJusqua} />
+            <Button type="button" variant="ghost" size="sm" className="-mt-2 self-start" onClick={() => setChoixDureeOuvert(true)}>
+              {t("sb.changer_duree")}
+            </Button>
+          </>
+        ) : (
+          <SelecteurDuree plan={plan} mois={mois} onChoisir={choisir} accesActuelJusqua={accesActuelJusqua} />
+        )}
       </div>
     )
   }
@@ -708,8 +725,6 @@ export function SubscribePage() {
                 </div>
               )}
 
-              <CodeRevendeur />
-
               {!configPrete ? (
                 <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label={t("sb.chargement_moyens")} />
               ) : (
@@ -860,6 +875,10 @@ export function SubscribePage() {
                   </div>
                 </>
               )}
+
+              {/* Le code revendeur vient APRÈS le paiement : facultatif, il passait avant le numéro à créditer et le
+                  repoussait d'autant sur un téléphone. Il reste valable tant que le paiement n'est pas validé. */}
+              <CodeRevendeur />
             </div>
           )}
 
@@ -981,7 +1000,9 @@ export function SubscribePage() {
 
       <p className="mt-6 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
         <ShieldCheck className="size-3.5 shrink-0" />
-        {t("sb.securise")}
+        {/* Une seule phrase sur le délai, celle du mode réellement choisi : « dès la confirmation » sous un transfert
+            vérifié à la main contredisait « sous 3 heures », écrit plus haut sur le même écran. */}
+        {methode === "CAMPAY" ? t("sb.securise") : t("sb.securise_manuel", { delai: delaiVerificationPaiementAffiche() })}
       </p>
     </div>
   )

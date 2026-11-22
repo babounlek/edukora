@@ -10,6 +10,7 @@ from payments.rattrapage import rattraper_paiements_en_attente
 from .models import AbonnementPush
 from .push import push_configure
 from .bilan_parent import utilisateur_du_jeton_bilan
+from .inscrit_sans_paiement import refuser as refuser_relance_inscrit, utilisateur_du_jeton_arret
 from .services import paiement_a_reprendre, utilisateur_du_jeton
 
 # Garde-fous sur ce que le navigateur envoie : un point d'entrée ouvert à tout compte connecté
@@ -50,6 +51,18 @@ def desabonner_bilan_view(request, jeton):
     return _page_minimale(
         "C'est fait", "Tu ne recevras plus le bilan de la semaine. Tu pourras le réactiver depuis ton compte.", 200,
     )
+
+
+@require_http_methods(["GET", "POST"])
+def desabonner_offre_view(request, jeton):
+    """Arrête les deux messages envoyés à un inscrit qui a ouvert l'écran d'abonnement sans payer (voir
+    relances.inscrit_sans_paiement) - même principe que desabonner_view : jeton signé, pas de connexion, seul effet
+    possible : écrire MOINS. Aucun réglage du compte n'est touché."""
+    utilisateur = utilisateur_du_jeton_arret(jeton)
+    if utilisateur is None:
+        return _page_minimale("Lien invalide", "Ce lien de désabonnement n'est pas valide.", 400)
+    refuser_relance_inscrit(utilisateur)
+    return _page_minimale("C'est fait", "Tu ne recevras plus de message au sujet de l'abonnement.", 200)
 
 
 def _page_minimale(titre, message, statut):
