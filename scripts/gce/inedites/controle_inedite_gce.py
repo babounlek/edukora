@@ -84,9 +84,9 @@ def verifier_dollars(t):
     return t.count("$") % 2 == 0
 
 
-def charger_corpus(dossier, matiere):
+def charger_corpus(dossier, matiere, niveau="ol"):
     refs = []
-    for d in sorted(glob.glob(os.path.join(dossier, f"gce-ol-{matiere}-*"))):
+    for d in sorted(glob.glob(os.path.join(dossier, f"gce-{niveau}-{matiere}-*"))):
         for f in glob.glob(os.path.join(d, "*.json")):
             try:
                 j = json.load(open(f, encoding="utf8"))
@@ -318,12 +318,13 @@ def main():
     ap.add_argument("--corpus", default=os.path.join(RACINE, "backend", "ingest", "cm"))
     ap.add_argument("--matiere", default="maths", help="fragment du dossier gce-ol-<matiere>-* du corpus de reference")
     ap.add_argument("--type", default="qcm", choices=["qcm", "redige"])
+    ap.add_argument("--niveau", default="ol", choices=["ol", "al"], help="niveau du corpus de reference : gce-<niveau>-<matiere>-*")
     ap.add_argument("--sections", default="", help='paper redige : "SECTION A:10:45,SECTION B:4:60" (groupe:nombre exercices:points)')
     ap.add_argument("--jumeau", default="", help="JSON de l'epreuve jumelle (autre paper de la session) : compare aussi a elle")
     a = ap.parse_args()
     ep = json.load(open(a.epreuve, encoding="utf8"))
     bp = json.load(open(a.blueprint, encoding="utf8")) if a.blueprint else None
-    refs = charger_corpus(a.corpus, a.matiere)
+    refs = charger_corpus(a.corpus, a.matiere, a.niveau)
     if a.jumeau:
         jum = json.load(open(a.jumeau, encoding="utf8"))
         for ex in jum["exercices"]:
@@ -338,7 +339,7 @@ def main():
         sections[g.strip()] = (int(nb), float(pts))
     rap = Rapport()
     pires = controler(ep, bp, refs, a.type, rap, sections)
-    print(f"corpus de reference : {len(refs)} questions reelles (gce-ol-{a.matiere}-*)")
+    print(f"corpus de reference : {len(refs)} questions reelles (gce-{a.niveau}-{a.matiere}-*)")
     for score, n, m in pires or []:
         print(f"  plus proche, Q{n}: {m[2]} (texte {m[1]:.2f}, nombres communs {m[3]:.2f})")
     for w in rap.avertissements:
