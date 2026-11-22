@@ -77,6 +77,7 @@ TEXTES = {
         # Fiche de quiz
         "quiz_brand": "Fiche de quiz",
         "quiz_brand_corrige": "Correction",
+        "quiz_plusieurs_matieres": "Plusieurs matières",
         "quiz_cta_titre": "Continue à t'entraîner",
         "quiz_cta_corps": "Refais un quiz en quelques secondes sur {site}.",
         "quiz_cta_lien": "Refaire un quiz",
@@ -166,6 +167,7 @@ TEXTES = {
         "fiche_qr_alt_outil": "QR code to the Sheets tool",
         "quiz_brand": "Quiz sheet",
         "quiz_brand_corrige": "Solutions",
+        "quiz_plusieurs_matieres": "Several subjects",
         "quiz_cta_titre": "Keep practising",
         "quiz_cta_corps": "Take another quiz in seconds on {site}.",
         "quiz_cta_lien": "Take another quiz",

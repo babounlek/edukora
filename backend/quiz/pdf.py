@@ -48,6 +48,8 @@ from catalog.sujet_pdf import (
     html_vers_pdf,
 )
 
+from . import instantane
+
 # Même dossier statique que catalog.sujet_pdf._KATEX_DIR (fichiers copiés depuis
 # frontend/node_modules/katex/dist) - pas un import direct de cette constante privée,
 # même raisonnement qu'inedit/sujet_pdf.py et fiches/pdf.py : reste correct même si son
@@ -98,7 +100,46 @@ def _corrige_deep_link(session):
     return f"{settings.PDF_SITE_URL}/{country_code}?ref=pdf_quiz_correction"
 
 
-def _bloc_question(quiz_question, *, avec_corrige, tx):
+# Au-delà, le titre ne tient plus sur une ligne de l'en-tête : il dit « Plusieurs matières », et chaque
+# question porte la sienne.
+MATIERES_NOMMEES_MAX = 3
+
+
+def _questions(session):
+    return (
+        session.quiz_questions
+        .select_related("question__exercise__lesson__subject", "competence_item__theme", "competence_item__subject")
+        .order_by("ordre")
+    )
+
+
+def _matiere_de_la_question(quiz_question):
+    return ((instantane.donnees(quiz_question) or {}).get("subject") or {}).get("label") or ""
+
+
+def matieres_de_la_session(session, quiz_questions=None):
+    """
+    Les matières de la fiche, dans l'ordre où elles apparaissent. La session n'en porte une que si l'élève
+    a choisi une matière au lancement : un quiz lancé depuis un thème, une révision ou un quiz mêlé n'en a
+    pas, et la fiche sortait alors sans titre. On la lit donc sur les questions elles-mêmes (leur instantané).
+    """
+    if session.subject_id:
+        return [session.subject.label]
+    matieres = []
+    for quiz_question in _questions(session) if quiz_questions is None else quiz_questions:
+        matiere = _matiere_de_la_question(quiz_question)
+        if matiere and matiere not in matieres:
+            matieres.append(matiere)
+    return matieres
+
+
+def _titre_matieres(matieres, tx):
+    if len(matieres) > MATIERES_NOMMEES_MAX:
+        return tx["quiz_plusieurs_matieres"]
+    return " · ".join(matieres)
+
+
+def _bloc_question(quiz_question, *, avec_corrige, tx, avec_matiere=False):
     """
     Un bloc "Question N" du PDF - énoncé seul si avec_corrige=False (le PDF "Fiche"),
     énoncé puis corrigé sinon (le PDF "Correction") ; jamais la réponse donnée par
@@ -107,9 +148,9 @@ def _bloc_question(quiz_question, *, avec_corrige, tx):
     et sa correction nomme la bonne lettre avant de l'expliquer. Import
     différé de quiz.views : quiz.views importe ce module au niveau top-level (voir
     queue_quiz_fiche_pdf_generation, appelée depuis quiz.views.quiz_fiche_pdf), un
-    import top-level symétrique ici créerait un cycle.
+    import top-level symétrique ici créerait un cycle. `avec_matiere` : la fiche mêle plusieurs
+    matières, chaque question nomme la sienne dans son titre.
     """
-    from . import instantane
     from .views import _clean_quiz_markdown, _corrige_de_la_question
 
     # L'instantané, pas le contenu vivant : le PDF reprend ce que l'élève a réellement vu.
@@ -119,7 +160,11 @@ def _bloc_question(quiz_question, *, avec_corrige, tx):
     else:
         enonce = _clean_quiz_markdown(donnees["enonce_markdown"]).strip()
 
-    blocs = [f"## Question {quiz_question.ordre}", enonce]
+    titre = f"## Question {quiz_question.ordre}"
+    matiere = avec_matiere and _matiere_de_la_question(quiz_question)
+    if matiere:
+        titre = f"{titre} - {matiere}"
+    blocs = [titre, enonce]
     choix = donnees.get("choix")
     # La Fiche laisse les cases vides, à cocher ; la Correction coche celle de la bonne réponse.
     propositions = propositions_markdown(choix, cochee=donnees.get("reponse_correcte") if avec_corrige else None)
@@ -147,13 +192,12 @@ def _bloc_question(quiz_question, *, avec_corrige, tx):
 
 def _combined_markdown(session, *, avec_corrige):
     tx = _textes(session)
-    quiz_questions = (
-        session.quiz_questions
-        .select_related("question__exercise__lesson__subject", "competence_item__theme", "competence_item__subject")
-        .order_by("ordre")
-    )
+    quiz_questions = list(_questions(session))
+    avec_matiere = len(matieres_de_la_session(session, quiz_questions)) > 1
     return adapter_markdown(
-        "\n\n".join(_bloc_question(qq, avec_corrige=avec_corrige, tx=tx) for qq in quiz_questions),
+        "\n\n".join(
+            _bloc_question(qq, avec_corrige=avec_corrige, tx=tx, avec_matiere=avec_matiere) for qq in quiz_questions
+        ),
         tx["langue"],
     )
 
@@ -171,7 +215,7 @@ def _render_html(session, *, avec_corrige, template_name, deep_link):
     return render_to_string(template_name, {
         "session": session,
         "tx": tx,
-        "subject_label": session.subject.label if session.subject_id else "",
+        "subject_label": _titre_matieres(matieres_de_la_session(session), tx),
         "cursus_display": _cursus_display(session.cursus),
         "total_questions": session.quiz_questions.count(),
         "content_html": content_html,
