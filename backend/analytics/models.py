@@ -93,6 +93,15 @@ class EventName(models.TextChoices):
     # texte, jamais d'identité.
     ACCUEIL_BOUTON_CLIC = "accueil_bouton_clic", "Bouton de l'accueil visiteur cliqué"
     EXAMEN_CHOISI = "examen_choisi", "Examen déclaré (bandeau ou sélecteur)"
+    # Le tunnel d'achat entre la page des prix et le paiement (audit du tunnel visiteur → abonné, 2026-11-21) : c'était
+    # la seule partie du parcours qui ne se mesurait pas, et celle où l'audit situe la plus grosse perte.
+    # CONNEXION_CODE_DEMANDE / CONNEXION_REUSSIE : `methode` (phone, email, google) et `achat` (vrai quand on arrive des
+    # prix avec un choix fait). Leur écart dit combien de codes n'arrivent pas ou ne sont pas saisis.
+    # PAIEMENT_NUMERO_AFFICHE : le numéro à créditer a été montré (`operator`, `cursus_id`) ; à comparer à
+    # PAYMENT_INITIATED, qui compte les déclarations. Jamais d'adresse, jamais de numéro.
+    CONNEXION_CODE_DEMANDE = "connexion_code_demande", "Code de connexion demandé"
+    CONNEXION_REUSSIE = "connexion_reussie", "Connexion ou création de compte réussie"
+    PAIEMENT_NUMERO_AFFICHE = "paiement_numero_affiche", "Numéro à créditer affiché (paiement manuel)"
 
 
 class AnalyticsEvent(models.Model):

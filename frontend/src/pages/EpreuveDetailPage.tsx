@@ -42,7 +42,7 @@ import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, tn, useI18n } from "@/lib/i18n"
-import { libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
+import { libelleEnteteExercice, libelleNature, libelleOrigine, libelleType } from "@/lib/libellesEpreuve"
 import { coursDetailPath, coursReaderPath, epreuveDetailPath, epreuveReaderPath, epreuvesListPath, examenPath, catalogueHomePath } from "@/lib/countryPath"
 
 export function EpreuveDetailPage() {
@@ -374,9 +374,13 @@ export function EpreuveDetailPage() {
                   const sansTitrePropre = sections !== null && !titreDistinctif(exercise, section)
                   // Dans un sujet à sections, l'en-tête collé devant chaque énoncé est le titre de la section,
                   // déjà affiché au-dessus : on ne le répète pas dans la carte.
-                  const enonce = repeteLIntituleDeSection(exercise, section)
-                    ? sansEnteteDeSection(exercise.enonce_markdown, exercise.titre)
-                    : exercise.enonce_markdown
+                  // libelleEnteteExercice : l'en-tête français des données (« **Exercice 1 (8 points)** ») s'affichait
+                  // tel quel sur la fiche d'un sujet du GCE lu en anglais ; le lecteur, lui, le réécrivait déjà.
+                  const enonce = libelleEnteteExercice(
+                    repeteLIntituleDeSection(exercise, section)
+                      ? sansEnteteDeSection(exercise.enonce_markdown, exercise.titre)
+                      : exercise.enonce_markdown,
+                  )
                   return (
                     <Fragment key={exercise.numero_exercice}>
                       {section && section.items[0].index === index && <EnTeteSection section={section} />}

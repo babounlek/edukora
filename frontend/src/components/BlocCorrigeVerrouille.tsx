@@ -67,7 +67,8 @@ export function BlocCorrigeVerrouille({ epreuve, pays }: { epreuve: Epreuve; pay
         {/* « S'abonner » mène à la connexion avant tout prix (voir SubscribePage) : sans ce lien, un
             visiteur devait deviner que la page des prix existe, ou la chercher au bas de l'accueil. */}
         <Button asChild variant="outline" size="lg" className="h-12 rounded-full px-6">
-          <Link to="/tarifs">{t("ed.voir_prix")}</Link>
+          {/* L'examen de l'épreuve suit jusqu'aux prix : il n'y a pas à le redire. */}
+          <Link to={seul ? `/tarifs?cursus=${seul.id}` : "/tarifs"}>{t("ed.voir_prix")}</Link>
         </Button>
       </div>
       <p className="mt-3 text-sm font-medium">{t("seance.prix_abonnement", { prix: formatAmount(PRIX_MOIS_FCFA) })}</p>

@@ -236,6 +236,27 @@ Décision de l'utilisateur du 2026-11-22 : « je valide toutes tes autres recomm
 
 **Déploiement** : `migrate relances` (0007, une table), rebuild de `backend`, de `relances` et de `caddy`, puis **`charger_aide`** en production après avoir vérifié qu'aucun article n'y a été retouché à la main. Avant le premier tour réel : `envoyer_relances --seulement inscrit_sans_paiement --dry-run`.
 
+## 7 quinquies. Deuxième tranche (2026-11-22, en local, non committé, non déployé)
+
+| ID | Ce qui est en place | Où |
+|---|---|---|
+| D1 | **Plus de français sur la fiche d'un sujet du GCE lu en anglais.** L'en-tête « **Exercice 1 (8 points)** » est dans les données de 2 819 exercices du GCE (base locale) ; la réécriture en « Exercise 1 (8 marks) » existait dans le lecteur, elle manquait sur la fiche de l'épreuve et dans les titres du sommaire. Les données ne sont pas touchées. | `pages/EpreuveDetailPage.tsx`, `components/EpreuveSommaire.tsx` |
+| B6 | L'examen suit la personne : « Voir les prix » sous un corrigé verrouillé emmène l'examen de l'épreuve (`/tarifs?cursus=…`) ; un visiteur qui choisit son examen sur les prix n'a plus à le redire sur l'accueil ; le bandeau « Choisis ton examen » ne s'affiche plus sur l'écran de connexion (il était exclu de `/login`, pas de `/connexion`). | `PricingPage.tsx`, `BlocCorrigeVerrouille.tsx`, `BandeauCursus.tsx` |
+| T5 | Le bloc parents de l'accueil vouvoie : « Vous êtes parent ? », « ce que votre enfant obtient », « Vous gardez la main ». C'est le seul bloc de l'accueil qui parle au payeur. | textes |
+| Mesure | Trois évènements de plus : `connexion_code_demande` et `connexion_reussie` (méthode, et si l'on vient des prix), `paiement_numero_affiche` (opérateur). Jamais d'adresse ni de numéro. Leur écart dira combien de codes n'aboutissent pas, et combien voient le numéro sans déclarer. | `analytics/models.py`, migration `analytics 0019`, `LoginPage.tsx`, `ManualPaymentPanel.tsx` |
+
+**Tests** : interface 1 760 tests au vert, compilation de production sans erreur ; serveur : `analytics` au vert.
+
+**Vérifié à l'écran**, mobile, image locale reconstruite : Physics GCE O Level 2026 Paper 2 en anglais affiche « Exercise 1 (8 marks) » à « Exercise 4 (5 marks) » et plus aucun « Exercice » ; `/tarifs?cursus=20` arrive sur « BAC - Série C » et « Continuer · 1 mois · 2 000 FCFA » ; pas de bandeau d'examen sur `/connexion` ; le bloc parents vouvoie.
+
+**Écarts et limites**
+- **T5 partiel** : seul le bloc parents de l'accueil vouvoie. La page des prix, l'écran de paiement et l'aide tutoient toujours : ils sont lus par l'élève comme par le parent.
+- **T6 non modifié** : « À propos » annonce plus d'épreuves que l'accueil parce qu'il compte toute la plateforme, et sa légende le dit déjà (« examens francophones et GCE confondus »). L'accueil compte l'examen du pays et de la langue.
+- **D1 à l'affichage seulement**, et selon la langue de l'interface : un sujet du GCE lu avec l'interface en français garde « Exercice 1 ». Corriger les données elles-mêmes demanderait un lot de contenu vers la production.
+- **Non fait** : D2 (niveau du quiz d'essai de Terminale, libellé « Débutant »), D3 (matières du GCE), D4 (deux défauts de la page Maths BAC C 2024, dans les données), A3, B3, la garantie, les démarches.
+
+**Déploiement** (en plus de la première tranche) : migration `analytics 0019` (aucun changement de table).
+
 ## 8. Décisions à prendre
 
 1. Accès ouvert dès la déclaration d'un transfert (A3) : oui ou non, et pour combien d'heures ?

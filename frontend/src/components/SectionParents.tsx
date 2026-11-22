@@ -9,7 +9,7 @@ import { formatAmount } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
 /**
- * « Tu es parent ? » : l'accueil parle à l'élève (« tu », « ton examen ») alors que c'est souvent le parent qui paie. Ce
+ * « Vous êtes parent ? » (le seul bloc de l'accueil qui vouvoie : il parle au payeur, pas à l'élève) : l'accueil parle à l'élève (« tu », « ton examen ») alors que c'est souvent le parent qui paie. Ce
  * bloc lui donne, au même endroit, ce qu'il cherche avant de décider : ce que son enfant obtient, comment on paie, ce
  * qu'il garde sous contrôle (audit du 2026-11-12, UX-03). Il ne dit que ce que le produit fait déjà : profils d'enfants
  * dans un seul compte, Mobile Money sans prélèvement automatique, code parent pour les paiements et la gestion.

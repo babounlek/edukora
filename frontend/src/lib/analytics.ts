@@ -57,6 +57,10 @@ export type AnalyticsEventName =
   // déclaré (`source`, avec l'identifiant de l'examen). Jamais de texte - voir analytics.models.
   | "accueil_bouton_clic"
   | "examen_choisi"
+  // Tunnel d'achat, entre les prix et le paiement (voir analytics.models) : la méthode et « achat », jamais l'adresse ni le numéro.
+  | "connexion_code_demande"
+  | "connexion_reussie"
+  | "paiement_numero_affiche"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

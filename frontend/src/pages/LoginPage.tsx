@@ -6,6 +6,7 @@ import { ApiError } from "@/api/client"
 import type { User } from "@/api/types"
 import { dureeAttente } from "@/lib/messagesEnvoiCode"
 import { usePaymentConfig } from "@/lib/paymentConfig"
+import { trackEvent } from "@/lib/analytics"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { GoogleSignInButton } from "@/components/GoogleSignInButton"
@@ -202,6 +203,8 @@ export function LoginPage() {
     }
     setResendCooldownEndsAt(Date.now() + OTP_RESEND_COOLDOWN_SECONDS * 1000)
     setCodeEnvoyeLe(Date.now())
+    // La méthode et « on vient des prix », jamais l'adresse ni le numéro (voir analytics.models).
+    trackEvent("connexion_code_demande", { methode, achat: Boolean(recapChoix) })
   }
 
   /** Contrôle local de l'identifiant saisi ; renvoie le message d'erreur, ou null. */
@@ -287,6 +290,7 @@ export function LoginPage() {
         : await verifyEmailCode(email, code, referral)
       clearReferralCode()
       login(response.access, response.user)
+      trackEvent("connexion_reussie", { methode, achat: Boolean(recapChoix) })
       await naviguerApresConnexion(response.user, response.user.session_restreinte)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))
@@ -302,6 +306,7 @@ export function LoginPage() {
       const response = await googleSignIn(credential, consumeReferralCode())
       clearReferralCode()
       login(response.access, response.user)
+      trackEvent("connexion_reussie", { methode: "google", achat: Boolean(recapChoix) })
       await naviguerApresConnexion(response.user)
     } catch (err) {
       setError(err instanceof ApiError ? err.message : t("login.erreur_generique"))

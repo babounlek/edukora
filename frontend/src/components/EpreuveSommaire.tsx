@@ -1,5 +1,6 @@
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
 import { t, useI18n } from "@/lib/i18n"
+import { libelleTitreExercice } from "@/lib/libellesEpreuve"
 
 /**
  * Le strict nécessaire pour étiqueter un exercice - satisfait aussi bien par
@@ -196,7 +197,8 @@ export function libelleCourtExercice(exercise: ExerciceLabelSource) {
  * partie de l'épreuve. Le titre entier reste accessible en infobulle (voir SommaireNav).
  */
 export function libelleLong(exercise: ExerciceLabelSource) {
-  const titre = exercise.titre.trim() || t("ed.exercice_n", { n: exercise.numero_exercice.trim() })
+  // Un sujet du GCE porte parfois l'en-tête français des données (« Exercice 4 ») : hors français, « Exercise 4 ».
+  const titre = libelleTitreExercice(exercise.titre.trim()) || t("ed.exercice_n", { n: exercise.numero_exercice.trim() })
   if (titre.length <= LONGUEUR_MAX_SIDEBAR) return titre
   const segments = titre.split(" - ")
   return segments[segments.length - 1].trim()

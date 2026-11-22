@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label"
 import { dateLimiteCampagne } from "@/lib/campagne"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 import { t, tn, useI18n } from "@/lib/i18n"
+import { trackEvent } from "@/lib/analytics"
 
 interface ManualPaymentPanelProps {
   plan: Plan
@@ -100,6 +101,12 @@ export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, 
   }, [operator, plan.id, mois])
 
   const account = accounts?.find((a) => a.operator === operator) ?? null
+  // Le numéro à créditer vient d'être montré : à comparer aux déclarations (payment_initiated) pour savoir combien de
+  // personnes voient où payer et ne vont pas au bout. Une fois par opérateur affiché.
+  const operateurAffiche = account?.operator
+  useEffect(() => {
+    if (operateurAffiche) trackEvent("paiement_numero_affiche", { operator: operateurAffiche, plan_id: plan.id })
+  }, [operateurAffiche, plan.id])
   const style = OPERATOR_STYLES[operator]
 
   // Le « Copié » ne s'affiche qu'une fois la copie réellement faite : navigator.clipboard est absent

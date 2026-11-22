@@ -46,6 +46,12 @@ describe("BlocCorrigeVerrouille : le verrou dit le prix et où juger avant de pa
     )
   })
 
+  it("emmène l'examen de l'épreuve jusqu'à la page des prix : il n'y a pas à le redire", () => {
+    afficher([BAC_C])
+
+    expect(screen.getByRole("link", { name: "Voir les prix" })).toHaveAttribute("href", "/tarifs?cursus=20")
+  })
+
   it("propose un bouton par examen tant que la personne n'a pas dit lequel elle prépare", () => {
     afficher([BAC_C, BAC_D])
 

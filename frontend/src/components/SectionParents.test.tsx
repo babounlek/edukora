@@ -14,7 +14,7 @@ describe("SectionParents : l'accueil parle aussi au parent qui paie", () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByRole("heading", { level: 2, name: "Tu es parent ?" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { level: 2, name: "Vous êtes parent ?" })).toBeInTheDocument()
     expect(screen.getByText(new RegExp(`${formatAmount(PRIX_MOIS_FCFA)} FCFA par mois`))).toBeInTheDocument()
     expect(screen.getByText(/au même prix/)).toBeInTheDocument()
     expect(screen.getByText(/sans prélèvement automatique/)).toBeInTheDocument()

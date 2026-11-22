@@ -22,6 +22,7 @@ import { cn, formatAmount } from "@/lib/utils"
 import { coursListPath } from "@/lib/countryPath"
 import { codeSerieAffiche } from "@/lib/cursus"
 import { useAuth } from "@/context/AuthContext"
+import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useCountry } from "@/context/CountryContext"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
@@ -334,10 +335,22 @@ export function PricingPage() {
   // Il reste libre d'en choisir un autre - le sélecteur n'est pas verrouillé, et son choix
   // manuel gagne (la condition `!selectedCursus` ci-dessous ne le réécrit jamais).
   const cursusDeclare = useCursusDeclare()
+  // `?cursus=` : l'examen de la page d'où l'on vient (« Voir les prix » sous le corrigé verrouillé d'une épreuve du
+  // BAC C). Il passe devant l'examen déclaré : c'est celui que la personne regardait à l'instant, et elle n'a pas à le
+  // redire (audit du tunnel visiteur → abonné, 2026-11-21).
+  const cursusDuLien = Number(searchParams.get("cursus"))
   useEffect(() => {
-    if (cursusDeclare === null || selectedCursus) return
-    setSelectedCursus(String(cursusDeclare))
-  }, [cursusDeclare, selectedCursus])
+    if (selectedCursus) return
+    if (cursusDuLien > 0) setSelectedCursus(String(cursusDuLien))
+    else if (cursusDeclare !== null) setSelectedCursus(String(cursusDeclare))
+  }, [cursusDeclare, cursusDuLien, selectedCursus])
+  // Un visiteur qui n'a encore rien dit et choisit son examen ICI l'a dit : on le garde dans le navigateur, sans
+  // message, pour que l'accueil et l'écran de connexion ne le lui redemandent pas. Jamais par-dessus un choix déjà
+  // fait, et jamais sur un compte (changer l'examen d'un compte est un geste à part, voir changerCursusPrepare).
+  function choisirCursus(id: string) {
+    setSelectedCursus(id)
+    if (!isAuthenticated && cursusDeclare === null && Number(id) > 0) memoriserCursusPrepareEnAttente(Number(id))
+  }
   const cursusRef = useRef<HTMLDivElement>(null)
   // Bloc du bouton principal : la barre d'action mobile ne s'affiche que lorsqu'il est hors écran.
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -579,7 +592,7 @@ export function PricingPage() {
               <CursusChips
                 liste={cursusEleve}
                 selected={selectedCursus}
-                onSelect={setSelectedCursus}
+                onSelect={choisirCursus}
                 label={t("prix.ton_cursus")}
                 describedBy="cursus-eleve-aide"
               />
