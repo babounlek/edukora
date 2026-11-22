@@ -194,6 +194,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "parents.c3_titre": "You stay in control",
   "parents.c3_texte": "A parent code reserves payments and managing children. The papers stay free: you can see everything before paying.",
   "parents.comment_payer": "How to pay?",
+  "fondateur.titre": "Why I built {site}",
+  "fondateur.citation":
+    "“I built {site} for my son, who is preparing for the BEPC. I wanted to follow his work myself instead of paying a home tutor without knowing what was being done. For three months now we have not had one, and every week I can see where he stands.”",
+  "fondateur.nom": "Serge G. Babounlek",
+  "fondateur.role": "parent of a BEPC candidate and founder of {site}",
   "accueil.pret_texte":
     "A monthly subscription: {prix} FCFA per month and per child, and you choose how many months up to your exam. Pay by Mobile Money, no commitment.",
   "accueil.voir_prix": "See pricing",

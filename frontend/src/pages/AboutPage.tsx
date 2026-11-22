@@ -30,6 +30,7 @@ import { catalogueHomePath, epreuvesListPath } from "@/lib/countryPath"
 import { localeCourante, t, useI18n } from "@/lib/i18n"
 import { texteRiche } from "@/lib/texteRiche"
 import { Button } from "@/components/ui/button"
+import { MotDuFondateur } from "@/components/MotDuFondateur"
 
 
 // Du plus tôt au plus tard dans la scolarité, pas l'ordre alphabétique de l'API.
@@ -409,6 +410,8 @@ export function AboutPage() {
             </p>
           </div>
         </div>
+        {/* Sous la carte de l'éditeur : une personne, son nom, et pourquoi elle a fait ce site. */}
+        <MotDuFondateur className="mt-6" />
       </section>
 
       {/* CTA band */}

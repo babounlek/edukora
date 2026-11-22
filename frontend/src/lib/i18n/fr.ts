@@ -200,6 +200,11 @@ export const fr = {
   "parents.c3_titre": "Tu gardes la main",
   "parents.c3_texte": "Un code parent réserve les paiements et la gestion des enfants. Les sujets restent gratuits : tu peux tout voir avant de payer.",
   "parents.comment_payer": "Comment payer ?",
+  "fondateur.titre": "Pourquoi j'ai créé {site}",
+  "fondateur.citation":
+    "« J'ai créé {site} pour mon fils, qui prépare le BEPC. Je voulais le suivre moi-même au lieu de payer un répétiteur sans savoir ce qui se faisait. Depuis trois mois, nous n'en avons plus, et je vois chaque semaine où il en est. »",
+  "fondateur.nom": "Serge G. Babounlek",
+  "fondateur.role": "parent d'un élève de 3e et fondateur d'{site}",
   "accueil.pret_texte":
     "Un abonnement au mois : {prix} FCFA par mois et par enfant, tu choisis le nombre de mois jusqu'à ton examen. Paiement par Mobile Money, sans engagement.",
   "accueil.voir_prix": "Voir les prix",

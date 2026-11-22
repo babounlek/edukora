@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { ShieldCheck, Smartphone, Users } from "lucide-react"
 
+import { MotDuFondateur } from "@/components/MotDuFondateur"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
 import { PRIX_MOIS_FCFA } from "@/lib/tarifs"
@@ -48,6 +49,8 @@ export function SectionParents() {
           </div>
         ))}
       </div>
+      {/* Le mot du fondateur, lui-même parent d'un élève : le seul nom de personne que lit le parent avant de payer. */}
+      <MotDuFondateur className="mt-5" />
       <div className="mt-5 flex flex-wrap gap-2">
         <Button asChild variant="outline">
           <Link to="/aide/comment-payer" onClick={() => trackEvent("accueil_bouton_clic", { cible: "parents_payer" })}>

@@ -177,6 +177,20 @@ Décision de l'utilisateur : corriger le bandeau « Session expirée ». Fronten
 - **Non fait** : la cause plus générale reste (toute route réservée appelée sans session affiche ce bandeau, `api/client.ts:373`) ; aucune autre page ne l'a montré aux trois visiteurs. Non vérifié en production, où Nadège ne l'a pas vu.
 - **Déploiement** : rebuild de `caddy` seul.
 
+## 7 ter. Le mot du fondateur (2026-11-22, en local, non committé, non déployé)
+
+Répond en partie au constat T1 (aucun nom de personne sur le site). Texte choisi par l'utilisateur, qui est à la fois le fondateur et le parent d'un élève de troisième :
+
+> « J'ai créé EduKora pour mon fils, qui prépare le BEPC. Je voulais le suivre moi-même au lieu de payer un répétiteur sans savoir ce qui se faisait. Depuis trois mois, nous n'en avons plus, et je vois chaque semaine où il en est. »
+> Serge G. Babounlek, parent d'un élève de 3e et fondateur d'EduKora
+
+- **Où** : page « À propos », sous la carte de l'éditeur ; accueil du visiteur, dans le bloc « Tu es parent ? », entre les trois lignes et « Comment payer ? ». Sous le titre « Pourquoi j'ai créé EduKora », jamais dans la section des avis, qui reste réservée aux avis vérifiés. Français et anglais.
+- **Fichiers** : `components/MotDuFondateur.tsx` (nouveau), `components/SectionParents.tsx`, `pages/AboutPage.tsx`, textes `fondateur.*`.
+- **Tests** : trois pour le bloc (titre, signature « parent et fondateur », aucune promesse pour l'enfant d'un autre), un pour le bloc parents.
+- **Mesuré à l'écran**, mobile 375 px : le bloc fait 276 px de haut, sans débordement. L'accueil du visiteur passe de 5 579 à 5 874 px (de 6,9 à 7,2 écrans) : c'est le prix de ce bloc sur une page que le rapport 16 avait raccourcie.
+- **À revoir** : « Depuis trois mois » est vrai au 2026-11-22 et vieillira ; le remplacer par le mois d'arrêt du répétiteur. Ce mot ne remplace pas les trois avis extérieurs (C1), toujours à obtenir.
+- **Déploiement** : rebuild de `caddy` seul.
+
 ## 8. Décisions à prendre
 
 1. Accès ouvert dès la déclaration d'un transfert (A3) : oui ou non, et pour combien d'heures ?
