@@ -499,7 +499,8 @@ def note_libre_detail(request, pk):
 @api_view(["GET"])
 def notes_a_revoir_view(request):
     """Les notes à réviser maintenant (jamais révisées ou échéance arrivée) : {total, notes}."""
-    total, notes = notes_a_revoir(profil_actif(request))
+    matiere = request.query_params.get("matiere")
+    total, notes = notes_a_revoir(profil_actif(request), matiere_id=int(matiere) if matiere and matiere.isdigit() else None)
     return Response({"total": total, "notes": notes})
 
 

@@ -1276,8 +1276,8 @@ export function supprimerNoteLibre(id: number) {
 }
 
 /** Les notes à réviser maintenant (jamais révisées ou échéance arrivée). */
-export function getNotesARevoir(signal?: AbortSignal) {
-  return apiRequest<NotesARevoir>("/access/etude/notes/a-revoir/", { signal })
+export function getNotesARevoir(signal?: AbortSignal, matiere?: number) {
+  return apiRequest<NotesARevoir>(`/access/etude/notes/a-revoir/${matiere ? `?matiere=${matiere}` : ""}`, { signal })
 }
 
 /** Enregistre la révision d'une note : « je m'en souviens » (savais) ou « à revoir ». */

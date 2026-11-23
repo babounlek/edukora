@@ -2,6 +2,8 @@ from datetime import timedelta
 
 from django.utils import timezone
 
+from catalog.models import Subject
+
 from .etude import enregistrer_marque, noter_revue, notes_a_revoir
 from .models import NoteLibre
 from .test_etude import _Base
@@ -83,3 +85,39 @@ class RevisionDesNotesTests(_Base):
         self.assertEqual(self.client.post("/access/etude/notes/revue/", {"genre": "libre", "id": pk, "savais": True}, format="json").status_code, 200)
         self.assertEqual(self.client.get("/access/etude/notes/a-revoir/").data["total"], 0)
         self.assertEqual(self.client.post("/access/etude/notes/revue/", {"genre": "libre", "id": 99999, "savais": True}, format="json").status_code, 404)
+
+
+class QuotaEtMatiereTests(_Base):
+    def _notes(self, n, subject=None):
+        return [NoteLibre.objects.create(profil=self.profil, subject=subject or self.subject, note=f"n{i}") for i in range(n)]
+
+    def test_only_five_new_notes_are_offered_per_day(self):
+        notes = self._notes(8)
+        total, liste = notes_a_revoir(self.profil)
+        self.assertEqual((total, len(liste)), (5, 5))
+
+        for note in liste:
+            noter_revue(self.profil, "libre", note["id"], True)
+        # Les cinq vues ont fait leur quota du jour : plus de nouvelle ce jour-là.
+        self.assertEqual(notes_a_revoir(self.profil)[0], 0)
+        self.assertEqual(NoteLibre.objects.filter(revision_debut=timezone.localdate()).count(), 5)
+        self.assertEqual(len(notes), 8)
+
+    def test_a_note_already_due_is_not_counted_in_the_daily_quota(self):
+        due = self._notes(1)[0]
+        due.revision_due = timezone.localdate() - timedelta(days=2)
+        due.revision_debut = timezone.localdate() - timedelta(days=9)
+        due.save()
+        self._notes(6)
+        total, liste = notes_a_revoir(self.profil)
+        self.assertEqual(total, 6)  # 1 due + 5 nouvelles
+        self.assertEqual(liste[0]["id"], due.pk)  # les rappels d'abord
+
+    def test_reviewing_one_subject_is_not_capped_and_only_returns_that_subject(self):
+        autre = Subject.objects.exclude(pk=self.subject.pk).first()
+        self._notes(8)
+        self._notes(2, subject=autre)
+        total, liste = notes_a_revoir(self.profil, matiere_id=self.subject.pk)
+        self.assertEqual((total, len(liste)), (8, 8))
+        reponse = self.client.get(f"/access/etude/notes/a-revoir/?matiere={autre.pk}")
+        self.assertEqual(reponse.data["total"], 2)

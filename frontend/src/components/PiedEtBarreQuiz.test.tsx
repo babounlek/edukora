@@ -71,6 +71,18 @@ describe("Footer : bandeau d'invitation", () => {
   })
 })
 
+describe("Footer : pas d'invitation pour un abonné actif", () => {
+  it("ne montre ni « Faire ma séance » ni « Encore un quiz » à un abonné, mais garde le pied de page", () => {
+    auth.isAuthenticated = true
+    auth.user = { a_un_abonnement_actif: true, cursus_prepare: { id: 1, examen: "BEPC", examen_display: "BEPC", series: null, langue: "fr" } }
+    afficher(<Footer />, "/carnet")
+
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument()
+    expect(screen.queryByText("Faire ma séance")).not.toBeInTheDocument()
+    expect(screen.queryByText(/Encore un quiz/)).not.toBeInTheDocument()
+  })
+})
+
 describe("Footer : l'éditeur et ses moyens de contact", () => {
   it("nomme l'éditeur et sa ville, et écrit le numéro WhatsApp et l'adresse e-mail en clair", () => {
     afficher(<Footer />, "/cm/epreuves")

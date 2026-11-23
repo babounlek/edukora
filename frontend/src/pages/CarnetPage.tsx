@@ -1,9 +1,9 @@
-import { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useMemo, useState } from "react"
+import { Link, useSearchParams } from "react-router-dom"
 
 import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Bookmark, BookOpen, FileText, Brain, NotebookPen, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
+import { ArrowRight, Bookmark, BookOpen, FileText, Brain, NotebookPen, Pencil, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
 import { getCarnet, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
@@ -68,6 +68,17 @@ export function CarnetPage() {
 
   const [nouvelle, setNouvelle] = useState(false)
   const [revision, setRevision] = useState(false)
+  const [matiereRevision, setMatiereRevision] = useState<number | null>(null)
+  const [aModifier, setAModifier] = useState<CarnetEntree | null>(null)
+  // Le lien « notes à réviser » de l'accueil ouvre directement la révision.
+  const [params, setParams] = useSearchParams()
+  useEffect(() => {
+    if (params.get("reviser") === "1") {
+      setRevision(true)
+      params.delete("reviser")
+      setParams(params, { replace: true })
+    }
+  }, [params, setParams])
   const { data: aRevoir } = useQuery({
     queryKey: ["notes-a-revoir"],
     queryFn: ({ signal }) => getNotesARevoir(signal),
@@ -130,7 +141,7 @@ export function CarnetPage() {
   }
 
   return (
-    <div className="mx-auto max-w-3xl animate-fade-up px-4 py-10 sm:px-6">
+    <div className="mx-auto max-w-5xl animate-fade-up px-4 py-10 sm:px-6">
       <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
         <NotebookPen className="size-3.5" />
         {t("cpt.carnet")}
@@ -147,7 +158,7 @@ export function CarnetPage() {
             {t("ca.nouvelle_note")}
           </Button>
           {(aRevoir?.total ?? 0) > 0 && (
-            <Button type="button" variant="outline" className="rounded-full" onClick={() => setRevision(true)}>
+            <Button type="button" variant="outline" className="rounded-full" onClick={() => { setMatiereRevision(null); setRevision(true) }}>
               <Brain />
               {t("ca.reviser_bouton", { n: aRevoir?.total ?? 0 })}
             </Button>
@@ -223,12 +234,27 @@ export function CarnetPage() {
         {entrees.length === 0 && <p className="mt-8 text-center text-sm text-muted-foreground">{t("ca.aucun_resultat")}</p>}
         {groupes.map(([matiere, liste]) => (
         <section key={matiere} className="mt-8">
-        <h2 className="flex items-baseline gap-2 font-display text-lg font-semibold">
-          {matiere}
-          <span className="text-xs font-normal text-muted-foreground">
-            {t(liste.length === 1 ? "ca.compteur_un" : "ca.compteur_n", { n: liste.length })}
-          </span>
-        </h2>
+        <div className="flex items-baseline justify-between gap-2">
+          <h2 className="flex items-baseline gap-2 font-display text-lg font-semibold">
+            {matiere}
+            <span className="text-xs font-normal text-muted-foreground">
+              {t(liste.length === 1 ? "ca.compteur_un" : "ca.compteur_n", { n: liste.length })}
+            </span>
+          </h2>
+          {liste.some((e) => e.note) && (
+            <button
+              type="button"
+              className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline print:hidden"
+              onClick={() => {
+                setMatiereRevision(liste[0].matiere_id)
+                setRevision(true)
+              }}
+            >
+              <Brain className="size-3.5" aria-hidden="true" />
+              {t("ca.reviser_matiere")}
+            </button>
+          )}
+        </div>
         <ul className="mt-3 flex flex-col gap-3">
           {liste.map((entree) => (
             <li
@@ -257,6 +283,18 @@ export function CarnetPage() {
                     </>
                   )}
                 </div>
+                {entree.genre === "libre" && (
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    className="shrink-0 text-muted-foreground print:hidden"
+                    aria-label={t("ca.modifier_aria")}
+                    onClick={() => setAModifier(entree)}
+                  >
+                    <Pencil className="size-4" />
+                  </Button>
+                )}
                 <Button
                   type="button"
                   size="icon"
@@ -292,7 +330,12 @@ export function CarnetPage() {
       )}
 
       <AjouterNoteDialog open={nouvelle} onOpenChange={setNouvelle} />
-      <RevisionNotes open={revision} onOpenChange={setRevision} />
+      <RevisionNotes open={revision} onOpenChange={setRevision} matiereId={matiereRevision} />
+      <AjouterNoteDialog
+        open={aModifier !== null}
+        onOpenChange={(ouvert) => !ouvert && setAModifier(null)}
+        edition={aModifier ? { id: aModifier.id, note: aModifier.note, citation: aModifier.citation } : undefined}
+      />
 
       <Dialog open={aConfirmer !== null} onOpenChange={(ouvert) => !ouvert && setAConfirmer(null)}>
         <DialogContent>

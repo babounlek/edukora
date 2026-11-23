@@ -98,6 +98,8 @@ class MarqueEtude(models.Model):
     # Révision de la note à la répétition espacée (voir access.etude.noter_revue) ; vide = jamais révisée.
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)
+    # Le jour de la première révision : sert à limiter le nombre de notes NOUVELLES proposées par jour.
+    revision_debut = models.DateField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -242,6 +244,7 @@ class NoteLibre(models.Model):
     citation = models.TextField(blank=True, max_length=1000, help_text="La question ou le passage d'origine, si la note en vient.")
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)
+    revision_debut = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

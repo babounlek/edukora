@@ -223,7 +223,11 @@ export function Footer() {
     pathname !== cible &&
     !(pathname === "/quiz" && !user?.a_un_abonnement_actif) &&
     !PAGES_SANS_INVITATION.test(pathname) &&
-    !vitrineAvecSonAppel
+    !vitrineAvecSonAppel &&
+    // Un abonné actif a sa séance sur son accueil, dans le menu et dans la barre d'onglets : le bloc du bas de page le
+    // poussait hors de ce qu'il était en train de faire (Mes notes, lecture). Il reste pour le visiteur et l'inscrit sans
+    // abonnement, dont c'est l'un des rares appels à s'inscrire ou à voir les prix.
+    !user?.a_un_abonnement_actif
 
   const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,

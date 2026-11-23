@@ -489,7 +489,8 @@ class AccueilApiTests(AccueilFixture):
         self._examen_dans(90)
         self._repondre(True)  # un quiz commencé et pas terminé
         reprises = self.client.get(reverse("quiz:accueil")).json()["reprises"]
-        self.assertEqual(set(reprises), {"quiz_en_cours", "cartes_dues", "defi", "tentatives"})
+        self.assertEqual(set(reprises), {"quiz_en_cours", "cartes_dues", "notes_a_revoir", "defi", "tentatives"})
+        self.assertEqual(reprises["notes_a_revoir"], {"total": 0})
         self.assertEqual(reprises["quiz_en_cours"], self.client.get(reverse("quiz:en-cours")).json())
         self.assertEqual([s["id"] for s in reprises["quiz_en_cours"]], [self.session.id])
         self.assertEqual(reprises["cartes_dues"], self.client.get(reverse("quiz:cartes-dues")).json())

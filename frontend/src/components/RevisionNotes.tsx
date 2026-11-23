@@ -4,6 +4,7 @@ import { CheckCircle2, Eye, RotateCcw, Trophy } from "lucide-react"
 
 import { getNotesARevoir, noterRevueNote } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
+import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { NoteTexte } from "@/components/NoteTexte"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
@@ -14,12 +15,14 @@ import { t, tn, useI18n } from "@/lib/i18n"
  * titre du cours), le verso la note ; l'élève dit s'il s'en souvenait. Ce qu'il sait revient plus tard, ce qu'il a oublié
  * revient demain (voir access.etude.noter_revue). Aucun point : réviser ses notes n'est pas une mesure de maîtrise.
  */
-export function RevisionNotes({ open, onOpenChange }: { open: boolean; onOpenChange: (ouvert: boolean) => void }) {
+export function RevisionNotes({
+  open, onOpenChange, matiereId,
+}: { open: boolean; onOpenChange: (ouvert: boolean) => void; matiereId?: number | null }) {
   useI18n()
   const queryClient = useQueryClient()
   const { data, isLoading } = useQuery({
-    queryKey: ["notes-a-revoir"],
-    queryFn: ({ signal }) => getNotesARevoir(signal),
+    queryKey: ["notes-a-revoir", "paquet", matiereId ?? null],
+    queryFn: ({ signal }) => getNotesARevoir(signal, matiereId ?? undefined),
     enabled: open,
     // Le paquet est figé à l'ouverture : le recharger à chaque réponse ferait sauter la carte sous les doigts.
     staleTime: Infinity,
@@ -56,6 +59,7 @@ export function RevisionNotes({ open, onOpenChange }: { open: boolean; onOpenCha
     if (!ouvert) {
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
+      queryClient.invalidateQueries({ queryKey: CLE_NOTES_DUES })
     }
     onOpenChange(ouvert)
   }
@@ -85,7 +89,7 @@ export function RevisionNotes({ open, onOpenChange }: { open: boolean; onOpenCha
         ) : (
           <div className="mt-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{carte.matiere}</p>
-            <p className="mt-1 text-sm text-muted-foreground">{contexte}</p>
+            {contexte !== carte.matiere && <p className="mt-1 text-sm text-muted-foreground">{contexte}</p>}
             {retournee ? (
               <div className="mt-3 rounded-xl border border-gold/30 bg-gold/[0.06] px-4 py-3">
                 <NoteTexte texte={carte.note} />

@@ -1526,6 +1526,8 @@ export interface Accueil {
   reprises?: {
     quiz_en_cours: QuizEnCoursItem[]
     cartes_dues: { total: number; cartes: CarteRevision[] }
+    /** Le nombre de notes à réviser aujourd'hui (voir access.etude.notes_a_revoir) ; absent d'un accueil gardé en cache d'avant. */
+    notes_a_revoir?: { total: number }
     defi: DefiSemaine | null
     tentatives: TentativeInediteListItem[]
   } | null

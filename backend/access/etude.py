@@ -62,6 +62,7 @@ def marques_du_document(profil, cible):
 
 CITATION_MAX = 1000
 A_REVOIR_MAX = 20
+NOUVELLES_PAR_JOUR = 5
 
 
 def creer_note_libre(profil, subject, note, citation=""):
@@ -87,11 +88,7 @@ def modifier_note_libre(note_libre, note):
     return note_libre
 
 
-def _a_reviser(qs, aujourdhui):
-    return qs.filter(Q(revision_due__isnull=True) | Q(revision_due__lte=aujourdhui))
-
-
-def notes_a_revoir(profil, limite=A_REVOIR_MAX):
+def notes_a_revoir(profil, limite=A_REVOIR_MAX, matiere_id=None):
     """
     Les notes dont la révision est due (jamais révisées, ou échéance arrivée), les plus en retard d'abord :
     (total dû, [entrée du carnet]). Les signets sans texte n'en font pas partie : il n'y a rien à relire.
@@ -99,14 +96,37 @@ def notes_a_revoir(profil, limite=A_REVOIR_MAX):
     from .carnet import entree_marque, entree_note_libre  # import tardif : carnet importe ce module
 
     aujourdhui = timezone.localdate()
-    marques = _a_reviser(MarqueEtude.objects.filter(profil=profil).exclude(note=""), aujourdhui)
-    libres = _a_reviser(NoteLibre.objects.filter(profil=profil), aujourdhui)
-    total = marques.count() + libres.count()
-    entrees = [entree_marque(m) for m in marques.select_related("lesson__subject__country", "cours__subject__country")[:limite]]
-    entrees += [entree_note_libre(n) for n in libres.select_related("subject__country")[:limite]]
-    # « jamais révisée » (None) passe avant une échéance datée ; puis la plus ancienne.
-    entrees.sort(key=lambda e: (e["revision_due"] is not None, e["revision_due"] or ""))
-    return total, entrees[:limite]
+    marques = MarqueEtude.objects.filter(profil=profil).exclude(note="")
+    libres = NoteLibre.objects.filter(profil=profil)
+    if matiere_id is not None:
+        marques = marques.filter(Q(lesson__subject_id=matiere_id) | Q(cours__subject_id=matiere_id))
+        libres = libres.filter(subject_id=matiere_id)
+
+    # Les notes déjà vues dont l'échéance est arrivée passent toujours : ce sont des rappels, pas de la nouveauté.
+    dues_m = marques.filter(revision_due__lte=aujourdhui)
+    dues_l = libres.filter(revision_due__lte=aujourdhui)
+    # Les notes jamais révisées arrivent au compte-gouttes (NOUVELLES_PAR_JOUR par jour) : sinon un élève qui a quarante
+    # notes anciennes en voyait vingt d'un coup le premier jour. Une révision CHOISIE d'une matière n'est pas plafonnée.
+    neuves_m = marques.filter(revision_due__isnull=True)
+    neuves_l = libres.filter(revision_due__isnull=True)
+    if matiere_id is None:
+        deja = (
+            MarqueEtude.objects.filter(profil=profil, revision_debut=aujourdhui).count()
+            + NoteLibre.objects.filter(profil=profil, revision_debut=aujourdhui).count()
+        )
+        quota = max(0, NOUVELLES_PAR_JOUR - deja)
+    else:
+        quota = limite
+
+    neuves = (
+        [entree_marque(m) for m in neuves_m.select_related("lesson__subject__country", "cours__subject__country")[:quota]]
+        + [entree_note_libre(n) for n in neuves_l.select_related("subject__country")[:quota]]
+    )[:quota]
+    dues = [entree_marque(m) for m in dues_m.select_related("lesson__subject__country", "cours__subject__country")[:limite]]
+    dues += [entree_note_libre(n) for n in dues_l.select_related("subject__country")[:limite]]
+    dues.sort(key=lambda e: e["revision_due"])  # la plus en retard d'abord
+    total = dues_m.count() + dues_l.count() + min(neuves_m.count() + neuves_l.count(), quota)
+    return total, (dues + neuves)[:limite]
 
 
 def noter_revue(profil, genre, pk, savais):
@@ -131,7 +151,9 @@ def noter_revue(profil, genre, pk, savais):
         palier = 1
     else:
         palier = min(obj.revision_palier + 1, dernier)
+    if obj.revision_debut is None:
+        obj.revision_debut = aujourdhui
     obj.revision_palier = palier
     obj.revision_due = aujourdhui + timedelta(days=LEITNER_INTERVALS_JOURS[palier])
-    obj.save(update_fields=["revision_palier", "revision_due"])
+    obj.save(update_fields=["revision_palier", "revision_due", "revision_debut"])
     return obj

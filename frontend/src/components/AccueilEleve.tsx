@@ -8,6 +8,8 @@ import type { Accueil, DefiSemaine, TentativeInediteListItem } from "@/api/types
 import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
 import { CLE_DUES, RangeeCartes, useCartesDues } from "@/components/CartesDeRevision"
+import { RangeeNotes, useNotesDues } from "@/components/RangeeNotes"
+import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { DefiDeLaSemaine, mentionDefi, useDefiSemaine } from "@/components/DefiDeLaSemaine"
 import { Moments } from "@/components/Moments"
 import { OuJenSuis } from "@/components/OuJenSuis"
@@ -51,6 +53,7 @@ function deposerReprises(
   }
   if (profilId != null) deposer(cleQuizEnCours(profilId), reprises.quiz_en_cours)
   deposer(CLE_DUES, reprises.cartes_dues)
+  if (reprises.notes_a_revoir) deposer(CLE_NOTES_DUES, reprises.notes_a_revoir)
   deposer(["defi-semaine", cursusId], { defi: reprises.defi })
 }
 
@@ -276,6 +279,7 @@ function AContinuer({
   // Mêmes clés de cache que l'accueil vient de remplir (voir deposerReprises) : aucune requête de plus.
   const defi = useDefiSemaine(country, cursusAccueil)
   const cartes = useCartesDues()
+  const notesDues = useNotesDues()
   // Le défi est la copie déjà entamée : sa ligne de reprise le dit, il n'a pas de ligne à lui.
   const defiEntame = defiDeLaCopie(defi, epreuveEnCours)
 
@@ -305,6 +309,7 @@ function AContinuer({
     lignes.push({ cle: `revision-${revision.id}`, rendu: <RangeeRevision revision={revision} /> })
   }
   if (cartes && cartes.total > 0) lignes.push({ cle: "cartes", rendu: <RangeeCartes total={cartes.total} /> })
+  if (notesDues && notesDues.total > 0) lignes.push({ cle: "notes", rendu: <RangeeNotes total={notesDues.total} /> })
   if (rangeeDefi && defi?.releve) lignes.push(rangeeDefi)
 
   if (lignes.length === 0) return null
