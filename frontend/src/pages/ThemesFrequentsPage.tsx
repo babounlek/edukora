@@ -540,14 +540,14 @@ export function ThemesFrequentsPage() {
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
-      <div className="mb-4">
+      <div className="mb-2 sm:mb-4">
         <BoutonAide guide="themes" className="-ml-2.5" />
         <AideContextuelle guide="themes" className="mt-1" />
       </div>
 
       {/* Hero : même gabarit que /epreuves et /cours (arrondi, dégradé vert-or, filigrane),
           avec le mini-classement en accessoire, adossé aux vraies données dès qu'il y en a. */}
-      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
+      <div className="relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8">
         <div
           aria-hidden
           className="absolute inset-0 opacity-[0.04]"
@@ -558,7 +558,7 @@ export function ThemesFrequentsPage() {
         />
         <div className="relative grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-center lg:gap-12">
           <div>
-            <p className="mb-2 font-display text-sm italic text-primary">
+            <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">
               {t("tf.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
             </p>
             <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
@@ -568,7 +568,8 @@ export function ThemesFrequentsPage() {
               {t("tf.hero_texte")}
             </p>
 
-            <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+            {/* Sur un téléphone, ces pastilles repoussaient le classement d'une rangée et demie. */}
+            <div className="mt-4 hidden flex-wrap gap-2 sm:mt-5 sm:flex">
               {disponible ? (
                 <>
                   <StatChip icon={<TrendingUp className="size-3.5 text-primary" />}>

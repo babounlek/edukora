@@ -84,6 +84,9 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
   const { langue } = useI18n()
   const containerRef = useRef<HTMLDivElement>(null)
   const [indisponible, setIndisponible] = useState(false)
+  // Le séparateur « ou » n'a de sens que sous un bouton qu'on voit : tant que le script de Google se charge (lent, ou
+  // bloqué sur un réseau faible), il s'affichait seul au-dessus du formulaire (revue des pages publiques, 2026-11-23).
+  const [dessine, setDessine] = useState(false)
   // Référence plutôt qu'état : le callback est passé à Google une seule fois, à
   // l'initialisation, et doit toujours appeler la version la plus récente du
   // gestionnaire sans pour autant réinitialiser la librairie à chaque rendu.
@@ -116,6 +119,7 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
           locale: langue,
           width: containerRef.current.offsetWidth || undefined,
         })
+        setDessine(true)
       })
       .catch(() => {
         if (!annule) setIndisponible(true)
@@ -139,7 +143,7 @@ export function GoogleSignInButton({ onCredential, disabled, withSeparator }: Go
         aria-busy={disabled}
         style={disabled ? { pointerEvents: "none", opacity: 0.6 } : undefined}
       />
-      {withSeparator && (
+      {withSeparator && dessine && (
         <div className="my-4 flex items-center gap-3">
           <span className="h-px flex-1 bg-border" />
           <span className="text-xs uppercase tracking-wide text-muted-foreground">{t("login.ou")}</span>

@@ -244,8 +244,16 @@ export function AboutPage() {
         </div>
       </section>
 
+      {/* Une personne, son nom, son visage et pourquoi elle a fait ce site : la page répond d'abord à « qui est derrière ? »,
+          avant les outils. Il était sous la carte de l'éditeur, au bas des neuf écrans de la page, sans portrait. */}
+      <div className="border-y border-border bg-muted/60">
+        <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
+          <MotDuFondateur variante="bande" />
+        </div>
+      </div>
+
       {/* Outils */}
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
         <Eyebrow>{t("ab.outils_eyebrow")}</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("ab.outils_titre")}
@@ -267,7 +275,7 @@ export function AboutPage() {
       </section>
 
       {/* Method */}
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
         <Eyebrow>{t("ab.methode_eyebrow")}</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("ab.methode_titre")}
@@ -289,7 +297,7 @@ export function AboutPage() {
       </section>
 
       {/* Audiences */}
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
         <Eyebrow>{t("ab.aud_eyebrow")}</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("ab.aud_titre", { site: SITE_NAME })}
@@ -343,7 +351,7 @@ export function AboutPage() {
       </section>
 
       {/* Coverage */}
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
         <Eyebrow>{t("ab.couv_eyebrow")}</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{t("ab.couv_titre")}</h2>
         <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
@@ -361,7 +369,7 @@ export function AboutPage() {
       </section>
 
       {/* Qui sommes-nous */}
-      <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
         <Eyebrow>{t("ab.qui_eyebrow")}</Eyebrow>
         <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {t("ab.qui_titre")}
@@ -410,8 +418,6 @@ export function AboutPage() {
             </p>
           </div>
         </div>
-        {/* Sous la carte de l'éditeur : une personne, son nom, et pourquoi elle a fait ce site. */}
-        <MotDuFondateur className="mt-6" />
       </section>
 
       {/* CTA band */}

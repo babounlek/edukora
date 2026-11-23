@@ -1,4 +1,5 @@
-import type { ReactNode } from "react"
+import { useState, type ReactNode } from "react"
+import { ChevronDown } from "lucide-react"
 import { LienCours } from "@/components/LienCours"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -35,13 +36,31 @@ const STYLES: Record<CalloutVariant, { icon: string; title: string; className: s
 export function Callout({ variant, children, coursHrefs, coursSlugs }: CalloutProps) {
   useI18n()
   const { icon, title, className } = STYLES[variant]
+  // Le rappel de méthode est une aide, pas la réponse : sur un téléphone il faisait ~400 px et passait avant la première
+  // ligne de solution (revue des pages publiques, 2026-11-23). Il y est replié, son titre reste visible ; ailleurs il
+  // reste ouvert. Le piège et le conseil, courts, restent toujours ouverts.
+  const [ouvert, setOuvert] = useState(() => variant !== "rappel" || !window.matchMedia?.("(max-width: 639px)").matches)
+  const repliable = variant === "rappel"
 
   return (
     <div className={`my-4 rounded-lg border-l-4 px-4 py-3 text-sm leading-relaxed text-foreground ${className}`}>
-      <p className="not-prose mb-1 flex items-center gap-1.5 font-semibold">
+      {repliable && (
+        <button
+          type="button"
+          aria-expanded={ouvert}
+          onClick={() => setOuvert((o) => !o)}
+          className="not-prose -my-1 flex min-h-11 w-full items-center gap-1.5 text-left font-semibold sm:hidden"
+        >
+          <span aria-hidden="true">{icon}</span>
+          <span className="flex-1">{title}</span>
+          <ChevronDown aria-hidden="true" className={`size-4 text-muted-foreground transition-transform ${ouvert ? "rotate-180" : ""}`} />
+        </button>
+      )}
+      <p className={`not-prose mb-1 flex items-center gap-1.5 font-semibold ${repliable ? "max-sm:hidden" : ""}`}>
         <span aria-hidden="true">{icon}</span>
         {title}
       </p>
+      <div className={repliable && !ouvert ? "hidden" : undefined}>
       {/* prose-sm pour rester à la taille du `text-sm` du conteneur, et surtout aucun
           `prose-p:my-*` : un tel override écraserait les règles `> :first-child` /
           `> :last-child` du plugin et rajouterait de la marge au padding du callout. Sans
@@ -62,6 +81,7 @@ export function Callout({ variant, children, coursHrefs, coursSlugs }: CalloutPr
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }

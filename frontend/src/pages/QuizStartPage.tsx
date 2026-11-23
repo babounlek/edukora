@@ -535,7 +535,7 @@ export function QuizStartPage() {
       {abonne ? (
         <h1 className="sr-only">{t("qd.onglet_quiz")}</h1>
       ) : (
-      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
+      <div className="relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8">
         <div
           aria-hidden
           className="absolute inset-0 opacity-[0.04]"
@@ -546,15 +546,16 @@ export function QuizStartPage() {
         />
         <Target aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <p className="mb-2 font-display text-sm italic text-primary">{t("qd.surtitre")}</p>
+          <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">{t("qd.surtitre")}</p>
           <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
             {t("qd.titre_debut")} <span className="text-primary">{t("qd.titre_accent")}</span>{t("qd.titre_fin")}
           </h1>
           <p className="mt-2 max-w-xl text-muted-foreground">
             {t("qd.hero_texte")}
           </p>
+          {/* Pastilles masquées sur téléphone : elles repoussaient « Essaie gratuitement » sous le premier écran. */}
           {nbQuestionsBanque > 0 && (
-            <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+            <div className="mt-4 hidden flex-wrap gap-2 sm:mt-5 sm:flex">
               <StatChip icon={<ListChecks className="size-3.5 text-primary" />}>
                 <span className="font-medium tabular-nums">{formatAmount(nbQuestionsBanque)}</span>
                 <span className="text-muted-foreground">{t("qd.stat_questions")}</span>
@@ -569,7 +570,7 @@ export function QuizStartPage() {
       </div>
       )}
 
-      <div className="mb-4">
+      <div className="mb-2 sm:mb-4">
         <BoutonAide guide="quiz-depart" className="-ml-2.5" />
         <AideContextuelle guide="quiz-depart" className="mt-1" />
       </div>
