@@ -298,6 +298,8 @@ def _question_payload(quiz_question):
             "theme_id": donnees["theme"]["id"],
             "subject_code": donnees["subject"]["code"],
             "subject_label": donnees["subject"]["label"],
+            # « Ajouter à mes notes » depuis la correction : la note se range dans le dossier de cette matière.
+            "subject_id": donnees["subject"].get("id"),
             # R19 : la difficulté estimée (pastille) et le coup de pouce, jamais le texte de l'indice avant qu'on le demande.
             "difficulte": donnees.get("difficulte") or None,
             "indice_disponible": bool(instantane.indice_du_corrige(donnees["corrige_markdown"])),

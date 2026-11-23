@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { Check, ChevronDown, CircleHelp, CreditCard, GraduationCap, Globe, History, LogOut, Menu, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
+import { Check, ChevronDown, CircleHelp, CreditCard, GraduationCap, Globe, History, LogOut, Menu, NotebookPen, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
 
 import { listEpreuves } from "@/api/endpoints"
 import { modeParentActif } from "@/api/client"
@@ -194,6 +194,12 @@ function AccountMenu() {
         {famille && (
           <>
             <DropdownMenuItem asChild>
+              <Link to="/carnet">
+                <NotebookPen />
+                {t("cpt.carnet")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
               <Link to="/historique">
                 <History />
                 {t("compte.historique")}
@@ -216,12 +222,20 @@ function AccountMenu() {
           </Link>
         </DropdownMenuItem>
         {!famille && (
-          <DropdownMenuItem asChild>
-            <Link to="/historique">
-              <History />
-              {t("compte.historique")}
-            </Link>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem asChild>
+              <Link to="/carnet">
+                <NotebookPen />
+                {t("cpt.carnet")}
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link to="/historique">
+                <History />
+                {t("compte.historique")}
+              </Link>
+            </DropdownMenuItem>
+          </>
         )}
         <DropdownMenuItem asChild>
           <Link to="/mes-paiements">

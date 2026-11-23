@@ -16,5 +16,9 @@ urlpatterns = [
     path("cours/<slug:slug>/lu/", views.cours_lu, name="cours-lu"),
     path("etude/", views.etude_marques, name="etude-marques"),
     path("etude/carnet/", views.etude_carnet, name="etude-carnet"),
+    path("etude/notes/", views.notes_libres, name="notes-libres"),
+    path("etude/notes/a-revoir/", views.notes_a_revoir_view, name="notes-a-revoir"),
+    path("etude/notes/revue/", views.note_revue, name="note-revue"),
+    path("etude/notes/<int:pk>/", views.note_libre_detail, name="note-libre"),
     path("exercices/<int:exercise_id>/fait/", views.marquer_exercice_fait, name="exercice-fait"),
 ]

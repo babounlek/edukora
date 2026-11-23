@@ -19,6 +19,7 @@ import type {
   CarteRevision,
   BilanPeriode,
   CarnetEntree,
+  NotesARevoir,
   CibleEtude,
   MarqueEtude,
   MarqueEtudeEnregistree,
@@ -1259,6 +1260,29 @@ export function saveMarqueEtude(
 /** Tout ce que l'élève a mis de côté ou annoté, du plus récent au plus ancien. */
 export function getCarnet(signal?: AbortSignal) {
   return apiRequest<CarnetEntree[]>("/access/etude/carnet/", { signal })
+}
+
+/** Une note libre : rattachée à une matière, pas à une section de cours (voir access.etude.creer_note_libre). */
+export function creerNoteLibre(subject: number, note: string, citation = "") {
+  return apiRequest<CarnetEntree>("/access/etude/notes/", { method: "POST", body: { subject, note, citation } })
+}
+
+export function modifierNoteLibre(id: number, note: string) {
+  return apiRequest<CarnetEntree>(`/access/etude/notes/${id}/`, { method: "PUT", body: { note } })
+}
+
+export function supprimerNoteLibre(id: number) {
+  return apiRequest<void>(`/access/etude/notes/${id}/`, { method: "DELETE" })
+}
+
+/** Les notes à réviser maintenant (jamais révisées ou échéance arrivée). */
+export function getNotesARevoir(signal?: AbortSignal) {
+  return apiRequest<NotesARevoir>("/access/etude/notes/a-revoir/", { signal })
+}
+
+/** Enregistre la révision d'une note : « je m'en souviens » (savais) ou « à revoir ». */
+export function noterRevueNote(genre: CarnetEntree["genre"], id: number, savais: boolean) {
+  return apiRequest<{ revision_due: string }>("/access/etude/notes/revue/", { method: "POST", body: { genre, id, savais } })
 }
 
 /** Nouvelle session limitée aux questions ratées d'une session terminée. */

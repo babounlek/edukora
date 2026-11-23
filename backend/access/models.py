@@ -95,6 +95,9 @@ class MarqueEtude(models.Model):
     compris = models.BooleanField(default=False)
     signet = models.BooleanField(default=False)
     note = models.TextField(blank=True, max_length=2000)
+    # Révision de la note à la répétition espacée (voir access.etude.noter_revue) ; vide = jamais révisée.
+    revision_palier = models.PositiveSmallIntegerField(default=0)
+    revision_due = models.DateField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -221,3 +224,29 @@ class TelechargementPdf(models.Model):
 
     def __str__(self):
         return f"{self.jour} {self.demandeur} {self.document}"
+
+
+class NoteLibre(models.Model):
+    """
+    Une note de l'élève rattachée à une MATIÈRE, pas à une section de cours : « formule de Pythagore à retenir »,
+    ou une erreur de quiz recopiée avec sa question (`citation`). Les notes posées sur une section vivent dans
+    MarqueEtude ; le carnet (« Mes notes ») les range ensemble, un dossier par matière.
+
+    `revision_palier` / `revision_due` : la note se révise à la répétition espacée (mêmes paliers que les thèmes, voir
+    access.etude.noter_revue). `revision_due` vide = jamais révisée, donc à réviser.
+    """
+
+    profil = models.ForeignKey("users.Profil", on_delete=models.CASCADE, related_name="notes_libres")
+    subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="notes_libres")
+    note = models.TextField(max_length=2000)
+    citation = models.TextField(blank=True, max_length=1000, help_text="La question ou le passage d'origine, si la note en vient.")
+    revision_palier = models.PositiveSmallIntegerField(default=0)
+    revision_due = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-updated_at"]
+
+    def __str__(self):
+        return f"{self.profil} - {self.subject_id}: {self.note[:40]}"

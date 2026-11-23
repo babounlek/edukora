@@ -7,15 +7,19 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from catalog import cours_pdf
-from catalog.models import Cours, Exercise, Lesson
+from catalog.models import Cours, Exercise, Lesson, Subject
 
 from quiz import xp
 from quiz.models import SourceXP
 from users.profils import profil_actif
 
 from . import quota
-from .etude import MarqueInvalide, enregistrer_marque, marques_du_document
-from .models import ExerciceFait, LectureProgress, MarqueEtude, TelechargementPdf
+from .carnet import entree_marque, entree_note_libre
+from .etude import (
+    MarqueInvalide, creer_note_libre, enregistrer_marque, marques_du_document, modifier_note_libre, noter_revue,
+    notes_a_revoir,
+)
+from .models import ExerciceFait, LectureProgress, MarqueEtude, NoteLibre, TelechargementPdf
 from .services import a_acces_exercices_cours, has_access
 from .sujets_publics import ouvrir_sujet, url_sujet
 
@@ -446,20 +450,63 @@ def etude_carnet(request):
     affichée : c'est SA note, la lui retirer serait la lui confisquer - la lecture, elle,
     reste gatée par le lecteur.
     """
+    profil = profil_actif(request)
     marques = (
-        MarqueEtude.objects.filter(profil=profil_actif(request))
+        MarqueEtude.objects.filter(profil=profil)
         .filter(models.Q(signet=True) | ~models.Q(note=""))
-        .select_related("lesson__subject__country", "cours__subject__country")[:200]
+        .select_related("lesson__subject__country", "cours__subject__country")[:1000]
     )
-    carnet = []
-    for marque in marques:
-        doc = marque.cours or marque.lesson
-        carnet.append({
-            **_marque_payload(marque),
-            "type": "cours" if marque.cours_id else "epreuve",
-            "titre": doc.titre if marque.cours_id else doc.title,
-            "slug": doc.slug,
-            "country": doc.subject.country.code.lower(),
-            "matiere": doc.subject.label,
-        })
+    libres = NoteLibre.objects.filter(profil=profil).select_related("subject__country")[:1000]
+    carnet = [entree_marque(m) for m in marques] + [entree_note_libre(n) for n in libres]
+    carnet.sort(key=lambda e: e["updated_at"], reverse=True)
     return Response(carnet)
+
+
+def _matiere_ouverte_a(request, subject_id):
+    """La matière visée par une note libre : n'importe quelle matière publiée du catalogue (elle ne donne accès à rien)."""
+    try:
+        return Subject.objects.select_related("country").get(pk=int(subject_id))
+    except (TypeError, ValueError, Subject.DoesNotExist):
+        return None
+
+
+@api_view(["POST"])
+def notes_libres(request):
+    """POST {subject, note, citation?} : une note rattachée à une matière (hors cours). Réservé aux comptes connectés."""
+    subject = _matiere_ouverte_a(request, request.data.get("subject"))
+    if subject is None:
+        return Response({"error": "Matière inconnue."}, status=400)
+    try:
+        note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""))
+    except MarqueInvalide as exc:
+        return Response({"error": str(exc)}, status=400)
+    return Response(entree_note_libre(note), status=201)
+
+
+@api_view(["PUT", "DELETE"])
+def note_libre_detail(request, pk):
+    note = get_object_or_404(NoteLibre.objects.select_related("subject__country"), pk=pk, profil=profil_actif(request))
+    if request.method == "DELETE":
+        note.delete()
+        return Response(status=204)
+    try:
+        note = modifier_note_libre(note, request.data.get("note"))
+    except MarqueInvalide as exc:
+        return Response({"error": str(exc)}, status=400)
+    return Response(entree_note_libre(note))
+
+
+@api_view(["GET"])
+def notes_a_revoir_view(request):
+    """Les notes à réviser maintenant (jamais révisées ou échéance arrivée) : {total, notes}."""
+    total, notes = notes_a_revoir(profil_actif(request))
+    return Response({"total": total, "notes": notes})
+
+
+@api_view(["POST"])
+def note_revue(request):
+    """POST {genre: marque|libre, id, savais} : enregistre la révision d'une note (voir access.etude.noter_revue)."""
+    obj = noter_revue(profil_actif(request), request.data.get("genre"), request.data.get("id"), bool(request.data.get("savais")))
+    if obj is None:
+        return Response({"error": "Note introuvable."}, status=404)
+    return Response({"revision_due": obj.revision_due.isoformat()})

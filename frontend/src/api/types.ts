@@ -1179,6 +1179,8 @@ export interface QuizQuestion {
   // corrigés du thème (/themes-frequents/<id>/exercices).
   theme_id?: number
   subject_code?: string
+  /** Id de la matière (CompetenceItem seulement) : « Ajouter à mes notes » range la note dans son dossier. */
+  subject_id?: number | null
   // R19 : difficulté estimée (null : non estimée ; absente d'une ancienne séance) et coup de pouce « rappel de méthode ».
   difficulte?: Difficulte | null
   indice_disponible?: boolean
@@ -1944,11 +1946,25 @@ export interface MarqueEtudeEnregistree extends MarqueEtude {
 
 /** Une entrée du carnet : une marque + de quoi rouvrir la section exacte. */
 export interface CarnetEntree extends MarqueEtude {
-  type: "cours" | "epreuve"
+  /** « marque » : note posée sur une section ; « libre » : note rattachée à une matière (voir access.carnet). */
+  genre: "marque" | "libre"
+  id: number
+  type: "cours" | "epreuve" | "libre"
   titre: string
   slug: string
   country: string
   matiere: string
+  matiere_id: number
+  /** La question ou le passage d'origine d'une note libre ("" sinon). */
+  citation: string
+  /** Prochaine révision de la note (null : jamais révisée, donc à réviser). */
+  revision_due: string | null
+}
+
+/** Les notes à réviser maintenant (voir access.etude.notes_a_revoir). */
+export interface NotesARevoir {
+  total: number
+  notes: CarnetEntree[]
 }
 
 /** Le document sur lequel portent les marques : un cours ou une épreuve, par slug. */

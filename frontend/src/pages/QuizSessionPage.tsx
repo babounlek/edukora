@@ -22,6 +22,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { CoupDePouce, PastilleDifficulte } from "@/components/CoupDePouce"
+import { AjouterAMesNotes } from "@/components/AjouterAMesNotes"
 import { SignalerQuestion } from "@/components/SignalerQuestion"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
@@ -765,6 +766,8 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             <ArrowRight className="size-4 shrink-0 text-primary" />
           </Link>
         )}
+
+        {answered && !essai && !invite && <AjouterAMesNotes subjectId={question.subject_id} enonce={question.enonce_markdown} />}
 
         {!essai && !invite && <SignalerQuestion sessionId={session.id} questionId={question.id} />}
 

@@ -28,9 +28,9 @@ export function BarreLecture({
   useI18n()
   const [progression, setProgression] = useState(0)
   const [mots, setMots] = useState(0)
-  // Sur téléphone la pastille n'est visible que pendant le défilement : posée sur le texte, elle masquait des
-  // cellules de tableau et le bas d'une figure à l'arrêt (test élève 2026-10-24). Sur grand écran elle reste.
-  const [enDefilement, setEnDefilement] = useState(false)
+  // Sur téléphone, pas de pastille : posée sur le texte, même seulement pendant le défilement, elle masquait des
+  // cellules de tableau et le bas d'une figure (test élève 2026-10-24, puis retour du 2026-11-23). La barre colorée du haut
+  // porte seule la progression ; la pastille « minutes restantes » ne reste que sur grand écran.
 
   // Le contenu arrive en asynchrone : on compte les mots une fois rendu, jamais au montage.
   useEffect(() => {
@@ -40,20 +40,6 @@ export function BarreLecture({
     }, 400)
     return () => clearTimeout(t)
   }, [cibleRef, contenuKey])
-
-  useEffect(() => {
-    let repos = 0
-    function defiler() {
-      setEnDefilement(true)
-      window.clearTimeout(repos)
-      repos = window.setTimeout(() => setEnDefilement(false), 2000)
-    }
-    window.addEventListener("scroll", defiler, { passive: true })
-    return () => {
-      window.removeEventListener("scroll", defiler)
-      window.clearTimeout(repos)
-    }
-  }, [])
 
   useEffect(() => {
     let image = 0
@@ -92,7 +78,7 @@ export function BarreLecture({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={pourcent}
-        className="fixed inset-x-0 top-0 z-50 h-[3px] bg-transparent"
+        className="fixed inset-x-0 top-0 z-50 h-1 bg-transparent lg:h-[3px]"
       >
         <div
           className="h-full bg-gradient-to-r from-primary via-primary to-gold transition-[width] duration-150 ease-out motion-reduce:transition-none"
@@ -102,7 +88,7 @@ export function BarreLecture({
       {afficherTemps && (
         <p
           aria-hidden="true"
-          className={`pointer-events-none fixed bottom-28 right-4 z-40 rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium tabular-nums text-muted-foreground shadow-md backdrop-blur-sm transition-opacity duration-300 motion-reduce:transition-none lg:bottom-6 lg:opacity-100 ${enDefilement ? "opacity-100" : "opacity-0"}`}
+          className={`pointer-events-none fixed bottom-6 right-4 z-40 hidden rounded-full border border-border bg-background/90 px-3 py-1.5 text-xs font-medium tabular-nums text-muted-foreground shadow-md backdrop-blur-sm transition-opacity duration-300 motion-reduce:transition-none lg:block lg:opacity-100`}
         >
           {tn("ed.restantes", minutes, { p: pourcent })}
         </p>
