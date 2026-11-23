@@ -27,8 +27,8 @@ export function FaqAccueil() {
   const questions = questionsAccueil(langueCourante())
 
   return (
-    <section className="mx-auto max-w-5xl px-4 pb-10 sm:px-6" aria-labelledby="accueil-faq">
-      <h2 id="accueil-faq" className="font-display text-xl font-semibold">
+    <section className="mx-auto max-w-5xl px-4 pb-14 sm:px-6 sm:pb-16" aria-labelledby="accueil-faq">
+      <h2 id="accueil-faq" className="font-display text-2xl font-semibold">
         {t("faq.titre")}
       </h2>
       <div className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card">

@@ -71,6 +71,49 @@ describe("Footer : bandeau d'invitation", () => {
   })
 })
 
+describe("Footer : l'éditeur et ses moyens de contact", () => {
+  it("nomme l'éditeur et sa ville, et écrit le numéro WhatsApp et l'adresse e-mail en clair", () => {
+    afficher(<Footer />, "/cm/epreuves")
+
+    expect(screen.getByText("Édité par Kora SARL")).toBeInTheDocument()
+    expect(screen.getByText("Yaoundé, Cameroun")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /WhatsApp \+237/ })).toHaveAttribute("href", expect.stringContaining("wa.me/"))
+    expect(screen.getByRole("link", { name: /^contact@/ })).toHaveAttribute("href", expect.stringMatching(/^mailto:contact@/))
+  })
+
+  it("ne répète plus les chiffres de la plateforme, que l'accueil dit déjà", () => {
+    afficher(<Footer />, "/cm/epreuves")
+
+    expect(screen.queryByText("512")).not.toBeInTheDocument()
+    expect(screen.queryByText(/cours et fiches/)).not.toBeInTheDocument()
+  })
+
+  it("laisse « À propos » et le centre d'aide lisibles sans ouvrir de tiroir", () => {
+    afficher(<Footer />, "/cm/epreuves")
+
+    for (const nom of ["À propos", "Centre d'aide"]) {
+      expect(screen.getByRole("link", { name: nom }).closest("details")).toBeNull()
+    }
+  })
+})
+
+describe("Footer : pas d'invitation sur l'accueil d'un visiteur", () => {
+  const connecte = { isAuthenticated: auth.isAuthenticated, user: auth.user }
+  afterEach(() => {
+    auth.isAuthenticated = connecte.isAuthenticated
+    auth.user = connecte.user
+  })
+
+  it("la vitrine se termine déjà par son appel : le pied de page ne le répète pas", () => {
+    auth.isAuthenticated = false
+    auth.user = null
+    afficher(<Footer />, "/cm")
+
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument()
+    expect(screen.queryByText("Créer mon compte")).not.toBeInTheDocument()
+  })
+})
+
 describe("BottomTabBar : pastille du compte à rebours", () => {
   it("n'est pas posée sur les réponses d'un quiz en cours", () => {
     afficher(<BottomTabBar />, "/quiz/session/460")

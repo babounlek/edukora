@@ -1,5 +1,8 @@
 import { render, screen } from "@testing-library/react"
+import { MemoryRouter } from "react-router-dom"
 import { describe, expect, it } from "vitest"
+
+import { PHOTO_FONDATEUR } from "@/lib/site"
 
 import { MotDuFondateur, dureeSansRepetiteur } from "./MotDuFondateur"
 
@@ -44,5 +47,37 @@ describe("MotDuFondateur : une personne, son nom, et son lien avec le site", () 
 
     const citation = screen.getByText(/pour mon fils/).textContent ?? ""
     expect(citation).not.toMatch(/votre enfant|ton enfant|garanti|réussi/i)
+  })
+})
+
+describe("MotDuFondateur, variante bande : le mot en grand sur l'accueil", () => {
+  function rendre() {
+    return render(
+      <MemoryRouter>
+        <MotDuFondateur variante="bande" />
+      </MemoryRouter>,
+    )
+  }
+
+  it("garde le titre, la citation et la signature, et mène à la page « À propos »", () => {
+    rendre()
+
+    expect(screen.getByText("Pourquoi j'ai créé EduKora")).toBeInTheDocument()
+    expect(screen.getByText(/pour mon fils, qui prépare le BEPC/)).toBeInTheDocument()
+    expect(screen.getByText("Serge G. Babounlek")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Qui est derrière EduKora/ })).toHaveAttribute("href", "/a-propos")
+  })
+
+  it("montre la photo du fondateur quand il y en a une, et jamais un cadre vide", () => {
+    const { container } = rendre()
+
+    const images = container.querySelectorAll("img")
+    if (PHOTO_FONDATEUR) {
+      expect(images).toHaveLength(1)
+      expect(images[0]).toHaveAttribute("src", PHOTO_FONDATEUR.src)
+      expect(images[0]).toHaveAccessibleName(/Serge G. Babounlek/)
+    } else {
+      expect(images).toHaveLength(0)
+    }
   })
 })

@@ -20,3 +20,14 @@ export const CONTACT_TELEPHONE_AFFICHAGE = "+237 689 49 26 25"
 
 export const CONTACT_WHATSAPP_URL = "https://wa.me/237689492625"
 export const CONTACT_WHATSAPP_AFFICHAGE = "+237 689 49 26 25"
+
+/**
+ * La photo du fondateur, montrée avec son mot sur l'accueil (voir MotDuFondateur). `null` tant qu'aucune photo n'est
+ * prête : le mot s'affiche alors seul, sans cadre vide. Le fichier vit dans public/brand ; ses dimensions sont écrites
+ * ici pour que le navigateur réserve la place avant le chargement.
+ */
+export const PHOTO_FONDATEUR: { src: string; largeur: number; hauteur: number } | null = {
+  src: "/brand/fondateur.webp",
+  largeur: 480,
+  hauteur: 600,
+}

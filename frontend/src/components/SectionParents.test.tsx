@@ -21,15 +21,14 @@ describe("SectionParents : l'accueil parle aussi au parent qui paie", () => {
     expect(screen.getByText(/Un code parent réserve les paiements/)).toBeInTheDocument()
   })
 
-  it("porte le mot du fondateur, signé comme parent et fondateur", () => {
+  it("ne porte plus le mot du fondateur : il a sa propre bande sur l'accueil, juste avant", () => {
     render(
       <MemoryRouter>
         <SectionParents />
       </MemoryRouter>,
     )
 
-    expect(screen.getByText("Pourquoi j'ai créé EduKora")).toBeInTheDocument()
-    expect(screen.getByText(/parent d'un élève de 3e et fondateur d'EduKora/)).toBeInTheDocument()
+    expect(screen.queryByText("Pourquoi j'ai créé EduKora")).toBeNull()
   })
 
   it("mène à l'aide sur le paiement ; le bouton des prix est celui du bloc suivant de l'accueil", () => {

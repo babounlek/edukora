@@ -60,6 +60,23 @@ const BADGE_PAIRS: [string, string][] = [
   ["destructive", "destructive-foreground"],
 ]
 
+// Les bandes vert profond de l'accueil (preuves, appel final) : le titre et les chiffres, puis le texte secondaire.
+const PAIRES_BANDE: [string, string][] = [
+  ["brand-deep", "brand-deep-foreground"],
+  ["brand-deep", "brand-deep-muted"],
+]
+
+describe.each(["root", "dark"] as const)("Contraste des bandes vert profond - thème %s", (block) => {
+  it.each(PAIRES_BANDE)("%s / %s atteint au moins 4.5:1", (bg, fg) => {
+    expect(contrastRatio(extractHsl(block, bg), extractHsl(block, fg))).toBeGreaterThanOrEqual(4.5)
+  })
+
+  // Le bouton doré de l'appel final est posé sur la bande : il doit s'en détacher (3:1, élément d'interface).
+  it("le doré du bouton se détache de la bande (3:1)", () => {
+    expect(contrastRatio(extractHsl(block, "brand-deep"), extractHsl(block, "gold"))).toBeGreaterThanOrEqual(3)
+  })
+})
+
 describe.each(["root", "dark"] as const)("Contraste des badges - thème %s", (block) => {
   it.each(BADGE_PAIRS)("%s / %s atteint au moins 4.5:1", (bg, fg) => {
     const ratio = contrastRatio(extractHsl(block, bg), extractHsl(block, fg))

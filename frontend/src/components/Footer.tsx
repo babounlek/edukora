@@ -3,22 +3,22 @@ import { Link, useLocation } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ArrowUp, ChevronDown, Mail, MessageCircle, ShieldCheck, Sparkles } from "lucide-react"
 
-import { getPlatformStats, listExamens } from "@/api/endpoints"
+import { listExamens } from "@/api/endpoints"
 import type { Cursus, PlanDuJour, User } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { ouvrirCentre } from "@/lib/guides/etat"
 import { useAbonneActif } from "@/lib/abonneActif"
-import { accueilEleveProbable } from "@/lib/indiceAccueil"
 import { useCountry } from "@/context/CountryContext"
-import { CONTACT_EMAIL, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
+import { CONTACT_EMAIL, CONTACT_WHATSAPP_AFFICHAGE, CONTACT_WHATSAPP_URL, EDITEUR_NOM, SITE_NAME } from "@/lib/site"
 import { catalogueHomePath, coursListPath, epreuvesListPath, examenPath, themesFrequentsPath } from "@/lib/countryPath"
 import { cn } from "@/lib/utils"
 import { Logo } from "@/components/Logo"
 import { PastilleOperateur } from "@/components/PastilleOperateur"
+import { ACCUEIL_PAYS_RE } from "@/components/CoquilleAccueil"
 import { SelecteurLangue } from "@/components/SelecteurLangue"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { langueDeListe } from "@/lib/discipline"
-import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
+import { t, tn, useI18n } from "@/lib/i18n"
 
 
 // Ordre de lecture d'un élève : du premier examen au dernier.
@@ -108,15 +108,33 @@ function invitationPour(user: User | null, country: string, seanceFaite = false)
   }
 }
 
-/** Une colonne de liens : repliable sur téléphone (la pile de quatre colonnes y faisait
- * ~700 px), toujours dépliée dès `sm`. Deux rendus plutôt qu'un <details> forcé ouvert :
- * l'état ouvert d'un <details> ne se pilote pas en CSS. */
-function Colonne({ titre, children }: { titre: string; children: ReactNode }) {
+/**
+ * Une colonne de liens. Sur un téléphone, les quatre colonnes étaient quatre tiroirs fermés : le pied de page ne
+ * montrait qu'un logo et quatre titres, et « À propos » ou « Centre d'aide » étaient à deux touchers (revue du pied de
+ * page, 2026-11-23). Les colonnes courtes sont maintenant ouvertes, sur deux colonnes ; seule la liste des examens, la
+ * plus longue, reste `repliable` sous `sm`. Pour elle, deux rendus plutôt qu'un <details> forcé ouvert : l'état
+ * ouvert d'un <details> ne se pilote pas en CSS.
+ */
+function Colonne({ titre, children, repliable = false, className }: {
+  titre: string
+  children: ReactNode
+  repliable?: boolean
+  /** Placement dans la grille du pied de page. */
+  className?: string
+}) {
   useI18n()
   const entete = "text-xs font-semibold uppercase tracking-[0.14em] text-foreground/70"
+  if (!repliable) {
+    return (
+      <nav aria-label={t("ft.aria_nav", { titre: titre.toLowerCase() })} className={cn("flex flex-col gap-2 sm:gap-2.5", className)}>
+        <span className={cn(entete, "mb-1")}>{titre}</span>
+        {children}
+      </nav>
+    )
+  }
   return (
     <>
-      <details className="group border-b border-border/70 sm:hidden">
+      <details className={cn("group border-y border-border/70 sm:hidden", className)}>
         <summary className={cn(entete, "flex cursor-pointer list-none items-center justify-between py-3.5")}>
           {titre}
           <ChevronDown className="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
@@ -125,7 +143,7 @@ function Colonne({ titre, children }: { titre: string; children: ReactNode }) {
           {children}
         </nav>
       </details>
-      <nav aria-label={t("ft.aria_nav", { titre: titre.toLowerCase() })} className="hidden flex-col gap-2.5 sm:flex">
+      <nav aria-label={t("ft.aria_nav", { titre: titre.toLowerCase() })} className={cn("hidden flex-col gap-2.5 sm:flex", className)}>
         <span className={cn(entete, "mb-1")}>{titre}</span>
         {children}
       </nav>
@@ -167,24 +185,11 @@ export function Footer() {
   const { user, isAuthenticated } = useAuth()
   const { pathname } = useLocation()
 
-  // Chiffres réels, jamais codés en dur (voir project_about_page_hardcoded_stats) : un
-  // compteur figé finit toujours par mentir.
-  // Dans la langue de l'interface, comme les puces du hero (voir lib/totauxCatalogue) : le pied de page est
-  // sur toutes les pages, et un total des deux langues y contredisait la page. (« À propos » reste global.)
+  // Le pied de page ne porte plus les chiffres de la plateforme : l'accueil les dit en grand (voir BandePreuves), et ici
+  // le même total portait un autre nom (« cours et fiches » contre « cours structurés »). À leur place, l'éditeur et
+  // ses moyens de contact (revue du pied de page, 2026-11-23).
   const langueStats = langueDeListe("", false)
   const abonne = useAbonneActif()
-  const { isLoading: sessionEnLecture } = useAuth()
-  // Un élève abonné ne voit pas le total de la plateforme : « 512 épreuves, 785 cours » contredisait sa propre liste (96 épreuves,
-  // 162 cours pour son examen et ses matières). Ces chiffres sont un argument pour un visiteur, pas une information pour lui.
-  const { data: statsPlateforme } = useQuery({
-    queryKey: ["platform-stats", langueStats],
-    queryFn: () => getPlatformStats(langueStats),
-    staleTime: 60 * 60 * 1000,
-    // Tant que la session se retrouve, un abonné probable (voir lib/indiceAccueil) n'est pas encore « abonné » :
-    // la requête partait pour rien, juste avant d'être désactivée.
-    enabled: !abonne && !(sessionEnLecture && accueilEleveProbable()),
-  })
-  const stats = abonne ? undefined : statsPlateforme
   // Même clé que /epreuves et /themes-frequents : déjà en cache la plupart du temps.
   // Examens de la langue de l'interface (voir lib/cursusLangue) : BEPC, Probatoire, BAC en français, GCE en anglais.
   const { data: cursusList } = useCursusListe(country, { langue: langueStats })
@@ -210,8 +215,15 @@ export function Footer() {
   const cible = invitation.lien.split("?")[0]
   // /quiz porte déjà son propre appel principal pour qui n'a pas d'abonnement (voir QuizCompletVisiteur) :
   // le répéter dans le pied de page ferait deux boutons identiques à la suite.
+  // Sur l'accueil d'un visiteur ou d'un élève sans abonnement, la vitrine se termine déjà par son appel (« Prêt à
+  // commencer ? », avec les prix et « Créer mon compte », voir CataloguePage) : l'invitation d'ici le répétait juste
+  // dessous (audit visuel de l'accueil, 2026-11-23). Un abonné, lui, a un autre accueil et garde la sienne.
+  const vitrineAvecSonAppel = ACCUEIL_PAYS_RE.test(pathname) && !user?.a_un_abonnement_actif
   const afficherInvitation =
-    pathname !== cible && !(pathname === "/quiz" && !user?.a_un_abonnement_actif) && !PAGES_SANS_INVITATION.test(pathname)
+    pathname !== cible &&
+    !(pathname === "/quiz" && !user?.a_un_abonnement_actif) &&
+    !PAGES_SANS_INVITATION.test(pathname) &&
+    !vitrineAvecSonAppel
 
   const examens = (langueStats === "en" ? ORDRE_EXAMENS_EN : ORDRE_EXAMENS).map((examen) => ({
     examen,
@@ -226,7 +238,8 @@ export function Footer() {
   if (PAGES_SANS_PIED.test(pathname)) return null
 
   return (
-    <footer className="mt-auto border-t border-border/80 bg-secondary/30">
+    // Le ton des bandes de l'accueil (« Comment ça marche », le mot du fondateur) : son fond se confondait avec la page.
+    <footer className="mt-auto border-t border-border bg-muted/60">
       <div className="h-px w-full bg-gradient-to-r from-primary/0 via-gold/70 to-primary/0" />
 
       {/* Bande 1 : l'action qui correspond à celui qui lit. */}
@@ -273,33 +286,41 @@ export function Footer() {
       )}
 
       {/* Bande 2 : la marque et la navigation. */}
-      <div className="mx-auto grid max-w-5xl gap-x-8 px-4 py-12 sm:grid-cols-4 sm:gap-y-10 sm:px-6 sm:py-14 lg:grid-cols-[1.5fr_1fr_1.2fr_1fr_1fr]">
-        <div className="mb-6 sm:col-span-4 sm:mb-0 lg:col-span-1">
+      {/* Sur un téléphone : la marque sur toute la largeur, puis « Réviser » à gauche, « EduKora » et « Aide » l'une
+          sous l'autre à droite, et les examens en tiroir dessous. À partir de `sm`, quatre colonnes dans l'ordre du
+          code ; à partir de `lg`, la marque en première colonne. */}
+      <div className="mx-auto grid max-w-5xl grid-cols-2 gap-x-6 gap-y-8 px-4 py-12 sm:grid-cols-4 sm:gap-x-8 sm:gap-y-10 sm:px-6 sm:py-14 lg:grid-cols-[1.5fr_1fr_1.2fr_1fr_1fr]">
+        <div className="col-span-2 sm:col-span-4 lg:col-span-1">
           <Link to={catalogueHomePath(country)} className="flex items-center gap-2.5">
             <Logo variante="horizontal" className="h-14" />
           </Link>
-          <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            {t("ft.accroche")}
-          </p>
-          {stats && (
-            <div className="mt-5 flex gap-6">
-              <div>
-                <p className="font-display text-2xl font-semibold tabular-nums text-foreground">
-                  {new Intl.NumberFormat(localeCourante()).format(stats.corriges_disponibles)}
-                </p>
-                <p className="text-xs text-muted-foreground">{t("ft.stat_epreuves")}</p>
-              </div>
-              <div>
-                <p className="font-display text-2xl font-semibold tabular-nums text-foreground">
-                  {new Intl.NumberFormat(localeCourante()).format(stats.cours_disponibles)}
-                </p>
-                <p className="text-xs text-muted-foreground">{t("ft.stat_cours")}</p>
-              </div>
-            </div>
-          )}
+          {/* Qui édite le site, où, et comment lui écrire : c'est ici qu'un parent le cherche, et l'éditeur n'était
+              nommé que dans la ligne du copyright. Le numéro et l'adresse sont écrits en clair, pas cachés derrière
+              « Écris-nous ». */}
+          <address className="mt-4 flex flex-col items-start gap-1 text-sm not-italic text-muted-foreground">
+            <span className="font-medium text-foreground">{t("confiance.editeur_titre", { editeur: EDITEUR_NOM })}</span>
+            <span>{t("ab.qui_lieu")}</span>
+            <a
+              href={CONTACT_WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={t("ft.whatsapp_titre")}
+              className="mt-2 inline-flex min-h-9 items-center gap-2 whitespace-nowrap rounded-full bg-[#25D366]/10 px-3 font-medium text-[#128C7E] ring-1 ring-[#25D366]/30 transition-colors hover:bg-[#25D366]/20 dark:text-[#25D366]"
+            >
+              <MessageCircle className="size-4" aria-hidden="true" />
+              WhatsApp {CONTACT_WHATSAPP_AFFICHAGE}
+            </a>
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="inline-flex min-h-9 items-center gap-2 transition-colors hover:text-primary"
+            >
+              <Mail className="size-4 shrink-0" aria-hidden="true" />
+              {CONTACT_EMAIL}
+            </a>
+          </address>
         </div>
 
-        <Colonne titre={t("ft.col_reviser")}>
+        <Colonne titre={t("ft.col_reviser")} className="max-sm:row-span-2">
           <Lien to={epreuvesListPath(country)}>{t("ft.epreuves")}</Lien>
           <Lien to={coursListPath(country)}>{t("ft.cours")}</Lien>
           <Lien to={themesFrequentsPath(country)} vedette>
@@ -312,7 +333,7 @@ export function Footer() {
           <Lien to={`${epreuvesListPath(country)}?origine=INEDITE`}>{t("ft.inedites")}</Lien>
         </Colonne>
 
-        <Colonne titre={t("ft.col_examen")}>
+        <Colonne titre={t("ft.col_examen")} repliable className="max-sm:order-last max-sm:col-span-2">
           {examens.length === 0 ? (
             <Lien to={epreuvesListPath(country)}>{t("ft.tous_examens")}</Lien>
           ) : (
@@ -321,13 +342,15 @@ export function Footer() {
                 {cursus.length === 1 && !cursus[0].series ? (
                   <Lien to={lienExamen(cursus[0])}>{examen}</Lien>
                 ) : (
-                  <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                    <span className="text-foreground/80">{examen}</span>
+                  // Les séries étaient des pastilles de 20 px, la moitié de ce qu'il faut pour un doigt : 36 px sur un
+                  // téléphone, 32 px au-delà (la taille des autres liens du pied de page).
+                  <p className="flex flex-wrap items-center gap-1.5 sm:gap-1">
+                    <span className="w-full text-foreground/80 sm:mb-0.5">{examen}</span>
                     {cursus.map((c) => (
                       <Link
                         key={c.id}
                         to={lienExamen(c)}
-                        className="rounded-md px-1 text-muted-foreground ring-1 ring-border transition-colors hover:text-primary hover:ring-primary/40"
+                        className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-md bg-card px-2 text-muted-foreground ring-1 ring-border transition-colors hover:text-primary hover:ring-primary/40 sm:min-h-8 sm:min-w-[1.875rem] sm:px-1"
                         aria-label={libelleCursus(c)}
                       >
                         {c.series?.code ?? examen}
@@ -351,28 +374,10 @@ export function Footer() {
           <button
             type="button"
             onClick={ouvrirCentre}
-            className="inline-flex w-fit items-center gap-1.5 text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
+            className="inline-flex min-h-8 w-fit items-center gap-1.5 text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
           >
             {t("guide.aide.footer")}
           </button>
-          <a
-            href={CONTACT_WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={t("ft.whatsapp_titre")}
-            className="inline-flex w-fit items-center gap-2 whitespace-nowrap rounded-full bg-[#25D366]/10 px-3 py-1.5 text-sm font-medium text-[#128C7E] ring-1 ring-[#25D366]/30 transition-colors hover:bg-[#25D366]/20 dark:text-[#25D366]"
-          >
-            <MessageCircle className="size-4" />
-            {t("ft.whatsapp")}
-          </a>
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            title={CONTACT_EMAIL}
-            className="inline-flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-          >
-            <Mail className="size-4 shrink-0" aria-hidden="true" />
-            {t("ft.email")}
-          </a>
         </Colonne>
       </div>
 
@@ -405,9 +410,9 @@ export function Footer() {
           <div className="flex flex-col items-center gap-2 border-t border-border/60 pt-4 sm:flex-row sm:justify-between">
             <span>© {year} {SITE_NAME} - {EDITEUR_NOM}</span>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              <Link to="/cgu" className="hover:text-primary">{t("ft.cgu")}</Link>
+              <Link to="/cgu" className="inline-flex min-h-8 items-center hover:text-primary">{t("ft.cgu")}</Link>
               <span aria-hidden>·</span>
-              <Link to="/confidentialite" className="hover:text-primary">{t("ft.confidentialite")}</Link>
+              <Link to="/confidentialite" className="inline-flex min-h-8 items-center hover:text-primary">{t("ft.confidentialite")}</Link>
             </div>
           </div>
         </div>

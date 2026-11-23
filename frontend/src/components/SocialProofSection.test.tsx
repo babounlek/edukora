@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
-import { SocialProofSection } from "./SocialProofSection"
+import { SocialProofSection, initiale } from "./SocialProofSection"
 
 const { listTemoignages } = vi.hoisted(() => ({
   listTemoignages: vi.fn(),
@@ -84,5 +84,29 @@ describe("SocialProofSection", () => {
 
     await screen.findByText("Bon contenu.")
     expect(container.querySelectorAll(".fill-gold")).toHaveLength(0)
+  })
+})
+
+describe("SocialProofSection : chaque avis a la même forme", () => {
+  const avis = [
+    { id: 1, auteur_nom: "Aïcha M.", auteur_description: "Première C", contenu: "Je le fais tous les jours.", note: 4 },
+    { id: 2, auteur_nom: "Brice T.", auteur_description: "Terminale D", contenu: "Les corrigés expliquent.", note: 5 },
+    { id: 3, auteur_nom: "Mme Ngono", auteur_description: "mère d'un élève de 3e", contenu: "Mon fils révise seul.", note: null },
+  ]
+
+  it("montre toujours cinq étoiles par avis noté, et dit la note à un lecteur d'écran", () => {
+    render(<SocialProofSection fournis={avis} />)
+
+    const notes = screen.getAllByRole("img")
+    expect(notes).toHaveLength(2)
+    expect(notes[0]).toHaveAccessibleName("Note : 4 sur 5")
+    for (const note of notes) expect(note.querySelectorAll("svg")).toHaveLength(5)
+  })
+
+  it("met l'initiale de l'auteur dans une pastille, sans la civilité", () => {
+    expect(initiale("Aïcha M.")).toBe("A")
+    expect(initiale("Mme Ngono")).toBe("N")
+    expect(initiale("  brice ")).toBe("B")
+    expect(initiale("")).toBe("")
   })
 })

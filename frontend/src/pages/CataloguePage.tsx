@@ -1,7 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react"
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, Clock, Crown, GraduationCap, Layers, TrendingUp } from "lucide-react"
+import { ArrowRight, BookOpen, Check, Clock, Crown, Flag, ListChecks, PenLine, RotateCcw, TrendingUp } from "lucide-react"
 
 import {
   getAccueilVitrine,
@@ -13,7 +13,7 @@ import { trackEvent } from "@/lib/analytics"
 import { nomPays } from "@/lib/pays"
 import { examLevelsFor, joinExamLevelsProse, libelleCursus } from "@/lib/cursus"
 import { langueDeListe } from "@/lib/discipline"
-import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
+import { langueCourante, t, useI18n } from "@/lib/i18n"
 import { useCursusListe } from "@/lib/cursusLangue"
 import { exempleDuCursus, extraireExempleCorrige } from "@/lib/exempleCorrige"
 import { PARAM_VOIR_TOUT } from "@/lib/filtreCursus"
@@ -44,6 +44,11 @@ import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
 import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
 import { PremiereSeance } from "@/components/PremiereSeance"
+import { BandePreuves } from "@/components/BandePreuves"
+import { CadreTelephone } from "@/components/CadreTelephone"
+import { LigneConfiance } from "@/components/LigneConfiance"
+import { MotDuFondateur } from "@/components/MotDuFondateur"
+import { MotifMarque } from "@/components/MotifMarque"
 import { SqueletteDePage } from "@/components/RouteFallback"
 import { accueilEleveProbable, marquerAccueilEleve, oublierAccueilEleve } from "@/lib/indiceAccueil"
 import { useInstallationPossible } from "@/lib/installation"
@@ -64,32 +69,105 @@ type CibleAccueil =
   | "inedite_vedette"
   | "inedites_liste"
   | "prix"
+  | "creer_compte"
 
-/** Chiffre de volumétrie du hero - même gabarit de puce que /epreuves, /quiz et /cours. */
-function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; libelle: string }) {
+/**
+ * Une étape du récit « Comment ça marche » : une vignette qui montre le produit, puis ce que la plateforme fait POUR
+ * l'élève. Les trois étapes étaient trois cartes de texte numérotées, identiques aux autres cartes de la page ; la
+ * vignette donne à voir ce que le texte raconte (audit visuel de l'accueil, 2026-11-23). Elle est dessinée en HTML, pas
+ * capturée : elle suit le thème clair ou sombre et la langue, et ne pèse rien. Décor, donc muette pour un lecteur
+ * d'écran : le titre et le texte disent tout.
+ */
+function EtapeIllustree({ numero, titre, description, vignette }: { numero: string; titre: string; description: string; vignette: ReactNode }) {
   return (
-    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-      {icon}
-      <span className="font-medium tabular-nums">{valeur}</span>
-      <span className="text-muted-foreground">{libelle}</span>
-    </span>
+    <div className="flex flex-col gap-4">
+      <div
+        aria-hidden="true"
+        className="flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-card px-4 shadow-sm ring-1 ring-border/70 sm:h-36"
+      >
+        {vignette}
+      </div>
+      <div className="flex gap-3">
+        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary font-display font-semibold text-primary-foreground">
+          {numero}
+        </span>
+        <div className="flex min-w-0 flex-col gap-1">
+          <h3 className="font-display text-lg font-semibold leading-snug">{titre}</h3>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
+    </div>
   )
 }
 
-
-/** Une étape du récit "Comment ça marche" - raconte ce que la plateforme fait POUR
- * l'élève, là où la grille précédente listait les rayons qu'il devait parcourir lui-même. */
-function EtapeExplication({ numero, titre, description }: { numero: string; titre: string; description: string }) {
+/** Étape 1 : les examens du pays, le premier choisi, et la ligne qui mène au jour de l'examen. */
+function VignetteExamen({ examens }: { examens: string[] }) {
   return (
-    // Sur un téléphone, le numéro passe à gauche du texte au lieu de prendre sa propre ligne : les trois étapes
-    // empilées faisaient 841 px (audit des accueils, 2026-11-21). À partir de `sm`, la carte d'avant, en colonne.
-    <div className="flex gap-3 rounded-2xl border border-border bg-card p-4 sm:flex-col sm:gap-2 sm:p-5">
-      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 font-display font-semibold text-primary">
-        {numero}
-      </span>
-      <div className="flex min-w-0 flex-col gap-1 sm:gap-2">
-        <h3 className="font-display text-lg font-semibold">{titre}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+    <div className="flex w-full max-w-[15rem] flex-col gap-3">
+      <div className="flex flex-wrap gap-1.5">
+        {examens.slice(0, 3).map((examen, index) => (
+          <span
+            key={examen}
+            className={
+              index === 0
+                ? "rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground"
+                : "rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground"
+            }
+          >
+            {examen}
+          </span>
+        ))}
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary">
+          <span className="block h-full w-2/5 rounded-full bg-primary" />
+        </span>
+        <Flag className="size-4 shrink-0 text-gold-text" />
+      </div>
+    </div>
+  )
+}
+
+/** Étape 2 : les trois temps d'une séance, sous les noms que l'élève lira dans sa séance (voir SeanceDuJour). */
+function VignetteSeance() {
+  const temps = [
+    { Icone: BookOpen, libelle: t("seance.phase_cours") },
+    { Icone: PenLine, libelle: t("seance.phase_exercice") },
+    { Icone: ListChecks, libelle: t("seance.phase_quiz") },
+  ]
+  return (
+    <div className="flex w-full max-w-[15rem] flex-col gap-1.5">
+      {temps.map(({ Icone, libelle }, index) => (
+        <div key={libelle} className="flex items-center gap-2 rounded-lg bg-secondary/60 px-2.5 py-1.5 text-xs font-medium">
+          <span className="flex size-5 shrink-0 items-center justify-center rounded-md bg-primary/15 text-primary">
+            <Icone className="size-3" />
+          </span>
+          <span className="flex-1">{libelle}</span>
+          <span className="text-muted-foreground tabular-nums">{index + 1}/3</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Étape 3 : le thème raté qui revient demain, dans trois jours, dans une semaine, jusqu'à ce qu'il soit acquis. */
+function VignetteRappels() {
+  const retours = [t("accueil.vignette_demain"), t("accueil.vignette_3_jours"), t("accueil.vignette_1_semaine")]
+  return (
+    <div className="flex w-full max-w-[17rem] items-start justify-between gap-1">
+      {retours.map((libelle) => (
+        <div key={libelle} className="flex flex-1 flex-col items-center gap-1.5 text-center">
+          <span className="flex size-8 items-center justify-center rounded-full bg-warning/15 text-warning">
+            <RotateCcw className="size-4" />
+          </span>
+          <span className="whitespace-nowrap text-xs font-medium leading-tight text-muted-foreground">{libelle}</span>
+        </div>
+      ))}
+      <div className="flex flex-1 flex-col items-center gap-1.5 text-center">
+        <span className="flex size-8 items-center justify-center rounded-full bg-success text-success-foreground">
+          <Check className="size-4" />
+        </span>
+        <span className="text-xs font-semibold leading-tight">{t("accueil.vignette_acquis")}</span>
       </div>
     </div>
   )
@@ -219,7 +297,12 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
   // Les inédites de tout le pays (même clé de cache que l'en-tête), demandées seulement quand l'examen déclaré n'en a aucune :
   // c'est ce qui permet de proposer « celles des autres examens » sans promettre une liste vide.
   const aucuneInedite = examenServi != null && inediteRecenteData?.count === 0
-  const { data: ineditesDuPays } = useInedites(country ?? "", null, aucuneInedite && !hasLegacyFilters)
+  const { data: ineditesDuPays } = useInedites(country ?? "", null, (aucuneInedite || !decouverte) && !hasLegacyFilters)
+  // Les chiffres de la bande de preuves : ceux de l'API de l'accueil, plus le nombre d'épreuves inédites du pays. Ce
+  // dernier vient de la liste que l'en-tête demande déjà (même clé de cache) : aucune requête de plus.
+  const chiffresPreuves = accueil
+    ? { epreuves: accueil.epreuves, cours: accueil.cours, matieres: accueil.matieres, inedites: ineditesDuPays?.count }
+    : undefined
 
   // Fiche complète de cette même épreuve : apercu_enonce_markdown (l'unique question
   // publique) n'est jamais renseigné sur le catalogue fusionné ci-dessus, seulement sur
@@ -316,7 +399,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
       {/* Le hero du visiteur : la promesse, la carte « première séance », les chiffres. Pas pour un élève connecté sans
           abonnement, qui a sa carte au-dessus et connaît déjà la promesse (audit des accueils, 2026-11-21). */}
       {!decouverte && (
-      <section className="relative overflow-hidden border-b border-border">
+      <section className="relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.05]"
           style={{
@@ -325,13 +408,11 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
             backgroundSize: "28px 28px",
           }}
         />
-        {/* pb-8 et non py-14 : le bandeau de chiffres qui suit appartient au hero, il
-            ne doit pas en être séparé par 56 px de vide. */}
         {/* Trois blocs dans une grille. Sur un téléphone ils se suivent : promesse, carte, liens - la carte arrive donc
             dès le premier écran, avant les liens secondaires. Sur un écran large, la carte occupe la colonne de droite
-            et les deux blocs de texte s'empilent à gauche.
-            pb-8 : le bandeau de chiffres qui suit appartient au hero. */}
-        <div className="relative mx-auto grid max-w-5xl gap-x-10 gap-y-6 px-4 pb-8 pt-10 sm:px-6 sm:pt-14 md:grid-cols-[1.1fr_1fr] md:items-center">
+            (dans un téléphone à partir de `lg`, voir CadreTelephone) et les deux blocs de texte s'empilent à gauche.
+            Ces classes sont aussi celles de la coquille (index.html et CoquilleAccueil) : les trois se changent ensemble. */}
+        <div className="relative mx-auto grid max-w-5xl gap-x-10 gap-y-6 px-4 pb-10 pt-10 sm:px-6 sm:pb-14 sm:pt-14 md:grid-cols-[1.1fr_1fr] md:items-center">
           <div className="md:col-start-1 md:row-start-1 md:self-end">
             {/* L'examen choisi se lit et se change dans la carte (voir PremiereSeance) : l'accroche garde les examens
                 du pays, pour un visiteur neuf comme pour un robot. */}
@@ -340,7 +421,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
             </p>
             {/* La promesse est celle d'un coach (« on te dit quoi réviser »), pas d'une bibliothèque : le volume du
                 corpus vient après, comme preuve. */}
-            <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
+            <h1 className="max-w-xl font-display text-4xl font-semibold leading-[1.1] tracking-tight sm:text-5xl lg:text-[3.5rem] lg:leading-[1.08]">
               {t("accueil.hero_titre_debut")}{" "}
               <span className="text-primary">{t("accueil.hero_titre_accent")}</span>.
             </h1>
@@ -353,7 +434,9 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
               une vraie première séance sans compte. Elle remplace la photo d'illustration et les deux boutons qui
               menaient à des listes. */}
           <div className="md:col-start-2 md:row-span-2 md:row-start-1">
-            <PremiereSeance country={country ?? ""} />
+            <CadreTelephone>
+              <PremiereSeance country={country ?? ""} />
+            </CadreTelephone>
           </div>
 
           <div className="md:col-start-1 md:row-start-2 md:self-start">
@@ -362,63 +445,22 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
             <p className="max-w-lg text-sm text-muted-foreground">
               {t("accueil.hero_reassurance", { prix: formatAmount(PRIX_MOIS_FCFA) })}
             </p>
-            {/* Porte secondaire : lire d'abord, pour qui ne veut pas d'un quiz. Bouton de contour, la carte porte
-                le seul bouton plein du hero. */}
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <Button variant="outline" size="lg" asChild className="border-primary/40 text-primary hover:text-primary">
-                <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`} onClick={mesurer("corrige_gratuit")}>
-                  {t("accueil.cta_corrige_gratuit")}
-                  <ArrowRight />
-                </Link>
-              </Button>
-            </div>
-            <Link
-              to={themesFrequentsPath(country ?? "")}
-              onClick={mesurer("themes")}
-              className="mt-3 flex w-fit items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-primary"
-            >
-              <TrendingUp className="size-3.5 text-primary" />
-              {t("accueil.themes_frequents")}
-              <ArrowRight className="size-3" />
-            </Link>
+            {/* Le hero s'arrête là : le titre, une phrase, la carte, le prix. Le bouton « Lire un corrigé gratuit » et
+                le lien vers les thèmes fréquents, qui s'empilaient ici avec trois puces de chiffres, sont sous
+                « Comment ça marche » ; les chiffres ont leur bande, juste dessous (audit visuel du 2026-11-23). */}
             {/* Pour qui prépare l'autre sous-système (le GCE sur la version française, le BAC sur
                 l'anglaise) : la page ne propose que les examens de sa langue. Variante compacte : une seule phrase,
                 là où la ligne doublée en deux langues prenait trois lignes sur un téléphone. */}
             <InviteAutreSousSystemeDuPays variante="compacte" className="mt-3" />
           </div>
         </div>
-
-        {/* La page n'affichait aucun chiffre, alors que sa volumétrie est son argument
-            le plus crédible - et le seul qu'un concurrent ne peut pas recopier. Tous
-            viennent de l'API, aucun n'est écrit en dur.
-            Bandeau pleine largeur SOUS la grille à deux colonnes, et non dans sa
-            colonne de gauche : là, les trois puces n'avaient que ~550 px et se
-            cassaient en 2 + 1, ce qui se lisait comme un accident de mise en page.
-            Constaté à l'écran, pas déduit. Ce bandeau comble aussi la couture un peu
-            vide entre le hero et la section suivante. */}
-        {accueil && (
-          <div className="relative mx-auto flex max-w-5xl flex-wrap gap-2 px-4 pb-14 sm:px-6">
-            <StatChip
-              icon={<BookOpen className="size-3.5 text-primary" />}
-              valeur={formatAmount(accueil.epreuves)}
-              libelle={tn("accueil.stat_epreuves", accueil.epreuves > 1 ? 2 : 1)}
-            />
-            <StatChip
-              icon={<GraduationCap className="size-3.5 text-gold-text" />}
-              valeur={formatAmount(accueil.cours)}
-              libelle={t("accueil.stat_cours")}
-            />
-            {accueil.matieres > 0 && (
-              <StatChip
-                icon={<Layers className="size-3.5 text-success" />}
-                valeur={String(accueil.matieres)}
-                libelle={tn("accueil.stat_matieres", accueil.matieres > 1 ? 2 : 1)}
-              />
-            )}
-          </div>
-        )}
       </section>
       )}
+
+      {/* Sous le hero du visiteur : les chiffres du corpus en grand, puis qui édite, comment on paie, à qui écrire. Pas
+          pour un élève connecté : il a déjà essayé, et sa carte porte le prix et « Montrer à mes parents ». */}
+      {!decouverte && <BandePreuves chiffres={chiffresPreuves} />}
+      {!decouverte && <LigneConfiance />}
 
       {/* Le visiteur qui revient après une séance gratuite : garder le site sur son téléphone est le rappel le moins
           cher qui soit, et rien d'autre ne le fait revenir (ni compte, ni rappel). L'invitation n'existait que sur le
@@ -435,9 +477,9 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           le même KaTeX, pas une capture d'écran ni un mock. Disparaît silencieusement
           si le slug ne charge pas (même patron que SocialProofSection/EpreuveRail). */}
       {exemple && exempleExercice && exempleCorrigeQ1 && (
-        <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6">
+        <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-14">
           <div className="max-w-2xl">
-            <h2 className="font-display text-xl font-semibold">{t("accueil.exemple_titre")}</h2>
+            <h2 className="font-display text-2xl font-semibold">{t("accueil.exemple_titre")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {/* exempleContent est forcément défini ici : la section entière est
                   gardée par `exempleExercice && exempleCorrigeQ1`, tous deux dérivés de
@@ -482,9 +524,11 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
 
       {/* « Comment ça marche » s'adresse à qui ne connaît pas le produit : un élève connecté a déjà dit son examen et
           sa carte lui montre la séance. Pour lui, seulement l'espace que cette section laissait avant les inédites. */}
-      {decouverte && <div aria-hidden="true" className="h-6" />}
       {!decouverte && (
-      <section className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+      // Bande pleine largeur, d'un ton plus soutenu que la page : les sections se suivaient toutes sur le même fond, sans
+      // rien qui dise où l'une finit (audit visuel de l'accueil, 2026-11-23).
+      <div className="border-y border-border bg-muted/60">
+      <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-14">
         {/* Le récit du plan, à la place d'une grille de quatre portes (Épreuves,
             Cours, Parcours, Quiz). Cette grille décrivait notre modèle de données -
             deux types de documents et deux outils - et laissait l'élève composer son
@@ -492,32 +536,54 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
             contredisait aussi la navigation, réduite depuis à trois entrées.
             Les quatre destinations restent atteignables : "Réviser" dans le menu, et
             l'encart Épreuves Inédites plus bas pour le produit payant. */}
-        <h2 className="font-display text-xl font-semibold">{t("accueil.comment_titre")}</h2>
+        <h2 className="font-display text-2xl font-semibold">{t("accueil.comment_titre")}</h2>
         {/* Ce qui distingue le produit des annales gratuites, dit une fois, ici : la grille « Pourquoi EduKora ? » qui
             suivait redisait ces trois étapes en quatre cartes (audit de l'accueil du 2026-11-15, R4). */}
         <p className="mt-1 max-w-2xl text-sm text-muted-foreground">{t("accueil.pourquoi_texte", { site: SITE_NAME })}</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-3 sm:gap-5">
-          <EtapeExplication
+        <div className="mt-6 grid gap-8 sm:grid-cols-3 sm:gap-6 lg:gap-10">
+          <EtapeIllustree
             numero="1"
             titre={t("accueil.etape1_titre")}
             description={t("accueil.etape1_texte")}
+            vignette={<VignetteExamen examens={examLevelsHero.split(" · ")} />}
           />
-          <EtapeExplication
+          <EtapeIllustree
             numero="2"
             titre={t("accueil.etape2_titre")}
             description={t("accueil.etape2_texte")}
+            vignette={<VignetteSeance />}
           />
-          <EtapeExplication
+          <EtapeIllustree
             numero="3"
             titre={t("accueil.etape3_titre")}
             description={t("accueil.etape3_texte")}
+            vignette={<VignetteRappels />}
           />
+        </div>
+        {/* Les deux portes secondaires, descendues du hero : lire d'abord, pour qui ne veut pas d'un quiz, et voir ce
+            qui tombe le plus à son examen. Toujours mesurées sous les mêmes noms. */}
+        <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-border pt-6">
+          <Button variant="outline" asChild className="border-primary/40 bg-card text-primary hover:text-primary">
+            <Link to={`${epreuvesListPath(country ?? "")}?gratuit=true`} onClick={mesurer("corrige_gratuit")}>
+              {t("accueil.cta_corrige_gratuit")}
+              <ArrowRight />
+            </Link>
+          </Button>
+          <Link
+            to={themesFrequentsPath(country ?? "")}
+            onClick={mesurer("themes")}
+            className="flex min-h-9 w-fit items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-primary"
+          >
+            <TrendingUp className="size-4 shrink-0 text-primary" aria-hidden="true" />
+            {t("accueil.themes_frequents")}
+            <ArrowRight className="size-3.5 shrink-0" aria-hidden="true" />
+          </Link>
         </div>
         {/* L'examen déclaré n'a aucune inédite : plutôt que de faire disparaître le bloc, on le dit (sinon le choix semble
             ignoré), et on ouvre celles des autres examens quand il y en a. `tout=1` : sans lui, la liste se réduirait
             aussitôt à l'examen déclaré, c'est-à-dire à rien (voir useFiltreCursusParDefaut). */}
         {aucuneInedite && examenServi && (
-          <p className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground">
+          <p className="mt-6 flex flex-wrap items-center gap-x-2 gap-y-1 rounded-2xl border border-dashed border-border bg-card px-5 py-4 text-sm text-muted-foreground">
             <Crown className="size-4 shrink-0 text-gold-text" aria-hidden="true" />
             <span>{t("accueil.inedites_aucune", { cursus: libelleCursus(examenServi) })}</span>
             {ineditesDuPays && ineditesDuPays.count > 0 && (
@@ -531,6 +597,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           </p>
         )}
       </section>
+      </div>
       )}
 
       {/* Les épreuves inédites n'ont plus qu'une présentation sur cette page : l'encart ci-dessous, avec une vraie
@@ -548,7 +615,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           la carte "Épreuves Inédites" de la grille au-dessus reste de toute façon
           visible dans les deux cas. */}
       {inediteVedette?.apercu_enonce_markdown && (
-        <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
+        <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-14">
           <div className="rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-8">
             <div className="flex flex-wrap items-center gap-2">
               <span className="flex items-center gap-1.5 rounded-full bg-gold/15 px-3 py-1 text-xs font-semibold text-gold-text">
@@ -562,7 +629,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
                 </span>
               )}
             </div>
-            <h2 className="mt-3 font-display text-xl font-semibold">{inediteVedette.title}</h2>
+            <h2 className="mt-3 font-display text-2xl font-semibold">{inediteVedette.title}</h2>
             <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
               {t("accueil.vedette_texte", { site: SITE_NAME })}
             </p>
@@ -607,7 +674,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
         !inediteVedetteLoading &&
         inediteRecenteData &&
         inediteRecenteData.count > 0 && (
-          <section className="mx-auto max-w-5xl px-4 pt-4 sm:px-6 mb-8">
+          <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-14">
             <div className="flex flex-wrap items-center gap-4 rounded-2xl border border-gold/30 bg-gold/5 p-5 sm:p-6">
               <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-gold/15 text-gold-text">
                 <Crown className="size-5" />
@@ -636,7 +703,19 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           plus haut en tient déjà lieu, et le CTA du hero mène à du contenu gratuit réel
           en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
-      <SocialProofSection fournis={accueil ? accueil.temoignages : null} />
+      <SocialProofSection bande fournis={accueil ? accueil.temoignages : null} />
+
+      {/* Le mot du fondateur, en grand, dans sa propre bande : le seul visage de la page, et la réponse à « qui est
+          derrière ? ». Il était au bas du bloc des parents, en petit (audit visuel de l'accueil, 2026-11-23). Après les
+          avis et à part d'eux : ce n'est pas un avis de client (voir MotDuFondateur). Pas pour un élève connecté, comme
+          le bloc des parents qu'il précède. */}
+      {!decouverte && (
+        <div className="border-b border-border bg-muted/60">
+          <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+            <MotDuFondateur variante="bande" />
+          </div>
+        </div>
+      )}
 
       {/* Le parent qui paie : voir SectionParents (audit du 2026-11-12, UX-03). Pas pour un élève connecté : sa carte
           porte « Montrer à mes parents », qui leur envoie le prix et le moyen de payer. */}
@@ -652,37 +731,44 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           n'avait que le menu du header pour trouver /tarifs. Pas de prix ici : ils
           dépendent du cursus (voir PricingPage/Plan.effective_price), les répéter en
           dur ici les désynchroniserait silencieusement de la vraie grille. */}
+      {/* Un seul appel final, en bande vert profond pleine largeur : ce bloc et l'invitation du pied de page se
+          suivaient, deux encadrés pour la même décision (audit visuel de l'accueil, 2026-11-23). Le pied de page n'en
+          affiche plus sur cette page (voir Footer) ; « Créer mon compte », qu'il portait, est ici pour le visiteur. */}
       {/* `data-fin-vitrine` : repère de la barre « Commencer » du visiteur, qui s'efface en arrivant ici (voir BarreCommencer). */}
-      <section data-fin-vitrine className="mx-auto max-w-5xl px-4 pb-14 sm:px-6">
-        <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-transparent to-transparent p-6 text-center sm:p-10">
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-              backgroundSize: "24px 24px",
-            }}
-          />
-          <div className="relative">
-            <h2 className="font-display text-2xl font-semibold">{t("accueil.pret_titre")}</h2>
-            <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-              {t("accueil.pret_texte", { prix: formatAmount(PRIX_MOIS_FCFA) })}
-            </p>
-            {campagne && (
-              <BandeauCampagne
-                campagne={campagne}
-                prix={campagne.prix}
-                prixReference={campagne.prix_reference}
-                className="mx-auto mt-4 max-w-xl justify-center text-left"
-              />
-            )}
-            <div className="mt-5 flex justify-center">
-              <Button size="lg" asChild>
-                <Link to="/tarifs" onClick={mesurer("prix")}>
-                  {t("accueil.voir_prix")}
-                  <ArrowRight />
+      <section data-fin-vitrine className={`relative overflow-hidden bg-brand-deep text-brand-deep-foreground ${decouverte ? "mt-12" : ""}`}>
+        <MotifMarque className="absolute -bottom-10 -left-8 h-56 w-auto opacity-[0.06] sm:h-72" />
+        <div className="relative mx-auto max-w-5xl px-4 py-14 text-center sm:px-6 sm:py-16">
+          <h2 className="font-display text-3xl font-semibold sm:text-4xl">{t("accueil.pret_titre")}</h2>
+          <p className="mx-auto mt-3 max-w-xl text-brand-deep-muted">
+            {t("accueil.pret_texte", { prix: formatAmount(PRIX_MOIS_FCFA) })}
+          </p>
+          {campagne && (
+            <BandeauCampagne
+              campagne={campagne}
+              prix={campagne.prix}
+              prixReference={campagne.prix_reference}
+              className="mx-auto mt-5 max-w-xl justify-center text-left"
+            />
+          )}
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <Button size="lg" asChild className="bg-gold text-gold-foreground hover:bg-gold/90">
+              <Link to="/tarifs" onClick={mesurer("prix")}>
+                {t("accueil.voir_prix")}
+                <ArrowRight />
+              </Link>
+            </Button>
+            {!isAuthenticated && (
+              <Button
+                size="lg"
+                variant="outline"
+                asChild
+                className="border-brand-deep-foreground/40 bg-transparent text-brand-deep-foreground hover:bg-brand-deep-foreground/10 hover:text-brand-deep-foreground"
+              >
+                <Link to="/connexion" onClick={mesurer("creer_compte")}>
+                  {t("ft.creer_compte")}
                 </Link>
               </Button>
-            </div>
+            )}
           </div>
         </div>
       </section>

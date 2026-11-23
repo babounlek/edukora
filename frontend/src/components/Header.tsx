@@ -425,19 +425,22 @@ export function Header() {
         <div className="flex min-w-0 items-center gap-2">
           <Link to={catalogueHomePath(country)} className="group flex min-w-0 items-center gap-2">
             {/* Le logo avec son slogan (il remplace l'ancienne baseline en texte). Le symbole seul quand la barre manque de
-                place : sous 400 px, et pour un élève qui suit un plan - la pastille de compte à rebours dit alors ce que le
+                place : sous 360 px, et pour un élève qui suit un plan - la pastille de compte à rebours dit alors ce que le
                 slogan disait, et logo + pastille + liens + compte dépasseraient 1024 px. Le symbole seul est le même fichier
                 rogné (object-cover + object-left), pas une seconde image ; le nom et le slogan restent dans l'alt.
-                Entre 400 et 768 px : icône + nom sans slogan (illisible à cette taille, et le logo complet recouvrait la loupe
-                entre 640 et 768 px, où les contrôles de droite - langue, pays, thème, compte - tiennent déjà toute la place). */}
+                Entre 360 et 768 px : icône + nom sans slogan (illisible à cette taille, et le logo complet recouvrait la loupe
+                entre 640 et 768 px, où les contrôles de droite - langue, pays, thème, compte - tiennent déjà toute la place).
+                Le seuil était à 400 px : sur la plupart des téléphones (360 à 393 px de large), le premier écran ne disait
+                donc jamais « EduKora » (audit visuel de l'accueil, 2026-11-23). Entre 360 et 400 px le nom est un peu plus
+                petit et peut encore rétrécir (min-w-0, max-w-full) plutôt que de recouvrir la loupe. */}
             {aUnCompteARebours ? (
               <Logo variante="horizontal" className="h-8 w-[34px] object-cover object-left" />
             ) : (
               <>
-                <span className="md:hidden">
+                <span className="min-w-0 md:hidden">
                   <Logo
                     variante="minimal"
-                    className="h-8 w-[34px] object-cover object-left min-[400px]:h-7 min-[400px]:w-auto min-[400px]:object-contain"
+                    className="h-8 w-[34px] object-cover object-left min-[360px]:h-6 min-[360px]:w-auto min-[360px]:max-w-full min-[360px]:shrink min-[360px]:object-contain min-[400px]:h-7"
                   />
                 </span>
                 {/* min-w-0 + max-w-full : si la place manque (compte connecté, nom long), le logo rétrécit au lieu de recouvrir la loupe. */}
@@ -452,7 +455,7 @@ export function Header() {
               disparu. Dans la barre dès `md`, dans le menu en dessous (voir plus bas) - même partage que le compte à rebours. */}
           <PastilleExamen className="hidden min-w-0 md:inline-flex" />
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-1 min-[400px]:gap-2">
           {/* Toujours visible (pas de hidden sm:), contrairement aux liens de nav
               desktop plus bas - ce lien rend la recherche accessible depuis
               n'importe quelle page, y compris sur mobile où la place au clavier
