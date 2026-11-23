@@ -43,7 +43,16 @@ export function CadreTelephone({ children, decor = true }: {
           className="absolute bottom-4 left-5 hidden w-[17.5rem] flex-col gap-0.5 rounded-2xl border border-border bg-card px-4 py-3 shadow-lg shadow-primary/10 lg:flex"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.14em] text-primary">{t("accueil.corrige_pas_a_pas")}</span>
-          <span className="text-base font-semibold tabular-nums">(a + b)² = a² + 2ab + b²</span>
+          {/* Neutre exprès : une formule de maths à côté d'une séance de littérature se contredisait (relevé du
+              2026-11-23). Les trois temps d'un corrigé valent pour toutes les matières. */}
+          <span className="flex items-center gap-1.5 text-sm font-semibold">
+            {[t("accueil.cadre_methode_1"), t("accueil.cadre_methode_2"), t("accueil.cadre_methode_3")].map((etape, i) => (
+              <span key={etape} className="flex items-center gap-1.5">
+                {i > 0 && <span className="text-muted-foreground">→</span>}
+                {etape}
+              </span>
+            ))}
+          </span>
           <span className="text-xs text-muted-foreground">{t("accueil.cadre_methode")}</span>
         </div>
       )}
