@@ -62,7 +62,7 @@ def _lire_mois(request, plan):
 
 def _report_provider_error(exc, transaction):
     """
-    PaiementFournisseurError (CampayError, etc.) est déjà gérée gracieusement ici (réponse 502 propre, jamais un
+    PaiementFournisseurError (CampayError, etc.) est déjà gérée gracieusement ici (réponse 503 propre - jamais 502 : Cloudflare remplace le corps d un 502 par « error code: 502 » -, jamais un
     crash) - donc jamais remontée automatiquement par l'intégration Django de Sentry,
     qui ne capture que les exceptions non gérées. Un échec de la chaîne de paiement
     reste pourtant le signal le plus critique du produit (voir l'audit UX, reco 5.1)
@@ -165,7 +165,7 @@ def initiate_payment(request):
         transaction.status = StatutTransaction.FAILED
         transaction.save(update_fields=["status", "updated_at"])
         _report_provider_error(exc, transaction)
-        return Response({"error": str(exc)}, status=502)
+        return Response({"error": str(exc)}, status=503)
 
     return Response({
         "transaction_id": transaction.id, "status": transaction.status,
@@ -182,7 +182,7 @@ def check_payment_status(request, transaction_id):
             transaction.sync_status()
         except PaiementFournisseurError as exc:
             _report_provider_error(exc, transaction)
-            return Response({"error": str(exc)}, status=502)
+            return Response({"error": str(exc)}, status=503)
 
     return Response({
         "status": transaction.status,

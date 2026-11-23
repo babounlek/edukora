@@ -510,7 +510,7 @@ class PaymentFlowAPITests(TestCase):
             "/payments/initiate/", {"plan_id": self.plan.id, "phone_number": self.user.phone_number},
         )
 
-        self.assertEqual(response.status_code, 502)
+        self.assertEqual(response.status_code, 503)
         transaction = Transaction.objects.get(user=self.user)
         self.assertEqual(transaction.status, StatutTransaction.FAILED)
 
@@ -518,7 +518,7 @@ class PaymentFlowAPITests(TestCase):
     @patch("payments.campay_client.init_collect")
     def test_initiate_payment_reports_campay_error_to_sentry_tagged_as_critical_path(self, mock_init, mock_capture):
         # Voir l'audit UX, reco 5.1 : une CampayError est déjà gérée gracieusement
-        # (réponse 502 propre) donc jamais remontée automatiquement par l'intégration
+        # (réponse 503 propre) donc jamais remontée automatiquement par l'intégration
         # Django de Sentry - _report_campay_error doit la capturer explicitement.
         mock_init.side_effect = CampayError("CamPay injoignable")
 
@@ -567,7 +567,7 @@ class PaymentFlowAPITests(TestCase):
 
         response = self.client.get(f"/payments/status/{transaction.id}/")
 
-        self.assertEqual(response.status_code, 502)
+        self.assertEqual(response.status_code, 503)
         mock_capture.assert_called_once()
 
     def test_check_status_rejects_other_users_transaction(self):

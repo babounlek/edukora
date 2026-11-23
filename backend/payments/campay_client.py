@@ -23,7 +23,7 @@ def _request(method, url, **kwargs):
     Enveloppe requests pour que toute panne réseau (timeout, DNS, connexion refusée)
     devienne une CampayError plutôt qu'une exception non gérée : `initiate_payment` et
     `check_payment_status` (payments/views.py) ne rattrapent que CampayError et
-    renvoient alors une réponse JSON propre (502) au frontend - sans ceci, une panne
+    renvoient alors une réponse JSON propre (503) au frontend - sans ceci, une panne
     réseau vers CamPay finit en 500 générique, sans message exploitable côté client.
     """
     try:

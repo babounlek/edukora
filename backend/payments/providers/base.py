@@ -27,7 +27,7 @@ class PaiementFournisseurError(Exception):
     """
     Toute défaillance d'un agrégateur (réseau, authentification, refus, réponse
     invalide). Les vues ne rattrapent que celle-ci : un adaptateur doit y convertir ses
-    erreurs propres pour qu'une panne de fournisseur reste une réponse 502 exploitable
+    erreurs propres pour qu'une panne de fournisseur reste une réponse 503 exploitable
     plutôt qu'un 500.
     """
 
