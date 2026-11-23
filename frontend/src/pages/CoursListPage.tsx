@@ -311,10 +311,14 @@ export function CoursListPage() {
   // via un lien, mais doit survivre à la navigation et aux prochaines visites.
   const [viewMode, setViewModeState] = useState<ViewMode>(() => {
     try {
-      return (localStorage.getItem(VIEW_MODE_STORAGE_KEY) as ViewMode) || "cards"
+      const stocke = localStorage.getItem(VIEW_MODE_STORAGE_KEY)
+      if (stocke === "cards" || stocke === "list") return stocke
     } catch {
-      return "cards"
+      // stockage indisponible : on retombe sur le défaut ci-dessous
     }
+    // Sans préférence enregistrée : la liste sur un téléphone, les cartes ailleurs. Une carte d'épreuve ou de cours fait
+    // ~260 px de haut, la liste en tient trois fois plus par écran (revue des pages de liste, 2026-11-23).
+    return window.matchMedia?.("(max-width: 639px)").matches ? "list" : "cards"
   })
 
   function setViewMode(mode: ViewMode) {
@@ -457,7 +461,7 @@ export function CoursListPage() {
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
       <ReviserTabs />
       <BandeauVue />
-      <div className="mb-4">
+      <div className="mb-2 sm:mb-4">
         <BoutonAide guide="cours-liste" className="-ml-2.5" />
         <AideContextuelle guide="cours-liste" className="mt-1" />
       </div>
@@ -468,7 +472,7 @@ export function CoursListPage() {
       {abonne ? (
         <h1 className="sr-only">{t("co.seo_liste")}</h1>
       ) : (
-      <div className="relative mb-6 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-5 sm:p-8">
+      <div className="relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8">
         <div
           aria-hidden
           className="absolute inset-0 opacity-[0.04]"
@@ -479,7 +483,7 @@ export function CoursListPage() {
         />
         <GraduationCap aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
         <div className="relative max-w-2xl">
-          <p className="mb-2 font-display text-sm italic text-primary">
+          <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">
             {t("co.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
           </p>
           <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
@@ -489,7 +493,8 @@ export function CoursListPage() {
             {t("co.hero_texte")}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-2 sm:mt-5">
+          {/* Sur un téléphone, les pastilles repoussaient la liste : « N cours trouvés » dessous dit déjà le total. */}
+          <div className="mt-4 hidden flex-wrap gap-2 sm:mt-5 sm:flex">
             {totalCours !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}

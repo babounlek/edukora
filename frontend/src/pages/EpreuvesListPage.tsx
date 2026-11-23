@@ -361,10 +361,14 @@ export function EpreuvesListPage() {
 
   const [viewMode, setViewModeState] = useState<ViewMode>(() => {
     try {
-      return (localStorage.getItem(VIEW_MODE_STORAGE_KEY) as ViewMode) || "cards"
+      const stocke = localStorage.getItem(VIEW_MODE_STORAGE_KEY)
+      if (stocke === "cards" || stocke === "list") return stocke
     } catch {
-      return "cards"
+      // stockage indisponible : on retombe sur le défaut ci-dessous
     }
+    // Sans préférence enregistrée : la liste sur un téléphone, les cartes ailleurs. Une carte d'épreuve ou de cours fait
+    // ~260 px de haut, la liste en tient trois fois plus par écran (revue des pages de liste, 2026-11-23).
+    return window.matchMedia?.("(max-width: 639px)").matches ? "list" : "cards"
   })
 
   function setViewMode(mode: ViewMode) {
@@ -550,7 +554,9 @@ export function EpreuvesListPage() {
 
           {/* Sur la page des inédites, le compte vit déjà dans « N épreuves trouvées » : une rangée
               de pastilles de plus ne faisait que repousser les résultats vers le bas. */}
-          <div className={cn("mt-3 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "flex")}>
+          {/* Sur un téléphone, ces deux pastilles repoussaient la liste d'une rangée et demie : « N épreuves trouvées » juste
+              dessous dit déjà le total. */}
+          <div className={cn("mt-3 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "hidden sm:flex")}>
             {totalEpreuves !== undefined && (
               <StatChip
                 icon={<BookOpen className="size-3.5 text-primary" />}

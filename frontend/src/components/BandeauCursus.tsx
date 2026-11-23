@@ -119,7 +119,9 @@ export function BandeauCursus() {
           <InviteAutreSousSysteme
             disponible={!ACCUEIL_PAYS_RE.test(pathname) && tousLesCursus.some((c) => c.langue && c.langue !== langueDeListe("", false))}
             variante="compacte"
-            className="mt-1"
+            // Sur un téléphone, cette ligne ajoutait une rangée à chaque page de liste (le premier résultat arrivait à
+            // 1 000 px) ; la langue reste dans le menu et sur l'accueil (revue des pages de liste, 2026-11-23).
+            className="mt-1 max-sm:hidden"
           />
         </div>
         <button
