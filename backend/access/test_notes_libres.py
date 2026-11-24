@@ -281,3 +281,32 @@ class SourceEtImageTests(_Base):
         self.assertEqual(self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": ""}, format="json").status_code, 400)
         r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "", "avec_image": True}, format="json")
         self.assertEqual(r.status_code, 201)
+
+
+class ThemeDesNotesTests(_Base):
+    def _tag(self, nom="trigonométrie"):
+        from catalog.models import Tag
+
+        return Tag.objects.create(name=nom)
+
+    def test_a_note_keeps_its_theme_and_comes_back_by_theme_first_pinned(self):
+        tag = self._tag()
+        a = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "Règle", "theme": tag.pk}, format="json")
+        self.assertEqual(a.data["theme_id"], tag.pk)
+        NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Épinglée", theme=tag, epingle=True)
+        NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Autre thème", theme=self._tag("autre"))
+        data = self.client.get(f"/access/etude/notes/par-theme/?theme={tag.pk}").data
+        self.assertEqual(data["total"], 2)
+        self.assertEqual(data["notes"][0]["note"], "Épinglée")
+
+    def test_an_unknown_theme_is_ignored_and_other_students_notes_never_show(self):
+        r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "x", "theme": 999999}, format="json")
+        self.assertIsNone(r.data["theme_id"])
+        tag = self._tag()
+        NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Privée", theme=tag)
+        from users.models import User
+        intrus = User.objects.create_user(phone_number="677500011", password="x")
+        autre = self.client.__class__()
+        autre.force_authenticate(user=intrus)
+        self.assertEqual(autre.get(f"/access/etude/notes/par-theme/?theme={tag.pk}").data["total"], 0)
+        self.assertEqual(self.client.get("/access/etude/notes/par-theme/?theme=abc").data["total"], 0)

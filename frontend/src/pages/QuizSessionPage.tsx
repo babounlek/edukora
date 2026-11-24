@@ -24,6 +24,7 @@ import { ObjectifXp } from "@/components/ObjectifXp"
 import { CoupDePouce, PastilleDifficulte } from "@/components/CoupDePouce"
 import { AjouterAMesNotes, bonneReponseEnNote } from "@/components/AjouterAMesNotes"
 import { NoterSelection } from "@/components/NoterSelection"
+import { NotesDuTheme } from "@/components/NotesDuTheme"
 import { SignalerQuestion } from "@/components/SignalerQuestion"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
@@ -413,7 +414,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
     <div ref={zoneQuizRef} className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
       {/* Après la réponse : sélectionner un passage de la question ou de l'explication le garde en note (« Noter ça »). */}
       {answered && !essai && !invite && (
-        <NoterSelection cibleRef={zoneQuizRef} subjectId={question.subject_id} avecBouton={false} origine="quiz" source={`/quiz/session/${session.id}`} />
+        <NoterSelection cibleRef={zoneQuizRef} subjectId={question.subject_id} themeId={question.theme_id} avecBouton={false} origine="quiz" source={`/quiz/session/${session.id}`} />
       )}
       {/* L'animation d'entrée porte sur le contenu seul, jamais sur le conteneur de la barre fixe du bas :
           `animate-fade-up` laisse un `transform` sur son élément, qui devient alors le repère de tout
@@ -738,6 +739,9 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         )}
         </div>
 
+        {/* Après une erreur : ce que l'élève a déjà noté sur ce thème, avant de relire la correction. */}
+        {answered && !correct && !essai && !invite && <NotesDuTheme themeId={question.theme_id} className="mt-4" />}
+
         {isQcm && answered && question.corrige_markdown && (
           // Repliée dans tous les cas : ouverte d'office après une erreur, la correction faisait trois écrans de méthode, de calcul
           // et d'explications avant la question suivante (« c'est un cours entier, je lis pas », test élève Guyguy). Après une erreur,
@@ -778,6 +782,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
             subjectId={question.subject_id}
             enonce={question.enonce_markdown}
             erreur={!correct}
+            themeId={question.theme_id}
             source={`/quiz/session/${session.id}`}
             bonneReponse={isQcm ? bonneReponseEnNote(question.choix, question.reponse_correcte) : undefined}
           />

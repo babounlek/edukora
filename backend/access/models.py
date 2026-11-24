@@ -260,6 +260,10 @@ class NoteLibre(models.Model):
         max_length=300, blank=True, default="",
         help_text="Adresse interne (/cours/…#section, /quiz/session/…) du passage ou de la question d'où vient la note.",
     )
+    theme = models.ForeignKey(
+        "catalog.Tag", null=True, blank=True, on_delete=models.SET_NULL, related_name="notes_libres",
+        help_text="Le thème sur lequel porte la note : elle revient sous les yeux de l'élève quand il le retravaille.",
+    )
     image = models.FileField(storage=protected_storage, upload_to=_note_image_path, blank=True, help_text="Une photo ou un schéma joint à la note.")
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)

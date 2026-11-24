@@ -24,6 +24,7 @@ from django.utils import timezone
 from quiz.models import JourXP, QuizAnswer, SeanceJournaliere, StatutSeance
 from quiz import textes
 from quiz.serie import serie_de_jours
+from access.etude import total_notes_dues
 from quiz.services import revisions_dues
 from quiz.xp import etat_du_jour
 from users.models import User
@@ -108,6 +109,9 @@ def composer_push(user, maintenant=None):
         dues = revisions_dues(profil, cursus).count()
         if dues:
             morceaux.append(f"{dues} thème{'s' if dues > 1 else ''} à revoir aujourd'hui.")
+        notes = total_notes_dues(profil)
+        if notes:
+            morceaux.append(f"{notes} de tes notes à relire.")
         body = " ".join(morceaux) or "Environ 25 minutes, choisies pour toi."
     return {"title": title, "body": body, "url": f"/{pays}", "tag": "rappel-du-jour"}
 
@@ -130,6 +134,9 @@ def _composer_push_en(profil, cursus, serie, etat, prenom, pays):
         dues = revisions_dues(profil, cursus).count()
         if dues:
             morceaux.append(f"{dues} topic{'s' if dues > 1 else ''} to review today.")
+        notes = total_notes_dues(profil)
+        if notes:
+            morceaux.append(f"{notes} note{'s' if notes > 1 else ''} of yours to review.")
         body = " ".join(morceaux) or "About 25 minutes, chosen for you."
     return {"title": title, "body": body, "url": f"/en/{pays}", "tag": "rappel-du-jour"}
 

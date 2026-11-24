@@ -20,7 +20,7 @@ from . import quota
 from .carnet import PAGE_CARNET, entree_marque, entree_note_libre, filtrer_carnet, resumer_dossiers
 from .etude import (
     MarqueInvalide, creer_note_libre, enregistrer_image_note, enregistrer_marque, epingler, marques_du_document,
-    modifier_note_libre, noter_revue, notes_a_revoir, retirer_image_note,
+    modifier_note_libre, noter_revue, notes_a_revoir, notes_du_theme, retirer_image_note,
 )
 from .models import ExerciceFait, LectureProgress, MarqueEtude, NoteLibre, TelechargementPdf
 from .services import a_acces_exercices_cours, has_access
@@ -520,6 +520,7 @@ def notes_libres(request):
     try:
         note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""), request.data.get("origine", ""),
             request.data.get("source", ""), avec_image=bool(request.data.get("avec_image")),
+            theme_id=request.data.get("theme"),
         )
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
@@ -537,6 +538,13 @@ def note_libre_detail(request, pk):
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(entree_note_libre(note))
+
+
+@api_view(["GET"])
+def notes_par_theme(request):
+    """GET ?theme=<id> : les notes de l'élève sur ce thème, pour les lui remettre sous les yeux (quiz, exercices du thème)."""
+    total, notes = notes_du_theme(profil_actif(request), request.query_params.get("theme"))
+    return Response({"total": total, "notes": [entree_note_libre(n) for n in notes]})
 
 
 @api_view(["GET", "POST", "DELETE"])

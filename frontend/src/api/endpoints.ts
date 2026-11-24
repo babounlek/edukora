@@ -21,6 +21,7 @@ import type {
   CarnetEntree,
   CarnetDossiers,
   CarnetPageData,
+  NotesParTheme,
   NotesARevoir,
   CibleEtude,
   MarqueEtude,
@@ -1277,11 +1278,11 @@ export function getCarnetPage(
 
 /** Une note libre : rattachée à une matière, pas à une section de cours (voir access.etude.creer_note_libre). */
 export function creerNoteLibre(
-  subject: number, note: string, citation = "", origine = "", source = "", avecImage = false,
+  subject: number, note: string, citation = "", origine = "", source = "", avecImage = false, theme: number | null = null,
 ) {
   return apiRequest<CarnetEntree>("/access/etude/notes/", {
     method: "POST",
-    body: { subject, note, citation, origine, source, avec_image: avecImage },
+    body: { subject, note, citation, origine, source, avec_image: avecImage, theme },
   })
 }
 
@@ -1303,6 +1304,11 @@ export function retirerImageNote(id: number) {
 /** La photo d'une note, en Blob : elle est privée, une balise <img> ne porterait pas le jeton de connexion. */
 export function getImageNote(id: number, signal?: AbortSignal) {
   return apiRequest<Blob>(`/access/etude/notes/${id}/image/`, { signal, blob: true })
+}
+
+/** Les notes de l'élève sur un thème : remises sous ses yeux après une erreur de quiz, en tête des exercices du thème. */
+export function getNotesParTheme(theme: number, signal?: AbortSignal) {
+  return apiRequest<NotesParTheme>(`/access/etude/notes/par-theme/?theme=${theme}`, { signal })
 }
 
 export function supprimerNoteLibre(id: number) {

@@ -85,7 +85,7 @@ def source_valide(source):
     return source
 
 
-def creer_note_libre(profil, subject, note, citation="", origine="", source="", avec_image=False):
+def creer_note_libre(profil, subject, note, citation="", origine="", source="", avec_image=False, theme_id=None):
     note = str(note or "").strip()
     citation = str(citation or "").strip()
     # Un passage gardé tel quel (ou une photo seule) est déjà une note : le texte peut rester vide.
@@ -96,9 +96,33 @@ def creer_note_libre(profil, subject, note, citation="", origine="", source="", 
     if len(citation) > CITATION_MAX:
         citation = citation[:CITATION_MAX]
     origine = origine if origine in ORIGINES_NOTE else ""
+    from catalog.models import Tag
+
+    theme = Tag.objects.filter(pk=theme_id).first() if str(theme_id or "").isdigit() else None
     return NoteLibre.objects.create(
         profil=profil, subject=subject, note=note, citation=citation, origine=origine, source=source_valide(source),
+        theme=theme,
     )
+
+
+NOTES_DU_THEME_MAX = 5
+
+
+def notes_du_theme(profil, theme_id, limite=NOTES_DU_THEME_MAX):
+    """Les notes de l'élève sur ce thème (texte ou passage gardé), les épinglées puis les plus récentes : (total, [notes])."""
+    if not str(theme_id or "").isdigit():
+        return 0, []
+    qs = NoteLibre.objects.filter(profil=profil, theme_id=int(theme_id)).select_related("subject__country")
+    total = qs.count()
+    notes = list(qs.order_by("-epingle", "-updated_at")[:limite])
+    return total, notes
+
+
+def total_notes_dues(profil):
+    """Combien de notes sont à réviser aujourd'hui (même compte que l'accueil) : pour les rappels du jour."""
+    if profil is None:
+        return 0
+    return notes_a_revoir(profil, limite=1)[0]
 
 
 def modifier_note_libre(note_libre, note, avec_image=False):

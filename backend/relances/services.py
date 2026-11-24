@@ -204,6 +204,15 @@ def composer_rappel_seance(user):
                  f"reste{'nt' if dues > 1 else ''} en mémoire."
         )
 
+    from access.etude import total_notes_dues
+
+    notes = total_notes_dues(profil)
+    if notes:
+        faits.append(
+            f"{notes} note{'s' if notes > 1 else ''} of yours to review." if anglais
+            else f"{notes} de tes notes à relire."
+        )
+
     pays = cursus.country.code.lower()
     lien = f"{settings.FRONTEND_URL}/en/{pays}" if anglais else f"{settings.FRONTEND_URL}/{pays}"
     lien_arret = lien_desabonnement(user)

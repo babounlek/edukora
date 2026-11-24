@@ -20,8 +20,8 @@ export function bonneReponseEnNote(choix: QuizChoix[], lettre?: string): string 
  * pas connue (anciennes séances).
  */
 export function AjouterAMesNotes({
-  subjectId, enonce, erreur = false, bonneReponse, source,
-}: { subjectId?: number | null; enonce: string; erreur?: boolean; bonneReponse?: string; source?: string }) {
+  subjectId, enonce, erreur = false, bonneReponse, source, themeId,
+}: { subjectId?: number | null; enonce: string; erreur?: boolean; bonneReponse?: string; source?: string; themeId?: number | null }) {
   useI18n()
   const [ouvert, setOuvert] = useState(false)
   if (!subjectId) return null
@@ -45,6 +45,7 @@ export function AjouterAMesNotes({
         joindreParDefaut={erreur}
         origine="quiz"
         source={source}
+        themeId={themeId}
       />
     </>
   )

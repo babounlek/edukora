@@ -349,3 +349,31 @@ class PushAnglaisTests(PushTestCase):
         charge = push.composer_push(user, SOIR)
 
         self.assertIn("3-day streak", charge["title"])
+
+
+class NotesDuesDansLeRappelTests(PushTestCase):
+    def test_the_daily_reminder_says_how_many_notes_are_due(self):
+        from access.models import NoteLibre
+
+        user = self.eleve()
+        sujet = Subject.objects.filter(country=self.cursus.country).first() or Subject.objects.create(
+            country=self.cursus.country, code="NOTES", label="Notes",
+        )
+        sans = push.composer_push(user, SOIR)
+        self.assertNotIn("notes à relire", sans["body"])
+        NoteLibre.objects.create(profil=user.profils.first(), subject=sujet, note="Une note à relire")
+        NoteLibre.objects.create(profil=user.profils.first(), subject=sujet, note="Une autre")
+        avec = push.composer_push(user, SOIR)
+        self.assertIn("2 de tes notes à relire", avec["body"])
+
+    def test_the_daily_email_says_it_too(self):
+        from access.models import NoteLibre
+        from . import services
+
+        user = self.eleve()
+        sujet = Subject.objects.filter(country=self.cursus.country).first() or Subject.objects.create(
+            country=self.cursus.country, code="NOTES", label="Notes",
+        )
+        NoteLibre.objects.create(profil=user.profils.first(), subject=sujet, note="À relire")
+        _sujet, corps, _html = services.composer_rappel_seance(user)
+        self.assertIn("1 de tes notes à relire", corps)

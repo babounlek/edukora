@@ -46,13 +46,15 @@ export function adresseDuPassage(plage: Range, zone: HTMLElement | null): string
  * empêche le navigateur de désélectionner avant le clic. Réservé aux comptes connectés (une note s'y enregistre).
  */
 export function NoterSelection({
-  cibleRef, subjectId, avecBouton = true, origine, source, remonter = false,
+  cibleRef, subjectId, avecBouton = true, origine, source, remonter = false, themeId,
 }: {
   cibleRef: RefObject<HTMLElement | null>
   subjectId?: number | null
   /** Faux dans un quiz : le bouton flottant gênerait les réponses, seul « Noter ça » sous une sélection reste. */
   avecBouton?: boolean
   origine?: string
+  /** Le thème des notes prises ici (exercices d'un thème, quiz) : elles reviendront quand l'élève le retravaille. */
+  themeId?: number | null
   /** Une barre d'actions fixée en bas de la page (précédent / suivant) : le bouton se pose au-dessus d'elle sur téléphone. */
   remonter?: boolean
   /** Adresse d'où viennent les notes prises ici ; à défaut la page courante, avec la section du passage sélectionné. */
@@ -159,13 +161,14 @@ export function NoterSelection({
         </button>
       </div>
       )}
-      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} source={source ?? window.location.pathname + window.location.search} />
+      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} themeId={themeId} source={source ?? window.location.pathname + window.location.search} />
       <AjouterNoteDialog
         open={citation !== null}
         onOpenChange={(ouvert) => !ouvert && setCitation(null)}
         subjectId={subjectId}
         citation={citation ?? undefined}
         origine={origine}
+        themeId={themeId}
         source={sourcePassage}
       />
     </>

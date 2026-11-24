@@ -20,6 +20,7 @@ urlpatterns = [
     path("etude/carnet/page/", views.etude_carnet_page, name="etude-carnet-page"),
     path("etude/notes/", views.notes_libres, name="notes-libres"),
     path("etude/notes/a-revoir/", views.notes_a_revoir_view, name="notes-a-revoir"),
+    path("etude/notes/par-theme/", views.notes_par_theme, name="notes-par-theme"),
     path("etude/notes/revue/", views.note_revue, name="note-revue"),
     path("etude/notes/epingler/", views.note_epingler, name="note-epingler"),
     path("etude/notes/<int:pk>/", views.note_libre_detail, name="note-libre"),

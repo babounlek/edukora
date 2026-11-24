@@ -1958,6 +1958,8 @@ export interface CarnetEntree extends MarqueEtude {
   origine?: string
   /** Adresse interne du passage ou de la question d'où vient la note (« Rouvrir la source »). */
   source?: string
+  /** Le thème sur lequel porte la note : elle revient sous les yeux de l'élève quand il le retravaille. */
+  theme_id?: number | null
   /** Une photo est jointe : elle se lit par GET /access/etude/notes/<id>/image/ (privée, jamais une adresse publique). */
   a_image?: boolean
   /** « marque » : note posée sur une section ; « libre » : note rattachée à une matière (voir access.carnet). */
@@ -2294,6 +2296,10 @@ export interface CarnetDossier {
 export interface CarnetDossiers {
   total: number
   dossiers: CarnetDossier[]
+}
+export interface NotesParTheme {
+  total: number
+  notes: CarnetEntree[]
 }
 export interface CarnetPageData {
   count: number

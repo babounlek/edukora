@@ -11,6 +11,7 @@ import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { BoutonPartager } from "@/components/BoutonPartager"
 import { ImageNote } from "@/components/ImageNote"
 import { NoteTexte } from "@/components/NoteTexte"
 import { RevisionNotes } from "@/components/RevisionNotes"
@@ -20,6 +21,7 @@ import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
 import { useSeo } from "@/lib/seo"
+import { cheminPublicDeLaSource, texteDeNotePartagee } from "@/lib/partageNote"
 import { capitaliserTheme } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -522,6 +524,15 @@ export function CarnetPage() {
                   {t("ca.rouvrir_source")}
                   <ArrowRight className="size-3" />
                 </Link>
+              )}
+              {(entree.note || entree.citation) && (
+                <BoutonPartager
+                  chemin={cheminPublicDeLaSource(entree.type === "libre" ? entree.source : lienSection(entree))}
+                  texte={texteDeNotePartagee({ matiere: entree.matiere, note: entree.note, citation: entree.citation }, t("ca.partage_entete"))}
+                  type="note"
+                  variant="ghost"
+                  className="-ml-2 mt-2 text-muted-foreground print:hidden"
+                />
               )}
               {entree.type !== "libre" && (
                 <Link

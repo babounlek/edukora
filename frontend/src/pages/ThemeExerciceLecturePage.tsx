@@ -36,6 +36,7 @@ import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { NoterSelection } from "@/components/NoterSelection"
+import { NotesDuTheme } from "@/components/NotesDuTheme"
 import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
 import { EtapeSuivante, usePositionDansLaSeance } from "@/components/BarreSeance"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -173,7 +174,7 @@ export function ThemeExerciceLecturePage() {
   return (
     <div ref={zoneRef} className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pt-10 lg:pb-12">
       {/* Prendre une note sur l'énoncé ou le corrigé : le bouton « Note » et « Noter ça » sous une sélection (comme dans un cours). */}
-      <NoterSelection cibleRef={zoneRef} subjectId={data?.lesson.subject_id} remonter />
+      <NoterSelection cibleRef={zoneRef} subjectId={data?.lesson.subject_id} themeId={Number(tagId) || null} remonter />
       {/* Barre de file : retour au thème, position, précédent/suivant. */}
       <div className="mb-5 flex items-center justify-between gap-3">
         <Link
@@ -197,6 +198,8 @@ export function ThemeExerciceLecturePage() {
           </div>
         )}
       </div>
+
+      <NotesDuTheme themeId={Number(tagId) || null} className="mb-5" />
 
       {isLoading || !data ? (
         <div className="flex flex-col gap-4">

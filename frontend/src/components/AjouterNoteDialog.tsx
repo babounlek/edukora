@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
-import { Bold, Eye, ImagePlus, Italic, List, Sigma, X } from "lucide-react"
+import { Bold, Eye, ImagePlus, Italic, List, Mic, Sigma, Square, X } from "lucide-react"
 
 import { creerNoteLibre, envoyerImageNote, listSubjects, modifierNoteLibre, retirerImageNote, supprimerNoteLibre } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
@@ -12,7 +12,8 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/compone
 import { useCountry } from "@/context/CountryContext"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { useCursusAbonne } from "@/lib/abonneActif"
-import { t, useI18n } from "@/lib/i18n"
+import { ajouterALaSuite, useDictee } from "@/lib/dictee"
+import { langueCourante, t, useI18n } from "@/lib/i18n"
 import { appliquerFormat, type Format } from "@/lib/miseEnForme"
 import { reduireImage } from "@/lib/reduireImage"
 import { cn } from "@/lib/utils"
@@ -55,12 +56,14 @@ function derniereMatiere(): number | null {
  * question est jointe en citation).
  */
 export function AjouterNoteDialog({
-  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine, source, joignables, joindreParDefaut = false,
+  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine, source, themeId, joignables, joindreParDefaut = false,
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
   /** Modifier une note libre existante : la matière et la citation ne changent pas, seul le texte. */
   edition?: { id: number; note: string; citation?: string; aImage?: boolean; version?: string }
+  /** Le thème de la note : elle reviendra sous les yeux de l'élève quand il le retravaille (voir NotesDuTheme). */
+  themeId?: number | null
   /** Adresse interne d'où vient la note (« Rouvrir la source » sur sa carte). */
   source?: string
   /** Matière imposée (depuis un quiz) ; sinon l'élève la choisit. */
@@ -133,6 +136,19 @@ export function AjouterNoteDialog({
     return () => window.clearTimeout(m)
   }, [open, texteVide])
 
+  // La dictée vocale : le texte reconnu s'ajoute à la suite de ce qui est écrit (voir lib/dictee).
+  const texteCourant = useRef(texte)
+  texteCourant.current = texte
+  const dictee = useDictee({
+    langue: langueCourante() === "en" ? "en" : "fr",
+    onTexte: (dicte) => ecrire(ajouterALaSuite(texteCourant.current, dicte).slice(0, NOTE_MAX)),
+    onErreur: (e) => toast.error(t(e === "refusee" ? "ca.dictee_refusee" : e === "reseau" ? "ca.dictee_reseau" : "ca.dictee_erreur")),
+  })
+  const arreterDictee = dictee.arreter
+  useEffect(() => {
+    if (!open) arreterDictee()
+  }, [open, arreterDictee])
+
   function ecrire(valeur: string) {
     setTexte(valeur)
     if (brouillon) ecrireBrouillon(citation ?? "", valeur)
@@ -175,7 +191,7 @@ export function AjouterNoteDialog({
         else if (edition.aImage && imageRetiree) await retirerImageNote(edition.id)
         return
       }
-      const note = await creerNoteLibre(matiere as number, reponseJointe + texte, citationEffective, origine ?? "", source ?? "", image !== null)
+      const note = await creerNoteLibre(matiere as number, reponseJointe + texte, citationEffective, origine ?? "", source ?? "", image !== null, themeId ?? null)
       if (image) {
         try {
           await envoyerImageNote(note.id, await reduireImage(image))
@@ -198,6 +214,7 @@ export function AjouterNoteDialog({
       toast.success(t(edition ? "ca.note_modifiee" : "ca.note_ajoutee"))
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
+      queryClient.invalidateQueries({ queryKey: ["notes-theme"] })
       queryClient.invalidateQueries({ queryKey: CLE_NOTES_DUES })
       setTexte("")
       setImage(null)
@@ -262,6 +279,20 @@ export function AjouterNoteDialog({
               <Icone className="size-4" aria-hidden="true" />
             </Button>
           ))}
+          {dictee.disponible && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className={cn("size-9", dictee.actif && "bg-destructive/10 text-destructive")}
+              aria-pressed={dictee.actif}
+              aria-label={t(dictee.actif ? "ca.dictee_arreter" : "ca.dictee")}
+              title={t(dictee.actif ? "ca.dictee_arreter" : "ca.dictee")}
+              onClick={dictee.actif ? dictee.arreter : dictee.demarrer}
+            >
+              {dictee.actif ? <Square className="size-4 fill-current" aria-hidden="true" /> : <Mic className="size-4" aria-hidden="true" />}
+            </Button>
+          )}
           <Button
             type="button"
             variant="ghost"
@@ -289,6 +320,12 @@ export function AjouterNoteDialog({
           placeholder={t("ed.note_placeholder")}
           className="mt-1.5 w-full resize-y rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm leading-relaxed outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
         />
+        {dictee.actif && (
+          <p role="status" className="mt-1.5 flex items-center gap-2 text-xs text-muted-foreground">
+            <span className="size-2 animate-pulse rounded-full bg-destructive" aria-hidden="true" />
+            {dictee.provisoire ? <em>{dictee.provisoire}</em> : t("ca.dictee_ecoute")}
+          </p>
+        )}
         {apercu && (
           <div className="mt-2 rounded-xl border border-gold/30 bg-gold/[0.06] px-4 py-3" aria-label={t("ca.apercu")}>
             {texte.trim() ? <NoteTexte texte={texte} /> : <p className="text-sm text-muted-foreground">{t("ca.apercu_vide")}</p>}
