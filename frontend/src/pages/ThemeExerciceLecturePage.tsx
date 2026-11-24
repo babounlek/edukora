@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import {
@@ -35,6 +35,7 @@ import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { NoterSelection } from "@/components/NoterSelection"
 import { libelleEnteteExercice, libelleTitreExercice } from "@/lib/libellesEpreuve"
 import { EtapeSuivante, usePositionDansLaSeance } from "@/components/BarreSeance"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -133,6 +134,7 @@ export function ThemeExerciceLecturePage() {
     window.scrollTo({ top: 0 })
   }, [exerciseId])
 
+  const zoneRef = useRef<HTMLDivElement>(null)
   const exercices = file?.exercices ?? []
   const index = exercices.findIndex((e) => e.exercise_id === Number(exerciseId))
   const precedent = index > 0 ? exercices[index - 1] : undefined
@@ -169,7 +171,9 @@ export function ThemeExerciceLecturePage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pt-10 lg:pb-12">
+    <div ref={zoneRef} className="mx-auto max-w-5xl animate-fade-up px-4 pb-28 pt-6 sm:px-6 sm:pt-10 lg:pb-12">
+      {/* Prendre une note sur l'énoncé ou le corrigé : le bouton « Note » et « Noter ça » sous une sélection (comme dans un cours). */}
+      <NoterSelection cibleRef={zoneRef} subjectId={data?.lesson.subject_id} remonter />
       {/* Barre de file : retour au thème, position, précédent/suivant. */}
       <div className="mb-5 flex items-center justify-between gap-3">
         <Link

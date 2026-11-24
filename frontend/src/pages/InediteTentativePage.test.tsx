@@ -29,6 +29,7 @@ const toast = vi.hoisted(() => Object.assign(vi.fn(), { error: vi.fn(), success:
 
 vi.mock("@/api/endpoints", () => api)
 vi.mock("sonner", () => ({ toast }))
+vi.mock("@/components/NoterSelection", () => ({ NoterSelection: () => null }))
 // Le rendu Markdown/KaTeX n'est pas ce qui est testé ici (voir audit-rendu.test.ts).
 vi.mock("@/components/EpreuveMarkdown", () => ({
   EpreuveMarkdown: ({ markdown }: { markdown: string }) => <div>{markdown}</div>,

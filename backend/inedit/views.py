@@ -320,6 +320,8 @@ def _tentative_payload(tentative):
         "id": tentative.id,
         "epreuve": tentative.epreuve_id,
         "epreuve_titre": tentative.epreuve.titre,
+        # La matière, pour que « Noter ça » range une note du corrigé dans son dossier.
+        "subject_id": tentative.epreuve.subject_id,
         # Code pays (ex. "CM") - permet au frontend de reconstruire une URL de
         # catalogue préfixée pays (voir InediteTentativePage.tsx) sans requête
         # supplémentaire : TentativeInedite n'expose sinon aucun lien vers Country.

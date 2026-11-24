@@ -1053,6 +1053,8 @@ export interface ExerciceLecture {
     origine: string
     subject_code: string
     subject_label: string
+    /** Id de la matière : « Noter ça » range la note dans son dossier. */
+    subject_id?: number
     introduction_markdown: string
   }
   theme: { id: number; name: string }
@@ -1680,6 +1682,8 @@ export interface TentativeInediteExercice {
 export interface TentativeInedite {
   id: number
   epreuve: number
+  /** Id de la matière de l'épreuve : « Noter ça » range la note dans son dossier. */
+  subject_id?: number
   epreuve_titre: string
   // Code pays (ex. "CM") - permet de reconstruire une URL de catalogue préfixée
   // pays (voir InediteTentativePage.tsx) sans requête supplémentaire.

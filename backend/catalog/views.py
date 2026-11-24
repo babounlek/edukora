@@ -1274,6 +1274,8 @@ class ThemeExerciceLectureView(APIView):
                 "origine": lesson.origine,
                 "subject_code": lesson.subject.code,
                 "subject_label": lesson.subject.label,
+                # « Noter ça » range la note dans le dossier de cette matière.
+                "subject_id": lesson.subject_id,
                 "introduction_markdown": lesson.introduction_markdown,
             },
             "theme": {"id": tag.pk, "name": tag.name},

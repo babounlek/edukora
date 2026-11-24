@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { NoterSelection } from "@/components/NoterSelection"
 import { BandeauNotation } from "@/components/inedit/BandeauNotation"
 import { CausePerte } from "@/components/inedit/CausePerte"
 import { BoutonTraitee } from "@/components/inedit/BoutonTraitee"
@@ -156,6 +157,7 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
 
   // Dernière requête d'écriture émise par question : deux clics rapprochés sur « + »
   // produisent deux requêtes, et une réponse tardive ne doit jamais écraser la plus récente.
+  const zoneNotesRef = useRef<HTMLDivElement>(null)
   const sequences = useRef(new Map<number, number>())
   const defilementInitial = useRef(false)
   // Un seul refetch de verrouillage à la fois : si l'horloge du serveur retarde sur celle du
@@ -650,7 +652,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   }
 
   return (
-    <div className={cn("mx-auto max-w-6xl animate-fade-up px-4 sm:px-6", enExamen ? "py-4" : "py-8")}>
+    <div ref={zoneNotesRef} className={cn("mx-auto max-w-6xl animate-fade-up px-4 sm:px-6", enExamen ? "py-4" : "py-8")}>
+      {/* « Noter ça » sur un passage du corrigé ou de l'énoncé. Pas de bouton flottant ici : en salle d'examen rien ne doit distraire. */}
+      {!enExamen && <NoterSelection cibleRef={zoneNotesRef} subjectId={tentative?.subject_id} avecBouton={false} />}
       {/* Toujours présent, même en salle d'examen : c'est ce qui dit au lecteur d'écran qu'un
           repère de temps vient de passer, sans interrompre la lecture d'une question. */}
       <p role="status" className="sr-only">

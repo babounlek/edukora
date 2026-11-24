@@ -29,7 +29,7 @@ export function texteDeLaSelection(plage: Range): string {
  * leur clé en identifiant : c'est ce que « Rouvrir la section » utilise déjà). Sans section reconnue, la page seule.
  */
 export function adresseDuPassage(plage: Range, zone: HTMLElement | null): string {
-  const base = window.location.pathname
+  const base = window.location.pathname + window.location.search
   let noeud: Node | null = plage.commonAncestorContainer
   if (noeud.nodeType === Node.TEXT_NODE) noeud = noeud.parentNode
   const section = noeud instanceof Element ? noeud.closest("[id]") : null
@@ -46,13 +46,15 @@ export function adresseDuPassage(plage: Range, zone: HTMLElement | null): string
  * empêche le navigateur de désélectionner avant le clic. Réservé aux comptes connectés (une note s'y enregistre).
  */
 export function NoterSelection({
-  cibleRef, subjectId, avecBouton = true, origine, source,
+  cibleRef, subjectId, avecBouton = true, origine, source, remonter = false,
 }: {
   cibleRef: RefObject<HTMLElement | null>
   subjectId?: number | null
   /** Faux dans un quiz : le bouton flottant gênerait les réponses, seul « Noter ça » sous une sélection reste. */
   avecBouton?: boolean
   origine?: string
+  /** Une barre d'actions fixée en bas de la page (précédent / suivant) : le bouton se pose au-dessus d'elle sur téléphone. */
+  remonter?: boolean
   /** Adresse d'où viennent les notes prises ici ; à défaut la page courante, avec la section du passage sélectionné. */
   source?: string
 }) {
@@ -135,7 +137,11 @@ export function NoterSelection({
       )}
       {/* Le geste « sélectionner un passage » ne se devine pas : un bouton toujours visible ouvre une note libre. */}
       {avecBouton && (
-      <div className="fixed bottom-[calc(var(--bottom-tab-bar,0px)+1rem)] right-4 z-40 flex flex-col items-end gap-2 lg:bottom-6 print:hidden">
+      <div
+        className={`fixed right-4 z-40 flex flex-col items-end gap-2 lg:bottom-6 print:hidden ${
+          remonter ? "bottom-[calc(var(--bottom-tab-bar,0px)+5rem)]" : "bottom-[calc(var(--bottom-tab-bar,0px)+1rem)]"
+        }`}
+      >
         {astuce && (
           <p role="status" className="max-w-[15rem] rounded-xl bg-foreground px-3 py-2 text-xs leading-snug text-background shadow-lg">
             {t("ca.astuce_noter")}
@@ -153,7 +159,7 @@ export function NoterSelection({
         </button>
       </div>
       )}
-      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} source={source ?? window.location.pathname} />
+      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} source={source ?? window.location.pathname + window.location.search} />
       <AjouterNoteDialog
         open={citation !== null}
         onOpenChange={(ouvert) => !ouvert && setCitation(null)}
