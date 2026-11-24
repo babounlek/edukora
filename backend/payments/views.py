@@ -96,10 +96,11 @@ def payment_config(request):
     comptes = MobileMoneyAccount.objects.filter(active=True).order_by("operator")
     return Response({
         "campay_active": bool(settings.CAMPAY_ACTIVE),
+        "manual_active": bool(settings.MANUAL_PAYMENT_ACTIVE),
         "beneficiaires": [
             {"operator": c.operator, "operator_display": c.get_operator_display(), "account_name": c.account_name}
             for c in comptes
-        ],
+        ] if settings.MANUAL_PAYMENT_ACTIVE else [],
         "sms_active": settings.SMS_BACKEND != "users.sms_backends.ConsoleSMSBackend",
     })
 
@@ -193,7 +194,8 @@ def check_payment_status(request, transaction_id):
 
 @api_view(["GET"])
 def list_manual_payment_methods(request):
-    accounts = MobileMoneyAccount.objects.filter(active=True)
+    accounts = MobileMoneyAccount.objects.filter(active=True) if settings.MANUAL_PAYMENT_ACTIVE \
+        else MobileMoneyAccount.objects.none()
     return Response(MobileMoneyAccountSerializer(accounts, many=True).data)
 
 
@@ -202,6 +204,8 @@ def list_manual_payment_methods(request):
 def declare_manual_payment(request):
     if (refus := exiger_mode_parent(request)) is not None:
         return refus
+    if not settings.MANUAL_PAYMENT_ACTIVE:
+        return Response({"error": "Le paiement manuel est momentanément indisponible."}, status=503)
     serializer = ManualPaymentDeclareSerializer(data=request.data, context={"request": request})
     serializer.is_valid(raise_exception=True)
     payment = serializer.save()

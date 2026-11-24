@@ -53,6 +53,11 @@ PAYMENT_PROVIDER = config("PAYMENT_PROVIDER", default="campay")
 # transactions déjà initiées continue (voir payments.views.check_payment_status).
 # Défaut actif : une variable absente ne change rien.
 CAMPAY_ACTIVE = config("CAMPAY_ACTIVE", default=True, cast=bool)
+# Interrupteur du paiement manuel (transfert Mobile Money déclaré, vérifié par l'équipe).
+# Coupé : /payments/manual/declare/ refuse toute NOUVELLE déclaration et le frontend
+# (lu via /payments/config/) ne propose plus ce moyen ; les déclarations déjà faites restent
+# consultables et traitables depuis l'admin. Défaut actif : une variable absente ne change rien.
+MANUAL_PAYMENT_ACTIVE = config("MANUAL_PAYMENT_ACTIVE", default=True, cast=bool)
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,

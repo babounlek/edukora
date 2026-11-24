@@ -1807,6 +1807,7 @@ export const en: Partial<Record<CleI18n, string>> = {
     "Automatic Mobile Money payment - confirmation within seconds, access unlocked immediately.",
   "sb.difficultes": "Trouble with Campay? Pay manually via Orange Money or MTN MoMo",
   "sb.auto_indisponible": "Automatic payment is temporarily unavailable. ",
+  "sb.aucun_moyen": "Payment is temporarily unavailable. Please try again a little later.",
   "sb.manuel_info":
     "Manual payment: you make the transfer yourself, then declare your transaction. Checked by our team within {delai}.",
   "sb.paiement": "Payment",

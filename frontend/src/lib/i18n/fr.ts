@@ -1815,6 +1815,7 @@ export const fr = {
     "Paiement Mobile Money automatique - confirmation en quelques secondes, accès débloqué immédiatement.",
   "sb.difficultes": "Des difficultés avec Campay ? Payer manuellement via Orange Money ou MTN MoMo",
   "sb.auto_indisponible": "Le paiement automatique est momentanément indisponible. ",
+  "sb.aucun_moyen": "Le paiement est momentanément indisponible. Réessaie un peu plus tard.",
   "sb.manuel_info":
     "Paiement manuel : tu effectues toi-même le transfert, puis tu déclares ta transaction. Vérifiée par notre équipe sous {delai}.",
   "sb.paiement": "Paiement",

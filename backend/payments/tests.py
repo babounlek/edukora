@@ -479,6 +479,16 @@ class PaymentFlowAPITests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIs(response.data["campay_active"], False)
 
+    @override_settings(MANUAL_PAYMENT_ACTIVE=False)
+    def test_manual_declaration_is_refused_when_manual_payment_is_switched_off(self):
+        response = self.client.post("/payments/manual/declare/", {"plan_id": self.plan.id})
+
+        self.assertEqual(response.status_code, 503)
+        self.assertFalse(ManualPayment.objects.filter(user=self.user).exists())
+        config = APIClient().get("/payments/config/").data
+        self.assertIs(config["manual_active"], False)
+        self.assertEqual(config["beneficiaires"], [])
+
     def test_payment_config_names_the_beneficiary_without_publishing_the_number(self):
         MobileMoneyAccount.objects.update_or_create(
             operator="ORANGE", defaults={"phone_number": "690000001", "account_name": "Kora SARL", "active": True},

@@ -16,6 +16,8 @@ export const PAYMENT_CONFIG_KEY = ["payment-config"] as const
  */
 export function usePaymentConfig(): {
   campayActif: boolean
+  /** Le paiement manuel est-il proposé ? (backend : MANUAL_PAYMENT_ACTIVE ; actif par défaut). */
+  manuelActif: boolean
   pret: boolean
   /** À qui part un transfert manuel (nom et opérateur). Vide si le serveur ne le dit pas. */
   beneficiaires: NonNullable<PaymentConfig["beneficiaires"]>
@@ -30,6 +32,7 @@ export function usePaymentConfig(): {
   })
   return {
     campayActif: data?.campay_active ?? true,
+    manuelActif: data?.manual_active ?? true,
     pret: !isPending,
     beneficiaires: data?.beneficiaires ?? [],
     smsActif: data?.sms_active ?? false,

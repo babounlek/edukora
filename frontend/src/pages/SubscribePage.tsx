@@ -178,9 +178,10 @@ export function SubscribePage() {
   // Campay coupé côté serveur (CAMPAY_ACTIVE=0) : seul le paiement manuel reste proposé,
   // directement déplié et présélectionné. `methode` est la méthode réellement affichée -
   // dérivée plutôt que corrigée dans un effet, pour ne jamais montrer Campay un instant.
-  const { campayActif, pret: configPrete } = usePaymentConfig()
+  const { campayActif, manuelActif, pret: configPrete } = usePaymentConfig()
   const methode: PaymentMethod = !campayActif && paymentMethod === "CAMPAY" ? "ORANGE" : paymentMethod
-  const optionsManuellesVisibles = !campayActif || showManualOptions
+  const optionsManuellesVisibles = manuelActif && (!campayActif || showManualOptions)
+  const aucunMoyen = !campayActif && !manuelActif
 
   useEffect(() => {
     // `cursus_id` : la relance de l'inscrit qui n'a pas payé (relances.inscrit_sans_paiement) y lit l'examen visé.
@@ -768,7 +769,9 @@ export function SubscribePage() {
                       </label>
                     )}
 
-                    {!optionsManuellesVisibles ? (
+                    {aucunMoyen ? (
+                      <p className="text-sm text-muted-foreground">{t("sb.aucun_moyen")}</p>
+                    ) : !manuelActif ? null : !optionsManuellesVisibles ? (
                       <button
                         type="button"
                         onClick={() => setShowManualOptions(true)}
@@ -811,6 +814,7 @@ export function SubscribePage() {
                     )}
                   </div>
 
+                  {!aucunMoyen && (
                   <div className="flex flex-col gap-2.5">
                     <StepLabel n={2}>{t("sb.paiement")}</StepLabel>
 
@@ -873,6 +877,7 @@ export function SubscribePage() {
                       )
                     )}
                   </div>
+                  )}
                 </>
               )}
 
