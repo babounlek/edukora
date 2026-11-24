@@ -322,6 +322,36 @@ export function CarnetPage() {
 
         {enListe && (
         <section className="mt-6">
+        {dossierId !== null && dossiers.length > 1 && (
+          // Passer d'une matière à l'autre sans repasser par la grille ; la pastille active se centre d'elle-même.
+          <nav aria-label={t("ca.dossiers_aria")} className="relative -mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0 print:hidden">
+            {dossiers.map((d) => {
+              const actif = d.matiere_id === dossierId
+              return (
+                <button
+                  key={d.matiere_id}
+                  type="button"
+                  aria-current={actif ? "true" : undefined}
+                  ref={(el) => {
+                    // Défilement de la rangée seule : scrollIntoView aurait aussi fait bouger la page.
+                    const rangee = el?.parentElement
+                    if (actif && el && rangee) rangee.scrollLeft = el.offsetLeft - (rangee.clientWidth - el.offsetWidth) / 2
+                  }}
+                  onClick={() => !actif && ouvrirDossier(d.matiere_id)}
+                  className={`inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                    actif ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  {d.matiere}
+                  <span className={actif ? "text-primary-foreground/80" : "text-muted-foreground/70"}>{d.total}</span>
+                  {d.a_reviser > 0 && (
+                    <span className="size-1.5 rounded-full bg-gold" role="img" aria-label={t("ca.dossier_a_reviser", { n: d.a_reviser })} />
+                  )}
+                </button>
+              )
+            })}
+          </nav>
+        )}
         <div className="flex flex-wrap items-center justify-between gap-2 print:hidden">
           {dossierId !== null ? (
             <button

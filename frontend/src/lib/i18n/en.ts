@@ -1462,6 +1462,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ca.tri_a_reviser": "To review first",
   "ca.voir_suite": "Show more",
   "ca.resultats": "Results",
+  "ca.dossiers_aria": "My folders",
 
   "hi.sous_titre": "Your quizzes, your attempts at original papers and what you've already read.",
   "hi.voir_moins": "Show less",

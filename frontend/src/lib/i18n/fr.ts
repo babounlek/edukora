@@ -1468,6 +1468,7 @@ export const fr = {
   "ca.tri_a_reviser": "À réviser d'abord",
   "ca.voir_suite": "Afficher la suite",
   "ca.resultats": "Résultats",
+  "ca.dossiers_aria": "Mes dossiers",
 
   "hi.sous_titre": "Tes quiz, tes tentatives d'épreuves inédites et ce que tu as déjà lu.",
   "hi.voir_moins": "Voir moins",
