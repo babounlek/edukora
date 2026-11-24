@@ -24,6 +24,7 @@ vi.mock("@/components/EpreuveMarkdown", () => ({ EpreuveMarkdown: ({ markdown }:
 vi.mock("@/components/BoutonPartager", () => ({ BoutonPartager: () => null }))
 vi.mock("@/components/ObjectifXp", () => ({ ObjectifXp: () => <p>objectif du jour</p> }))
 vi.mock("@/components/QuizFichePdfButtons", () => ({ QuizFichePdfButtons: () => null }))
+vi.mock("@/components/NoterSelection", () => ({ NoterSelection: () => null }))
 
 import { QuizSessionPage } from "./QuizSessionPage"
 

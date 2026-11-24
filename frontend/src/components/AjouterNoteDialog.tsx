@@ -49,7 +49,7 @@ function derniereMatiere(): number | null {
  * question est jointe en citation).
  */
 export function AjouterNoteDialog({
-  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine,
+  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine, joignables, joindreParDefaut = false,
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
@@ -61,6 +61,13 @@ export function AjouterNoteDialog({
   matiereParDefaut?: { id: number; label: string } | null
   citation?: string
   texteInitial?: string
+  /**
+   * Depuis la correction d'un quiz : la question et la bonne réponse ne sont jamais imposées, l'élève coche ce qu'il veut joindre
+   * à sa note (rien de coché : une note libre dans la matière).
+   */
+  joignables?: { question: string; bonneReponse?: string }
+  /** Cases cochées d'office à l'ouverture (après une erreur : la question et la bonne réponse). */
+  joindreParDefaut?: boolean
   /** « quiz » : la note vient de la correction d'un quiz (rappelé sur sa carte). */
   origine?: string
 }) {
@@ -70,15 +77,23 @@ export function AjouterNoteDialog({
   const cursus = useCursusAbonne()
   const [texte, setTexte] = useState(edition?.note ?? texteInitial ?? "")
   const [choix, setChoix] = useState<number | null>(matiereParDefaut?.id ?? derniereMatiere())
-  const aCitation = Boolean(edition?.citation ?? citation)
+  const [avecQuestion, setAvecQuestion] = useState(joindreParDefaut)
+  const [avecReponse, setAvecReponse] = useState(joindreParDefaut)
+  const citationEffective = joignables ? (avecQuestion ? joignables.question : "") : (citation ?? "")
+  const reponseJointe = joignables?.bonneReponse && avecReponse ? t("ca.bonne_reponse_note", { reponse: joignables.bonneReponse }) : ""
+  const aCitation = Boolean(edition?.citation ?? citationEffective) || reponseJointe !== ""
+  // Le brouillon ne sert qu'aux notes écrites hors quiz : une note de quiz se fait en quelques secondes, dans la page.
+  const brouillon = !edition && !joignables
   const zoneTexte = useRef<HTMLTextAreaElement>(null)
   const texteVide = texte === ""
 
   useEffect(() => {
     if (!open) return
-    setTexte(edition?.note ?? texteInitial ?? lireBrouillon(citation ?? ""))
+    setTexte(edition?.note ?? texteInitial ?? (brouillon ? lireBrouillon(citation ?? "") : ""))
     setChoix(matiereParDefaut?.id ?? derniereMatiere())
-  }, [open, texteInitial, edition?.note, matiereParDefaut?.id, citation])
+    setAvecQuestion(joindreParDefaut)
+    setAvecReponse(joindreParDefaut)
+  }, [open, texteInitial, edition?.note, matiereParDefaut?.id, citation, brouillon, joindreParDefaut])
 
   // Le curseur se pose À LA FIN d'un texte déjà écrit (la bonne réponse d'un quiz, un brouillon) : on écrit à la suite.
   useEffect(() => {
@@ -92,7 +107,7 @@ export function AjouterNoteDialog({
 
   function ecrire(valeur: string) {
     setTexte(valeur)
-    if (!edition) ecrireBrouillon(citation ?? "", valeur)
+    if (brouillon) ecrireBrouillon(citation ?? "", valeur)
   }
   // Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
   const enregistrable = Boolean(texte.trim()) || aCitation
@@ -114,7 +129,7 @@ export function AjouterNoteDialog({
 
   const creer = useMutation({
     mutationFn: () =>
-      edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, texte, citation ?? "", origine ?? ""),
+      edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, reponseJointe + texte, citationEffective, origine ?? ""),
     onSuccess: () => {
       if (!edition && matiere !== null) {
         try {
@@ -123,7 +138,7 @@ export function AjouterNoteDialog({
           /* stockage indisponible : la matière ne sera simplement pas retenue */
         }
       }
-      if (!edition) ecrireBrouillon("", "")
+      if (brouillon) ecrireBrouillon("", "")
       toast.success(t(edition ? "ca.note_modifiee" : "ca.note_ajoutee"))
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
@@ -139,10 +154,29 @@ export function AjouterNoteDialog({
       <DialogContent>
         <DialogTitle>{t(edition ? "ca.modifier_note" : "ca.nouvelle_note")}</DialogTitle>
         <DialogDescription>{t("ca.nouvelle_note_texte")}</DialogDescription>
-        {(edition?.citation ?? citation) && (
+        {joignables && (
+          <fieldset className="mt-3 flex flex-col gap-1.5 text-sm">
+            <label className="flex items-center gap-2">
+              <input type="checkbox" className="size-4 accent-primary" checked={avecQuestion} onChange={(e) => setAvecQuestion(e.target.checked)} />
+              {t("ca.joindre_question")}
+            </label>
+            {joignables.bonneReponse && (
+              <label className="flex items-center gap-2">
+                <input type="checkbox" className="size-4 accent-primary" checked={avecReponse} onChange={(e) => setAvecReponse(e.target.checked)} />
+                {t("ca.joindre_reponse")}
+              </label>
+            )}
+          </fieldset>
+        )}
+        {(edition?.citation ?? citationEffective) && (
           <blockquote className="mt-3 max-h-40 overflow-y-auto rounded-xl border-l-4 border-gold/60 bg-gold/[0.06] px-3 py-2 text-muted-foreground">
-            <NoteTexte texte={edition?.citation ?? citation ?? ""} />
+            <NoteTexte texte={edition?.citation ?? citationEffective} />
           </blockquote>
+        )}
+        {reponseJointe && (
+          <div className="mt-2 rounded-xl border border-gold/30 bg-gold/[0.06] px-3 py-2">
+            <NoteTexte texte={reponseJointe.trim()} />
+          </div>
         )}
         {!subjectId && !edition && matieres && matieres.length > 0 && (
           <select
@@ -177,7 +211,7 @@ export function AjouterNoteDialog({
           <span className="mr-auto text-xs tabular-nums text-muted-foreground">
             {texte.length} / {NOTE_MAX}
           </span>
-          <Button variant="outline" onClick={() => { if (!edition) ecrireBrouillon("", ""); onOpenChange(false) }}>
+          <Button variant="outline" onClick={() => { if (brouillon) ecrireBrouillon("", ""); onOpenChange(false) }}>
             {t("seance.annuler")}
           </Button>
           <Button disabled={!enregistrable || (!edition && matiere === null) || creer.isPending} onClick={() => creer.mutate()}>

@@ -23,6 +23,7 @@ import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { CoupDePouce, PastilleDifficulte } from "@/components/CoupDePouce"
 import { AjouterAMesNotes, bonneReponseEnNote } from "@/components/AjouterAMesNotes"
+import { NoterSelection } from "@/components/NoterSelection"
 import { SignalerQuestion } from "@/components/SignalerQuestion"
 import { QuizFichePdfButtons } from "@/components/QuizFichePdfButtons"
 import { useCountry } from "@/context/CountryContext"
@@ -143,6 +144,7 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   const debutQuestionRef = useRef(Date.now())
   // Toujours la dernière version des gestionnaires, pour un écouteur clavier posé une seule fois.
   const keyHandlerRef = useRef<(e: KeyboardEvent) => void>(() => {})
+  const zoneQuizRef = useRef<HTMLDivElement>(null)
   // Posé quand une réponse vient d'être enregistrée : le retour qui apparaît alors est amené à l'écran (voir
   // amenerLeRetour). Jamais pour une question déjà répondue qu'on rouvre : la page ne doit pas sauter à l'ouverture.
   const retourARegarderRef = useRef(false)
@@ -408,7 +410,11 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
+    <div ref={zoneQuizRef} className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:px-6 sm:pb-10 sm:pt-10">
+      {/* Après la réponse : sélectionner un passage de la question ou de l'explication le garde en note (« Noter ça »). */}
+      {answered && !essai && !invite && (
+        <NoterSelection cibleRef={zoneQuizRef} subjectId={question.subject_id} avecBouton={false} origine="quiz" />
+      )}
       {/* L'animation d'entrée porte sur le contenu seul, jamais sur le conteneur de la barre fixe du bas :
           `animate-fade-up` laisse un `transform` sur son élément, qui devient alors le repère de tout
           descendant `fixed` (la barre partait au bas de la page, pas de l'écran). */}

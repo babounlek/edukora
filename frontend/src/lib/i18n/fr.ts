@@ -1470,6 +1470,8 @@ export const fr = {
   "ca.tri_a_reviser": "À réviser d'abord",
   "ca.voir_suite": "Afficher la suite",
   "ca.resultats": "Résultats",
+  "ca.joindre_question": "Joindre la question",
+  "ca.joindre_reponse": "Joindre la bonne réponse",
   "ca.noter_erreur_bouton": "Noter cette erreur",
   "ca.bonne_reponse_note": "Bonne réponse : {reponse}\n\n",
   "ca.origine_quiz": "Issue d'un quiz",

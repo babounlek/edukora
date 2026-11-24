@@ -33,8 +33,14 @@ export function texteDeLaSelection(plage: Range): string {
  * empêche le navigateur de désélectionner avant le clic. Réservé aux comptes connectés (une note s'y enregistre).
  */
 export function NoterSelection({
-  cibleRef, subjectId,
-}: { cibleRef: RefObject<HTMLElement | null>; subjectId?: number | null }) {
+  cibleRef, subjectId, avecBouton = true, origine,
+}: {
+  cibleRef: RefObject<HTMLElement | null>
+  subjectId?: number | null
+  /** Faux dans un quiz : le bouton flottant gênerait les réponses, seul « Noter ça » sous une sélection reste. */
+  avecBouton?: boolean
+  origine?: string
+}) {
   useI18n()
   const { isAuthenticated } = useAuth()
   const [bouton, setBouton] = useState<{ x: number; y: number } | null>(null)
@@ -43,7 +49,7 @@ export function NoterSelection({
   // L'astuce ne s'affiche qu'une fois (puis le bouton parle de lui-même) et disparaît seule.
   const [astuce, setAstuce] = useState(false)
   useEffect(() => {
-    if (!isAuthenticated || !subjectId) return
+    if (!isAuthenticated || !subjectId || !avecBouton) return
     try {
       if (window.localStorage.getItem(CLE_ASTUCE)) return
       window.localStorage.setItem(CLE_ASTUCE, "1")
@@ -53,7 +59,7 @@ export function NoterSelection({
     setAstuce(true)
     const m = window.setTimeout(() => setAstuce(false), 9000)
     return () => window.clearTimeout(m)
-  }, [isAuthenticated, subjectId])
+  }, [isAuthenticated, subjectId, avecBouton])
 
   useEffect(() => {
     if (!isAuthenticated || !subjectId) return
@@ -108,6 +114,7 @@ export function NoterSelection({
         </button>
       )}
       {/* Le geste « sélectionner un passage » ne se devine pas : un bouton toujours visible ouvre une note libre. */}
+      {avecBouton && (
       <div className="fixed bottom-[calc(var(--bottom-tab-bar,0px)+1rem)] right-4 z-40 flex flex-col items-end gap-2 lg:bottom-6 print:hidden">
         {astuce && (
           <p role="status" className="max-w-[15rem] rounded-xl bg-foreground px-3 py-2 text-xs leading-snug text-background shadow-lg">
@@ -125,12 +132,14 @@ export function NoterSelection({
           <span className="hidden sm:inline">{t("ca.ajouter_note")}</span>
         </button>
       </div>
+      )}
       <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} />
       <AjouterNoteDialog
         open={citation !== null}
         onOpenChange={(ouvert) => !ouvert && setCitation(null)}
         subjectId={subjectId}
         citation={citation ?? undefined}
+        origine={origine}
       />
     </>
   )

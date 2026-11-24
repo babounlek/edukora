@@ -41,8 +41,8 @@ export function AjouterAMesNotes({
         open={ouvert}
         onOpenChange={setOuvert}
         subjectId={subjectId}
-        citation={enonce.replace(/\s+/g, " ").trim()}
-        texteInitial={bonneReponse ? t("ca.bonne_reponse_note", { reponse: bonneReponse }) : undefined}
+        joignables={{ question: enonce.replace(/\s+/g, " ").trim(), bonneReponse }}
+        joindreParDefaut={erreur}
         origine="quiz"
       />
     </>

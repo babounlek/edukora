@@ -1464,6 +1464,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ca.tri_a_reviser": "To review first",
   "ca.voir_suite": "Show more",
   "ca.resultats": "Results",
+  "ca.joindre_question": "Attach the question",
+  "ca.joindre_reponse": "Attach the correct answer",
   "ca.noter_erreur_bouton": "Note this mistake",
   "ca.bonne_reponse_note": "Correct answer: {reponse}\n\n",
   "ca.origine_quiz": "From a quiz",
