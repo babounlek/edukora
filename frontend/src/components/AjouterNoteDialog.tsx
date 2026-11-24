@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
@@ -49,7 +49,7 @@ function derniereMatiere(): number | null {
  * question est jointe en citation).
  */
 export function AjouterNoteDialog({
-  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition,
+  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine,
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
@@ -61,6 +61,8 @@ export function AjouterNoteDialog({
   matiereParDefaut?: { id: number; label: string } | null
   citation?: string
   texteInitial?: string
+  /** « quiz » : la note vient de la correction d'un quiz (rappelé sur sa carte). */
+  origine?: string
 }) {
   useI18n()
   const queryClient = useQueryClient()
@@ -69,12 +71,24 @@ export function AjouterNoteDialog({
   const [texte, setTexte] = useState(edition?.note ?? texteInitial ?? "")
   const [choix, setChoix] = useState<number | null>(matiereParDefaut?.id ?? derniereMatiere())
   const aCitation = Boolean(edition?.citation ?? citation)
+  const zoneTexte = useRef<HTMLTextAreaElement>(null)
+  const texteVide = texte === ""
 
   useEffect(() => {
     if (!open) return
     setTexte(edition?.note ?? texteInitial ?? lireBrouillon(citation ?? ""))
     setChoix(matiereParDefaut?.id ?? derniereMatiere())
   }, [open, texteInitial, edition?.note, matiereParDefaut?.id, citation])
+
+  // Le curseur se pose À LA FIN d'un texte déjà écrit (la bonne réponse d'un quiz, un brouillon) : on écrit à la suite.
+  useEffect(() => {
+    if (!open) return
+    const m = window.setTimeout(() => {
+      const z = zoneTexte.current
+      if (z) z.setSelectionRange(z.value.length, z.value.length)
+    }, 60)
+    return () => window.clearTimeout(m)
+  }, [open, texteVide])
 
   function ecrire(valeur: string) {
     setTexte(valeur)
@@ -100,7 +114,7 @@ export function AjouterNoteDialog({
 
   const creer = useMutation({
     mutationFn: () =>
-      edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, texte, citation ?? ""),
+      edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, texte, citation ?? "", origine ?? ""),
     onSuccess: () => {
       if (!edition && matiere !== null) {
         try {
@@ -145,6 +159,7 @@ export function AjouterNoteDialog({
           </select>
         )}
         <textarea
+          ref={zoneTexte}
           value={texte}
           onChange={(e) => ecrire(e.target.value)}
           onKeyDown={(e) => {

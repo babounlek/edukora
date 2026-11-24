@@ -1276,8 +1276,8 @@ export function getCarnetPage(
 }
 
 /** Une note libre : rattachée à une matière, pas à une section de cours (voir access.etude.creer_note_libre). */
-export function creerNoteLibre(subject: number, note: string, citation = "") {
-  return apiRequest<CarnetEntree>("/access/etude/notes/", { method: "POST", body: { subject, note, citation } })
+export function creerNoteLibre(subject: number, note: string, citation = "", origine = "") {
+  return apiRequest<CarnetEntree>("/access/etude/notes/", { method: "POST", body: { subject, note, citation, origine } })
 }
 
 export function modifierNoteLibre(id: number, note: string) {

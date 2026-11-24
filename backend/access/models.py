@@ -244,6 +244,7 @@ class NoteLibre(models.Model):
     subject = models.ForeignKey("catalog.Subject", on_delete=models.CASCADE, related_name="notes_libres")
     note = models.TextField(max_length=2000)
     citation = models.TextField(blank=True, max_length=1000, help_text="La question ou le passage d'origine, si la note en vient.")
+    origine = models.CharField(max_length=10, blank=True, default="", help_text="« quiz » : écrite depuis la correction d'un quiz.")
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)
     revision_debut = models.DateField(null=True, blank=True)

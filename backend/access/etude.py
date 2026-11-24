@@ -65,7 +65,10 @@ A_REVOIR_MAX = 20
 NOUVELLES_PAR_JOUR = 5
 
 
-def creer_note_libre(profil, subject, note, citation=""):
+ORIGINES_NOTE = ("quiz",)
+
+
+def creer_note_libre(profil, subject, note, citation="", origine=""):
     note = str(note or "").strip()
     citation = str(citation or "").strip()
     # Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
@@ -75,7 +78,8 @@ def creer_note_libre(profil, subject, note, citation=""):
         raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
     if len(citation) > CITATION_MAX:
         citation = citation[:CITATION_MAX]
-    return NoteLibre.objects.create(profil=profil, subject=subject, note=note, citation=citation)
+    origine = origine if origine in ORIGINES_NOTE else ""
+    return NoteLibre.objects.create(profil=profil, subject=subject, note=note, citation=citation, origine=origine)
 
 
 def modifier_note_libre(note_libre, note):

@@ -205,3 +205,11 @@ class CitationSeuleTests(_Base):
         self.assertEqual(self.client.put(f"/access/etude/notes/{note.pk}/", {"note": ""}, format="json").status_code, 200)
         libre = NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Sans passage")
         self.assertEqual(self.client.put(f"/access/etude/notes/{libre.pk}/", {"note": ""}, format="json").status_code, 400)
+
+
+class OrigineTests(_Base):
+    def test_a_note_written_from_a_quiz_keeps_its_origin_and_an_unknown_origin_is_ignored(self):
+        r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "a", "origine": "quiz"}, format="json")
+        self.assertEqual(r.data["origine"], "quiz")
+        r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "b", "origine": "autre"}, format="json")
+        self.assertEqual(r.data["origine"], "")

@@ -516,7 +516,7 @@ def notes_libres(request):
     if subject is None:
         return Response({"error": "Matière inconnue."}, status=400)
     try:
-        note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""))
+        note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""), request.data.get("origine", ""))
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(entree_note_libre(note), status=201)

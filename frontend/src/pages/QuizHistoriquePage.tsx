@@ -6,6 +6,7 @@ import { ArrowLeft, Check, Info, ListChecks, RotateCcw, Timer, X } from "lucide-
 import { getQuizHistoriqueDetail, rejouerQuiz } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import type { QuizHistoriqueQuestion } from "@/api/types"
+import { AjouterAMesNotes, bonneReponseEnNote } from "@/components/AjouterAMesNotes"
 import { EnteteCompte } from "@/components/CompteSection"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -30,7 +31,7 @@ const DECLARE: Record<string, "hq.declare_reussi" | "hq.declare_partiel" | "hq.d
 }
 
 /** Une question de la tentative, en lecture seule : ce qui a été présenté, répondu, et la correction. */
-function QuestionHistorique({ question }: { question: QuizHistoriqueQuestion }) {
+function QuestionHistorique({ question, peutNoter }: { question: QuizHistoriqueQuestion; peutNoter: boolean }) {
   useI18n()
   const reponse = question.reponse
   const qcm = question.type_reponse === "QCM"
@@ -103,6 +104,15 @@ function QuestionHistorique({ question }: { question: QuizHistoriqueQuestion }) 
           <EpreuveMarkdown markdown={question.corrige_markdown} solutionsOuvertes />
         </article>
       </details>
+
+      {peutNoter && reponse !== null && (
+        <AjouterAMesNotes
+          subjectId={question.subject_id}
+          enonce={question.enonce_markdown}
+          erreur={!reponse.est_correcte}
+          bonneReponse={qcm ? bonneReponseEnNote(question.choix, question.reponse_correcte) : undefined}
+        />
+      )}
     </li>
   )
 }
@@ -244,7 +254,7 @@ export function QuizHistoriquePage() {
 
       <ol className="flex flex-col gap-4">
         {detail.questions.map((question) => (
-          <QuestionHistorique key={question.id} question={question} />
+          <QuestionHistorique key={question.id} question={question} peutNoter={connecte} />
         ))}
       </ol>
     </div>

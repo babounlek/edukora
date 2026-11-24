@@ -199,6 +199,7 @@ def _question_historique(quiz_question, reponse):
         "theme": donnees["theme"]["name"] if est_item else "",
         "theme_id": donnees["theme"]["id"] if est_item else None,
         "subject_code": donnees["subject"]["code"] if est_item else None,
+        "subject_id": donnees["subject"].get("id") if est_item else None,
         "subject_label": donnees["subject"]["label"],
         "reponse_correcte": donnees["reponse_correcte"],
         "corrige_markdown": donnees["corrige_markdown"],

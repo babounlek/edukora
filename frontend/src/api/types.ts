@@ -1950,6 +1950,8 @@ export interface MarqueEtudeEnregistree extends MarqueEtude {
 
 /** Une entrée du carnet : une marque + de quoi rouvrir la section exacte. */
 export interface CarnetEntree extends MarqueEtude {
+  /** « quiz » : note écrite depuis la correction d'un quiz. */
+  origine?: string
   /** « marque » : note posée sur une section ; « libre » : note rattachée à une matière (voir access.carnet). */
   genre: "marque" | "libre"
   id: number
@@ -2128,6 +2130,8 @@ export interface QuizHistoriqueQuestion {
   theme: string
   theme_id: number | null
   subject_code: string | null
+  /** Id de la matière (CompetenceItem seulement) : « Noter cette erreur » range la note dans son dossier. */
+  subject_id?: number | null
   subject_label: string
   reponse_correcte: string
   corrige_markdown: string
