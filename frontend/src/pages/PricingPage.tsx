@@ -303,7 +303,9 @@ export function PricingPage() {
   const navigate = useNavigate()
   const { country } = useCountry()
   // Campay coupé côté serveur : la FAQ ne doit plus promettre une activation instantanée.
-  const { campayActif, beneficiaires } = usePaymentConfig()
+  const { campayActif, manuelActif, beneficiaires } = usePaymentConfig()
+  // Ni automatique ni manuel : plus aucun moyen de payer (MANUAL_PAYMENT_ACTIVE=0 avec Campay coupé).
+  const aucunMoyen = !campayActif && !manuelActif
   const { isAuthenticated } = useAuth()
   const campagne = useCampagne()
   const [allPlans, setAllPlans] = useState<Plan[]>([])
@@ -457,7 +459,9 @@ export function PricingPage() {
       icone: <Smartphone className="size-4" />,
       teinte: "bg-primary/10 text-primary",
       q: t("prix.faq1_q"),
-      r: campayActif ? t("prix.faq1_r_campay") : t("prix.faq1_r_manuel"),
+      r: campayActif
+        ? t(manuelActif ? "prix.faq1_r_campay" : "prix.faq1_r_campay_seul")
+        : manuelActif ? t("prix.faq1_r_manuel") : t("prix.faq1_r_aucun"),
     },
     {
       cle: "prix",
@@ -504,7 +508,9 @@ export function PricingPage() {
       icone: <ArrowRightLeft className="size-4" />,
       teinte: "bg-primary/10 text-primary",
       q: campayActif ? t("prix.faq4_q_campay") : t("prix.faq4_q_manuel"),
-      r: campayActif ? t("prix.faq4_r_campay") : t("prix.faq4_r_manuel", { delai: delaiVerificationPaiementAffiche() }),
+      r: campayActif
+        ? t(manuelActif ? "prix.faq4_r_campay" : "prix.faq4_r_campay_seul")
+        : aucunMoyen ? t("prix.faq1_r_aucun") : t("prix.faq4_r_manuel", { delai: delaiVerificationPaiementAffiche() }),
     },
   ]
 
@@ -560,7 +566,9 @@ export function PricingPage() {
               {/* Même condition que la FAQ plus bas : Campay coupé, l'accès n'est activé qu'après la vérification manuelle. */}
               {campayActif
                 ? t("prix.puce_acces_immediat")
-                : t("prix.puce_acces_verifie", { delai: delaiVerificationPaiementAffiche() })}
+                : aucunMoyen
+                  ? t("prix.puce_indisponible")
+                  : t("prix.puce_acces_verifie", { delai: delaiVerificationPaiementAffiche() })}
             </ChipReassurance>
           </div>
         </div>
@@ -751,7 +759,9 @@ export function PricingPage() {
                 t("prix.etape2"),
                 campayActif
                   ? t("prix.etape3_immediat")
-                  : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() }),
+                  : aucunMoyen
+                    ? t("prix.etape3_indisponible")
+                    : t("prix.etape3_verifie", { delai: delaiVerificationPaiementAffiche() }),
               ] as string[]
             ).map((texte, i) => (
               <li key={i} className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 text-sm">

@@ -325,10 +325,9 @@ def composer_relance_paiement(user, transaction, etape):
     lien = f"{settings.FRONTEND_URL}/abonnement?cursus={transaction.plan.cursus_id}"
     lignes = [_salutation(user), "", f"Ton paiement de {transaction.amount} FCFA {verbe}."]
     if etape == 1:
-        lignes += [
-            "Rien n'a été débité pour un accès que tu n'as pas reçu : tu peux réessayer, ou payer par transfert "
-            "manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection.",
-        ]
+        reprise = ("tu peux réessayer, ou payer par transfert manuel (Orange Money ou MTN MoMo) sans rien perdre "
+                   "de ta sélection." if settings.MANUAL_PAYMENT_ACTIVE else "tu peux réessayer.")
+        lignes += [f"Rien n'a été débité pour un accès que tu n'as pas reçu : {reprise}"]
     else:
         lignes += [
             "C'est notre dernier message à ce sujet. Ton abonnement court jusqu'à ton examen : plus tôt tu "

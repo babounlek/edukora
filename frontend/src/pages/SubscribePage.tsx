@@ -940,7 +940,7 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 {t("erreur.reessayer")}
               </Button>
-              {campayActif && (
+              {campayActif && manuelActif && (
                 <button
                   type="button"
                   onClick={passerAuPaiementManuel}
@@ -988,7 +988,7 @@ export function SubscribePage() {
               <Button variant="outline" onClick={() => setPhase("form")}>
                 {t("erreur.reessayer")}
               </Button>
-              {campayActif && (
+              {campayActif && manuelActif && (
                 <button
                   type="button"
                   onClick={passerAuPaiementManuel}
