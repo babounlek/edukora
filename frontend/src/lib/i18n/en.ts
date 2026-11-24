@@ -1457,6 +1457,11 @@ export const en: Partial<Record<CleI18n, string>> = {
   "ca.compteur_un": "{n} entry",
   "ca.compteur_n": "{n} entries",
   "ca.aucun_resultat": "No note matches your search.",
+  "ca.tous_dossiers": "All my folders",
+  "ca.dossier_a_reviser": "{n} to review",
+  "ca.tri_a_reviser": "To review first",
+  "ca.voir_suite": "Show more",
+  "ca.resultats": "Results",
 
   "hi.sous_titre": "Your quizzes, your attempts at original papers and what you've already read.",
   "hi.voir_moins": "Show less",

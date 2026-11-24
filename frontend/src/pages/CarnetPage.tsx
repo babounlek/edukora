@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 
 import { ConnexionRequise } from "@/components/ConnexionRequise"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Bookmark, BookOpen, FileText, Brain, NotebookPen, Pencil, Pin, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { ArrowLeft, ArrowRight, Bookmark, BookOpen, FileText, Brain, Folder, NotebookPen, Pencil, Pin, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
-import { epinglerNote, getCarnet, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
+import { epinglerNote, getCarnetDossiers, getCarnetPage, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
@@ -35,10 +35,6 @@ function libelleSection(entree: CarnetEntree): string {
   return capitaliserTheme(entree.cle.replace(/-/g, " "))
 }
 
-function sansAccent(s: string): string {
-  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
-}
-
 function lienSection(entree: CarnetEntree): string {
   if (entree.type === "libre") return ""
   const base = entree.type === "cours" ? coursReaderPath(entree.slug) : epreuveReaderPath(entree.country, entree.slug)
@@ -60,9 +56,11 @@ export function CarnetPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
 
-  const { data, isLoading, isError, refetch } = useQuery({
-    queryKey: ["carnet"],
-    queryFn: ({ signal }) => getCarnet(signal),
+  // Deux niveaux : la grille des dossiers (un résumé par matière), puis les notes d'un dossier, 20 à la fois. Une
+  // recherche sort des dossiers et fouille toutes les matières.
+  const { data: resume, isLoading, isError, refetch } = useQuery({
+    queryKey: ["carnet", "dossiers"],
+    queryFn: ({ signal }) => getCarnetDossiers(signal),
     enabled: isAuthenticated,
   })
 
@@ -116,42 +114,65 @@ export function CarnetPage() {
   }
 
   const [recherche, setRecherche] = useState("")
-  const [filtre, setFiltre] = useState<"tout" | "notes" | "signets" | "epinglees">("tout")
-  // Un seul dossier à imprimer : les autres se masquent le temps de l'impression (voir le bouton de chaque dossier).
-  const [dossierImprime, setDossierImprime] = useState<string | null>(null)
+  const [aiguille, setAiguille] = useState("")
+  // La recherche part au serveur : on attend une courte pause de frappe plutôt qu'une requête par lettre.
   useEffect(() => {
-    if (dossierImprime === null) return
-    const fin = () => setDossierImprime(null)
-    window.addEventListener("afterprint", fin)
-    window.print()
-    return () => window.removeEventListener("afterprint", fin)
-  }, [dossierImprime])
+    const m = window.setTimeout(() => setAiguille(recherche.trim()), 250)
+    return () => window.clearTimeout(m)
+  }, [recherche])
+  const [filtre, setFiltre] = useState<"tout" | "notes" | "signets" | "epinglees">("tout")
+  const [tri, setTri] = useState<"recent" | "a_reviser">("recent")
+  // Le dossier ouvert vit dans l'adresse (?dossier=<matière>) : le bouton Retour du téléphone revient à la grille.
+  const dossierId = Number(params.get("dossier")) || null
+  function ouvrirDossier(id: number | null) {
+    const p = new URLSearchParams(params)
+    if (id === null) p.delete("dossier")
+    else p.set("dossier", String(id))
+    setParams(p)
+    setFiltre("tout")
+    setTri("recent")
+  }
+  const dossiers = resume?.dossiers ?? []
+  const dossier = dossiers.find((d) => d.matiere_id === dossierId) ?? null
+  // Un dossier qui n'existe plus (dernière note retirée) ramène à la grille.
+  useEffect(() => {
+    if (resume && dossierId !== null && !dossier) {
+      const p = new URLSearchParams(params)
+      p.delete("dossier")
+      setParams(p, { replace: true })
+    }
+  }, [resume, dossierId, dossier, params, setParams])
+  const enListe = dossierId !== null || aiguille !== ""
+
+  const pages = useInfiniteQuery({
+    queryKey: ["carnet", "page", { dossierId, filtre, tri, aiguille }],
+    queryFn: ({ pageParam, signal }) => getCarnetPage({ matiere: dossierId, filtre, q: aiguille, tri, page: pageParam }, signal),
+    initialPageParam: 1,
+    getNextPageParam: (derniere) => (derniere.page * derniere.page_size < derniere.count ? derniere.page + 1 : undefined),
+    enabled: isAuthenticated && enListe,
+  })
+  const entrees = pages.data?.pages.flatMap((p) => p.results) ?? []
+  const nombre = pages.data?.pages[0]?.count ?? 0
+
+  // Imprimer un dossier : on charge d'abord toutes ses pages, sinon seules les 20 premières notes sortiraient.
+  const [impression, setImpression] = useState(false)
+  async function imprimerDossier() {
+    setImpression(true)
+    try {
+      let suite = pages.hasNextPage
+      while (suite) suite = (await pages.fetchNextPage()).hasNextPage
+      window.setTimeout(() => window.print(), 150)
+    } finally {
+      setImpression(false)
+    }
+  }
   const epingler = useMutation({
     mutationFn: (entree: CarnetEntree) => epinglerNote(entree.genre, entree.id, !entree.epingle),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["carnet"] }),
     onError: () => toast.error(t("ca.note_erreur")),
   })
-  const toutes = useMemo(() => data ?? [], [data])
-
-  // Un dossier par matière : calculé à partir de ce que l'entrée sait déjà (sa matière), sans rangement à la main.
-  const { entrees, groupes } = useMemo(() => {
-    const aiguille = sansAccent(recherche.trim())
-    const gardees = toutes.filter((e) => {
-      if (filtre === "notes" && !e.note) return false
-      if (filtre === "signets" && !e.signet) return false
-      if (filtre === "epinglees" && !e.epingle) return false
-      if (!aiguille) return true
-      return sansAccent(`${e.note} ${e.titre} ${e.matiere} ${libelleSection(e)}`).includes(aiguille)
-    })
-    const parMatiere = new Map<string, CarnetEntree[]>()
-    for (const e of gardees) parMatiere.set(e.matiere, [...(parMatiere.get(e.matiere) ?? []), e])
-    // Les notes épinglées d'abord dans chaque dossier ; le reste garde l'ordre du serveur (la plus récente en tête).
-    for (const [m, liste] of parMatiere) parMatiere.set(m, [...liste.filter((e) => e.epingle), ...liste.filter((e) => !e.epingle)])
-    return {
-      entrees: gardees,
-      groupes: [...parMatiere.entries()].sort((a, b) => a[0].localeCompare(b[0])),
-    }
-  }, [toutes, recherche, filtre])
+  const aDesEpinglees = dossier ? dossier.epingles > 0 : dossiers.some((d) => d.epingles > 0)
+  const aDesDues = dossier ? dossier.a_reviser > 0 : dossiers.some((d) => d.a_reviser > 0)
 
   if (!authLoading && !isAuthenticated) {
     return <ConnexionRequise from="/carnet" titre={t("cpt.carnet")} explication={t("carnet.intent")} />
@@ -180,12 +201,6 @@ export function CarnetPage() {
               {t("ca.reviser_bouton", { n: aRevoir?.total ?? 0 })}
             </Button>
           )}
-          {toutes.length > 0 && (
-            <Button type="button" variant="ghost" className="rounded-full text-muted-foreground" onClick={() => window.print()}>
-              <Printer />
-              {t("ca.imprimer")}
-            </Button>
-          )}
         </div>
       )}
 
@@ -202,7 +217,7 @@ export function CarnetPage() {
           onRetry={() => refetch()}
           className="mt-8"
         />
-      ) : toutes.length === 0 ? (
+      ) : (resume?.total ?? 0) === 0 ? (
         <div className="mt-8 rounded-3xl border border-dashed border-border bg-card/60 p-8 text-center">
           <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <Bookmark className="size-6" />
@@ -232,59 +247,142 @@ export function CarnetPage() {
               className="w-full rounded-full border border-input bg-background py-2.5 pl-10 pr-4 text-sm outline-none transition-colors focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
             />
           </div>
-          <div className="flex flex-wrap gap-2">
-            {(["tout", "notes", "signets", "epinglees"] as const)
-              .filter((f) => f !== "epinglees" || toutes.some((e) => e.epingle))
-              .map((f) => (
-              <button
-                key={f}
-                type="button"
-                aria-pressed={filtre === f}
-                onClick={() => setFiltre(f)}
-                className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
-                  filtre === f ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary/40"
-                }`}
-              >
-                {t(`ca.filtre_${f}`)}
-              </button>
-            ))}
-          </div>
+          {enListe && (
+            <div className="flex flex-wrap items-center gap-2">
+              {(["tout", "notes", "signets", "epinglees"] as const)
+                .filter((f) => f !== "epinglees" || aDesEpinglees || filtre === "epinglees")
+                .map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    aria-pressed={filtre === f}
+                    onClick={() => setFiltre(f)}
+                    className={`rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                      filtre === f ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                    }`}
+                  >
+                    {t(`ca.filtre_${f}`)}
+                  </button>
+                ))}
+              {aDesDues && (
+                <button
+                  type="button"
+                  aria-pressed={tri === "a_reviser"}
+                  onClick={() => setTri(tri === "a_reviser" ? "recent" : "a_reviser")}
+                  className={`ml-auto rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
+                    tri === "a_reviser" ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                  }`}
+                >
+                  {t("ca.tri_a_reviser")}
+                </button>
+              )}
+            </div>
+          )}
         </div>
-        {entrees.length === 0 && <p className="mt-8 text-center text-sm text-muted-foreground">{t("ca.aucun_resultat")}</p>}
-        {groupes.map(([matiere, liste]) => (
-        <section key={matiere} className={`mt-8 ${dossierImprime !== null && dossierImprime !== matiere ? "print:hidden" : ""}`}>
-        <div className="flex items-baseline justify-between gap-2">
-          <h2 className="flex items-baseline gap-2 font-display text-lg font-semibold">
-            {matiere}
-            <span className="text-xs font-normal text-muted-foreground">
-              {t(liste.length === 1 ? "ca.compteur_un" : "ca.compteur_n", { n: liste.length })}
-            </span>
-          </h2>
-          {liste.some((e) => e.note) && (
+
+        {!enListe && (
+          <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {dossiers.map((d) => (
+              <li key={d.matiere_id}>
+                <button
+                  type="button"
+                  onClick={() => ouvrirDossier(d.matiere_id)}
+                  className="flex h-full w-full items-start gap-3 rounded-2xl border border-border bg-card p-4 text-left transition-colors hover:border-primary/40 sm:p-5"
+                >
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                    <Folder className="size-5" aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-display text-base font-semibold leading-snug">{d.matiere}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {t(d.total === 1 ? "ca.compteur_un" : "ca.compteur_n", { n: d.total })}
+                    </span>
+                    {(d.a_reviser > 0 || d.epingles > 0) && (
+                      <span className="mt-2 flex flex-wrap gap-1.5">
+                        {d.a_reviser > 0 && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                            <Brain className="size-3" aria-hidden="true" />
+                            {t("ca.dossier_a_reviser", { n: d.a_reviser })}
+                          </span>
+                        )}
+                        {d.epingles > 0 && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-gold/15 px-2 py-0.5 text-xs font-medium text-gold-text">
+                            <Pin className="size-3 fill-current" aria-hidden="true" />
+                            {d.epingles}
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {enListe && (
+        <section className="mt-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 print:hidden">
+          {dossierId !== null ? (
             <button
               type="button"
-              className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline print:hidden"
-              onClick={() => {
-                setMatiereRevision(liste[0].matiere_id)
-                setRevision(true)
-              }}
+              onClick={() => ouvrirDossier(null)}
+              className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
             >
-              <Brain className="size-3.5" aria-hidden="true" />
-              {t("ca.reviser_matiere")}
+              <ArrowLeft className="size-4" aria-hidden="true" />
+              {t("ca.tous_dossiers")}
             </button>
+          ) : (
+            <span />
           )}
-          <button
-            type="button"
-            aria-label={t("ca.imprimer_dossier")}
-            title={t("ca.imprimer_dossier")}
-            className="inline-flex shrink-0 items-center text-muted-foreground hover:text-primary print:hidden"
-            onClick={() => setDossierImprime(matiere)}
-          >
-            <Printer className="size-3.5" aria-hidden="true" />
-          </button>
+          {dossier && (
+            <div className="flex items-center gap-3">
+              {dossier.avec_note > 0 && (
+                <button
+                  type="button"
+                  className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-primary hover:underline"
+                  onClick={() => {
+                    setMatiereRevision(dossier.matiere_id)
+                    setRevision(true)
+                  }}
+                >
+                  <Brain className="size-3.5" aria-hidden="true" />
+                  {t("ca.reviser_matiere")}
+                </button>
+              )}
+              <button
+                type="button"
+                aria-label={t("ca.imprimer_dossier")}
+                title={t("ca.imprimer_dossier")}
+                disabled={impression}
+                className="inline-flex shrink-0 items-center text-muted-foreground hover:text-primary"
+                onClick={imprimerDossier}
+              >
+                <Printer className="size-3.5" aria-hidden="true" />
+              </button>
+            </div>
+          )}
         </div>
+        <h2 className="mt-2 flex items-baseline gap-2 font-display text-lg font-semibold">
+          {dossier ? dossier.matiere : t("ca.resultats")}
+          {pages.data && (
+            <span className="text-xs font-normal text-muted-foreground">
+              {t(nombre === 1 ? "ca.compteur_un" : "ca.compteur_n", { n: nombre })}
+            </span>
+          )}
+        </h2>
+        {pages.isError ? (
+          <ErreurChargement objet={t("ca.objet")} message={t("ca.message_erreur")} onRetry={() => pages.refetch()} className="mt-4" />
+        ) : pages.isLoading ? (
+          <div className="mt-4 flex flex-col gap-3">
+            <Skeleton className="h-28 w-full rounded-2xl" />
+            <Skeleton className="h-28 w-full rounded-2xl" />
+          </div>
+        ) : entrees.length === 0 ? (
+          <p className="mt-8 text-center text-sm text-muted-foreground">{t("ca.aucun_resultat")}</p>
+        ) : null}
         <ul className="mt-3 flex flex-col gap-3">
-          {liste.map((entree) => (
+          {entrees.map((entree) => (
             <li
               key={`${entree.genre}-${entree.id}`}
               className="group break-inside-avoid rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/40 sm:p-5"
@@ -294,6 +392,7 @@ export function CarnetPage() {
                   {entree.type === "cours" ? <BookOpen className="size-4" /> : entree.type === "libre" ? <StickyNote className="size-4" /> : <FileText className="size-4" />}
                 </span>
                 <div className="min-w-0 flex-1">
+                  {dossierId === null && <p className="text-xs font-medium text-primary">{entree.matiere}</p>}
                   {entree.type === "libre" ? (
                     entree.citation && <p className="text-sm italic text-muted-foreground">{entree.citation}</p>
                   ) : (
@@ -366,8 +465,16 @@ export function CarnetPage() {
             </li>
           ))}
         </ul>
+        {pages.hasNextPage && (
+          <div className="mt-5 flex justify-center print:hidden">
+            <Button type="button" variant="outline" className="rounded-full" disabled={pages.isFetchingNextPage} onClick={() => pages.fetchNextPage()}>
+              {t("ca.voir_suite")}
+              <span className="text-muted-foreground">({nombre - entrees.length})</span>
+            </Button>
+          </div>
+        )}
         </section>
-        ))}
+        )}
         </>
       )}
 

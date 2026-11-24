@@ -2269,3 +2269,23 @@ export interface RattachementRevendeur {
   peut_saisir_code: boolean
   revendeur: { nom_affiche: string } | null
 }
+
+export interface CarnetDossier {
+  matiere_id: number
+  matiere: string
+  total: number
+  a_reviser: number
+  epingles: number
+  avec_note: number
+  updated_at: string
+}
+export interface CarnetDossiers {
+  total: number
+  dossiers: CarnetDossier[]
+}
+export interface CarnetPageData {
+  count: number
+  page: number
+  page_size: number
+  results: CarnetEntree[]
+}

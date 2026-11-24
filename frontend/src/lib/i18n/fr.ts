@@ -1463,6 +1463,11 @@ export const fr = {
   "ca.compteur_un": "{n} entrée",
   "ca.compteur_n": "{n} entrées",
   "ca.aucun_resultat": "Aucune note ne correspond à ta recherche.",
+  "ca.tous_dossiers": "Tous mes dossiers",
+  "ca.dossier_a_reviser": "{n} à réviser",
+  "ca.tri_a_reviser": "À réviser d'abord",
+  "ca.voir_suite": "Afficher la suite",
+  "ca.resultats": "Résultats",
 
   "hi.sous_titre": "Tes quiz, tes tentatives d'épreuves inédites et ce que tu as déjà lu.",
   "hi.voir_moins": "Voir moins",

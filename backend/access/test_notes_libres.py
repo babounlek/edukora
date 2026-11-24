@@ -144,3 +144,47 @@ class EpinglerTests(_Base):
         autre = self.client.__class__()
         autre.force_authenticate(user=intrus)
         self.assertEqual(autre.post("/access/etude/notes/epingler/", {"genre": "marque", "id": marque.pk, "epingle": False}, format="json").status_code, 404)
+
+
+class DossiersEtPagesTests(_Base):
+    def _note(self, texte, **extra):
+        return NoteLibre.objects.create(profil=self.profil, subject=self.subject, note=texte, **extra)
+
+    def test_the_folders_summarise_each_subject_with_what_is_due_and_pinned(self):
+        autre = Subject.objects.create(country=self.subject.country, code="AUTRE", label="Autre matière")
+        self._note("a", revision_due=timezone.localdate() - timedelta(days=1), epingle=True)
+        self._note("b")
+        NoteLibre.objects.create(profil=self.profil, subject=autre, note="c")
+        data = self.client.get("/access/etude/carnet/dossiers/").data
+        self.assertEqual(data["total"], 3)
+        premier = data["dossiers"][0]
+        # Le dossier où il y a quelque chose à réviser passe en tête.
+        self.assertEqual(premier["matiere_id"], self.subject.pk)
+        self.assertEqual((premier["total"], premier["a_reviser"], premier["epingles"]), (2, 1, 1))
+
+    def test_a_folder_is_paged_by_twenty_with_pinned_notes_first(self):
+        for i in range(25):
+            self._note(f"note {i}")
+        epinglee = self._note("la épinglée", epingle=True)
+        p1 = self.client.get(f"/access/etude/carnet/page/?matiere={self.subject.pk}").data
+        self.assertEqual((p1["count"], len(p1["results"]), p1["page_size"]), (26, 20, 20))
+        self.assertEqual(p1["results"][0]["id"], epinglee.pk)
+        p2 = self.client.get(f"/access/etude/carnet/page/?matiere={self.subject.pk}&page=2").data
+        self.assertEqual(len(p2["results"]), 6)
+
+    def test_the_search_ignores_accents_and_spans_every_subject(self):
+        autre = Subject.objects.create(country=self.subject.country, code="AUTRE", label="Autre matière")
+        self._note("Théorème de Thalès")
+        NoteLibre.objects.create(profil=self.profil, subject=autre, note="thales aussi")
+        data = self.client.get("/access/etude/carnet/page/?q=THALÈS").data
+        self.assertEqual(data["count"], 2)
+
+    def test_a_bad_page_is_refused_and_someone_elses_notes_stay_hidden(self):
+        self.assertEqual(self.client.get("/access/etude/carnet/page/?page=abc").status_code, 400)
+        from users.models import User
+        intrus = User.objects.create_user(phone_number="677500009", password="x")
+        autre = self.client.__class__()
+        autre.force_authenticate(user=intrus)
+        self._note("privée")
+        self.assertEqual(autre.get("/access/etude/carnet/page/").data["count"], 0)
+        self.assertEqual(autre.get("/access/etude/carnet/dossiers/").data["dossiers"], [])

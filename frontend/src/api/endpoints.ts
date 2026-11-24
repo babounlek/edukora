@@ -19,6 +19,8 @@ import type {
   CarteRevision,
   BilanPeriode,
   CarnetEntree,
+  CarnetDossiers,
+  CarnetPageData,
   NotesARevoir,
   CibleEtude,
   MarqueEtude,
@@ -1257,9 +1259,20 @@ export function saveMarqueEtude(
   })
 }
 
-/** Tout ce que l'élève a mis de côté ou annoté, du plus récent au plus ancien. */
-export function getCarnet(signal?: AbortSignal) {
-  return apiRequest<CarnetEntree[]>("/access/etude/carnet/", { signal })
+/** La grille des dossiers de Mes notes : un résumé par matière, sans les notes. */
+export function getCarnetDossiers(signal?: AbortSignal) {
+  return apiRequest<CarnetDossiers>("/access/etude/carnet/dossiers/", { signal })
+}
+
+/** Les notes d'un dossier (ou de tous, en recherche), 20 par page. */
+export function getCarnetPage(
+  p: { matiere: number | null; filtre: string; q: string; tri: string; page: number },
+  signal?: AbortSignal,
+) {
+  const qs = new URLSearchParams({ filtre: p.filtre, tri: p.tri, page: String(p.page) })
+  if (p.matiere !== null) qs.set("matiere", String(p.matiere))
+  if (p.q.trim()) qs.set("q", p.q.trim())
+  return apiRequest<CarnetPageData>(`/access/etude/carnet/page/?${qs}`, { signal })
 }
 
 /** Une note libre : rattachée à une matière, pas à une section de cours (voir access.etude.creer_note_libre). */

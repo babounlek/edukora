@@ -1,5 +1,6 @@
 from django.db import models
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from django.utils.text import slugify
 from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes, throttle_classes
@@ -14,7 +15,7 @@ from quiz.models import SourceXP
 from users.profils import profil_actif
 
 from . import quota
-from .carnet import entree_marque, entree_note_libre
+from .carnet import PAGE_CARNET, entree_marque, entree_note_libre, filtrer_carnet, resumer_dossiers
 from .etude import (
     MarqueInvalide, creer_note_libre, enregistrer_marque, epingler, marques_du_document, modifier_note_libre, noter_revue,
     notes_a_revoir,
@@ -450,7 +451,10 @@ def etude_carnet(request):
     affichée : c'est SA note, la lui retirer serait la lui confisquer - la lecture, elle,
     reste gatée par le lecteur.
     """
-    profil = profil_actif(request)
+    return Response(_carnet_complet(profil_actif(request)))
+
+
+def _carnet_complet(profil):
     marques = (
         MarqueEtude.objects.filter(profil=profil)
         .filter(models.Q(signet=True) | ~models.Q(note=""))
@@ -459,7 +463,42 @@ def etude_carnet(request):
     libres = NoteLibre.objects.filter(profil=profil).select_related("subject__country")[:1000]
     carnet = [entree_marque(m) for m in marques] + [entree_note_libre(n) for n in libres]
     carnet.sort(key=lambda e: e["updated_at"], reverse=True)
-    return Response(carnet)
+    return carnet
+
+
+@api_view(["GET"])
+def etude_carnet_dossiers(request):
+    """La grille des dossiers de Mes notes : un résumé par matière (total, à réviser, épinglées), sans les notes."""
+    carnet = _carnet_complet(profil_actif(request))
+    return Response({"total": len(carnet), "dossiers": resumer_dossiers(carnet, timezone.localdate())})
+
+
+@api_view(["GET"])
+def etude_carnet_page(request):
+    """
+    Les notes d'un dossier (?matiere=<id>) ou de tous (recherche), 20 par page.
+    ?filtre=tout|notes|signets|epinglees  ?q=<recherche sans accent>  ?tri=recent|a_reviser  ?page=1…
+    """
+    carnet = _carnet_complet(profil_actif(request))
+    try:
+        matiere = int(request.query_params["matiere"]) if request.query_params.get("matiere") else None
+        page = max(1, int(request.query_params.get("page", 1)))
+    except ValueError:
+        return Response({"error": "Paramètre invalide."}, status=400)
+    filtre = request.query_params.get("filtre", "tout")
+    if filtre not in ("tout", "notes", "signets", "epinglees"):
+        filtre = "tout"
+    tri = "a_reviser" if request.query_params.get("tri") == "a_reviser" else "recent"
+    gardees = filtrer_carnet(
+        carnet, matiere, filtre, request.query_params.get("q", ""), tri, timezone.localdate(),
+    )
+    debut = (page - 1) * PAGE_CARNET
+    return Response({
+        "count": len(gardees),
+        "page": page,
+        "page_size": PAGE_CARNET,
+        "results": gardees[debut:debut + PAGE_CARNET],
+    })
 
 
 def _matiere_ouverte_a(request, subject_id):
