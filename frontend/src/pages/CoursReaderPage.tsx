@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreLecture } from "@/components/BarreLecture"
+import { NoterSelection } from "@/components/NoterSelection"
 import { RepriseLecture } from "@/components/RepriseLecture"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
@@ -196,6 +197,7 @@ export function CoursReaderPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       <BarreLecture cibleRef={articleRef} contenuKey={content?.id} />
+      <NoterSelection cibleRef={articleRef} subjectId={cours?.subject.id} />
       {/* Sur téléphone : retour, puis le titre, puis les boutons (partager, PDF, hors ligne). Cinq boutons AVANT le titre
           repoussaient le cours sous le pli (test élève Guyguy) ; dès `sm` ils retrouvent leur place à droite du retour. */}
       <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] sm:gap-x-4">

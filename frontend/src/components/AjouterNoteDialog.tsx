@@ -11,6 +11,17 @@ import { useCursusAbonne } from "@/lib/abonneActif"
 import { t, useI18n } from "@/lib/i18n"
 
 const NOTE_MAX = 2000
+const CLE_DERNIERE_MATIERE = "edukora_note_derniere_matiere"
+
+/** La matière de la dernière note écrite : on écrit souvent plusieurs notes de suite dans la même. */
+function derniereMatiere(): number | null {
+  try {
+    const v = Number(window.localStorage.getItem(CLE_DERNIERE_MATIERE))
+    return v > 0 ? v : null
+  } catch {
+    return null
+  }
+}
 
 /**
  * Écrire une note libre, rangée dans le dossier d'une matière. Deux entrées : le bouton « Nouvelle note » de Mes notes
@@ -34,7 +45,7 @@ export function AjouterNoteDialog({
   const { country } = useCountry()
   const cursus = useCursusAbonne()
   const [texte, setTexte] = useState(edition?.note ?? texteInitial ?? "")
-  const [choix, setChoix] = useState<number | null>(null)
+  const [choix, setChoix] = useState<number | null>(derniereMatiere)
 
   useEffect(() => {
     if (open) setTexte(edition?.note ?? texteInitial ?? "")
@@ -46,12 +57,21 @@ export function AjouterNoteDialog({
     queryFn: ({ signal }) => listSubjects(country, signal, cursus ?? undefined),
     enabled: open && !subjectId && !edition,
   })
-  const matiere = subjectId ?? choix ?? matieres?.[0]?.id ?? null
+  // La dernière matière n'est reprise que si elle fait partie de la liste proposée (examen changé depuis).
+  const choixValide = choix !== null && matieres?.some((m) => m.id === choix) ? choix : null
+  const matiere = subjectId ?? choixValide ?? matieres?.[0]?.id ?? null
 
   const creer = useMutation({
     mutationFn: () =>
       edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, texte, citation ?? ""),
     onSuccess: () => {
+      if (!edition && matiere !== null) {
+        try {
+          window.localStorage.setItem(CLE_DERNIERE_MATIERE, String(matiere))
+        } catch {
+          /* stockage indisponible : la matière ne sera simplement pas retenue */
+        }
+      }
       toast.success(t(edition ? "ca.note_modifiee" : "ca.note_ajoutee"))
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
@@ -89,6 +109,10 @@ export function AjouterNoteDialog({
         <textarea
           value={texte}
           onChange={(e) => setTexte(e.target.value)}
+          onKeyDown={(e) => {
+            // Ctrl/Cmd + Entrée enregistre, comme dans une messagerie.
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && texte.trim() && !creer.isPending && (edition || matiere !== null)) creer.mutate()
+          }}
           maxLength={NOTE_MAX}
           rows={5}
           autoFocus

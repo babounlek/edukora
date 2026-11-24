@@ -100,6 +100,8 @@ class MarqueEtude(models.Model):
     revision_due = models.DateField(null=True, blank=True)
     # Le jour de la première révision : sert à limiter le nombre de notes NOUVELLES proposées par jour.
     revision_debut = models.DateField(null=True, blank=True)
+    # Épinglée : reste en haut de son dossier dans Mes notes (les formules à ne jamais oublier).
+    epingle = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -245,6 +247,7 @@ class NoteLibre(models.Model):
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)
     revision_debut = models.DateField(null=True, blank=True)
+    epingle = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

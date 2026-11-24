@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { BarreExercices } from "@/components/BarreExercices"
 import { BarreLecture } from "@/components/BarreLecture"
+import { NoterSelection } from "@/components/NoterSelection"
 import { BoutonHorsLigne } from "@/components/BoutonHorsLigne"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
@@ -292,6 +293,7 @@ export function EpreuveReaderPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
       {content?.lesson_type !== "FICHE" && <BarreLecture cibleRef={articleRef} contenuKey={content?.title} />}
+      <NoterSelection cibleRef={articleRef} subjectId={epreuve?.subject.id} />
       <div className="mb-6 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
         <Link
           to={epreuvesListPath(displayCountry)}

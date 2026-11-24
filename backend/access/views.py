@@ -16,7 +16,7 @@ from users.profils import profil_actif
 from . import quota
 from .carnet import entree_marque, entree_note_libre
 from .etude import (
-    MarqueInvalide, creer_note_libre, enregistrer_marque, marques_du_document, modifier_note_libre, noter_revue,
+    MarqueInvalide, creer_note_libre, enregistrer_marque, epingler, marques_du_document, modifier_note_libre, noter_revue,
     notes_a_revoir,
 )
 from .models import ExerciceFait, LectureProgress, MarqueEtude, NoteLibre, TelechargementPdf
@@ -494,6 +494,15 @@ def note_libre_detail(request, pk):
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(entree_note_libre(note))
+
+
+@api_view(["POST"])
+def note_epingler(request):
+    """POST {genre: marque|libre, id, epingle} : épingle (ou désépingle) une note en haut de son dossier."""
+    obj = epingler(profil_actif(request), request.data.get("genre"), request.data.get("id"), bool(request.data.get("epingle")))
+    if obj is None:
+        return Response({"error": "Note introuvable."}, status=404)
+    return Response({"epingle": obj.epingle})
 
 
 @api_view(["GET"])

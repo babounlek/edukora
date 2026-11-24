@@ -19,6 +19,7 @@ urlpatterns = [
     path("etude/notes/", views.notes_libres, name="notes-libres"),
     path("etude/notes/a-revoir/", views.notes_a_revoir_view, name="notes-a-revoir"),
     path("etude/notes/revue/", views.note_revue, name="note-revue"),
+    path("etude/notes/epingler/", views.note_epingler, name="note-epingler"),
     path("etude/notes/<int:pk>/", views.note_libre_detail, name="note-libre"),
     path("exercices/<int:exercise_id>/fait/", views.marquer_exercice_fait, name="exercice-fait"),
 ]

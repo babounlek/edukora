@@ -3,10 +3,10 @@ import { Link, useSearchParams } from "react-router-dom"
 
 import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, Bookmark, BookOpen, FileText, Brain, NotebookPen, Pencil, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
+import { ArrowRight, Bookmark, BookOpen, FileText, Brain, NotebookPen, Pencil, Pin, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
-import { getCarnet, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
+import { epinglerNote, getCarnet, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
@@ -116,7 +116,21 @@ export function CarnetPage() {
   }
 
   const [recherche, setRecherche] = useState("")
-  const [filtre, setFiltre] = useState<"tout" | "notes" | "signets">("tout")
+  const [filtre, setFiltre] = useState<"tout" | "notes" | "signets" | "epinglees">("tout")
+  // Un seul dossier à imprimer : les autres se masquent le temps de l'impression (voir le bouton de chaque dossier).
+  const [dossierImprime, setDossierImprime] = useState<string | null>(null)
+  useEffect(() => {
+    if (dossierImprime === null) return
+    const fin = () => setDossierImprime(null)
+    window.addEventListener("afterprint", fin)
+    window.print()
+    return () => window.removeEventListener("afterprint", fin)
+  }, [dossierImprime])
+  const epingler = useMutation({
+    mutationFn: (entree: CarnetEntree) => epinglerNote(entree.genre, entree.id, !entree.epingle),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["carnet"] }),
+    onError: () => toast.error(t("ca.note_erreur")),
+  })
   const toutes = useMemo(() => data ?? [], [data])
 
   // Un dossier par matière : calculé à partir de ce que l'entrée sait déjà (sa matière), sans rangement à la main.
@@ -125,11 +139,14 @@ export function CarnetPage() {
     const gardees = toutes.filter((e) => {
       if (filtre === "notes" && !e.note) return false
       if (filtre === "signets" && !e.signet) return false
+      if (filtre === "epinglees" && !e.epingle) return false
       if (!aiguille) return true
       return sansAccent(`${e.note} ${e.titre} ${e.matiere} ${libelleSection(e)}`).includes(aiguille)
     })
     const parMatiere = new Map<string, CarnetEntree[]>()
     for (const e of gardees) parMatiere.set(e.matiere, [...(parMatiere.get(e.matiere) ?? []), e])
+    // Les notes épinglées d'abord dans chaque dossier ; le reste garde l'ordre du serveur (la plus récente en tête).
+    for (const [m, liste] of parMatiere) parMatiere.set(m, [...liste.filter((e) => e.epingle), ...liste.filter((e) => !e.epingle)])
     return {
       entrees: gardees,
       groupes: [...parMatiere.entries()].sort((a, b) => a[0].localeCompare(b[0])),
@@ -216,7 +233,9 @@ export function CarnetPage() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {(["tout", "notes", "signets"] as const).map((f) => (
+            {(["tout", "notes", "signets", "epinglees"] as const)
+              .filter((f) => f !== "epinglees" || toutes.some((e) => e.epingle))
+              .map((f) => (
               <button
                 key={f}
                 type="button"
@@ -233,7 +252,7 @@ export function CarnetPage() {
         </div>
         {entrees.length === 0 && <p className="mt-8 text-center text-sm text-muted-foreground">{t("ca.aucun_resultat")}</p>}
         {groupes.map(([matiere, liste]) => (
-        <section key={matiere} className="mt-8">
+        <section key={matiere} className={`mt-8 ${dossierImprime !== null && dossierImprime !== matiere ? "print:hidden" : ""}`}>
         <div className="flex items-baseline justify-between gap-2">
           <h2 className="flex items-baseline gap-2 font-display text-lg font-semibold">
             {matiere}
@@ -254,6 +273,15 @@ export function CarnetPage() {
               {t("ca.reviser_matiere")}
             </button>
           )}
+          <button
+            type="button"
+            aria-label={t("ca.imprimer_dossier")}
+            title={t("ca.imprimer_dossier")}
+            className="inline-flex shrink-0 items-center text-muted-foreground hover:text-primary print:hidden"
+            onClick={() => setDossierImprime(matiere)}
+          >
+            <Printer className="size-3.5" aria-hidden="true" />
+          </button>
         </div>
         <ul className="mt-3 flex flex-col gap-3">
           {liste.map((entree) => (
@@ -283,6 +311,20 @@ export function CarnetPage() {
                     </>
                   )}
                 </div>
+                {entree.note && (
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="ghost"
+                    aria-pressed={entree.epingle}
+                    className={`shrink-0 print:hidden ${entree.epingle ? "text-gold-text" : "text-muted-foreground"}`}
+                    aria-label={t(entree.epingle ? "ca.desepingler" : "ca.epingler")}
+                    disabled={epingler.isPending}
+                    onClick={() => epingler.mutate(entree)}
+                  >
+                    <Pin className={`size-4 ${entree.epingle ? "fill-current" : ""}`} />
+                  </Button>
+                )}
                 {entree.genre === "libre" && (
                   <Button
                     type="button"

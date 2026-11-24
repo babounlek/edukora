@@ -1963,6 +1963,8 @@ export interface CarnetEntree extends MarqueEtude {
   citation: string
   /** Prochaine révision de la note (null : jamais révisée, donc à réviser). */
   revision_due: string | null
+  /** Épinglée : reste en haut de son dossier. */
+  epingle: boolean
 }
 
 /** Les notes à réviser maintenant (voir access.etude.notes_a_revoir). */

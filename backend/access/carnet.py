@@ -26,6 +26,7 @@ def entree_marque(marque):
         "matiere_id": doc.subject_id,
         "citation": "",
         "revision_due": _date(marque.revision_due),
+        "epingle": marque.epingle,
     }
 
 
@@ -46,4 +47,5 @@ def entree_note_libre(note):
         "matiere_id": note.subject_id,
         "citation": note.citation,
         "revision_due": _date(note.revision_due),
+        "epingle": note.epingle,
     }

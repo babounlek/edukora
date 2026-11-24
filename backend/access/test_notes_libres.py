@@ -121,3 +121,26 @@ class QuotaEtMatiereTests(_Base):
         self.assertEqual((total, len(liste)), (8, 8))
         reponse = self.client.get(f"/access/etude/notes/a-revoir/?matiere={autre.pk}")
         self.assertEqual(reponse.data["total"], 2)
+
+
+class EpinglerTests(_Base):
+    def test_pinning_flags_the_note_without_moving_it_in_time(self):
+        note = NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Formule")
+        avant = NoteLibre.objects.get(pk=note.pk).updated_at
+        reponse = self.client.post("/access/etude/notes/epingler/", {"genre": "libre", "id": note.pk, "epingle": True}, format="json")
+        self.assertEqual(reponse.data, {"epingle": True})
+        note.refresh_from_db()
+        self.assertTrue(note.epingle)
+        self.assertEqual(note.updated_at, avant)
+        carnet = self.client.get("/access/etude/carnet/").data
+        self.assertTrue(carnet[0]["epingle"])
+
+    def test_a_section_note_can_be_pinned_and_someone_elses_cannot(self):
+        enregistrer_marque(self.profil, self.cours, "regle", note="À retenir")
+        marque = self.profil.marques_etude.get()
+        self.assertEqual(self.client.post("/access/etude/notes/epingler/", {"genre": "marque", "id": marque.pk, "epingle": True}, format="json").status_code, 200)
+        from users.models import User
+        intrus = User.objects.create_user(phone_number="677500008", password="x")
+        autre = self.client.__class__()
+        autre.force_authenticate(user=intrus)
+        self.assertEqual(autre.post("/access/etude/notes/epingler/", {"genre": "marque", "id": marque.pk, "epingle": False}, format="json").status_code, 404)

@@ -157,3 +157,15 @@ def noter_revue(profil, genre, pk, savais):
     obj.revision_due = aujourdhui + timedelta(days=LEITNER_INTERVALS_JOURS[palier])
     obj.save(update_fields=["revision_palier", "revision_due", "revision_debut"])
     return obj
+
+
+def epingler(profil, genre, pk, epingle):
+    """Épingle ou désépingle une note (« marque » ou « libre ») de ce profil. None si elle n'existe pas."""
+    modele = {"marque": MarqueEtude, "libre": NoteLibre}.get(genre)
+    obj = modele.objects.filter(profil=profil, pk=pk).first() if modele else None
+    if obj is None:
+        return None
+    obj.epingle = bool(epingle)
+    # `updated_at` ne bouge pas : épingler n'est pas écrire, la note ne doit pas sauter en tête de la liste récente.
+    modele.objects.filter(pk=obj.pk).update(epingle=obj.epingle)
+    return obj
