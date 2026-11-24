@@ -213,3 +213,71 @@ class OrigineTests(_Base):
         self.assertEqual(r.data["origine"], "quiz")
         r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "b", "origine": "autre"}, format="json")
         self.assertEqual(r.data["origine"], "")
+
+
+def _png(couleur=(200, 30, 30), taille=(40, 30), format="PNG"):
+    import io
+
+    from PIL import Image
+
+    tampon = io.BytesIO()
+    Image.new("RGB", taille, couleur).save(tampon, format=format)
+    tampon.seek(0)
+    return tampon
+
+
+class SourceEtImageTests(_Base):
+    def _note(self, **extra):
+        return NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Une note", **extra)
+
+    def test_the_source_is_kept_only_when_it_is_an_internal_address(self):
+        bonne = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "a", "source": "/cours/x/lire#regle"}, format="json")
+        self.assertEqual(bonne.data["source"], "/cours/x/lire#regle")
+        for mauvaise in ("https://exemple.org/x", "//exemple.org/x", "javascript:alert(1)", "/a b", "/x" + chr(92) + "y", "/" + "a" * 400):
+            r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "b", "source": mauvaise}, format="json")
+            self.assertEqual(r.data["source"], "", mauvaise)
+
+    def test_an_image_is_checked_shrunk_and_only_served_to_its_owner(self):
+        note = self._note()
+        r = self.client.post(f"/access/etude/notes/{note.pk}/image/", {"image": _png(taille=(3000, 2000))}, format="multipart")
+        self.assertEqual(r.status_code, 200)
+        self.assertTrue(r.data["a_image"])
+        corps = b"".join(self.client.get(f"/access/etude/notes/{note.pk}/image/").streaming_content)
+        from PIL import Image
+        import io
+        self.assertEqual(max(Image.open(io.BytesIO(corps)).size), 1600)
+        from users.models import User
+        intrus = User.objects.create_user(phone_number="677500010", password="x")
+        autre = self.client.__class__()
+        autre.force_authenticate(user=intrus)
+        self.assertEqual(autre.get(f"/access/etude/notes/{note.pk}/image/").status_code, 404)
+        self.assertEqual(autre.delete(f"/access/etude/notes/{note.pk}/image/").status_code, 404)
+
+    def test_a_file_that_is_not_an_image_is_refused(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+
+        note = self._note()
+        faux = SimpleUploadedFile("a.png", b"<html>pas une image</html>", content_type="image/png")
+        self.assertEqual(self.client.post(f"/access/etude/notes/{note.pk}/image/", {"image": faux}, format="multipart").status_code, 400)
+        gif = _png(format="GIF")
+        self.assertEqual(self.client.post(f"/access/etude/notes/{note.pk}/image/", {"image": gif}, format="multipart").status_code, 400)
+
+    def test_removing_the_image_or_the_note_deletes_the_file(self):
+        note = self._note()
+        self.client.post(f"/access/etude/notes/{note.pk}/image/", {"image": _png()}, format="multipart")
+        note.refresh_from_db()
+        nom = note.image.name
+        stockage = note.image.storage
+        self.assertTrue(stockage.exists(nom))
+        self.assertFalse(self.client.delete(f"/access/etude/notes/{note.pk}/image/").data["a_image"])
+        self.assertFalse(stockage.exists(nom))
+        self.client.post(f"/access/etude/notes/{note.pk}/image/", {"image": _png()}, format="multipart")
+        note.refresh_from_db()
+        nom = note.image.name
+        self.client.delete(f"/access/etude/notes/{note.pk}/")
+        self.assertFalse(stockage.exists(nom))
+
+    def test_a_note_may_be_only_a_photo(self):
+        self.assertEqual(self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": ""}, format="json").status_code, 400)
+        r = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "", "avec_image": True}, format="json")
+        self.assertEqual(r.status_code, 201)

@@ -1,9 +1,11 @@
 from django.db import models
+from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.utils.text import slugify
 from rest_framework import serializers
-from rest_framework.decorators import api_view, permission_classes, throttle_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes, throttle_classes
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -17,8 +19,8 @@ from users.profils import profil_actif
 from . import quota
 from .carnet import PAGE_CARNET, entree_marque, entree_note_libre, filtrer_carnet, resumer_dossiers
 from .etude import (
-    MarqueInvalide, creer_note_libre, enregistrer_marque, epingler, marques_du_document, modifier_note_libre, noter_revue,
-    notes_a_revoir,
+    MarqueInvalide, creer_note_libre, enregistrer_image_note, enregistrer_marque, epingler, marques_du_document,
+    modifier_note_libre, noter_revue, notes_a_revoir, retirer_image_note,
 )
 from .models import ExerciceFait, LectureProgress, MarqueEtude, NoteLibre, TelechargementPdf
 from .services import a_acces_exercices_cours, has_access
@@ -516,7 +518,9 @@ def notes_libres(request):
     if subject is None:
         return Response({"error": "Matière inconnue."}, status=400)
     try:
-        note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""), request.data.get("origine", ""))
+        note = creer_note_libre(profil_actif(request), subject, request.data.get("note"), request.data.get("citation", ""), request.data.get("origine", ""),
+            request.data.get("source", ""), avec_image=bool(request.data.get("avec_image")),
+        )
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(entree_note_libre(note), status=201)
@@ -529,7 +533,32 @@ def note_libre_detail(request, pk):
         note.delete()
         return Response(status=204)
     try:
-        note = modifier_note_libre(note, request.data.get("note"))
+        note = modifier_note_libre(note, request.data.get("note"), avec_image=bool(request.data.get("avec_image")))
+    except MarqueInvalide as exc:
+        return Response({"error": str(exc)}, status=400)
+    return Response(entree_note_libre(note))
+
+
+@api_view(["GET", "POST", "DELETE"])
+@parser_classes([MultiPartParser, FormParser])
+def note_image(request, pk):
+    """
+    L'image d'une note libre, à son propriétaire seulement. GET : le fichier (jamais l'adresse du stockage, privé).
+    POST (multipart, champ « image ») : la joint ou la remplace, après vérification et réduction. DELETE : la retire.
+    """
+    note = get_object_or_404(NoteLibre.objects.select_related("subject__country"), pk=pk, profil=profil_actif(request))
+    if request.method == "GET":
+        if not note.image:
+            return Response({"error": "Pas d'image."}, status=404)
+        reponse = FileResponse(note.image.open("rb"), content_type="image/jpeg")
+        reponse["Cache-Control"] = "private, max-age=3600"
+        reponse["X-Content-Type-Options"] = "nosniff"
+        return reponse
+    if request.method == "DELETE":
+        retirer_image_note(note)
+        return Response(entree_note_libre(note))
+    try:
+        enregistrer_image_note(note, request.FILES.get("image"))
     except MarqueInvalide as exc:
         return Response({"error": str(exc)}, status=400)
     return Response(entree_note_libre(note))

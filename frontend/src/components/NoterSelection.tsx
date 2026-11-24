@@ -25,6 +25,19 @@ export function texteDeLaSelection(plage: Range): string {
 }
 
 /**
+ * L'adresse du passage : la page, puis l'ancre de la section qui le contient (les sections d'un cours ou d'un corrigé portent
+ * leur clé en identifiant : c'est ce que « Rouvrir la section » utilise déjà). Sans section reconnue, la page seule.
+ */
+export function adresseDuPassage(plage: Range, zone: HTMLElement | null): string {
+  const base = window.location.pathname
+  let noeud: Node | null = plage.commonAncestorContainer
+  if (noeud.nodeType === Node.TEXT_NODE) noeud = noeud.parentNode
+  const section = noeud instanceof Element ? noeud.closest("[id]") : null
+  const id = section && zone?.contains(section) && /^[a-z0-9][a-z0-9_-]{0,59}$/.test(section.id) ? section.id : ""
+  return id ? `${base}#${id}` : base
+}
+
+/**
  * « Noter ça » : sélectionne un passage du cours ou du corrigé, un bouton apparaît sous la sélection, et le passage devient la
  * citation d'une note rangée dans la matière du document. C'est le geste le plus court pour prendre une note : sans lui, il
  * fallait descendre au pied de la section, retaper ce qu'on voulait garder.
@@ -33,18 +46,21 @@ export function texteDeLaSelection(plage: Range): string {
  * empêche le navigateur de désélectionner avant le clic. Réservé aux comptes connectés (une note s'y enregistre).
  */
 export function NoterSelection({
-  cibleRef, subjectId, avecBouton = true, origine,
+  cibleRef, subjectId, avecBouton = true, origine, source,
 }: {
   cibleRef: RefObject<HTMLElement | null>
   subjectId?: number | null
   /** Faux dans un quiz : le bouton flottant gênerait les réponses, seul « Noter ça » sous une sélection reste. */
   avecBouton?: boolean
   origine?: string
+  /** Adresse d'où viennent les notes prises ici ; à défaut la page courante, avec la section du passage sélectionné. */
+  source?: string
 }) {
   useI18n()
   const { isAuthenticated } = useAuth()
   const [bouton, setBouton] = useState<{ x: number; y: number } | null>(null)
   const [citation, setCitation] = useState<string | null>(null)
+  const [sourcePassage, setSourcePassage] = useState("")
   const [libre, setLibre] = useState(false)
   // L'astuce ne s'affiche qu'une fois (puis le bouton parle de lui-même) et disparaît seule.
   const [astuce, setAstuce] = useState(false)
@@ -92,8 +108,12 @@ export function NoterSelection({
   function noter() {
     const selection = window.getSelection()
     if (selection && selection.rangeCount > 0) {
-      const texte = texteDeLaSelection(selection.getRangeAt(0))
-      if (texte) setCitation(texte)
+      const plage = selection.getRangeAt(0)
+      const texte = texteDeLaSelection(plage)
+      if (texte) {
+        setSourcePassage(source ?? adresseDuPassage(plage, cibleRef.current))
+        setCitation(texte)
+      }
     }
     setBouton(null)
   }
@@ -133,13 +153,14 @@ export function NoterSelection({
         </button>
       </div>
       )}
-      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} />
+      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} source={source ?? window.location.pathname} />
       <AjouterNoteDialog
         open={citation !== null}
         onOpenChange={(ouvert) => !ouvert && setCitation(null)}
         subjectId={subjectId}
         citation={citation ?? undefined}
         origine={origine}
+        source={sourcePassage}
       />
     </>
   )

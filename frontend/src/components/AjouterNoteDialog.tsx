@@ -2,14 +2,20 @@ import { useEffect, useRef, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
-import { creerNoteLibre, listSubjects, modifierNoteLibre } from "@/api/endpoints"
+import { Bold, Eye, ImagePlus, Italic, List, Sigma, X } from "lucide-react"
+
+import { creerNoteLibre, envoyerImageNote, listSubjects, modifierNoteLibre, retirerImageNote, supprimerNoteLibre } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
+import { ImageNote } from "@/components/ImageNote"
 import { NoteTexte } from "@/components/NoteTexte"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { useCountry } from "@/context/CountryContext"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { useCursusAbonne } from "@/lib/abonneActif"
 import { t, useI18n } from "@/lib/i18n"
+import { appliquerFormat, type Format } from "@/lib/miseEnForme"
+import { reduireImage } from "@/lib/reduireImage"
+import { cn } from "@/lib/utils"
 
 const NOTE_MAX = 2000
 const CLE_DERNIERE_MATIERE = "edukora_note_derniere_matiere"
@@ -49,12 +55,14 @@ function derniereMatiere(): number | null {
  * question est jointe en citation).
  */
 export function AjouterNoteDialog({
-  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine, joignables, joindreParDefaut = false,
+  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition, origine, source, joignables, joindreParDefaut = false,
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
   /** Modifier une note libre existante : la matière et la citation ne changent pas, seul le texte. */
-  edition?: { id: number; note: string; citation?: string }
+  edition?: { id: number; note: string; citation?: string; aImage?: boolean; version?: string }
+  /** Adresse interne d'où vient la note (« Rouvrir la source » sur sa carte). */
+  source?: string
   /** Matière imposée (depuis un quiz) ; sinon l'élève la choisit. */
   subjectId?: number | null
   /** Matière proposée d'office (le dossier ouvert) : l'élève peut encore en changer. */
@@ -86,6 +94,23 @@ export function AjouterNoteDialog({
   const brouillon = !edition && !joignables
   const zoneTexte = useRef<HTMLTextAreaElement>(null)
   const texteVide = texte === ""
+  const [apercu, setApercu] = useState(false)
+  // La photo : choisie dans cette fenêtre (image), ou déjà jointe à la note qu'on modifie (edition.aImage).
+  const [image, setImage] = useState<File | null>(null)
+  const [imageRetiree, setImageRetiree] = useState(false)
+  const choixImage = useRef<HTMLInputElement>(null)
+  const [adresseImage, setAdresseImage] = useState<string | null>(null)
+  useEffect(() => {
+    if (!image) {
+      setAdresseImage(null)
+      return
+    }
+    const a = URL.createObjectURL(image)
+    setAdresseImage(a)
+    return () => URL.revokeObjectURL(a)
+  }, [image])
+  const imageDejaJointe = Boolean(edition?.aImage) && !imageRetiree
+  const aUneImage = image !== null || imageDejaJointe
 
   useEffect(() => {
     if (!open) return
@@ -93,6 +118,9 @@ export function AjouterNoteDialog({
     setChoix(matiereParDefaut?.id ?? derniereMatiere())
     setAvecQuestion(joindreParDefaut)
     setAvecReponse(joindreParDefaut)
+    setApercu(false)
+    setImage(null)
+    setImageRetiree(false)
   }, [open, texteInitial, edition?.note, matiereParDefaut?.id, citation, brouillon, joindreParDefaut])
 
   // Le curseur se pose À LA FIN d'un texte déjà écrit (la bonne réponse d'un quiz, un brouillon) : on écrit à la suite.
@@ -110,7 +138,19 @@ export function AjouterNoteDialog({
     if (brouillon) ecrireBrouillon(citation ?? "", valeur)
   }
   // Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
-  const enregistrable = Boolean(texte.trim()) || aCitation
+  const enregistrable = Boolean(texte.trim()) || aCitation || aUneImage
+
+  /** Gras, italique, liste, formule : les signes Markdown posés autour de la sélection (la sélection reste choisie après). */
+  function formater(format: Format) {
+    const z = zoneTexte.current
+    if (!z) return
+    const r = appliquerFormat(texte, z.selectionStart, z.selectionEnd, format)
+    ecrire(r.texte.slice(0, NOTE_MAX))
+    window.setTimeout(() => {
+      z.focus()
+      z.setSelectionRange(r.debut, r.fin)
+    }, 0)
+  }
 
   const { data: liste } = useQuery({
     queryKey: ["matieres-notes", country, cursus],
@@ -128,8 +168,24 @@ export function AjouterNoteDialog({
   const matiere = subjectId ?? choixValide ?? matieres?.[0]?.id ?? null
 
   const creer = useMutation({
-    mutationFn: () =>
-      edition ? modifierNoteLibre(edition.id, texte) : creerNoteLibre(matiere as number, reponseJointe + texte, citationEffective, origine ?? ""),
+    mutationFn: async () => {
+      if (edition) {
+        await modifierNoteLibre(edition.id, texte, image !== null || imageDejaJointe)
+        if (image) await envoyerImageNote(edition.id, await reduireImage(image))
+        else if (edition.aImage && imageRetiree) await retirerImageNote(edition.id)
+        return
+      }
+      const note = await creerNoteLibre(matiere as number, reponseJointe + texte, citationEffective, origine ?? "", source ?? "", image !== null)
+      if (image) {
+        try {
+          await envoyerImageNote(note.id, await reduireImage(image))
+        } catch {
+          // La note ne doit pas rester vide par la faute de la photo : sans texte ni passage, on la retire.
+          if (!(reponseJointe + texte).trim() && !citationEffective) await supprimerNoteLibre(note.id).catch(() => undefined)
+          toast.error(t("ca.image_erreur_envoi"))
+        }
+      }
+    },
     onSuccess: () => {
       if (!edition && matiere !== null) {
         try {
@@ -144,6 +200,7 @@ export function AjouterNoteDialog({
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
       queryClient.invalidateQueries({ queryKey: CLE_NOTES_DUES })
       setTexte("")
+      setImage(null)
       onOpenChange(false)
     },
     onError: () => toast.error(t("ca.note_erreur")),
@@ -151,7 +208,7 @@ export function AjouterNoteDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-h-[92vh] overflow-y-auto">
         <DialogTitle>{t(edition ? "ca.modifier_note" : "ca.nouvelle_note")}</DialogTitle>
         <DialogDescription>{t("ca.nouvelle_note_texte")}</DialogDescription>
         {joignables && (
@@ -192,6 +249,31 @@ export function AjouterNoteDialog({
             ))}
           </select>
         )}
+        <div className="mt-3 flex flex-wrap items-center gap-1" role="toolbar" aria-label={t("ca.mise_en_forme")}>
+          {(
+            [
+              ["gras", Bold, "ca.format_gras"],
+              ["italique", Italic, "ca.format_italique"],
+              ["liste", List, "ca.format_liste"],
+              ["formule", Sigma, "ca.format_formule"],
+            ] as const
+          ).map(([format, Icone, cle]) => (
+            <Button key={format} type="button" variant="ghost" size="icon" className="size-9" aria-label={t(cle)} title={t(cle)} onClick={() => formater(format)}>
+              <Icone className="size-4" aria-hidden="true" />
+            </Button>
+          ))}
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            aria-pressed={apercu}
+            className={cn("ml-auto gap-1.5", apercu && "bg-accent")}
+            onClick={() => setApercu(!apercu)}
+          >
+            <Eye className="size-4" aria-hidden="true" />
+            {t("ca.apercu")}
+          </Button>
+        </div>
         <textarea
           ref={zoneTexte}
           value={texte}
@@ -205,8 +287,62 @@ export function AjouterNoteDialog({
           autoFocus
           aria-label={t("ed.note_label")}
           placeholder={t("ed.note_placeholder")}
-          className="mt-3 w-full resize-y rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm leading-relaxed outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
+          className="mt-1.5 w-full resize-y rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm leading-relaxed outline-none focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-ring/40"
         />
+        {apercu && (
+          <div className="mt-2 rounded-xl border border-gold/30 bg-gold/[0.06] px-4 py-3" aria-label={t("ca.apercu")}>
+            {texte.trim() ? <NoteTexte texte={texte} /> : <p className="text-sm text-muted-foreground">{t("ca.apercu_vide")}</p>}
+          </div>
+        )}
+        <div className="mt-3">
+          <input
+            ref={choixImage}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="sr-only"
+            tabIndex={-1}
+            aria-label={t("ca.ajouter_photo")}
+            onChange={(e) => {
+              const f = e.target.files?.[0]
+              if (f) {
+                setImage(f)
+                setImageRetiree(false)
+              }
+              e.target.value = ""
+            }}
+          />
+          {image && adresseImage && (
+            <div className="relative mb-2 overflow-hidden rounded-xl border border-border bg-muted/30">
+              <img src={adresseImage} alt={t("ca.image_alt")} className="max-h-48 w-full object-contain" />
+            </div>
+          )}
+          {!image && imageDejaJointe && edition && (
+            <div className="mb-2">
+              <ImageNote noteId={edition.id} version={edition.version} className="max-h-48 w-full object-contain" />
+            </div>
+          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button type="button" variant="outline" size="sm" className="gap-1.5 rounded-full" onClick={() => choixImage.current?.click()}>
+              <ImagePlus className="size-4" aria-hidden="true" />
+              {t(aUneImage ? "ca.remplacer_photo" : "ca.ajouter_photo")}
+            </Button>
+            {aUneImage && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-muted-foreground"
+                onClick={() => {
+                  setImage(null)
+                  if (edition?.aImage) setImageRetiree(true)
+                }}
+              >
+                <X className="size-4" aria-hidden="true" />
+                {t("ca.retirer_photo")}
+              </Button>
+            )}
+          </div>
+        </div>
         <div className="mt-3 flex items-center justify-end gap-2">
           <span className="mr-auto text-xs tabular-nums text-muted-foreground">
             {texte.length} / {NOTE_MAX}

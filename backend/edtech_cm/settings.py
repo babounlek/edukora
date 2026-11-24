@@ -469,6 +469,11 @@ if SPACES_BUCKET:
             "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {"default_acl": "private", "querystring_auth": True},
         },
+        # Image d'une note de l'élève (voir access/storage.py) : une photo personnelle, privée, rendue par access.views.note_image.
+        "notes_protected": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {"default_acl": "private", "querystring_auth": True},
+        },
     }
 else:
     STORAGES = {
@@ -491,6 +496,10 @@ else:
         "cours_protected": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "cours")},
+        },
+        "notes_protected": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": str(BASE_DIR / "protected_media" / "notes")},
         },
     }
 

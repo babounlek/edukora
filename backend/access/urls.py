@@ -23,5 +23,6 @@ urlpatterns = [
     path("etude/notes/revue/", views.note_revue, name="note-revue"),
     path("etude/notes/epingler/", views.note_epingler, name="note-epingler"),
     path("etude/notes/<int:pk>/", views.note_libre_detail, name="note-libre"),
+    path("etude/notes/<int:pk>/image/", views.note_image, name="note-image"),
     path("exercices/<int:exercise_id>/fait/", views.marquer_exercice_fait, name="exercice-fait"),
 ]

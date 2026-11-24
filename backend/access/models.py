@@ -1,4 +1,15 @@
+import uuid
+
 from django.db import models
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+
+from .storage import protected_storage
+
+
+def _note_image_path(instance, filename):
+    """Un nom que personne ne peut deviner, rangé par profil : le fichier n'est de toute façon servi qu'à son propriétaire."""
+    return f"{instance.profil_id}/{uuid.uuid4().hex}.jpg"
 
 
 class LectureProgress(models.Model):
@@ -245,6 +256,11 @@ class NoteLibre(models.Model):
     note = models.TextField(max_length=2000)
     citation = models.TextField(blank=True, max_length=1000, help_text="La question ou le passage d'origine, si la note en vient.")
     origine = models.CharField(max_length=10, blank=True, default="", help_text="« quiz » : écrite depuis la correction d'un quiz.")
+    source = models.CharField(
+        max_length=300, blank=True, default="",
+        help_text="Adresse interne (/cours/…#section, /quiz/session/…) du passage ou de la question d'où vient la note.",
+    )
+    image = models.FileField(storage=protected_storage, upload_to=_note_image_path, blank=True, help_text="Une photo ou un schéma joint à la note.")
     revision_palier = models.PositiveSmallIntegerField(default=0)
     revision_due = models.DateField(null=True, blank=True)
     revision_debut = models.DateField(null=True, blank=True)
@@ -257,3 +273,10 @@ class NoteLibre(models.Model):
 
     def __str__(self):
         return f"{self.profil} - {self.subject_id}: {self.note[:40]}"
+
+
+@receiver(post_delete, sender=NoteLibre)
+def _supprimer_image_de_la_note(sender, instance, **kwargs):
+    """Une note supprimée (ou son compte, en cascade) emporte sa photo : sinon le fichier resterait orphelin dans le stockage."""
+    if instance.image:
+        instance.image.delete(save=False)

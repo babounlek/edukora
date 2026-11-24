@@ -1276,12 +1276,33 @@ export function getCarnetPage(
 }
 
 /** Une note libre : rattachée à une matière, pas à une section de cours (voir access.etude.creer_note_libre). */
-export function creerNoteLibre(subject: number, note: string, citation = "", origine = "") {
-  return apiRequest<CarnetEntree>("/access/etude/notes/", { method: "POST", body: { subject, note, citation, origine } })
+export function creerNoteLibre(
+  subject: number, note: string, citation = "", origine = "", source = "", avecImage = false,
+) {
+  return apiRequest<CarnetEntree>("/access/etude/notes/", {
+    method: "POST",
+    body: { subject, note, citation, origine, source, avec_image: avecImage },
+  })
 }
 
-export function modifierNoteLibre(id: number, note: string) {
-  return apiRequest<CarnetEntree>(`/access/etude/notes/${id}/`, { method: "PUT", body: { note } })
+export function modifierNoteLibre(id: number, note: string, avecImage = false) {
+  return apiRequest<CarnetEntree>(`/access/etude/notes/${id}/`, { method: "PUT", body: { note, avec_image: avecImage } })
+}
+
+/** Joint (ou remplace) la photo d'une note : réduite côté client (lib/reduireImage), revérifiée et réduite côté serveur. */
+export function envoyerImageNote(id: number, image: Blob) {
+  const formulaire = new FormData()
+  formulaire.append("image", image, "note.jpg")
+  return apiRequest<CarnetEntree>(`/access/etude/notes/${id}/image/`, { method: "POST", body: formulaire })
+}
+
+export function retirerImageNote(id: number) {
+  return apiRequest<CarnetEntree>(`/access/etude/notes/${id}/image/`, { method: "DELETE" })
+}
+
+/** La photo d'une note, en Blob : elle est privée, une balise <img> ne porterait pas le jeton de connexion. */
+export function getImageNote(id: number, signal?: AbortSignal) {
+  return apiRequest<Blob>(`/access/etude/notes/${id}/image/`, { signal, blob: true })
 }
 
 export function supprimerNoteLibre(id: number) {

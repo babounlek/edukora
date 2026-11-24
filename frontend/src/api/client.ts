@@ -301,7 +301,7 @@ interface RequestOptions {
    */
   signal?: AbortSignal
   /**
-   * true : une réponse PDF est rendue telle quelle, en Blob (un téléchargement). Toute réponse JSON reste lue
+   * true : une réponse PDF ou image est rendue telle quelle, en Blob (un téléchargement, une photo de note). Toute réponse JSON reste lue
    * comme d'habitude : l'appelant reçoit donc `Blob | <le JSON>` et regarde lequel.
    */
   blob?: boolean
@@ -386,7 +386,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
   }
 
   const contentType = response.headers.get("content-type") ?? ""
-  if (options.blob && response.ok && contentType.includes("application/pdf")) {
+  if (options.blob && response.ok && (contentType.includes("application/pdf") || contentType.startsWith("image/"))) {
     return (await response.blob()) as T
   }
   const data = contentType.includes("application/json") ? await response.json() : null

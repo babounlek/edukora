@@ -1952,6 +1952,10 @@ export interface MarqueEtudeEnregistree extends MarqueEtude {
 export interface CarnetEntree extends MarqueEtude {
   /** « quiz » : note écrite depuis la correction d'un quiz. */
   origine?: string
+  /** Adresse interne du passage ou de la question d'où vient la note (« Rouvrir la source »). */
+  source?: string
+  /** Une photo est jointe : elle se lit par GET /access/etude/notes/<id>/image/ (privée, jamais une adresse publique). */
+  a_image?: boolean
   /** « marque » : note posée sur une section ; « libre » : note rattachée à une matière (voir access.carnet). */
   genre: "marque" | "libre"
   id: number

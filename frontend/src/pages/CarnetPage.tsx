@@ -11,6 +11,7 @@ import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { ImageNote } from "@/components/ImageNote"
 import { NoteTexte } from "@/components/NoteTexte"
 import { RevisionNotes } from "@/components/RevisionNotes"
 import { Button } from "@/components/ui/button"
@@ -109,7 +110,7 @@ export function CarnetPage() {
   async function restaurer(entree: CarnetEntree) {
     try {
       if (entree.genre === "libre") {
-        const neuve = await creerNoteLibre(entree.matiere_id, entree.note, entree.citation)
+        const neuve = await creerNoteLibre(entree.matiere_id, entree.note, entree.citation, entree.origine ?? "", entree.source ?? "")
         if (entree.epingle) await epinglerNote("libre", neuve.id, true)
       } else {
         await saveMarqueEtude(
@@ -465,7 +466,7 @@ export function CarnetPage() {
                     </>
                   )}
                 </div>
-                {entree.note && (
+                {(entree.note || entree.genre === "libre") && (
                   <Button
                     type="button"
                     size="icon"
@@ -508,6 +509,20 @@ export function CarnetPage() {
                   <NoteTexte texte={entree.note} />
                 </div>
               )}
+              {entree.genre === "libre" && entree.a_image && (
+                <div className="mt-3">
+                  <ImageNote noteId={entree.id} version={entree.updated_at ?? undefined} />
+                </div>
+              )}
+              {entree.genre === "libre" && entree.source && (
+                <Link
+                  to={entree.source}
+                  className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline print:hidden"
+                >
+                  {t("ca.rouvrir_source")}
+                  <ArrowRight className="size-3" />
+                </Link>
+              )}
               {entree.type !== "libre" && (
                 <Link
                   to={lienSection(entree)}
@@ -538,7 +553,11 @@ export function CarnetPage() {
       <AjouterNoteDialog
         open={aModifier !== null}
         onOpenChange={(ouvert) => !ouvert && setAModifier(null)}
-        edition={aModifier ? { id: aModifier.id, note: aModifier.note, citation: aModifier.citation } : undefined}
+        edition={
+          aModifier
+            ? { id: aModifier.id, note: aModifier.note, citation: aModifier.citation, aImage: aModifier.a_image, version: aModifier.updated_at ?? undefined }
+            : undefined
+        }
       />
     </div>
   )

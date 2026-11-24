@@ -68,28 +68,96 @@ NOUVELLES_PAR_JOUR = 5
 ORIGINES_NOTE = ("quiz",)
 
 
-def creer_note_libre(profil, subject, note, citation="", origine=""):
+SOURCE_MAX = 300
+IMAGE_MAX_OCTETS = 8 * 1024 * 1024  # ce que le serveur accepte de lire ; le client réduit bien avant
+IMAGE_COTE_MAX = 1600
+IMAGE_PIXELS_MAX = 40_000_000
+IMAGES_PAR_PROFIL_MAX = 200
+
+
+def source_valide(source):
+    """Une adresse INTERNE seulement (/cours/…, /epreuves/…, /quiz/session/…) : jamais un lien écrit à la main vers l'extérieur."""
+    source = str(source or "").strip()
+    if not source.startswith("/") or source.startswith("//") or len(source) > SOURCE_MAX:
+        return ""
+    if chr(92) in source or "://" in source or any(c.isspace() for c in source):
+        return ""
+    return source
+
+
+def creer_note_libre(profil, subject, note, citation="", origine="", source="", avec_image=False):
     note = str(note or "").strip()
     citation = str(citation or "").strip()
-    # Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
-    if not note and not citation:
+    # Un passage gardé tel quel (ou une photo seule) est déjà une note : le texte peut rester vide.
+    if not note and not citation and not avec_image:
         raise MarqueInvalide("La note est vide.")
     if len(note) > NOTE_MAX:
         raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
     if len(citation) > CITATION_MAX:
         citation = citation[:CITATION_MAX]
     origine = origine if origine in ORIGINES_NOTE else ""
-    return NoteLibre.objects.create(profil=profil, subject=subject, note=note, citation=citation, origine=origine)
+    return NoteLibre.objects.create(
+        profil=profil, subject=subject, note=note, citation=citation, origine=origine, source=source_valide(source),
+    )
 
 
-def modifier_note_libre(note_libre, note):
+def modifier_note_libre(note_libre, note, avec_image=False):
     note = str(note or "").strip()
-    if not note and not note_libre.citation:
+    if not note and not note_libre.citation and not note_libre.image and not avec_image:
         raise MarqueInvalide("La note est vide.")
     if len(note) > NOTE_MAX:
         raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
     note_libre.note = note
     note_libre.save(update_fields=["note", "updated_at"])
+    return note_libre
+
+
+def enregistrer_image_note(note_libre, fichier):
+    """
+    Joint une photo à la note : vérifiée par Pillow (jamais confiance au type annoncé), remise à l'endroit, réduite à
+    IMAGE_COTE_MAX px, ré-encodée en JPEG (les métadonnées, position GPS comprise, disparaissent). Remplace la précédente.
+    """
+    import io
+
+    from django.core.files.base import ContentFile
+    from PIL import Image, ImageOps, UnidentifiedImageError
+
+    if fichier is None:
+        raise MarqueInvalide("Aucune image reçue.")
+    if fichier.size > IMAGE_MAX_OCTETS:
+        raise MarqueInvalide("Image trop lourde.")
+    if not note_libre.image and NoteLibre.objects.filter(profil=note_libre.profil).exclude(image="").count() >= IMAGES_PAR_PROFIL_MAX:
+        raise MarqueInvalide("Trop de notes avec une image : retires-en quelques-unes d'abord.")
+    try:
+        image = Image.open(fichier)
+        if image.format not in ("JPEG", "PNG", "WEBP"):
+            raise MarqueInvalide("Format d'image non pris en charge (JPEG, PNG ou WebP).")
+        if image.width * image.height > IMAGE_PIXELS_MAX:
+            raise MarqueInvalide("Image trop grande.")
+        image = ImageOps.exif_transpose(image)
+        if image.mode in ("RGBA", "LA", "P"):
+            image = image.convert("RGBA")
+            fond = Image.new("RGB", image.size, (255, 255, 255))
+            fond.paste(image, mask=image.split()[-1])
+            image = fond
+        else:
+            image = image.convert("RGB")
+        image.thumbnail((IMAGE_COTE_MAX, IMAGE_COTE_MAX))
+        tampon = io.BytesIO()
+        image.save(tampon, format="JPEG", quality=82, optimize=True)
+    except (UnidentifiedImageError, OSError, ValueError, Image.DecompressionBombError):
+        raise MarqueInvalide("Ce fichier n'est pas une image lisible.")
+    if note_libre.image:
+        note_libre.image.delete(save=False)
+    note_libre.image.save("note.jpg", ContentFile(tampon.getvalue()), save=False)
+    note_libre.save(update_fields=["image", "updated_at"])
+    return note_libre
+
+
+def retirer_image_note(note_libre):
+    if note_libre.image:
+        note_libre.image.delete(save=False)
+        note_libre.save(update_fields=["image", "updated_at"])
     return note_libre
 
 

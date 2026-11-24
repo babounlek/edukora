@@ -20,8 +20,8 @@ export function bonneReponseEnNote(choix: QuizChoix[], lettre?: string): string 
  * pas connue (anciennes séances).
  */
 export function AjouterAMesNotes({
-  subjectId, enonce, erreur = false, bonneReponse,
-}: { subjectId?: number | null; enonce: string; erreur?: boolean; bonneReponse?: string }) {
+  subjectId, enonce, erreur = false, bonneReponse, source,
+}: { subjectId?: number | null; enonce: string; erreur?: boolean; bonneReponse?: string; source?: string }) {
   useI18n()
   const [ouvert, setOuvert] = useState(false)
   if (!subjectId) return null
@@ -44,6 +44,7 @@ export function AjouterAMesNotes({
         joignables={{ question: enonce.replace(/\s+/g, " ").trim(), bonneReponse }}
         joindreParDefaut={erreur}
         origine="quiz"
+        source={source}
       />
     </>
   )

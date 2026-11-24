@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
  */
 export function NoteTexte({ texte, className }: { texte: string; className?: string }) {
   return (
-    <div className={cn("text-sm leading-relaxed [&_p]:my-0 [&_.katex-display]:my-2 [&_.katex-display]:overflow-x-auto", className)}>
+    <div className={cn("text-sm leading-relaxed [&_p]:my-0 [&_.katex-display]:my-2 [&_.katex-display]:overflow-x-auto [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:my-1 [&_ol]:list-decimal [&_ol]:pl-5 [&_strong]:font-semibold", className)}>
       <ReactMarkdown
         remarkPlugins={[remarkMath, remarkBreaks]}
         rehypePlugins={[rehypeKatex]}

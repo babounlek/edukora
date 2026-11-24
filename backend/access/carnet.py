@@ -26,6 +26,8 @@ def entree_marque(marque):
         "matiere_id": doc.subject_id,
         "citation": "",
         "origine": "",
+        "source": "",
+        "a_image": False,
         "revision_due": _date(marque.revision_due),
         "epingle": marque.epingle,
     }
@@ -48,6 +50,8 @@ def entree_note_libre(note):
         "matiere_id": note.subject_id,
         "citation": note.citation,
         "origine": note.origine,
+        "source": note.source,
+        "a_image": bool(note.image),
         "revision_due": _date(note.revision_due),
         "epingle": note.epingle,
     }

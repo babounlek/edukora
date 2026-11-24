@@ -110,6 +110,7 @@ function QuestionHistorique({ question, peutNoter }: { question: QuizHistoriqueQ
           subjectId={question.subject_id}
           enonce={question.enonce_markdown}
           erreur={!reponse.est_correcte}
+          source={window.location.pathname}
           bonneReponse={qcm ? bonneReponseEnNote(question.choix, question.reponse_correcte) : undefined}
         />
       )}
