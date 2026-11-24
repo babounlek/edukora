@@ -424,7 +424,7 @@ export function CarnetPage() {
                 <div className="min-w-0 flex-1">
                   {dossierId === null && <p className="text-xs font-medium text-primary">{entree.matiere}</p>}
                   {entree.type === "libre" ? (
-                    entree.citation && <p className="text-sm italic text-muted-foreground">{entree.citation}</p>
+                    entree.citation && <NoteTexte texte={entree.citation} className="italic text-muted-foreground" />
                   ) : (
                     <>
                       <p className="text-xs text-muted-foreground">

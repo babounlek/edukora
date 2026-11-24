@@ -4,6 +4,7 @@ import { toast } from "sonner"
 
 import { creerNoteLibre, listSubjects, modifierNoteLibre } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
+import { NoteTexte } from "@/components/NoteTexte"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { useCountry } from "@/context/CountryContext"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
@@ -88,8 +89,8 @@ export function AjouterNoteDialog({
         <DialogTitle>{t(edition ? "ca.modifier_note" : "ca.nouvelle_note")}</DialogTitle>
         <DialogDescription>{t("ca.nouvelle_note_texte")}</DialogDescription>
         {(edition?.citation ?? citation) && (
-          <blockquote className="mt-3 rounded-xl border-l-4 border-gold/60 bg-gold/[0.06] px-3 py-2 text-sm text-muted-foreground">
-            {(edition?.citation ?? citation ?? "").slice(0, 280)}
+          <blockquote className="mt-3 max-h-40 overflow-y-auto rounded-xl border-l-4 border-gold/60 bg-gold/[0.06] px-3 py-2 text-muted-foreground">
+            <NoteTexte texte={edition?.citation ?? citation ?? ""} />
           </blockquote>
         )}
         {!subjectId && !edition && matieres && matieres.length > 0 && (

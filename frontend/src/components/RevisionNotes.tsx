@@ -89,7 +89,7 @@ export function RevisionNotes({
         ) : (
           <div className="mt-4">
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{carte.matiere}</p>
-            {contexte !== carte.matiere && <p className="mt-1 text-sm text-muted-foreground">{contexte}</p>}
+            {contexte !== carte.matiere && <NoteTexte texte={contexte} className="mt-1 text-muted-foreground" />}
             {retournee ? (
               <div className="mt-3 rounded-xl border border-gold/30 bg-gold/[0.06] px-4 py-3">
                 <NoteTexte texte={carte.note} />
