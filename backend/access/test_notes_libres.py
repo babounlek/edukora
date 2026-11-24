@@ -188,3 +188,20 @@ class DossiersEtPagesTests(_Base):
         self._note("privée")
         self.assertEqual(autre.get("/access/etude/carnet/page/").data["count"], 0)
         self.assertEqual(autre.get("/access/etude/carnet/dossiers/").data["dossiers"], [])
+
+
+class CitationSeuleTests(_Base):
+    def test_a_passage_kept_without_text_is_a_note_but_never_a_review_card(self):
+        reponse = self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": "", "citation": "Un passage à garder"}, format="json")
+        self.assertEqual(reponse.status_code, 201)
+        self.assertEqual(self.client.get("/access/etude/carnet/page/?filtre=notes").data["count"], 1)
+        self.assertEqual(notes_a_revoir(self.profil)[0], 0)
+        dossier = self.client.get("/access/etude/carnet/dossiers/").data["dossiers"][0]
+        self.assertEqual((dossier["total"], dossier["avec_note"]), (1, 0))
+
+    def test_without_text_nor_passage_it_is_still_refused_and_editing_may_empty_a_passage_note(self):
+        self.assertEqual(self.client.post("/access/etude/notes/", {"subject": self.subject.pk, "note": " ", "citation": " "}, format="json").status_code, 400)
+        note = NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Un mot", citation="Le passage")
+        self.assertEqual(self.client.put(f"/access/etude/notes/{note.pk}/", {"note": ""}, format="json").status_code, 200)
+        libre = NoteLibre.objects.create(profil=self.profil, subject=self.subject, note="Sans passage")
+        self.assertEqual(self.client.put(f"/access/etude/notes/{libre.pk}/", {"note": ""}, format="json").status_code, 400)

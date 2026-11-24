@@ -7,10 +7,11 @@ import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { t, tn, useI18n } from "@/lib/i18n"
 
 /** Les notes à réviser aujourd'hui : le nombre seulement. Même cache que l'accueil, qui le remplit avec sa réponse. */
-export function useNotesDues() {
+export function useNotesDues(actif = true) {
   return useQuery({
     queryKey: CLE_NOTES_DUES,
     queryFn: ({ signal }) => getNotesARevoir(signal).then((d) => ({ total: d.total })),
+    enabled: actif,
   }).data
 }
 

@@ -1,8 +1,9 @@
 import { useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { BookOpen, CalendarCheck, TrendingUp } from "lucide-react"
+import { BookOpen, CalendarCheck, NotebookPen, TrendingUp } from "lucide-react"
 
 import { CompteAReboursBadge } from "@/components/CompteAReboursBadge"
+import { useNotesDues } from "@/components/RangeeNotes"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { catalogueHomePath, epreuvesListPath, recherchePath, themesFrequentsPath, coursListPath } from "@/lib/countryPath"
@@ -29,6 +30,8 @@ export function BottomTabBar() {
   const { t } = useI18n()
   const barRef = useRef<HTMLElement>(null)
   const visible = isAuthenticated && Boolean(user?.cursus_prepare)
+  // Le point sur « Mes notes » : des notes sont à réviser aujourd'hui.
+  const notesDues = useNotesDues(visible)?.total ?? 0
 
   // Publie la hauteur réelle de la barre (comptage à rebours compris, qui varie) dans
   // --bottom-tab-bar : une barre d'action fixée en bas d'une page (voir
@@ -64,6 +67,7 @@ export function BottomTabBar() {
     { to: accueil, label: t("nav.aujourdhui"), icon: CalendarCheck, actif: estAccueil },
     { to: epreuvesListPath(country), label: t("nav.reviser"), icon: BookOpen, actif: estReviser },
     { to: "/parcours", label: t("nav.progression"), icon: TrendingUp, actif: pathname.startsWith("/parcours") },
+    { to: "/carnet", label: t("cpt.carnet"), icon: NotebookPen, actif: pathname.startsWith("/carnet"), pastille: notesDues > 0 },
   ]
 
   return (
@@ -95,7 +99,12 @@ export function BottomTabBar() {
               onglet.actif ? "text-primary" : "text-muted-foreground hover:text-foreground",
             )}
           >
-            <onglet.icon className="size-5 shrink-0" />
+            <span className="relative">
+              <onglet.icon className="size-5 shrink-0" />
+              {"pastille" in onglet && onglet.pastille && (
+                <span className="absolute -right-1 -top-0.5 size-2 rounded-full bg-gold ring-2 ring-background" aria-hidden="true" />
+              )}
+            </span>
             {onglet.label}
           </Link>
         ))}

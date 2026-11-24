@@ -68,7 +68,8 @@ NOUVELLES_PAR_JOUR = 5
 def creer_note_libre(profil, subject, note, citation=""):
     note = str(note or "").strip()
     citation = str(citation or "").strip()
-    if not note:
+    # Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
+    if not note and not citation:
         raise MarqueInvalide("La note est vide.")
     if len(note) > NOTE_MAX:
         raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
@@ -79,7 +80,7 @@ def creer_note_libre(profil, subject, note, citation=""):
 
 def modifier_note_libre(note_libre, note):
     note = str(note or "").strip()
-    if not note:
+    if not note and not note_libre.citation:
         raise MarqueInvalide("La note est vide.")
     if len(note) > NOTE_MAX:
         raise MarqueInvalide(f"Note trop longue ({NOTE_MAX} caractères maximum).")
@@ -97,7 +98,8 @@ def notes_a_revoir(profil, limite=A_REVOIR_MAX, matiere_id=None):
 
     aujourdhui = timezone.localdate()
     marques = MarqueEtude.objects.filter(profil=profil).exclude(note="")
-    libres = NoteLibre.objects.filter(profil=profil)
+    # Un passage gardé sans texte (citation seule) n'a rien à retrouver de mémoire : il reste dans les dossiers, pas en révision.
+    libres = NoteLibre.objects.filter(profil=profil).exclude(note="")
     if matiere_id is not None:
         marques = marques.filter(Q(lesson__subject_id=matiere_id) | Q(cours__subject_id=matiere_id))
         libres = libres.filter(subject_id=matiere_id)

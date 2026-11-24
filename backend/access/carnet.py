@@ -91,7 +91,7 @@ def filtrer_carnet(carnet, matiere_id=None, filtre="tout", q="", tri="recent", m
     for e in carnet:
         if matiere_id is not None and e["matiere_id"] != matiere_id:
             continue
-        if filtre == "notes" and not e["note"]:
+        if filtre == "notes" and not e["note"] and e["genre"] != "libre":
             continue
         if filtre == "signets" and not e["signet"]:
             continue

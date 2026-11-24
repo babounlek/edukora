@@ -6,7 +6,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tansta
 import { ArrowLeft, ArrowRight, Bookmark, BookOpen, FileText, Brain, Folder, NotebookPen, Pencil, Pin, Plus, Printer, Search, StickyNote, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
-import { epinglerNote, getCarnetDossiers, getCarnetPage, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
+import { creerNoteLibre, epinglerNote, getCarnetDossiers, getCarnetPage, getNotesARevoir, saveMarqueEtude, supprimerNoteLibre } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
 import { COURS_SECTION_LABELS } from "@/components/CoursSection"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
@@ -14,7 +14,6 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { NoteTexte } from "@/components/NoteTexte"
 import { RevisionNotes } from "@/components/RevisionNotes"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -96,22 +95,37 @@ export function CarnetPage() {
       toast.error(t("ca.erreur_retrait"))
     },
     onSuccess: (_reponse, entree) => {
-      setAConfirmer(null)
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
+      // Pas de fenêtre de confirmation : on supprime, et un message permet de revenir en arrière quelques secondes.
+      toast(t("ca.note_supprimee"), { duration: 7000, action: { label: t("seance.annuler"), onClick: () => void restaurer(entree) } })
       if (entree.genre === "libre") return
       // La page du lecteur garde son propre cache de marques pour ce document.
       queryClient.invalidateQueries({ queryKey: ["etude", entree.type === "cours" ? "cours" : "lesson", entree.slug] })
     },
   })
 
-  // La corbeille supprime le signet ET la note : une note écrite à la main ne se récupère pas,
-  // on demande donc confirmation quand l'entrée en porte une (un simple signet se refait en un clic).
-  const [aConfirmer, setAConfirmer] = useState<CarnetEntree | null>(null)
-  function demanderRetrait(entree: CarnetEntree) {
-    if (entree.note || entree.genre === "libre") setAConfirmer(entree)
-    else retirer.mutate(entree)
+  /** « Annuler » après une suppression : la note revient avec son texte, sa citation et son épingle (pas son calendrier de révision). */
+  async function restaurer(entree: CarnetEntree) {
+    try {
+      if (entree.genre === "libre") {
+        const neuve = await creerNoteLibre(entree.matiere_id, entree.note, entree.citation)
+        if (entree.epingle) await epinglerNote("libre", neuve.id, true)
+      } else {
+        await saveMarqueEtude(
+          { type: entree.type === "cours" ? "cours" : "lesson", slug: entree.slug },
+          entree.cle,
+          { signet: entree.signet, note: entree.note },
+        )
+        queryClient.invalidateQueries({ queryKey: ["etude", entree.type === "cours" ? "cours" : "lesson", entree.slug] })
+      }
+      queryClient.invalidateQueries({ queryKey: ["carnet"] })
+      queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
+    } catch {
+      toast.error(t("ca.note_erreur"))
+    }
   }
+  const demanderRetrait = (entree: CarnetEntree) => retirer.mutate(entree)
 
   const [recherche, setRecherche] = useState("")
   const [aiguille, setAiguille] = useState("")
@@ -223,9 +237,17 @@ export function CarnetPage() {
             <Bookmark className="size-6" />
           </span>
           <p className="mt-4 font-display text-lg font-semibold">{t("ca.vide")}</p>
-          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">
-            {t("ca.vide_texte")}
-          </p>
+          <p className="mx-auto mt-1 max-w-sm text-sm text-muted-foreground">{t("ca.vide_texte")}</p>
+          <ol className="mx-auto mt-4 flex max-w-sm list-none flex-col gap-2.5 text-left text-sm">
+            {(["ca.vide_1", "ca.vide_2", "ca.vide_3"] as const).map((cle, i) => (
+              <li key={cle} className="flex items-start gap-3">
+                <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                  {i + 1}
+                </span>
+                <span>{t(cle)}</span>
+              </li>
+            ))}
+          </ol>
           <Button asChild className="mt-5 rounded-full">
             <Link to={`/${country}`}>
               {t("ca.aller_reviser")}
@@ -508,34 +530,13 @@ export function CarnetPage() {
         </>
       )}
 
-      <AjouterNoteDialog open={nouvelle} onOpenChange={setNouvelle} />
+      <AjouterNoteDialog open={nouvelle} onOpenChange={setNouvelle} matiereParDefaut={dossier ? { id: dossier.matiere_id, label: dossier.matiere } : null} />
       <RevisionNotes open={revision} onOpenChange={setRevision} matiereId={matiereRevision} />
       <AjouterNoteDialog
         open={aModifier !== null}
         onOpenChange={(ouvert) => !ouvert && setAModifier(null)}
         edition={aModifier ? { id: aModifier.id, note: aModifier.note, citation: aModifier.citation } : undefined}
       />
-
-      <Dialog open={aConfirmer !== null} onOpenChange={(ouvert) => !ouvert && setAConfirmer(null)}>
-        <DialogContent>
-          <DialogTitle>{t("ca.dialogue_titre")}</DialogTitle>
-          <DialogDescription>
-            {t("ca.dialogue_texte")}
-          </DialogDescription>
-          <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-            <Button variant="outline" onClick={() => setAConfirmer(null)}>
-              {t("ca.garder")}
-            </Button>
-            <Button
-              variant="destructive"
-              disabled={retirer.isPending}
-              onClick={() => aConfirmer && retirer.mutate(aConfirmer)}
-            >
-              {retirer.isPending ? t("ca.suppression") : t("ca.retirer")}
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

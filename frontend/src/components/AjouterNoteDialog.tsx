@@ -13,6 +13,25 @@ import { t, useI18n } from "@/lib/i18n"
 
 const NOTE_MAX = 2000
 const CLE_DERNIERE_MATIERE = "edukora_note_derniere_matiere"
+const CLE_BROUILLON = "edukora_note_brouillon"
+
+/** Le brouillon d'une note non enregistrée : fermer la fenêtre par erreur ne doit pas faire perdre ce qui était écrit. */
+function lireBrouillon(citation: string): string {
+  try {
+    const b = JSON.parse(window.localStorage.getItem(CLE_BROUILLON) ?? "null")
+    return b && b.c === citation && typeof b.t === "string" ? b.t : ""
+  } catch {
+    return ""
+  }
+}
+function ecrireBrouillon(citation: string, texte: string) {
+  try {
+    if (texte.trim()) window.localStorage.setItem(CLE_BROUILLON, JSON.stringify({ c: citation, t: texte }))
+    else window.localStorage.removeItem(CLE_BROUILLON)
+  } catch {
+    /* stockage indisponible : pas de brouillon, la note s'écrit normalement */
+  }
+}
 
 /** La matière de la dernière note écrite : on écrit souvent plusieurs notes de suite dans la même. */
 function derniereMatiere(): number | null {
@@ -30,7 +49,7 @@ function derniereMatiere(): number | null {
  * question est jointe en citation).
  */
 export function AjouterNoteDialog({
-  open, onOpenChange, subjectId, citation, texteInitial, edition,
+  open, onOpenChange, subjectId, matiereParDefaut, citation, texteInitial, edition,
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
@@ -38,6 +57,8 @@ export function AjouterNoteDialog({
   edition?: { id: number; note: string; citation?: string }
   /** Matière imposée (depuis un quiz) ; sinon l'élève la choisit. */
   subjectId?: number | null
+  /** Matière proposée d'office (le dossier ouvert) : l'élève peut encore en changer. */
+  matiereParDefaut?: { id: number; label: string } | null
   citation?: string
   texteInitial?: string
 }) {
@@ -46,18 +67,33 @@ export function AjouterNoteDialog({
   const { country } = useCountry()
   const cursus = useCursusAbonne()
   const [texte, setTexte] = useState(edition?.note ?? texteInitial ?? "")
-  const [choix, setChoix] = useState<number | null>(derniereMatiere)
+  const [choix, setChoix] = useState<number | null>(matiereParDefaut?.id ?? derniereMatiere())
+  const aCitation = Boolean(edition?.citation ?? citation)
 
   useEffect(() => {
-    if (open) setTexte(edition?.note ?? texteInitial ?? "")
-  }, [open, texteInitial, edition?.note])
+    if (!open) return
+    setTexte(edition?.note ?? texteInitial ?? lireBrouillon(citation ?? ""))
+    setChoix(matiereParDefaut?.id ?? derniereMatiere())
+  }, [open, texteInitial, edition?.note, matiereParDefaut?.id, citation])
 
-  const { data: matieres } = useQuery({
+  function ecrire(valeur: string) {
+    setTexte(valeur)
+    if (!edition) ecrireBrouillon(citation ?? "", valeur)
+  }
+  // Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
+  const enregistrable = Boolean(texte.trim()) || aCitation
+
+  const { data: liste } = useQuery({
     queryKey: ["matieres-notes", country, cursus],
     // Les matières de l'examen préparé quand on le connaît : sinon la liste mêlait BEPC et GCE.
     queryFn: ({ signal }) => listSubjects(country, signal, cursus ?? undefined),
     enabled: open && !subjectId && !edition,
   })
+  // Le dossier ouvert est toujours proposé, même si sa matière n'est plus dans la liste de l'examen préparé.
+  const matieres =
+    liste && matiereParDefaut && !liste.some((m) => m.id === matiereParDefaut.id)
+      ? [{ id: matiereParDefaut.id, label: matiereParDefaut.label }, ...liste]
+      : liste
   // La dernière matière n'est reprise que si elle fait partie de la liste proposée (examen changé depuis).
   const choixValide = choix !== null && matieres?.some((m) => m.id === choix) ? choix : null
   const matiere = subjectId ?? choixValide ?? matieres?.[0]?.id ?? null
@@ -73,6 +109,7 @@ export function AjouterNoteDialog({
           /* stockage indisponible : la matière ne sera simplement pas retenue */
         }
       }
+      if (!edition) ecrireBrouillon("", "")
       toast.success(t(edition ? "ca.note_modifiee" : "ca.note_ajoutee"))
       queryClient.invalidateQueries({ queryKey: ["carnet"] })
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
@@ -109,10 +146,10 @@ export function AjouterNoteDialog({
         )}
         <textarea
           value={texte}
-          onChange={(e) => setTexte(e.target.value)}
+          onChange={(e) => ecrire(e.target.value)}
           onKeyDown={(e) => {
             // Ctrl/Cmd + Entrée enregistre, comme dans une messagerie.
-            if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && texte.trim() && !creer.isPending && (edition || matiere !== null)) creer.mutate()
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && enregistrable && !creer.isPending && (edition || matiere !== null)) creer.mutate()
           }}
           maxLength={NOTE_MAX}
           rows={5}
@@ -125,10 +162,10 @@ export function AjouterNoteDialog({
           <span className="mr-auto text-xs tabular-nums text-muted-foreground">
             {texte.length} / {NOTE_MAX}
           </span>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => { if (!edition) ecrireBrouillon("", ""); onOpenChange(false) }}>
             {t("seance.annuler")}
           </Button>
-          <Button disabled={!texte.trim() || (!edition && matiere === null) || creer.isPending} onClick={() => creer.mutate()}>
+          <Button disabled={!enregistrable || (!edition && matiere === null) || creer.isPending} onClick={() => creer.mutate()}>
             {t("matieres.enregistrer")}
           </Button>
         </div>

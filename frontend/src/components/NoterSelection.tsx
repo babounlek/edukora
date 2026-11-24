@@ -7,6 +7,7 @@ import { t, useI18n } from "@/lib/i18n"
 
 const LONGUEUR_MIN = 4
 const LONGUEUR_MAX = 600
+const CLE_ASTUCE = "edukora_astuce_noter"
 
 /**
  * Le texte sélectionné, tel qu'on l'écrirait à la main : une formule KaTeX est rendue deux fois dans la page (en MathML pour
@@ -38,6 +39,21 @@ export function NoterSelection({
   const { isAuthenticated } = useAuth()
   const [bouton, setBouton] = useState<{ x: number; y: number } | null>(null)
   const [citation, setCitation] = useState<string | null>(null)
+  const [libre, setLibre] = useState(false)
+  // L'astuce ne s'affiche qu'une fois (puis le bouton parle de lui-même) et disparaît seule.
+  const [astuce, setAstuce] = useState(false)
+  useEffect(() => {
+    if (!isAuthenticated || !subjectId) return
+    try {
+      if (window.localStorage.getItem(CLE_ASTUCE)) return
+      window.localStorage.setItem(CLE_ASTUCE, "1")
+    } catch {
+      return
+    }
+    setAstuce(true)
+    const m = window.setTimeout(() => setAstuce(false), 9000)
+    return () => window.clearTimeout(m)
+  }, [isAuthenticated, subjectId])
 
   useEffect(() => {
     if (!isAuthenticated || !subjectId) return
@@ -91,6 +107,25 @@ export function NoterSelection({
           {t("ca.noter_ca")}
         </button>
       )}
+      {/* Le geste « sélectionner un passage » ne se devine pas : un bouton toujours visible ouvre une note libre. */}
+      <div className="fixed bottom-[calc(var(--bottom-tab-bar,0px)+1rem)] right-4 z-40 flex flex-col items-end gap-2 lg:bottom-6 print:hidden">
+        {astuce && (
+          <p role="status" className="max-w-[15rem] rounded-xl bg-foreground px-3 py-2 text-xs leading-snug text-background shadow-lg">
+            {t("ca.astuce_noter")}
+          </p>
+        )}
+        <button
+          type="button"
+          aria-label={t("ca.ajouter_note")}
+          onClick={() => { setAstuce(false); setLibre(true) }}
+          className="flex items-center gap-1.5 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg transition-transform hover:scale-[1.03]"
+        >
+          <NotebookPen className="size-4" aria-hidden="true" />
+          <span className="sm:hidden">{t("ca.ajouter_note_court")}</span>
+          <span className="hidden sm:inline">{t("ca.ajouter_note")}</span>
+        </button>
+      </div>
+      <AjouterNoteDialog open={libre} onOpenChange={setLibre} subjectId={subjectId} />
       <AjouterNoteDialog
         open={citation !== null}
         onOpenChange={(ouvert) => !ouvert && setCitation(null)}
