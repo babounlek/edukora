@@ -151,6 +151,12 @@ class ApiCoursTests(TestCase):
         self.assertEqual(titres, ["Cours fréquent"])
 
     def test_le_filtre_respecte_le_cursus_demande(self):
+        # Un cours sans source n'est proposé qu'aux examens où sa matière a du contenu : on en publie aux deux, pour que
+        # seule la fréquence puisse écarter le cours à l'autre examen.
+        for cursus in (self.cursus, self.autre_cursus):
+            _epreuve(self.subject, cursus, f"Annale {cursus.pk}", [])
+
+        self.assertEqual(len(self._liste(cursus=self.autre_cursus.pk)), 2)
         self.assertEqual(len(self._liste(tombe_souvent="true", cursus=self.cursus.pk)), 1)
         self.assertEqual(self._liste(tombe_souvent="true", cursus=self.autre_cursus.pk), [])
 
