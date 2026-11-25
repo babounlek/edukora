@@ -1,4 +1,6 @@
+import json
 from datetime import timedelta
+from unittest.mock import patch
 
 from django.test import override_settings
 from django.utils import timezone
@@ -239,6 +241,30 @@ class ExtractionTests(_Base):
         self.assertEqual(bilan["laissees"], 1)
         memo.refresh_from_db()
         self.assertEqual(memo.definition, "Texte corrigé par l'enseignant.")
+
+    def test_a_versioned_correction_rewrites_a_draft_but_never_a_published_card(self):
+        self._question(2019, "**Referendum** : consultation directe du peuple, dans le texte ci-dessus.")
+        extraction.enregistrer(self.subject, extraction.relever(self.subject))
+        retouche = {"referendum": {"terme": "Référendum", "definition": "Consultation directe du peuple."}}
+        with patch.object(extraction, "corrections_de", return_value=retouche):
+            self.assertEqual(extraction.enregistrer(self.subject, extraction.relever(self.subject))["creees"], 0)
+            memo = Memo.objects.get()
+            self.assertEqual((memo.terme, memo.definition), ("Référendum", "Consultation directe du peuple."))
+            Memo.objects.filter(pk=memo.pk).update(
+                statut=StatutMemo.PUBLIE, relu_par_enseignant=True, definition="Texte relu.", terme="Referendum",
+            )
+            extraction.enregistrer(self.subject, extraction.relever(self.subject))
+        memo.refresh_from_db()
+        self.assertEqual((memo.terme, memo.definition), ("Referendum", "Texte relu."))
+
+    def test_the_shipped_corrections_keep_each_card_matched_to_its_term(self):
+        toutes = json.loads(extraction.FICHIER_CORRECTIONS.read_text(encoding="utf-8"))
+        for matiere, retouches in toutes.items():
+            if matiere.startswith("_"):
+                continue
+            for cle, retouche in retouches.items():
+                self.assertEqual(extraction._cle(cle), cle)
+                self.assertEqual(extraction._cle(retouche.get("terme", cle)), cle)
 
     @override_settings(MEMOS_MONTRER_BROUILLONS=True)
     def test_in_development_drafts_show_flagged_as_to_review(self):

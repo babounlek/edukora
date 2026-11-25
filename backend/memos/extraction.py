@@ -9,9 +9,11 @@ des épreuves où la question a été posée.
 Le résultat est une proposition : les fiches naissent BROUILLON, un enseignant les relit (voir memos.models.Memo).
 """
 
+import json
 import re
 import unicodedata
 from collections import Counter
+from pathlib import Path
 
 from catalog.models import Question
 
@@ -26,6 +28,7 @@ PAS_DES_NOTIONS = {
     "methode", "exemple", "conseil", "nb", "note",
 }
 DEFINITION_MIN = 25
+FICHIER_CORRECTIONS = Path(__file__).resolve().parent / "donnees" / "corrections_extraites.json"
 
 
 def _cle(terme):
@@ -44,6 +47,12 @@ def _phrase(texte):
     texte = texte.strip()
     texte = texte[:1].upper() + texte[1:]
     return texte if texte.endswith((".", "!", "?", "…")) else texte + "."
+
+
+def corrections_de(subject):
+    """Les retouches versionnées des fiches de cette matière (voir donnees/corrections_extraites.json), par terme."""
+    toutes = json.loads(FICHIER_CORRECTIONS.read_text(encoding="utf-8"))
+    return toutes.get(f"{subject.country.code.upper()}/{subject.code}", {})
 
 
 def relever(subject):
@@ -75,11 +84,13 @@ def relever(subject):
             notion["lessons"].add(lesson.pk)
             notion["cursus"].update(c.pk for c in lesson.cursus.all())
             notion["themes"].update(t.pk for t in question.themes.all())
+    corrections = corrections_de(subject)
     relevees = []
-    for notion in notions.values():
+    for cle, notion in notions.items():
+        retouche = corrections.get(cle, {})
         relevees.append({
-            "terme": notion["terme"],
-            "definition": _phrase(max(notion["redactions"])[1]),
+            "terme": retouche.get("terme", notion["terme"]),
+            "definition": retouche.get("definition") or _phrase(max(notion["redactions"])[1]),
             "sessions": notion["sessions"],
             "lessons": sorted(notion["lessons"]),
             "cursus": sorted(notion["cursus"]),
@@ -111,6 +122,7 @@ def enregistrer(subject, relevees):
             bilan["laissees"] += 1
         else:
             if memo.statut != StatutMemo.PUBLIE:
+                memo.terme = notion["terme"]
                 memo.definition = notion["definition"]
                 memo.theme_id = notion["theme_id"]
             memo.sessions = fusionner_sessions(memo.sessions, notion["sessions"])
