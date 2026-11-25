@@ -96,7 +96,7 @@ class ComposerTests(BilanParentTestCase):
         }
         with mock.patch("relances.bilan_parent.bilan_du_profil", return_value=bilan):
             _, corps = bilan_parent.composer_bilan_parent(user, DIMANCHE)
-        self.assertIn("Thèmes consolidés : Suites (Maths).", corps)
+        self.assertIn("Thèmes devenus solides : Suites (Maths).", corps)
         self.assertIn("Série en cours : 4 jours de suite.", corps)
         self.assertIn("20 questions (80 % de réussite)", corps)
 

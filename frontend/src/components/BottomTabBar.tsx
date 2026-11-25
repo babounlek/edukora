@@ -61,6 +61,8 @@ export function BottomTabBar() {
     pathname.startsWith(recherchePath(country)) ||
     pathname.startsWith("/epreuves") ||
     pathname.startsWith("/cours") ||
+    pathname.startsWith("/fiches-edukora") ||
+    pathname.startsWith("/examens-blancs") ||
     pathname.startsWith("/quiz")
 
   const onglets = [

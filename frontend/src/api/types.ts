@@ -1548,7 +1548,8 @@ export interface ErreursMatiere {
   subject_code: string
   subject_label: string
   nb: number
-  themes: { theme_id: number; theme: string; nb: number }[]
+  /** `a_cours` : le thème a au moins un cours à ouvrir (absent d'une réponse gardée en cache). */
+  themes: { theme_id: number; theme: string; nb: number; a_cours?: boolean }[]
   /** Nombre total de thèmes touchés (`themes` n'en cite que les premiers). */
   themes_total: number
 }
@@ -2323,6 +2324,10 @@ export interface FicheEdukora {
   /** Pas encore relue par un enseignant (visible en développement seulement). */
   a_relire: boolean
   matiere_id: number
+  /** Le thème de la notion, avec ce qu'il a derrière lui (absent d'une réponse gardée en cache). */
+  theme?: { id: number; nom: string; a_quiz: boolean; a_cours: boolean } | null
+  /** Les épreuves publiées dont la fiche est tirée. */
+  sources?: { slug: string; titre: string; annee: number | null }[]
 }
 /** Une fiche gratuite montrée en aperçu (accueil, Mes notes) : avec sa matière et l'examen qu'elle prépare. */
 export interface FicheApercu extends FicheEdukora {

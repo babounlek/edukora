@@ -1010,6 +1010,7 @@ class RevisionPaperTests(PaperQcmBase):
                 )
                 q.themes.set([theme])
         self.demarrer()
+        self.client.post(self.url("mode-examen"))
         self.client.post(self.url("completer"))
 
         attendus = {f"Theme lourd {p}" for p in (7, 6, 5, 4)} | {"Suites"}  # Suites : 3 questions

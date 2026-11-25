@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import { BookOpen, CheckCircle2, Crown, History, ListChecks, Play, RotateCcw, Timer } from "lucide-react"
 
-import { getMyProgression, listMyTentativesInedites, listQuizHistorique } from "@/api/endpoints"
-import type { Progression, QuizEnCoursItem, QuizHistoriqueItem, TentativeInediteListItem } from "@/api/types"
+import { getMyProgression, listMySimulations, listMyTentativesInedites, listQuizHistorique } from "@/api/endpoints"
+import type { Progression, QuizEnCoursItem, QuizHistoriqueItem } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { EnteteCompte, EtatVide, Section } from "@/components/CompteSection"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -13,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { formatDureeEcoulee } from "@/lib/duration"
 import { useQuizEnCours } from "@/lib/quizEnCours"
 import { formatNote } from "@/lib/notation"
+import { type Copie, depuisAnnale, depuisInedite, pourcentageCopie } from "@/lib/copies"
 import { useSeo } from "@/lib/seo"
 import { coursReaderPath, epreuveReaderPath } from "@/lib/countryPath"
 import { localeCourante, t, useI18n } from "@/lib/i18n"
@@ -176,38 +177,35 @@ function ListeQuiz({
   )
 }
 
-function ContenuTentatives({ tentatives }: { tentatives: TentativeInediteListItem[] }) {
+function ContenuCopies({ copies }: { copies: Copie[] }) {
   return (
     <ExpandableList
-      items={tentatives}
-      renderItem={(tentative) => (
-        <li key={tentative.id}>
-          <Link
-            to={
-              tentative.submitted_at
-                ? `/inedit/tentative/${tentative.id}/resultat`
-                : `/inedit/tentative/${tentative.id}`
-            }
-            className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/60 px-3.5 py-2.5 text-sm transition-colors hover:border-primary/40"
-          >
-            <span className="flex min-w-0 flex-col">
-              <span className="truncate font-medium">{tentative.epreuve_titre}</span>
-              <span className="text-xs text-muted-foreground">
-                {traduireLibelleSerie(tentative.cursus_display)} · {new Date(tentative.started_at).toLocaleDateString(localeCourante())}
+      items={copies}
+      renderItem={(copie) => {
+        const pct = pourcentageCopie(copie)
+        return (
+          <li key={copie.cle}>
+            <Link
+              to={copie.submitted_at ? copie.lienResultat : copie.lienCopie}
+              className="flex items-center justify-between gap-3 rounded-xl border border-border bg-background/60 px-3.5 py-2.5 text-sm transition-colors hover:border-primary/40"
+            >
+              <span className="flex min-w-0 flex-col">
+                <span className="truncate font-medium">{copie.titre}</span>
+                <span className="text-xs text-muted-foreground">
+                  {t(`blancs.genre_${copie.genre}`)} · {new Date(copie.started_at).toLocaleDateString(localeCourante())}
+                </span>
               </span>
-            </span>
-            {tentative.submitted_at ? (
-              <Badge variant={tentative.score_obtenu !== null && tentative.score_obtenu >= 50 ? "success" : "outline"}>
-                {tentative.note_obtenue !== null && tentative.bareme_snapshot !== null
-                  ? formatNote(tentative.note_obtenue, tentative.bareme_snapshot)
-                  : `${tentative.score_obtenu}%`}
-              </Badge>
-            ) : (
-              <Badge variant="outline">{t("statut.en_cours")}</Badge>
-            )}
-          </Link>
-        </li>
-      )}
+              {!copie.submitted_at ? (
+                <Badge variant="outline">{t("statut.en_cours")}</Badge>
+              ) : pct === null ? (
+                <Badge variant="outline">{t("blancs.a_noter")}</Badge>
+              ) : (
+                <Badge variant={pct >= 50 ? "success" : "outline"}>{formatNote(copie.note_obtenue, copie.bareme_snapshot)}</Badge>
+              )}
+            </Link>
+          </li>
+        )
+      }}
     />
   )
 }
@@ -291,6 +289,12 @@ export function HistoriquePage() {
     enabled: actif,
     staleTime: 0,
   })
+  const annalesQuery = useQuery({
+    queryKey: ["mes-simulations", cursusId ?? null],
+    queryFn: () => listMySimulations(),
+    enabled: actif,
+    staleTime: 0,
+  })
   // Les tentatives de quiz sont filtrées côté serveur sur le profil actif ; paginées (voir
   // quiz.historique) : « Voir plus » charge la page suivante sans rien recharger.
   const quizQuery = useInfiniteQuery({
@@ -303,6 +307,14 @@ export function HistoriquePage() {
   })
   const progression = progressionQuery.data ?? null
   const tentatives = tentativesQuery.data ?? null
+  const annales = annalesQuery.data ?? null
+  // Les mêmes copies que « Mes examens blancs » (voir lib/copies). Une annale seulement ouverte, chrono jamais lancé,
+  // n'est pas une copie : elle n'est pas listée.
+  const copies = [
+    ...(annales ?? []).map(depuisAnnale).filter((c) => c.submitted_at !== null || c.enCours),
+    ...(tentatives ?? []).map(depuisInedite),
+  ].sort((a, b) => b.started_at.localeCompare(a.started_at))
+  const nbRendues = copies.filter((c) => c.submitted_at !== null).length
   const quiz = quizQuery.data?.pages.flatMap((p) => p.results) ?? []
   const quizTotal = quizQuery.data?.pages[0]?.count ?? 0
   // Accessoire : si la liste des quiz en cours ne répond pas, l'historique reste utile tel quel.
@@ -312,9 +324,9 @@ export function HistoriquePage() {
   if (isLoading) return null
 
   const totalRead = (progression?.lessons.length ?? 0) + (progression?.cours.length ?? 0)
-  const charge = progression !== null && tentatives !== null && quizQuery.data !== undefined
-  const enErreur = progressionQuery.isError || tentativesQuery.isError || quizQuery.isError
-  const vide = charge && totalRead === 0 && tentatives.length === 0 && nbQuiz === 0
+  const charge = progression !== null && tentatives !== null && annales !== null && quizQuery.data !== undefined
+  const enErreur = progressionQuery.isError || tentativesQuery.isError || annalesQuery.isError || quizQuery.isError
+  const vide = charge && totalRead === 0 && copies.length === 0 && nbQuiz === 0
   const contenuQuiz = (
     <ContenuQuiz
       quiz={quiz}
@@ -328,9 +340,10 @@ export function HistoriquePage() {
   const sources = charge
     ? [
         nbQuiz > 0 && { cle: "quiz", libelle: t("hq.onglet", { n: nbQuiz }), titre: t("hq.titre"), icone: ListChecks, contenu: contenuQuiz },
-        tentatives.length > 0 && {
-          cle: "tentatives", libelle: t("hi.tentatives_onglet", { n: tentatives.length }), titre: t("hi.tentatives_titre"),
-          icone: Crown, contenu: <ContenuTentatives tentatives={tentatives} />,
+        copies.length > 0 && {
+          // Le nombre annoncé est celui des copies rendues, comme sur « Mes examens blancs ».
+          cle: "tentatives", libelle: t("hi.tentatives_onglet", { n: nbRendues || copies.length }), titre: t("hi.tentatives_titre"),
+          icone: Crown, contenu: <ContenuCopies copies={copies} />,
         },
         totalRead > 0 && {
           cle: "lectures", libelle: t("hi.lectures_onglet", { n: totalRead }), titre: t("hi.lu"),
@@ -355,6 +368,7 @@ export function HistoriquePage() {
           onRetry={() => {
             if (progressionQuery.isError) progressionQuery.refetch()
             if (tentativesQuery.isError) tentativesQuery.refetch()
+            if (annalesQuery.isError) annalesQuery.refetch()
             if (quizQuery.isError) quizQuery.refetch()
           }}
         />

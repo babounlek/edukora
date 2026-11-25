@@ -16,14 +16,14 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { STATUTS } from "@/lib/statutsProgression"
 import { subjectIcon } from "@/lib/subjectIcon"
-import { SEUIL_DEBUT_PCT, pourcent, prochainPalier } from "@/lib/maitrise"
+import { anneauPreparation, pourcent, prochainPalier } from "@/lib/maitrise"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 import { BandeauMatieres, InviteChoixMatieres } from "@/components/ChoixMatieres"
 import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { BulletinPrevisionnel } from "@/components/BulletinPrevisionnel"
-import { CarteErreurs } from "@/components/MesErreurs"
+import { ARevoirAujourdhui } from "@/components/ARevoirAujourdhui"
 
 /** Savoirs qui ont du contenu : les seuls qui comptent dans un pourcentage. Un savoir
  * sans contenu n'est pas un échec de l'élève - l'inclure ferait mentir la barre, et
@@ -268,10 +268,13 @@ export function ParcoursPage() {
   const totalEnCours = matieres?.reduce((somme, m) => somme + m.en_cours, 0) ?? 0
   const totalTravailles = totalMaitrises + totalARevoir + totalEnCours
   const totalADecouvrir = Math.max(0, totalExploitables - totalMaitrises - totalARevoir - totalEnCours)
-  // L'élève qui démarre : le nombre de savoirs gagnés et le prochain palier, pas « 1 % » ni « 5 sur 977 »
-  // (même garde-fou que « Où j'en suis » sur l'accueil).
-  const debut = totalExploitables > 0 && pourcent(totalMaitrises / totalExploitables) < SEUIL_DEBUT_PCT
-  const centreAnneau = debut ? <span className="tabular-nums">{totalMaitrises}</span> : undefined
+  // Le même anneau et la même phrase que « Où j'en suis » sur l'accueil (voir lib/maitrise.anneauPreparation).
+  const anneau = anneauPreparation(matieres ?? [])
+  const debut = totalExploitables > 0 && anneau.debut
+  const centreAnneau = debut && anneau.centre !== null ? <span className="tabular-nums">{anneau.centre}</span> : undefined
+  const phraseDebut = totalTravailles > 0
+    ? t("oujensuis.debut_effort", { n: totalTravailles, m: totalMaitrises, p: prochainPalier(totalMaitrises) })
+    : t("oujensuis.debut", { m: totalMaitrises, p: prochainPalier(totalMaitrises) })
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -298,8 +301,8 @@ export function ParcoursPage() {
           </div>
           {totalExploitables > 0 && (
             <AnneauProgression
-              part={totalMaitrises / totalExploitables}
-              partTravaillee={totalTravailles / totalExploitables}
+              part={anneau.part}
+              partTravaillee={anneau.partTravaillee}
               centre={centreAnneau}
               className="hidden sm:block sm:size-32 [&>span]:text-3xl"
             />
@@ -354,17 +357,16 @@ export function ParcoursPage() {
           <>
             <div className="mt-6 flex items-center gap-4 sm:hidden">
               <AnneauProgression
-                part={totalMaitrises / totalExploitables}
-                partTravaillee={totalTravailles / totalExploitables}
+                part={anneau.part}
+                partTravaillee={anneau.partTravaillee}
                 centre={centreAnneau}
               />
               {debut ? (
-                <p className="text-sm text-muted-foreground">
-                  {t("oujensuis.debut", { m: totalMaitrises, p: prochainPalier(totalMaitrises) })}
-                </p>
+                <p className="text-sm text-muted-foreground">{phraseDebut}</p>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-semibold tabular-nums text-foreground">{totalMaitrises}</span>
+                  <span className="font-semibold tabular-nums text-foreground">{t("oujensuis.pct", { pct: pourcent(anneau.part) })}</span>{" "}
+                  {t("oujensuis.part_examen")} <span className="tabular-nums">{totalMaitrises}</span>
                   {tn("pc.maitrises_mobile", totalMaitrises)}
                   <span className="tabular-nums">{totalExploitables}</span>
                 </p>
@@ -372,11 +374,10 @@ export function ParcoursPage() {
             </div>
             {/* Sur grand écran l'anneau est en haut à droite, sans phrase : le palier s'écrit ici. */}
             {debut && (
-              <p className="mt-6 hidden text-sm text-muted-foreground sm:block">
-                {t("oujensuis.debut", { m: totalMaitrises, p: prochainPalier(totalMaitrises) })}
-              </p>
+              <p className="mt-6 hidden text-sm text-muted-foreground sm:block">{phraseDebut}</p>
             )}
-            {totalTravailles > 0 && (
+            {/* Au début, la phrase ci-dessus dit déjà combien de thèmes sont travaillés. */}
+            {!debut && totalTravailles > 0 && (
               <p className="mt-4 text-sm font-medium text-primary">
                 {tn("pc.abordes", totalTravailles, { total: totalExploitables })}
               </p>
@@ -402,7 +403,7 @@ export function ParcoursPage() {
           première semaine (« Mathématiques : 47 % de réussite »), là où les savoirs maîtrisés restent
           longtemps près de zéro. Le bloc n'existait que dans « Mon compte » ; il se tait sans activité. */}
       {/* Avant le bilan : c'est la seule chose de cette page qui se fait tout de suite. */}
-      {abonneAuCursus && <CarteErreurs cursusId={Number(cursusId)} className="mt-6" />}
+      {abonneAuCursus && <ARevoirAujourdhui cursusId={Number(cursusId)} className="mt-6" />}
       {abonneAuCursus && <BilanDePeriode cursusId={Number(cursusId)} className="mt-6" />}
       {abonneAuCursus && <BulletinPrevisionnel className="mt-6" />}
 

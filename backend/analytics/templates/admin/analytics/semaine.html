@@ -1,0 +1,64 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<p>Généré le {{ point.genere_le|date:"j F Y à H:i" }}. Chiffres internes.</p>
+
+<h2>La séance aide-t-elle ?</h2>
+<p>Question posée une fois par élève, à partir de sa troisième séance terminée.</p>
+<table>
+  <thead><tr><th>Période</th><th>Réponses</th><th>Part de « oui »</th>{% for r in point.avis_30.reponses %}<th>{{ r.libelle }}</th>{% endfor %}</tr></thead>
+  <tbody>
+    <tr><td>7 jours</td><td>{{ point.avis_7.total }}</td><td>{% if point.avis_7.part_oui is not None %}{{ point.avis_7.part_oui }} %{% else %}-{% endif %}</td>{% for r in point.avis_7.reponses %}<td>{{ r.nombre }}</td>{% endfor %}</tr>
+    <tr><td>30 jours</td><td>{{ point.avis_30.total }}</td><td>{% if point.avis_30.part_oui is not None %}{{ point.avis_30.part_oui }} %{% else %}-{% endif %}</td>{% for r in point.avis_30.reponses %}<td>{{ r.nombre }}</td>{% endfor %}</tr>
+  </tbody>
+</table>
+{% if point.avis_30.motifs %}
+<p>Motifs (30 jours) : {% for m in point.avis_30.motifs %}{{ m.libelle }} ({{ m.nombre }}){% if not forloop.last %}, {% endif %}{% endfor %}.</p>
+{% endif %}
+
+<h2>Retour des élèves (30 jours)</h2>
+<table>
+  <thead><tr><th>Retour</th><th>Profils jugeables</th><th>Revenus</th><th>Part</th></tr></thead>
+  <tbody>
+    {% for cle, r in point.retention.retour.items %}
+    <tr><td>{{ cle }}</td><td>{{ r.eligibles }}</td><td>{{ r.revenus }}</td><td>{% if r.part is not None %}{{ r.part }} %{% else %}-{% endif %}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p>Nouveaux profils actifs : {{ point.retention.nouveaux_profils_actifs }}.</p>
+
+<h2>Entonnoir</h2>
+<table>
+  <thead><tr><th>Étape</th><th>7 jours</th><th>30 jours</th><th>30 jours : part de l'étape précédente</th></tr></thead>
+  <tbody>
+    {% for sept, trente in etapes %}
+    <tr><td>{{ trente.libelle }}</td><td>{{ sept.eleves }}</td><td>{{ trente.eleves }}</td><td>{% if trente.part_de_l_etape_precedente is not None %}{{ trente.part_de_l_etape_precedente }} %{% else %}-{% endif %}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p>Paiements des 30 jours : {{ point.entonnoir_30.paiements.eleves_ayant_tente }} élève(s) ont tenté, {{ point.entonnoir_30.paiements.eleves_n_ayant_jamais_paye }} n'ont jamais payé.</p>
+<p>Pages vues sur 30 jours (visiteurs compris) : {% for nom, nombre in point.entonnoir_30.frequentation.items %}{{ nom }} {{ nombre }}{% if not forloop.last %} ; {% endif %}{% endfor %}.</p>
+
+<h2>Fiches EduKora (7 jours)</h2>
+<p>{{ point.fiches.lectures }} ouverture(s) d'une matière, {{ point.fiches.gardees }} fiche(s) gardée(s).</p>
+
+<h2>Questions signalées à traiter ({{ point.signalements.total }})</h2>
+{% if point.signalements.lignes %}
+<table>
+  <thead><tr><th>Date</th><th>Matière et thème</th><th>Motif</th><th>Énoncé</th><th>Commentaire de l'élève</th></tr></thead>
+  <tbody>
+    {% for s in point.signalements.lignes %}
+    <tr>
+      <td><a href="{% url 'admin:quiz_signalementquestion_change' s.id %}">{{ s.date|date:"j/m H:i" }}</a></td>
+      <td>{{ s.matiere }}<br><small>{{ s.theme }}</small></td>
+      <td>{{ s.motif }}</td>
+      <td>{% if s.enonce %}<a href="{% url 'admin:quiz_competenceitem_change' s.item_id %}">{{ s.enonce|truncatechars:220 }}</a>{% endif %}</td>
+      <td>{{ s.commentaire }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>Aucun signalement en attente.</p>
+{% endif %}
+{% endblock %}

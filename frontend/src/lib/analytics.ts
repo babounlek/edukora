@@ -61,6 +61,10 @@ export type AnalyticsEventName =
   | "connexion_code_demande"
   | "connexion_reussie"
   | "paiement_numero_affiche"
+  // « Cette séance t'a aidé ? » : la réponse et un motif pris dans une liste fermée - voir analytics.models.
+  | "seance_avis"
+  // Fiches EduKora : une matière ouverte (`fiche_gardee` est enregistré par le serveur).
+  | "fiche_lue"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

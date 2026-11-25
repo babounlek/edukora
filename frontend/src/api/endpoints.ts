@@ -468,6 +468,25 @@ export function readCours(slug: string) {
   return apiRequest<CoursContent>(cheminLectureCours(slug), { auth: "optional" })
 }
 
+/** « Où cette notion est tombée » : les épreuves officielles qui portent un thème du cours. */
+export function getCoursEpreuves(slug: string, cursus?: number, signal?: AbortSignal) {
+  return apiRequest<{ total: number; annees: number[]; epreuves: { slug: string; title: string; year: number | null }[] }>(
+    `/catalog/cours/${slug}/epreuves/${cursus ? `?cursus=${cursus}` : ""}`, { signal, auth: false },
+  )
+}
+
+/** Les thèmes d'une épreuve qui ont des questions de quiz pour l'examen. */
+export function getEpreuveQuizThemes(slug: string, cursus?: number, signal?: AbortSignal) {
+  return apiRequest<{ cursus_id: number | null; themes: { theme_id: number; theme: string; questions_quiz: number }[] }>(
+    `/catalog/lessons/${slug}/quiz/${cursus ? `?cursus=${cursus}` : ""}`, { signal, auth: false },
+  )
+}
+
+/** Faut-il poser « Cette séance t'a aidé ? » (une seule fois, à partir de la troisième séance terminée) ? */
+export function getAvisSeance(signal?: AbortSignal) {
+  return apiRequest<{ demander: boolean }>("/analytics/avis-seance/", { signal })
+}
+
 export function previewCours(slug: string) {
   return apiRequest<CoursPreview>(`/access/cours/preview/${slug}/`, { auth: false })
 }
@@ -1323,6 +1342,11 @@ export function getFichesApercu(pays: string, cursus: number | null, signal?: Ab
 
 export function getFiches(cursus: number, matiere: number, signal?: AbortSignal) {
   return apiRequest<FichesListe>(`/memos/fiches/?cursus=${cursus}&matiere=${matiere}`, { signal, auth: "optional" })
+}
+
+/** Où se trouve une fiche : le lien « rouvrir la source » d'une note ne porte que son identifiant. */
+export function situerFiche(id: number, signal?: AbortSignal) {
+  return apiRequest<{ matiere_id: number; cursus_ids: number[] }>(`/memos/fiches/${id}/`, { signal, auth: "optional" })
 }
 
 /** « Garder dans mes notes » : la fiche devient une note de l'élève (terme au recto, définition au verso). */

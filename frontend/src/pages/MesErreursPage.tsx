@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, CheckCircle2, Loader2, RotateCcw } from "lucide-react"
+import { ArrowRight, BookOpen, CheckCircle2, Loader2, RotateCcw } from "lucide-react"
 
 import { getErreurs } from "@/api/endpoints"
 import type { ErreursMatiere } from "@/api/types"
@@ -10,6 +10,8 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
+import { useCountry } from "@/context/CountryContext"
+import { coursListPath } from "@/lib/countryPath"
 import { EchecRefaireErreurs } from "@/components/MesErreurs"
 import { cleErreurs, useRefaireErreurs } from "@/lib/erreurs"
 import { couleurMatiere } from "@/lib/matiereCouleur"
@@ -126,6 +128,7 @@ function LigneMatiere({
   matiere, enCours, desactive, onRefaire,
 }: { matiere: ErreursMatiere; enCours: boolean; desactive: boolean; onRefaire: () => void }) {
   const Icone = subjectIcon(matiere.subject_code)
+  const { country } = useCountry()
   const autres = matiere.themes_total - matiere.themes.length
   return (
     <li className="rounded-2xl border border-border bg-card p-4 sm:p-5">
@@ -150,12 +153,30 @@ function LigneMatiere({
       </div>
       {/* Les thèmes où les erreurs se concentrent : de quoi reconnaître ses lacunes d'un coup d'œil. */}
       <ul className="mt-3 flex flex-wrap gap-2">
-        {matiere.themes.map((theme) => (
-          <li key={theme.theme_id} className="max-w-full truncate rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-            {capitaliserTheme(theme.theme)}
-            {theme.nb > 1 && <span className="tabular-nums"> · {theme.nb}</span>}
-          </li>
-        ))}
+        {matiere.themes.map((theme) => {
+          const contenu = (
+            <>
+              <span className="truncate">{capitaliserTheme(theme.theme)}</span>
+              {theme.nb > 1 && <span className="shrink-0 tabular-nums">· {theme.nb}</span>}
+            </>
+          )
+          return (
+            <li key={theme.theme_id} className="flex max-w-full">
+              {theme.a_cours ? (
+                <Link
+                  to={`${coursListPath(country)}?theme=${theme.theme_id}`}
+                  aria-label={t("erreurs.revoir_cours", { theme: capitaliserTheme(theme.theme) })}
+                  className="inline-flex min-h-9 max-w-full items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1 text-xs font-medium text-primary hover:border-primary"
+                >
+                  <BookOpen className="size-3.5 shrink-0" aria-hidden="true" />
+                  {contenu}
+                </Link>
+              ) : (
+                <span className="inline-flex max-w-full items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">{contenu}</span>
+              )}
+            </li>
+          )
+        })}
         {autres > 0 && <li className="px-1 py-1 text-xs text-muted-foreground">{tn("erreurs.autres_themes", autres)}</li>}
       </ul>
     </li>

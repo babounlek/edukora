@@ -100,8 +100,9 @@ class CacheDuSqueletteTests(ParcoursFixture):
         with CaptureQueriesContext(connection) as second:
             apres = construire_parcours_par_frequence(self.aicha, self.cursus, self.subject)
         self.assertEqual(avant, apres)
-        # Réponses, révisions, lectures : trois requêtes, plus aucune sur le contenu.
-        self.assertEqual(len(second), 3)
+        # Réponses de quiz, QCM des copies d'examen (inédites puis annales), révisions, lectures : cinq requêtes, plus aucune
+        # sur le contenu.
+        self.assertEqual(len(second), 5)
         self.assertGreater(len(premier), len(second))
 
     def test_la_progression_d_un_eleve_n_est_jamais_servie_a_un_autre(self):

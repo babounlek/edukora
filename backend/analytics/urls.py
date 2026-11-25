@@ -7,4 +7,5 @@ app_name = "analytics"
 urlpatterns = [
     path("events/", views.track_event, name="track-event"),
     path("entonnoir/", views.entonnoir_view, name="entonnoir"),
+    path("avis-seance/", views.avis_seance_view, name="avis-seance"),
 ]

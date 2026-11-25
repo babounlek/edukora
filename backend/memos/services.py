@@ -4,6 +4,8 @@ from django.conf import settings
 
 from access.models import NoteLibre
 from access.services import bulk_active_subscription_cursus_ids
+from catalog.models import StatutContenu
+from inedit.liens import themes_avec_cours, themes_avec_quiz
 
 from .gratuites import sessions_de
 from .models import Memo, StatutMemo
@@ -38,7 +40,38 @@ def gardees(profil, memos):
     return {sources[s] for s in trouvees}
 
 
-def entree(memo, *, lisible, gardee, cursus_id=None):
+def liens_des_fiches(memos, cursus):
+    """
+    {id de fiche: {"theme": …, "sources": […]}} : de quoi passer d'une fiche à son quiz, à son cours et aux épreuves dont
+    elle est tirée. Les fiches n'avaient aucun de ces passages (audit du 2026-11-25). Un lien « quiz » ou « cours » n'est
+    annoncé que si le thème a de quoi le remplir ; une source n'est citée que publiée et de cet examen.
+    """
+    ids_themes = [m.theme_id for m in memos if m.theme_id]
+    avec_quiz = themes_avec_quiz(ids_themes, cursus) if ids_themes else set()
+    avec_cours = themes_avec_cours(ids_themes, cursus) if ids_themes else set()
+    sources = {}
+    lignes = (
+        Memo.sources.through.objects.filter(
+            memo_id__in=[m.pk for m in memos], lesson__statut=StatutContenu.VALIDE, lesson__cursus=cursus,
+        )
+        .values_list("memo_id", "lesson__slug", "lesson__title", "lesson__year")
+        .order_by("-lesson__year", "lesson__title")
+    )
+    for memo_id, slug, titre, annee in lignes:
+        sources.setdefault(memo_id, []).append({"slug": slug, "titre": titre, "annee": annee})
+    return {
+        m.pk: {
+            "theme": (
+                {"id": m.theme_id, "nom": m.theme.name, "a_quiz": m.theme_id in avec_quiz, "a_cours": m.theme_id in avec_cours}
+                if m.theme_id else None
+            ),
+            "sources": sources.get(m.pk, []),
+        }
+        for m in memos
+    }
+
+
+def entree(memo, *, lisible, gardee, cursus_id=None, liens=None):
     """Une fiche telle que l'API la rend. Verrouillée : le terme et les sessions restent visibles (c'est ce qui donne envie),
     jamais la définition."""
     return {
@@ -53,6 +86,7 @@ def entree(memo, *, lisible, gardee, cursus_id=None):
         "gardee": gardee,
         "a_relire": memo.statut != StatutMemo.PUBLIE,
         "matiere_id": memo.subject_id,
+        **(liens or {"theme": None, "sources": []}),
     }
 
 

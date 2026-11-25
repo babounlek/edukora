@@ -40,6 +40,7 @@ import { ExerciceNav } from "@/components/ExerciceNav"
 import { QcmDExercice } from "@/components/QcmDExercice"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
+import { QuizSurCesThemes } from "@/components/QuizSurCesThemes"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { PartReussie } from "@/components/PartReussie"
 import { BasculeEssai, useEssaiEpreuve } from "@/components/BasculeEssai"
@@ -387,6 +388,8 @@ export function EpreuveReaderPage() {
       )}
 
       <EtapeSuivante />
+
+      {slug && content && <QuizSurCesThemes slug={slug} className="mt-8" />}
 
       {epreuve && (
         <RelatedEpreuves

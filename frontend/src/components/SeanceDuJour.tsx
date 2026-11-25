@@ -12,6 +12,7 @@ import {
   proposerAutreChose, retirerObjectifMatiere, terminerSeanceDuJour,
 } from "@/api/endpoints"
 import type { EtapeSeance, EtapeSeanceVerrouillee, PlanDuJour, Seance } from "@/api/types"
+import { AvisSeance } from "@/components/AvisSeance"
 import { BoutonParents } from "@/components/BoutonParents"
 import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Button } from "@/components/ui/button"
@@ -988,6 +989,8 @@ function SeanceFaite({
           </p>
         ) : null
       })()}
+
+      <AvisSeance subjectId={seance.subject?.id} themeId={seance.theme?.id} />
 
       {/* "Continuer" enchaîne sur une VRAIE séance suivante, jamais sur la liste des
           thèmes : renvoyer au catalogue quelqu'un qui vient de faire ce qu'on lui a

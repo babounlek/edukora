@@ -28,6 +28,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
 import { SuiteDuCours } from "@/components/SuiteDuCours"
+import { OuTombe } from "@/components/OuTombe"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { lienAbonnement } from "@/lib/retourAchat"
 import { useEtude } from "@/lib/useEtude"
@@ -316,6 +317,7 @@ export function CoursReaderPage() {
       {isAuthenticated && slug && <CartesDuCours slug={slug} />}
       <EtapeSuivante />
       {cours && <SuiteDuCours cours={cours} />}
+      {cours && <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mx-auto mt-6 max-w-3xl" />}
 
       {cours && (
         <RelatedCours

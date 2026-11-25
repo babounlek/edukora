@@ -13,6 +13,7 @@ from django.utils import timezone
 from subscriptions.models import Subscription
 
 from .models import QuizAnswer, SeanceJournaliere, StatutSeance
+from . import definitions
 from .services import REPONSES_MIN_THEME_CONSOLIDE, SEUIL_MAITRISE
 
 # Longueur de la période affichée. Un abonnement Mensuel dure 30 jours ; un abonnement
@@ -73,7 +74,8 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
     seances_qs = SeanceJournaliere.objects.filter(
         profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, date__gte=debut, date__lte=fin,
     )
-    jours_actifs = set(seances_qs.values_list("date", flat=True))
+    dates_seances = set(seances_qs.values_list("date", flat=True))
+    jours_reponses = []
 
     # Uniquement les réponses sourcées d'un CompetenceItem : thème unique et sans
     # ambiguïté, comme pour la maîtrise (voir quiz.services.maitrise_par_theme).
@@ -118,7 +120,7 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
             periode["reussies"] += int(correcte)
             matiere["periode"][0] += 1
             matiere["periode"][1] += int(correcte)
-            jours_actifs.add(timezone.localtime(reponse.answered_at).date())
+            jours_reponses.append(reponse.answered_at)
             serie = serie + 1 if correcte else 0
             meilleure_serie = max(meilleure_serie, serie)
         else:
@@ -168,6 +170,14 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
         })
     matieres.sort(key=lambda m: -m["questions"])
 
+    # Les copies d'examen blanc de la période : un élève qui n'a fait qu'une annale a travaillé ce jour-là.
+    from .copies import copies_rendues
+
+    copies = [c for c in copies_rendues(profil, cursus, fin_dt) if c["rendue_at"] >= debut_dt]
+    jours_de_travail = definitions.jours_actifs(
+        profil, debut, fin, seances=dates_seances, reponses=jours_reponses, copies=[c["rendue_at"] for c in copies],
+    )
+
     seances = seances_qs.count()
     seances_total = SeanceJournaliere.objects.filter(
         profil=profil, cursus=cursus, statut=StatutSeance.TERMINEE, date__lte=fin,
@@ -178,7 +188,7 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
         "expire_le": expiration,
         "abonnement_actif": subscription.is_active,
         "seances": seances,
-        "jours_actifs": len(jours_actifs),
+        "jours_actifs": len(jours_de_travail),
         "questions": periode["total"],
         "taux_reussite": _taux(periode["reussies"], periode["total"]),
         "taux_avant": _taux(avant["reussies"], avant["total"]),
@@ -199,5 +209,5 @@ def bilan_de_periode(profil, cursus, aujourdhui=None, jours=PERIODE_JOURS):
         "matieres": matieres[:MATIERES_CITEES_MAX],
         # Sans activité, le front n'affiche pas de bilan : trois zéros ne convainquent
         # personne de renouveler, ils lui rappellent qu'il n'a rien fait.
-        "a_de_l_activite": seances > 0 or periode["total"] > 0,
+        "a_de_l_activite": seances > 0 or periode["total"] > 0 or bool(copies),
     }

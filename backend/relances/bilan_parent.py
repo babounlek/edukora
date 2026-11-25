@@ -24,6 +24,7 @@ from django.core import signing
 from django.utils import timezone
 
 from quiz.bilan import bilan_de_periode
+from quiz.copies import copies_rendues
 from quiz.models import JourXP
 from quiz.serie import serie_de_jours
 from subscriptions.models import Subscription
@@ -90,10 +91,14 @@ def bilan_du_profil(profil, maintenant=None):
     """Le bilan des 7 derniers jours d'un profil abonné, ou None s'il n'a aucun abonnement actif.
     Tout vient de quiz.bilan et quiz.xp : rien n'est recalculé ici."""
     aujourdhui = timezone.localtime(maintenant).date() if maintenant else timezone.localdate()
-    abonnement = (
+    actifs = (
         Subscription.objects.filter(profil=profil, expires_at__gt=maintenant or timezone.now())
-        .select_related("cursus").order_by("-expires_at").first()
+        .select_related("cursus").order_by("-expires_at")
     )
+    # L'examen que l'élève prépare, s'il y est abonné : sinon un second abonnement plus long (l'examen d'un autre cycle)
+    # donnait au parent le bilan d'un examen sur lequel l'enfant ne travaille pas.
+    prepare = profil.compte.cursus_prepare_id
+    abonnement = (actifs.filter(cursus_id=prepare).first() if prepare else None) or actifs.first()
     if abonnement is None:
         return None
     bilan = bilan_de_periode(profil, abonnement.cursus, aujourdhui=aujourdhui, jours=JOURS_BILAN)
@@ -103,7 +108,69 @@ def bilan_du_profil(profil, maintenant=None):
         JourXP.objects.filter(profil=profil, jour__gt=aujourdhui - timedelta(days=JOURS_BILAN), jour__lte=aujourdhui)
         .values_list("xp", flat=True),
     )
-    return {**bilan, "xp": xp, "serie": serie_de_jours(profil, aujourdhui)["jours"]}
+    fin = maintenant or timezone.now()
+    return {
+        **bilan, "xp": xp, "serie": serie_de_jours(profil, aujourdhui)["jours"],
+        "examens": examens_de_la_semaine(profil, abonnement.cursus, aujourdhui, fin),
+    }
+
+
+EXAMENS_CITES_MAX = 3
+
+
+def examens_de_la_semaine(profil, cursus, aujourdhui, jusqu_a):
+    """
+    Les examens blancs rendus et notés ces 7 derniers jours (les plus récents d'abord), chacun avec la note précédente en
+    épreuve entière dans la même matière quand il y en a une : c'est ce qui dit au parent si les notes montent.
+    """
+    copies = [c for c in copies_rendues(profil, cursus, jusqu_a) if c["definitive"]]
+    depuis = aujourdhui - timedelta(days=JOURS_BILAN - 1)
+    lignes = []
+    for index, copie in enumerate(copies):
+        if timezone.localtime(copie["rendue_at"]).date() < depuis:
+            break
+        precedente = next(
+            (c for c in copies[index + 1:] if c["entiere"] and c["subject_id"] == copie["subject_id"]), None,
+        ) if copie["entiere"] else None
+        lignes.append({**copie, "precedente": precedente})
+    return lignes[:EXAMENS_CITES_MAX]
+
+
+def _note(copie, langue=textes.FR):
+    def nombre(valeur):
+        texte = f"{valeur:g}"
+        return texte if langue == textes.EN else texte.replace(".", ",")
+
+    separateur = "/" if langue == textes.EN else " sur "
+    return f"{nombre(copie['note'])}{separateur}{nombre(copie['bareme'])}"
+
+
+def _lignes_examens(examens, langue=textes.FR):
+    if not examens:
+        return []
+    anglais = langue == textes.EN
+    lignes = [
+        "  Mock exams (marked against the scheme; written answers are self-marked):"
+        if anglais else
+        "  Examens blancs (notés sur le barème ; les réponses rédigées sont notées par l'élève) :"
+    ]
+    for copie in examens:
+        conditions = (
+            ("exam conditions" if copie["conditions_reelles"] else "practice")
+            if anglais else
+            ("en conditions d'examen" if copie["conditions_reelles"] else "en entraînement")
+        )
+        ligne = f"  - {copie['titre']} : {_note(copie, langue)} ({conditions})"
+        if anglais:
+            ligne = f"  - {copie['titre']}: {_note(copie, langue)} ({conditions})"
+        if copie["precedente"]:
+            avant = _note(copie["precedente"], langue)
+            ligne += (
+                f"; previous full paper in {copie['subject_label']}: {avant}" if anglais
+                else f" ; épreuve précédente en {copie['subject_label']} : {avant}"
+            )
+        lignes.append(ligne + ".")
+    return lignes
 
 
 def _bloc_profil(prenom, bilan, langue=textes.FR):
@@ -124,9 +191,10 @@ def _bloc_profil(prenom, bilan, langue=textes.FR):
     if bilan["xp"]:
         faits.append(f"{bilan['xp']} points")
     lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
+    lignes += _lignes_examens(bilan.get("examens"))
     if bilan["themes_consolides"]:
         citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])
-        lignes.append(f"  Thèmes consolidés : {citations}.")
+        lignes.append(f"  Thèmes devenus solides : {citations}.")
     if bilan["serie"] >= 2:
         lignes.append(f"  Série en cours : {bilan['serie']} jours de suite.")
     return lignes
@@ -149,9 +217,10 @@ def _bloc_profil_en(prenom, bilan):
     if bilan["xp"]:
         faits.append(f"{bilan['xp']} points")
     lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
+    lignes += _lignes_examens(bilan.get("examens"), textes.EN)
     if bilan["themes_consolides"]:
         citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])
-        lignes.append(f"  Topics consolidated: {citations}.")
+        lignes.append(f"  Topics now solid: {citations}.")
     if bilan["serie"] >= 2:
         lignes.append(f"  Current streak: {bilan['serie']} days in a row.")
     return lignes

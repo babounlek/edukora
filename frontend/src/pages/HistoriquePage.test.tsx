@@ -8,8 +8,9 @@ const getMyProgression = vi.hoisted(() => vi.fn())
 const listMyTentativesInedites = vi.hoisted(() => vi.fn())
 const listQuizHistorique = vi.hoisted(() => vi.fn())
 const listQuizEnCours = vi.hoisted(() => vi.fn())
+const listMySimulations = vi.hoisted(() => vi.fn())
 
-vi.mock("@/api/endpoints", () => ({ getMyProgression, listMyTentativesInedites, listQuizHistorique, listQuizEnCours }))
+vi.mock("@/api/endpoints", () => ({ getMyProgression, listMyTentativesInedites, listQuizHistorique, listQuizEnCours, listMySimulations }))
 vi.mock("@/context/AuthContext", () => ({
   useAuth: () => ({ isAuthenticated: true, isLoading: false, user: { id: 1, profil_actif: { id: 9 }, cursus_prepare: { id: 20 } } }),
 }))
@@ -57,6 +58,7 @@ describe("HistoriquePage - quiz", () => {
     vi.clearAllMocks()
     getMyProgression.mockResolvedValue({ lessons: [], cours: [] })
     listMyTentativesInedites.mockResolvedValue([])
+    listMySimulations.mockResolvedValue([])
     listQuizHistorique.mockResolvedValue(page([]))
     listQuizEnCours.mockResolvedValue([])
   })
@@ -114,7 +116,7 @@ describe("HistoriquePage - quiz", () => {
     afficher()
 
     expect(await screen.findByRole("tab", { name: "Quiz (1)" })).toBeInTheDocument()
-    expect(screen.getByRole("tab", { name: "Tentatives (1)" })).toBeInTheDocument()
+    expect(screen.getByRole("tab", { name: "Examens blancs (1)" })).toBeInTheDocument()
   })
 })
 
@@ -130,6 +132,7 @@ describe("HistoriquePage - reprendre un quiz", () => {
     vi.clearAllMocks()
     getMyProgression.mockResolvedValue({ lessons: [], cours: [] })
     listMyTentativesInedites.mockResolvedValue([])
+    listMySimulations.mockResolvedValue([])
     listQuizHistorique.mockResolvedValue(page([]))
     listQuizEnCours.mockResolvedValue([])
   })
@@ -172,5 +175,32 @@ describe("HistoriquePage - reprendre un quiz", () => {
     expect(await screen.findByRole("link", { name: /2\/3/ })).toBeInTheDocument()
     expect(screen.queryByText("Reprendre le quiz")).not.toBeInTheDocument()
     expect(screen.queryByRole("alert")).not.toBeInTheDocument()
+  })
+})
+
+describe("HistoriquePage - examens blancs", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    getMyProgression.mockResolvedValue({ lessons: [], cours: [] })
+    listQuizHistorique.mockResolvedValue(page([]))
+    listQuizEnCours.mockResolvedValue([])
+  })
+
+  it("range les annales avec les inédites, et n'y met pas une annale seulement ouverte", async () => {
+    listMyTentativesInedites.mockResolvedValue([])
+    const annale = {
+      id: 3, epreuve: 5, epreuve_titre: "PCT BEPC 2022", matiere: "PCT", started_at: "2026-11-10T08:00:00Z",
+      submitted_at: "2026-11-10T10:00:00Z", note_obtenue: 13, bareme_snapshot: 20, score_obtenu: 65,
+    }
+    listMySimulations.mockResolvedValue([
+      annale,
+      { ...annale, id: 4, epreuve_titre: "Seulement ouverte", submitted_at: null, note_obtenue: null, chrono_en_cours: false },
+    ])
+    afficher()
+
+    const lien = await screen.findByRole("link", { name: /PCT BEPC 2022/ })
+    expect(lien).toHaveAttribute("href", "/simulation/3/resultat")
+    expect(lien).toHaveTextContent("Annale")
+    expect(screen.queryByText("Seulement ouverte")).not.toBeInTheDocument()
   })
 })

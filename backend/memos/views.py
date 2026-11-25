@@ -5,6 +5,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from access.carnet import entree_note_libre
+from analytics.models import AnalyticsEvent, EventName
+from catalog.models import Cursus
 from users.profils import profil_actif
 
 from . import services
@@ -97,14 +99,30 @@ def liste(request):
     user, profil = _qui(request)
     abonne = services.a_l_abonnement(user, profil, cursus_id)
     memos = sorted(
-        services.visibles().filter(cursus=cursus_id, subject_id=int(matiere)).distinct(),
+        services.visibles().filter(cursus=cursus_id, subject_id=int(matiere)).select_related("theme").distinct(),
         key=lambda m: cle_de_tri(m, cursus_id),
     )
     deja = services.gardees(profil, memos)
+    liens = services.liens_des_fiches(memos, Cursus.objects.filter(pk=cursus_id).first()) if memos else {}
     return Response({
         "abonne": abonne,
-        "fiches": [services.entree(m, lisible=abonne or m.gratuit, gardee=m.pk in deja, cursus_id=cursus_id) for m in memos],
+        "fiches": [
+            services.entree(m, lisible=abonne or m.gratuit, gardee=m.pk in deja, cursus_id=cursus_id, liens=liens.get(m.pk))
+            for m in memos
+        ],
     })
+
+
+@api_view(["GET"])
+@permission_classes([permissions.AllowAny])
+def situer(request, pk):
+    """
+    GET : où se trouve une fiche (sa matière, les examens qu'elle prépare). « Rouvrir la source » d'une note gardée ne
+    porte que l'identifiant de la fiche : sans cela la page ouvrait l'examen déclaré et la première matière. Le lien
+    enregistré dans les notes reste le même, il sert aussi à ne pas garder deux fois la même fiche.
+    """
+    memo = get_object_or_404(services.visibles(), pk=pk)
+    return Response({"matiere_id": memo.subject_id, "cursus_ids": sorted(memo.cursus.values_list("pk", flat=True))})
 
 
 @api_view(["POST"])
@@ -118,4 +136,6 @@ def garder(request, pk):
     if not memo.gratuit and not (cursus_ids & bulk_active_subscription_cursus_ids(request.user, profil)):
         return Response({"error": "Cette fiche demande l'abonnement."}, status=403)
     note, creee = services.garder_dans_les_notes(profil, memo)
+    if creee:
+        AnalyticsEvent.objects.create(name=EventName.FICHE_GARDEE, user=request.user, properties={"fiche_id": memo.pk})
     return Response(entree_note_libre(note), status=201 if creee else 200)

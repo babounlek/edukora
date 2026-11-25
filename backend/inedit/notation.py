@@ -167,6 +167,15 @@ def resultat_declare_depuis_points(obtenus, points):
     return "PARTIEL"
 
 
+def copie_libre_vide(copie, exercices):
+    """Une copie d'entraînement libre (le chrono n'a jamais tourné) dont aucune question n'est traitée : elle ne dit rien
+    de ce que l'élève sait. Vaut pour les épreuves inédites comme pour les examens blancs sur annales."""
+    if copie.exam_mode_started_at is not None:
+        return False
+    reponses = {r.question_id: r for r in copie.reponses.all()}
+    return not any(est_traitee(q, reponses.get(q.pk)) for e in exercices for q in e.questions.all())
+
+
 def calculer(tentative, exercices):
     """Bilan complet d'une tentative. `exercices` : queryset/itérable d'ExerciceInedite
     de l'épreuve (questions et thèmes idéalement préchargés)."""

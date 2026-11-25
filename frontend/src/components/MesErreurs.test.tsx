@@ -8,7 +8,7 @@ const getErreurs = vi.hoisted(() => vi.fn())
 const refaireErreurs = vi.hoisted(() => vi.fn())
 vi.mock("@/api/endpoints", () => ({ getErreurs, refaireErreurs }))
 
-import { CarteErreurs, LigneErreurs } from "./MesErreurs"
+import { LigneErreurs } from "./MesErreurs"
 
 function afficher(element: React.ReactNode) {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
@@ -50,24 +50,5 @@ describe("LigneErreurs (accueil)", () => {
     afficher(<LigneErreurs total={1} cursusId={14} />)
 
     expect(screen.getByText("1 erreur à corriger")).toBeInTheDocument()
-  })
-})
-
-describe("CarteErreurs (Ma progression)", () => {
-  it("se tait sans erreur", async () => {
-    getErreurs.mockResolvedValue({ total: 0, paquet: 0, plus_ancienne: null, matieres: [] })
-    const { container } = afficher(<CarteErreurs cursusId={14} />)
-
-    await waitFor(() => expect(getErreurs).toHaveBeenCalled())
-    expect(container).toBeEmptyDOMElement()
-  })
-
-  it("annonce la banque et le paquet, avec le lien vers le détail", async () => {
-    getErreurs.mockResolvedValue({ total: 23, paquet: 10, plus_ancienne: "2026-11-01", matieres: [] })
-    afficher(<CarteErreurs cursusId={14} />)
-
-    expect(await screen.findByText("23 questions à refaire")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: "Refaire 10 erreurs" })).toBeEnabled()
-    expect(screen.getByRole("link", { name: "Voir mes erreurs" })).toHaveAttribute("href", "/erreurs")
   })
 })

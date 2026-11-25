@@ -773,6 +773,13 @@ def apercu_de_demain(profil, cursus):
     }
 
 
+def _qcm_de_copies(profil, cursus=None):
+    """Les QCM des copies d'examen blanc qui comptent dans la maîtrise (voir quiz.copies et quiz.definitions)."""
+    from .copies import reponses_qcm_de_copies
+
+    return reponses_qcm_de_copies(profil, cursus)
+
+
 def maitrise_par_theme(profil, cursus=None):
     """
     Vue d'ensemble de la maîtrise de l'utilisateur, thème par thème, à partir de la
@@ -798,20 +805,28 @@ def maitrise_par_theme(profil, cursus=None):
     if cursus:
         reponses = reponses.filter(quiz_question__session__cursus=cursus)
 
+    lignes = [
+        {
+            "subject_id": item.subject_id, "subject_label": item.subject.label,
+            "theme_id": item.theme_id, "theme": item.theme.name, "correcte": reponse.est_correcte,
+        }
+        for reponse in reponses
+        for item in (reponse.quiz_question.competence_item,)
+    ]
+    lignes += _qcm_de_copies(profil, cursus)
+
     stats = {}
-    for reponse in reponses:
-        item = reponse.quiz_question.competence_item
-        cle = (item.subject_id, item.theme_id)
-        s = stats.setdefault(cle, {
-            "subject_id": item.subject_id,
-            "subject_label": item.subject.label,
-            "theme_id": item.theme_id,
-            "theme": item.theme.name,
+    for ligne in lignes:
+        s = stats.setdefault((ligne["subject_id"], ligne["theme_id"]), {
+            "subject_id": ligne["subject_id"],
+            "subject_label": ligne["subject_label"],
+            "theme_id": ligne["theme_id"],
+            "theme": ligne["theme"],
             "total": 0,
             "reussies": 0,
         })
         s["total"] += 1
-        if reponse.est_correcte:
+        if ligne["correcte"]:
             s["reussies"] += 1
 
     en_revision_qs = RevisionSchedule.objects.filter(profil=profil)
@@ -857,12 +872,13 @@ def _stats_par_savoir(profil, cursus=None):
     if cursus:
         reponses = reponses.filter(quiz_question__session__cursus=cursus)
 
+    lignes = [(r.quiz_question.competence_item.theme.savoir_officiel_id, r.est_correcte) for r in reponses]
+    lignes += [(c["savoir_id"], c["correcte"]) for c in _qcm_de_copies(profil, cursus) if c["savoir_id"] is not None]
     stats = {}
-    for reponse in reponses:
-        savoir_id = reponse.quiz_question.competence_item.theme.savoir_officiel_id
+    for savoir_id, correcte in lignes:
         s = stats.setdefault(savoir_id, {"total": 0, "reussies": 0})
         s["total"] += 1
-        if reponse.est_correcte:
+        if correcte:
             s["reussies"] += 1
     return stats
 
@@ -936,7 +952,8 @@ def niveaux_avant_apres(session):
 
 def est_maitrise(taux, nb_reponses):
     """
-    Un thème (ou un savoir) est-il « maîtrisé » ? Le taux seul ne suffit pas : une unique
+    Un thème (ou un savoir) est-il « maîtrisé » ? LA définition de tous les compteurs (voir quiz.definitions).
+    Le taux seul ne suffit pas : une unique
     bonne réponse donne 100 %, et le thème passait « maîtrisé » dans l'anneau et les
     compteurs de progression sur cette seule réponse. Même échantillon minimal que le
     « consolidé » du bilan et de la trajectoire (REPONSES_MIN_THEME_CONSOLIDE), pour que
@@ -1167,11 +1184,20 @@ def progression_par_theme(profil, cursus, tag_ids=None):
         revisions = revisions.filter(theme_id__in=tag_ids)
         lectures = lectures.filter(cours__tags__id__in=tag_ids)
 
+    lignes = [
+        (r.quiz_question.competence_item.theme_id, r.est_correcte)
+        for r in reponses.select_related("quiz_question__competence_item")
+    ]
+    copies = _qcm_de_copies(profil, cursus)
+    if tag_ids is not None:
+        demandes = set(tag_ids)
+        copies = [c for c in copies if c["theme_id"] in demandes]
+    lignes += [(c["theme_id"], c["correcte"]) for c in copies]
     stats_par_tag = defaultdict(lambda: {"total": 0, "reussies": 0})
-    for reponse in reponses.select_related("quiz_question__competence_item"):
-        s = stats_par_tag[reponse.quiz_question.competence_item.theme_id]
+    for theme_id, correcte in lignes:
+        s = stats_par_tag[theme_id]
         s["total"] += 1
-        if reponse.est_correcte:
+        if correcte:
             s["reussies"] += 1
     tags_en_revision = set(revisions.values_list("theme_id", flat=True))
     tags_lus = set(lectures.values_list("cours__tags__id", flat=True))
@@ -2155,6 +2181,10 @@ def _theme_deja_maitrise(profil, cursus, theme):
         stats["total"] += 1
         if reponse.est_correcte:
             stats["reussies"] += 1
+    for copie in _qcm_de_copies(profil, cursus):
+        if copie["theme_id"] == theme.pk:
+            stats["total"] += 1
+            stats["reussies"] += int(copie["correcte"])
     if stats["total"] < REPONSES_MINIMUM_MAITRISE_THEME:
         return False
     return 100 * stats["reussies"] / stats["total"] >= SEUIL_MAITRISE
@@ -2216,7 +2246,7 @@ def _construire_etapes(
         # Plusieurs exercices sur les gros budgets : c'est ce qui distingue une séance
         # intensive d'une séance normale rallongée artificiellement - s'entraîner, ça
         # veut dire refaire, pas lire plus longtemps.
-        for exercice in _exercices_pour_theme(cursus, subject, theme, EXERCICES_PAR_SEANCE_MAX):
+        for exercice in _exercices_pour_theme(cursus, subject, theme, EXERCICES_PAR_SEANCE_MAX, profil=profil):
             if restant < DUREE_ETAPE_MINUTES["exercice"]:
                 break
             etapes.append(dict(exercice, duree_min=DUREE_ETAPE_MINUTES["exercice"]))
@@ -2237,7 +2267,7 @@ def _construire_etapes(
     return etapes
 
 
-def _exercices_pour_theme(cursus, subject, theme, maximum):
+def _exercices_pour_theme(cursus, subject, theme, maximum, profil=None):
     """
     Des exercices réellement tombés sur ce thème, le plus récent d'abord - c'est ce qui
     distingue une révision edukora d'une fiche de cours : l'élève travaille les sujets
@@ -2249,7 +2279,14 @@ def _exercices_pour_theme(cursus, subject, theme, maximum):
 
     Même source que ThemeExercicesView, sans sa restriction d'accès : le gating est
     décidé plus haut, sur la séance entière (voir la vue).
+
+    Les exercices que `profil` a déjà faits sont écartés tant qu'il en reste d'autres sur le thème ; quand il les a tous
+    faits, ils reviennent, le plus récent d'abord (refaire vaut mieux qu'une séance sans entraînement).
     """
+    faits = (
+        set(ExerciceFait.objects.filter(profil=profil, exercise__lesson__subject=subject).values_list("exercise_id", flat=True))
+        if profil is not None else set()
+    )
     questions = (
         Question.objects.filter(
             themes=theme, exercise__lesson__statut=StatutContenu.VALIDE,
@@ -2258,7 +2295,7 @@ def _exercices_pour_theme(cursus, subject, theme, maximum):
         .select_related("exercise__lesson")
         .order_by("-exercise__lesson__year", "exercise__numero_exercice")
     )
-    vus, trouves = set(), []
+    vus, trouves, deja_faits = set(), [], []
     for question in questions:
         lesson = question.exercise.lesson
         numero = question.exercise.numero_exercice
@@ -2266,7 +2303,10 @@ def _exercices_pour_theme(cursus, subject, theme, maximum):
         if cle in vus:
             continue
         vus.add(cle)
-        trouves.append({
+        liste = deja_faits if question.exercise.pk in faits else trouves
+        if len(liste) >= maximum:
+            continue
+        liste.append({
             "type": "exercice",
             # Permet de marquer l'exercice comme fait quand la séance est clôturée
             # (voir terminer_seance) - sans quoi la file d'entraînement du thème le
@@ -2280,7 +2320,7 @@ def _exercices_pour_theme(cursus, subject, theme, maximum):
         })
         if len(trouves) >= maximum:
             break
-    return trouves
+    return trouves or deja_faits
 
 
 

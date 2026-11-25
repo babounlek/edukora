@@ -16,7 +16,18 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
     def rendre(self):
         return self.client.post(self.url("completer"))
 
+    def en_conditions_reelles(self):
+        """Une copie vide ne programme de révision qu'en conditions réelles (voir inedit.notation.copie_libre_vide)."""
+        TentativeInedite.objects.filter(pk=self.tentative.pk).update(exam_mode_started_at=timezone.now())
+
+    def test_une_copie_d_entrainement_libre_rendue_vide_ne_programme_rien(self):
+        reponse = self.rendre()
+
+        self.assertEqual(reponse.data["themes_a_reviser"], [])
+        self.assertFalse(RevisionSchedule.objects.filter(profil=self.profil).exists())
+
     def test_une_question_laissee_de_cote_planifie_la_revision_de_son_theme(self):
+        self.en_conditions_reelles()
         # Ni la QCM ni l'ouverte ne sont traitées : le thème commun revient demain.
         reponse = self.rendre()
 
@@ -32,6 +43,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         )
 
     def test_les_liens_quiz_et_cours_ne_sont_proposes_que_si_le_theme_a_du_contenu(self):
+        self.en_conditions_reelles()
         self.rendre()
         theme = RevisionSchedule.objects.get(profil=self.profil, cursus=self.cursus).theme
         item = CompetenceItem.objects.create(
@@ -70,6 +82,7 @@ class RevisionsApresEpreuveTests(NotationAPITestCase):
         self.assertEqual([t["theme"] for t in reponse.data["themes_a_reviser"]], ["Suites numériques"])
 
     def test_la_planification_n_est_faite_que_pour_l_eleve_qui_rend(self):
+        self.en_conditions_reelles()
         autre = TentativeInedite.objects.create(profil=self.profil, epreuve=self.epreuve)
         self.rendre()
         self.assertEqual(RevisionSchedule.objects.filter(profil=self.profil).count(), 1)

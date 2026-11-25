@@ -1,7 +1,10 @@
 from django.contrib import admin, messages
+from django.core.exceptions import PermissionDenied
 from django.template.response import TemplateResponse
+from django.urls import path
 
 from .models import AnalyticsEvent
+from .semaine import point_de_la_semaine
 
 
 @admin.register(AnalyticsEvent)
@@ -18,6 +21,24 @@ class AnalyticsEventAdmin(admin.ModelAdmin):
     readonly_fields = ["name", "user", "properties", "created_at"]
     date_hierarchy = "created_at"
     actions = ["vider_tout"]
+    change_list_template = "admin/analytics/analyticsevent/change_list.html"
+
+    def get_urls(self):
+        semaine = path("semaine/", self.admin_site.admin_view(self.semaine_view), name="analytics_semaine")
+        return [semaine, *super().get_urls()]
+
+    def semaine_view(self, request):
+        """Le point de la semaine (voir analytics.semaine), réservé à qui peut consulter les évènements."""
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+        point = point_de_la_semaine()
+        return TemplateResponse(request, "admin/analytics/semaine.html", {
+            **self.admin_site.each_context(request),
+            "title": "Le point de la semaine",
+            "point": point,
+            "etapes": list(zip(point["entonnoir_7"]["etapes"], point["entonnoir_30"]["etapes"])),
+            "opts": self.model._meta,
+        })
 
     def has_add_permission(self, request):
         return False

@@ -133,7 +133,9 @@ describe("MesExamensBlancsPage", () => {
     expect(screen.getByText("Mini-inédite")).toBeInTheDocument()
     expect(screen.getByText("Défi de la semaine")).toBeInTheDocument()
     expect(screen.getByText("Annale")).toBeInTheDocument()
-    expect(screen.getByText("80 %", { selector: "p" })).toBeInTheDocument() // la meilleure : la mini à 16/20
+    // La meilleure note ne compte que les épreuves entières : la mini à 16/20 ne passe pas devant l'annale à 12/20.
+    expect(screen.getByText("60 %", { selector: "p" })).toBeInTheDocument()
+    expect(screen.getByText("sur les épreuves entières (hors minis et défis)")).toBeInTheDocument()
   })
 
   it("une inédite chronométrée non rendue se reprend ; une copie libre entamée n'y figure pas", async () => {

@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Timer, Trophy } from "lucide-react"
 
 import { listMySimulations, listMyTentativesInedites } from "@/api/endpoints"
-import type { SimulationListItem, TentativeInediteListItem } from "@/api/types"
 import { ConnexionRequise } from "@/components/ConnexionRequise"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { PointsPerdus } from "@/components/PointsPerdus"
@@ -12,53 +11,13 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { type Copie, depuisAnnale, depuisInedite, estEpreuveEntiere, pourcentageCopie as pourcentage } from "@/lib/copies"
 import { epreuvesListPath } from "@/lib/countryPath"
 import { aUnEssaiSansCompte } from "@/lib/invite"
 import { formatNote } from "@/lib/notation"
 import { useSeo } from "@/lib/seo"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
-
-type Genre = "annale" | "inedite" | "mini" | "defi"
-
-/** Une copie passée en conditions d'examen, quelle que soit son origine : annale, inédite, mini-inédite ou défi de la semaine. */
-interface Copie {
-  cle: string
-  genre: Genre
-  titre: string
-  matiere: string
-  started_at: string
-  submitted_at: string | null
-  note_obtenue: number | null
-  bareme_snapshot: number | null
-  enCours: boolean
-  lienCopie: string
-  lienResultat: string
-}
-
-function depuisAnnale(s: SimulationListItem): Copie {
-  return {
-    cle: `a${s.id}`, genre: "annale", titre: s.epreuve_titre, matiere: s.matiere ?? "", started_at: s.started_at,
-    submitted_at: s.submitted_at, note_obtenue: s.note_obtenue, bareme_snapshot: s.bareme_snapshot,
-    enCours: Boolean(s.chrono_en_cours), lienCopie: `/simulation/${s.id}`, lienResultat: `/simulation/${s.id}/resultat`,
-  }
-}
-
-function depuisInedite(s: TentativeInediteListItem): Copie {
-  return {
-    cle: `i${s.id}`, genre: s.genre ?? "inedite", titre: s.epreuve_titre, matiere: s.subject_label, started_at: s.started_at,
-    submitted_at: s.submitted_at, note_obtenue: s.note_obtenue, bareme_snapshot: s.bareme_snapshot,
-    // Une copie libre entamée n'est pas un examen blanc : seule celle dont le chrono tourne est « en cours » ici.
-    enCours: s.submitted_at === null && s.exam_mode_started_at !== null,
-    lienCopie: `/inedit/tentative/${s.id}`, lienResultat: `/inedit/tentative/${s.id}/resultat`,
-  }
-}
-
-/** La note d'une copie rendue, en % du barème : la seule mesure comparable d'une épreuve à l'autre. */
-function pourcentage(s: Copie): number | null {
-  if (s.submitted_at === null || s.note_obtenue === null || !s.bareme_snapshot) return null
-  return Math.round((100 * s.note_obtenue) / s.bareme_snapshot)
-}
 
 function jour(iso: string): string {
   return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "long" })
@@ -105,10 +64,12 @@ export function MesExamensBlancsPage() {
     .filter((s) => s.submitted_at !== null)
     .sort((a, b) => (b.submitted_at as string).localeCompare(a.submitted_at as string))
   const notees = rendues.filter((s) => pourcentage(s) !== null)
-  const pourcents = notees.map((s) => pourcentage(s) as number)
+  // La meilleure note et la tendance ne comparent que des épreuves entières : un 3/4 sur une mini passait devant un 13/20.
+  const entieres = notees.filter(estEpreuveEntiere)
+  const pourcents = entieres.map((s) => pourcentage(s) as number)
   const meilleure = pourcents.length ? Math.max(...pourcents) : null
   // De la plus ancienne à la plus récente : de quoi dire si les notes montent.
-  const chrono = [...notees].reverse()
+  const chrono = [...entieres].reverse()
   const tendance =
     chrono.length >= 2 ? (pourcentage(chrono[chrono.length - 1]) as number) - (pourcentage(chrono[0]) as number) : null
 
@@ -174,6 +135,7 @@ export function MesExamensBlancsPage() {
                     {t("blancs.meilleure")}
                   </p>
                   <p className="mt-1 font-display text-3xl font-semibold tabular-nums">{meilleure === null ? "–" : `${meilleure} %`}</p>
+                  {notees.length > entieres.length && <p className="mt-0.5 text-xs text-muted-foreground">{t("blancs.hors_minis")}</p>}
                 </div>
                 <div className="rounded-2xl border border-border bg-card p-4">
                   <p className="text-xs text-muted-foreground">{tn("blancs.passes", rendues.length)}</p>

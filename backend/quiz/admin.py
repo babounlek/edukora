@@ -235,9 +235,21 @@ class CompetenceItemAdmin(admin.ModelAdmin):
 class SignalementQuestionAdmin(admin.ModelAdmin):
     """Les questions signalées par les élèves (R22) : à traiter, avec l'item concerné et le commentaire."""
 
-    list_display = ["cree_le", "motif", "statut", "competence_item_id_garde", "commentaire"]
+    list_display = ["cree_le", "motif", "statut", "matiere", "enonce", "commentaire"]
+    list_select_related = ["competence_item__subject"]
     list_filter = ["statut", "motif"]
     search_fields = ["commentaire", "competence_item__theme__name"]
     raw_id_fields = ["profil", "quiz_question", "competence_item"]
     readonly_fields = ["cree_le", "modifie_le", "competence_item_id_garde"]
     list_editable = ["statut"]
+
+    @admin.display(description="Matière", ordering="competence_item__subject__label")
+    def matiere(self, obj):
+        return obj.competence_item.subject.label if obj.competence_item else "contenu supprimé"
+
+    @admin.display(description="Énoncé")
+    def enonce(self, obj):
+        if obj.competence_item is None:
+            return f"item {obj.competence_item_id_garde}"
+        texte = " ".join(obj.competence_item.enonce_markdown.split())
+        return texte if len(texte) <= 140 else texte[:139] + "…"

@@ -7,7 +7,7 @@ import { phraseTrajectoire } from "@/lib/trajectoire"
 import { Button } from "@/components/ui/button"
 import { AnneauProgression, BarreSegmentee, Ecrin, LegendeProgression } from "@/components/Progression"
 import { themesFrequentsPath } from "@/lib/countryPath"
-import { SEUIL_DEBUT_PCT, pourcent, prochainPalier } from "@/lib/maitrise"
+import { anneauPreparation, pourcent, prochainPalier } from "@/lib/maitrise"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
@@ -50,12 +50,11 @@ export function OuJenSuis({
   // Deux cartes sur six matières, sans un mot : un élève GCE en suit six et se demandait où étaient les autres (test
   // élève Gogo). La légende dit pourquoi celles-ci, le bouton dit combien il y en a.
   const matieresMasquees = suivies.length > matieres.length
-  const debut = pourcent(preparation.ponderee) < SEUIL_DEBUT_PCT
-  // Ce que l'élève a déjà travaillé, toutes matières confondues : maîtrisé, en révision ou en cours. Au début, la
-  // maîtrise ne dit presque rien (un élève à trois séances et 30 thèmes en révision lisait « 1 », « 0 % », « 0 % » et
-  // « 0/111 maîtrisés » : audit de l'accueil abonné, 2026-11-16). On montre donc l'effort d'abord, sans rien cacher
-  // de la maîtrise, qui reste écrite juste après et reprend la première place dès qu'elle passe le seuil.
-  const travailles = resume.reduce((somme, m) => somme + m.maitrises + m.en_revision + m.en_cours, 0)
+  // Au début, la maîtrise ne dit presque rien (un élève à trois séances et 30 thèmes en révision lisait « 1 », « 0 % »,
+  // « 0 % » et « 0/111 maîtrisés » : audit de l'accueil abonné, 2026-11-16). On montre donc l'effort d'abord, sans rien
+  // cacher de la maîtrise, qui reste écrite juste après et reprend la première place dès qu'elle passe le seuil.
+  const anneau = anneauPreparation(resume)
+  const { debut, travailles } = anneau
 
   return (
     <section className="mx-auto max-w-5xl px-4 pt-6 sm:px-6" aria-label={t("oujensuis.aria")}>
@@ -88,8 +87,9 @@ export function OuJenSuis({
           </div>
           <AnneauProgression
             part={preparation.ponderee}
-            // Le même nombre que celui qui ouvre la phrase à côté : les thèmes travaillés, ou les maîtrisés à défaut.
-            centre={debut ? <span className="tabular-nums">{travailles > 0 ? travailles : preparation.maitrises}</span> : undefined}
+            partTravaillee={anneau.partTravaillee}
+            // Le même nombre que celui qui ouvre la phrase à côté, et que l'anneau de « Ma progression ».
+            centre={anneau.centre === null ? undefined : <span className="tabular-nums">{anneau.centre}</span>}
           />
         </div>
 

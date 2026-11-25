@@ -2,6 +2,7 @@ from django.urls import path
 
 from . import avis, views
 from .accueil_api import AccueilView
+from .liens_contenus import CoursOuTombeView, EpreuveThemesQuizView
 
 app_name = "catalog"
 
@@ -12,6 +13,8 @@ urlpatterns = [
     # Avant « cours/<slug>/ » : « titres » serait sinon pris pour un slug de cours.
     path("cours/titres/", views.CoursTitresView.as_view(), name="cours-titres"),
     path("cours/<slug:slug>/", views.CoursDetailView.as_view(), name="cours-detail"),
+    path("cours/<slug:slug>/epreuves/", CoursOuTombeView.as_view(), name="cours-ou-tombe"),
+    path("lessons/<slug:slug>/quiz/", EpreuveThemesQuizView.as_view(), name="epreuve-themes-quiz"),
     path("subjects/", views.SubjectListView.as_view(), name="subject-list"),
     path("cursus/", views.CursusListView.as_view(), name="cursus-list"),
     path("examens/<str:country>/", views.ExamenListeView.as_view(), name="examen-liste"),

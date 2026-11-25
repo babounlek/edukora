@@ -17,7 +17,7 @@ from access.services import has_access
 from access.sujets_publics import url_sujet
 from catalog.libelles import libelle_cursus
 from catalog.models import EXAMENS_GCE, Lesson, LessonType, Question, TypeReponse
-from inedit import notation, rapport
+from inedit import liens, notation, rapport
 from inedit.models import CausePerte, ResultatDeclare
 from quiz import xp
 from quiz.services import enregistrer_resultat_pour_revision
@@ -128,6 +128,9 @@ def _complete(simulation):
         xp.crediter_simulation(simulation.profil, simulation.pk)
     # Exercices laissés de côté : leur thème est une faiblesse comme un exercice raté.
     reponses = {r.question_id: r for r in simulation.reponses.all()}
+    # Sauf une copie d'entraînement libre rendue sans rien : elle ne dit rien de l'élève et remplirait sa file de révision.
+    if notation.copie_libre_vide(simulation, exercices):
+        return _resultat_payload(simulation, bilan, exercices)
     if simulation_a_la_question(simulation.lesson):
         _revision_paper(simulation, bilan, exercices)
         return _resultat_payload(simulation, bilan, exercices)
@@ -335,8 +338,19 @@ def _themes_a_reviser(simulation, bilan, exercices):
         actuelle = echeances.get(planification.theme.name)
         if actuelle is None or planification.due_at < actuelle:
             echeances[planification.theme.name] = planification.due_at
+    cursus_lies = _cursus(simulation)
+    cursus = cursus_lies[0] if cursus_lies else simulation.profil.compte.cursus_prepare
+    ids_themes = [perdus[nom] for nom in echeances]
+    avec_quiz = liens.themes_avec_quiz(ids_themes, cursus)
+    avec_cours = liens.themes_avec_cours(ids_themes, cursus)
     return [
-        {"theme": nom, "theme_id": perdus[nom], "echeance": echeance.isoformat()}
+        {
+            "theme": nom,
+            "theme_id": perdus[nom],
+            "echeance": echeance.isoformat(),
+            "a_quiz": perdus[nom] in avec_quiz,
+            "a_cours": perdus[nom] in avec_cours,
+        }
         for nom, echeance in sorted(echeances.items(), key=lambda item: (item[1], item[0]))
     ]
 
@@ -486,6 +500,10 @@ def mes_simulations(request):
         SimulationEpreuve.objects.filter(profil=profil_actif(request))
         .select_related("lesson__subject__country").order_by("-started_at")
     )
+    # Même filtre que les épreuves inédites (voir inedit.views.list_my_tentatives_inedites) : un élève qui change d'examen
+    # ne mêle pas les deux dans sa meilleure note et sa tendance.
+    if request.user.cursus_prepare is not None:
+        simulations = simulations.filter(lesson__cursus=request.user.cursus_prepare)
     resultat = []
     for s in simulations:
         # Une copie dont le chrono est écoulé se rend ici même, comme à l'ouverture : sans cela la liste la
@@ -524,18 +542,18 @@ def mes_pertes(request):
     from inedit.models import TentativeInedite
 
     profil = profil_actif(request)
+    cursus = request.user.cursus_prepare
+    annales = SimulationEpreuve.objects.filter(profil=profil, submitted_at__isnull=False)
+    inedites = TentativeInedite.objects.filter(profil=profil, submitted_at__isnull=False)
+    if cursus is not None:
+        annales = annales.filter(lesson__cursus=cursus)
+        inedites = inedites.filter(epreuve__cursus=cursus)
     pertes = []
-    for simulation in (
-        SimulationEpreuve.objects.filter(profil=profil, submitted_at__isnull=False)
-        .select_related("lesson__subject").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]
-    ):
+    for simulation in annales.select_related("lesson__subject").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]:
         bilan, _ = _bilan(simulation)
         unite = "question" if simulation_a_la_question(simulation.lesson) else "exercice"
         pertes.append(rapport.pertes_par_cause(bilan["lignes"], unite=unite))
-    for tentative in (
-        TentativeInedite.objects.filter(profil=profil, submitted_at__isnull=False)
-        .select_related("epreuve").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]
-    ):
+    for tentative in inedites.select_related("epreuve").order_by("-submitted_at")[:COPIES_DANS_LA_SYNTHESE]:
         bilan = notation.calculer(tentative, tentative.epreuve.exercices_ordonnes("questions__themes"))
         pertes.append(rapport.pertes_par_cause(bilan["lignes"]))
     pertes = [p for p in pertes if p["causes"]]

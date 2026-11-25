@@ -1,7 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft, ArrowRight, BookOpen, Check, Crown, FileText, Lock, TrendingUp } from "lucide-react"
+import { ArrowLeft, ArrowRight, BookOpen, Check, Crown, FileText, ListChecks, Lock, TrendingUp } from "lucide-react"
 
 import { getThemeExercices, getThemesFrequents } from "@/api/endpoints"
 import { useCursusListe } from "@/lib/cursusLangue"
@@ -188,6 +188,14 @@ export function ThemeExercicesPage() {
                 </StatChip>
               )}
             </div>
+            {themeClasse?.quiz_disponible && (
+              <Button asChild size="sm" variant="outline" className="mt-3 rounded-full">
+                <Link to={`/quiz?cursus=${cursusId}&theme=${tagId}`}>
+                  <ListChecks />
+                  {t("sc.quiz")}
+                </Link>
+              </Button>
+            )}
             {paquetHorsLigne && (
               <div className="mt-3">
                 <BoutonThemeHorsLigne paquet={paquetHorsLigne} />

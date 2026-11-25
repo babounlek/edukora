@@ -624,7 +624,7 @@ describe("AccueilEleve", () => {
     getAccueil.mockResolvedValue(accueil({
       preparation: { ponderee: 0.01, brute: 0.01, maitrises: 6, exploitables: 1120 },
       resume: [
-        { subject_id: 1, subject_code: "MATHS", subject_label: "Mathématiques", total: 10, maitrises: 3, en_revision: 0, en_cours: 0, a_decouvrir: 7, sans_contenu: 0, poids_total: 20, poids_maitrise: 7 },
+        { subject_id: 1, subject_code: "MATHS", subject_label: "Mathématiques", total: 10, maitrises: 3, en_revision: 0, en_cours: 0, a_decouvrir: 7, sans_contenu: 0, poids_total: 20, poids_maitrise: 0.37 },
         { subject_id: 2, subject_code: "ANG", subject_label: "Anglais", total: 8, maitrises: 0, en_revision: 0, en_cours: 0, a_decouvrir: 8, sans_contenu: 0, poids_total: 8, poids_maitrise: 0 },
         { subject_id: 3, subject_code: "CHIMIE", subject_label: "Chimie", total: 9, maitrises: 0, en_revision: 4, en_cours: 1, a_decouvrir: 4, sans_contenu: 0, poids_total: 9, poids_maitrise: 0 },
       ],

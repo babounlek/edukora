@@ -5,9 +5,11 @@ from rest_framework.response import Response
 from rest_framework.throttling import SimpleRateThrottle
 
 from users.ip import client_ip
+from users.profils import profil_actif
 
 from .funnel import entonnoir
 from .models import AnalyticsEvent, EventName
+from .semaine import demander_avis_seance
 
 # Plafond de clés dans `properties` - un contexte minimal (ex. {"cursus_id": 3}) tient
 # largement dedans ; au-delà, c'est le signe que ce point d'entrée est détourné vers
@@ -78,6 +80,12 @@ def track_event(request):
     # y lève une SyntaxError plutôt que de résoudre proprement (déjà rencontré ailleurs
     # dans ce projet), même si trackEvent() l'avale de toute façon (fire-and-forget).
     return Response({}, status=201)
+
+
+@api_view(["GET"])
+def avis_seance_view(request):
+    """GET : faut-il poser « Cette séance t'a aidé ? » à cet élève ? (voir analytics.semaine.demander_avis_seance)."""
+    return Response({"demander": demander_avis_seance(request.user, profil_actif(request))})
 
 
 @api_view(["GET"])

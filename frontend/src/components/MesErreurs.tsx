@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, Loader2, RotateCcw } from "lucide-react"
 
-import { getErreurs } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
-import { cleErreurs, useRefaireErreurs, type EchecRefaire } from "@/lib/erreurs"
+import { useRefaireErreurs, type EchecRefaire } from "@/lib/erreurs"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -67,49 +65,5 @@ export function LigneErreurs({
       </div>
       <EchecRefaireErreurs echec={echec} className={rangee ? "px-5 pb-3" : "px-1"} />
     </Cadre>
-  )
-}
-
-/**
- * Dans « Ma progression » : la banque d'erreurs en une carte, avec le bouton pour en refaire un paquet
- * et le lien vers le détail par matière. Se tait sans erreur, et tant que la banque n'est pas lue (une
- * carte qui apparaît puis disparaît ferait sauter la page).
- */
-export function CarteErreurs({ cursusId, className }: { cursusId: number; className?: string }) {
-  useI18n()
-  const { data } = useQuery({
-    queryKey: cleErreurs(cursusId),
-    queryFn: ({ signal }) => getErreurs(cursusId, signal),
-    retry: false,
-  })
-  const { lancer, enCours, echec } = useRefaireErreurs(cursusId)
-  if (!data || data.total <= 0) return null
-  return (
-    <section
-      aria-label={t("erreurs.titre")}
-      className={cn("rounded-3xl border border-border bg-card p-5 shadow-sm sm:p-6", className)}
-    >
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex min-w-0 items-center gap-3">
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-warning/15 text-warning-foreground dark:text-warning">
-            <RotateCcw className="size-5" aria-hidden="true" />
-          </span>
-          <div className="min-w-0">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-primary">{t("erreurs.titre")}</p>
-            <p className="mt-0.5 font-display text-lg font-semibold leading-snug">{tn("erreurs.total", data.total)}</p>
-          </div>
-        </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-2">
-          <Button className="min-h-11 rounded-full" disabled={enCours !== null} onClick={() => lancer()}>
-            {enCours !== null ? <Loader2 className="animate-spin" /> : <RotateCcw />}
-            {enCours !== null ? t("quiz.preparation") : tn("erreurs.refaire", data.paquet)}
-          </Button>
-          <Link to="/erreurs" className="text-sm font-medium text-primary underline-offset-4 hover:underline">
-            {t("erreurs.voir")}
-          </Link>
-        </div>
-      </div>
-      <EchecRefaireErreurs echec={echec} />
-    </section>
   )
 }

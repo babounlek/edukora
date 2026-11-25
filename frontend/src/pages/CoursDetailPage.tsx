@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { CoursSection } from "@/components/CoursSection"
 import { RelatedCours } from "@/components/RelatedCours"
+import { OuTombe } from "@/components/OuTombe"
 import { CountryBadge } from "@/components/CountryBadge"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { BadgeTombeSouvent } from "@/components/BadgeTombeSouvent"
@@ -199,6 +200,8 @@ export function CoursDetailPage() {
             </div>
           </div>
         </div>
+
+        <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mt-6" />
 
         <RelatedCours
           subjectCode={cours.subject.code}

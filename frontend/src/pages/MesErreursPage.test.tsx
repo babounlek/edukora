@@ -16,6 +16,7 @@ const auth = vi.hoisted(() => ({
 
 vi.mock("@/api/endpoints", () => ({ getErreurs, refaireErreurs }))
 vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
+vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
 vi.mock("@/lib/seo", () => ({ useSeo: vi.fn() }))
 
 import { MesErreursPage } from "./MesErreursPage"
@@ -28,7 +29,7 @@ const banque = {
     {
       subject_id: 10, subject_code: "MATHS", subject_label: "Mathématiques", nb: 11, themes_total: 5,
       themes: [
-        { theme_id: 1, theme: "factorisation", nb: 4 },
+        { theme_id: 1, theme: "factorisation", nb: 4, a_cours: true },
         { theme_id: 2, theme: "radicaux", nb: 3 },
         { theme_id: 3, theme: "théorème de Thalès", nb: 1 },
       ],
@@ -73,6 +74,9 @@ describe("MesErreursPage", () => {
     expect(screen.getByText(/Factorisation/)).toBeInTheDocument()
     expect(screen.getByText("+ 2 autres thèmes")).toBeInTheDocument()
     expect(screen.getByText("3 erreurs")).toBeInTheDocument()
+    // Un thème qui a un cours y mène ; les autres restent de simples repères.
+    expect(screen.getByRole("link", { name: "Revoir le cours : Factorisation" })).toHaveAttribute("href", "/cm/cours?theme=1")
+    expect(screen.queryByRole("link", { name: /Revoir le cours : Radicaux/ })).not.toBeInTheDocument()
   })
 
   it("refaire ouvre un quiz du paquet annoncé et y conduit", async () => {

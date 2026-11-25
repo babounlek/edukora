@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Search } from "lucide-react"
 
@@ -38,6 +39,18 @@ export function ReviserTabs() {
     { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs") },
   ]
 
+  // Sept onglets ne tiennent pas sur un téléphone : sur « Fiches », l'onglet actif était hors de l'écran. On fait défiler
+  // la rangée seule (jamais scrollIntoView, qui ferait aussi défiler la page).
+  const rangee = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const boite = rangee.current
+    const actif = boite?.querySelector<HTMLElement>('[aria-current="page"]')
+    if (!boite || !actif) return
+    const b = boite.getBoundingClientRect()
+    const a = actif.getBoundingClientRect()
+    if (a.left < b.left || a.right > b.right) boite.scrollLeft += a.left - b.left - (b.width - a.width) / 2
+  }, [pathname])
+
   // Sans conteneur ni marge propres : rendu comme premier enfant du conteneur que
   // chaque page a déjà (`mx-auto max-w-5xl px-4`), pour ne pas empiler deux fois la
   // même largeur et la même gouttière.
@@ -45,7 +58,7 @@ export function ReviserTabs() {
     <nav aria-label={t("nav.reviser")} className="mb-6">
       <div className="flex items-end justify-between gap-3 border-b border-border">
         {/* Cinq onglets ne tiennent pas dans 375 px : la rangée défile de côté plutôt que de rogner un libellé. */}
-        <div className="flex min-w-0 gap-1 overflow-x-auto [scrollbar-width:none]">
+        <div ref={rangee} className="flex min-w-0 gap-1 overflow-x-auto [scrollbar-width:none]">
           {onglets.map((onglet) => (
             <Link
               key={onglet.to}

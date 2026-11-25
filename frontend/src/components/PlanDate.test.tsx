@@ -20,9 +20,9 @@ describe("PlanDate", () => {
   it("dit où en est la semaine, les étapes datées et l'effet d'une séance de plus", () => {
     render(<PlanDate plan={plan} />)
 
-    expect(screen.getByText("Cette semaine : 1 sur 2 thèmes à consolider")).toBeInTheDocument()
-    expect(screen.getByText("3 thèmes de plus à consolider")).toBeInTheDocument()
-    expect(screen.getByText("12 thèmes de plus à consolider")).toBeInTheDocument()
+    expect(screen.getByText("Cette semaine : 1 sur 2 thèmes à rendre solides")).toBeInTheDocument()
+    expect(screen.getByText("3 thèmes de plus à rendre solides")).toBeInTheDocument()
+    expect(screen.getByText("12 thèmes de plus à rendre solides")).toBeInTheDocument()
     expect(screen.getByText(/environ 74 % de l'essentiel/)).toBeInTheDocument()
   })
 

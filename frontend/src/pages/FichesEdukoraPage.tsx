@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { ArrowRight, BadgeCheck, Check, Crown, GraduationCap, Layers, Lock, NotebookPen, Search } from "lucide-react"
 import { toast } from "sonner"
 
-import { garderFiche, getFiches, getFichesMatieres } from "@/api/endpoints"
+import { garderFiche, getFiches, getFichesMatieres, situerFiche } from "@/api/endpoints"
 import type { FicheEdukora } from "@/api/types"
 import { ApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
+import { trackEvent } from "@/lib/analytics"
+import { coursListPath, epreuveDetailPath } from "@/lib/countryPath"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
@@ -53,6 +55,47 @@ function Sessions({ fiche }: { fiche: FicheEdukora }) {
 }
 
 /**
+ * D'une fiche vers le quiz de sa notion, son cours et les sujets dont elle est tirée. Les fiches formaient une île : on y
+ * entrait, on n'en sortait nulle part (audit du 2026-11-25). Un lien n'est montré que s'il mène à quelque chose.
+ */
+function PassagesDeLaFiche({ fiche, cursus, pays }: { fiche: FicheEdukora; cursus: number; pays: string }) {
+  const theme = fiche.theme
+  const sources = (fiche.sources ?? []).slice(0, 4)
+  const lien = "inline-flex min-h-9 items-center font-medium text-primary underline-offset-4 hover:underline"
+  if (!theme?.a_quiz && !theme?.a_cours && sources.length === 0) return null
+  return (
+    <div className="mt-1 flex flex-wrap items-center gap-x-4 text-xs">
+      {theme?.a_quiz && (
+        <Link to={`/quiz?cursus=${cursus}&theme=${theme.id}`} className={lien}>
+          {t("fe.quiz")}
+        </Link>
+      )}
+      {theme?.a_cours && (
+        <Link to={`${coursListPath(pays)}?theme=${theme.id}`} className={lien}>
+          {t("fe.cours")}
+        </Link>
+      )}
+      {sources.length > 0 && (
+        <span className="flex flex-wrap items-center gap-x-2 text-muted-foreground">
+          {t("fe.sujets")}
+          {sources.map((s) => (
+            <Link
+              key={s.slug}
+              to={epreuveDetailPath(pays, s.slug)}
+              className={lien}
+              title={s.titre}
+              aria-label={t("fe.voir_sujet", { annee: s.annee ?? s.titre })}
+            >
+              {s.annee ?? s.titre}
+            </Link>
+          ))}
+        </span>
+      )}
+    </div>
+  )
+}
+
+/**
  * « Fiches EduKora » : des fiches de révision toutes faites, à côté des notes que l'élève écrit lui-même. Une notion par
  * fiche (une définition d'éducation civique, par exemple), dite en quelques lignes, avec les sessions où elle est tombée.
  * « Garder dans mes notes » la copie dans le dossier de sa matière : elle entre alors dans la révision espacée.
@@ -68,21 +111,36 @@ export function FichesEdukoraPage() {
   const { country } = useCountry()
   const declare = useCursusDeclare()
   const [params, setParams] = useSearchParams()
-  const cursus = Number(params.get("cursus")) || declare
   const [recherche, setRecherche] = useState("")
+  // « Rouvrir la source » d'une note gardée mène ici avec la seule fiche (?fiche=<id>) : on demande où elle se trouve,
+  // sinon la page ouvrait l'examen déclaré et la première matière, où la fiche n'est pas forcément.
+  const ficheVisee = Number(params.get("fiche")) || null
+  const aSituer = ficheVisee !== null && !params.get("matiere")
+  const situationQ = useQuery({
+    queryKey: ["fiches-edukora", "situer", ficheVisee],
+    queryFn: ({ signal }) => situerFiche(ficheVisee as number, signal),
+    enabled: aSituer && !authLoading,
+    retry: false,
+  })
+  const situation = aSituer ? situationQ.data : undefined
+  const enSituation = aSituer && situationQ.isLoading
+  const cursusDeLaFiche = situation
+    ? (declare !== null && situation.cursus_ids.includes(declare) ? declare : (situation.cursus_ids[0] ?? null))
+    : null
+  const cursus = Number(params.get("cursus")) || cursusDeLaFiche || declare
 
   const matieresQ = useQuery({
     queryKey: ["fiches-edukora", "matieres", cursus, isAuthenticated],
     queryFn: ({ signal }) => getFichesMatieres(cursus as number, signal),
-    enabled: !authLoading && cursus !== null,
+    enabled: !authLoading && !enSituation && cursus !== null,
   })
   const matieres = matieresQ.data?.matieres ?? []
-  const matiereId = Number(params.get("matiere")) || matieres[0]?.matiere_id || null
+  const matiereId = Number(params.get("matiere")) || situation?.matiere_id || matieres[0]?.matiere_id || null
   const matiere = matieres.find((m) => m.matiere_id === matiereId) ?? null
   const fichesQ = useQuery({
     queryKey: ["fiches-edukora", "fiches", cursus, matiereId, isAuthenticated],
     queryFn: ({ signal }) => getFiches(cursus as number, matiereId as number, signal),
-    enabled: !authLoading && cursus !== null && matiereId !== null,
+    enabled: !authLoading && !enSituation && cursus !== null && matiereId !== null,
   })
   const abonne = fichesQ.data?.abonne ?? matieresQ.data?.abonne ?? false
   const fiches = useMemo(() => {
@@ -91,12 +149,20 @@ export function FichesEdukoraPage() {
     return aiguille ? toutes.filter((f) => sansAccent(`${f.terme} ${f.definition ?? ""}`).includes(aiguille)) : toutes
   }, [fichesQ.data, recherche])
 
-  // « Rouvrir la source » d'une note gardée mène ici, sur sa fiche (?fiche=<id>) : on la met sous les yeux.
-  const ficheVisee = Number(params.get("fiche")) || null
+  // La fiche visée est mise sous les yeux.
   const viseeRef = useRef<HTMLLIElement>(null)
   useEffect(() => {
     if (ficheVisee && fiches.some((f) => f.id === ficheVisee)) viseeRef.current?.scrollIntoView({ block: "center" })
   }, [ficheVisee, fiches])
+
+  // Une matière ouverte, une fois par passage : de quoi savoir si les fiches sont lues.
+  const matieresLues = useRef(new Set<number>())
+  const nbFiches = fichesQ.data?.fiches.length ?? 0
+  useEffect(() => {
+    if (!matiereId || !cursus || nbFiches === 0 || matieresLues.current.has(matiereId)) return
+    matieresLues.current.add(matiereId)
+    trackEvent("fiche_lue", { matiere_id: matiereId, cursus_id: cursus })
+  }, [matiereId, cursus, nbFiches])
 
   const garder = useMutation({
     mutationFn: (fiche: FicheEdukora) => garderFiche(fiche.id),
@@ -172,6 +238,7 @@ export function FichesEdukoraPage() {
                   onClick={() => {
                     const p = new URLSearchParams(params)
                     p.set("matiere", String(m.matiere_id))
+                    p.set("cursus", String(cursus))
                     p.delete("fiche")
                     setParams(p, { replace: true })
                   }}
@@ -263,6 +330,7 @@ export function FichesEdukoraPage() {
                     <div className="mt-2">
                       <Sessions fiche={fiche} />
                     </div>
+                    <PassagesDeLaFiche fiche={fiche} cursus={cursus as number} pays={country} />
                     {fiche.verrouillee ? (
                       <p className="mt-3 flex items-center gap-2 rounded-xl bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
                         <Lock className="size-3.5 shrink-0" aria-hidden="true" />

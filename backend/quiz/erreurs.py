@@ -137,10 +137,13 @@ def resume_des_erreurs(profil, cursus):
         theme = matiere["_themes"].setdefault(item.theme_id, {"theme_id": item.theme_id, "theme": item.theme.name, "nb": 0})
         theme["nb"] += 1
 
+    from inedit.liens import themes_avec_cours
+
+    avec_cours = themes_avec_cours([item.theme_id for item, _jour in banque], cursus)
     matieres = []
     for matiere in sorted(par_matiere.values(), key=lambda m: (-m["nb"], m["subject_label"])):
         themes = sorted(matiere.pop("_themes").values(), key=lambda th: (-th["nb"], th["theme"]))
-        matiere["themes"] = themes[:THEMES_CITES_MAX]
+        matiere["themes"] = [{**th, "a_cours": th["theme_id"] in avec_cours} for th in themes[:THEMES_CITES_MAX]]
         matiere["themes_total"] = len(themes)
         matieres.append(matiere)
 

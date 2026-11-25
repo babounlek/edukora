@@ -113,17 +113,17 @@ describe("ParcoursPage (Ma progression) - ce que disent les chiffres à un élè
 
     const anglais = (await screen.findByRole("link", { name: /Anglais/ })).textContent
     expect(anglais).toContain("À découvrir")
-    expect(anglais).toContain("100 savoirs à découvrir")
+    expect(anglais).toContain("100 thèmes à découvrir")
     expect(anglais).not.toMatch(/0\s*%|abonne-toi/)
 
     const maths = screen.getByRole("link", { name: /Mathématiques/ }).textContent
     expect(maths).toContain("En cours")
-    expect(maths).toContain("32 savoirs travaillés sur 100")
+    expect(maths).toContain("32 thèmes travaillés sur 100")
     expect(maths).not.toMatch(/(^|\D)0\s*%/)
 
     const physique = screen.getByRole("link", { name: /Physique/ }).textContent
     expect(physique).toContain("25")
-    expect(physique).toContain("25/100 savoirs maîtrisés")
+    expect(physique).toContain("25/100 thèmes maîtrisés")
   })
 
   it("sous 10 %, le haut de page dit le palier suivant, pas « N sur 300 »", async () => {
@@ -134,15 +134,18 @@ describe("ParcoursPage (Ma progression) - ce que disent les chiffres à un élè
     ])
     afficher()
 
-    expect((await screen.findAllByText(/Savoirs maîtrisés : 6\. Prochain palier : 10\./)).length).toBeGreaterThan(0)
+    // La même phrase que sur l'accueil : l'effort d'abord, la maîtrise juste après.
+    expect((await screen.findAllByText(/Thèmes déjà travaillés : 42\. Maîtrisés : 6 ; prochain palier : 10\./)).length).toBeGreaterThan(0)
+    // Et le même nombre au centre de l'anneau : les thèmes travaillés, pas les seuls maîtrisés.
+    for (const anneau of screen.getAllByRole("img", { name: /% maîtrisé$/ })) expect(anneau).toHaveTextContent("42")
   })
 
   it("au-delà, il garde le compte « maîtrisés sur total »", async () => {
-    getResumeParcours.mockResolvedValue([matiere({ subject_id: 3, subject_label: "Physique", maitrises: 40, en_revision: 4 })])
+    getResumeParcours.mockResolvedValue([matiere({ subject_id: 3, subject_label: "Physique", maitrises: 40, en_revision: 4, poids_maitrise: 0.4 })])
     afficher()
 
     await screen.findByRole("link", { name: /Physique/ })
-    expect(screen.queryByText(/Prochain palier/)).toBeNull()
+    expect(screen.queryByText(/prochain palier/i)).toBeNull()
   })
 
   it("montre le bilan par matière quand l'élève a de l'activité", async () => {

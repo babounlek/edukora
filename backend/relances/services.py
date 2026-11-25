@@ -27,7 +27,7 @@ from django.utils import timezone
 from catalog.models import ExamSession
 from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
 from quiz import textes
-from quiz.models import SeanceJournaliere, StatutSeance
+from quiz.models import JourXP, SeanceJournaliere, StatutSeance
 from quiz.serie import serie_de_jours
 from quiz.services import revisions_dues
 from subscriptions.models import Subscription
@@ -239,6 +239,9 @@ def destinataires_rappel_seance(maintenant=None):
     deja_fait = SeanceJournaliere.objects.filter(
         date=aujourdhui, statut=StatutSeance.TERMINEE,
     ).values("profil__compte_id")
+    # La journée de travail est faite aussi quand l'objectif de points est atteint (même règle que la notification,
+    # voir relances.push.destinataires_push).
+    objectif_atteint = JourXP.objects.filter(jour=aujourdhui, atteint=True).values("profil__compte_id")
     deja_relance = RelanceEnvoyee.objects.filter(
         type=TypeRelance.RAPPEL_SEANCE, reference=aujourdhui.isoformat(),
     ).values("user_id")
@@ -248,6 +251,7 @@ def destinataires_rappel_seance(maintenant=None):
             cursus_prepare__country__actif=True,
         )
         .exclude(pk__in=deja_fait)
+        .exclude(pk__in=objectif_atteint)
         .exclude(pk__in=deja_relance)
         .filter(subscriptions__expires_at__gt=timezone.now())
         .select_related("cursus_prepare__country", "cursus_prepare__series")

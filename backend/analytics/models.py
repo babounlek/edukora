@@ -102,6 +102,13 @@ class EventName(models.TextChoices):
     CONNEXION_CODE_DEMANDE = "connexion_code_demande", "Code de connexion demandé"
     CONNEXION_REUSSIE = "connexion_reussie", "Connexion ou création de compte réussie"
     PAIEMENT_NUMERO_AFFICHE = "paiement_numero_affiche", "Numéro à créditer affiché (paiement manuel)"
+    # « Cette séance t'a aidé ? » (audit du 2026-11-25) : posée une fois par élève à partir de sa troisième séance terminée.
+    # `avis` (oui, un_peu, non), `motif` pris dans une liste fermée (voir analytics.semaine), `subject_id` et `theme_id` de
+    # la séance. Jamais de texte libre.
+    SEANCE_AVIS = "seance_avis", "Avis après une séance"
+    # Fiches EduKora : une matière ouverte (`matiere_id`, `cursus_id`) et une fiche gardée dans les notes (`fiche_id`).
+    FICHE_LUE = "fiche_lue", "Fiches EduKora : matière ouverte"
+    FICHE_GARDEE = "fiche_gardee", "Fiche EduKora gardée dans les notes"
 
 
 class AnalyticsEvent(models.Model):

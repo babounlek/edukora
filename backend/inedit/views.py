@@ -22,18 +22,18 @@ from access import quota
 from access.services import has_access_inedite
 from catalog.inedit_bridge import bulk_mes_tentatives, epreuve_inedite_catalogue_payload
 from catalog.libelles import libelle_cursus
-from catalog.models import Cours, Cursus, StatutContenu, TypeReponse, langue_examen
+from catalog.models import Cursus, StatutContenu, TypeReponse
 from catalog.slugs_renommes import slug_actuel
 from catalog.rendering import annotate_cours_links
 from catalog.serializers import CursusSerializer
-from quiz.models import CompetenceItem, ResultatDeclare
+from quiz.models import ResultatDeclare
 from quiz import xp
 from quiz.services import enregistrer_resultat_pour_revision
 from subscriptions.models import InscriptionInedite
 from users.parent import portee_famille
 from users.profils import profil_actif
 
-from . import notation, rapport
+from . import liens, notation, rapport
 from .models import CausePerte, DefiSemaine, EpreuveInedite,QuestionInedite, TentativeInedite, TentativeReponse
 
 
@@ -188,7 +188,8 @@ def _complete(tentative):
         # Rendue en conditions réelles (ou sur papier) et réellement entamée : la copie rapporte des points, comme un examen blanc.
         if tentative.exam_mode_started_at is not None and tentative.reponses.exists():
             xp.crediter_inedite(tentative.profil, tentative.pk)
-        _planifier_revisions_des_questions_non_traitees(tentative, exercices)
+        if not notation.copie_libre_vide(tentative, exercices):
+            _planifier_revisions_des_questions_non_traitees(tentative, exercices)
         return _tentative_resultat_payload(tentative, bilan)
     return _tentative_resultat_payload(tentative)
 
@@ -245,14 +246,8 @@ def _themes_a_reviser(tentative, bilan):
     # remplir : sinon le lien lançait un quiz sans question (404) ou ouvrait une liste vide.
     cursus = tentative.epreuve.cursus.first()
     ids_themes = [ids[nom] for nom in echeances]
-    avec_quiz = set(
-        CompetenceItem.objects.filter(theme_id__in=ids_themes, cursus=cursus, statut=StatutContenu.VALIDE)
-        .values_list("theme_id", flat=True)
-    )
-    cours = Cours.objects.visibles().filter(tags__id__in=ids_themes)
-    if cursus is not None and cursus.examen:
-        cours = cours.filter(subject__langue=langue_examen(cursus.examen))
-    avec_cours = set(cours.values_list("tags__id", flat=True)) & set(ids_themes)
+    avec_quiz = liens.themes_avec_quiz(ids_themes, cursus)
+    avec_cours = liens.themes_avec_cours(ids_themes, cursus)
     return [
         {
             "theme": nom,

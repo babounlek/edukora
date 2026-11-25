@@ -28,6 +28,7 @@ import { BoutonPartager } from "@/components/BoutonPartager"
 import { BoutonSujetPdf } from "@/components/BoutonSujetPdf"
 import { SITE_NAME } from "@/lib/site"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
+import { QuizSurCesThemes } from "@/components/QuizSurCesThemes"
 import { BackToTopBar } from "@/components/BackToTopBar"
 import { BoutonSimulation } from "@/components/BoutonSimulation"
 import { CountryBadge } from "@/components/CountryBadge"
@@ -478,6 +479,8 @@ export function EpreuveDetailPage() {
           </span>
           <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-1" />
         </Link>
+
+        <QuizSurCesThemes slug={epreuve.slug ?? slug ?? ""} className="mt-8" />
 
         <RelatedEpreuves
           subjectCode={epreuve.subject.code}
