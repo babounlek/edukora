@@ -2316,6 +2316,12 @@ export interface FicheEdukora {
   /** null quand la fiche est verrouillée (sans abonnement, hors fiches gratuites). */
   definition: string | null
   exemple: string
+  /** Les blocs d'une fiche de méthode (absents d'une réponse gardée en cache). */
+  piege?: string
+  exercice?: string
+  reponse?: string
+  /** « Calcul », « Géométrie »… ; vide quand la matière n'est pas rangée par rubriques. */
+  rubrique?: string
   sessions: { annee: number; origine: string }[]
   gratuit: boolean
   verrouillee: boolean

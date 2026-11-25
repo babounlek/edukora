@@ -28,6 +28,13 @@ class Memo(models.Model):
     terme = models.CharField(max_length=160, help_text="La notion : « Scrutin », « Suffrage universel ».")
     definition = models.TextField(help_text="La définition à retenir, en quelques lignes (Markdown, formules entre $).")
     exemple = models.TextField(blank=True, help_text="Un exemple ou une précision, facultatif.")
+    # Les trois champs d'une fiche de MÉTHODE (voir donnees/maths_bepc_methodes.json) ; vides pour une définition.
+    piege = models.TextField(blank=True, help_text="L'erreur à éviter (Markdown, formules entre $).")
+    exercice = models.TextField(blank=True, help_text="« À toi » : un exercice court, à faire sans regarder la méthode.")
+    reponse = models.TextField(blank=True, help_text="La réponse de l'exercice, montrée quand l'élève la demande.")
+    rubrique = models.CharField(
+        max_length=40, blank=True, help_text="Pour ranger les fiches d'une matière : « Calcul », « Géométrie »…",
+    )
     sessions = models.JSONField(
         default=list, blank=True,
         help_text='Où la notion est tombée : [{"annee": 2019, "origine": "OFFICIEL"}, …] (voir catalog.Lesson.origine).',

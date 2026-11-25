@@ -12,6 +12,16 @@ Une fiche, c'est **une notion à savoir par cœur** : sa définition en quelques
 
 Elle est plus courte qu'un cours : c'est ce que tu relis la veille de l'examen.
 
+## Et les fiches de méthode, en maths ?
+
+En maths, une fiche répond à **une question que tu te poses devant un exercice**, par exemple « Comment calculer une longueur avec Pythagore ? ». Tu y trouves quand utiliser la méthode et ses étapes, puis trois blocs :
+
+- **Exemple**, rédigé comme sur une copie ;
+- **Le piège** à éviter ;
+- **À toi** : un petit exercice. Fais-le sans regarder la méthode, puis touche « Voir la réponse ».
+
+Les fiches de maths sont rangées en groupes (Calcul, Géométrie, Repère, Statistiques) : touche un groupe pour ne voir que ses fiches.
+
 ## Où les trouver ?
 
 Dans « Réviser », onglet **Fiches**, ou depuis [Mes notes](/carnet). Ouvre les [Fiches EduKora](/fiches-edukora), choisis ta matière, et cherche une notion si besoin.

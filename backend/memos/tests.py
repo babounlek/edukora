@@ -266,6 +266,16 @@ class ExtractionTests(_Base):
                 self.assertEqual(extraction._cle(cle), cle)
                 self.assertEqual(extraction._cle(retouche.get("terme", cle)), cle)
 
+    def test_the_shipped_method_cards_are_complete_and_fit_in_a_note(self):
+        notions = redaction.lire("maths_bepc_methodes")["notions"]
+        self.assertEqual(len({n["terme"] for n in notions}), len(notions))
+        for n in notions:
+            for champ in ("definition", "exemple", "piege", "exercice", "reponse"):
+                self.assertTrue(n.get(champ), f"{n['terme']} : {champ}")
+            self.assertIn(n["rubrique"], {"Calcul", "Géométrie", "Repère", "Statistiques"})
+            note = f"{n['definition']}\n\n{n['exemple']}\n\n**Piège** : {n['piege']}"
+            self.assertLessEqual(len(note), 2000, n["terme"])
+
     @override_settings(MEMOS_MONTRER_BROUILLONS=True)
     def test_in_development_drafts_show_flagged_as_to_review(self):
         m = Memo.objects.create(subject=self.subject, terme="Brouillon", definition="Une définition encore à relire par un enseignant.", gratuit=True)
@@ -273,3 +283,31 @@ class ExtractionTests(_Base):
         data = self.client.get(f"/memos/fiches/?cursus={self.cursus.pk}&matiere={self.subject.pk}").data
         self.assertTrue(data["fiches"][0]["a_relire"])
         self.assertEqual(services.visibles().count(), 1)
+
+
+@override_settings(MEMOS_MONTRER_BROUILLONS=False)
+class FicheDeMethodeTests(_Base):
+    BLOCS = {"piege": "Oublier les parenthèses.", "exercice": "Factorise x² - 1.", "reponse": "(x - 1)(x + 1)",
+             "rubrique": "Calcul"}
+
+    def fiches(self):
+        return self.client.get(f"/memos/fiches/?cursus={self.cursus.pk}&matiere={self.subject.pk}").data["fiches"]
+
+    def test_the_blocks_are_served_with_a_readable_card_and_hidden_on_a_locked_one(self):
+        self.memo("Gratuite", gratuit=True, **self.BLOCS)
+        self.memo("Payante", **self.BLOCS)
+        par_terme = {f["terme"]: f for f in self.fiches()}
+        for champ, valeur in self.BLOCS.items():
+            self.assertEqual(par_terme["Gratuite"][champ], valeur)
+        for champ in ("piege", "exercice", "reponse"):
+            self.assertEqual(par_terme["Payante"][champ], "")
+        # La rubrique reste : une fiche verrouillée se range avec les autres.
+        self.assertEqual(par_terme["Payante"]["rubrique"], "Calcul")
+
+    def test_a_kept_method_card_carries_its_trap_but_not_the_exercise(self):
+        fiche = self.memo("Gratuite", gratuit=True, **self.BLOCS)
+        self.client.post(f"/memos/fiches/{fiche.pk}/garder/")
+        note = NoteLibre.objects.get().note
+        self.assertIn("**Piège** : Oublier les parenthèses.", note)
+        self.assertNotIn("Factorise", note)
+        self.assertNotIn("(x - 1)(x + 1)", note)

@@ -79,6 +79,10 @@ def entree(memo, *, lisible, gardee, cursus_id=None, liens=None):
         "terme": memo.terme,
         "definition": memo.definition if lisible else None,
         "exemple": memo.exemple if lisible else "",
+        "piege": memo.piege if lisible else "",
+        "exercice": memo.exercice if lisible else "",
+        "reponse": memo.reponse if lisible else "",
+        "rubrique": memo.rubrique,
         # Les années de CET examen seulement (voir memos.gratuites).
         "sessions": sessions_de(memo, cursus_id),
         "gratuit": memo.gratuit,
@@ -94,6 +98,7 @@ def garder_dans_les_notes(profil, memo):
     """
     Copie la fiche dans les notes de l'élève : (note, créée ?). Le terme devient le recto de la carte de révision (la
     citation), la définition son verso (la note) : réviser ses notes interroge alors « Scrutin ? » et montre la définition.
+    L'exemple et le piège suivent ; l'exercice « À toi » reste sur la fiche, que la note permet de rouvrir.
     Un second appui ne crée pas de doublon.
     """
     existante = NoteLibre.objects.filter(profil=profil, origine=ORIGINE_FICHE, source=source_de(memo)).first()
@@ -102,6 +107,8 @@ def garder_dans_les_notes(profil, memo):
     texte = memo.definition
     if memo.exemple:
         texte += f"\n\n{memo.exemple}"
+    if memo.piege:
+        texte += f"\n\n**Piège** : {memo.piege}"
     note = NoteLibre.objects.create(
         profil=profil, subject=memo.subject, note=texte[:2000], citation=memo.terme, origine=ORIGINE_FICHE,
         source=source_de(memo), theme=memo.theme,

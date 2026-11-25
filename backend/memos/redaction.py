@@ -29,6 +29,13 @@ def lire(nom):
     return json.loads(chemin.read_text(encoding="utf-8"))
 
 
+CHAMPS_FACULTATIFS = ("exemple", "piege", "exercice", "reponse", "rubrique")
+
+
+def _facultatifs(notion):
+    return {champ: notion.get(champ, "") for champ in CHAMPS_FACULTATIFS}
+
+
 def importer(donnees, dry_run=False):
     """{"creees", "completees", "mises_a_jour", "epreuves_absentes", "ignorees"}."""
     subject = Subject.objects.filter(country__code__iexact=donnees["pays"], code=donnees["matiere"]).first()
@@ -64,8 +71,7 @@ def importer(donnees, dry_run=False):
         if memo is None:
             memo = Memo.objects.create(
                 subject=subject, terme=notion["terme"], definition=notion["definition"],
-                exemple=notion.get("exemple", ""), sessions=sessions, ordre=1000 + rang * 10,
-                statut=StatutMemo.BROUILLON,
+                sessions=sessions, ordre=1000 + rang * 10, statut=StatutMemo.BROUILLON, **_facultatifs(notion),
             )
             existantes[_cle(notion["terme"])] = memo
             bilan["creees"] += 1
@@ -74,7 +80,9 @@ def importer(donnees, dry_run=False):
             # des sessions. Son texte n'est réécrit que si elle vient de ce fichier et n'a été ni retouchée ni publiée.
             vient_du_fichier = memo.ordre >= 1000
             if vient_du_fichier and not memo.modifie_a_la_main and memo.statut != StatutMemo.PUBLIE:
-                memo.definition, memo.exemple = notion["definition"], notion.get("exemple", "")
+                memo.definition = notion["definition"]
+                for champ, valeur in _facultatifs(notion).items():
+                    setattr(memo, champ, valeur)
                 bilan["mises_a_jour"] += 1
             else:
                 bilan["completees"] += 1

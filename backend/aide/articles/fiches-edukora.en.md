@@ -9,6 +9,16 @@ A sheet is **one notion to know by heart**: its definition in a few lines, somet
 
 It is shorter than a lesson: it is what you reread the day before the exam.
 
+## What are the method sheets in maths?
+
+In maths, a sheet answers **one question you ask yourself in front of an exercise**, for example how to find a length with Pythagoras. It tells you when to use the method and its steps, then shows three blocks:
+
+- **An example**, written as on an exam paper;
+- **The trap** to avoid;
+- **Your turn**: a short exercise. Do it without looking at the method, then tap "Show the answer".
+
+Maths sheets are grouped into sections (shown in French: Calcul, Géométrie, Repère, Statistiques): tap a section to see only its sheets.
+
 ## Where do I find them?
 
 In "Revise", **Sheets** tab, or from [My notes](/carnet). Open the [EduKora sheets](/fiches-edukora), choose your subject, and search for a notion if needed.

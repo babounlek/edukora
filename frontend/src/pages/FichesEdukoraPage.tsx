@@ -8,6 +8,7 @@ import { garderFiche, getFiches, getFichesMatieres, situerFiche } from "@/api/en
 import type { FicheEdukora } from "@/api/types"
 import { ApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
+import { BlocsFiche, Sessions } from "@/components/fiches/BlocsFiche"
 import { NoteTexte } from "@/components/NoteTexte"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
@@ -18,6 +19,7 @@ import { trackEvent } from "@/lib/analytics"
 import { coursListPath, epreuveDetailPath } from "@/lib/countryPath"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { grouperParRubrique } from "@/lib/rubriquesFiches"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { useSeo } from "@/lib/seo"
@@ -26,32 +28,6 @@ import { t, tn, useI18n } from "@/lib/i18n"
 
 function sansAccent(s: string): string {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
-}
-
-/** « Tombé au BEPC 2018, 2019 » et, à part, les examens blancs : seules les sessions officielles font foi. */
-function Sessions({ fiche }: { fiche: FicheEdukora }) {
-  const officielles = fiche.sessions.filter((s) => s.origine === "OFFICIEL").map((s) => s.annee)
-  const autres = fiche.sessions.filter((s) => s.origine !== "OFFICIEL").map((s) => s.annee)
-  if (officielles.length === 0 && autres.length === 0) return null
-  return (
-    <p className="flex flex-wrap items-center gap-1.5 text-xs">
-      {officielles.length > 0 && (
-        <>
-          <span className="font-medium text-gold-text">{tn("fe.tombe", officielles.length)}</span>
-          {officielles.map((a) => (
-            <span key={a} className="rounded-full bg-gold/15 px-2 py-0.5 font-semibold tabular-nums text-gold-text">
-              {a}
-            </span>
-          ))}
-        </>
-      )}
-      {autres.length > 0 && (
-        <span className="text-muted-foreground">
-          {t("fe.blanc", { annees: [...new Set(autres)].join(", ") })}
-        </span>
-      )}
-    </p>
-  )
 }
 
 /**
@@ -143,11 +119,25 @@ export function FichesEdukoraPage() {
     enabled: !authLoading && !enSituation && cursus !== null && matiereId !== null,
   })
   const abonne = fichesQ.data?.abonne ?? matieresQ.data?.abonne ?? false
-  const fiches = useMemo(() => {
+  const trouvees = useMemo(() => {
     const toutes = fichesQ.data?.fiches ?? []
     const aiguille = sansAccent(recherche.trim())
     return aiguille ? toutes.filter((f) => sansAccent(`${f.terme} ${f.definition ?? ""}`).includes(aiguille)) : toutes
   }, [fichesQ.data, recherche])
+  // Les rubriques se lisent sur toutes les fiches de la matière : une recherche ne doit pas faire disparaître un filtre.
+  const rubriques = useMemo(
+    () => grouperParRubrique(fichesQ.data?.fiches ?? []).filter((g) => g.rubrique),
+    [fichesQ.data],
+  )
+  const [rubriqueChoisie, setRubriqueChoisie] = useState("")
+  // Le choix d'une autre matière, ou une rubrique disparue, ramène à « Toutes ».
+  const rubriqueActive = rubriques.some((g) => g.rubrique === rubriqueChoisie) ? rubriqueChoisie : ""
+  const fiches = useMemo(
+    () => (rubriqueActive ? trouvees.filter((f) => f.rubrique === rubriqueActive) : trouvees),
+    [trouvees, rubriqueActive],
+  )
+  const parRubrique = rubriques.length > 1
+  const groupes = parRubrique ? grouperParRubrique(fiches) : [{ rubrique: "", fiches }]
 
   // La fiche visée est mise sous les yeux.
   const viseeRef = useRef<HTMLLIElement>(null)
@@ -276,6 +266,29 @@ export function FichesEdukoraPage() {
             </div>
           </div>
 
+          {parRubrique && (
+            <div role="group" aria-label={t("fe.rubriques_aria")} className="mt-4 flex flex-wrap gap-2">
+              {[{ rubrique: "", fiches: fichesQ.data?.fiches ?? [] }, ...rubriques].map((g) => {
+                const actif = g.rubrique === rubriqueActive
+                return (
+                  <button
+                    key={g.rubrique || "toutes"}
+                    type="button"
+                    aria-pressed={actif}
+                    onClick={() => setRubriqueChoisie(g.rubrique)}
+                    className={cn(
+                      "inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3.5 text-xs font-medium transition-colors",
+                      actif ? "border-primary bg-primary/10 text-primary" : "border-border bg-card text-muted-foreground hover:border-primary/40",
+                    )}
+                  >
+                    {g.rubrique || t("fe.toutes")}
+                    <span className="tabular-nums opacity-70">{g.fiches.length}</span>
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
           {!abonne && verrouillees > 0 && (
             <div className="mt-5 flex flex-col gap-3 rounded-2xl border border-gold/40 bg-gradient-to-br from-gold/[0.10] via-gold/[0.03] to-transparent p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
               <p className="flex items-start gap-3 text-sm">
@@ -306,67 +319,70 @@ export function FichesEdukoraPage() {
           ) : fiches.length === 0 ? (
             <p className="mt-10 text-center text-sm text-muted-foreground">{t("fe.aucun_resultat")}</p>
           ) : (
-            <ul className="mt-5 grid items-start gap-4 lg:grid-cols-2">
-              {fiches.map((fiche, i) => (
-                <li
-                  key={fiche.id}
-                  ref={fiche.id === ficheVisee ? viseeRef : undefined}
-                  style={{ animationDelay: `${Math.min(i, 10) * 35}ms` }}
-                  className={cn(
-                    "relative animate-fade-up overflow-hidden rounded-2xl border bg-card shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5",
-                    fiche.id === ficheVisee ? "border-primary ring-2 ring-primary/20" : "border-border",
-                  )}
-                >
-                  <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", couleurMatiere(matiere?.matiere_code).barre)} />
-                  <div className="p-4 pl-5 sm:p-5 sm:pl-6">
-                    <div className="flex items-start justify-between gap-3">
-                      <h3 className="font-display text-xl font-semibold leading-tight tracking-tight">{fiche.terme}</h3>
-                      {fiche.a_relire && (
-                        <span className="shrink-0 rounded-full bg-warning/15 px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide text-warning-foreground dark:text-warning">
-                          {t("fe.a_relire")}
-                        </span>
+            groupes.map((groupe) => (
+            <section key={groupe.rubrique || "sans"} aria-label={groupe.rubrique || undefined}>
+              {groupe.rubrique && (
+                <h3 className="mt-8 font-display text-lg font-semibold tracking-tight text-muted-foreground">{groupe.rubrique}</h3>
+              )}
+                <ul className={cn("grid items-start gap-4 lg:grid-cols-2", groupe.rubrique ? "mt-3" : "mt-5")}>
+                  {groupe.fiches.map((fiche, i) => (
+                    <li
+                      key={fiche.id}
+                      ref={fiche.id === ficheVisee ? viseeRef : undefined}
+                      style={{ animationDelay: `${Math.min(i, 10) * 35}ms` }}
+                      className={cn(
+                        "relative animate-fade-up overflow-hidden rounded-2xl border bg-card shadow-sm transition-shadow duration-300 hover:shadow-lg hover:shadow-primary/5",
+                        fiche.id === ficheVisee ? "border-primary ring-2 ring-primary/20" : "border-border",
                       )}
-                    </div>
-                    <div className="mt-2">
-                      <Sessions fiche={fiche} />
-                    </div>
-                    <PassagesDeLaFiche fiche={fiche} cursus={cursus as number} pays={country} />
-                    {fiche.verrouillee ? (
-                      <p className="mt-3 flex items-center gap-2 rounded-xl bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
-                        <Lock className="size-3.5 shrink-0" aria-hidden="true" />
-                        {t("fe.verrouillee")}
-                      </p>
-                    ) : (
-                      <>
-                        <NoteTexte texte={fiche.definition ?? ""} className="mt-3 text-[0.95rem] leading-relaxed" />
-                        {fiche.exemple && (
-                          <blockquote className="mt-3 border-l-2 border-gold/60 pl-3">
-                            <NoteTexte texte={fiche.exemple} className="italic text-muted-foreground" />
-                          </blockquote>
-                        )}
-                        <div className="mt-3.5 flex items-center justify-end border-t border-dashed border-border pt-3">
-                          {fiche.gardee ? (
-                            <Link to={`/carnet?dossier=${fiche.matiere_id}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
-                              <Check className="size-3.5" aria-hidden="true" />
-                              {t("fe.gardee")}
-                            </Link>
-                          ) : isAuthenticated ? (
-                            <Button type="button" size="sm" variant="outline" className="rounded-full" disabled={garder.isPending} onClick={() => garder.mutate(fiche)}>
-                              <NotebookPen />
-                              {t("fe.garder")}
-                            </Button>
-                          ) : (
-                            <Link to="/connexion" state={{ from: "/fiches-edukora" }} className="text-xs font-medium text-primary hover:underline">
-                              {t("fe.connecte_toi")}
-                            </Link>
+                    >
+                      <span aria-hidden="true" className={cn("absolute inset-y-0 left-0 w-1", couleurMatiere(matiere?.matiere_code).barre)} />
+                      <div className="p-4 pl-5 sm:p-5 sm:pl-6">
+                        <div className="flex items-start justify-between gap-3">
+                          <h3 className="font-display text-xl font-semibold leading-tight tracking-tight">{fiche.terme}</h3>
+                          {fiche.a_relire && (
+                            <span className="shrink-0 rounded-full bg-warning/15 px-2 py-0.5 text-[0.7rem] font-semibold uppercase tracking-wide text-warning-foreground dark:text-warning">
+                              {t("fe.a_relire")}
+                            </span>
                           )}
                         </div>
-                      </>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
+                        <div className="mt-2">
+                          <Sessions fiche={fiche} />
+                        </div>
+                        <PassagesDeLaFiche fiche={fiche} cursus={cursus as number} pays={country} />
+                        {fiche.verrouillee ? (
+                          <p className="mt-3 flex items-center gap-2 rounded-xl bg-muted/50 px-3 py-2.5 text-sm text-muted-foreground">
+                            <Lock className="size-3.5 shrink-0" aria-hidden="true" />
+                            {t("fe.verrouillee")}
+                          </p>
+                        ) : (
+                          <>
+                            <NoteTexte texte={fiche.definition ?? ""} className="mt-3 text-[0.95rem] leading-relaxed" />
+                            <BlocsFiche fiche={fiche} />
+                            <div className="mt-3.5 flex items-center justify-end border-t border-dashed border-border pt-3">
+                              {fiche.gardee ? (
+                                <Link to={`/carnet?dossier=${fiche.matiere_id}`} className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:underline">
+                                  <Check className="size-3.5" aria-hidden="true" />
+                                  {t("fe.gardee")}
+                                </Link>
+                              ) : isAuthenticated ? (
+                                <Button type="button" size="sm" variant="outline" className="rounded-full" disabled={garder.isPending} onClick={() => garder.mutate(fiche)}>
+                                  <NotebookPen />
+                                  {t("fe.garder")}
+                                </Button>
+                              ) : (
+                                <Link to="/connexion" state={{ from: "/fiches-edukora" }} className="text-xs font-medium text-primary hover:underline">
+                                  {t("fe.connecte_toi")}
+                                </Link>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+            </section>
+            ))
           )}
         </>
       )}

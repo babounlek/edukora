@@ -8,9 +8,9 @@ class MemoAdmin(admin.ModelAdmin):
     """La relecture se fait ici : l'enseignant corrige la définition, coche « relu », puis la fiche peut être publiée."""
 
     list_display = ("terme", "subject", "statut", "relu_par_enseignant", "gratuit", "ordre", "nb_sessions", "updated_at")
-    list_filter = ("statut", "relu_par_enseignant", "gratuit", "subject")
+    list_filter = ("statut", "relu_par_enseignant", "gratuit", "subject", "rubrique")
     list_editable = ("gratuit", "ordre")
-    search_fields = ("terme", "definition")
+    search_fields = ("terme", "definition", "piege", "exercice")
     filter_horizontal = ("cursus",)
     raw_id_fields = ("theme", "sources")
     actions = ["marquer_relues_et_publier", "repasser_en_brouillon"]
@@ -21,7 +21,7 @@ class MemoAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         # Une retouche du texte dans l'administration protège la fiche d'une réécriture par l'extraction.
-        if change and {"definition", "exemple", "terme"} & set(form.changed_data):
+        if change and {"definition", "exemple", "piege", "exercice", "reponse", "rubrique", "terme"} & set(form.changed_data):
             obj.modifie_a_la_main = True
         super().save_model(request, obj, form, change)
 
