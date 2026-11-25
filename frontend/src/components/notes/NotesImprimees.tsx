@@ -26,6 +26,10 @@ export function NotesImprimees({
   const date = new Date().toLocaleDateString(localeCourante(), { day: "numeric", month: "long", year: "numeric" })
   return (
     <div className="notes-imprimees hidden text-black print:block">
+      {/* A4 à marges serrées (une page se paie à l'unité). Posé ici, il ne vaut que tant que la feuille existe. Surtout pas de
+          page CSS « nommée » (`page: notes`) : le navigateur saute alors une page avant et après la feuille, et l'élève
+          payait deux feuilles blanches. */}
+      <style>{"@page { size: A4; margin: 12mm 11mm 13mm; }"}</style>
       <div className="flex items-end justify-between gap-6 border-b-2 border-black pb-2">
         <div className="min-w-0">
           <p className="font-sans text-[8pt] font-semibold uppercase tracking-[0.2em]">{t("imp.surtitre")}</p>

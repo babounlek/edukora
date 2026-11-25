@@ -11,6 +11,7 @@ import {
 } from "@/api/endpoints"
 import type { CarnetEntree } from "@/api/types"
 import { AjouterNoteDialog } from "@/components/AjouterNoteDialog"
+import { ApercuFiches, useApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { NoteTexte } from "@/components/NoteTexte"
 import { CarteDossier } from "@/components/notes/CarteDossier"
@@ -183,11 +184,20 @@ export function CarnetPage() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["carnet"] }),
     onError: () => toast.error(t("ca.note_erreur")),
   })
+  const nonAbonne = !authLoading && !user?.a_un_abonnement_actif
+  const apercu = useApercuFiches(country)
+  const apercuMontre = nonAbonne && (apercu?.fiches.length ?? 0) > 0
   const aDesEpinglees = dossier ? dossier.epingles > 0 : totalEpingles > 0
   const aDesDues = dossier ? dossier.a_reviser > 0 : dossiers.some((d) => d.a_reviser > 0)
 
   if (!authLoading && !isAuthenticated) {
-    return <ConnexionRequise from="/carnet" titre={t("cpt.carnet")} explication={t("carnet.intent")} />
+    // Le visiteur ne bute pas sur un mur : sous l'invitation à se connecter, les fiches gratuites se lisent tout de suite.
+    return (
+      <>
+        <ConnexionRequise from="/carnet" titre={t("cpt.carnet")} explication={t("carnet.intent")} />
+        <ApercuFiches country={country} className="mx-auto max-w-5xl px-4 pb-12 sm:px-6" />
+      </>
+    )
   }
 
   const total = resume?.total ?? 0
@@ -316,6 +326,7 @@ export function CarnetPage() {
         // Une panne n'est pas un carnet vide : sans ce cas, l'élève croyait avoir perdu ses notes.
         <ErreurChargement objet={t("ca.objet")} message={t("ca.message_erreur")} onRetry={() => refetch()} className="mt-8" />
       ) : total === 0 ? (
+        <>
         <div className="mt-8 animate-fade-up rounded-3xl border border-dashed border-border bg-card/60 p-8 text-center">
           <span className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
             <Bookmark className="size-6" />
@@ -339,6 +350,8 @@ export function CarnetPage() {
             </Link>
           </Button>
         </div>
+        {nonAbonne && <ApercuFiches country={country} className="mt-10 print:hidden" />}
+        </>
       ) : (
         <>
           <div className="relative mt-5 print:hidden">
@@ -384,8 +397,10 @@ export function CarnetPage() {
                 </section>
               )}
 
-              {/* Les fiches toutes faites d'EduKora : à garder dans ses notes d'un toucher. */}
-              <Link
+              {/* Les fiches toutes faites d'EduKora : à garder dans ses notes d'un toucher. Sans abonnement, quelques-unes se
+                  lisent ici même. */}
+              {apercuMontre && <ApercuFiches country={country} className="mt-8 print:hidden" />}
+              {!apercuMontre && <Link
                 to="/fiches-edukora"
                 className="group mt-8 flex items-center gap-4 rounded-2xl border border-gold/40 bg-gradient-to-r from-gold/[0.14] to-transparent p-4 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gold/15 sm:p-5 print:hidden"
               >
@@ -397,7 +412,7 @@ export function CarnetPage() {
                   <span className="mt-0.5 block text-sm text-muted-foreground">{t("fe.accroche")}</span>
                 </span>
                 <ArrowRight className="size-4 shrink-0 text-gold-text transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
-              </Link>
+              </Link>}
 
               <section className="mt-8" aria-label={t("ca.dossiers_titre")}>
                 <h2 className="font-sans text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground print:hidden">{t("ca.dossiers_titre")}</h2>

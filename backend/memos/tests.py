@@ -9,7 +9,8 @@ from catalog.models import Cursus, Examen, Exercise, Lesson, LessonType, Questio
 from subscriptions.models import Subscription
 from users.models import User
 
-from . import extraction, services
+from . import extraction, redaction, services
+from .gratuites import fusionner_sessions
 from .models import Memo, StatutMemo
 
 
@@ -85,6 +86,27 @@ class LectureTests(_Base):
 
 
 @override_settings(MEMOS_MONTRER_BROUILLONS=False)
+class ApercuTests(_Base):
+    def test_a_visitor_previews_a_few_free_published_cards_and_never_a_paid_or_draft_one(self):
+        for i in range(5):
+            self.memo(f"Gratuite {i}", gratuit=True, ordre=i)
+        self.memo("Payante", ordre=0)
+        self.memo("Brouillon", gratuit=True, ordre=0, statut=StatutMemo.BROUILLON)
+        data = APIClient().get("/memos/apercu/?pays=cm").data
+        self.assertEqual([f["terme"] for f in data["fiches"]], ["Gratuite 0", "Gratuite 1", "Gratuite 2"])
+        self.assertTrue(all(f["definition"] for f in data["fiches"]))
+        self.assertEqual(data["fiches"][0]["cursus_id"], self.cursus.pk)
+        self.assertEqual(data["total"], 6)
+
+    def test_the_preview_of_an_exam_never_shows_another_exams_cards(self):
+        self.memo("Gratuite", gratuit=True)
+        autre = Cursus.objects.exclude(pk=self.cursus.pk).filter(country=self.cursus.country).first()
+        data = APIClient().get(f"/memos/apercu/?pays=cm&cursus={autre.pk}").data
+        self.assertEqual(data, {"total": 0, "fiches": []})
+        self.assertEqual(APIClient().get("/memos/apercu/").status_code, 400)
+
+
+@override_settings(MEMOS_MONTRER_BROUILLONS=False)
 class GarderTests(_Base):
     def test_keeping_a_card_makes_a_review_note_once(self):
         memo = self.memo(gratuit=True, exemple="Exemple : l'élection présidentielle.")
@@ -105,6 +127,76 @@ class GarderTests(_Base):
         self.assertEqual(APIClient().post(f"/memos/fiches/{memo.pk}/garder/").status_code, 401)
         self.abonner()
         self.assertEqual(self.client.post(f"/memos/fiches/{memo.pk}/garder/").status_code, 201)
+
+
+class SessionsParExamenTests(_Base):
+    def test_each_exam_only_sees_its_own_years(self):
+        autre = Cursus.objects.exclude(pk=self.cursus.pk).filter(country=self.cursus.country).first()
+        memo = self.memo(gratuit=True, sessions=[
+            {"annee": 2018, "origine": "OFFICIEL", "cursus": [self.cursus.pk]},
+            {"annee": 2021, "origine": "OFFICIEL", "cursus": [autre.pk]},
+        ])
+        memo.cursus.add(autre)
+        bepc = self.client.get(f"/memos/fiches/?cursus={self.cursus.pk}&matiere={self.subject.pk}").data
+        lycee = self.client.get(f"/memos/fiches/?cursus={autre.pk}&matiere={self.subject.pk}").data
+        self.assertEqual(bepc["fiches"][0]["sessions"], [{"annee": 2018, "origine": "OFFICIEL"}])
+        self.assertEqual(lycee["fiches"][0]["sessions"], [{"annee": 2021, "origine": "OFFICIEL"}])
+
+    def test_merging_sessions_keeps_one_entry_per_year_with_all_its_exams(self):
+        self.assertEqual(
+            fusionner_sessions([{"annee": 2018, "origine": "OFFICIEL", "cursus": [1]}], [{"annee": 2018, "origine": "OFFICIEL", "cursus": [2]}]),
+            [{"annee": 2018, "origine": "OFFICIEL", "cursus": [1, 2]}],
+        )
+
+
+class RedactionTests(_Base):
+    def _epreuve(self, titre, annee, cursus):
+        lesson = Lesson.objects.create(
+            title=titre, subject=self.subject, year=annee, origine="OFFICIEL", lesson_type=LessonType.CORR,
+            statut=StatutContenu.VALIDE,
+        )
+        lesson.cursus.add(cursus)
+        return lesson
+
+    def _donnees(self, notions):
+        return {
+            "pays": self.subject.country.code, "matiere": self.subject.code,
+            "epreuves": {"A": "Épreuve A", "X": "Épreuve absente"}, "notions": notions,
+        }
+
+    def test_written_cards_are_drafts_whose_years_come_from_the_cited_papers(self):
+        autre = Cursus.objects.exclude(pk=self.cursus.pk).filter(country=self.cursus.country).first()
+        self._epreuve("Épreuve A", 2019, autre)
+        deja = self.memo("Syndicat", definition="Texte déjà relu du BEPC.", sessions=[
+            {"annee": 2018, "origine": "OFFICIEL", "cursus": [self.cursus.pk]},
+        ])
+        bilan = redaction.importer(self._donnees([
+            {"terme": "Dictature", "definition": "Un régime qui concentre tous les pouvoirs.", "epreuves": ["A"]},
+            {"terme": "Syndicat", "definition": "Autre rédaction.", "epreuves": ["A"]},
+            {"terme": "Sans preuve", "definition": "Rien ne montre que c'est tombé.", "epreuves": ["X"]},
+        ]))
+        self.assertEqual((bilan["creees"], bilan["completees"], bilan["ignorees"]), (1, 1, 1))
+        self.assertEqual(bilan["epreuves_absentes"], ["Épreuve absente"])
+        neuve = Memo.objects.get(terme="Dictature")
+        self.assertEqual((neuve.statut, neuve.relu_par_enseignant, neuve.gratuit), (StatutMemo.BROUILLON, False, True))
+        self.assertEqual(neuve.sessions, [{"annee": 2019, "origine": "OFFICIEL", "cursus": [autre.pk]}])
+        deja.refresh_from_db()
+        # La fiche relue du BEPC garde son texte et son statut ; elle gagne l'autre examen et ses années.
+        self.assertEqual((deja.definition, deja.statut), ("Texte déjà relu du BEPC.", StatutMemo.PUBLIE))
+        self.assertEqual({c.pk for c in deja.cursus.all()}, {self.cursus.pk, autre.pk})
+        self.assertEqual([s["annee"] for s in deja.sessions], [2018, 2019])
+        # Rejouable sans doublon.
+        self.assertEqual(redaction.importer(self._donnees([
+            {"terme": "Dictature", "definition": "Un régime qui concentre tous les pouvoirs.", "epreuves": ["A"]},
+        ]))["creees"], 0)
+
+    def test_the_shipped_file_is_consistent(self):
+        donnees = redaction.lire("education_civique_lycee")
+        termes = [n["terme"] for n in donnees["notions"]]
+        self.assertEqual(len(termes), len(set(termes)))
+        for n in donnees["notions"]:
+            self.assertTrue(n["epreuves"] and set(n["epreuves"]) <= set(donnees["epreuves"]), n["terme"])
+            self.assertGreaterEqual(len(n["definition"]), 60, n["terme"])
 
 
 class ExtractionTests(_Base):

@@ -23,6 +23,7 @@ import type {
   CarnetPageData,
   NotesParTheme,
   FichesListe,
+  FichesApercu,
   FichesMatieres,
   NotesARevoir,
   CibleEtude,
@@ -1311,6 +1312,13 @@ export function getImageNote(id: number, signal?: AbortSignal) {
 /** Fiches EduKora : les matières qui en ont pour cet examen (un visiteur les lit aussi : quelques fiches sont gratuites). */
 export function getFichesMatieres(cursus: number, signal?: AbortSignal) {
   return apiRequest<FichesMatieres>(`/memos/matieres/?cursus=${cursus}`, { signal, auth: "optional" })
+}
+
+/** Quelques fiches gratuites, définition comprise : l'aperçu montré à qui n'est pas abonné. */
+export function getFichesApercu(pays: string, cursus: number | null, signal?: AbortSignal) {
+  const qs = new URLSearchParams({ pays })
+  if (cursus !== null) qs.set("cursus", String(cursus))
+  return apiRequest<FichesApercu>(`/memos/apercu/?${qs}`, { signal, auth: "optional" })
 }
 
 export function getFiches(cursus: number, matiere: number, signal?: AbortSignal) {

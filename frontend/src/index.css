@@ -431,15 +431,8 @@
 }
 
 /* Impression (Mes notes → « Imprimer ou enregistrer en PDF ») : seul le contenu de la page sort, sans la coque. */
-/* La feuille des notes (voir components/notes/NotesImprimees) : A4, marges serrées (une page se paie à l'unité), et les
-   couleurs de fond ne s'impriment pas : tout est en noir sur blanc, y compris depuis le thème sombre. */
-@page notes {
-  size: A4;
-  margin: 12mm 11mm 13mm;
-}
-.notes-imprimees {
-  page: notes;
-}
+/* La feuille des notes (voir components/notes/NotesImprimees, qui pose elle-même le format de page) : les couleurs de fond
+   ne s'impriment pas, tout est en noir sur blanc, y compris depuis le thème sombre. */
 @media print {
   .notes-imprimees,
   .notes-imprimees * {
@@ -454,6 +447,12 @@
   html:has(.notes-imprimees),
   html:has(.notes-imprimees) body {
     background: #fff !important;
+  }
+  /* Rien d'autre que la feuille ne doit prendre de hauteur : une hauteur minimale d'écran ajouterait une page vide. */
+  html:has(.notes-imprimees) body,
+  html:has(.notes-imprimees) #root,
+  html:has(.notes-imprimees) #root * {
+    min-height: 0 !important;
   }
 }
 

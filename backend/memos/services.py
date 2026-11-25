@@ -5,6 +5,7 @@ from django.conf import settings
 from access.models import NoteLibre
 from access.services import bulk_active_subscription_cursus_ids
 
+from .gratuites import sessions_de
 from .models import Memo, StatutMemo
 
 ORIGINE_FICHE = "fiche"
@@ -37,7 +38,7 @@ def gardees(profil, memos):
     return {sources[s] for s in trouvees}
 
 
-def entree(memo, *, lisible, gardee):
+def entree(memo, *, lisible, gardee, cursus_id=None):
     """Une fiche telle que l'API la rend. Verrouillée : le terme et les sessions restent visibles (c'est ce qui donne envie),
     jamais la définition."""
     return {
@@ -45,7 +46,8 @@ def entree(memo, *, lisible, gardee):
         "terme": memo.terme,
         "definition": memo.definition if lisible else None,
         "exemple": memo.exemple if lisible else "",
-        "sessions": memo.sessions,
+        # Les années de CET examen seulement (voir memos.gratuites).
+        "sessions": sessions_de(memo, cursus_id),
         "gratuit": memo.gratuit,
         "verrouillee": not lisible,
         "gardee": gardee,

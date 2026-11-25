@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { garderFiche, getFiches, getFichesMatieres } from "@/api/endpoints"
 import type { FicheEdukora } from "@/api/types"
+import { ApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { NoteTexte } from "@/components/NoteTexte"
 import { ReviserTabs } from "@/components/ReviserTabs"
@@ -65,8 +66,9 @@ export function FichesEdukoraPage() {
   const queryClient = useQueryClient()
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
-  const cursus = useCursusDeclare()
+  const declare = useCursusDeclare()
   const [params, setParams] = useSearchParams()
+  const cursus = Number(params.get("cursus")) || declare
   const [recherche, setRecherche] = useState("")
 
   const matieresQ = useQuery({
@@ -128,6 +130,8 @@ export function FichesEdukoraPage() {
       </header>
 
       {cursus === null ? (
+        <>
+        <ApercuFiches country={country} className="mt-8" />
         <div className="mt-8 rounded-3xl border border-dashed border-border bg-card/60 p-8 text-center">
           <GraduationCap className="mx-auto size-8 text-primary" aria-hidden="true" />
           <p className="mt-3 font-display text-xl font-semibold">{t("fe.choisir_examen")}</p>
@@ -139,6 +143,7 @@ export function FichesEdukoraPage() {
             </Link>
           </Button>
         </div>
+        </>
       ) : matieresQ.isLoading || authLoading ? (
         <div className="mt-8 flex flex-col gap-3">
           <Skeleton className="h-10 w-64 rounded-full" />

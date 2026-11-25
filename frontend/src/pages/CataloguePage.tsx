@@ -38,6 +38,7 @@ import { useCampagne } from "@/lib/campagne"
 import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { AccueilDecouverte } from "@/components/AccueilDecouverte"
+import { SectionNotesAccueil } from "@/components/ApercuFiches"
 import { BarreCommencer } from "@/components/BarreCommencer"
 import { InviteInstallation } from "@/components/InviteInstallation"
 import { AccueilEleve } from "@/components/AccueilEleve"
@@ -703,6 +704,9 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           plus haut en tient déjà lieu, et le CTA du hero mène à du contenu gratuit réel
           en un clic (voir /epreuves?gratuit=true). Le catalogue complet, lui, vit sur sa
           propre URL (voir EpreuvesListPage) plutôt qu'en bas de celle-ci. */}
+      {/* Les notes et les Fiches EduKora : pour le visiteur comme pour l'élève sans abonnement, qui n'en voyaient rien. */}
+      <SectionNotesAccueil country={country ?? ""} />
+
       <SocialProofSection bande fournis={accueil ? accueil.temoignages : null} />
 
       {/* Le mot du fondateur, en grand, dans sa propre bande : le seul visage de la page, et la réponse à « qui est

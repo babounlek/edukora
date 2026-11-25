@@ -15,6 +15,7 @@ from collections import Counter
 
 from catalog.models import Question
 
+from .gratuites import assurer_gratuites, fusionner_sessions
 from .models import Memo, StatutMemo
 
 QUESTION_DE_DEFINITION = re.compile(r"d[ée]fini", re.IGNORECASE)
@@ -25,7 +26,6 @@ PAS_DES_NOTIONS = {
     "methode", "exemple", "conseil", "nb", "note",
 }
 DEFINITION_MIN = 25
-GRATUITES_PAR_MATIERE = 5
 
 
 def _cle(terme):
@@ -64,12 +64,14 @@ def relever(subject):
             if not cle or cle in PAS_DES_NOTIONS or len(definition) < DEFINITION_MIN:
                 continue
             notion = notions.setdefault(cle, {
-                "terme": _propre(terme), "redactions": [], "sessions": set(), "lessons": set(), "cursus": set(),
+                "terme": _propre(terme), "redactions": [], "sessions": [], "lessons": set(), "cursus": set(),
                 "themes": Counter(),
             })
             notion["redactions"].append((lesson.year or 0, definition))
             if lesson.year:
-                notion["sessions"].add((lesson.year, lesson.origine))
+                notion["sessions"] = fusionner_sessions(notion["sessions"], [
+                    {"annee": lesson.year, "origine": lesson.origine, "cursus": [c.pk for c in lesson.cursus.all()]},
+                ])
             notion["lessons"].add(lesson.pk)
             notion["cursus"].update(c.pk for c in lesson.cursus.all())
             notion["themes"].update(t.pk for t in question.themes.all())
@@ -78,7 +80,7 @@ def relever(subject):
         relevees.append({
             "terme": notion["terme"],
             "definition": _phrase(max(notion["redactions"])[1]),
-            "sessions": [{"annee": a, "origine": o} for a, o in sorted(notion["sessions"])],
+            "sessions": notion["sessions"],
             "lessons": sorted(notion["lessons"]),
             "cursus": sorted(notion["cursus"]),
             "theme_id": notion["themes"].most_common(1)[0][0] if notion["themes"] else None,
@@ -92,7 +94,8 @@ def enregistrer(subject, relevees):
     """
     Crée ou met à jour les fiches de la matière à partir du relevé : {"creees", "mises_a_jour", "laissees"}.
     Une fiche retouchée à la main n'est jamais réécrite ; une fiche publiée garde son statut et son texte relu (seules ses
-    sessions et ses sources sont complétées). Les GRATUITES_PAR_MATIERE premières sont lisibles sans abonnement.
+    sessions et ses sources sont complétées). Sessions, sources et examens s'AJOUTENT à ceux d'une fiche qui prépare aussi
+    d'autres examens (voir memos.redaction). Chaque examen garde quelques fiches lisibles sans abonnement.
     """
     bilan = {"creees": 0, "mises_a_jour": 0, "laissees": 0}
     existantes = {_cle(m.terme): m for m in Memo.objects.filter(subject=subject)}
@@ -101,8 +104,7 @@ def enregistrer(subject, relevees):
         if memo is None:
             memo = Memo.objects.create(
                 subject=subject, terme=notion["terme"], definition=notion["definition"], sessions=notion["sessions"],
-                theme_id=notion["theme_id"], ordre=(rang + 1) * 10, gratuit=rang < GRATUITES_PAR_MATIERE,
-                statut=StatutMemo.BROUILLON,
+                theme_id=notion["theme_id"], ordre=(rang + 1) * 10, statut=StatutMemo.BROUILLON,
             )
             bilan["creees"] += 1
         elif memo.modifie_a_la_main:
@@ -111,10 +113,11 @@ def enregistrer(subject, relevees):
             if memo.statut != StatutMemo.PUBLIE:
                 memo.definition = notion["definition"]
                 memo.theme_id = notion["theme_id"]
-            memo.sessions = notion["sessions"]
+            memo.sessions = fusionner_sessions(memo.sessions, notion["sessions"])
             memo.save()
             bilan["mises_a_jour"] += 1
         if not memo.modifie_a_la_main:
-            memo.cursus.set(notion["cursus"])
-            memo.sources.set(notion["lessons"])
+            memo.cursus.add(*notion["cursus"])
+            memo.sources.add(*notion["lessons"])
+    assurer_gratuites(subject)
     return bilan

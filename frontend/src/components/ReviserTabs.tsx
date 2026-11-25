@@ -31,11 +31,11 @@ export function ReviserTabs() {
     { to: coursListPath(country), label: t("nav.cours"), actif: pathname.startsWith(coursListPath(country)) },
     { to: themesFrequentsPath(country), label: t("qd.onglet_themes"), actif: pathname.startsWith(themesFrequentsPath(country)) },
     { to: "/quiz", label: t("qd.onglet_quiz"), actif: pathname.startsWith("/quiz") },
-    // Les annales passées en conditions d'examen : la copie à reprendre et les notes (voir MesExamensBlancsPage).
-    { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs") },
     // Ce qu'on relit : les fiches toutes faites d'EduKora, puis les notes que l'élève s'est écrites.
     { to: "/fiches-edukora", label: t("fe.onglet"), actif: pathname.startsWith("/fiches-edukora") },
     { to: "/carnet", label: t("cpt.carnet"), actif: pathname.startsWith("/carnet") },
+    // Les annales passées en conditions d'examen : la copie à reprendre et les notes (voir MesExamensBlancsPage).
+    { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs") },
   ]
 
   // Sans conteneur ni marge propres : rendu comme premier enfant du conteneur que

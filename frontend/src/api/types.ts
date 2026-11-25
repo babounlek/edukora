@@ -2324,6 +2324,17 @@ export interface FicheEdukora {
   a_relire: boolean
   matiere_id: number
 }
+/** Une fiche gratuite montrée en aperçu (accueil, Mes notes) : avec sa matière et l'examen qu'elle prépare. */
+export interface FicheApercu extends FicheEdukora {
+  matiere: string
+  matiere_code: string
+  cursus_id: number
+  examen: string
+}
+export interface FichesApercu {
+  total: number
+  fiches: FicheApercu[]
+}
 export interface FichesMatieres {
   abonne: boolean
   matieres: { matiere_id: number; matiere: string; matiere_code: string; total: number; gratuites: number }[]
