@@ -4,7 +4,7 @@ ordre: 30
 pages: /cours
 titre: Les cours et leurs exercices d'application
 resume: Les cours sont gratuits ; les exercices d'application qui suivent, avec leurs solutions pas à pas, demandent l'abonnement.
-mots_cles: cours, leçon, exercice, exercices d'application, solution, méthode, signet, carnet, note, notions
+mots_cles: cours, leçon, exercice, exercices d'application, solution, méthode, signet, carnet, note, notes, noter ça, notions
 ---
 ## Lire un cours
 
@@ -16,7 +16,7 @@ Après chaque cours, des exercices **progressifs** avec leurs solutions détaill
 
 ## Garder un passage ou écrire une note
 
-Pendant la lecture, tu peux **garder une section** pour plus tard ou écrire une **note**. Tout se retrouve dans ton [Carnet](/carnet).
+Pendant la lecture, tu peux **garder une section** pour plus tard ou écrire une **note**. Sélectionne un passage puis touche « Noter ça », ou utilise le bouton « Note ». Tout se retrouve dans [Mes notes](/carnet) : voir [Mes notes : écrire, retrouver et réviser](/aide/mes-notes).
 
 ## Un cours ne correspond pas à ma question ?
 

@@ -22,6 +22,8 @@ import type {
   CarnetDossiers,
   CarnetPageData,
   NotesParTheme,
+  FichesListe,
+  FichesMatieres,
   NotesARevoir,
   CibleEtude,
   MarqueEtude,
@@ -1304,6 +1306,20 @@ export function retirerImageNote(id: number) {
 /** La photo d'une note, en Blob : elle est privée, une balise <img> ne porterait pas le jeton de connexion. */
 export function getImageNote(id: number, signal?: AbortSignal) {
   return apiRequest<Blob>(`/access/etude/notes/${id}/image/`, { signal, blob: true })
+}
+
+/** Fiches EduKora : les matières qui en ont pour cet examen (un visiteur les lit aussi : quelques fiches sont gratuites). */
+export function getFichesMatieres(cursus: number, signal?: AbortSignal) {
+  return apiRequest<FichesMatieres>(`/memos/matieres/?cursus=${cursus}`, { signal, auth: "optional" })
+}
+
+export function getFiches(cursus: number, matiere: number, signal?: AbortSignal) {
+  return apiRequest<FichesListe>(`/memos/fiches/?cursus=${cursus}&matiere=${matiere}`, { signal, auth: "optional" })
+}
+
+/** « Garder dans mes notes » : la fiche devient une note de l'élève (terme au recto, définition au verso). */
+export function garderFiche(id: number) {
+  return apiRequest<CarnetEntree>(`/memos/fiches/${id}/garder/`, { method: "POST" })
 }
 
 /** Les notes de l'élève sur un thème : remises sous ses yeux après une erreur de quiz, en tête des exercices du thème. */

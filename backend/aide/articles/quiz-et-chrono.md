@@ -22,6 +22,10 @@ Le chrono est **facultatif** : tu peux le mettre pour t'entraîner aux condition
 
 Si tu quittes un quiz avant la fin, « Reprendre » te ramène **à l'endroit où tu t'étais arrêté**, avec tes réponses.
 
+## Garder une erreur en note
+
+Sous la correction d'une question, « Noter cette erreur » la range dans [Mes notes](/carnet), avec la question et la bonne réponse si tu veux. Si tu te trompes encore sur ce thème, ta note te sera rappelée. Voir [Mes notes](/aide/mes-notes).
+
 ## Revoir un ancien quiz
 
 Tes quiz passés sont dans ton [historique](/historique) : tu peux les relire tels que tu les as faits.

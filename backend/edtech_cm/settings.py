@@ -104,6 +104,7 @@ INSTALLED_APPS = [
     "relances",
     "simulations",
     "recherche",
+    "memos",  # Fiches EduKora : fiches de révision toutes faites (memos/models.py), API sous /memos/
     "aide",  # centre d aide : articles FR/EN (aide/models.py), API sous /aide-api/
     "synchro",  # journal et moteur de la chaîne de synchronisation des contenus (deploy/SPEC-SYNC-CONTENU.md)
 ]
@@ -393,6 +394,10 @@ STATIC_URL = "static/"
 # le volume partagé (voir docker-compose.yml), Django ne les sert jamais lui-même
 # hors DEBUG.
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Fiches EduKora : en développement, les fiches encore en brouillon s'affichent (marquées « à relire ») pour voir un pilote
+# avant la relecture d'un enseignant. Jamais en production : seules les fiches relues et publiées y sont montrées.
+MEMOS_MONTRER_BROUILLONS = config("MEMOS_MONTRER_BROUILLONS", default=DEBUG, cast=bool)
 
 # PDF de sujet (public, jamais le corrigé - voir catalog/sujet_pdf.py) : généré hors
 # ligne par une commande dédiée, jamais dans le cycle de requête HTTP. Pas de

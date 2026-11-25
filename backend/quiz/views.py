@@ -1365,7 +1365,7 @@ def _reprises(user, profil, cursus):
     from . import cartes
     from .historique import quiz_en_cours
 
-    from access.etude import notes_a_revoir
+    from access.etude import notes_a_revoir, resume_des_notes
 
     total, liste = cartes.cartes_dues(profil)
     return {
@@ -1373,6 +1373,8 @@ def _reprises(user, profil, cursus):
         "cartes_dues": {"total": total, "cartes": liste},
         # Seulement le nombre : la ligne « notes à réviser » de l'accueil n'en montre pas le contenu.
         "notes_a_revoir": {"total": notes_a_revoir(profil, limite=1)[0]},
+        # Le bloc « Mes notes » de l'accueil : le nombre de notes et la dernière, sans requête de plus côté client.
+        "notes": resume_des_notes(profil),
         "defi": defi.etat_du_defi(profil, cursus),
         "tentatives": tentatives_inedites(profil, cursus),
     }

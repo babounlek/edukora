@@ -431,6 +431,32 @@
 }
 
 /* Impression (Mes notes → « Imprimer ou enregistrer en PDF ») : seul le contenu de la page sort, sans la coque. */
+/* La feuille des notes (voir components/notes/NotesImprimees) : A4, marges serrées (une page se paie à l'unité), et les
+   couleurs de fond ne s'impriment pas : tout est en noir sur blanc, y compris depuis le thème sombre. */
+@page notes {
+  size: A4;
+  margin: 12mm 11mm 13mm;
+}
+.notes-imprimees {
+  page: notes;
+}
+@media print {
+  .notes-imprimees,
+  .notes-imprimees * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .notes-imprimees .katex-display {
+    margin: 0.35em 0;
+    overflow: visible;
+  }
+  html:has(.notes-imprimees),
+  html:has(.notes-imprimees) body {
+    background: #fff !important;
+  }
+}
+
 @media print {
   body > #root header,
   body > #root footer,

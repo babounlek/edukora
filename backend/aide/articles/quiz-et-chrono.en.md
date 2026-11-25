@@ -15,6 +15,10 @@ A finished quiz earns you points (XP) and moves your streak forward. Trial quizz
 
 The timer is **optional**: you can turn it on to practise in exam conditions. The elapsed time is kept if you leave and resume.
 
+## Keeping a mistake as a note
+
+Under a question's correction, "Note this mistake" files it in [My notes](/carnet), with the question and the correct answer if you want. If you get that topic wrong again, your note is brought back. See [My notes](/aide/mes-notes).
+
 ## Leaving and resuming
 
 If you leave a quiz before the end, "Resume" takes you back **to where you stopped**, with your answers.

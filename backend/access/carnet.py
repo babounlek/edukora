@@ -24,6 +24,7 @@ def entree_marque(marque):
         "country": doc.subject.country.code.lower(),
         "matiere": doc.subject.label,
         "matiere_id": doc.subject_id,
+        "matiere_code": doc.subject.code,
         "citation": "",
         "origine": "",
         "source": "",
@@ -49,6 +50,7 @@ def entree_note_libre(note):
         "country": note.subject.country.code.lower(),
         "matiere": note.subject.label,
         "matiere_id": note.subject_id,
+        "matiere_code": note.subject.code,
         "citation": note.citation,
         "origine": note.origine,
         "source": note.source,
@@ -79,8 +81,10 @@ def resumer_dossiers(carnet, maintenant):
     for e in carnet:
         d = dossiers.setdefault(
             e["matiere_id"],
-            {"matiere_id": e["matiere_id"], "matiere": e["matiere"], "total": 0, "a_reviser": 0, "epingles": 0,
-             "avec_note": 0, "updated_at": e["updated_at"]},
+            {"matiere_id": e["matiere_id"], "matiere": e["matiere"], "matiere_code": e["matiere_code"], "total": 0,
+             "a_reviser": 0, "epingles": 0, "avec_note": 0, "updated_at": e["updated_at"],
+             # La note la plus récente du dossier, en une ligne : la carte du dossier montre ce qu'il y a dedans.
+             "apercu": (e["note"] or e["citation"] or e["titre"])[:140]},
         )
         d["total"] += 1
         d["epingles"] += 1 if e["epingle"] else 0
@@ -88,6 +92,7 @@ def resumer_dossiers(carnet, maintenant):
         d["a_reviser"] += 1 if _a_reviser(e, iso) else 0
         if e["updated_at"] > d["updated_at"]:
             d["updated_at"] = e["updated_at"]
+            d["apercu"] = (e["note"] or e["citation"] or e["titre"])[:140]
     # Les dossiers où il y a quelque chose à réviser d'abord, puis les plus récemment touchés.
     return sorted(dossiers.values(), key=lambda d: (d["a_reviser"] == 0, -d["updated_at"].timestamp()))
 

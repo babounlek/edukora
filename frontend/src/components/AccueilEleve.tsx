@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext"
 import { DepuisLaDerniereFois } from "@/components/DepuisLaDerniereFois"
 import { CLE_DUES, RangeeCartes, useCartesDues } from "@/components/CartesDeRevision"
 import { RangeeNotes, useNotesDues } from "@/components/RangeeNotes"
+import { BlocNotesAccueil } from "@/components/BlocNotesAccueil"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { DefiDeLaSemaine, mentionDefi, useDefiSemaine } from "@/components/DefiDeLaSemaine"
 import { Moments } from "@/components/Moments"
@@ -203,6 +204,10 @@ export function AccueilEleve({ country }: { country: string }) {
         aNoter={!enCours ? aNoter : undefined}
         lecture={lectureAReprendre}
       />
+      {/* Les notes de l'élève : toujours annoncées sur l'accueil (ce qu'il a à relire, sa dernière note, en écrire une). */}
+      {data.reprises?.notes && (
+        <BlocNotesAccueil resume={data.reprises.notes} dues={data.reprises.notes_a_revoir?.total ?? 0} />
+      )}
       {/* GCE seulement, et seulement tant que l'élève n'a pas dit quelles matières il passe. */}
       <InvitationMatieres />
       <Moments accueil={data} userId={userId} />
@@ -309,7 +314,11 @@ function AContinuer({
     lignes.push({ cle: `revision-${revision.id}`, rendu: <RangeeRevision revision={revision} /> })
   }
   if (cartes && cartes.total > 0) lignes.push({ cle: "cartes", rendu: <RangeeCartes total={cartes.total} /> })
-  if (notesDues && notesDues.total > 0) lignes.push({ cle: "notes", rendu: <RangeeNotes total={notesDues.total} /> })
+  // Les notes à relire ont leur bloc sur l'accueil (BlocNotesAccueil) ; la ligne ne reste que pour un accueil gardé en
+  // cache d'avant ce bloc.
+  if (!accueil.reprises?.notes && notesDues && notesDues.total > 0) {
+    lignes.push({ cle: "notes", rendu: <RangeeNotes total={notesDues.total} /> })
+  }
   if (rangeeDefi && defi?.releve) lignes.push(rangeeDefi)
 
   if (lignes.length === 0) return null

@@ -1532,6 +1532,11 @@ export interface Accueil {
     cartes_dues: { total: number; cartes: CarteRevision[] }
     /** Le nombre de notes à réviser aujourd'hui (voir access.etude.notes_a_revoir) ; absent d'un accueil gardé en cache d'avant. */
     notes_a_revoir?: { total: number }
+    /** Le bloc « Mes notes » de l'accueil (voir access.etude.resume_des_notes). */
+    notes?: {
+      total: number
+      derniere: { texte: string; matiere: string; matiere_code: string; matiere_id: number; epingle: boolean } | null
+    }
     defi: DefiSemaine | null
     tentatives: TentativeInediteListItem[]
   } | null
@@ -1954,6 +1959,8 @@ export interface MarqueEtudeEnregistree extends MarqueEtude {
 
 /** Une entrée du carnet : une marque + de quoi rouvrir la section exacte. */
 export interface CarnetEntree extends MarqueEtude {
+  /** Code de la matière : la couleur du filet de la carte. */
+  matiere_code?: string
   /** « quiz » : note écrite depuis la correction d'un quiz. */
   origine?: string
   /** Adresse interne du passage ou de la question d'où vient la note (« Rouvrir la source »). */
@@ -2287,6 +2294,10 @@ export interface RattachementRevendeur {
 export interface CarnetDossier {
   matiere_id: number
   matiere: string
+  /** Code de la matière : sa couleur et son pictogramme (voir lib/matiereCouleur). */
+  matiere_code?: string
+  /** La note la plus récente du dossier, en une ligne. */
+  apercu?: string
   total: number
   a_reviser: number
   epingles: number
@@ -2296,6 +2307,30 @@ export interface CarnetDossier {
 export interface CarnetDossiers {
   total: number
   dossiers: CarnetDossier[]
+}
+/** Une Fiche EduKora (voir backend memos) : une notion, sa définition, les sessions où elle est tombée. */
+export interface FicheEdukora {
+  id: number
+  terme: string
+  /** null quand la fiche est verrouillée (sans abonnement, hors fiches gratuites). */
+  definition: string | null
+  exemple: string
+  sessions: { annee: number; origine: string }[]
+  gratuit: boolean
+  verrouillee: boolean
+  /** Déjà gardée dans les notes de l'élève. */
+  gardee: boolean
+  /** Pas encore relue par un enseignant (visible en développement seulement). */
+  a_relire: boolean
+  matiere_id: number
+}
+export interface FichesMatieres {
+  abonne: boolean
+  matieres: { matiere_id: number; matiere: string; matiere_code: string; total: number; gratuites: number }[]
+}
+export interface FichesListe {
+  abonne: boolean
+  fiches: FicheEdukora[]
 }
 export interface NotesParTheme {
   total: number

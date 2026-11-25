@@ -65,7 +65,7 @@ A_REVOIR_MAX = 20
 NOUVELLES_PAR_JOUR = 5
 
 
-ORIGINES_NOTE = ("quiz",)
+ORIGINES_NOTE = ("quiz", "fiche")
 
 
 SOURCE_MAX = 300
@@ -116,6 +116,26 @@ def notes_du_theme(profil, theme_id, limite=NOTES_DU_THEME_MAX):
     total = qs.count()
     notes = list(qs.order_by("-epingle", "-updated_at")[:limite])
     return total, notes
+
+
+def resume_des_notes(profil):
+    """
+    Le bloc « Mes notes » de l'accueil : combien l'élève en a, et la dernière (une épinglée d'abord) en clair.
+    {total, derniere: {texte, matiere, matiere_code, matiere_id, epingle} | None}.
+    """
+    libres = NoteLibre.objects.filter(profil=profil)
+    marques = MarqueEtude.objects.filter(profil=profil).filter(Q(signet=True) | ~Q(note=""))
+    note = libres.select_related("subject").order_by("-epingle", "-updated_at").first()
+    derniere = None
+    if note is not None and (note.note or note.citation):
+        derniere = {
+            "texte": (note.note or note.citation)[:280],
+            "matiere": note.subject.label,
+            "matiere_code": note.subject.code,
+            "matiere_id": note.subject_id,
+            "epingle": note.epingle,
+        }
+    return {"total": libres.count() + marques.count(), "derniere": derniere}
 
 
 def total_notes_dues(profil):

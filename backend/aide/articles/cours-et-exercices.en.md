@@ -13,7 +13,7 @@ After each lesson come **progressive** exercises with detailed solutions. They n
 
 ## Keeping a passage or writing a note
 
-While reading, you can **keep a section** for later or write a **note**. Everything is in your [Notebook](/carnet).
+While reading, you can **keep a section** for later or write a **note**. Select a passage then tap "Note this", or use the "Note" button. Everything is in [My notes](/carnet): see [My notes: write, find and review](/aide/mes-notes).
 
 ## A lesson doesn't match my question?
 
