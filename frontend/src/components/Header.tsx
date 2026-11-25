@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
 import { Check, ChevronDown, CircleHelp, CreditCard, GraduationCap, Globe, History, LogOut, Menu, NotebookPen, Receipt, Search, Sparkles, User, UserCircle } from "lucide-react"
 
-import { listEpreuves } from "@/api/endpoints"
 import { modeParentActif } from "@/api/client"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
@@ -20,10 +18,11 @@ import { PastilleExamen } from "@/components/ChoixExamen"
 import { useCursusAbonnesEtat } from "@/lib/changerCursusPrepare"
 import { useProfils, useChangerProfilActif } from "@/lib/changerProfilActif"
 import { cn } from "@/lib/utils"
-import { ineditesNouvelles, marquerIneditesVues, useIneditesVues } from "@/lib/ineditesVues"
+import { marquerIneditesVues } from "@/lib/ineditesVues"
+import { useNouvellesInedites } from "@/lib/useNouvellesInedites"
 import { SITE_NAME } from "@/lib/site"
 import { ouvrirCentre } from "@/lib/guides/etat"
-import { langueCourante, localeCourante, useI18n } from "@/lib/i18n"
+import { localeCourante, useI18n } from "@/lib/i18n"
 import { SelecteurLangue, useSynchroLangueCompte } from "@/components/SelecteurLangue"
 import { FlammeSerie } from "@/components/FlammeSerie"
 import { catalogueHomePath, coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
@@ -364,27 +363,17 @@ export function Header() {
     isCoursSection ||
     pathname.startsWith(themesFrequentsPath(country)) ||
     pathname.startsWith(recherchePath(country)) ||
-    pathname.startsWith("/quiz")
+    // La page d'entrée et les pages personnelles qu'elle ouvre. « Mes notes » en fait partie ici : sur grand écran, le
+    // menu du haut n'a pas d'entrée à elle (la barre du bas, si, voir BottomTabBar).
+    ["/reviser", "/quiz", "/fiches-edukora", "/examens-blancs", "/erreurs", "/cartes", "/carnet"].some((p) => pathname.startsWith(p))
 
-  // Même clé de cache que CataloguePage ("epreuves-inedites-recente") : un visiteur
-  // qui atterrit sur le catalogue puis navigue ailleurs ne repaie pas cette requête
-  // dans la fenêtre de staleTime (60 s, voir main.tsx). Sert uniquement à savoir s'il
-  // existe au moins une inédite pour ce pays - jamais le contenu de la réponse.
-  const { data: inediteRecenteData } = useQuery({
-    queryKey: ["epreuves-inedites-recente", country, langueCourante()],
-    queryFn: ({ signal }) => listEpreuves({ country, origine: "INEDITE", ordering: "recent", langue: langueCourante() }, signal),
-    enabled: Boolean(country),
-  })
-  const hasInedites = Boolean(inediteRecenteData && inediteRecenteData.count > 0)
   // Le point or signale une NOUVEAUTÉ : il s'éteint dès que la personne a regardé les
   // inédites (leur liste ou l'une d'elles) et se rallume si une plus récente est publiée.
-  const derniereIneditId = inediteRecenteData?.results[0]?.id
-  const ineditesVues = useIneditesVues()
+  const { derniereId: derniereIneditId, nouvelles: nouvellesInedites } = useNouvellesInedites(country)
   const surLesInedites = pathname.includes("/epreuves-inedites/") || new URLSearchParams(search).get("origine") === "INEDITE"
   useEffect(() => {
     if (surLesInedites && derniereIneditId !== undefined) marquerIneditesVues(derniereIneditId)
   }, [surLesInedites, derniereIneditId])
-  const nouvellesInedites = hasInedites && ineditesNouvelles(derniereIneditId, ineditesVues)
 
   /**
    * Deux navigations, pas une.
@@ -393,7 +382,7 @@ export function Header() {
    * Cours, Prix - c'est aussi la version que les robots indexent, elle ne bouge pas.
    *
    * Un ÉLÈVE qui a déclaré son examen n'est plus là pour explorer un catalogue mais
-   * pour avancer : Aujourd'hui (sa séance), Réviser (toute la bibliothèque), Ma
+   * pour avancer : Aujourd'hui (sa séance), Réviser (la page qui ouvre toute la bibliothèque), Ma
    * progression. Trois entrées, parce que les cinq précédentes décrivaient notre
    * modèle de données (deux types de documents, deux outils, une page commerciale) et
    * pas sa façon de réviser - personne ne se dit "je vais faire un quiz", on se dit
@@ -411,7 +400,7 @@ export function Header() {
   const navLinks: { to: string; label: string; active: boolean; badge: boolean; menuSeulement?: boolean }[] = suitUnPlan
     ? [
         { to: catalogueHomePath(country), label: t("nav.aujourdhui"), active: isAccueil, badge: false },
-        { to: epreuvesListPath(country), label: t("nav.reviser"), active: isReviserSection, badge: nouvellesInedites },
+        { to: "/reviser", label: t("nav.reviser"), active: isReviserSection, badge: nouvellesInedites },
         { to: "/parcours", label: t("nav.progression"), active: isParcoursSection, badge: false },
         ...(user?.a_un_abonnement_actif
           ? []

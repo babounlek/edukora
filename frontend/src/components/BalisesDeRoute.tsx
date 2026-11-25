@@ -23,6 +23,7 @@ const PREFIXES_PRIVES = [
   "/quiz",
   "/parcours",
   "/revision",
+  "/reviser",
   "/inedit",
   "/simulation",
 ]

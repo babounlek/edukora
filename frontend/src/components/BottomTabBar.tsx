@@ -63,11 +63,14 @@ export function BottomTabBar() {
     pathname.startsWith("/cours") ||
     pathname.startsWith("/fiches-edukora") ||
     pathname.startsWith("/examens-blancs") ||
+    pathname.startsWith("/reviser") ||
+    pathname.startsWith("/erreurs") ||
+    pathname.startsWith("/cartes") ||
     pathname.startsWith("/quiz")
 
   const onglets = [
     { to: accueil, label: t("nav.aujourdhui"), icon: CalendarCheck, actif: estAccueil },
-    { to: epreuvesListPath(country), label: t("nav.reviser"), icon: BookOpen, actif: estReviser },
+    { to: "/reviser", label: t("nav.reviser"), icon: BookOpen, actif: estReviser },
     { to: "/parcours", label: t("nav.progression"), icon: TrendingUp, actif: pathname.startsWith("/parcours") },
     { to: "/carnet", label: t("cpt.carnet"), icon: NotebookPen, actif: pathname.startsWith("/carnet"), pastille: notesDues > 0 },
   ]

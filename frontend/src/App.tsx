@@ -57,6 +57,7 @@ const CarnetPage = lazy(() => import("@/pages/CarnetPage").then((m) => ({ defaul
 const FichesEdukoraPage = lazy(() => import("@/pages/FichesEdukoraPage").then((m) => ({ default: m.FichesEdukoraPage })))
 const MesExamensBlancsPage = lazy(() => import("@/pages/MesExamensBlancsPage").then((m) => ({ default: m.MesExamensBlancsPage })))
 const MesCartesPage = lazy(() => import("@/pages/MesCartesPage").then((m) => ({ default: m.MesCartesPage })))
+const ReviserPage = lazy(() => import("@/pages/ReviserPage").then((m) => ({ default: m.ReviserPage })))
 const MesErreursPage = lazy(() => import("@/pages/MesErreursPage").then((m) => ({ default: m.MesErreursPage })))
 const MesPaiementsPage = lazy(() => import("@/pages/MesPaiementsPage").then((m) => ({ default: m.MesPaiementsPage })))
 const DevenirRevendeurPage = lazy(() => import("@/pages/DevenirRevendeurPage").then((m) => ({ default: m.DevenirRevendeurPage })))
@@ -198,6 +199,7 @@ function App({ basename = "" }: { basename?: string }) {
                       <Route path="/historique" element={<HistoriquePage />} />
                       <Route path="/carnet" element={<CarnetPage />} />
                       <Route path="/fiches-edukora" element={<FichesEdukoraPage />} />
+                      <Route path="/reviser" element={<ReviserPage />} />
                       <Route path="/erreurs" element={<MesErreursPage />} />
                       <Route path="/cartes" element={<MesCartesPage />} />
                       <Route path="/reussites" element={<Navigate to="/parcours" replace />} />
