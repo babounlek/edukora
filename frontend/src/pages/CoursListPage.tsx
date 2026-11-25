@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
-import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
+import { AideContextuelle } from "@/components/guides/AideContextuelle"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
   ArrowRight,
   BookOpen,
   CheckCircle2,
-  GraduationCap,
   LayoutGrid,
-  Layers,
   List,
   Loader2,
   Search,
@@ -18,7 +16,6 @@ import {
 } from "lucide-react"
 
 import { getMyProgression, listCours, listSubjects } from "@/api/endpoints"
-import { examLevelsFor } from "@/lib/cursus"
 import { nomPays } from "@/lib/pays"
 import { useSeo } from "@/lib/seo"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -35,7 +32,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { CoursCard } from "@/components/CoursCard"
 import { CoursListRow } from "@/components/CoursListRow"
-import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { BoutonFiltres, MenuFiltre } from "@/components/FiltresCatalogue"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { desactiverFiltreCursus, useFiltreCursusParDefaut } from "@/lib/filtreCursus"
 import { BandeauVue } from "@/components/BandeauVue"
@@ -44,7 +41,7 @@ import { ErreurChargement } from "@/components/ErreurChargement"
 import { localeCourante, t, tn, useI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
-import { cursusDesTotaux, useTotalCours } from "@/lib/totauxCatalogue"
+import { useDeclarerSiRienDeclare } from "@/lib/declarerCursus"
 
 type ViewMode = "cards" | "list"
 
@@ -91,17 +88,6 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
   )
 }
 
-/** Statistique du hero - même gabarit que les puces de /quiz et /fiches. */
-function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; libelle: string }) {
-  return (
-    <span className="flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-      {icon}
-      <span className="font-medium tabular-nums">{valeur}</span>
-      <span className="text-muted-foreground">{libelle}</span>
-    </span>
-  )
-}
-
 // Combien de cours une liste thématique met en avant avant de replier les autres.
 const COURS_MIS_EN_AVANT = 3
 
@@ -120,7 +106,9 @@ export function CoursListPage() {
   const [searchParams, setSearchParams] = useSearchParams()
   // Pré-filtrage sur l'examen déclaré - voir useFiltreCursusParDefaut : un défaut
   // annoncé et réversible, jamais un masquage.
-  const { cursusPrepare, rangeeExamenMasquee } = useFiltreCursusParDefaut()
+  const { cursusPrepare } = useFiltreCursusParDefaut()
+  const declarerSiRienDeclare = useDeclarerSiRienDeclare()
+  const [plusOuvert, setPlusOuvert] = useState(false)
   useAbandonCursusHorsLangue(country)
   const subjectFilter = searchParams.get("subject") ?? ""
   const cursusFilter = searchParams.get("cursus") ?? ""
@@ -189,31 +177,11 @@ export function CoursListPage() {
   // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; seul l'examen
   // déjà choisi reste proposé quelle que soit sa langue. L'examen déclaré, lui, n'est pas gardé : en anglais, un
   // « Probatoire C » parmi les pastilles du GCE n'avait rien à y faire (voir lib/cursusLangue).
-  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
+  const { data: cursusList } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter],
     fixeLaLangue: true,
   })
-
-  const filtresActifs = Boolean(subjectFilter || cursusFilter || nonLusFilter || frequentFilter || search || savoirFilter || themeFilter)
-
-  // Volumétrie totale du pays, affichée dans le hero : jamais `count` de la liste
-  // ci-dessous, qui est le nombre de résultats APRÈS filtrage et tomberait à 3 dès
-  // qu'on tape un mot-clé. Sans filtre les deux coïncident, d'où le `enabled` : le
-  // cas courant (arrivée sur la page nue) ne paie aucune requête supplémentaire, et
-  // seule une arrivée déjà filtrée - un lien partagé - en déclenche une, pour que le
-  // hero annonce quand même le catalogue complet.
-  // Dans la langue de l'interface (sauf « Toutes les langues ») : le total d'un filtre actif ne doit pas
-  // compter les cours de l'autre langue, que la liste n'affiche pas.
-  // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
-  // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
-  const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
-  const { data: totalData } = useTotalCours(
-    country,
-    cursusChoisi?.langue ?? langueDeListe("", toutesLangues),
-    filtresActifs,
-    cursusDesTotaux(cursusAbonne, cursusChoisi?.id),
-  )
 
   // Débounce la clé de query, pas le champ affiché : le champ reste réactif à chaque
   // frappe (il est contrôlé par `search` directement), seule la requête réseau attend
@@ -442,9 +410,6 @@ export function CoursListPage() {
     },
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
 
-  // Niveaux d'examen réellement présents pour ce pays - jamais un texte fixe : la
-  // plupart des pays n'ont pas de Probatoire (voir examLevelsFor).
-  const examLevels = examLevelsFor(cursusList)
   // Le cursus est LE filtre d'un élève ("mon BAC D") : en pastilles d'un clic plutôt que caché
   // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
   const cursusTries = [...cursusList].sort(
@@ -453,74 +418,19 @@ export function CoursListPage() {
       (x.series?.code ?? "").localeCompare(y.series?.code ?? "", localeCourante()),
   )
   const coursEnCours = progression?.cours?.[0]
-  // `undefined` tant que rien n'est chargé - la puce du hero ne s'affiche pas plutôt
-  // que d'annoncer un "0 cours publiés" démenti une seconde plus tard.
-  const totalCours = filtresActifs ? totalData?.count : coursQuery.data ? count : undefined
+  const pucesSecondaires = activeFilterChips.filter((chip) => chip.key !== "subject" && chip.key !== "cursus")
+  const nbFiltresSecondaires = [frequentFilter, nonLusFilter].filter(Boolean).length
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
-      <ReviserTabs />
+      <ReviserTabs sansLoupeMobile />
       <BandeauVue />
-      <div className="mb-2 sm:mb-4">
-        <BoutonAide guide="cours-liste" className="-ml-2.5" />
-        <AideContextuelle guide="cours-liste" className="mt-1" />
-      </div>
-      {/* Même hero compact que /epreuves : les résultats doivent apparaître sans défiler, et le
-          volume du catalogue est la preuve qu'il y a de quoi chercher. Pas pour un abonné, comme sur
-          /epreuves et /quiz : il n'a plus à être convaincu, et son premier cours n'apparaissait qu'à
-          730 px sur un téléphone (audit du 2026-11-16). Il garde un titre pour les lecteurs d'écran. */}
-      {abonne ? (
-        <h1 className="sr-only">{t("co.seo_liste")}</h1>
-      ) : (
-      <div className="relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8">
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <GraduationCap aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
-        <div className="relative max-w-2xl">
-          <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">
-            {t("co.eyebrow")}{countryLabel ? ` - ${countryLabel}` : ""}
-          </p>
-          <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-            {t("co.titre_debut")} <span className="text-primary">{t("co.titre_accent")}</span>{t("co.titre_fin")}
-          </h1>
-          <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-            {t("co.hero_texte")}
-          </p>
+      {/* Même titre d'une ligne que /epreuves : les résultats doivent apparaître sans défiler. */}
+      <h1 className={abonne ? "sr-only" : "mb-3 font-display text-xl font-semibold tracking-tight sm:text-2xl"}>
+        {t("co.seo_liste")}
+      </h1>
 
-          {/* Sur un téléphone, les pastilles repoussaient la liste : « N cours trouvés » dessous dit déjà le total. */}
-          <div className="mt-4 hidden flex-wrap gap-2 sm:mt-5 sm:flex">
-            {totalCours !== undefined && (
-              <StatChip
-                icon={<BookOpen className="size-3.5 text-primary" />}
-                valeur={formatAmount(totalCours)}
-                libelle={tn("co.stat_publies", totalCours > 1 ? 2 : 1)}
-              />
-            )}
-            {subjects.length > 0 && (
-              <StatChip
-                icon={<Layers className="size-3.5 text-primary" />}
-                valeur={String(subjects.length)}
-                libelle={tn("accueil.stat_matieres", subjects.length > 1 ? 2 : 1)}
-              />
-            )}
-            {examLevels.length > 0 && (
-              <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm sm:flex">
-                <CheckCircle2 className="size-3.5 text-success" />
-                <span className="text-muted-foreground">{examLevels.join(" · ")}</span>
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-      )}
-
-      {/* Reprise de lecture juste sous le hero, avant les filtres : pour qui revient,
+      {/* Reprise de lecture juste sous le titre, avant les filtres : pour qui revient,
           c'est l'action la plus probable de la page - la faire chercher au milieu
           d'une grille de plusieurs milliers de cartes n'aurait aucun sens. */}
       {coursEnCours && (
@@ -541,84 +451,90 @@ export function CoursListPage() {
         </Link>
       )}
 
-      {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal de la page,
-          comme sur /epreuves. Examen et matière sont des pastilles d'un clic - choisir sa matière est
-          le premier geste sur un catalogue de plusieurs milliers de cours, il ne doit pas coûter deux
-          clics et la lecture d'une liste. */}
-      <div className="mb-6 rounded-2xl border border-border bg-card p-4 shadow-lg shadow-primary/5 sm:p-6">
-        <div className="group relative">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
-          <Input
-            type="search"
-            inputMode="search"
-            enterKeyHint="search"
-            aria-label={t("co.rechercher")}
-            placeholder={t("co.rechercher_placeholder")}
-            value={search}
-            onChange={(e) => updateFilter("search", e.target.value)}
-            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
-          />
-          {search && (
-            <button
-              type="button"
-              onClick={() => updateFilter("search", "")}
-              aria-label={t("ep.effacer")}
-              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <X className="size-4" />
-            </button>
+      {/* Recherche, examen, matière, comme sur /epreuves ; le reste derrière « Filtres ». */}
+      <div className="mb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex w-full gap-2 sm:w-auto sm:flex-1">
+            <div className="group relative min-w-0 flex-1">
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+              <Input
+                type="search"
+                inputMode="search"
+                enterKeyHint="search"
+                aria-label={t("co.rechercher")}
+                placeholder={t("ep.rechercher_court")}
+                value={search}
+                onChange={(e) => updateFilter("search", e.target.value)}
+                className="h-11 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
+              />
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => updateFilter("search", "")}
+                  aria-label={t("ep.effacer")}
+                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  <X className="size-4" />
+                </button>
+              )}
+            </div>
+            <BoutonFiltres
+              ouvert={plusOuvert}
+              nombre={nbFiltresSecondaires}
+              onClick={() => setPlusOuvert((v) => !v)}
+              className="sm:hidden"
+            />
+          </div>
+          {!abonne && cursusTries.length > 0 && (
+            <MenuFiltre
+              titre={t("quiz.examen")}
+              valeur={cursusFilter}
+              libelleTout={t("ep.tous_examens_menu")}
+              options={cursusTries.map((c) => ({
+                valeur: String(c.id),
+                libelle: `${c.examen_display}${c.series ? ` ${c.series.code}` : ""}`,
+              }))}
+              onChange={(v) => {
+                updateFilter("cursus", v)
+                declarerSiRienDeclare(cursusTries.find((c) => String(c.id) === v))
+              }}
+            />
           )}
+          {subjectsTries.length > 0 && (
+            <MenuFiltre
+              titre={t("quiz.matiere")}
+              valeur={subjectFilter}
+              libelleTout={t("ep.toutes_matieres_menu")}
+              options={subjectsTries.map((subject) => {
+                const SubjectIcon = subjectIcon(subject.code)
+                const libelle = subjectShortLabel(subject.code, subject.label)
+                return {
+                  valeur: subject.code,
+                  libelle,
+                  contenu: (
+                    <span className="flex items-center gap-2">
+                      <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                        <SubjectIcon className="size-3" aria-hidden="true" />
+                      </span>
+                      {libelle}
+                      {subject.cours_count !== undefined && <span className="tabular-nums opacity-60">{subject.cours_count}</span>}
+                    </span>
+                  ),
+                }
+              })}
+              onChange={(v) => updateFilter("subject", v)}
+            />
+          )}
+          <BoutonFiltres
+            ouvert={plusOuvert}
+            nombre={nbFiltresSecondaires}
+            onClick={() => setPlusOuvert((v) => !v)}
+            className="h-9 rounded-full max-sm:hidden"
+          />
         </div>
 
-        {!abonne && !rangeeExamenMasquee && cursusTries.length > 0 && (
-          <FiltreLigne titre={t("quiz.examen")}>
-            <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
-              {t("ep.tous")}
-            </PastilleFiltre>
-            {cursusTries.map((c) => (
-              <PastilleFiltre
-                key={c.id}
-                actif={cursusFilter === String(c.id)}
-                onClick={() => updateFilter("cursus", cursusFilter === String(c.id) ? "" : String(c.id))}
-              >
-                {c.examen_display}
-                {c.series ? ` ${c.series.code}` : ""}
-              </PastilleFiltre>
-            ))}
-          </FiltreLigne>
-        )}
-
-        {subjectsTries.length > 0 && (
-          <FiltreLigne titre={t("quiz.matiere")}>
-            <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
-              {t("ep.toutes")}
-            </PastilleFiltre>
-            {subjectsTries.map((subject) => {
-              const SubjectIcon = subjectIcon(subject.code)
-              const actif = subjectFilter === subject.code
-              return (
-                <PastilleFiltre
-                  key={subject.id}
-                  actif={actif}
-                  onClick={() => updateFilter("subject", actif ? "" : subject.code)}
-                >
-                  <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
-                    <SubjectIcon className="size-3" aria-hidden="true" />
-                  </span>
-                  {subjectShortLabel(subject.code, subject.label)}
-                  {/* Le compteur est un repère de tri (les matières sont classées par nombre de
-                      cours), pas une information dont dépend le choix : il cède la place sur
-                      téléphone, où une pastille plus étroite laisse voir la suivante. */}
-                  {subject.cours_count !== undefined && (
-                    <span className="hidden tabular-nums opacity-60 sm:inline">{subject.cours_count}</span>
-                  )}
-                </PastilleFiltre>
-              )
-            })}
-          </FiltreLigne>
-        )}
-
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        {plusOuvert && (
+          <div className="mt-2 flex flex-wrap items-center gap-2 rounded-xl bg-muted/50 p-3">
           {/* Ouvert à tous, visiteurs compris : c'est un repère de contenu, pas un historique. Seuls les cours
               du quart supérieur de leur matière y figurent (voir catalog.FrequenceCours) : le filtre montre ce
               qu'on sait, jamais le reste n'est déclaré sans importance. */}
@@ -654,12 +570,12 @@ export function CoursListPage() {
               {t("co.masquer_lus")}
             </button>
           )}
-        </div>
+          </div>
+        )}
 
-        {activeFilterChips.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
-            <span className="text-sm text-muted-foreground">{t("ep.filtres_actifs")}</span>
-            {activeFilterChips.map((chip) => (
+        {(pucesSecondaires.length > 0 || activeFilterChips.length > 1) && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {pucesSecondaires.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
             {activeFilterChips.length > 1 && (
@@ -674,6 +590,10 @@ export function CoursListPage() {
           </div>
         )}
       </div>
+
+      {/* La première visite montre l'aide de la page, sous les filtres qu'elle explique ; ensuite elle se relance par
+          le « ? » de l'en-tête. */}
+      <AideContextuelle guide="cours-liste" className="mt-0 mb-4" />
 
       {isLoading ? (
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-busy="true" aria-label={t("co.chargement")}>

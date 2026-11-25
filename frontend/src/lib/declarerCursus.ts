@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext"
 import { libelleCursus } from "@/lib/cursus"
 import { trackEvent } from "@/lib/analytics"
 import { useChangerCursusPrepare } from "@/lib/changerCursusPrepare"
-import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
+import { memoriserCursusPrepareEnAttente, useCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { t } from "@/lib/i18n"
 
 /**
@@ -46,4 +46,20 @@ export function useDeclarerCursus() {
   }
 
   return { declarer, enCours: changer.isPending }
+}
+
+/**
+ * Choisir un examen dans le filtre d'une liste vaut déclaration tant que rien n'est déclaré : le bandeau « Choisis ton
+ * examen » ne s'affiche plus sur ces listes, ce filtre y pose la même question. Un élève qui a déjà déclaré le sien ne
+ * fait que filtrer - regarder les épreuves d'un autre examen ne le change pas.
+ */
+export function useDeclarerSiRienDeclare() {
+  const { isAuthenticated, user } = useAuth()
+  const enAttente = useCursusPrepareEnAttente()
+  const { declarer } = useDeclarerCursus()
+  const aDeclare = isAuthenticated ? Boolean(user?.cursus_prepare) : enAttente !== null
+
+  return (cursus: Cursus | undefined) => {
+    if (cursus && !aDeclare) declarer(cursus, undefined, "selecteur")
+  }
 }

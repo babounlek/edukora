@@ -21,7 +21,10 @@ import { t, useI18n } from "@/lib/i18n"
  * page garde son URL, son référencement et son code. Seul le chemin pour y arriver
  * change.
  */
-export function ReviserTabs() {
+export function ReviserTabs({ sansLoupeMobile = false }: {
+  /** Les listes d'épreuves et de cours ont leur champ de recherche juste dessous, et l'en-tête a déjà la loupe. */
+  sansLoupeMobile?: boolean
+} = {}) {
   useI18n()
   const { country } = useCountry()
   const { pathname } = useLocation()
@@ -87,7 +90,10 @@ export function ReviserTabs() {
             state={ETAT_FOCUS_RECHERCHE}
             aria-label={t("qd.rechercher_site")}
             aria-keyshortcuts="/ Control+K Meta+K"
-            className="mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start"
+            className={cn(
+              "mb-1 inline-flex h-8 shrink-0 items-center gap-2 rounded-md border border-border bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground sm:w-56 sm:justify-start",
+              sansLoupeMobile && "max-sm:hidden",
+            )}
           >
             <Search className="size-4 shrink-0" aria-hidden="true" />
             <span className="hidden sm:inline">{t("qd.rechercher_partout")}</span>

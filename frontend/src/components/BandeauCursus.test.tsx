@@ -17,10 +17,10 @@ import { BandeauCursus } from "./BandeauCursus"
 
 const CURSUS = [{ id: 1, examen: "BEPC", examen_display: "BEPC", series: null, langue: "fr", country: { code: "CM" } }]
 
-function afficher() {
+function afficher(chemin = "/cm/themes-frequents") {
   return render(
     <QueryClientProvider client={new QueryClient({ defaultOptions: { queries: { retry: false } } })}>
-      <MemoryRouter initialEntries={["/cm/epreuves"]}>
+      <MemoryRouter initialEntries={[chemin]}>
         <BandeauCursus />
       </MemoryRouter>
     </QueryClientProvider>,
@@ -78,5 +78,20 @@ describe("BandeauCursus - place réservée pendant le chargement (décalage de m
     afficher()
     await waitFor(() => expect(screen.queryByTestId("bandeau-cursus-reserve")).toBeNull())
     expect(screen.queryByRole("region")).toBeNull()
+  })
+})
+
+describe("BandeauCursus - listes qui ont leur filtre « Examen »", () => {
+  it("ne repose pas la question sur la liste des épreuves ni sur celle des cours", () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    auth.isAuthenticated = false
+    auth.user = null
+    listCursus.mockResolvedValue(CURSUS)
+    for (const chemin of ["/cm/epreuves", "/cm/cours"]) {
+      const { container, unmount } = afficher(chemin)
+      expect(container).toBeEmptyDOMElement()
+      unmount()
+    }
   })
 })

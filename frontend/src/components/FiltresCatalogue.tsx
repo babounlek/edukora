@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useRef, useState, type ReactNode, type RefObject } from "react"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, SlidersHorizontal, X } from "lucide-react"
 
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -155,6 +156,92 @@ export function PastilleFiltre({
       )}
     >
       {children}
+    </button>
+  )
+}
+
+const TOUT = "all"
+
+/**
+ * Un filtre à choix unique qui tient dans un bouton : « Examen », « Matière ». Sur les listes d'épreuves et de cours, les
+ * deux rangées de pastilles et leurs titres repoussaient le premier résultat sous le premier écran d'un téléphone (revue
+ * du 2026-11-25). Choisi, le bouton porte la valeur, et une croix la retire.
+ */
+export function MenuFiltre({
+  titre, valeur, options, libelleTout, onChange,
+}: {
+  titre: string
+  /** "" : rien de choisi. */
+  valeur: string
+  options: { valeur: string; libelle: string; contenu?: ReactNode }[]
+  libelleTout: string
+  onChange: (valeur: string) => void
+}) {
+  useI18n()
+  const choisi = options.find((o) => o.valeur === valeur)
+  const libelle = valeur ? (choisi?.libelle ?? valeur) : titre
+  return (
+    <div
+      className={cn(
+        "inline-flex min-w-0 items-center rounded-full border",
+        valeur ? "border-primary/40 bg-primary/10 text-primary" : "border-border bg-background text-foreground",
+      )}
+    >
+      <Select value={valeur || TOUT} onValueChange={(v) => onChange(v === TOUT ? "" : v)}>
+        <SelectTrigger
+          aria-label={valeur ? `${titre} : ${libelle}` : titre}
+          className={cn(
+            "h-9 w-auto min-w-0 gap-1.5 rounded-full border-0 bg-transparent pl-3.5 font-medium shadow-none",
+            valeur ? "pr-1.5" : "pr-3",
+          )}
+        >
+          <span className="truncate">{libelle}</span>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value={TOUT}>{libelleTout}</SelectItem>
+          {options.map((o) => (
+            <SelectItem key={o.valeur} value={o.valeur}>
+              {o.contenu ?? o.libelle}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {valeur && (
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          aria-label={t("ep.retirer_filtre", { label: libelle })}
+          className="flex size-9 shrink-0 items-center justify-center rounded-full hover:bg-primary/15"
+        >
+          <X className="size-3.5" aria-hidden="true" />
+        </button>
+      )}
+    </div>
+  )
+}
+
+/** Le bouton « Filtres » des listes : il ouvre les filtres de second rang, et dit combien sont actifs. */
+export function BoutonFiltres({
+  ouvert, nombre, onClick, className,
+}: { ouvert: boolean; nombre: number; onClick: () => void; className?: string }) {
+  useI18n()
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-expanded={ouvert}
+      className={cn(
+        "inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-md border border-border bg-background px-3 text-sm font-medium transition-colors hover:border-primary/40 hover:text-primary",
+        className,
+      )}
+    >
+      <SlidersHorizontal className="size-4" aria-hidden="true" />
+      {t("ep.filtres")}
+      {nombre > 0 && (
+        <span className="flex size-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
+          {nombre}
+        </span>
+      )}
     </button>
   )
 }

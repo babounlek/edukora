@@ -68,10 +68,6 @@ export function useEtatFiltreCursus() {
     searchParams,
     setSearchParams,
     applique,
-    // La rangée de pastilles « Examen » ne sert plus à rien quand la liste est déjà réduite à l'examen déclaré (la puce
-    // retirable et « Voir tout » restent la porte de sortie). Elle revient dès que l'élève élargit (`tout=1`, plus de
-    // cursus dans l'URL) ou quand l'examen déclaré est de l'autre langue (rien n'est alors pré-filtré).
-    rangeeExamenMasquee: applique && estDeLangue(cursusPrepare, langueCourante()),
   }
 }
 

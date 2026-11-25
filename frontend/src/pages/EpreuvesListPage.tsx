@@ -1,34 +1,28 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
-import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
+import { AideContextuelle } from "@/components/guides/AideContextuelle"
 import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-query"
 import {
-  BookOpen,
-  ChevronDown,
   Crown,
   Timer,
   Gift,
-  GraduationCap,
   LayoutGrid,
-  Layers,
   List,
   Loader2,
   RefreshCw,
   Search,
   SearchX,
-  SlidersHorizontal,
   X,
 } from "lucide-react"
 
 import { listEpreuves, listSubjects } from "@/api/endpoints"
 import type { NatureEpreuve, Origine } from "@/api/types"
-import { examLevelsFor } from "@/lib/cursus"
 import { nomPays } from "@/lib/pays"
 import { localeCourante, t, tn, useI18n, type CleI18n } from "@/lib/i18n"
 import { langueDeListe, PARAM_TOUTES_LANGUES } from "@/lib/discipline"
 import { FILTERS_SESSION_KEY } from "@/lib/filtresListe"
 import { useAbandonCursusHorsLangue, useCursusListe } from "@/lib/cursusLangue"
-import { cursusDesTotaux, useTotalEpreuves } from "@/lib/totauxCatalogue"
+import { useDeclarerSiRienDeclare } from "@/lib/declarerCursus"
 import { useSeo } from "@/lib/seo"
 import { nouveauGermeAleatoire, triDepuisUrl, triPourApi, valeurUrlDuTri } from "@/lib/triEpreuves"
 import { useDebouncedValue } from "@/lib/useDebouncedValue"
@@ -45,7 +39,7 @@ import { BandeauVue } from "@/components/BandeauVue"
 import { useAbonneActif, useCursusAbonne } from "@/lib/abonneActif"
 import { EpreuveCard } from "@/components/EpreuveCard"
 import { EpreuveListRow } from "@/components/EpreuveListRow"
-import { FiltreLigne, PastilleFiltre } from "@/components/FiltresCatalogue"
+import { BoutonFiltres, MenuFiltre } from "@/components/FiltresCatalogue"
 import { ThemesFrequents } from "@/components/ThemesFrequents"
 import {
   Select,
@@ -136,17 +130,6 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
   )
 }
 
-/** Statistique du hero - même gabarit que les puces de /quiz, /fiches et /cours. */
-function StatChip({ icon, valeur, libelle }: { icon: ReactNode; valeur: string; libelle: string }) {
-  return (
-    <span className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs sm:gap-1.5 sm:px-3 sm:py-1.5 sm:text-sm">
-      {icon}
-      <span className="font-medium tabular-nums">{valeur}</span>
-      <span className="text-muted-foreground">{libelle}</span>
-    </span>
-  )
-}
-
 export function EpreuvesListPage() {
   const abonne = useAbonneActif()
   const cursusAbonne = useCursusAbonne()
@@ -179,7 +162,8 @@ export function EpreuvesListPage() {
   // Pré-filtrage sur l'examen déclaré, déclaré APRÈS la restauration de session
   // ci-dessus : l'ordre des deux effets compte, sans quoi une recherche sauvegardée
   // serait ignorée (voir useFiltreCursusParDefaut).
-  const { cursusPrepare, rangeeExamenMasquee } = useFiltreCursusParDefaut()
+  const { cursusPrepare } = useFiltreCursusParDefaut()
+  const declarerSiRienDeclare = useDeclarerSiRienDeclare()
   useAbandonCursusHorsLangue(country)
 
   const subjectFilter = searchParams.get("subject") ?? ""
@@ -259,33 +243,15 @@ export function EpreuvesListPage() {
   // Les examens proposés suivent la langue de l'interface (« Toutes les langues » les montre tous) ; seul l'examen
   // déjà choisi reste proposé quelle que soit sa langue. L'examen déclaré, lui, n'est pas gardé : en anglais, un
   // « Probatoire C » parmi les pastilles du GCE n'avait rien à y faire (voir lib/cursusLangue).
-  const { data: cursusList, tous: tousLesCursus } = useCursusListe(country, {
+  const { data: cursusList } = useCursusListe(country, {
     langue: langueDeListe("", toutesLangues),
     garder: [cursusFilter],
     fixeLaLangue: true,
   })
 
-  // Origine et nature sont des filtres de second rang : repliés tant qu'ils ne servent pas, mais
-  // jamais cachés quand l'un d'eux est actif (on doit voir ce qui restreint la liste).
+  // Les filtres de second rang (gratuites, inédites, origine, nature) sont repliés derrière « Filtres » ; ceux qui sont
+  // actifs restent visibles en puces, panneau fermé (on doit voir ce qui restreint la liste).
   const [plusOuvert, setPlusOuvert] = useState(false)
-
-  const filtresActifs = Boolean(
-    subjectFilter || cursusFilter || origineFilter || natureFilter || gratuitFilter || miniFilter || search,
-  )
-
-  // Volumétrie totale du pays, affichée dans le hero - même clé de cache que sur
-  // CataloguePage, donc un aller-retour entre les deux pages ne repaie pas la requête.
-  // Dans la langue de l'interface (sauf « Toutes les langues ») : sans cela, un filtre actif faisait
-  // afficher le total des deux langues à côté d'une liste d'une seule.
-  // Un examen choisi fixe la langue du total, comme celle de la liste : sans cela, un lien vers un examen d'une
-  // autre langue que l'interface annonçait le total de la langue de l'interface à côté d'une liste de l'examen.
-  const cursusChoisi = tousLesCursus.find((c) => String(c.id) === cursusFilter)
-  const { data: totalData } = useTotalEpreuves(
-    country,
-    cursusChoisi?.langue ?? langueDeListe("", toutesLangues),
-    filtresActifs,
-    cursusDesTotaux(cursusAbonne, cursusChoisi?.id),
-  )
 
   const debouncedSearch = useDebouncedValue(search, 300)
 
@@ -474,12 +440,13 @@ export function EpreuvesListPage() {
     },
   ].filter((chip): chip is { key: string; label: string; clear: () => void } => Boolean(chip))
 
-  const examLevels = examLevelsFor(cursusList)
-  // Sur la page des inédites l'origine est déjà la page elle-même : ni panneau ouvert d'office
-  // pour un sélecteur « Origine » redondant, ni pastille « 1 » sur « Plus de filtres ».
-  const origineSecondaire = Boolean(origineFilter) && !pageInedites
-  const plusVisible = plusOuvert || origineSecondaire || Boolean(natureFilter)
-  const nbFiltresSecondaires = (origineSecondaire ? 1 : 0) + (natureFilter ? 1 : 0)
+  // Sur la page des inédites l'origine est déjà la page elle-même : pas de « 1 » sur le bouton « Filtres ».
+  const nbFiltresSecondaires = [
+    gratuitFilter,
+    miniFilter,
+    Boolean(origineFilter) && !pageInedites,
+    Boolean(natureFilter),
+  ].filter(Boolean).length
   // Le cursus est LE filtre d'un élève ("mon BAC D") : en pastilles d'un clic plutôt que caché
   // dans une liste déroulante, triées pour que les séries d'un même examen se suivent.
   const cursusTries = cursusList
@@ -489,174 +456,109 @@ export function EpreuvesListPage() {
       x.examen_display.localeCompare(y.examen_display, localeCourante()) ||
       (x.series?.code ?? "").localeCompare(y.series?.code ?? "", localeCourante()),
   )
-  const totalEpreuves = pageInedites
-    ? epreuvesQuery.data ? count : undefined
-    : filtresActifs ? totalData?.count : epreuvesQuery.data ? count : undefined
+  const pucesSecondaires = activeFilterChips.filter((chip) => chip.key !== "subject" && chip.key !== "cursus")
 
   return (
     <div className="mx-auto max-w-5xl animate-fade-up px-4 py-6 sm:px-6 sm:py-10">
-      <ReviserTabs />
+      <ReviserTabs sansLoupeMobile />
       <BandeauVue />
-      <div className="mb-2 sm:mb-4">
-        <BoutonAide guide="annales" className="-ml-2.5" />
-        <AideContextuelle guide="annales" className="mt-1" />
-      </div>
-      {/* Hero : plus court qu'avant (les résultats doivent apparaître sans défiler sur un
-          ordinateur), avec un filigrane et le volume du catalogue - la preuve qu'il y a de quoi
-          chercher avant même d'avoir cherché. Pas pour un abonné : il n'a plus à être convaincu, et
-          la liste ne commençait qu'après 700 px sur un téléphone (audit du 2026-11-13). Il garde un
-          titre : discret sur la page des inédites (qui doit dire de quoi elle parle), réservé aux
-          lecteurs d'écran sur la liste générale, que l'onglet « Épreuves » nomme déjà. */}
-      {abonne ? (
-        <h1 className={pageInedites ? "mb-4 font-display text-xl font-semibold tracking-tight" : "sr-only"}>
-          {pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste")}
-        </h1>
-      ) : (
-      <div
-        className={cn(
-          "relative mb-4 overflow-hidden rounded-3xl border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] sm:mb-6",
-          pageInedites ? "border-gold/40 p-4 sm:p-6" : "border-border p-4 sm:p-8",
-        )}
+      {/* Un titre d'une ligne : la grande carte de présentation repoussait le premier résultat sous le premier écran
+          d'un téléphone (revue du 2026-11-25). Pour un abonné, la liste générale n'en montre aucun : l'onglet
+          « Épreuves » la nomme déjà. */}
+      <h1
+        className={
+          abonne && !pageInedites
+            ? "sr-only"
+            : "mb-3 font-display text-xl font-semibold tracking-tight sm:text-2xl"
+        }
       >
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: "radial-gradient(circle at 2px 2px, var(--foreground) 1.5px, transparent 0)",
-            backgroundSize: "24px 24px",
-          }}
-        />
-        <BookOpen aria-hidden className="pointer-events-none absolute -bottom-6 -right-4 hidden size-44 rotate-[-12deg] text-primary/[0.07] sm:block" />
-        <div className="relative max-w-2xl">
-          <p className="mb-2 hidden font-display text-sm italic text-primary sm:block">
-            {pageInedites ? t("ep.seo_inedites") : t("ep.seo_liste")}
-            {countryLabel ? ` - ${countryLabel}` : ""}
-          </p>
-          {pageInedites ? (
-            <>
-              <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-3xl">
-                {t("ep.titre_inedites")} <span className="text-primary">{t("ep.titre_inedites_accent")}</span>.
-              </h1>
-              <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-                {t("ep.texte_inedites", { site: SITE_NAME })}
-              </p>
-            </>
-          ) : (
-            <>
-              <h1 className="font-display text-2xl font-semibold leading-[1.15] tracking-tight text-balance sm:text-4xl">
-                {t("ep.titre_liste")} <span className="text-primary">{t("ep.titre_liste_accent")}</span>{t("ep.titre_liste_fin")}
-              </h1>
-              <p className="mt-2 hidden max-w-xl text-muted-foreground sm:block">
-                {t("ep.texte_liste")}
-              </p>
-            </>
-          )}
+        {pageInedites ? t("ep.seo_inedites") : t("ep.titre_court")}
+      </h1>
 
-          {/* Sur la page des inédites, le compte vit déjà dans « N épreuves trouvées » : une rangée
-              de pastilles de plus ne faisait que repousser les résultats vers le bas. */}
-          {/* Sur un téléphone, ces deux pastilles repoussaient la liste d'une rangée et demie : « N épreuves trouvées » juste
-              dessous dit déjà le total. */}
-          <div className={cn("mt-3 flex-wrap gap-2 sm:mt-5", pageInedites ? "hidden" : "hidden sm:flex")}>
-            {totalEpreuves !== undefined && (
-              <StatChip
-                icon={<BookOpen className="size-3.5 text-primary" />}
-                valeur={formatAmount(totalEpreuves)}
-                libelle={tn(pageInedites ? "ep.stat_inedites" : "ep.stat_publiees", totalEpreuves > 1 ? 2 : 1)}
+      {/* Recherche, examen, matière : les trois gestes de base. Tout le reste est derrière « Filtres ». Sur un téléphone,
+          la recherche et « Filtres » sur une ligne, les deux menus dessous ; dès `sm`, tout sur une ligne. */}
+      <div className="mb-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className={cn("flex w-full gap-2 sm:w-auto sm:flex-1", pageInedites && "hidden")}>
+            <div className={cn("group relative min-w-0 flex-1", pageInedites && "hidden")}>
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
+              <Input
+                type="search"
+                inputMode="search"
+                enterKeyHint="search"
+                aria-label={t("ep.rechercher")}
+                placeholder={t("ep.rechercher_court")}
+                value={search}
+                onChange={(e) => updateFilter("search", e.target.value)}
+                className="h-11 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
               />
-            )}
-            {subjectsTries.length > 0 && (
-              <StatChip
-                icon={<Layers className="size-3.5 text-primary" />}
-                valeur={String(subjectsTries.length)}
-                libelle={tn("qd.stat_matieres", subjectsTries.length > 1 ? 2 : 1)}
-              />
-            )}
-            {examLevels.length > 0 && (
-              <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-sm sm:flex">
-                <GraduationCap className="size-3.5 text-success" />
-                <span className="text-muted-foreground">{examLevels.join(" · ")}</span>
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
-      )}
-
-      {/* Panneau de recherche : la carte surélevée fait de la recherche le point focal
-          de la page, comme sur /cours. */}
-      <div className="mb-4 rounded-2xl border border-border bg-card p-3.5 shadow-lg shadow-primary/5 sm:mb-6 sm:p-6">
-        {/* Une vingtaine d'inédites se parcourent aux pastilles : sans champ de recherche, les
-            résultats remontent d'une soixantaine de pixels. */}
-        <div className={cn("group relative", pageInedites && "hidden")}>
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary" />
-          <Input
-            type="search"
-            inputMode="search"
-            enterKeyHint="search"
-            aria-label={t("ep.rechercher")}
-            placeholder={t("ep.rechercher_placeholder")}
-            value={search}
-            onChange={(e) => updateFilter("search", e.target.value)}
-            className="h-12 border-input pl-10 pr-10 text-base shadow-none focus-visible:border-primary/60 focus-visible:ring-primary/25 [&::-webkit-search-cancel-button]:hidden"
-          />
-          {search && (
-            <button
-              type="button"
-              onClick={() => updateFilter("search", "")}
-              aria-label={t("ep.effacer")}
-              className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
-
-        {!abonne && !rangeeExamenMasquee && cursusTries.length > 0 && (
-          <FiltreLigne titre={t("quiz.examen")}>
-            <PastilleFiltre actif={!cursusFilter} onClick={() => updateFilter("cursus", "")}>
-              {t("ep.tous")}
-            </PastilleFiltre>
-            {cursusTries.map((c) => (
-              <PastilleFiltre
-                key={c.id}
-                actif={cursusFilter === String(c.id)}
-                onClick={() => updateFilter("cursus", cursusFilter === String(c.id) ? "" : String(c.id))}
-              >
-                {c.examen_display}
-                {c.series ? ` ${c.series.code}` : ""}
-              </PastilleFiltre>
-            ))}
-          </FiltreLigne>
-        )}
-
-        {subjectsTries.length > 0 && (
-          <FiltreLigne titre={t("quiz.matiere")}>
-            <PastilleFiltre actif={!subjectFilter} onClick={() => updateFilter("subject", "")}>
-              {t("ep.toutes")}
-            </PastilleFiltre>
-            {subjectsTries.map((subject) => {
-              const SubjectIcon = subjectIcon(subject.code)
-              const actif = subjectFilter === subject.code
-              return (
-                <PastilleFiltre
-                  key={subject.id}
-                  actif={actif}
-                  onClick={() => updateFilter("subject", actif ? "" : subject.code)}
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => updateFilter("search", "")}
+                  aria-label={t("ep.effacer")}
+                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
-                  <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
-                    <SubjectIcon className="size-3" aria-hidden="true" />
-                  </span>
-                  {subjectShortLabel(subject.code, subject.label)}
-                </PastilleFiltre>
-              )
-            })}
-          </FiltreLigne>
-        )}
+                  <X className="size-4" />
+                </button>
+              )}
+            </div>
+            <BoutonFiltres
+              ouvert={plusOuvert}
+              nombre={nbFiltresSecondaires}
+              onClick={() => setPlusOuvert((v) => !v)}
+              className="sm:hidden"
+            />
+          </div>
+          {!abonne && cursusTries.length > 0 && (
+            <MenuFiltre
+              titre={t("quiz.examen")}
+              valeur={cursusFilter}
+              libelleTout={t("ep.tous_examens_menu")}
+              options={cursusTries.map((c) => ({
+                valeur: String(c.id),
+                libelle: `${c.examen_display}${c.series ? ` ${c.series.code}` : ""}`,
+              }))}
+              onChange={(v) => {
+                updateFilter("cursus", v)
+                declarerSiRienDeclare(cursusTries.find((c) => String(c.id) === v))
+              }}
+            />
+          )}
+          {subjectsTries.length > 0 && (
+            <MenuFiltre
+              titre={t("quiz.matiere")}
+              valeur={subjectFilter}
+              libelleTout={t("ep.toutes_matieres_menu")}
+              options={subjectsTries.map((subject) => {
+                const SubjectIcon = subjectIcon(subject.code)
+                const libelle = subjectShortLabel(subject.code, subject.label)
+                return {
+                  valeur: subject.code,
+                  libelle,
+                  contenu: (
+                    <span className="flex items-center gap-2">
+                      <span className={cn("flex size-5 items-center justify-center rounded-full", couleurMatiere(subject.code).puce)}>
+                        <SubjectIcon className="size-3" aria-hidden="true" />
+                      </span>
+                      {libelle}
+                    </span>
+                  ),
+                }
+              })}
+              onChange={(v) => updateFilter("subject", v)}
+            />
+          )}
+          <BoutonFiltres
+            ouvert={plusOuvert}
+            nombre={nbFiltresSecondaires}
+            onClick={() => setPlusOuvert((v) => !v)}
+            className={cn("h-9 rounded-full", !pageInedites && "max-sm:hidden")}
+          />
+        </div>
 
-        {/* Raccourcis vers les facettes les plus demandées - un clic, là où passer par le
-            sélecteur "Origine" en coûte deux. Restent aussi accessibles depuis leurs
-            sélecteurs, ce ne sont que des raccourcis. */}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        {plusOuvert && (
+          <div className="mt-2 flex flex-wrap items-center gap-2 rounded-xl bg-muted/50 p-3">
           <button
             type="button"
             hidden={pageInedites && !uneInediteOfferte}
@@ -700,26 +602,6 @@ export function EpreuvesListPage() {
             <Timer className="size-4" />
             {t("ep.mini_filtre")}
           </button>
-          <button
-            type="button"
-            onClick={() => setPlusOuvert((v) => !v)}
-            aria-expanded={plusVisible}
-            className="ml-auto inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-          >
-            <SlidersHorizontal className="size-4" />
-            <span className="sm:hidden">{t("ep.filtres")}</span>
-            <span className="hidden sm:inline">{t("ep.plus_filtres")}</span>
-            {nbFiltresSecondaires > 0 && (
-              <span className="flex size-5 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground">
-                {nbFiltresSecondaires}
-              </span>
-            )}
-            <ChevronDown className={cn("size-4 transition-transform", plusVisible && "rotate-180")} />
-          </button>
-        </div>
-
-        {plusVisible && (
-          <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-muted/50 p-3">
             <Select
               value={origineFilter || "all"}
               onValueChange={(v) => updateFilter("origine", v === "all" ? "" : v)}
@@ -753,10 +635,9 @@ export function EpreuvesListPage() {
           </div>
         )}
 
-        {activeFilterChips.length > 0 && (
-          <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3.5">
-            <span className="text-sm text-muted-foreground">{t("ep.filtres_actifs")}</span>
-            {activeFilterChips.map((chip) => (
+        {(pucesSecondaires.length > 0 || activeFilterChips.length > 1) && (
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {pucesSecondaires.map((chip) => (
               <FilterChip key={chip.key} label={chip.label} onRemove={chip.clear} />
             ))}
             {activeFilterChips.length > 1 && (
@@ -771,6 +652,10 @@ export function EpreuvesListPage() {
           </div>
         )}
       </div>
+
+      {/* La première visite montre l'aide de la page, sous les filtres qu'elle explique ; ensuite elle se relance par
+          le « ? » de l'en-tête. */}
+      <AideContextuelle guide="annales" className="mt-0 mb-4" />
 
       {country && subjectFilter && cursusFilter && (
         <ThemesFrequents
@@ -835,7 +720,7 @@ export function EpreuvesListPage() {
                 updateFilter("ordering", valeurUrlDuTri(v))
               }}
             >
-              <SelectTrigger className="h-8 w-40 text-xs sm:w-48 sm:text-sm" aria-label={t("ep.trier")}>
+              <SelectTrigger className="h-8 w-36 text-xs sm:w-48 sm:text-sm" aria-label={t("ep.trier")}>
                 <SelectValue placeholder={t("ep.tri_annee")} />
               </SelectTrigger>
               <SelectContent>

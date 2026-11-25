@@ -21,6 +21,9 @@ const FERME_KEY = "edukamer_bandeau_cursus_ferme"
 // quiz en cours, paiement, connexion. Ailleurs il reste visible, y compris quand
 // l'élève arrive directement sur un cours ou une épreuve depuis un PDF ou une recherche.
 const PAGES_SANS_BANDEAU = /\/lire$|^\/quiz\/session|^\/quiz\/essai|^\/inedit\/tentative|^\/simulation|^\/abonnement|^\/login|^\/connexion|^\/tarifs/
+// Les listes d'épreuves et de cours posent déjà la question avec leur filtre « Examen » (voir useDeclarerSiRienDeclare) :
+// le bandeau la posait une seconde fois et repoussait le premier résultat (revue du 2026-11-25).
+const LISTES_AVEC_FILTRE_EXAMEN = /^\/[a-z]{2}\/(epreuves|cours)\/?$/
 
 
 function lireFerme(): boolean {
@@ -55,7 +58,7 @@ export function BandeauCursus() {
   // Pas sur l'accueil d'un pays : la carte du hero y pose la même question (voir PremiereSeance), et deux fois sur le
   // même écran, c'était du bruit (audit de l'accueil du 2026-11-15, R6).
   const visible =
-    !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && !ACCUEIL_PAYS_RE.test(pathname) && Boolean(country)
+    !ferme && !aDeclare && !PAGES_SANS_BANDEAU.test(pathname) && !LISTES_AVEC_FILTRE_EXAMEN.test(pathname) && !ACCUEIL_PAYS_RE.test(pathname) && Boolean(country)
 
   // Seulement les examens de la langue de l'interface (voir lib/cursusLangue).
   const { data: cursusList, tous: tousLesCursus, isPending } = useCursusListe(country, { langue: langueDeListe("", false), enabled: visible })
