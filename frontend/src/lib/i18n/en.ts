@@ -2400,6 +2400,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "fe.voir_reponse": "Show the answer",
   "fe.masquer_reponse": "Hide the answer",
   "fe.toutes": "All",
+  "fe.imp_reponses": "Answers to \"Your turn\"",
   "fe.rubriques_aria": "Sections",
   "fe.autres_annees_one": "Show {n} earlier year",
   "fe.autres_annees_other": "Show {n} earlier years",

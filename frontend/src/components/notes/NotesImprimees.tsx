@@ -25,7 +25,7 @@ export function NotesImprimees({
   if (entrees.length === 0) return null
   const date = new Date().toLocaleDateString(localeCourante(), { day: "numeric", month: "long", year: "numeric" })
   return (
-    <div className="notes-imprimees hidden text-black print:block">
+    <div className="feuille-imprimee hidden text-black print:block">
       {/* A4 à marges serrées (une page se paie à l'unité). Posé ici, il ne vaut que tant que la feuille existe. Surtout pas de
           page CSS « nommée » (`page: notes`) : le navigateur saute alors une page avant et après la feuille, et l'élève
           payait deux feuilles blanches. */}

@@ -2409,6 +2409,7 @@ export const fr = {
   "fe.voir_reponse": "Voir la réponse",
   "fe.masquer_reponse": "Masquer la réponse",
   "fe.toutes": "Toutes",
+  "fe.imp_reponses": "Réponses des « À toi »",
   "fe.rubriques_aria": "Rubriques",
   "fe.autres_annees_one": "Voir {n} année plus ancienne",
   "fe.autres_annees_other": "Voir {n} années plus anciennes",

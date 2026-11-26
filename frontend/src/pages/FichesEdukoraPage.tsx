@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { ArrowRight, BadgeCheck, Check, Crown, GraduationCap, Layers, Lock, NotebookPen, Search } from "lucide-react"
+import { ArrowRight, BadgeCheck, Check, Crown, GraduationCap, Layers, Lock, NotebookPen, Printer, Search } from "lucide-react"
 import { toast } from "sonner"
 
 import { garderFiche, getFiches, getFichesMatieres, situerFiche } from "@/api/endpoints"
@@ -9,6 +9,7 @@ import type { FicheEdukora } from "@/api/types"
 import { ApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { BlocsFiche, Sessions } from "@/components/fiches/BlocsFiche"
+import { FichesImprimees } from "@/components/fiches/FichesImprimees"
 import { NoteTexte } from "@/components/NoteTexte"
 import { ReviserTabs } from "@/components/ReviserTabs"
 import { Button } from "@/components/ui/button"
@@ -19,6 +20,7 @@ import { trackEvent } from "@/lib/analytics"
 import { coursListPath, epreuveDetailPath } from "@/lib/countryPath"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { couleurMatiere } from "@/lib/matiereCouleur"
+import { useImpression } from "@/lib/useImpression"
 import { grouperParRubrique } from "@/lib/rubriquesFiches"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { subjectIcon } from "@/lib/subjectIcon"
@@ -169,9 +171,15 @@ export function FichesEdukoraPage() {
 
   const Icone = matiere ? subjectIcon(matiere.matiere_code) : Layers
   const verrouillees = fiches.filter((f) => f.verrouillee).length
+  // Sur papier sortent les fiches affichées (matière, rubrique, recherche) que l'élève peut lire.
+  const imprimables = fiches.length - verrouillees
+  const impression = useImpression()
+  const feuille = impression && imprimables > 0
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10 print:max-w-none print:p-0">
+      {feuille && <FichesImprimees titre={[matiere?.matiere, rubriqueActive].filter(Boolean).join(" · ")} fiches={fiches} />}
+      <div className={feuille ? "print:hidden" : undefined}>
       <ReviserTabs />
 
       <header className="relative animate-fade-up overflow-hidden rounded-3xl border border-gold/40 bg-gradient-to-br from-gold/[0.16] via-card to-primary/[0.06] px-5 py-6 sm:px-9 sm:py-8">
@@ -254,6 +262,12 @@ export function FichesEdukoraPage() {
               <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{matiere?.matiere}</h2>
               <p className="text-xs text-muted-foreground">{tn("fe.nombre", matiere?.total ?? 0)}</p>
             </div>
+            {imprimables > 0 && (
+              <Button type="button" variant="outline" className="rounded-full print:hidden" onClick={() => window.print()}>
+                <Printer />
+                {t("ca.imprimer")}
+              </Button>
+            )}
             <div className="relative w-full sm:w-64">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
@@ -387,6 +401,7 @@ export function FichesEdukoraPage() {
           )}
         </>
       )}
+      </div>
     </div>
   )
 }
