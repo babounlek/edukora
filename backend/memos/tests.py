@@ -295,6 +295,10 @@ class ExtractionTests(_Base):
             "svt_bepc": {"Génétique", "Microbes, maladies et défense", "Fonctionnement du corps", "Environnement et géologie"},
             "histoire_bepc": {"Cameroun", "Conquête et colonisation", "Décolonisation", "Le monde au XIXe siècle", "Guerres et crises"},
             "geographie_bepc": {"Population", "Économie et développement", "Milieu et environnement"},
+            "francais_bepc": {"Compréhension", "Vocabulaire", "Grammaire", "Orthographe", "Expression écrite"},
+            "eps_bepc": {"Athlétisme", "Gymnastique"},
+            "anglais_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Rédaction"},
+            "dessin_bepc": {"Couleurs", "Dessin à consignes"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
