@@ -125,12 +125,12 @@ export function CarteNote({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {entree.genre === "libre" && (
-                <DropdownMenuItem onSelect={onModifier}>
-                  <Pencil aria-hidden="true" />
-                  {t("ca.modifier_aria")}
-                </DropdownMenuItem>
-              )}
+              {/* Toute note se modifie ici, y compris celle d'une section : il fallait sinon rouvrir la source, et on
+                  croyait la note figée. */}
+              <DropdownMenuItem onSelect={onModifier}>
+                <Pencil aria-hidden="true" />
+                {t(entree.genre === "marque" && !entree.note ? "ed.ajouter_note" : "ca.modifier_aria")}
+              </DropdownMenuItem>
               <DropdownMenuItem onSelect={onRetirer} disabled={occupe} className="text-destructive focus:text-destructive">
                 <Trash2 aria-hidden="true" />
                 {t("ca.retirer_aria")}

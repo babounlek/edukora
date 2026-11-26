@@ -102,7 +102,7 @@ export function useInedites(country: string, cursusId: number | null | undefined
 }
 
 /** Lien "toutes les inédites", restreint au même cursus que ce que l'accueil montre -
- * sinon le "Voir les 3 épreuves inédites" ouvrait une liste de 12. */
+ * sinon le lien vers les inédites ouvrait une liste plus longue que celle annoncée. */
 export function requeteInedites(cursusId: number | null | undefined): string {
   return cursusId == null ? "origine=INEDITE" : `origine=INEDITE&cursus=${cursusId}`
 }

@@ -4,7 +4,11 @@ import { toast } from "sonner"
 
 import { Bold, Eye, ImagePlus, Italic, List, Mic, Sigma, Square, X } from "lucide-react"
 
-import { creerNoteLibre, envoyerImageNote, listSubjects, modifierNoteLibre, retirerImageNote, supprimerNoteLibre } from "@/api/endpoints"
+import { ApiError } from "@/api/client"
+import {
+  creerNoteLibre, envoyerImageNote, listSubjects, modifierNoteLibre, retirerImageNote, saveMarqueEtude, supprimerNoteLibre,
+} from "@/api/endpoints"
+import type { CibleEtude } from "@/api/types"
 import { Button } from "@/components/ui/button"
 import { ImageNote } from "@/components/ImageNote"
 import { NoteTexte } from "@/components/NoteTexte"
@@ -60,8 +64,15 @@ export function AjouterNoteDialog({
 }: {
   open: boolean
   onOpenChange: (ouvert: boolean) => void
-  /** Modifier une note libre existante : la matière et la citation ne changent pas, seul le texte. */
-  edition?: { id: number; note: string; citation?: string; aImage?: boolean; version?: string }
+  /**
+   * Modifier une note existante : la matière et la citation ne changent pas, seul le texte. Avec `marque`, c'est la note
+   * posée sur une section d'un cours ou d'un corrigé : le lecteur l'affiche en texte brut et sans photo, la fenêtre ne
+   * propose donc ni mise en forme ni image.
+   */
+  edition?: {
+    id: number; note: string; citation?: string; aImage?: boolean; version?: string
+    marque?: { cible: CibleEtude; cle: string; signet: boolean; contexte: string }
+  }
   /** Le thème de la note : elle reviendra sous les yeux de l'élève quand il le retravaille (voir NotesDuTheme). */
   themeId?: number | null
   /** Adresse interne d'où vient la note (« Rouvrir la source » sur sa carte). */
@@ -153,8 +164,10 @@ export function AjouterNoteDialog({
     setTexte(valeur)
     if (brouillon) ecrireBrouillon(citation ?? "", valeur)
   }
-  // Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation.
-  const enregistrable = Boolean(texte.trim()) || aCitation || aUneImage
+  const marque = edition?.marque
+  // Un passage gardé tel quel est déjà une note : le texte peut rester vide quand il y a une citation. Sur une section,
+  // seul un signet permet de vider la note : sinon elle disparaîtrait du carnet sans le dire (« Retirer » est là pour ça).
+  const enregistrable = marque ? Boolean(texte.trim()) || marque.signet : Boolean(texte.trim()) || aCitation || aUneImage
 
   /** Gras, italique, liste, formule : les signes Markdown posés autour de la sélection (la sélection reste choisie après). */
   function formater(format: Format) {
@@ -185,6 +198,10 @@ export function AjouterNoteDialog({
 
   const creer = useMutation({
     mutationFn: async () => {
+      if (marque) {
+        await saveMarqueEtude(marque.cible, marque.cle, { note: texte.trim() })
+        return
+      }
       if (edition) {
         await modifierNoteLibre(edition.id, texte, image !== null || imageDejaJointe)
         if (image) await envoyerImageNote(edition.id, await reduireImage(image))
@@ -216,18 +233,21 @@ export function AjouterNoteDialog({
       queryClient.invalidateQueries({ queryKey: ["notes-a-revoir"] })
       queryClient.invalidateQueries({ queryKey: ["notes-theme"] })
       queryClient.invalidateQueries({ queryKey: CLE_NOTES_DUES })
+      // La page du lecteur garde son propre cache de marques pour ce document.
+      if (marque) queryClient.invalidateQueries({ queryKey: ["etude", marque.cible.type, marque.cible.slug] })
       setTexte("")
       setImage(null)
       onOpenChange(false)
     },
-    onError: () => toast.error(t("ca.note_erreur")),
+    // Sur une section, le serveur peut refuser (corrigé dont l'abonnement a expiré) : on dit sa raison.
+    onError: (erreur) => toast.error(marque && erreur instanceof ApiError && erreur.status === 403 ? erreur.message : t("ca.note_erreur")),
   })
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92vh] overflow-y-auto">
-        <DialogTitle>{t(edition ? "ca.modifier_note" : "ca.nouvelle_note")}</DialogTitle>
-        <DialogDescription>{t("ca.nouvelle_note_texte")}</DialogDescription>
+        <DialogTitle>{t(marque && !edition?.note ? "ed.ajouter_note" : edition ? "ca.modifier_note" : "ca.nouvelle_note")}</DialogTitle>
+        <DialogDescription>{marque ? marque.contexte : t("ca.nouvelle_note_texte")}</DialogDescription>
         {joignables && (
           <fieldset className="mt-3 flex flex-col gap-1.5 text-sm">
             <label className="flex items-center gap-2">
@@ -267,7 +287,7 @@ export function AjouterNoteDialog({
           </select>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-1" role="toolbar" aria-label={t("ca.mise_en_forme")}>
-          {(
+          {!marque && (
             [
               ["gras", Bold, "ca.format_gras"],
               ["italique", Italic, "ca.format_italique"],
@@ -293,17 +313,19 @@ export function AjouterNoteDialog({
               {dictee.actif ? <Square className="size-4 fill-current" aria-hidden="true" /> : <Mic className="size-4" aria-hidden="true" />}
             </Button>
           )}
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-pressed={apercu}
-            className={cn("ml-auto gap-1.5", apercu && "bg-accent")}
-            onClick={() => setApercu(!apercu)}
-          >
-            <Eye className="size-4" aria-hidden="true" />
-            {t("ca.apercu")}
-          </Button>
+          {!marque && (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              aria-pressed={apercu}
+              className={cn("ml-auto gap-1.5", apercu && "bg-accent")}
+              onClick={() => setApercu(!apercu)}
+            >
+              <Eye className="size-4" aria-hidden="true" />
+              {t("ca.apercu")}
+            </Button>
+          )}
         </div>
         <textarea
           ref={zoneTexte}
@@ -331,7 +353,7 @@ export function AjouterNoteDialog({
             {texte.trim() ? <NoteTexte texte={texte} /> : <p className="text-sm text-muted-foreground">{t("ca.apercu_vide")}</p>}
           </div>
         )}
-        <div className="mt-3">
+        <div className={cn("mt-3", marque && "hidden")}>
           <input
             ref={choixImage}
             type="file"

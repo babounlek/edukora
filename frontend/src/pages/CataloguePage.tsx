@@ -661,9 +661,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
                   moyen de savoir que d'autres inédites existent pour d'autres matières. */}
               <Button asChild variant="outline">
                 <Link to={`${epreuvesListPath(country ?? "")}?${requeteInedites(cursusAccueil)}`} onClick={mesurer("inedites_liste")}>
-                  {inediteRecenteData && inediteRecenteData.count > 1
-                    ? t("accueil.vedette_voir_n", { n: inediteRecenteData.count })
-                    : t("accueil.vedette_voir_toutes")}
+                  {t("accueil.repli_bouton")}
                 </Link>
               </Button>
             </div>

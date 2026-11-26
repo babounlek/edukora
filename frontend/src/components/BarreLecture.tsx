@@ -81,7 +81,7 @@ export function BarreLecture({
         className="fixed inset-x-0 top-0 z-50 h-1 bg-transparent lg:h-[3px]"
       >
         <div
-          className="h-full bg-gradient-to-r from-primary via-primary to-gold transition-[width] duration-150 ease-out motion-reduce:transition-none"
+          className="h-full bg-primary transition-[width] duration-150 ease-out motion-reduce:transition-none"
           style={{ width: `${pourcent}%` }}
         />
       </div>

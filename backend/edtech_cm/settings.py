@@ -212,6 +212,9 @@ CORS_ALLOWED_ORIGINS = config(
 # ci-dessus liste des origines explicites, jamais "*" (interdit par les navigateurs
 # de toute façon dès que credentials=true est demandé).
 CORS_ALLOW_CREDENTIALS = True
+# Le nom d'un PDF téléchargé est choisi par le serveur (voir catalog.cours_pdf.nom_telechargement) : en inter-origines,
+# le navigateur ne le laisse lire au frontend que s'il est exposé ici.
+CORS_EXPOSE_HEADERS = ["Content-Disposition"]
 # En-tête du « mode parent » (voir users.parent), à autoriser en plus des défauts pour les
 # appels inter-origines (dev : localhost:5173 -> API).
 from corsheaders.defaults import default_headers

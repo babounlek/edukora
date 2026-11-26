@@ -15,7 +15,7 @@ import { ApercuFiches, useApercuFiches } from "@/components/ApercuFiches"
 import { ErreurChargement } from "@/components/ErreurChargement"
 import { NoteTexte } from "@/components/NoteTexte"
 import { CarteDossier } from "@/components/notes/CarteDossier"
-import { CarteNote } from "@/components/notes/CarteNote"
+import { CarteNote, libelleSection } from "@/components/notes/CarteNote"
 import { NotesImprimees } from "@/components/notes/NotesImprimees"
 import { RevisionNotes } from "@/components/RevisionNotes"
 import { ReviserTabs } from "@/components/ReviserTabs"
@@ -585,7 +585,19 @@ export function CarnetPage() {
         onOpenChange={(ouvert) => !ouvert && setAModifier(null)}
         edition={
           aModifier
-            ? { id: aModifier.id, note: aModifier.note, citation: aModifier.citation, aImage: aModifier.a_image, version: aModifier.updated_at ?? undefined }
+            ? {
+                id: aModifier.id, note: aModifier.note, citation: aModifier.citation, aImage: aModifier.a_image,
+                version: aModifier.updated_at ?? undefined,
+                marque:
+                  aModifier.genre === "marque"
+                    ? {
+                        cible: { type: aModifier.type === "cours" ? "cours" : "lesson", slug: aModifier.slug },
+                        cle: aModifier.cle,
+                        signet: Boolean(aModifier.signet),
+                        contexte: `${aModifier.titre} · ${libelleSection(aModifier)}`,
+                      }
+                    : undefined,
+              }
             : undefined
         }
       />

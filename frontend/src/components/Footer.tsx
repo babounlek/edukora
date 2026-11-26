@@ -35,15 +35,26 @@ function libelleCursus(c: Pick<Cursus, "examen_display" | "series">) {
 }
 
 /** Le compte à rebours en une phrase - au mois près quand la date n'est qu'estimée
- * (voir CompteARebours.estimee : jamais un nombre de jours sur une date supposée). */
+ * (voir CompteARebours.estimee : jamais un nombre de jours sur une date supposée).
+ * L'examen et le délai sont en gras : ce sont les deux informations à retenir. */
 function phraseCompteARebours(user: User) {
   const cr = user.compte_a_rebours
   if (!cr || cr.jours_restants < 0) return null
-  if (cr.estimee) {
-    const mois = Math.max(1, Math.round(cr.jours_restants / 30))
-    return tn("ft.mois", mois, { session: cr.session_label })
-  }
-  return tn("ft.jours", cr.jours_restants, { session: cr.session_label })
+  const duree = cr.estimee
+    ? tn("ft.mois", Math.max(1, Math.round(cr.jours_restants / 30)))
+    : tn("ft.jours", cr.jours_restants)
+  // La phrase traduite est découpée autour de ses deux variables (l'examen d'abord, le délai ensuite, en fr comme en en).
+  const [avant, entre = "", apres = ""] = t("ft.compte_a_rebours", { session: "|", duree: "|" }).split("|")
+  const gras = "font-bold"
+  return (
+    <>
+      {avant}
+      <strong className={gras}>{cr.session_label}</strong>
+      {entre}
+      <strong className={gras}>{duree}</strong>
+      {apres}
+    </>
+  )
 }
 
 /**
@@ -72,7 +83,7 @@ function invitationPour(user: User | null, country: string, seanceFaite = false)
     return {
       message: (
         <>
-          {compteARebours ? `${compteARebours}. ` : ""}
+          {compteARebours && <>{compteARebours}. </>}
           {cursus ? t("ft.debloque_cursus", { cursus }) : t("ft.debloque")}{" "}
           <span className="text-primary">{t("ft.debloque_fin")}</span>
         </>
@@ -86,7 +97,7 @@ function invitationPour(user: User | null, country: string, seanceFaite = false)
     return {
       message: (
         <>
-          {compteARebours ? `${compteARebours} · ` : ""}
+          {compteARebours && <>{compteARebours} · </>}
           <span className="text-primary">{t("ft.seance_faite")}</span>
         </>
       ),
@@ -97,7 +108,7 @@ function invitationPour(user: User | null, country: string, seanceFaite = false)
   return {
     message: (
       <>
-        {compteARebours ? `${compteARebours} · ` : ""}
+        {compteARebours && <>{compteARebours} · </>}
         <span className="text-primary">{t(compteARebours ? "ft.seance_prete_suite" : "ft.seance_prete")}</span>
       </>
     ),

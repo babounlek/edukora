@@ -423,7 +423,6 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/85 backdrop-blur-sm">
-      <div className="h-[3px] w-full bg-gradient-to-r from-primary via-gold to-primary" />
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3.5 sm:px-6">
         <div className="flex min-w-0 items-center gap-2">
           <Link to={catalogueHomePath(country)} className="group flex min-w-0 items-center gap-2">

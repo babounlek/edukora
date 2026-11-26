@@ -27,7 +27,7 @@ export async function telechargerCoursPdf(slug: string): Promise<void> {
   for (let essai = 0; essai < ESSAIS_MAX; essai++) {
     const reponse = await demanderCoursPdf(slug)
     if (reponse instanceof Blob) {
-      enregistrer(reponse, `${slug}.pdf`)
+      enregistrer(reponse, reponse instanceof File ? reponse.name : `${slug}.pdf`)
       return
     }
     await attendre(PAUSE_MS)

@@ -220,7 +220,7 @@ def download_cours_pdf(request, cours_id):
         # Une même adresse sert deux versions selon l'abonnement : jamais mise en cache partagée (livrer_pdf).
         return quota.livrer_pdf(
             request, document, lambda: stockage.open(nom, "rb"),
-            as_attachment=True, filename=f"{slugify(cours.titre) or 'cours'}.pdf",
+            as_attachment=True, filename=cours_pdf.nom_telechargement(cours, variante),
         )
 
     if not cours_pdf.markdown_du_cours(cours, variante).strip():

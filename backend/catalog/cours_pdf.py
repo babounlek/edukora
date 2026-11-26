@@ -24,6 +24,7 @@ import sys
 import tempfile
 import threading
 import time
+import unicodedata
 from pathlib import Path
 
 import markdown
@@ -91,6 +92,47 @@ def empreinte(cours, variante):
 
 def nom_fichier(cours, variante):
     return f"{variante}/{cours.pk}-{empreinte(cours, variante)}.pdf"
+
+
+# --- Nom sur l'appareil de l'élève -------------------------------------------------------------------------------
+
+# Au-delà, le titre est coupé entre deux mots : l'écran d'un téléphone n'en montre pas davantage.
+TITRE_MAX = 60
+_NOMS_EXAMENS = {"BEPC": "BEPC", "PROBATOIRE": "Probatoire", "BAC": "BAC", "CAP": "CAP", "GCE_OL": "GCE-OL", "GCE_AL": "GCE-AL"}
+
+
+def _segment(texte):
+    """Un morceau de nom de fichier : sans accent, les mots reliés par des tirets, la casse gardée."""
+    ascii_ = unicodedata.normalize("NFKD", texte.replace("œ", "oe").replace("Œ", "Oe")).encode("ascii", "ignore").decode()
+    return re.sub(r"[^A-Za-z0-9]+", "-", ascii_).strip("-")
+
+
+def _examen_unique(cours):
+    """
+    Le code de l'examen du cours s'il n'y en a qu'un, sinon None : un cours commun à plusieurs examens n'en annonce
+    aucun plutôt qu'un au hasard. Beaucoup de cours n'ont pas de cursus : on regarde alors leurs épreuves sources.
+    """
+    examens = set(cours.cursus.values_list("examen", flat=True))
+    if not examens:
+        examens = set(cours.rappels_source.values_list("exercise__lesson__cursus__examen", flat=True)) - {None}
+    return examens.pop() if len(examens) == 1 else None
+
+
+def nom_telechargement(cours, variante):
+    """
+    « EduKora_BEPC_Mathematiques_Le-theoreme-de-Thales.pdf » : l'examen et la matière se lisent dans le dossier des
+    téléchargements, et le tri par nom les regroupe (un site web ne peut pas y créer de sous-dossiers). La version sans
+    les exercices le dit, quand elle diffère vraiment de la complète : les deux peuvent se retrouver côte à côte.
+    """
+    examen = _examen_unique(cours)
+    titre = _segment(cours.titre)
+    if len(titre) > TITRE_MAX:
+        titre = titre[: TITRE_MAX + 1].rsplit("-", 1)[0][:TITRE_MAX]
+    morceaux = [_segment(settings.SITE_NAME), _NOMS_EXAMENS.get(examen, ""), _segment(cours.subject.label), titre or "cours"]
+    if variante == LIBRE and any(s.get("type") in SECTIONS_PAYANTES_COURS for s in cours.sections_raw):
+        anglais = cours.subject.code.startswith("GCE_") or (examen or "").startswith("GCE_")
+        morceaux.append("no-exercises" if anglais else "sans-exercices")
+    return "_".join(m for m in morceaux if m) + ".pdf"
 
 
 # --- Rendu -----------------------------------------------------------------------------------------------------

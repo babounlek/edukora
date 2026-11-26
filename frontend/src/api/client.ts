@@ -387,7 +387,10 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
 
   const contentType = response.headers.get("content-type") ?? ""
   if (options.blob && response.ok && (contentType.includes("application/pdf") || contentType.startsWith("image/"))) {
-    return (await response.blob()) as T
+    const blob = await response.blob()
+    // Quand le serveur nomme le fichier, le Blob est un File qui porte ce nom (voir lib/coursPdf).
+    const nom = /filename="([^"]+)"/.exec(response.headers.get("content-disposition") ?? "")?.[1]
+    return (nom ? new File([blob], nom, { type: blob.type }) : blob) as T
   }
   const data = contentType.includes("application/json") ? await response.json() : null
 

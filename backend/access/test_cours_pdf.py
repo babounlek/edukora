@@ -131,6 +131,20 @@ class TelechargementTests(_Base):
         self.assertEqual(b"".join(reponse.streaming_content), b"PDF-LIBRE")
         self.assertEqual(reponse["Content-Type"], "application/pdf")
         self.assertIn("attachment", reponse["Content-Disposition"])
+        self.assertIn(cours_pdf.nom_telechargement(self.cours, LIBRE), reponse["Content-Disposition"])
+
+    def test_le_nom_du_fichier_dit_la_matiere_et_distingue_les_deux_versions(self):
+        self.cours.titre = "Le théorème de Thalès : œuvre et méthode, " + "très " * 30 + "longue"
+        matiere = cours_pdf._segment(self.cours.subject.label)
+
+        libre = cours_pdf.nom_telechargement(self.cours, LIBRE)
+        complet = cours_pdf.nom_telechargement(self.cours, COMPLET)
+
+        self.assertRegex(libre, r"^[A-Za-z0-9_-]+\.pdf$")
+        self.assertIn(f"_{matiere}_Le-theoreme-de-Thales-oeuvre-et-methode", libre)
+        self.assertRegex(libre, r"_(sans-exercices|no-exercises)\.pdf$")
+        self.assertNotIn("exerci", complet)
+        self.assertLessEqual(len(complet.rsplit("_", 1)[1]), cours_pdf.TITRE_MAX + len(".pdf"))
 
     def test_un_connecte_sans_abonnement_recoit_la_version_libre(self):
         self._deposer(LIBRE, b"PDF-LIBRE")

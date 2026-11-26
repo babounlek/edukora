@@ -37,6 +37,20 @@ describe("telechargerCoursPdf", () => {
     expect(clics).toEqual(["les-suites.pdf"])
   })
 
+  it("garde le nom donné par le serveur", async () => {
+    const clics: string[] = []
+    vi.spyOn(HTMLAnchorElement.prototype, "click").mockImplementation(function (this: HTMLAnchorElement) {
+      clics.push(this.download)
+    })
+    demanderCoursPdf.mockResolvedValueOnce(
+      new File(["%PDF"], "EduKora_BEPC_Mathematiques_Les-suites.pdf", { type: "application/pdf" }),
+    )
+
+    await telechargerCoursPdf("les-suites")
+
+    expect(clics).toEqual(["EduKora_BEPC_Mathematiques_Les-suites.pdf"])
+  })
+
   it("abandonne quand le serveur ne l'a toujours pas préparé", async () => {
     demanderCoursPdf.mockResolvedValue({ statut: "en_preparation" })
 
