@@ -255,12 +255,15 @@ export function FichesEdukoraPage() {
           </nav>
 
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-3">
-            <span className={cn("flex size-14 shrink-0 items-center justify-center rounded-2xl", couleurMatiere(matiere?.matiere_code).puce)}>
-              <Icone className="size-7" aria-hidden="true" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{matiere?.matiere}</h2>
-              <p className="text-xs text-muted-foreground">{tn("fe.nombre", matiere?.total ?? 0)}</p>
+            {/* La largeur réservée au nom : sans elle, le bouton et la recherche l’écrasaient et il passait dessous. */}
+            <div className="flex min-w-[min(100%,18rem)] flex-1 items-center gap-4">
+              <span className={cn("flex size-14 shrink-0 items-center justify-center rounded-2xl", couleurMatiere(matiere?.matiere_code).puce)}>
+                <Icone className="size-7" aria-hidden="true" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="font-display text-2xl font-semibold leading-tight tracking-tight sm:text-3xl">{matiere?.matiere}</h2>
+                <p className="text-xs text-muted-foreground">{tn("fe.nombre", matiere?.total ?? 0)}</p>
+              </div>
             </div>
             {imprimables > 0 && (
               <Button type="button" variant="outline" className="rounded-full print:hidden" onClick={() => window.print()}>
