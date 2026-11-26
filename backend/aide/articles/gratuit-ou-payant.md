@@ -4,14 +4,15 @@ ordre: 40
 populaire: oui
 pages: /tarifs
 titre: Gratuit ou payant : qu'est-ce que je peux faire sans payer ?
-resume: Les cours sont gratuits ; les corrigés complets, les exercices d'application, les inédites et la séance complète demandent l'abonnement.
-mots_cles: gratuit, payant, abonnement, sans payer, essai, free, prix, cours gratuits, corrigé gratuit
+resume: Les cours sont gratuits ; les corrigés complets, les exercices d'application, les inédites, la séance complète et toutes les fiches demandent l'abonnement.
+mots_cles: gratuit, payant, abonnement, sans payer, essai, free, prix, cours gratuits, corrigé gratuit, fiche gratuite, fiches
 ---
 ## Gratuit
 
 - Les **cours**, à lire en entier.
 - Certains **corrigés d'annales** sont ouverts à tous : ils sont repérables dans les listes.
 - Des **quiz d'essai**, sans même créer de compte.
+- Quelques **[Fiches EduKora](/aide/fiches-edukora)** par matière. Les autres montrent la notion et les années où elle est tombée, sans la définition.
 
 ## Avec l'abonnement
 
@@ -19,6 +20,7 @@ mots_cles: gratuit, payant, abonnement, sans payer, essai, free, prix, cours gra
 - Les **exercices d'application** corrigés, après chaque cours.
 - Le **quiz qui cible tes révisions** et ta **séance du jour** complète.
 - Les **épreuves inédites**.
+- Toutes les **Fiches EduKora** de ton examen.
 
 Le détail, les offres du moment et le prix sont sur la page [Prix](/tarifs). Le prix est **par mois** (tu choisis le nombre de mois), sans renouvellement automatique : voir [Comment payer](/aide/comment-payer).
 

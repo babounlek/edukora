@@ -11,6 +11,7 @@ There is **only one plan**: the **monthly** subscription. You choose the number 
 - **Practice exercises** solved step by step, after each lesson.
 - The **quiz** that finds your weak spots and brings them back, and your **daily session**.
 - The {{site}} **mock papers**.
+- All the **[EduKora sheets](/aide/fiches-edukora)** for your exam, to keep in your notes or print (without a subscription, only a few sheets per subject can be read).
 - The ranking of the **topics that come up most** in real past papers.
 
 Everything is included, whatever number of months you choose.

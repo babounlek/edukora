@@ -13,6 +13,7 @@ Il n'y a qu'**une seule formule** : l'abonnement **au mois**. Tu choisis le nomb
 - Les **exercices d'application** corrigés pas à pas, après chaque cours.
 - Le **quiz** qui repère tes lacunes et te les reproposera, et ta **séance du jour**.
 - Les **épreuves inédites** {{site}}.
+- Toutes les **[Fiches EduKora](/aide/fiches-edukora)** de ton examen, à garder dans tes notes ou à imprimer (sans abonnement, seules quelques fiches par matière sont lisibles).
 - Le classement des **thèmes qui reviennent le plus** dans les vraies annales.
 
 Tout est inclus, quel que soit le nombre de mois que tu choisis.
