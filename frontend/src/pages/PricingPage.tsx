@@ -466,6 +466,19 @@ export function PricingPage() {
         ? t(manuelActif ? "prix.faq1_r_campay" : "prix.faq1_r_campay_seul")
         : manuelActif ? t("prix.faq1_r_manuel") : t("prix.faq1_r_aucun"),
     },
+    // Qui encaisse, juste après « comment je paie » : la demande arrive sous le nom de CamPay, que le parent ne connaît
+    // pas. Seulement quand ce mode est ouvert : un transfert manuel montre le nom du bénéficiaire sur l'écran de paiement.
+    ...(campayActif
+      ? [
+          {
+            cle: "securite",
+            icone: <ShieldCheck className="size-4" />,
+            teinte: "bg-success/10 text-success",
+            q: t("prix.faq_sur_q"),
+            r: t("prix.faq_sur_r", { site: SITE_NAME }),
+          },
+        ]
+      : []),
     {
       cle: "prix",
       icone: <Lock className="size-4" />,

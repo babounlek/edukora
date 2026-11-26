@@ -447,6 +447,8 @@ export const en: Partial<Record<CleI18n, string>> = {
     "What happens when my months run out?",
   "prix.faq5_r":
     "Your access stops on the date shown before you pay. Nothing is renewed automatically: you extend whenever you like, and the new months are added after the current ones.",
+  "prix.faq_sur_q": "Is the payment safe? Who is CamPay?",
+  "prix.faq_sur_r": "The payment goes through CamPay, a Cameroonian Mobile Money payment service connected to MTN and Orange. The request arrives on your phone, sometimes under CamPay's name, and you approve it with your PIN: you type it only on your phone, neither {site} nor CamPay sees it. Nothing is charged unless you approve, and your operator sends you an SMS that proves your payment.",
   "prix.faq7_q": "Can I get a refund?",
   "prix.faq7_r": "A confirmed payment is final: it is not refunded, unless a proven technical fault on the platform stops you from accessing what you paid for. In that case, write to us. The papers, the lessons and some of the solutions are free: try before you pay.",
   "prix.faq6_q":
@@ -1929,7 +1931,12 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.direct_seul_titre": "Orange Money or MTN MoMo",
   "sb.direct_seul_texte": "You get a payment request on your phone and approve it with your PIN. Your access opens right away.",
   "sb.campay_texte":
-    "Automatic Mobile Money payment - confirmation within seconds, access unlocked immediately.",
+    "Automatic Mobile Money payment through CamPay - confirmation within seconds, access unlocked immediately.",
+  "sb.confiance_titre": "Payment through CamPay, our Mobile Money provider",
+  "sb.confiance_nom": "CamPay sends the request to your phone on behalf of {site}: its name may appear there.",
+  "sb.confiance_code": "You type your PIN only on your phone: neither {site} nor CamPay sees it.",
+  "sb.confiance_debit": "Nothing is charged unless you approve, and nothing renews by itself.",
+  "sb.confiance_lien": "Who is CamPay? Is my payment safe?",
   "sb.difficultes": "Direct payment not going through? Pay by Orange Money or MTN MoMo transfer",
   "sb.auto_indisponible": "Automatic payment is temporarily unavailable. ",
   "sb.aucun_moyen": "Payment is temporarily unavailable. Please try again a little later.",
@@ -1955,6 +1962,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.nouvelle_demande": "Send a new request",
   "sb.nouvelle_demande_aide": "Approve only one request: every approved request is charged.",
   "sb.confirme_texte": "A request for {montant} FCFA was sent to {phone}. Approve it with your Mobile Money PIN: this page updates by itself.",
+  "sb.confirme_campay": "It comes from CamPay, our payment provider: its name may appear instead of ours.",
   "sb.revenir_formulaire": "Back to the form",
   "sb.deja_valide": "If you've already approved the payment, your access will still activate.",
   "sb.timeout_titre": "The confirmation is taking longer than expected",
@@ -1968,7 +1976,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.echec_code": "you enter the right PIN;",
   "sb.echec_delai": "you approve the request within a few minutes: after that, it expires.",
   "sb.echec_rien_debite": "A failed payment is not charged.",
-  "sb.securise": "Secure payment - your subscription activates as soon as the payment is confirmed.",
+  "sb.securise": "Secure payment through CamPay - your subscription activates as soon as the payment is confirmed.",
   "sb.securise_manuel": "Secure payment - your subscription activates once our team has checked your transfer, usually within {delai}.",
 
   "bv.prolonge": "Your access is extended",

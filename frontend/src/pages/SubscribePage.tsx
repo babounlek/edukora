@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
-import { AlertCircle, CheckCircle2, Gift, Loader2, MessageCircle, ShieldCheck, Smartphone, Sparkles, User, XCircle, Zap } from "lucide-react"
+import { AlertCircle, Check, CheckCircle2, Gift, Loader2, MessageCircle, ShieldCheck, Smartphone, Sparkles, User, XCircle, Zap } from "lucide-react"
 
 import {
   checkPaymentStatus, getPaiementEnCours, initiatePayment, listCursus, listMyInscriptionsInedites, listMySubscriptions, listPlans,
@@ -36,6 +36,7 @@ import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 import { LienAide } from "@/components/aide/LienAide"
 import { lienContactAide } from "@/lib/aide/contact"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
+import { SITE_NAME } from "@/lib/site"
 import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { chiffresNumeroLocal } from "@/lib/telephone"
@@ -106,6 +107,39 @@ function AideValidation({ operator }: { operator: MobileMoneyOperator | "" }) {
           </Button>
         ))}
       </div>
+    </div>
+  )
+}
+
+/**
+ * Qui encaisse, et ce qui protège l'argent du payeur. La demande arrive sur le téléphone sous le nom d'un prestataire
+ * que le parent ne connaît pas : c'est là qu'il hésite. CamPay est donc nommé avant le paiement, avec les garanties
+ * qui tiennent au mode de paiement lui-même (code secret saisi chez l'opérateur, rien de débité sans validation, aucun
+ * renouvellement). L'article d'aide dit qui est CamPay.
+ */
+function ConfianceCampay() {
+  const garanties = [
+    t("sb.confiance_nom", { site: SITE_NAME }),
+    t("sb.confiance_code", { site: SITE_NAME }),
+    t("sb.confiance_debit"),
+  ]
+  return (
+    <div className="rounded-lg border border-border bg-muted/40 px-3.5 py-3 text-sm">
+      <p className="flex items-center gap-2 font-medium">
+        <ShieldCheck className="size-4 shrink-0 text-success" aria-hidden="true" />
+        {t("sb.confiance_titre")}
+      </p>
+      <ul className="mt-2 flex flex-col gap-1.5 text-xs text-muted-foreground">
+        {garanties.map((texte) => (
+          <li key={texte} className="flex gap-2">
+            <Check className="mt-0.5 size-3.5 shrink-0 text-success" aria-hidden="true" />
+            <span>{texte}</span>
+          </li>
+        ))}
+      </ul>
+      <LienAide slug="paiement-securise" className="mt-1.5 text-xs">
+        {t("sb.confiance_lien")}
+      </LienAide>
     </div>
   )
 }
@@ -866,8 +900,8 @@ export function SubscribePage() {
               ) : (
                 <>
                   {/* Un seul moyen proposé (la demande sur le téléphone) : pas d'étape « choisis ton moyen » à option
-                      unique, ni de carte au nom du prestataire, inconnu de qui paie. Les deux opérateurs acceptés,
-                      et ce qui va se passer. */}
+                      unique. Les deux opérateurs acceptés, et ce qui va se passer ; le prestataire, CamPay, est
+                      présenté sous le bouton de paiement (ConfianceCampay), pas comme un choix à faire. */}
                   {campayActif && !manuelActif ? (
                     <div className="flex items-start gap-3">
                       <span className="mt-0.5 flex shrink-0 -space-x-1.5">
@@ -1010,6 +1044,7 @@ export function SubscribePage() {
                             {t("camp.prix_promo_jusqu_au", { date: dateLimiteCampagne(selectedPlan.campagne.fin) })}
                           </p>
                         )}
+                        <ConfianceCampay />
                       </form>
                     ) : (
                       selectedPlan && (
@@ -1083,6 +1118,8 @@ export function SubscribePage() {
                   ? t("sb.confirme_texte", { phone: phoneNumber, montant: formatAmount(attente.montant) })
                   : t("sb.envoi_demande", { phone: phoneNumber })}
               </p>
+              {/* Le nom inconnu qui s'affiche sur le téléphone au moment de taper le code secret : le dire ici aussi. */}
+              {attente && <p className="text-xs text-muted-foreground">{t("sb.confirme_campay")}</p>}
               {attente && <AideValidation operator={attente.operator} />}
               {/* Pas « Annuler » : ce bouton n'annule rien côté opérateur. Le dire évite qu'on croie sa demande
                   retirée, puis qu'on repaie une deuxième fois. */}

@@ -20,7 +20,7 @@ Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **en une fo
 ## Payer : la demande arrive sur ton téléphone
 
 1. Sur l'écran de paiement, entre le **numéro Orange ou MTN qui va payer** (9 chiffres, il commence par 6), puis appuie sur « Payer ».
-2. Une **demande de paiement arrive sur ce téléphone**, avec le montant. Valide-la avec ton **code secret Mobile Money**.
+2. Une **demande de paiement arrive sur ce téléphone**, avec le montant. Elle est envoyée par **CamPay**, notre prestataire de paiement Mobile Money : son nom peut y apparaître, c'est normal. Vérifie le montant, puis valide avec ton **code secret Mobile Money**. Ce code, tu ne le tapes que sur ton téléphone : voir [Mon paiement est-il sûr ? Qui est CamPay ?](/aide/paiement-securise).
 3. Ton accès s'ouvre dès que l'opérateur confirme, en général en quelques secondes. Tu reçois un SMS de confirmation, et le paiement apparaît dans [Mes paiements](/mes-paiements).
 
 **Rien ne s'affiche sur ton téléphone ?** Compose **\*126#** sur MTN ou **#150\*50#** sur Orange : tu y retrouves la demande en attente et tu la valides. Le code à composer est aussi rappelé sur l'écran de paiement.

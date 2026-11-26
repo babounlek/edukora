@@ -16,7 +16,7 @@ Payment is by **Mobile Money** (Orange Money or MTN MoMo), **in one go** for the
 ## Paying: the request arrives on your phone
 
 1. On the payment screen, enter the **Orange or MTN number that will pay** (9 digits, starting with 6), then press "Pay".
-2. A **payment request arrives on that phone**, showing the amount. Approve it with your **Mobile Money PIN**.
+2. A **payment request arrives on that phone**, showing the amount. It is sent by **CamPay**, our Mobile Money payment provider: its name may appear, that is normal. Check the amount, then approve with your **Mobile Money PIN**. You type that PIN only on your phone: see [Is my payment safe? Who is CamPay?](/aide/paiement-securise).
 3. Your access opens as soon as the operator confirms, usually within seconds. You receive a confirmation SMS, and the payment appears in [My payments](/mes-paiements).
 
 **Nothing showing on your phone?** Dial **\*126#** on MTN or **#150\*50#** on Orange: you will find the pending request there and can approve it. The code to dial is also shown on the payment screen.

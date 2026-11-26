@@ -391,15 +391,27 @@ describe("SubscribePage : la demande de paiement sur le téléphone (audit du tu
     fireEvent.click(screen.getByRole("button", { name: /Payer 2 000 FCFA/ }))
   }
 
-  it("ne présente ni étape de choix ni le nom du prestataire quand la demande directe est le seul moyen", async () => {
+  it("ne présente pas d'étape de choix quand la demande directe est le seul moyen", async () => {
     getPaymentConfig.mockResolvedValue({ campay_active: true, manual_active: false })
     afficher("/abonnement?cursus=4&mois=1")
 
     expect(await screen.findByText("Orange Money ou MTN MoMo")).toBeInTheDocument()
     expect(screen.queryByText("Recommandé")).not.toBeInTheDocument()
     expect(screen.queryByText("Moyen de paiement")).not.toBeInTheDocument()
-    expect(screen.queryByText(/Campay/)).not.toBeInTheDocument()
     expect(screen.getByLabelText(/Numéro Mobile Money/)).toBeInTheDocument()
+  })
+
+  it("nomme CamPay sous le bouton de paiement, avec ce qui protège le payeur et l'article qui le présente", async () => {
+    getPaymentConfig.mockResolvedValue({ campay_active: true, manual_active: false })
+    afficher("/abonnement?cursus=4&mois=1")
+
+    expect(await screen.findByText("Paiement par CamPay, notre prestataire Mobile Money")).toBeInTheDocument()
+    expect(screen.getByText(/tu ne le tapes que sur ton téléphone : ni .+ ni CamPay ne le voient/)).toBeInTheDocument()
+    expect(screen.getByText(/Rien n'est débité sans ta validation/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Qui est CamPay \? Mon paiement est-il sûr \?/ })).toHaveAttribute(
+      "href",
+      "/aide/paiement-securise",
+    )
   })
 
   it("dit le montant et le code à composer pour l'opérateur du numéro pendant l'attente", async () => {
@@ -408,6 +420,7 @@ describe("SubscribePage : la demande de paiement sur le téléphone (audit du tu
     await payer()
 
     expect(await screen.findByText(/Une demande de 2 000 FCFA a été envoyée au 677123456/)).toBeInTheDocument()
+    expect(screen.getByText(/Elle vient de CamPay, notre prestataire de paiement/)).toBeInTheDocument()
     expect(screen.getByText(/Compose #150\*50# \(Orange Money\)/)).toBeInTheDocument()
     expect(screen.queryByText(/\*126#/)).not.toBeInTheDocument()
   })
