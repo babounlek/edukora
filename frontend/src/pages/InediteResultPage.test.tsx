@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -136,6 +137,26 @@ describe("InediteResultPage", () => {
 
     expect(await screen.findByText("Copie en cours")).toBeInTheDocument()
     expect(completeSimulation).not.toHaveBeenCalled()
+  })
+
+  it("propose de réessayer quand le chargement échoue, et relance vraiment le chargement", async () => {
+    const user = userEvent.setup()
+    let repondre: (copie: unknown) => void = () => {}
+    getTentativeInedite
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockImplementationOnce(() => new Promise((resolve) => { repondre = resolve }))
+    completeTentative.mockResolvedValue(resultat())
+    afficher()
+
+    expect(await screen.findByText("Impossible de charger cette page")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Retour au catalogue" })).toBeInTheDocument()
+    await user.click(screen.getByRole("button", { name: "Réessayer" }))
+
+    // Pendant la relance, l'écran d'erreur laisse la place au squelette.
+    expect(getTentativeInedite).toHaveBeenCalledTimes(2)
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument()
+    repondre({ id: 7, submitted_at: "2026-10-04T09:00:00Z" })
+    expect(await screen.findByText("Programmation Terminale TI – Épreuve inédite n°1")).toBeInTheDocument()
   })
 
   it("affiche la note sur le barème, définitive, avec le détail par exercice", async () => {

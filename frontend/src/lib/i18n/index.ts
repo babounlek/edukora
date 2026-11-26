@@ -169,9 +169,22 @@ function interpoler(gabarit: string, variables?: Variables): string {
   return gabarit.replace(/\{(\w+)\}/g, (brut, nom: string) => (nom in variables ? String(variables[nom]) : brut))
 }
 
+/**
+ * Typographie française : une espace insécable avant « ! ? : ; », pour que la ponctuation ne parte jamais
+ * seule à la ligne (« Tu maîtrises / ! » sur le retour d'une bonne réponse, audit 20, F14). Posée à l'affichage
+ * plutôt qu'écrite dans fr.ts : le dictionnaire reste lisible et les tests s'écrivent avec des espaces ordinaires
+ * (sous Vitest, MODE vaut « test » et t() rend le texte tel quel ; insecables() se teste à part).
+ */
+export function insecables(texte: string): string {
+  return texte.replace(/ ([!?:;])/g, " $1")
+}
+
+const TYPOGRAPHIE_FRANCAISE = import.meta.env.MODE !== "test"
+
 /** Texte d'une clé dans la langue courante ; à défaut de traduction, le français. */
 export function t(cle: CleI18n, variables?: Variables): string {
-  return interpoler(surcharge[cle] ?? fr[cle], variables)
+  const texte = interpoler(surcharge[cle] ?? fr[cle], variables)
+  return TYPOGRAPHIE_FRANCAISE && langue === "fr" ? insecables(texte) : texte
 }
 
 /** Pluriel : lit `<base>_one` ou `<base>_other` selon `n` ; `{n}` est toujours disponible. */

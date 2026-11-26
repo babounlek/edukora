@@ -19,7 +19,7 @@ import { BandeauCursus } from "@/components/BandeauCursus"
 import { BandeauLangueCursus } from "@/components/BandeauLangueCursus"
 import { BarreSeance } from "@/components/BarreSeance"
 import { BottomTabBar } from "@/components/BottomTabBar"
-import { useConcentration } from "@/lib/concentration"
+import { useConcentration, useSansOnglets } from "@/lib/concentration"
 import { ErrorBoundary } from "@/components/ErrorBoundary"
 import { RouteFallback } from "@/components/RouteFallback"
 import { ScrollToTop } from "@/components/ScrollToTop"
@@ -138,6 +138,7 @@ function App({ basename = "" }: { basename?: string }) {
   const enExamen = useModeExamen()
   // Quiz en cours sur téléphone : l'en-tête, la barre d'onglets et le pied de page s'effacent (voir lib/concentration).
   const concentre = useConcentration()
+  const sansOnglets = useSansOnglets()
   return (
     <ThemeProvider defaultTheme="light" storageKey="edukamer-theme">
       <AppToaster />
@@ -165,7 +166,7 @@ function App({ basename = "" }: { basename?: string }) {
               {!enExamen && <BandeauReprisePaiement />}
               {!enExamen && <BarreSeance />}
               <main id="contenu" tabIndex={-1} className="flex-1 outline-none">
-                <ErrorBoundary>
+                <ErrorBoundary reinitialiserSurNavigation>
                   <Suspense fallback={<RouteFallback />}>
                     <Routes>
                       <Route path="/" element={<RootRedirect />} />
@@ -245,9 +246,9 @@ function App({ basename = "" }: { basename?: string }) {
               {/* Réserve la hauteur de la barre d'onglets, qui est en position fixe :
                   sans elle, les derniers liens du pied de page sont recouverts et donc
                   inatteignables sur mobile. */}
-              {!enExamen && !concentre && <ReserveBarreOnglets />}
+              {!enExamen && !concentre && !sansOnglets && <ReserveBarreOnglets />}
             </div>
-            {!enExamen && !concentre && <BottomTabBar />}
+            {!enExamen && !concentre && !sansOnglets && <BottomTabBar />}
             <OnboardingModal />
             <GuideHost />
             <PinDialogs />

@@ -34,6 +34,7 @@ import {
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { capitaliserTheme, cn } from "@/lib/utils"
+import { definirSansOnglets } from "@/lib/concentration"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { NoterSelection } from "@/components/NoterSelection"
 import { NotesDuTheme } from "@/components/NotesDuTheme"
@@ -135,6 +136,20 @@ export function ThemeExerciceLecturePage() {
     window.scrollTo({ top: 0 })
   }, [exerciseId])
 
+  // Cette page a sa propre barre d'action en bas : la barre d'onglets s'efface tant qu'on la lit (voir
+  // lib/concentration, definirSansOnglets). L'en-tête reste, pour la recherche et le menu.
+  useEffect(() => {
+    definirSansOnglets(true)
+    return () => definirSansOnglets(false)
+  }, [])
+
+  // Dans la séance du jour, la barre du bas ne mène qu'à l'étape d'après (le plus souvent le quiz qui valide la
+  // séance). Avant, sa grande « Suivante » verte ouvrait l'exercice suivant du thème et faisait sortir de la
+  // séance l'élève qui touchait le bouton le plus visible (audit 20, F12). L'exercice suivant reste offert en
+  // bas de la lecture et par les flèches du haut.
+  const position = usePositionDansLaSeance()
+  const etapeSeance = position?.suivante && position.lienSuivante ? position : null
+
   const zoneRef = useRef<HTMLDivElement>(null)
   const exercices = file?.exercices ?? []
   const index = exercices.findIndex((e) => e.exercise_id === Number(exerciseId))
@@ -226,8 +241,17 @@ export function ThemeExerciceLecturePage() {
           Posée au-dessus de la barre d'onglets (BottomTabBar, z-40, lg:hidden) : sa hauteur est
           publiée dans --bottom-tab-bar, 0 quand la barre n'existe pas. lg:hidden comme elle,
           sinon la plage 640-1024 px n'avait ni la barre du bas ni de quoi avancer au pouce. */}
-      {index >= 0 && (
-        <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 py-3 backdrop-blur lg:hidden">
+      {etapeSeance?.suivante && etapeSeance.lienSuivante ? (
+        <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+          <Button asChild size="lg" className="w-full">
+            <Link to={etapeSeance.lienSuivante} onClick={etapeSeance.ouvrirSuivante}>
+              {etapeSeance.suivante.type === "quiz" ? t("bs.passer_quiz") : t("bs.continuer")}
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
+      ) : index >= 0 && (
+        <div className="fixed inset-x-0 bottom-[var(--bottom-tab-bar,0px)] z-30 border-t border-border bg-background/95 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
           <div className="flex items-center gap-2">
             {precedent ? (
               <Button asChild variant="outline" size="lg" className="flex-1">

@@ -45,7 +45,7 @@ function SheetContent({ className, children, ...props }: React.ComponentProps<ty
         {...props}
       >
         {children}
-        <SheetPrimitive.Close className="absolute right-4 top-4 rounded-md p-1 text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/50">
+        <SheetPrimitive.Close className="absolute right-2 top-2 rounded-md p-3 text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/50">
           <X className="size-5" />
           <span className="sr-only">{t("moments.fermer")}</span>
         </SheetPrimitive.Close>

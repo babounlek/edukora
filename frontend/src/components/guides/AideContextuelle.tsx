@@ -25,7 +25,17 @@ import { t, useI18n } from "@/lib/i18n"
  *
  * Les deux n'affichent rien pour un guide inconnu ou qui n'est pas de type « aide ».
  */
-export function AideContextuelle({ guide: id, className }: { guide: string; className?: string }) {
+export function AideContextuelle({
+  guide: id,
+  className,
+  auto = true,
+}: {
+  guide: string
+  className?: string
+  /** false : jamais d'ouverture automatique ici (la carte s'affiche encore si l'élève la demande par le « ? »).
+   * Pour une page dont le contenu demandé passerait sous l'aide, p. ex. des résultats de recherche (audit 20, F4). */
+  auto?: boolean
+}) {
   useI18n()
   const guide = trouverGuide(id)
   const etat = useEtatGuides()
@@ -38,10 +48,10 @@ export function AideContextuelle({ guide: id, className }: { guide: string; clas
   // d'accueil du compte fermé...) ; le moteur refuse tant qu'une règle l'interdit.
   const { identite, ouvert, autoDejaMontre, revision } = etat
   useEffect(() => {
-    if (!guide || guide.type !== "aide" || !identite) return
+    if (!auto || !guide || guide.type !== "aide" || !identite) return
     const situation = { memoire: memoireActuelle(), guideOuvert: ouvert !== null, autoDejaMontre }
     if (peutDeclencherAuto(guide, contexte(), situation)) ouvrirGuide(id, { explicite: false })
-  }, [guide, id, identite, ouvert, autoDejaMontre, revision, contexte])
+  }, [auto, guide, id, identite, ouvert, autoDejaMontre, revision, contexte])
 
   const cible = guide?.etapes[0]?.cible
   useEffect(() => {

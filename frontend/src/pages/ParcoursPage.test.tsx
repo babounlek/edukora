@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react"
+import { render, screen, waitFor, within } from "@testing-library/react"
+import userEvent from "@testing-library/user-event"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
@@ -160,5 +161,45 @@ describe("ParcoursPage (Ma progression) - ce que disent les chiffres à un élè
     expect(await screen.findByText("Par matière")).toBeTruthy()
     expect(screen.getByText("47 %")).toBeTruthy()
     expect(getBilanPeriode).toHaveBeenCalledWith(14, expect.anything())
+  })
+})
+
+describe("ParcoursPage (Ma progression) - un chargement qui échoue se réessaie", () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    auth.user.cursus_prepare = { id: 14, examen_display: "BEPC", series: null }
+    getBilanPeriode.mockRejectedValue(new Error("pas de bilan"))
+    getErreurs.mockResolvedValue({ total: 0, paquet: 0, plus_ancienne: null, matieres: [] })
+  })
+
+  it("les matières qui n'arrivent pas : un bloc « Réessayer » à leur place, qui relance vraiment la requête", async () => {
+    const user = userEvent.setup()
+    listMySubscriptions.mockResolvedValue([abonnement(258, BEPC)])
+    getResumeParcours
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce([matiere({ subject_id: 1, subject_label: "Anglais" })])
+    afficher()
+
+    // D'autres blocs de la page (les réussites) ont leur propre « Réessayer » : on vise celui des matières.
+    const bloc = (await screen.findByText("Impossible de charger cette page")).closest("[role=alert]") as HTMLElement
+    await user.click(within(bloc).getByRole("button", { name: "Réessayer" }))
+
+    expect(await screen.findByRole("link", { name: /Anglais/ })).toBeTruthy()
+    expect(getResumeParcours).toHaveBeenCalledTimes(2)
+    expect(screen.queryByText("Impossible de charger cette page")).toBeNull()
+  })
+
+  it("les abonnements qui n'arrivent pas : la page entière se réessaie", async () => {
+    const user = userEvent.setup()
+    listMySubscriptions
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce([abonnement(258, BEPC)])
+    getResumeParcours.mockResolvedValue([])
+    afficher()
+
+    await user.click(await screen.findByRole("button", { name: "Réessayer" }))
+
+    expect(await screen.findByText("BEPC")).toBeTruthy()
+    expect(listMySubscriptions).toHaveBeenCalledTimes(2)
   })
 })

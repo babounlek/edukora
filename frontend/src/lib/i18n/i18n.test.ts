@@ -8,6 +8,7 @@ import {
   cheminDansLangue,
   definirLangue,
   initialiserLangue,
+  insecables,
   langueCourante,
   langueDuChemin,
   langueStockee,
@@ -51,6 +52,18 @@ describe("dictionnaires", () => {
   it("toute la tranche française est traduite en anglais", () => {
     const manquantes = Object.keys(fr).filter((cle) => !(cle in en))
     expect(manquantes).toEqual([])
+  })
+})
+
+describe("insecables", () => {
+  it("lie « ! ? : ; » au mot d'avant, pour qu'ils ne partent jamais seuls à la ligne", () => {
+    expect(insecables("Tu maîtrises !")).toBe("Tu maîtrises !")
+    expect(insecables("Prêt ? Durée : 2 h ; go")).toBe("Prêt ? Durée : 2 h ; go")
+  })
+
+  it("ne touche ni aux adresses ni à une ponctuation déjà collée", () => {
+    expect(insecables("https://edukora.africa/aide?x=1")).toBe("https://edukora.africa/aide?x=1")
+    expect(insecables("Hello!")).toBe("Hello!")
   })
 })
 

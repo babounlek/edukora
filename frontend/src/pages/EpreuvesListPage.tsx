@@ -497,7 +497,7 @@ export function EpreuvesListPage() {
                   type="button"
                   onClick={() => updateFilter("search", "")}
                   aria-label={t("ep.effacer")}
-                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground after:absolute after:-inset-1.5 hover:bg-muted hover:text-foreground"
                 >
                   <X className="size-4" />
                 </button>

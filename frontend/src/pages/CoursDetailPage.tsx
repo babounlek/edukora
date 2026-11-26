@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { CoursSection } from "@/components/CoursSection"
 import { RelatedCours } from "@/components/RelatedCours"
 import { LienFiches, useCursusDesFiches } from "@/components/fiches/LienFiches"
@@ -34,7 +35,10 @@ export function CoursDetailPage() {
   const [cours, setCours] = useState<Cours | null>(null)
   const cursusDesFiches = useCursusDesFiches(cours?.cursus)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
-  const [error, setError] = useState("")
+  // L'échec du chargement de la fiche (réseau, serveur, 404), gardé tel quel : seul un 404 dit « introuvable ».
+  const [error, setError] = useState<unknown>(null)
+  // « Réessayer » relance le chargement de la fiche (voir son effet).
+  const [relance, setRelance] = useState(0)
 
   useDeclarerLangueContenu(cours?.subject.langue)
   useSeo({
@@ -51,14 +55,8 @@ export function CoursDetailPage() {
     if (!slug) return
     getCours(slug)
       .then(setCours)
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError(t("co.introuvable"))
-        } else {
-          setError(err instanceof ApiError ? err.message : t("co.charger_erreur"))
-        }
-      })
-  }, [slug])
+      .catch((err: unknown) => setError(err))
+  }, [slug, relance])
 
   // Le premier appel ci-dessus part avant que la session ne soit reconfirmée (voir
   // AuthContext - l'access token ne survit jamais à un rechargement de page) : un
@@ -88,10 +86,27 @@ export function CoursDetailPage() {
   }, [cours, navigate])
 
   if (error && !cours) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur se réessaie.
+    if (error instanceof ApiError && error.status === 404) {
+      return (
+        <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+          <p className="text-destructive">{t("co.introuvable")}</p>
+          <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+            {t("ed.retour_catalogue")}
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-destructive">{error}</p>
-        <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <ErreurChargement
+          message={messagePourEleve(error)}
+          onRetry={() => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to="/" className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("ed.retour_catalogue")}
         </Link>
       </div>

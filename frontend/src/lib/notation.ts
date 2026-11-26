@@ -8,6 +8,13 @@ export function formatPoints(valeur: number | null | undefined): string {
     : new Intl.NumberFormat(localeCourante(), { maximumFractionDigits: 2 }).format(valeur)
 }
 
+/** Barème d'un exercice tel que l'API l'envoie (« 3.5 », « 5 ») : « 3,5 » en français. Une valeur qui n'est
+ * pas un nombre est rendue telle quelle (audit 20, F10 : « 3.25 pts » sur les épreuves). */
+export function formatBareme(points: string): string {
+  const nombre = Number(points)
+  return points.trim() !== "" && Number.isFinite(nombre) ? formatPoints(nombre) : points
+}
+
 /** « 12,5 / 20 » - la note sur son barème réel. */
 export function formatNote(note: number | null, bareme: number | null): string {
   if (note === null || bareme === null) return "—"

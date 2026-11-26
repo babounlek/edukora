@@ -20,6 +20,7 @@ import { lireDefiMemorise } from "@/lib/defiEssai"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, estIntrouvable, messagePourEleve } from "@/components/ErreurChargement"
 import { ObjectifXp } from "@/components/ObjectifXp"
 import { CoupDePouce, PastilleDifficulte } from "@/components/CoupDePouce"
 import { AjouterAMesNotes, bonneReponseEnNote } from "@/components/AjouterAMesNotes"
@@ -130,7 +131,9 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
   // Deux erreurs distinctes : un échec de CHARGEMENT remplace la page, mais un échec d'ACTION
   // (réponse, correction, fin du quiz) ne doit jamais effacer un quiz en cours - l'élève
   // garde ses réponses sous les yeux et peut simplement réessayer.
-  const [error, setError] = useState("")
+  const [error, setError] = useState<unknown>(null)
+  // « Réessayer » sur l'écran d'échec de chargement relance le chargement (voir son effet).
+  const [relance, setRelance] = useState(0)
   const [actionError, setActionError] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [revealed, setRevealed] = useState<Record<number, QuizCorrige>>({})
@@ -199,16 +202,23 @@ export function QuizSessionPage({ essai = false }: { essai?: boolean } = {}) {
         // d'où « Voir mon résultat » est à portée, plutôt qu'au début d'un quiz fini.
         setCurrentIndex(firstUnanswered === -1 ? indexDeReprise(data.questions) : firstUnanswered)
       })
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : t("qs.charger_erreur"))
+      .catch((err: unknown) => {
+        setError(err)
       })
-  }, [id, navigate, essai])
+  }, [id, navigate, essai, relance])
 
   if (error) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-10 text-center">
-        <p className="text-destructive">{error}</p>
-        <Link to="/quiz" className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-5xl px-4 py-10">
+        <ErreurChargement
+          objet={t("qd.objet_quiz")}
+          message={estIntrouvable(error) ? t("qs.introuvable") : messagePourEleve(error)}
+          onRetry={estIntrouvable(error) ? undefined : () => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to="/quiz" className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("qs.retour")}
         </Link>
       </div>

@@ -111,14 +111,14 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
                   autonomes - jamais fusionnées, le bon choix dépend de l'élève, pas de
                   nous. */}
               <div className="flex shrink-0 gap-1.5 pl-9 sm:pl-0">
-                <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
+                <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs max-sm:min-h-11">
                   <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, data.nb_sessions_disponibles)}>
                     <FileText className="size-3.5" />
                     {t("qd.exercices")}
                   </Link>
                 </Button>
                 {theme.quiz_disponible ? (
-                  <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs">
+                  <Button asChild size="sm" variant="outline" className="h-7 px-2.5 text-xs max-sm:min-h-11">
                     <Link
                       to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}
                       title={avancement?.titre}
@@ -134,7 +134,7 @@ export function ThemesFrequents({ country, cursusId, subjectCode }: ThemesFreque
                     variant="outline"
                     disabled
                     title={t("qd.pas_de_quiz_theme")}
-                    className="h-7 px-2.5 text-xs"
+                    className="h-7 px-2.5 text-xs max-sm:min-h-11"
                   >
                     <ListChecks className="size-3.5" />
                     {t("qd.onglet_quiz")}

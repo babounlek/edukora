@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { Search } from "lucide-react"
 
+import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { coursListPath, epreuvesListPath, recherchePath, themesFrequentsPath } from "@/lib/countryPath"
 import { ETAT_FOCUS_RECHERCHE } from "@/lib/recherche"
@@ -27,6 +28,7 @@ export function ReviserTabs({ sansLoupeMobile = false }: {
 } = {}) {
   useI18n()
   const { country } = useCountry()
+  const { isAuthenticated } = useAuth()
   const { pathname } = useLocation()
   const surLaRecherche = pathname.startsWith(recherchePath(country))
 
@@ -37,10 +39,12 @@ export function ReviserTabs({ sansLoupeMobile = false }: {
     { to: "/quiz", label: t("qd.onglet_quiz"), actif: pathname.startsWith("/quiz") },
     // Ce qu'on relit : les fiches toutes faites d'EduKora, puis les notes que l'élève s'est écrites.
     { to: "/fiches-edukora", label: t("fe.onglet"), actif: pathname.startsWith("/fiches-edukora") },
-    { to: "/carnet", label: t("cpt.carnet"), actif: pathname.startsWith("/carnet") },
+    { to: "/carnet", label: t("cpt.carnet"), actif: pathname.startsWith("/carnet"), compte: true },
     // Les annales passées en conditions d'examen : la copie à reprendre et les notes (voir MesExamensBlancsPage).
-    { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs") },
-  ]
+    { to: "/examens-blancs", label: t("blancs.onglet"), actif: pathname.startsWith("/examens-blancs"), compte: true },
+    // Sans compte, ces deux onglets ne menaient qu'à « Connecte-toi », et la rangée disparaissait au passage :
+    // le visiteur ne les voit plus (audit 20, N3). Les pages elles-mêmes gardent leur invitation à se connecter.
+  ].filter((onglet) => !onglet.compte || isAuthenticated)
 
   // Sept onglets ne tiennent pas sur un téléphone : sur « Fiches », l'onglet actif était hors de l'écran. On fait défiler
   // la rangée seule (jamais scrollIntoView, qui ferait aussi défiler la page).

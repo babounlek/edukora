@@ -5,10 +5,10 @@ import { useQuery } from "@tanstack/react-query"
 import { ArrowRight, ChevronRight, Compass, GraduationCap, Lock, RotateCcw, SlidersHorizontal } from "lucide-react"
 
 import { getResumeParcours, listMySubscriptions } from "@/api/endpoints"
-import { ApiError } from "@/api/client"
 import type { Cursus, ResumeMatiere } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { BlocReussites } from "@/components/BlocReussites"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { Button } from "@/components/ui/button"
@@ -179,7 +179,12 @@ export function ParcoursPage() {
     if (!authLoading && !isAuthenticated) navigate("/connexion", { state: { from: "/parcours" } })
   }, [authLoading, isAuthenticated, navigate])
 
-  const { data: subscriptions, isError: erreurAbonnements } = useQuery({
+  const {
+    data: subscriptions,
+    isError: erreurAbonnements,
+    isFetching: abonnementsEnCours,
+    refetch: rechargerAbonnements,
+  } = useQuery({
     queryKey: ["mes-abonnements"],
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
@@ -216,7 +221,12 @@ export function ParcoursPage() {
     : prepare
   const cursusId = cursusChoisi ?? parDefaut
 
-  const { data: matieres, error: erreurResume } = useQuery({
+  const {
+    data: matieres,
+    error: erreurResume,
+    isFetching: resumeEnCours,
+    refetch: rechargerResume,
+  } = useQuery({
     queryKey: ["parcours-resume", cursusId],
     queryFn: () => getResumeParcours(Number(cursusId)),
     enabled: isAuthenticated && cursusId !== null,
@@ -226,8 +236,14 @@ export function ParcoursPage() {
   })
 
   if (authLoading || !subscriptions) {
-    if (erreurAbonnements) {
-      return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">{t("pc.abos_erreur")}</p>
+    // Pendant la relance (« Réessayer »), le squelette revient : l'erreur de la requête précédente reste posée
+    // jusqu'à la réponse, l'élève ne verrait sinon aucun signe que son geste a été pris en compte.
+    if (erreurAbonnements && !abonnementsEnCours) {
+      return (
+        <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+          <ErreurChargement onRetry={() => void rechargerAbonnements()} />
+        </div>
+      )
     }
     return <Squelette />
   }
@@ -419,7 +435,15 @@ export function ParcoursPage() {
       {abonneAuCursus && <InviteChoixMatieres className="mt-4" />}
 
       {!matieres ? (
-        erreurResume ? null : (
+        // Squelette aussi pendant la relance : l'erreur précédente reste posée jusqu'à la réponse.
+        erreurResume && !resumeEnCours ? (
+          <ErreurChargement
+            compact
+            className="mt-5"
+            message={messagePourEleve(erreurResume)}
+            onRetry={() => void rechargerResume()}
+          />
+        ) : (
           <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <Skeleton key={i} className="h-44 w-full rounded-2xl" />
@@ -443,12 +467,6 @@ export function ParcoursPage() {
             />
           ))}
         </div>
-      )}
-
-      {erreurResume && (
-        <p className="mt-4 text-sm text-destructive">
-          {erreurResume instanceof ApiError ? erreurResume.message : t("pc.matieres_erreur")}
-        </p>
       )}
 
       {/* Secondaire par rapport aux matières du parcours, mais doit se remarquer en

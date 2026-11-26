@@ -11,6 +11,7 @@ import { CartesDuCours } from "@/components/CartesDeRevision"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { BarreLecture } from "@/components/BarreLecture"
 import { NoterSelection } from "@/components/NoterSelection"
 import { RepriseLecture } from "@/components/RepriseLecture"
@@ -55,8 +56,11 @@ export function CoursReaderPage() {
   const { country } = useCountry()
 
   const [content, setContent] = useState<CoursContent | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  // L'échec du chargement du cours (hors 403, qui passe par accesRefuse), gardé tel quel pour distinguer le 404.
+  const [error, setError] = useState<unknown>(null)
   const [accesRefuse, setAccesRefuse] = useState(false)
+  // « Réessayer » relance le chargement du cours (voir son effet).
+  const [relance, setRelance] = useState(0)
   // Requête séparée de readCours (voir EpreuveReaderPage.getEpreuve, même raison) :
   // CoursContent.header ne porte que des libellés d'affichage (matiere, pas
   // subject.code ; pas de cursus.id), insuffisant pour RelatedCours ci-dessous. Sert
@@ -122,9 +126,9 @@ export function CoursReaderPage() {
           setAccesRefuse(true)
           return
         }
-        setError(err instanceof ApiError ? err.message : t("ed.contenu_erreur"))
+        setError(err)
       })
-  }, [slug, isLoading, navigate, visiteurEnAttente, visiteurRefuse])
+  }, [slug, isLoading, navigate, visiteurEnAttente, visiteurRefuse, relance])
 
   useEffect(() => {
     // Même raison que dans EpreuveReaderPage : le contenu arrive en asynchrone, le #hash
@@ -167,10 +171,27 @@ export function CoursReaderPage() {
   }
 
   if (error) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur se réessaie.
+    if (error instanceof ApiError && error.status === 404) {
+      return (
+        <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
+          <p className="text-destructive">{t("co.introuvable")}</p>
+          <Link to={coursListPath(country)} className="mt-3 inline-block text-sm text-primary hover:underline">
+            {t("co.retour")}
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
-        <p className="text-destructive">{error}</p>
-        <Link to={coursListPath(country)} className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        <ErreurChargement
+          message={messagePourEleve(error)}
+          onRetry={() => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to={coursListPath(country)} className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("co.retour")}
         </Link>
       </div>

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { MemoryRouter, Route, Routes } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 
+import { ApiError } from "@/api/client"
 import type { Epreuve, TentativeEnCours } from "@/api/types"
 
 const getEpreuveInedite = vi.hoisted(() => vi.fn())
@@ -369,5 +370,41 @@ describe("fiche d'une épreuve inédite, pour un abonné", () => {
     expect(await screen.findByRole("button", { name: "Reprendre cette épreuve" })).toBeInTheDocument()
     expect(screen.getByText(/Chrono en cours : il te reste 1:[23]\d:\d\d/)).toBeInTheDocument()
     expect(screen.queryByRole("button", { name: /Recommencer/ })).not.toBeInTheDocument()
+  })
+})
+
+describe("fiche d'une épreuve inédite, quand le chargement échoue", () => {
+  it("une coupure propose de réessayer, et « Réessayer » recharge vraiment la fiche", async () => {
+    getEpreuveInedite
+      .mockRejectedValueOnce(new TypeError("Failed to fetch"))
+      .mockResolvedValueOnce(epreuve())
+    afficher()
+
+    expect(await screen.findByText("Impossible de charger cette page")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Retour au catalogue" })).toBeInTheDocument()
+    await userEvent.click(screen.getByRole("button", { name: "Réessayer" }))
+
+    expect(await screen.findByRole("heading", { name: epreuve().title })).toBeInTheDocument()
+    expect(getEpreuveInedite).toHaveBeenCalledTimes(2)
+  })
+
+  it("une épreuve introuvable le dit, sans proposer de réessayer", async () => {
+    getEpreuveInedite.mockRejectedValue(new ApiError(404, { detail: "Pas trouvé." }))
+    afficher()
+
+    expect(await screen.findByText("Cette épreuve n'existe pas ou n'est plus disponible.")).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Réessayer" })).not.toBeInTheDocument()
+  })
+
+  it("l'échec d'une action reste sous la fiche, sans écran de relance", async () => {
+    getEpreuveInedite.mockResolvedValue(epreuve({ has_access: true, duree_minutes: null }))
+    startTentativeInedite.mockRejectedValue(new ApiError(400, { detail: "Copie impossible à ouvrir." }))
+    afficher()
+
+    await userEvent.click(await screen.findByRole("button", { name: "Commencer cette épreuve" }))
+
+    expect(await screen.findByText("Copie impossible à ouvrir.")).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: epreuve().title })).toBeInTheDocument()
+    expect(screen.queryByRole("button", { name: "Réessayer" })).not.toBeInTheDocument()
   })
 })

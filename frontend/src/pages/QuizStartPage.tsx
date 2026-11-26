@@ -236,7 +236,7 @@ function CarteThemeCible({
       <div className="mt-auto flex gap-1.5">
         <Button
           size="sm"
-          className="h-8 flex-1 text-xs"
+          className="h-8 flex-1 text-xs max-sm:min-h-11"
           onClick={onLancer}
           disabled={!theme.quiz_disponible || desactive}
           title={theme.quiz_disponible ? undefined : t("qd.pas_de_quiz_theme")}
@@ -244,7 +244,7 @@ function CarteThemeCible({
           <ListChecks className="size-3.5" />
           {lancement ? t("quiz.preparation") : t("qd.quiz_theme")}
         </Button>
-        <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+        <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs max-sm:min-h-11">
           <Link to={lienExercices}>
             <FileText className="size-3.5" />
             {t("qd.exercices")}

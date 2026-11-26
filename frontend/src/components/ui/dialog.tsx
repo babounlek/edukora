@@ -32,7 +32,7 @@ function DialogContent({ className, children, ...props }: React.ComponentProps<t
         {...props}
       >
         {children}
-        <DialogPrimitive.Close className="absolute right-3 top-3 rounded-md p-1.5 text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/50">
+        <DialogPrimitive.Close className="absolute right-1.5 top-1.5 rounded-md p-3 text-muted-foreground outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring/50">
           <X className="size-5" />
           <span className="sr-only">{t("moments.fermer")}</span>
         </DialogPrimitive.Close>

@@ -77,6 +77,13 @@ describe.each(["root", "dark"] as const)("Contraste des bandes vert profond - th
   })
 })
 
+// Texte d'erreur (text-destructive) posé directement sur la page ou sur une carte : messages du quiz, de la connexion.
+describe.each(["root", "dark"] as const)("Contraste du texte d'erreur - thème %s", (block) => {
+  it.each(["background", "card"])("destructive sur %s atteint au moins 4.5:1", (fond) => {
+    expect(contrastRatio(extractHsl(block, fond), extractHsl(block, "destructive"))).toBeGreaterThanOrEqual(4.5)
+  })
+})
+
 describe.each(["root", "dark"] as const)("Contraste des badges - thème %s", (block) => {
   it.each(BADGE_PAIRS)("%s / %s atteint au moins 4.5:1", (bg, fg) => {
     const ratio = contrastRatio(extractHsl(block, bg), extractHsl(block, fg))

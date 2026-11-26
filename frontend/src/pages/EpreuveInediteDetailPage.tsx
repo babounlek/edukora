@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { ParrainageHint } from "@/components/ParrainageHint"
 import { BoutonPartager } from "@/components/BoutonPartager"
 import { SITE_NAME } from "@/lib/site"
@@ -50,6 +51,10 @@ export function EpreuveInediteDetailPage() {
   const cursusDeclare = useCursusDeclare()
 
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
+  // Deux erreurs distinctes : l'échec du CHARGEMENT de la fiche remplace la page (avec « Réessayer »), l'échec d'une
+  // ACTION (commencer, essayer sans compte) s'affiche sous la fiche, qui reste à l'écran.
+  const [erreurChargement, setErreurChargement] = useState<unknown>(null)
+  const [relance, setRelance] = useState(0)
   const [error, setError] = useState("")
   const [starting, setStarting] = useState(false)
   // La formule la moins chère qui débloque réellement les inédites (voir l'effet plus bas).
@@ -72,8 +77,8 @@ export function EpreuveInediteDetailPage() {
     if (!id) return
     getEpreuveInedite(id)
       .then(setEpreuve)
-      .catch((err) => setError(err instanceof ApiError ? err.message : t("ed.charger_erreur")))
-  }, [id])
+      .catch((err: unknown) => setErreurChargement(err))
+  }, [id, relance])
 
   useEffect(() => {
     // ?ref=pdf_sujet_inedit : posé par le PDF du sujet (voir backend
@@ -197,11 +202,28 @@ export function EpreuveInediteDetailPage() {
     }
   }
 
-  if (error && !epreuve) {
+  if (erreurChargement && !epreuve) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur se réessaie.
+    if (erreurChargement instanceof ApiError && erreurChargement.status === 404) {
+      return (
+        <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+          <p className="text-destructive">{t("ed.introuvable")}</p>
+          <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+            {t("ed.retour_catalogue")}
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-destructive">{error}</p>
-        <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <ErreurChargement
+          message={messagePourEleve(erreurChargement)}
+          onRetry={() => {
+            setErreurChargement(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to="/" className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("ed.retour_catalogue")}
         </Link>
       </div>

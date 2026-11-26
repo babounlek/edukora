@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import {
   apercuQuestion,
   exerciceAnchorId,
@@ -39,6 +40,7 @@ import { titreEpreuve } from "@/lib/titreEpreuve"
 import { couleurMatiere } from "@/lib/matiereCouleur"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { cn } from "@/lib/utils"
+import { formatBareme } from "@/lib/notation"
 import { trackEvent } from "@/lib/analytics"
 import { useSeo } from "@/lib/seo"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
@@ -55,7 +57,10 @@ export function EpreuveDetailPage() {
 
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [preview, setPreview] = useState<EpreuvePreview | null>(null)
-  const [error, setError] = useState("")
+  // L'échec du chargement de la fiche (réseau, serveur, 404), gardé tel quel : seul un 404 dit « introuvable ».
+  const [error, setError] = useState<unknown>(null)
+  // « Réessayer » relance le chargement de la fiche (voir son effet).
+  const [relance, setRelance] = useState(0)
 
   useDeclarerLangueContenu(epreuve?.subject.langue)
   useSeo({
@@ -76,14 +81,8 @@ export function EpreuveDetailPage() {
     if (!slug) return
     getEpreuve(slug)
       .then(setEpreuve)
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 404) {
-          setError(t("ed.introuvable"))
-        } else {
-          setError(err instanceof ApiError ? err.message : t("ed.charger_erreur"))
-        }
-      })
-  }, [slug])
+      .catch((err: unknown) => setError(err))
+  }, [slug, relance])
 
   // Le premier appel ci-dessus part avant que la session ne soit reconfirmée (voir
   // AuthContext - l'access token ne survit jamais à un rechargement de page) : un
@@ -143,10 +142,27 @@ export function EpreuveDetailPage() {
   }, [epreuve, country, navigate])
 
   if (error && !epreuve) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur se réessaie.
+    if (error instanceof ApiError && error.status === 404) {
+      return (
+        <div className="mx-auto max-w-2xl px-4 py-10 text-center">
+          <p className="text-destructive">{t("ed.introuvable")}</p>
+          <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+            {t("ed.retour_catalogue")}
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-destructive">{error}</p>
-        <Link to="/" className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <ErreurChargement
+          message={messagePourEleve(error)}
+          onRetry={() => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to="/" className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("ed.retour_catalogue")}
         </Link>
       </div>
@@ -200,7 +216,7 @@ export function EpreuveDetailPage() {
           </span>
           {exercise.points && (
             <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-              {exercise.points} pts
+              {formatBareme(exercise.points)} pts
             </span>
           )}
         </a>
@@ -401,7 +417,7 @@ export function EpreuveDetailPage() {
                           </p>
                           {exercise.points && (
                             <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-                              {exercise.points} pts
+                              {formatBareme(exercise.points)} pts
                             </span>
                           )}
                         </div>

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
 import { ClipboardCheck, Info, Trophy, Zap } from "lucide-react"
 
-import { ApiError } from "@/api/client"
 import type { TentativeInediteResult } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ErreurChargement, estIntrouvable, messagePourEleve } from "@/components/ErreurChargement"
 import { CartePertes, CartePosition, CarteTemps } from "@/components/inedit/RapportFin"
 import { formatDureeEcoulee } from "@/lib/duration"
 import { formatPoints } from "@/lib/notation"
@@ -70,7 +70,9 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
   const essaiSansCompte = useEssaiSansCompte()
   useSeo({ title: source === "officielle" ? t("rp.seo_simulation") : t("rp.seo") })
   const [result, setResult] = useState<TentativeInediteResult | null>(null)
-  const [error, setError] = useState("")
+  // L'échec du chargement du résultat, et le compteur que « Réessayer » incrémente pour le relancer.
+  const [error, setError] = useState<unknown>(null)
+  const [relance, setRelance] = useState(0)
 
   useEffect(() => {
     if (!id) return
@@ -92,18 +94,24 @@ export function InediteResultPage({ source = "inedit" }: { source?: SourceEpreuv
         // déjà calculé (voir inedit.views.complete_tentative).
         setResult(await api.terminer(numero))
       })
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : t("rp.erreur"))
+      .catch((err: unknown) => {
+        setError(err)
       })
-  }, [id, source, navigate])
+  }, [id, source, navigate, relance])
 
   if (error) {
     return (
-      <div className="mx-auto max-w-5xl px-4 py-10 text-center sm:px-6">
-        <p className="text-destructive">{error}</p>
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        <ErreurChargement
+          message={estIntrouvable(error) ? t("hq.introuvable") : messagePourEleve(error)}
+          onRetry={estIntrouvable(error) ? undefined : () => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
         <Link
           to={result ? cheminRetour(source, result.country) : "/"}
-          className="mt-3 inline-block text-sm text-primary hover:underline"
+          className="mt-4 block text-center text-sm text-primary hover:underline"
         >
           {t("ed.retour_catalogue")}
         </Link>

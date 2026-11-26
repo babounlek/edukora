@@ -13,6 +13,7 @@ import { useAuth } from "@/context/AuthContext"
 import { abonnementsActifsDuProfil, abonnementsDeLExamenPrepare } from "@/lib/changerCursusPrepare"
 import { AnneauProgression, BarreSegmentee, CompteurStatut, Ecrin, LegendeProgression } from "@/components/Progression"
 import { SommaireNav, type SommaireEntry } from "@/components/SommaireNav"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -393,7 +394,12 @@ export function ParcoursSubjectPage() {
     if (!authLoading && !isAuthenticated) navigate("/connexion", { state: { from: `/parcours/${subjectId}` } })
   }, [authLoading, isAuthenticated, navigate, subjectId])
 
-  const { data: subscriptions, isError: erreurAbonnements } = useQuery({
+  const {
+    data: subscriptions,
+    isError: erreurAbonnements,
+    isFetching: abonnementsEnCours,
+    refetch: rechargerAbonnements,
+  } = useQuery({
     queryKey: ["mes-abonnements"],
     queryFn: listMySubscriptions,
     enabled: isAuthenticated,
@@ -439,7 +445,12 @@ export function ParcoursSubjectPage() {
     setRecherche("")
   }, [selectedCursus, subjectId])
 
-  const { data: modules, error: erreurParcours } = useQuery({
+  const {
+    data: modules,
+    error: erreurParcours,
+    isFetching: parcoursEnCours,
+    refetch: rechargerParcours,
+  } = useQuery({
     queryKey: ["parcours", selectedCursus, subjectId],
     queryFn: () => getParcours(Number(selectedCursus), Number(subjectId)),
     enabled: isAuthenticated && Boolean(selectedCursus) && Boolean(subjectId),
@@ -553,8 +564,14 @@ export function ParcoursSubjectPage() {
     }
   }
 
-  if (erreurAbonnements) {
-    return <p className="mx-auto max-w-5xl px-4 py-10 text-sm text-destructive sm:px-6">{t("pc.abos_erreur")}</p>
+  // Pendant la relance (« Réessayer »), on retombe sur le squelette ci-dessous : l'erreur de la requête précédente
+  // reste posée jusqu'à la réponse, l'élève ne verrait sinon aucun signe que son geste a été pris en compte.
+  if (erreurAbonnements && !abonnementsEnCours) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
+        <ErreurChargement onRetry={() => void rechargerAbonnements()} />
+      </div>
+    )
   }
   // La page s'affiche dès que le parcours est là, même si la liste des abonnements
   // n'est pas encore arrivée (voir parDefaut).
@@ -587,9 +604,6 @@ export function ParcoursSubjectPage() {
   const cursusDeclare = abonnementAffiche?.cursus
     ?? (user?.cursus_prepare && String(user.cursus_prepare.id) === selectedCursus ? user.cursus_prepare : undefined)
   const abonneAuCursus = actifs.some((sub) => String(sub.cursus.id) === selectedCursus)
-  const erreurChargement = error || (erreurParcours
-    ? erreurParcours instanceof ApiError ? erreurParcours.message : t("pc.parcours_erreur")
-    : "")
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
@@ -709,7 +723,15 @@ export function ParcoursSubjectPage() {
       </Ecrin>
 
       {!modules ? (
-        erreurParcours ? null : (
+        // Squelette aussi pendant la relance : l'erreur précédente reste posée jusqu'à la réponse.
+        erreurParcours && !parcoursEnCours ? (
+          <ErreurChargement
+            compact
+            className="mt-8"
+            message={messagePourEleve(erreurParcours)}
+            onRetry={() => void rechargerParcours()}
+          />
+        ) : (
           <div className="mt-8 flex flex-col gap-6">
             <Skeleton className="h-48 w-full rounded-3xl" />
             <Skeleton className="h-96 w-full rounded-3xl" />
@@ -977,7 +999,8 @@ export function ParcoursSubjectPage() {
         </div>
       )}
 
-      {erreurChargement && <p className="mt-4 text-sm text-destructive">{erreurChargement}</p>}
+      {/* L'échec d'une ACTION (lancer un quiz) : celui du chargement du parcours a son bloc « Réessayer » ci-dessus. */}
+      {error && <p className="mt-4 text-sm text-destructive">{error}</p>}
     </div>
   )
 }

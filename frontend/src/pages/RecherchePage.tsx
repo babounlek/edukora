@@ -271,11 +271,14 @@ export function RecherchePage() {
       <ReviserTabs />
       <div className="mb-2 sm:mb-4">
         <BoutonAide guide="recherche" className="-ml-2.5" />
-        <AideContextuelle guide="recherche" className="mt-1" />
+        {/* Pas d'aide qui s'ouvre seule au-dessus de résultats : après avoir tapé « thales », l'élève ne voyait
+            le premier résultat qu'à 884 px (audit 20, F4). Le « ? » la rouvre à la demande. */}
+        <AideContextuelle guide="recherche" className="mt-1" auto={!termes} />
       </div>
       {/* Même hero que /epreuves, /cours et /themes-frequents : filigrane, pastille d'intitulé en italique,
-          titre en Fraunces avec la fin en couleur, puis la carte de recherche surélevée qui porte les filtres. */}
-      <div className="relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8">
+          titre en Fraunces avec la fin en couleur, puis la carte de recherche surélevée qui porte les filtres.
+          Sur téléphone, caché quand une recherche est faite : l'accroche ne sert plus, les résultats montent. */}
+      <div className={cn("relative mb-4 overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary/[0.09] via-primary/[0.03] to-gold/[0.06] p-4 sm:mb-6 sm:p-8", termes && "max-sm:hidden")}>
         <div
           aria-hidden
           className="absolute inset-0 opacity-[0.04]"
@@ -405,7 +408,7 @@ export function RecherchePage() {
                   type="button"
                   onClick={() => retirer(pastille.cle)}
                   aria-label={t("rc.retirer", { x: pastille.libelle })}
-                  className="flex size-5 items-center justify-center rounded-full hover:bg-primary/20"
+                  className="relative flex size-5 items-center justify-center rounded-full after:absolute after:-inset-3 hover:bg-primary/20"
                 >
                   <X className="size-3" aria-hidden="true" />
                 </button>

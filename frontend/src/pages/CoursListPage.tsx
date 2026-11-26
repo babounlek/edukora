@@ -206,9 +206,11 @@ export function CoursListPage() {
           // Jamais `false` : le backend ne teste que la valeur "true", mais envoyer
           // exclude_read=false polluerait l'URL de l'API pour rien.
           exclude_read: nonLusFilter || undefined,
-          // Les plus fréquents d'abord : filtrer sur « tombe souvent » sans les classer ne servirait à rien.
           tombe_souvent: frequentFilter || undefined,
-          ordering: frequentFilter || thematique ? "frequent" : undefined,
+          // Toujours les plus fréquents d'abord (les autres suivent, plus récents d'abord) : avec le tri
+          // par date seul, le catalogue du BEPC s'ouvrait sur 24 cours d'EPS, les derniers ajoutés
+          // (audit 20, F1).
+          ordering: "frequent",
           savoir: savoirFilter ? Number(savoirFilter) : undefined,
           theme: themeFilter ? Number(themeFilter) : undefined,
           page: pageParam,
@@ -472,7 +474,7 @@ export function CoursListPage() {
                   type="button"
                   onClick={() => updateFilter("search", "")}
                   aria-label={t("ep.effacer")}
-                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground hover:bg-muted hover:text-foreground"
+                  className="absolute right-2 top-1/2 flex size-8 -translate-y-1/2 items-center justify-center rounded-full text-muted-foreground after:absolute after:-inset-1.5 hover:bg-muted hover:text-foreground"
                 >
                   <X className="size-4" />
                 </button>

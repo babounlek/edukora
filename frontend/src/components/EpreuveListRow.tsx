@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Lock, Unlock } from "lucide-react"
+import { CheckCircle2, Lock } from "lucide-react"
 
 import type { Epreuve } from "@/api/types"
 import { BadgeInedite } from "@/components/BadgeInedite"
@@ -52,9 +52,14 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
       <span className={cn("flex size-8 shrink-0 items-center justify-center rounded-lg", couleurMatiere(epreuve.subject.code).puce)}>
         <Icone className="size-4" aria-hidden="true" />
       </span>
+      {/* Deux lignes plutôt qu'une coupée : à 375 px, « Français BEPC 2026 - Expres… » et
+          « … - Étude … » perdaient justement ce qui les distingue. L'année n'est répétée à
+          côté que si le titre ne la porte pas déjà (audit 20, F3). */}
       <div className="flex min-w-0 flex-1 items-baseline gap-2">
-        <h2 className="truncate font-display text-sm font-medium">{epreuve.title}</h2>
-        {epreuve.year && <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>}
+        <h2 className="line-clamp-2 break-words font-display text-sm font-medium">{epreuve.title}</h2>
+        {epreuve.year && !epreuve.title.includes(String(epreuve.year)) && (
+          <span className="shrink-0 text-xs text-muted-foreground">{epreuve.year}</span>
+        )}
       </div>
       <div className="flex shrink-0 items-center gap-1.5">
         {epreuve.est_vitrine && !abonne && <Badge variant="success">{t("ep.gratuit")}</Badge>}
@@ -69,10 +74,10 @@ export function EpreuveListRow({ epreuve, className, style }: EpreuveListRowProp
             {libelleType(epreuve.lesson_type, epreuve.lesson_type_display)}
           </Badge>
         )}
-        {epreuve.has_access ? (
-          <Unlock className="size-3.5 shrink-0 text-success" />
-        ) : (
-          <Lock className="size-3.5 shrink-0 text-muted-foreground" />
+        {/* Le cadenas seulement quand le corrigé est fermé : « Gratuit » dit déjà le reste,
+            et un cadenas ouvert sur chaque ligne d'un abonné ne disait rien (audit 20, F2). */}
+        {!epreuve.has_access && (
+          <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label={t("ed.abonnement_requis")} />
         )}
         {reprise && <Badge variant="outline">{t("statut.en_cours")}</Badge>}
         {inedite && faite ? (

@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, estIntrouvable, messagePourEleve } from "@/components/ErreurChargement"
 import { NoterSelection } from "@/components/NoterSelection"
 import { BandeauNotation } from "@/components/inedit/BandeauNotation"
 import { CausePerte } from "@/components/inedit/CausePerte"
@@ -130,7 +131,9 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
   const m = libellesUnite(unite)
   const [questions, setQuestions] = useState<FlatQuestion[]>([])
   const [notation, setNotation] = useState<NotationResume | null>(null)
-  const [loadError, setLoadError] = useState("")
+  // L'échec du chargement de la copie, et le compteur que « Réessayer » incrémente pour le relancer.
+  const [loadError, setLoadError] = useState<unknown>(null)
+  const [relance, setRelance] = useState(0)
   const [remainingSeconds, setRemainingSeconds] = useState<number | null>(null)
   const [showCorrection, setShowCorrection] = useState(false)
   const [flaggedIds, setFlaggedIds] = useState<Set<number>>(new Set())
@@ -199,10 +202,10 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
           // stockage indisponible : le briefing se reproposera, sans gravité
         }
       })
-      .catch((err) => {
-        setLoadError(err instanceof ApiError ? err.message : t("ed.charger_erreur"))
+      .catch((err: unknown) => {
+        setLoadError(err)
       })
-  }, [id, charger])
+  }, [id, charger, relance])
 
   // Chrono du mode examen - recalcule depuis un timestamp fixe (deadline) à chaque
   // tick plutôt que de décrémenter un compteur : robuste au throttling d'un onglet en
@@ -389,11 +392,17 @@ export function InediteTentativePage({ source = "inedit" }: { source?: SourceEpr
 
   if (loadError) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-destructive">{loadError}</p>
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <ErreurChargement
+          message={estIntrouvable(loadError) ? t("hq.introuvable") : messagePourEleve(loadError)}
+          onRetry={estIntrouvable(loadError) ? undefined : () => {
+            setLoadError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
         <Link
           to={tentative ? cheminRetour(source, tentative.country) : "/"}
-          className="mt-3 inline-block text-sm text-primary hover:underline"
+          className="mt-4 block text-center text-sm text-primary hover:underline"
         >
           {t("ed.retour_catalogue")}
         </Link>

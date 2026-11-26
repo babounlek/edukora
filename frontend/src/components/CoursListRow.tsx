@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { CheckCircle2, Clock, ListChecks, Lock, Star, Unlock } from "lucide-react"
+import { CheckCircle2, Clock, ListChecks, Lock, Star } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { Badge } from "@/components/ui/badge"
@@ -77,9 +77,9 @@ export function CoursListRow({ cours, className, style }: CoursListRowProps) {
             {cours.apercu_contenu.exercices_count}
           </span>
         )}
-        {cours.has_access ? (
-          <Unlock className="size-3.5 shrink-0 text-success" aria-label={t("co.acces_inclus")} />
-        ) : (
+        {/* Rien quand le cours est ouvert : un cadenas, même ouvert, sur chaque ligne d'un catalogue
+            gratuit faisait croire au visiteur que tout était payant (audit 20, F2). */}
+        {!cours.has_access && (
           <Lock className="size-3.5 shrink-0 text-muted-foreground" aria-label={t("ed.abonnement_requis")} />
         )}
         {/* Repli mobile du badge "Lu" masqué ci-dessus : la coche seule tient dans la

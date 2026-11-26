@@ -15,6 +15,7 @@ import { BoutonPartager } from "@/components/BoutonPartager"
 import { Button } from "@/components/ui/button"
 import { BilanErreurs } from "@/components/BilanErreurs"
 import { Confettis } from "@/components/Confettis"
+import { ErreurChargement, estIntrouvable, messagePourEleve } from "@/components/ErreurChargement"
 import { JalonsAtteints } from "@/components/JalonsAtteints"
 import { Mascotte } from "@/components/Mascotte"
 import { NiveauXp } from "@/components/NiveauXp"
@@ -285,7 +286,7 @@ function LigneTheme({
       </div>
       <div className="flex shrink-0 flex-wrap gap-1.5">
         {theme.subject_code && (
-          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs max-sm:min-h-11">
             <Link to={`${themeExercicesPath(country, theme.theme_id)}?subject=${theme.subject_code}&cursus=${cursusId}`}>
               <FileText className="size-3.5" />
               {t("qd.exercices")}
@@ -293,7 +294,7 @@ function LigneTheme({
           </Button>
         )}
         {theme.cours && (
-          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs">
+          <Button asChild size="sm" variant="outline" className="h-8 px-2.5 text-xs max-sm:min-h-11">
             <Link to={`/cours/${theme.cours.slug}`}>
               <BookOpen className="size-3.5" />
               {t("nav.cours")}
@@ -301,7 +302,7 @@ function LigneTheme({
           </Button>
         )}
         {theme.subject_code && quizCible && (
-          <Button size="sm" variant={taux < 70 ? "default" : "outline"} className="h-8 px-2.5 text-xs" onClick={onQuiz} disabled={lancement}>
+          <Button size="sm" variant={taux < 70 ? "default" : "outline"} className="h-8 px-2.5 text-xs max-sm:min-h-11" onClick={onQuiz} disabled={lancement}>
             <ListChecks className="size-3.5" />
             {lancement ? t("pc.preparation") : t("qr.quiz_cible")}
           </Button>
@@ -341,7 +342,9 @@ export function QuizResultPage() {
   const navigate = useNavigate()
   const { country } = useCountry()
   const [result, setResult] = useState<QuizResult | null>(null)
-  const [error, setError] = useState("")
+  // L'échec du chargement du résultat, et le compteur que « Réessayer » incrémente pour le relancer.
+  const [error, setError] = useState<unknown>(null)
+  const [relance, setRelance] = useState(0)
   const [refaisant, setRefaisant] = useState(false)
   const [erreurRefaire, setErreurRefaire] = useState("")
   const [themeEnLancement, setThemeEnLancement] = useState<number | null>(null)
@@ -423,10 +426,10 @@ export function QuizResultPage() {
         // seconde vaut mieux que des chiffres d'avant.
         oublierAccueilEnCache()
       })
-      .catch((err) => {
-        setError(err instanceof ApiError ? err.message : t("qr.err_charger"))
+      .catch((err: unknown) => {
+        setError(err)
       })
-  }, [id, queryClient])
+  }, [id, queryClient, relance])
 
   // Un quiz GRATUIT joué (un seul thème, celui qu'offre cet examen, au moins une réponse) est noté sur l'appareil avec
   // son score : la carte de l'accueil avance à la matière suivante (voir components/PremiereSeance) et le même quiz
@@ -441,9 +444,15 @@ export function QuizResultPage() {
 
   if (error) {
     return (
-      <div className="mx-auto max-w-2xl px-4 py-10 text-center">
-        <p className="text-destructive">{error}</p>
-        <Link to="/quiz" className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <ErreurChargement
+          message={estIntrouvable(error) ? t("qs.introuvable") : messagePourEleve(error)}
+          onRetry={estIntrouvable(error) ? undefined : () => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to="/quiz" className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("qr.retour_quiz")}
         </Link>
       </div>

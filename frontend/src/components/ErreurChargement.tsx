@@ -1,5 +1,6 @@
 import { RefreshCw } from "lucide-react"
 
+import { ApiError } from "@/api/client"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
@@ -13,6 +14,22 @@ interface ErreurChargementProps {
   /** Variante compacte, pour un bloc au milieu d'une page plutôt qu'une page entière. */
   compact?: boolean
   className?: string
+}
+
+/**
+ * Le message du serveur, seulement quand il est écrit pour l'élève : une réponse métier (400, 409...). Jamais un 404
+ * de Django en anglais (« No QuizSession matches the given query. »), un refus d'accès générique, ni « Erreur API
+ * (502) » : la phrase par défaut d'ErreurChargement dit mieux qu'il faut réessayer.
+ */
+export function messagePourEleve(erreur: unknown): string | undefined {
+  if (!(erreur instanceof ApiError)) return undefined
+  if (erreur.status < 400 || erreur.status >= 500 || [401, 403, 404].includes(erreur.status)) return undefined
+  return erreur.message
+}
+
+/** Introuvable (404) : réessayer ne changera rien, on ne le propose pas. */
+export function estIntrouvable(erreur: unknown): boolean {
+  return erreur instanceof ApiError && erreur.status === 404
 }
 
 /**

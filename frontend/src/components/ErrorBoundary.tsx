@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react"
+import { useLocation } from "react-router-dom"
 import { AlertTriangle, RefreshCw } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -22,10 +23,24 @@ const CHUNK_RELOAD_ATTEMPTED_KEY = "edukamer_chunk_reload_attempted"
 
 interface Props {
   children: ReactNode
+  /**
+   * Efface l'erreur dès que l'adresse (pathname) change. Réservé à un filet posé SOUS le routeur (celui des routes,
+   * voir App.tsx) : sans cela, une page en erreur bloquait toutes les suivantes, l'en-tête et les onglets ne menaient
+   * plus nulle part et seul « Recharger la page » débloquait l'élève.
+   */
+  reinitialiserSurNavigation?: boolean
+}
+
+interface LimiteProps {
+  children: ReactNode
+  /** Une valeur qui, en changeant, efface l'erreur (ici l'adresse de la page). */
+  cleReinitialisation?: string
 }
 
 interface State {
   error: Error | null
+  /** La clé de réinitialisation du dernier rendu, pour voir qu'elle a changé (voir getDerivedStateFromProps). */
+  cle?: string
 }
 
 /**
@@ -36,10 +51,32 @@ interface State {
  * silencieusement) ; toute autre erreur affiche un message avec un bouton de secours,
  * plutôt que de laisser deviner si l'app a juste planté ou s'il faut réessayer.
  */
-export class ErrorBoundary extends Component<Props, State> {
+export function ErrorBoundary({ children, reinitialiserSurNavigation = false }: Props) {
+  // Deux composants plutôt qu'un hook conditionnel : useLocation n'existe que sous un routeur, et le filet de
+  // main.tsx, posé au-dessus de toute l'app, n'en a pas.
+  if (reinitialiserSurNavigation) return <LimiteSurNavigation>{children}</LimiteSurNavigation>
+  return <LimiteErreur>{children}</LimiteErreur>
+}
+
+function LimiteSurNavigation({ children }: { children: ReactNode }) {
+  const { pathname } = useLocation()
+  return <LimiteErreur cleReinitialisation={pathname}>{children}</LimiteErreur>
+}
+
+class LimiteErreur extends Component<LimiteProps, State> {
   state: State = { error: null }
 
-  static getDerivedStateFromError(error: Error): State {
+  // L'élève a changé de page : l'erreur de la page précédente est retirée AVANT le rendu, la nouvelle page se rend
+  // directement. Quand c'est la page d'arrivée elle-même qui plante, l'erreur arrive après ce calcul (dans le même
+  // rendu, la clé est déjà à jour) : elle reste affichée, sans être effacée puis relancée une seconde fois.
+  // Un chunk introuvable garde son propre garde : déjà rechargé une fois (CHUNK_RELOAD_ATTEMPTED_KEY), un nouvel
+  // échec sur la page suivante affiche le message manuel au lieu de recharger en boucle.
+  static getDerivedStateFromProps(props: LimiteProps, state: State): Partial<State> | null {
+    if (props.cleReinitialisation === state.cle) return null
+    return { cle: props.cleReinitialisation, error: null }
+  }
+
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { error }
   }
 

@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
+import { ErreurChargement, messagePourEleve } from "@/components/ErreurChargement"
 import { BarreExercices } from "@/components/BarreExercices"
 import { BarreLecture } from "@/components/BarreLecture"
 import { NoterSelection } from "@/components/NoterSelection"
@@ -53,6 +54,7 @@ import { useEtude } from "@/lib/useEtude"
 import { useSeo } from "@/lib/seo"
 import { useDeclarerLangueContenu } from "@/lib/langueContenu"
 import { t, useI18n } from "@/lib/i18n"
+import { formatBareme } from "@/lib/notation"
 import { libelleEnteteExercice } from "@/lib/libellesEpreuve"
 import { epreuveDetailPath, epreuveReaderPath, epreuvesListPath } from "@/lib/countryPath"
 
@@ -67,8 +69,11 @@ export function EpreuveReaderPage() {
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [epreuveFailed, setEpreuveFailed] = useState(false)
   const cursusDesFiches = useCursusDesFiches(epreuve?.cursus)
-  const [error, setError] = useState<string | null>(null)
+  // L'échec du chargement du corrigé (hors 403, qui passe par accesRefuse), gardé tel quel pour distinguer le 404.
+  const [error, setError] = useState<unknown>(null)
   const [accesRefuse, setAccesRefuse] = useState(false)
+  // « Réessayer » relance le chargement du corrigé (voir son effet). Pas `essai` : déjà pris par « Essaie d'abord ».
+  const [relance, setRelance] = useState(0)
 
   useSeo({ title: content?.title ?? t("ed.seo_corrige") })
   useDeclarerLangueContenu(epreuve?.subject.langue)
@@ -131,9 +136,9 @@ export function EpreuveReaderPage() {
           setAccesRefuse(true)
           return
         }
-        setError(err instanceof ApiError ? err.message : t("ed.contenu_erreur"))
+        setError(err)
       })
-  }, [slug, isLoading, isAuthenticated, navigate, epreuve, epreuveFailed, countryParam, fallbackCountry])
+  }, [slug, isLoading, isAuthenticated, navigate, epreuve, epreuveFailed, countryParam, fallbackCountry, relance])
 
   useEffect(() => {
     // Le contenu arrive en asynchrone : au moment où le navigateur traite le #hash
@@ -179,10 +184,27 @@ export function EpreuveReaderPage() {
   }
 
   if (error) {
+    // « Introuvable » n'est vrai que pour un 404 : une coupure réseau ou une erreur serveur se réessaie.
+    if (error instanceof ApiError && error.status === 404) {
+      return (
+        <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
+          <p className="text-destructive">{t("ed.introuvable")}</p>
+          <Link to={epreuvesListPath(displayCountry)} className="mt-3 inline-block text-sm text-primary hover:underline">
+            {t("ed.retour_catalogue")}
+          </Link>
+        </div>
+      )
+    }
     return (
-      <div className="mx-auto max-w-3xl px-4 py-8 text-center sm:px-6">
-        <p className="text-destructive">{error}</p>
-        <Link to={epreuvesListPath(displayCountry)} className="mt-3 inline-block text-sm text-primary hover:underline">
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        <ErreurChargement
+          message={messagePourEleve(error)}
+          onRetry={() => {
+            setError(null)
+            setRelance((n) => n + 1)
+          }}
+        />
+        <Link to={epreuvesListPath(displayCountry)} className="mt-4 block text-center text-sm text-primary hover:underline">
           {t("ed.retour_catalogue")}
         </Link>
       </div>
@@ -231,7 +253,7 @@ export function EpreuveReaderPage() {
                   </h2>
                   {exercise.points && (
                     <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
-                      {exercise.points} pts
+                      {formatBareme(exercise.points)} pts
                     </span>
                   )}
                 </div>

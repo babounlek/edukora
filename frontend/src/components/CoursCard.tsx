@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react"
 import { Link } from "react-router-dom"
-import { ArrowRight, BookOpenCheck, CheckCircle2, Clock, Eye, ListChecks, Unlock } from "lucide-react"
+import { ArrowRight, BookOpen, BookOpenCheck, CheckCircle2, Clock, Eye, ListChecks } from "lucide-react"
 
 import type { Cours } from "@/api/types"
 import { formatCursusGroups } from "@/lib/cursus"
@@ -110,7 +110,8 @@ export function CoursCard({ cours, className, style, niveauTitre = 3 }: CoursCar
             <span className="flex min-w-0 items-center gap-1.5 font-medium text-foreground">
               {accessible ? (
                 <>
-                  <Unlock className="size-4 shrink-0 text-success" aria-hidden="true" />
+                  {/* Livre ouvert, pas cadenas ouvert : un cadenas, même ouvert, se lit « payant » (audit 20, F2). */}
+                  <BookOpen className="size-4 shrink-0 text-success" aria-hidden="true" />
                   <span className="truncate">{cours.est_vitrine && !cours.has_access ? t("ep.lire_libre") : t("co.lire")}</span>
                 </>
               ) : (

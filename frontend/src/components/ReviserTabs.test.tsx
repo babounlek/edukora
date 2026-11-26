@@ -4,6 +4,8 @@ import { MemoryRouter, Route, Routes, useLocation } from "react-router-dom"
 import { describe, expect, it, vi } from "vitest"
 
 vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" }) }))
+const auth = vi.hoisted(() => ({ isAuthenticated: true }))
+vi.mock("@/context/AuthContext", () => ({ useAuth: () => auth }))
 
 import { ReviserTabs } from "./ReviserTabs"
 import { useRaccourciRecherche } from "@/lib/useRaccourciRecherche"
@@ -64,6 +66,18 @@ describe("ReviserTabs", () => {
     monter("/cm/recherche")
     expect(screen.queryByRole("link", { name: "Rechercher sur tout le site" })).not.toBeInTheDocument()
     expect(screen.getAllByRole("link")).toHaveLength(7)
+  })
+
+  it("sans compte, ni « Mes notes » ni « Examens blancs » : ils ne menaient qu'à la connexion", () => {
+    auth.isAuthenticated = false
+    try {
+      monter("/cm/recherche")
+      expect(screen.queryByRole("link", { name: "Mes notes" })).not.toBeInTheDocument()
+      expect(screen.queryByRole("link", { name: "Examens blancs" })).not.toBeInTheDocument()
+      expect(screen.getAllByRole("link")).toHaveLength(5)
+    } finally {
+      auth.isAuthenticated = true
+    }
   })
 
   it("le raccourci « / » appelle l'ouverture, sauf quand on écrit dans un champ", async () => {

@@ -67,6 +67,8 @@
 }
 
 .dark {
+  /* Cases à cocher, listes, champs de date et barres de défilement natifs suivent le thème sombre (audit 20, A4). */
+  color-scheme: dark;
   --background: hsl(155 22% 7%);
   --foreground: hsl(45 25% 94%);
   --card: hsl(155 20% 9.5%);
@@ -81,8 +83,11 @@
   --muted-foreground: hsl(150 10% 65%);
   --accent: hsl(155 30% 15%);
   --accent-foreground: hsl(152 60% 82%);
-  --destructive: hsl(3 62% 42%);
-  --destructive-foreground: hsl(45 25% 94%);
+  /* Clair, avec un texte foncé dessus, comme success, warning et info en sombre : à 42 % de luminosité,
+     text-destructive (84 usages, messages d'erreur du quiz et de la connexion) tombait à 2,8:1 sur le fond
+     (audit 20, A1). Vérifié dans index.css.test.ts. */
+  --destructive: hsl(3 75% 62%);
+  --destructive-foreground: hsl(150 30% 8%);
   --success: hsl(142.1 60% 42%);
   --success-foreground: hsl(150 30% 8%);
   --warning: hsl(25 88% 57%);

@@ -131,21 +131,21 @@ function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_ava
   return (
     <div className="flex shrink-0 flex-wrap gap-1.5">
       {theme.cours_slug && (
-        <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs">
+        <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs max-sm:min-h-11">
           <Link to={`/cours/${theme.cours_slug}`}>
             <BookOpen className="size-3.5" />
             {t("tf.cours")}
           </Link>
         </Button>
       )}
-      <Button asChild size="sm" variant={mis_en_avant ? "default" : "outline"} className="h-8 px-3 text-xs">
+      <Button asChild size="sm" variant={mis_en_avant ? "default" : "outline"} className="h-8 px-3 text-xs max-sm:min-h-11">
         <Link to={lienExercicesTheme(country, theme, subjectCode, cursusId, total)}>
           <FileText className="size-3.5" />
           {t("qd.exercices")}
         </Link>
       </Button>
       {theme.quiz_disponible ? (
-        <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs">
+        <Button asChild size="sm" variant="outline" className="h-8 px-3 text-xs max-sm:min-h-11">
           <Link to={`/quiz?cursus=${cursusId}&theme=${theme.id}`}>
             <ListChecks className="size-3.5" />
             {t("qd.onglet_quiz")}
@@ -157,7 +157,7 @@ function ActionsTheme({ country, theme, subjectCode, cursusId, total, mis_en_ava
           variant="outline"
           disabled
           title={t("qd.pas_de_quiz_theme")}
-          className="h-8 px-3 text-xs"
+          className="h-8 px-3 text-xs max-sm:min-h-11"
         >
           <ListChecks className="size-3.5" />
           {t("qd.onglet_quiz")}
