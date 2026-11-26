@@ -300,6 +300,7 @@ class ExtractionTests(_Base):
             "anglais_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Rédaction"},
             "dessin_bepc": {"Couleurs", "Dessin à consignes"},
             "allemand_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
+            "espagnol_bepc": {"Conjugaison", "Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
