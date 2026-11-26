@@ -301,6 +301,8 @@ class ExtractionTests(_Base):
             "dessin_bepc": {"Couleurs", "Dessin à consignes"},
             "allemand_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
             "espagnol_bepc": {"Conjugaison", "Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
+            "maths_probatoire_d": {"Trigonométrie", "Géométrie", "Fonctions", "Algèbre", "Suites", "Statistiques", "Dénombrement"},
+            "chimie_probatoire_cde": {"Chimie organique", "Oxydoréduction et piles", "Dosages et expériences", "Engrais"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
