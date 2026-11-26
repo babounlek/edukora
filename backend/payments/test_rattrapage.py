@@ -106,9 +106,13 @@ class RattrapageTests(TestCase):
 
         reponse = client.get("/relances/paiement-a-reprendre/")
 
-        # Proposer de « reprendre » un paiement qui vient d'aboutir, ce serait le faire payer deux fois.
-        self.assertEqual(reponse.data, {"a_reprendre": False})
+        # Proposer de « reprendre » un paiement qui vient d'aboutir, ce serait le faire payer deux fois. Et
+        # l'application, chargée avant ce rattrapage, doit apprendre que l'accès est ouvert (voir lib/accesActive.ts).
+        self.assertEqual(reponse.data, {"a_reprendre": False, "acces_active": True})
         self.assertTrue(Subscription.objects.get(user=self.user, cursus=self.cursus).is_active)
+
+        # À la lecture suivante, plus rien à rattraper : l'application ne relit pas le compte en boucle.
+        self.assertEqual(client.get("/relances/paiement-a-reprendre/").data, {"a_reprendre": False, "acces_active": False})
 
 
 class RecuTests(TestCase):

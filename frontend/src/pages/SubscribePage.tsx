@@ -12,6 +12,7 @@ import type { Cursus, ManualPayment, MobileMoneyOperator, Plan } from "@/api/typ
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { useQueryClient } from "@tanstack/react-query"
+import { rafraichirApresActivation } from "@/lib/accesActive"
 import { trackEvent } from "@/lib/analytics"
 import { Sentry } from "@/lib/sentry"
 import { cn, formatAmount } from "@/lib/utils"
@@ -237,7 +238,7 @@ export function SubscribePage() {
   // quel à initiatePayment/declareManualPayment (voir payments.views._resoudre_profil).
   const profilParam = searchParams.get("profil")
   const navigate = useNavigate()
-  const { isAuthenticated, isLoading, user } = useAuth()
+  const { isAuthenticated, isLoading, user, updateUser } = useAuth()
   // Sans `profil=`, le serveur retombe sur le PREMIER profil du compte : un parent qui paie depuis le profil du
   // cadet abonnait l'aîné. Le profil actif est donc relayé par défaut (test élève 10-24, parent à deux enfants).
   // Un parent à plusieurs enfants peut changer ici l'enfant pour qui il paie (sélecteur ci-dessous) : sans lui, le
@@ -471,10 +472,16 @@ export function SubscribePage() {
         if (result.status !== "PENDING") {
           pollRef.current = null
           const enAttente = phaseRef.current === "pending" || phaseRef.current === "timeout"
-          if (result.status === "SUCCESSFUL") setPhase("success")
-          else if (enAttente) setPhase("failed")
-          // Le bandeau « reprendre mon paiement » doit refléter ce résultat tout de suite.
-          queryClient.invalidateQueries({ queryKey: ["paiement-a-reprendre"] })
+          if (result.status === "SUCCESSFUL") {
+            setPhase("success")
+            // L'accès est ouvert côté serveur : le compte et les pages en mémoire doivent le savoir sans rechargement
+            // (le bandeau « reprendre mon paiement » compris).
+            void rafraichirApresActivation(queryClient, updateUser)
+          } else {
+            if (enAttente) setPhase("failed")
+            // Le bandeau « reprendre mon paiement » doit refléter ce résultat tout de suite.
+            queryClient.invalidateQueries({ queryKey: ["paiement-a-reprendre"] })
+          }
           trackEvent(result.status === "SUCCESSFUL" ? "payment_succeeded" : "payment_failed", suivi)
           return
         }
@@ -559,6 +566,7 @@ export function SubscribePage() {
         // CamPay côté backend (voir TransactionManager.creer_couverte_par_credit),
         // donc rien à sonder ici non plus. Ou une demande précédente, validée entre-temps.
         setPhase("success")
+        void rafraichirApresActivation(queryClient, updateUser)
         trackEvent("payment_succeeded", properties)
         return
       }

@@ -11,14 +11,17 @@ const initiatePayment = vi.hoisted(() => vi.fn())
 const checkPaymentStatus = vi.hoisted(() => vi.fn())
 const getPaiementEnCours = vi.hoisted(() => vi.fn())
 const listMySubscriptions = vi.hoisted(() => vi.fn())
+const getMe = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
   isLoading: false,
+  updateUser: vi.fn(),
   user: { phone_number: "677000000" } as { phone_number: string; profil_actif?: { id: number; prenom: string } },
 }))
 
 vi.mock("@/api/endpoints", () => ({
   checkPaymentStatus,
+  getMe,
   getPaiementEnCours,
   initiatePayment,
   listCursus: vi.fn(() => Promise.resolve([])),
@@ -74,6 +77,8 @@ function afficher(url: string) {
 }
 
 beforeEach(() => {
+  getMe.mockReset().mockResolvedValue({ id: 1, a_un_abonnement_actif: true })
+  auth.updateUser.mockReset()
   listMyInscriptionsInedites.mockReset()
   getPaymentConfig.mockReset()
   getPaymentConfig.mockResolvedValue({ campay_active: true })
@@ -465,6 +470,8 @@ describe("SubscribePage : la demande de paiement sur le téléphone (audit du tu
       await act(() => vi.advanceTimersByTimeAsync(10_000 + 100))
       expect(checkPaymentStatus).toHaveBeenCalledTimes(41)
       expect(await screen.findByText("Abonnement activé !")).toBeInTheDocument()
+      // Le compte en mémoire est relu : l'en-tête, le catalogue et les pages déverrouillées le savent sans rechargement.
+      await waitFor(() => expect(auth.updateUser).toHaveBeenCalledWith({ id: 1, a_un_abonnement_actif: true }))
     } finally {
       vi.useRealTimers()
     }

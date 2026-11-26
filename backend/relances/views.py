@@ -87,12 +87,15 @@ def paiement_a_reprendre_view(request):
     L'application appelle cette route à l'ouverture : c'est là qu'un paiement validé après la fermeture de la
     page d'abonnement est relu auprès de l'agrégateur (voir payments.rattrapage), avant de proposer de le
     « reprendre » - le reprendre serait payer deux fois."""
-    rattraper_paiements_en_attente(user=request.user)
+    # `acces_active` : un paiement vient d'aboutir à cette relecture. L'application, chargée avant, croit encore
+    # l'élève sans abonnement : elle relit alors son compte et ses pages (voir lib/accesActive.ts).
+    acces_active = rattraper_paiements_en_attente(user=request.user) > 0
     transaction = paiement_a_reprendre(request.user)
     if transaction is None:
-        return Response({"a_reprendre": False})
+        return Response({"a_reprendre": False, "acces_active": acces_active})
     return Response({
         "a_reprendre": True,
+        "acces_active": acces_active,
         "montant": transaction.amount,
         "cursus_id": transaction.plan.cursus_id,
         "statut": transaction.status,

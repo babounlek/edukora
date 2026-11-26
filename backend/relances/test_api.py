@@ -19,7 +19,9 @@ class PaiementAReprendreApiTests(RelancesTestCase):
 
     def test_rien_a_reprendre_sans_tentative(self):
         self.client.force_authenticate(user=self.eleve(abonne=False))
-        self.assertEqual(self.client.get("/relances/paiement-a-reprendre/").data, {"a_reprendre": False})
+        self.assertEqual(
+            self.client.get("/relances/paiement-a-reprendre/").data, {"a_reprendre": False, "acces_active": False},
+        )
 
     def test_une_tentative_echouee_est_proposee_a_la_reprise(self):
         user = self.eleve(abonne=False)

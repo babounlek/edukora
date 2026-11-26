@@ -270,6 +270,8 @@ export interface EtatXp {
 /** Voir relances.views.paiement_a_reprendre_view. */
 export interface PaiementAReprendre {
   a_reprendre: boolean
+  /** Un paiement validé après coup vient d'être confirmé à cette lecture : l'accès est ouvert. */
+  acces_active?: boolean
   montant?: number
   cursus_id?: number
   statut?: "PENDING" | "FAILED"

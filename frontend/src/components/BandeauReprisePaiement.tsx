@@ -1,11 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { X } from "lucide-react"
 
 import { getPaiementAReprendre } from "@/api/endpoints"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/AuthContext"
+import { rafraichirApresActivation } from "@/lib/accesActive"
 import { formatAmount } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -34,7 +35,8 @@ function lireFerme(): boolean {
 export function BandeauReprisePaiement() {
   useI18n()
   const { pathname } = useLocation()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, updateUser } = useAuth()
+  const queryClient = useQueryClient()
   const [ferme, setFerme] = useState(lireFerme)
 
   const { data } = useQuery({
@@ -45,6 +47,13 @@ export function BandeauReprisePaiement() {
     staleTime: 60_000,
     retry: false,
   })
+
+  // Le serveur vient de confirmer un paiement validé après la fermeture de la page d'abonnement : l'application,
+  // chargée avant, croit encore l'élève sans abonnement. Une seule fois : la lecture suivante répond false.
+  const accesActive = Boolean(data?.acces_active)
+  useEffect(() => {
+    if (accesActive) void rafraichirApresActivation(queryClient, updateUser)
+  }, [accesActive, queryClient, updateUser])
 
   if (!isAuthenticated || ferme || !data?.a_reprendre || PAGES_SANS_BANDEAU.test(pathname)) return null
 
