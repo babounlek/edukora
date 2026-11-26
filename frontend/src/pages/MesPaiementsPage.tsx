@@ -3,8 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
 import { ArrowRight, Check, CheckCircle2, Clock, Copy, RefreshCw, XCircle, type LucideIcon } from "lucide-react"
 
-import { listMyManualPayments, listProfils } from "@/api/endpoints"
-import type { ManualPayment, ManualPaymentStatus, MobileMoneyOperator } from "@/api/types"
+import { listMyManualPayments, listMyTransactions, listProfils } from "@/api/endpoints"
+import type { ManualPayment, ManualPaymentStatus, MobileMoneyOperator, PaiementConfirme } from "@/api/types"
 import { useAuth } from "@/context/AuthContext"
 import { useCountry } from "@/context/CountryContext"
 import { Button } from "@/components/ui/button"
@@ -61,6 +61,9 @@ export function MesPaiementsPage() {
   const navigate = useNavigate()
   const [payments, setPayments] = useState<ManualPayment[] | null>(null)
   const [erreur, setErreur] = useState(false)
+  // Les paiements validés sur le téléphone (demande directe) : la page ne montrait que les transferts déclarés, et qui
+  // avait payé ainsi n'y retrouvait rien. Un confort : sans réponse, les transferts déclarés s'affichent seuls.
+  const [directs, setDirects] = useState<PaiementConfirme[]>([])
   // Plusieurs enfants sur le compte : chaque ligne dit pour lequel elle est. Un compte à un seul profil n'a pas à lire
   // son propre prénom sur chaque paiement.
   const [plusieursProfils, setPlusieursProfils] = useState(false)
@@ -69,6 +72,7 @@ export function MesPaiementsPage() {
     setErreur(false)
     setPayments(null)
     listMyManualPayments().then(setPayments).catch(() => setErreur(true))
+    listMyTransactions().then(setDirects).catch(() => setDirects([]))
     listProfils().then((profils) => setPlusieursProfils(profils.length > 1)).catch(() => {
       // Simple confort d'affichage : sans lui, le prénom ne s'affiche que si les paiements en nomment plusieurs.
     })
@@ -101,6 +105,25 @@ export function MesPaiementsPage() {
         )}
       </header>
 
+      {directs.length > 0 && (
+        <section className="mb-8" aria-labelledby="paiements-confirmes">
+          <h2 id="paiements-confirmes" className="mb-3 text-sm font-semibold text-foreground/80">{t("pm.directs_titre")}</h2>
+          <ul className="flex flex-col gap-3">
+            {directs.map((paiement) => (
+              <CartePaiementConfirme
+                key={paiement.id}
+                paiement={paiement}
+                montrerEnfant={plusieursProfils || new Set(directs.map((p) => p.profil?.id)).size > 1}
+              />
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {directs.length > 0 && payments !== null && payments.length > 0 && (
+        <h2 className="mb-3 text-sm font-semibold text-foreground/80">{t("pm.declares_titre")}</h2>
+      )}
+
       {erreur ? (
         // Une panne n'est pas « aucun paiement » : sans ce cas, l'écran restait sur son chargement,
         // sans rien dire à quelqu'un qui vient vérifier qu'on a bien reçu son argent.
@@ -118,7 +141,7 @@ export function MesPaiementsPage() {
           <Skeleton className="h-28 rounded-2xl" />
           <Skeleton className="h-28 rounded-2xl" />
         </div>
-      ) : payments.length === 0 ? (
+      ) : payments.length === 0 && directs.length > 0 ? null : payments.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border px-6 py-12 text-center">
           <p className="font-display text-lg font-semibold">{t("pm.vide")}</p>
           <p className="mx-auto mt-1.5 max-w-sm text-sm text-muted-foreground">
@@ -132,7 +155,7 @@ export function MesPaiementsPage() {
           </Button>
         </div>
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col gap-3" aria-label={t("pm.declares_titre")}>
           {payments.map((payment, index) => (
             <CartePaiement
               key={payment.id}
@@ -153,6 +176,56 @@ export function MesPaiementsPage() {
         {t("pm.note_campay")}
       </p>
     </div>
+  )
+}
+
+/** Un paiement validé sur le téléphone : ce qui a été payé, quand, pour qui, et le numéro de reçu à citer au support. */
+function CartePaiementConfirme({ paiement, montrerEnfant }: { paiement: PaiementConfirme; montrerEnfant: boolean }) {
+  const operateur = paiement.operator ? OPERATEURS[paiement.operator] : null
+  const cursus = paiement.plan.cursus
+  return (
+    <li className="animate-fade-up rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="flex items-start gap-3.5">
+        <span
+          className={cn(
+            "flex size-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold",
+            operateur ? operateur.tuile : "bg-primary/10 text-primary",
+          )}
+          aria-hidden="true"
+        >
+          {operateur ? operateur.sigle : <CheckCircle2 className="size-5" />}
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="font-display text-base font-semibold leading-tight">
+            {cursus.examen_display}
+            {cursus.series ? ` - ${t("prix.serie", { code: cursus.series.code })}` : ""}
+          </p>
+          {montrerEnfant && paiement.profil?.prenom && (
+            <p className="mt-0.5 text-sm font-medium">{t("pm.pour_enfant", { prenom: paiement.profil.prenom })}</p>
+          )}
+          <p className="mt-0.5 text-sm text-muted-foreground">
+            {paiement.plan.duration_mode === "MENSUEL" ? `${tn("mp.duree", paiement.mois)} · ` : ""}
+            {dateFr(paiement.created_at)}
+          </p>
+        </div>
+        <div className="shrink-0 text-right">
+          <p className="font-display text-lg font-semibold tabular-nums leading-tight">
+            {formatAmount(paiement.amount)}
+            <span className="ml-1 text-xs font-medium text-muted-foreground">FCFA</span>
+          </p>
+          <p className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-success">
+            <CheckCircle2 className="size-3.5" aria-hidden="true" />
+            {t("pm.direct_statut")}
+          </p>
+        </div>
+      </div>
+      {paiement.reference && (
+        <p className="mt-4 flex items-center gap-1.5 border-t border-border/60 pt-3 text-xs text-muted-foreground">
+          <span>{t("pm.direct_recu")}</span>
+          <span className="font-mono text-foreground/80">{paiement.reference}</span>
+        </p>
+      )}
+    </li>
   )
 }
 

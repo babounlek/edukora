@@ -9,7 +9,7 @@ from users.models import phone_validator
 from users.phone import to_e164, to_local
 from users.profils import profil_actif
 
-from .models import ManualPayment, MobileMoneyAccount, MobileMoneyOperator
+from .models import ManualPayment, MobileMoneyAccount, MobileMoneyOperator, Transaction
 
 # Capture du SMS de confirmation jointe à une déclaration (facultative).
 PREUVE_TAILLE_MAX = 5 * 1024 * 1024
@@ -79,6 +79,24 @@ class ManualPaymentSerializer(serializers.ModelSerializer):
             "rejection_reason", "rejection_reason_display", "created_at", "reviewed_at", "profil",
             "paye_par_revendeur", "mois",
         ]
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    """Un paiement automatique confirmé, tel que « Mes paiements » le montre (voir payments.views.list_my_transactions)."""
+
+    plan = PlanSerializer(read_only=True)
+    operator = serializers.CharField(source="operateur", read_only=True)
+    reference = serializers.CharField(source="reference_recu", read_only=True)
+    profil = serializers.SerializerMethodField()
+
+    def get_profil(self, obj):
+        if obj.profil_id is None:
+            return None
+        return {"id": obj.profil_id, "prenom": obj.profil.prenom}
+
+    class Meta:
+        model = Transaction
+        fields = ["id", "plan", "amount", "mois", "operator", "reference", "phone_number", "created_at", "profil"]
 
 
 class ManualPaymentDeclareSerializer(serializers.Serializer):

@@ -52,6 +52,8 @@ import type {
   Paginated,
   QuotaPdf,
   ParcoursModule,
+  PaiementConfirme,
+  PaiementEnCours,
   PaymentInitiateResponse,
   PaymentStatusResponse,
   Plan,
@@ -636,13 +638,25 @@ interface InitiatePaymentParams {
   profilId?: number
   /** Nombre de mois achetés (plan au mois, 1 à `Plan.mois_max`) - le serveur le revérifie et recalcule le montant. */
   mois?: number
+  /** Envoyer une demande neuve même si une autre est encore en attente : seulement quand le payeur le demande lui-même. */
+  nouvelleDemande?: boolean
 }
 
-export function initiatePayment({ planId, phoneNumber, profilId, mois }: InitiatePaymentParams) {
+export function initiatePayment({ planId, phoneNumber, profilId, mois, nouvelleDemande }: InitiatePaymentParams) {
   return apiRequest<PaymentInitiateResponse>("/payments/initiate/", {
     method: "POST",
-    body: { plan_id: planId, phone_number: phoneNumber, profil_id: profilId, mois },
+    body: { plan_id: planId, phone_number: phoneNumber, profil_id: profilId, mois, nouvelle_demande: nouvelleDemande || undefined },
   })
+}
+
+/** La demande de paiement encore en attente du compte pour cet examen, s'il y en a une (voir payments.views.payment_en_cours). */
+export function getPaiementEnCours(cursusId?: number) {
+  return apiRequest<PaiementEnCours>(`/payments/en-cours/${cursusId ? `?cursus=${cursusId}` : ""}`)
+}
+
+/** Les paiements automatiques confirmés du compte (voir payments.views.list_my_transactions). */
+export function listMyTransactions() {
+  return apiRequest<PaiementConfirme[]>("/payments/mine/")
 }
 
 export function checkPaymentStatus(transactionId: number) {

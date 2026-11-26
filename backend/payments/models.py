@@ -164,6 +164,23 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.user} - {self.plan} - {self.amount} FCFA ({self.status})"
 
+    @property
+    def operateur(self):
+        """
+        L'opérateur que l'agrégateur a reconnu pour ce numéro (« MTN », « ORANGE »), vide s'il ne l'a pas dit.
+        Lu dans sa dernière réponse (demande ou statut, les deux le portent) : l'écran d'attente s'en sert pour
+        dire au payeur quel code composer si la demande n'apparaît pas sur son téléphone.
+        """
+        brut = self.raw_response.get("operator") if isinstance(self.raw_response, dict) else None
+        valeur = str(brut or "").strip().upper()
+        return valeur if valeur in MobileMoneyOperator.values else ""
+
+    @property
+    def reference_recu(self):
+        """Le numéro que l'agrégateur donne au paiement confirmé (« CP201027T00005 »), à citer au support."""
+        brut = self.raw_response.get("code") if isinstance(self.raw_response, dict) else None
+        return str(brut or "")
+
     def initiate(self):
         """Envoie la demande de collecte à l'agrégateur de la transaction et enregistre la référence retournée."""
         resultat = get_provider(self.provider).initier(

@@ -3,12 +3,28 @@ categorie: paiement
 ordre: 30
 pages: /mes-paiements,/abonnement
 titre: Mon paiement a été refusé ou a échoué
-resume: Le motif du refus s'affiche dans Mes paiements ; selon la cause, tu réessaies ou tu corriges ta déclaration.
-mots_cles: refusé, rejeté, échoué, échec, erreur paiement, montant incorrect, transaction introuvable, paiement non reçu, mauvais opérateur, deuxième tentative
+resume: Un paiement qui échoue n'est pas débité. Vérifie ton solde et ton code secret, puis réessaie ; pour un transfert déclaré, le motif du refus s'affiche dans Mes paiements.
+mots_cles: refusé, rejeté, échoué, échec, erreur paiement, montant incorrect, transaction introuvable, paiement non reçu, mauvais opérateur, deuxième tentative, solde insuffisant, code secret, demande expirée, *126#, #150*50#
 ---
-Un paiement refusé n'est pas une impasse : le **motif** est affiché dans [Mes paiements](/mes-paiements), sous le paiement concerné.
+Un paiement refusé n'est pas une impasse, et **un paiement qui échoue n'est pas débité**.
 
-## Selon le motif
+## La demande sur ton téléphone a échoué
+
+L'opérateur ne nous dit pas toujours pourquoi. Presque tous les échecs viennent de l'une de ces causes :
+
+- **Solde insuffisant** : ton compte Mobile Money doit couvrir le total affiché sur l'écran de paiement.
+- **Code secret erroné** : relance le paiement et saisis-le à nouveau, sans te presser.
+- **Demande expirée** : elle ne reste valable que quelques minutes. Relance le paiement et valide tout de suite.
+- **Demande jamais affichée** : compose **\*126#** sur MTN ou **#150\*50#** sur Orange pour la retrouver et la valider.
+- **Numéro refusé** : seuls les numéros **Orange** et **MTN** qui ont un compte Mobile Money actif sont acceptés.
+
+Appuie ensuite sur « Réessayer » : tu ne perds ni ton examen ni ton nombre de mois.
+
+**Tu as validé, mais l'écran dit que la confirmation tarde ?** Ne paie pas une deuxième fois. Ton accès s'active dès que l'opérateur confirme, même si tu as fermé la page. Si l'écran t'annonce qu'une demande attend déjà sur ton numéro, valide celle-là.
+
+## Ton transfert déclaré a été refusé
+
+Quand le transfert manuel est proposé et que tu en as déclaré un, le **motif** du refus est affiché dans [Mes paiements](/mes-paiements), sous le paiement concerné.
 
 - **Transaction introuvable** : l'identifiant déclaré ne correspond à aucun transfert. Relis le SMS de ton opérateur et recopie l'identifiant exactement.
 - **Montant incorrect** : le montant transféré n'est pas le total affiché sur l'écran de paiement (le prix du mois multiplié par le nombre de mois choisi).
@@ -16,10 +32,8 @@ Un paiement refusé n'est pas une impasse : le **motif** est affiché dans [Mes 
 - **Transaction déjà utilisée** : cette transaction a déjà servi pour un autre accès.
 - **Paiement non reçu** : le transfert n'est pas arrivé sur notre numéro. Vérifie que tu as bien envoyé au numéro affiché.
 
-## Que faire ensuite ?
+Corrige ce qui est en cause et **déclare à nouveau** ta transaction depuis la page de paiement.
 
-1. Corrige ce qui est en cause et **déclare à nouveau** ta transaction depuis la page de paiement.
-2. Si tu avais utilisé le paiement automatique (quand il est proposé) et qu'il a échoué, **fais toi-même le transfert** par Orange Money ou MTN MoMo : tu ne perds pas ta sélection. Voir [Comment payer](/aide/comment-payer).
-3. Si tu es sûr d'avoir bien payé et que le refus te paraît faux, écris-nous sur WhatsApp au {{whatsapp}} avec ton code d'assistance et le SMS de ton opérateur.
+## Toujours bloqué ?
 
-**Argent débité mais rien reçu ?** Garde le SMS de ton opérateur : c'est la preuve de ton transfert.
+Écris-nous sur WhatsApp au {{whatsapp}} avec ton code d'assistance et, si tu as été débité, le SMS de ton opérateur : c'est la preuve de ton paiement.

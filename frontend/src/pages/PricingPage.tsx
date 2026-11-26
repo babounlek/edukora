@@ -690,9 +690,12 @@ export function PricingPage() {
                       : t("prix.choisir_cursus")}
                   </Button>
                 </div>
-                {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). */}
+                {/* Le bouton mène à la connexion avant tout paiement : le dire avant le clic (test parent 10-24). Avec la
+                    demande sur le téléphone, on ne « voit » aucun numéro où envoyer : on valide chez soi. */}
                 {!isAuthenticated && (
-                  <p className="text-center text-xs text-muted-foreground">{t("prix.avant_connexion")}</p>
+                  <p className="text-center text-xs text-muted-foreground">
+                    {t(campayActif ? "prix.avant_connexion_direct" : "prix.avant_connexion")}
+                  </p>
                 )}
                 {/* À qui part l'argent, dit avant la création du compte (un parent le demande avant de donner son
                     numéro). Le numéro lui-même ne s'affiche qu'à l'écran de paiement, là où la déclaration se fait. */}

@@ -1097,11 +1097,36 @@ export interface PaymentInitiateResponse {
   status: TransactionStatus
   amount: number
   credit_applique: number
+  /** Le numéro qui reçoit la demande, 9 chiffres. */
+  phone_number?: string
+  /** L'opérateur reconnu par l'agrégateur pour ce numéro ; vide s'il ne l'a pas dit. */
+  operator?: MobileMoneyOperator | ""
+  created_at?: string
+  /** Vrai quand le serveur rend une demande déjà envoyée et encore validable, au lieu d'en envoyer une deuxième. */
+  deja_en_attente?: boolean
 }
 
 export interface PaymentStatusResponse {
   status: TransactionStatus
   subscription_active: boolean
+  operator?: MobileMoneyOperator | ""
+}
+
+/** Voir payments.views.payment_en_cours : la demande encore en attente du compte, pour reprendre l'attente. */
+export type PaiementEnCours = { en_cours: false } | ({ en_cours: true } & PaymentInitiateResponse)
+
+/** Un paiement automatique confirmé (voir payments.views.list_my_transactions). */
+export interface PaiementConfirme {
+  id: number
+  plan: Plan
+  amount: number
+  mois: number
+  operator: MobileMoneyOperator | ""
+  /** Le numéro de reçu donné par l'agrégateur ; vide s'il n'en a pas donné. */
+  reference: string
+  phone_number: string
+  created_at: string
+  profil: { id: number; prenom: string } | null
 }
 
 export type MobileMoneyOperator = "ORANGE" | "MTN"

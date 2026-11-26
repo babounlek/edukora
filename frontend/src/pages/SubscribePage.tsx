@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react"
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { AideContextuelle, BoutonAide } from "@/components/guides/AideContextuelle"
-import { AlertCircle, CheckCircle2, Gift, Loader2, ShieldCheck, Sparkles, User, XCircle, Zap } from "lucide-react"
+import { AlertCircle, CheckCircle2, Gift, Loader2, MessageCircle, ShieldCheck, Smartphone, Sparkles, User, XCircle, Zap } from "lucide-react"
 
 import {
-  checkPaymentStatus, initiatePayment, listCursus, listMyInscriptionsInedites, listMySubscriptions, listPlans,
+  checkPaymentStatus, getPaiementEnCours, initiatePayment, listCursus, listMyInscriptionsInedites, listMySubscriptions, listPlans,
   listProfils,
 } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
@@ -33,6 +33,8 @@ import { BilanDePeriode } from "@/components/BilanDePeriode"
 import { ContenuDebloque } from "@/components/ContenuDebloque"
 import { InviteAvis } from "@/components/InviteAvis"
 import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
+import { LienAide } from "@/components/aide/LienAide"
+import { lienContactAide } from "@/lib/aide/contact"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { chiffresNumeroLocal } from "@/lib/telephone"
@@ -45,6 +47,67 @@ type PaymentMethod = "CAMPAY" | MobileMoneyOperator
 // aucune échappatoire (source de tickets support : l'utilisateur ne sait pas s'il
 // doit attendre, réessayer, ou si son argent est parti).
 const MAX_POLL_ATTEMPTS = 40
+const SONDAGE_RAPIDE_MS = 3000
+// Passé ces deux minutes, la page ne s'arrête plus de regarder : elle sonde plus lentement pendant dix minutes de plus.
+// Qui validait à 2 min 30 restait devant « prend plus de temps que prévu » jusqu'au rattrapage horaire du serveur
+// (audit du tunnel de paiement, 2026-11-26).
+const SONDAGE_LENT_MS = 10_000
+const MAX_SONDAGES_LENTS = 60
+
+/**
+ * Le code à composer pour retrouver et valider une demande de paiement en attente, par opérateur : la demande
+ * n'apparaît pas toujours d'elle-même sur le téléphone. Codes donnés par l'agrégateur avec chaque demande
+ * (documentation du SDK CamPay) ; à corriger ici si un opérateur change le sien.
+ */
+const CODE_VALIDATION: Record<MobileMoneyOperator, string> = { MTN: "*126#", ORANGE: "#150*50#" }
+const NOM_OPERATEUR: Record<MobileMoneyOperator, string> = { MTN: "MTN MoMo", ORANGE: "Orange Money" }
+
+/** La demande envoyée au téléphone du payeur, telle que l'écran d'attente la décrit. */
+interface DemandeEnAttente {
+  transactionId: number
+  operator: MobileMoneyOperator | ""
+  montant: number
+  /** Le serveur a rendu une demande déjà envoyée plutôt que d'en envoyer une deuxième. */
+  dejaEnAttente: boolean
+}
+
+/** Les erreurs de paiement que le serveur nomme par un code : dites dans la langue de la page, jamais en texte technique. */
+function messageErreurPaiement(err: unknown): string {
+  if (!(err instanceof ApiError)) return t("sb.erreur_initie")
+  if (err.code === "paiement_indisponible") return t("sb.err_indisponible")
+  if (err.code === "numero_refuse") return t("sb.err_numero_refuse")
+  if (err.code === "numero_invalide") return t("sb.erreur_numero")
+  return err.message
+}
+
+/**
+ * « Rien ne s'affiche sur ton téléphone ? » : le code à composer pour retrouver la demande et la valider. L'opérateur
+ * vient de l'agrégateur ; tant qu'il ne l'a pas dit, les deux codes sont donnés. Sur un téléphone, un toucher compose
+ * le code (le menu de l'opérateur seulement : rien n'est validé sans le code secret du payeur).
+ */
+function AideValidation({ operator }: { operator: MobileMoneyOperator | "" }) {
+  const operateurs: MobileMoneyOperator[] = operator ? [operator] : ["MTN", "ORANGE"]
+  return (
+    <div className="w-full rounded-lg border border-border bg-muted/40 px-3.5 py-3 text-left text-sm">
+      <p className="font-medium">{t("sb.ussd_titre")}</p>
+      <p className="mt-1 text-muted-foreground">
+        {operator
+          ? t("sb.ussd_un", { code: CODE_VALIDATION[operator], operateur: NOM_OPERATEUR[operator] })
+          : t("sb.ussd_deux", { mtn: CODE_VALIDATION.MTN, orange: CODE_VALIDATION.ORANGE })}
+      </p>
+      <div className="mt-2.5 flex flex-wrap gap-2 sm:hidden">
+        {operateurs.map((op) => (
+          <Button key={op} asChild variant="secondary" size="sm">
+            <a href={`tel:${encodeURIComponent(CODE_VALIDATION[op])}`}>
+              <Smartphone className="size-3.5" aria-hidden="true" />
+              {t("sb.ussd_bouton", { code: CODE_VALIDATION[op], operateur: NOM_OPERATEUR[op] })}
+            </a>
+          </Button>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 interface PaymentMethodOption {
   value: PaymentMethod
@@ -173,7 +236,14 @@ export function SubscribePage() {
   const [declaredPayment, setDeclaredPayment] = useState<ManualPayment | null>(null)
   const [phase, setPhase] = useState<PaymentPhase>("form")
   const [error, setError] = useState<string | null>(null)
+  const [attente, setAttente] = useState<DemandeEnAttente | null>(null)
   const pollRef = useRef<number | null>(null)
+  // Le sondage en cours : incrémenté pour abandonner le précédent (nouvelle demande, page quittée), y compris
+  // la réponse d'une requête déjà partie.
+  const sondageRef = useRef(0)
+  // La phase lue depuis le sondage, qui court sur plusieurs rendus.
+  const phaseRef = useRef<PaymentPhase>("form")
+  phaseRef.current = phase
   const queryClient = useQueryClient()
   // Campay coupé côté serveur (CAMPAY_ACTIVE=0) : seul le paiement manuel reste proposé,
   // directement déplié et présélectionné. `methode` est la méthode réellement affichée -
@@ -331,49 +401,103 @@ export function SubscribePage() {
       })
   }, [profilId, profilParam])
 
-  useEffect(() => {
-    return () => {
-      if (pollRef.current) window.clearInterval(pollRef.current)
+  function arreterSondage() {
+    sondageRef.current += 1
+    if (pollRef.current) {
+      window.clearTimeout(pollRef.current)
+      pollRef.current = null
     }
-  }, [])
+  }
 
+  useEffect(() => arreterSondage, [])
+
+  /**
+   * Suit une demande jusqu'à son dénouement : toutes les 3 secondes pendant deux minutes, puis toutes les 10 secondes
+   * pendant dix minutes. Le passage au rythme lent affiche « prend plus de temps que prévu » sans cesser de regarder.
+   * Le sondage survit au retour sur le formulaire : un succès s'affiche où que soit le payeur (il a payé) ; un échec
+   * ne s'affiche que s'il attendait encore, pour ne pas lui retirer le formulaire des mains.
+   */
   function pollTransaction(transactionId: number) {
+    arreterSondage()
+    const moi = sondageRef.current
+    const suivi = { cursus_id: cursusId ? Number(cursusId) : undefined }
     let attempts = 0
-    pollRef.current = window.setInterval(async () => {
+    const sonder = async () => {
       attempts += 1
       try {
         const result = await checkPaymentStatus(transactionId)
+        if (sondageRef.current !== moi) return
+        if (result.operator) {
+          // L'opérateur n'est parfois connu qu'au premier statut : la consigne de l'écran d'attente se précise alors.
+          const operator = result.operator
+          setAttente((a) => (a && a.transactionId === transactionId && !a.operator ? { ...a, operator } : a))
+        }
         if (result.status !== "PENDING") {
-          if (pollRef.current) window.clearInterval(pollRef.current)
-          setPhase(result.status === "SUCCESSFUL" ? "success" : "failed")
+          pollRef.current = null
+          const enAttente = phaseRef.current === "pending" || phaseRef.current === "timeout"
+          if (result.status === "SUCCESSFUL") setPhase("success")
+          else if (enAttente) setPhase("failed")
           // Le bandeau « reprendre mon paiement » doit refléter ce résultat tout de suite.
           queryClient.invalidateQueries({ queryKey: ["paiement-a-reprendre"] })
-          trackEvent(result.status === "SUCCESSFUL" ? "payment_succeeded" : "payment_failed", {
-            cursus_id: cursusId ? Number(cursusId) : undefined,
-          })
+          trackEvent(result.status === "SUCCESSFUL" ? "payment_succeeded" : "payment_failed", suivi)
           return
         }
       } catch {
         // on continue de sonder, une erreur ponctuelle du reseau ne doit pas interrompre l'attente
+        if (sondageRef.current !== moi) return
       }
-      if (attempts >= MAX_POLL_ATTEMPTS) {
-        if (pollRef.current) window.clearInterval(pollRef.current)
-        setPhase("timeout")
-        trackEvent("payment_timeout", { cursus_id: cursusId ? Number(cursusId) : undefined })
+      if (attempts === MAX_POLL_ATTEMPTS) {
+        if (phaseRef.current === "pending") setPhase("timeout")
+        trackEvent("payment_timeout", suivi)
       }
-    }, 3000)
+      if (attempts >= MAX_POLL_ATTEMPTS + MAX_SONDAGES_LENTS) {
+        pollRef.current = null
+        return
+      }
+      pollRef.current = window.setTimeout(sonder, attempts < MAX_POLL_ATTEMPTS ? SONDAGE_RAPIDE_MS : SONDAGE_LENT_MS)
+    }
+    pollRef.current = window.setTimeout(sonder, SONDAGE_RAPIDE_MS)
   }
 
+  // Ne coupe pas le sondage : ce bouton n'annule rien chez l'opérateur, et qui a validé entre-temps doit voir son accès.
   function cancelPending() {
-    if (pollRef.current) {
-      window.clearInterval(pollRef.current)
-      pollRef.current = null
-    }
     setPhase("form")
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+  function suivreDemande(response: { transaction_id: number; operator?: MobileMoneyOperator | ""; amount: number; deja_en_attente?: boolean }) {
+    setAttente({
+      transactionId: response.transaction_id,
+      operator: response.operator || "",
+      montant: response.amount,
+      dejaEnAttente: Boolean(response.deja_en_attente),
+    })
+    setPhase("pending")
+    pollTransaction(response.transaction_id)
+  }
+
+  // Écran rouvert ou rechargé pendant qu'une demande attend encore sur le téléphone : on reprend l'attente, au lieu de
+  // présenter un formulaire vierge qui invite à payer une deuxième fois.
+  useEffect(() => {
+    if (!isAuthenticated || !configPrete || !campayActif) return
+    let annule = false
+    getPaiementEnCours(cursusId ? Number(cursusId) : undefined)
+      .then((demande) => {
+        if (annule || !demande?.en_cours || phaseRef.current !== "form") return
+        if (demande.phone_number) setPhoneNumber(demande.phone_number)
+        suivreDemande(demande)
+      })
+      .catch(() => {
+        // Sans réponse on reste sur le formulaire : le serveur refuse de toute façon de doubler une demande en attente.
+      })
+    return () => {
+      annule = true
+    }
+    // Une fois la session et les moyens de paiement connus ; `suivreDemande` ne dépend que de l'examen affiché.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, configPrete, campayActif, cursusId])
+
+  /** `nouvelleDemande` : le payeur demande lui-même une demande neuve alors qu'une autre attend encore. */
+  async function lancerPaiement(nouvelleDemande = false) {
     if (!selectedPlanId) return
 
     setError(null)
@@ -382,11 +506,13 @@ export function SubscribePage() {
       return
     }
 
+    arreterSondage()
+    setAttente(null)
     setPhase("pending")
     const properties = { cursus_id: cursusId ? Number(cursusId) : undefined, plan_id: selectedPlanId, mois }
     trackEvent("payment_initiated", properties)
     try {
-      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber, profilId, mois })
+      const response = await initiatePayment({ planId: selectedPlanId, phoneNumber, profilId, mois, nouvelleDemande })
       if (response.status === "FAILED") {
         setPhase("failed")
         trackEvent("payment_failed", properties)
@@ -395,25 +521,32 @@ export function SubscribePage() {
       if (response.status === "SUCCESSFUL") {
         // Crédit parrainage suffisant pour couvrir tout le prix - jamais envoyé à
         // CamPay côté backend (voir TransactionManager.creer_couverte_par_credit),
-        // donc rien à sonder ici non plus.
+        // donc rien à sonder ici non plus. Ou une demande précédente, validée entre-temps.
         setPhase("success")
         trackEvent("payment_succeeded", properties)
         return
       }
-      pollTransaction(response.transaction_id)
+      suivreDemande(response)
     } catch (err) {
-      setPhase("failed")
-      setError(err instanceof ApiError ? err.message : t("sb.erreur_initie"))
+      const numeroEnCause = err instanceof ApiError && (err.code === "numero_refuse" || err.code === "numero_invalide")
+      // Un numéro refusé se corrige dans le formulaire : on y revient, le message sous le champ.
+      setPhase(numeroEnCause ? "form" : "failed")
+      setError(messageErreurPaiement(err))
       trackEvent("payment_failed", properties)
       // Contrairement à response.status === "FAILED" ci-dessus (échec métier déjà
       // remonté côté backend, voir payments/views.py._report_campay_error) : un rejet
       // de la promesse ici est inattendu (réseau, réponse invalide...) - jamais capturé
       // ailleurs, donc explicitement priorisé côté Sentry (voir l'audit UX, reco 5.1).
-      Sentry.captureException(err, { tags: { critical_path: "payment" } })
+      if (!numeroEnCause) Sentry.captureException(err, { tags: { critical_path: "payment" } })
       // Campay a peut-être été coupé depuis le chargement de la page : on relit l'état
       // pour que « Réessayer » ramène un formulaire déjà basculé sur le paiement manuel.
       queryClient.invalidateQueries({ queryKey: PAYMENT_CONFIG_KEY })
     }
+  }
+
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+    void lancerPaiement()
   }
 
   const selectedPlan = plans.find((p) => p.id === selectedPlanId) ?? null
@@ -730,6 +863,28 @@ export function SubscribePage() {
                 <Loader2 className="mx-auto size-6 animate-spin text-primary" aria-label={t("sb.chargement_moyens")} />
               ) : (
                 <>
+                  {/* Un seul moyen proposé (la demande sur le téléphone) : pas d'étape « choisis ton moyen » à option
+                      unique, ni de carte au nom du prestataire, inconnu de qui paie. Les deux opérateurs acceptés,
+                      et ce qui va se passer. */}
+                  {campayActif && !manuelActif ? (
+                    <div className="flex items-start gap-3">
+                      <span className="mt-0.5 flex shrink-0 -space-x-1.5">
+                        {MANUAL_METHODS.map((method) => (
+                          <span
+                            key={method.value}
+                            className={cn("flex size-8 items-center justify-center rounded-full text-[0.65rem] font-bold ring-2 ring-card", method.badgeClass)}
+                            aria-hidden="true"
+                          >
+                            {method.content}
+                          </span>
+                        ))}
+                      </span>
+                      <span className="flex flex-col gap-0.5">
+                        <span className="text-sm font-semibold">{t("sb.direct_seul_titre")}</span>
+                        <span className="text-xs text-muted-foreground">{t("sb.direct_seul_texte")}</span>
+                      </span>
+                    </div>
+                  ) : (
                   <div className="flex flex-col gap-2.5">
                     <StepLabel n={1}>{t("sb.moyen")}</StepLabel>
 
@@ -757,7 +912,7 @@ export function SubscribePage() {
                         </span>
                         <span className="flex flex-col gap-0.5">
                           <span className="flex items-center gap-1.5">
-                            <span className="text-sm font-semibold">{CAMPAY_METHOD.label}</span>
+                            <span className="text-sm font-semibold">{t("sb.direct_label")}</span>
                             <span className="rounded-full bg-success/15 px-1.5 py-0.5 text-xs font-semibold uppercase tracking-wide text-success">
                               {t("sb.recommande")}
                             </span>
@@ -813,10 +968,11 @@ export function SubscribePage() {
                       </div>
                     )}
                   </div>
+                  )}
 
                   {!aucunMoyen && (
                   <div className="flex flex-col gap-2.5">
-                    <StepLabel n={2}>{t("sb.paiement")}</StepLabel>
+                    {!(campayActif && !manuelActif) && <StepLabel n={2}>{t("sb.paiement")}</StepLabel>}
 
                     {methode === "CAMPAY" ? (
                       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -832,10 +988,12 @@ export function SubscribePage() {
                             onChange={(e) => setPhoneNumber(chiffresNumeroLocal(e.target.value))}
                             type="tel"
                             autoComplete="tel-national"
+                            aria-describedby="momo-phone-aide"
                           />
+                          <p id="momo-phone-aide" className="text-xs text-muted-foreground">{t("sb.numero_aide")}</p>
                         </div>
 
-                        {error && <p className="text-sm text-destructive">{error}</p>}
+                        {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
 
                         {selectedPlan && creditAppliqueSelection > 0 && (
                           <p className="text-xs text-muted-foreground">
@@ -911,11 +1069,20 @@ export function SubscribePage() {
               <Loader2 className="size-8 animate-spin text-primary" />
               <p className="font-display font-medium">{t("sb.confirme")}</p>
               {profilPrenom && <p className="text-sm font-medium">{t("sb.paiement_pour", { prenom: profilPrenom })}</p>}
+              {/* Une demande précédente attend encore sur ce numéro : le serveur l'a rendue au lieu d'en envoyer une
+                  deuxième. Le dire, sinon le payeur attend une demande neuve qui ne viendra pas. */}
+              {attente?.dejaEnAttente && (
+                <p role="status" className="w-full rounded-lg border border-warning/40 bg-warning/10 px-3.5 py-2.5 text-left text-sm">
+                  {t("sb.deja_attente")}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground">
-                {t("sb.confirme_texte", { phone: phoneNumber })}
+                {attente
+                  ? t("sb.confirme_texte", { phone: phoneNumber, montant: formatAmount(attente.montant) })
+                  : t("sb.envoi_demande", { phone: phoneNumber })}
               </p>
-              {/* Pas « Annuler » : ce bouton n'annule rien côté opérateur, il arrête seulement
-                  de sonder le statut sur cette page. Le dire évite qu'on croie sa demande
+              {attente && <AideValidation operator={attente.operator} />}
+              {/* Pas « Annuler » : ce bouton n'annule rien côté opérateur. Le dire évite qu'on croie sa demande
                   retirée, puis qu'on repaie une deuxième fois. */}
               <button
                 type="button"
@@ -927,6 +1094,14 @@ export function SubscribePage() {
               <p className="text-xs text-muted-foreground">
                 {t("sb.deja_valide")}
               </p>
+              {attente?.dejaEnAttente && (
+                <div className="flex flex-col items-center gap-1 border-t border-border/60 pt-3">
+                  <Button type="button" variant="outline" size="sm" onClick={() => void lancerPaiement(true)}>
+                    {t("sb.nouvelle_demande")}
+                  </Button>
+                  <p className="text-xs text-muted-foreground">{t("sb.nouvelle_demande_aide")}</p>
+                </div>
+              )}
             </div>
           )}
 
@@ -937,6 +1112,7 @@ export function SubscribePage() {
               <p className="text-sm text-muted-foreground">
                 {t("sb.timeout_texte")}
               </p>
+              {attente && <AideValidation operator={attente.operator} />}
               <Button variant="outline" onClick={() => setPhase("form")}>
                 {t("erreur.reessayer")}
               </Button>
@@ -984,10 +1160,32 @@ export function SubscribePage() {
             <div className="flex flex-col items-center gap-3 py-6 text-center">
               <XCircle className="size-10 text-destructive" />
               <p className="font-display font-medium">{t("sb.echec")}</p>
-              {error && <p className="text-sm text-muted-foreground">{error}</p>}
-              <Button variant="outline" onClick={() => setPhase("form")}>
+              {/* Jamais un titre seul : soit le serveur dit ce qui s'est passé, soit l'opérateur a refusé sans dire
+                  pourquoi, et l'on donne les trois causes qui expliquent presque tous les refus. */}
+              {error ? (
+                <p className="text-sm text-muted-foreground">{error}</p>
+              ) : (
+                <div className="w-full rounded-lg border border-border bg-muted/40 px-3.5 py-3 text-left text-sm">
+                  <p className="font-medium">{t("sb.echec_verifs_titre")}</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-5 text-muted-foreground">
+                    <li>{t("sb.echec_solde", { montant: formatAmount(attente?.montant ?? netAPayerSelection) })}</li>
+                    <li>{t("sb.echec_code")}</li>
+                    <li>{t("sb.echec_delai")}</li>
+                  </ul>
+                  <p className="mt-2 text-xs text-muted-foreground">{t("sb.echec_rien_debite")}</p>
+                </div>
+              )}
+              <Button onClick={() => setPhase("form")}>
                 {t("erreur.reessayer")}
               </Button>
+              {/* Le paiement manuel peut être coupé : sans cette porte, l'écran d'échec n'offrait que « Réessayer ». */}
+              <Button asChild variant="outline" size="sm">
+                <a href={lienContactAide({ page: "/abonnement" })} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="size-3.5" aria-hidden="true" />
+                  {t("aide.contact.bouton")}
+                </a>
+              </Button>
+              <LienAide slug="paiement-refuse">{t("aide.lien.refuse")}</LienAide>
               {campayActif && manuelActif && (
                 <button
                   type="button"

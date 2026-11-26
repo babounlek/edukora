@@ -29,7 +29,21 @@ class PaiementFournisseurError(Exception):
     invalide). Les vues ne rattrapent que celle-ci : un adaptateur doit y convertir ses
     erreurs propres pour qu'une panne de fournisseur reste une réponse 503 exploitable
     plutôt qu'un 500.
+
+    Le texte de l'exception est technique (réponse brute de l'agrégateur, détail réseau) :
+    il part aux journaux et à Sentry, jamais à l'écran du payeur. Ce que le payeur lit se
+    choisit par `code` (voir payments.views.MESSAGES_PAYEUR) :
+
+    - `paiement_indisponible` (défaut) : panne, authentification, réponse illisible ;
+    - `numero_refuse` : l'agrégateur a refusé la demande pour ce numéro.
     """
+
+    code = "paiement_indisponible"
+
+    def __init__(self, *args, code=None):
+        super().__init__(*args)
+        if code:
+            self.code = code
 
 
 @dataclass(frozen=True)

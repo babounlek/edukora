@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router-dom"
 import { beforeEach, describe, expect, it, vi } from "vitest"
@@ -8,6 +8,8 @@ const getPaymentConfig = vi.hoisted(() => vi.fn())
 const listProfils = vi.hoisted(() => vi.fn())
 const listPlans = vi.hoisted(() => vi.fn())
 const initiatePayment = vi.hoisted(() => vi.fn())
+const checkPaymentStatus = vi.hoisted(() => vi.fn())
+const getPaiementEnCours = vi.hoisted(() => vi.fn())
 const listMySubscriptions = vi.hoisted(() => vi.fn())
 const auth = vi.hoisted(() => ({
   isAuthenticated: true,
@@ -16,7 +18,8 @@ const auth = vi.hoisted(() => ({
 }))
 
 vi.mock("@/api/endpoints", () => ({
-  checkPaymentStatus: vi.fn(),
+  checkPaymentStatus,
+  getPaiementEnCours,
   initiatePayment,
   listCursus: vi.fn(() => Promise.resolve([])),
   listPlans,
@@ -30,6 +33,7 @@ vi.mock("@/context/CountryContext", () => ({ useCountry: () => ({ country: "cm" 
 vi.mock("@/lib/analytics", () => ({ trackEvent: vi.fn() }))
 vi.mock("@/lib/sentry", () => ({ Sentry: { captureException: vi.fn() } }))
 vi.mock("@/components/BilanDePeriode", () => ({ BilanDePeriode: () => null }))
+vi.mock("@/components/InviteAvis", () => ({ InviteAvis: () => null }))
 // Ces deux blocs appellent des routes réservées aux comptes dès leur montage : on compte les montages.
 const blocsReserves = vi.hoisted(() => ({ codeRevendeur: vi.fn(), paiementManuel: vi.fn() }))
 vi.mock("@/components/CodeRevendeur", () => ({
@@ -45,6 +49,7 @@ vi.mock("@/components/ManualPaymentPanel", () => ({
   },
 }))
 
+import { ApiError } from "@/api/client"
 import { SubscribePage } from "./SubscribePage"
 
 const RETOUR = "/cm/epreuves-inedites/maths-bac-d"
@@ -77,6 +82,9 @@ beforeEach(() => {
   listPlans.mockReset()
   listPlans.mockResolvedValue([])
   initiatePayment.mockReset()
+  checkPaymentStatus.mockReset()
+  getPaiementEnCours.mockReset()
+  getPaiementEnCours.mockResolvedValue({ en_cours: false })
   listMySubscriptions.mockReset()
   listMySubscriptions.mockResolvedValue([])
   auth.isAuthenticated = true
@@ -242,7 +250,8 @@ describe("SubscribePage : interrupteur Campay (CAMPAY_ACTIVE)", () => {
     afficher("/abonnement?cursus=4&duree=examen")
 
     expect(await screen.findByText("Recommandé")).toBeInTheDocument()
-    expect(screen.getByText(/Des difficultés avec Campay/)).toBeInTheDocument()
+    expect(screen.getByText(/Le paiement direct ne passe pas/)).toBeInTheDocument()
+    expect(screen.queryByText(/Campay/)).not.toBeInTheDocument()
     expect(screen.queryByText(/momentanément indisponible/)).not.toBeInTheDocument()
   })
 
@@ -254,7 +263,7 @@ describe("SubscribePage : interrupteur Campay (CAMPAY_ACTIVE)", () => {
     expect(screen.getByText("Orange Money")).toBeInTheDocument()
     expect(screen.getByText("MTN MoMo")).toBeInTheDocument()
     expect(screen.queryByText("Recommandé")).not.toBeInTheDocument()
-    expect(screen.queryByText(/Des difficultés avec Campay/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Le paiement direct ne passe pas/)).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/Numéro Mobile Money/)).not.toBeInTheDocument()
   })
 
@@ -368,5 +377,124 @@ describe("SubscribePage : l'élève choisit le nombre de mois", () => {
     afficher("/abonnement?cursus=4&mois=3")
 
     expect(await screen.findByRole("button", { name: /Payer 5 000 FCFA/ })).toBeInTheDocument()
+  })
+})
+
+describe("SubscribePage : la demande de paiement sur le téléphone (audit du tunnel, 2026-11-26)", () => {
+  beforeEach(() => {
+    listPlans.mockResolvedValue([planAuMois()])
+    checkPaymentStatus.mockResolvedValue({ status: "PENDING", subscription_active: false })
+  })
+
+  async function payer() {
+    fireEvent.change(await screen.findByLabelText(/Numéro Mobile Money/), { target: { value: "677123456" } })
+    fireEvent.click(screen.getByRole("button", { name: /Payer 2 000 FCFA/ }))
+  }
+
+  it("ne présente ni étape de choix ni le nom du prestataire quand la demande directe est le seul moyen", async () => {
+    getPaymentConfig.mockResolvedValue({ campay_active: true, manual_active: false })
+    afficher("/abonnement?cursus=4&mois=1")
+
+    expect(await screen.findByText("Orange Money ou MTN MoMo")).toBeInTheDocument()
+    expect(screen.queryByText("Recommandé")).not.toBeInTheDocument()
+    expect(screen.queryByText("Moyen de paiement")).not.toBeInTheDocument()
+    expect(screen.queryByText(/Campay/)).not.toBeInTheDocument()
+    expect(screen.getByLabelText(/Numéro Mobile Money/)).toBeInTheDocument()
+  })
+
+  it("dit le montant et le code à composer pour l'opérateur du numéro pendant l'attente", async () => {
+    initiatePayment.mockResolvedValue({ transaction_id: 7, status: "PENDING", amount: 2000, credit_applique: 0, operator: "ORANGE" })
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByText(/Une demande de 2 000 FCFA a été envoyée au 677123456/)).toBeInTheDocument()
+    expect(screen.getByText(/Compose #150\*50# \(Orange Money\)/)).toBeInTheDocument()
+    expect(screen.queryByText(/\*126#/)).not.toBeInTheDocument()
+  })
+
+  it("donne les deux codes tant que l'opérateur n'est pas connu", async () => {
+    initiatePayment.mockResolvedValue({ transaction_id: 7, status: "PENDING", amount: 2000, credit_applique: 0, operator: "" })
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByText(/Compose \*126# sur MTN ou #150\*50# sur Orange/)).toBeInTheDocument()
+  })
+
+  it("prévient qu'une demande attend déjà, et n'en envoie une neuve que si le payeur le demande", async () => {
+    initiatePayment.mockResolvedValue({
+      transaction_id: 7, status: "PENDING", amount: 2000, credit_applique: 0, operator: "MTN", deja_en_attente: true,
+    })
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByText(/attend encore sur ce numéro/)).toBeInTheDocument()
+    expect(initiatePayment).toHaveBeenLastCalledWith(expect.objectContaining({ nouvelleDemande: false }))
+
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer une nouvelle demande" }))
+    await waitFor(() => expect(initiatePayment).toHaveBeenCalledTimes(2))
+    expect(initiatePayment).toHaveBeenLastCalledWith(expect.objectContaining({ nouvelleDemande: true }))
+  })
+
+  it("continue de regarder après deux minutes, et ouvre l'accès dès que le payeur valide", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      initiatePayment.mockResolvedValue({ transaction_id: 7, status: "PENDING", amount: 2000, credit_applique: 0, operator: "MTN" })
+      afficher("/abonnement?cursus=4&mois=1")
+      await payer()
+      await screen.findByText(/Une demande de 2 000 FCFA/)
+
+      // Deux minutes de sondage rapide (40 lectures) sans validation : l'écran le dit, sans cesser de regarder.
+      await act(() => vi.advanceTimersByTimeAsync(40 * 3000 + 100))
+      expect(screen.getByText("La confirmation prend plus de temps que prévu")).toBeInTheDocument()
+      expect(checkPaymentStatus).toHaveBeenCalledTimes(40)
+
+      checkPaymentStatus.mockResolvedValue({ status: "SUCCESSFUL", subscription_active: true })
+      await act(() => vi.advanceTimersByTimeAsync(10_000 + 100))
+      expect(checkPaymentStatus).toHaveBeenCalledTimes(41)
+      expect(await screen.findByText("Abonnement activé !")).toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it("reprend l'attente quand l'écran est rouvert pendant qu'une demande est en cours", async () => {
+    getPaiementEnCours.mockResolvedValue({
+      en_cours: true, transaction_id: 9, status: "PENDING", amount: 4000, credit_applique: 0, phone_number: "699000111", operator: "ORANGE",
+    })
+    afficher("/abonnement?cursus=4&mois=2")
+
+    expect(await screen.findByText(/Une demande de 4 000 FCFA a été envoyée au 699000111/)).toBeInTheDocument()
+    expect(getPaiementEnCours).toHaveBeenCalledWith(4)
+    expect(initiatePayment).not.toHaveBeenCalled()
+  })
+
+  it("ramène au formulaire, message sous le champ, quand le numéro est refusé", async () => {
+    initiatePayment.mockRejectedValue(new ApiError(503, { error: "texte du serveur", code: "numero_refuse" }))
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(/Ce numéro n'a pas été accepté/)
+    expect(screen.getByLabelText(/Numéro Mobile Money/)).toBeInTheDocument()
+    expect(screen.queryByText("Le paiement a échoué")).not.toBeInTheDocument()
+  })
+
+  it("ne montre jamais le texte technique d'une panne, et laisse une porte vers le support", async () => {
+    initiatePayment.mockRejectedValue(new ApiError(503, { error: "repli du serveur", code: "paiement_indisponible" }))
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByText("Le paiement a échoué")).toBeInTheDocument()
+    expect(screen.getByText(/momentanément indisponible. Rien n'a été débité/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Écrire au support sur WhatsApp/ })).toHaveAttribute("href", expect.stringContaining("wa.me"))
+  })
+
+  it("donne les vérifications à faire quand l'opérateur refuse sans dire pourquoi", async () => {
+    initiatePayment.mockResolvedValue({ transaction_id: 7, status: "FAILED", amount: 2000, credit_applique: 0 })
+    afficher("/abonnement?cursus=4&mois=1")
+    await payer()
+
+    expect(await screen.findByText("Le paiement a échoué")).toBeInTheDocument()
+    expect(screen.getByText(/ton solde Mobile Money couvre bien 2 000 FCFA/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Que faire d'un paiement refusé/ })).toBeInTheDocument()
   })
 })
