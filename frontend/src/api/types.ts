@@ -1145,7 +1145,12 @@ export interface PaymentConfig {
 export interface MobileMoneyAccount {
   operator: MobileMoneyOperator
   operator_display: string
+  /** Vide pour un compte marchand payé par code. */
   phone_number: string
+  /** Rempli : compte marchand, l'écran montre ce code à la place du numéro. */
+  merchant_code?: string
+  /** Séquence du kit de l'opérateur, avec {code} et {montant} ; vide : l'élève passe par le menu. */
+  ussd_template?: string
   account_name: string
 }
 

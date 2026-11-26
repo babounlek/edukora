@@ -55,7 +55,8 @@ class MobileMoneyAccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MobileMoneyAccount
-        fields = ["operator", "operator_display", "phone_number", "account_name"]
+        # merchant_code rempli : l'écran montre le code marchand à la place du numéro (voir ManualPaymentPanel.tsx).
+        fields = ["operator", "operator_display", "phone_number", "merchant_code", "ussd_template", "account_name"]
 
 
 class ManualPaymentSerializer(serializers.ModelSerializer):

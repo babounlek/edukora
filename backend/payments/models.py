@@ -1,7 +1,10 @@
 import logging
+import re
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.core.mail import send_mail
+from django.core.validators import RegexValidator
 from django.db import connection, models
 from django.db import transaction as db_transaction
 from django.utils import timezone
@@ -286,6 +289,22 @@ class MobileMoneyOperator(models.TextChoices):
     MTN = "MTN", "MTN Mobile Money"
 
 
+code_marchand_validator = RegexValidator(
+    regex=r"^\d{3,12}$", message="Le code marchand ne contient que des chiffres (3 à 12).",
+)
+
+
+def sequence_ussd_validator(valeur):
+    """Une séquence à composer (* ou # au début, # à la fin, chiffres, * et #), où seuls {code} et {montant} sont
+    remplacés à l'affichage. Toute autre accolade serait affichée telle quelle à l'élève."""
+    reste = valeur.replace("{code}", "0").replace("{montant}", "0")
+    if not re.fullmatch(r"[*#][0-9*#]*#", reste):
+        raise ValidationError(
+            "Séquence invalide : commence par * ou #, finit par #, ne contient que des chiffres, *, # et les "
+            "repères {code} et {montant}.",
+        )
+
+
 class MobileMoneyAccount(models.Model):
     """
     Compte de réception configuré par un administrateur pour un opérateur - jamais
@@ -296,7 +315,25 @@ class MobileMoneyAccount(models.Model):
     """
 
     operator = models.CharField(max_length=10, choices=MobileMoneyOperator.choices, unique=True)
-    phone_number = models.CharField(max_length=9, validators=[phone_validator])
+    phone_number = models.CharField(
+        max_length=9, blank=True, validators=[phone_validator],
+        help_text="Numéro qui reçoit un transfert. Laissé vide pour un compte marchand payé par code.",
+    )
+    # Compte marchand (Orange Money, MoMo Pay) : le client paie un code, pas un numéro. Il voit le nom du commerce
+    # sur l'écran de confirmation de son opérateur, et le relevé marchand sert à vérifier les déclarations.
+    merchant_code = models.CharField(
+        "code marchand", max_length=12, blank=True, validators=[code_marchand_validator],
+        help_text="Code remis par l'opérateur à l'ouverture du compte marchand. Rempli, il remplace le numéro à "
+                  "l'écran de paiement.",
+    )
+    # La séquence de paiement marchand diffère d'un opérateur à l'autre et peut changer : elle se recopie du kit
+    # remis par l'opérateur, jamais devinée dans le code.
+    ussd_template = models.CharField(
+        "séquence USSD", max_length=60, blank=True, validators=[sequence_ussd_validator],
+        help_text="Facultatif. Séquence de paiement marchand recopiée du kit de l'opérateur, avec {code} et "
+                  "{montant} à la place du code marchand et du montant, par exemple #150*47*{code}*{montant}# "
+                  "(à vérifier). Vide : l'élève ouvre le menu de l'opérateur et saisit le code lui-même.",
+    )
     account_name = models.CharField(max_length=150, help_text="Nom du bénéficiaire affiché à l'utilisateur.")
     active = models.BooleanField(default=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -304,9 +341,24 @@ class MobileMoneyAccount(models.Model):
     class Meta:
         verbose_name = "compte Mobile Money"
         verbose_name_plural = "comptes Mobile Money"
+        constraints = [
+            models.CheckConstraint(
+                condition=~models.Q(phone_number="") | ~models.Q(merchant_code=""),
+                name="mobilemoneyaccount_numero_ou_code_marchand",
+            ),
+        ]
 
     def __str__(self):
+        if self.merchant_code:
+            return f"{self.get_operator_display()} - code marchand {self.merchant_code}"
         return f"{self.get_operator_display()} - {self.phone_number}"
+
+    def clean(self):
+        super().clean()
+        if not self.phone_number and not self.merchant_code:
+            raise ValidationError("Renseigne un numéro ou un code marchand.")
+        if self.ussd_template and not self.merchant_code:
+            raise ValidationError({"ussd_template": "La séquence USSD ne sert qu'avec un code marchand."})
 
 
 class ManualPaymentStatus(models.TextChoices):

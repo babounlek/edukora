@@ -87,8 +87,13 @@ class TransactionAdmin(admin.ModelAdmin):
 
 @admin.register(MobileMoneyAccount)
 class MobileMoneyAccountAdmin(admin.ModelAdmin):
-    list_display = ["operator", "phone_number", "account_name", "active", "updated_at"]
+    list_display = ["operator", "merchant_code", "phone_number", "account_name", "active", "updated_at"]
     list_filter = ["active", "operator"]
+    fieldsets = [
+        (None, {"fields": ["operator", "account_name", "active"]}),
+        ("Compte marchand (paiement par code)", {"fields": ["merchant_code", "ussd_template"]}),
+        ("Transfert vers un numéro", {"fields": ["phone_number"]}),
+    ]
 
 
 class ManualPaymentAdminForm(forms.ModelForm):

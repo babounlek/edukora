@@ -35,6 +35,16 @@ interface ManualPaymentPanelProps {
  */
 const CODE_MENU_OPERATEUR: Record<MobileMoneyOperator, string> = { ORANGE: "#150#", MTN: "*126#" }
 
+/**
+ * Séquence de paiement marchand à composer, montant compris, ou null sans séquence saisie dans l'admin. La séquence
+ * vient du kit de l'opérateur (MobileMoneyAccount.ussd_template), jamais du code : elle change d'un opérateur à
+ * l'autre.
+ */
+export function sequenceMarchand(account: MobileMoneyAccount, montant: number): string | null {
+  if (!account.merchant_code || !account.ussd_template) return null
+  return account.ussd_template.split("{code}").join(account.merchant_code).split("{montant}").join(String(montant))
+}
+
 // Mêmes couleurs de marque que le sélecteur de moyen de paiement (SubscribePage) -
 // l'utilisateur doit reconnaître d'un coup d'oeil qu'il est toujours sur le même
 // opérateur qu'il vient de choisir.
@@ -71,6 +81,7 @@ export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, 
   const [showForm, setShowForm] = useState(false)
   const [copied, setCopied] = useState(false)
   const [copiedAmount, setCopiedAmount] = useState(false)
+  const [copiedSequence, setCopiedSequence] = useState(false)
   const [payerPhoneNumber, setPayerPhoneNumber] = useState(() =>
     defaultPayerPhone && /^6\d{8}$/.test(defaultPayerPhone) ? defaultPayerPhone : "",
   )
@@ -126,9 +137,17 @@ export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, 
     copier(String(montant), setCopiedAmount)
   }
 
+  // Compte marchand : l'élève paie un code, pas un numéro, et son opérateur lui affiche le nom du commerce.
+  const codeMarchand = account?.merchant_code || null
+  const sequence = account ? sequenceMarchand(account, montant) : null
+
   function handleCopyNumber() {
     if (!account) return
-    copier(account.phone_number, setCopied)
+    copier(codeMarchand ?? account.phone_number, setCopied)
+  }
+
+  function handleCopySequence() {
+    if (sequence) copier(sequence, setCopiedSequence)
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -209,29 +228,65 @@ export function ManualPaymentPanel({ plan, mois, montant, operator, onDeclared, 
           <p className="mt-1 text-xs font-medium">{tn("mp.duree", mois)}</p>
         )}
         <p className="mt-1 text-xs text-muted-foreground">
-          {t("mp.envoie", { prix: formatAmount(montant) })}
+          {t(codeMarchand ? "mp.envoie_marchand" : "mp.envoie", { prix: formatAmount(montant) })}
         </p>
 
         <div className="mt-3.5 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/70 px-3.5 py-2.5">
           <div className="min-w-0">
-            <p className="text-xs text-muted-foreground">{t("mp.numero_a_crediter")}</p>
-            <p className="truncate font-mono text-lg font-semibold tracking-wide">{account.phone_number}</p>
+            <p className="text-xs text-muted-foreground">{t(codeMarchand ? "mp.code_marchand" : "mp.numero_a_crediter")}</p>
+            <p className="truncate font-mono text-lg font-semibold tracking-wide">{codeMarchand ?? account.phone_number}</p>
           </div>
           <Button type="button" variant="outline" size="sm" onClick={handleCopyNumber} className="shrink-0">
             {copied ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
             {copied ? t("mp.copie") : t("mp.copier")}
           </Button>
         </div>
-        <p className="mt-2 text-xs text-muted-foreground">{t("mp.beneficiaire", { nom: account.account_name })}</p>
-        {/* Sur un téléphone, un toucher ouvre le menu Mobile Money de l'opérateur : celui qui paie n'a pas à quitter la
-            page pour retrouver le code. Le menu seulement (codes publics des opérateurs), jamais un transfert
-            pré-rempli : le montant et le numéro se saisissent dans le menu, sous les yeux de celui qui paie. */}
-        <Button asChild variant="secondary" size="sm" className="mt-3 w-full sm:hidden">
-          <a href={`tel:${encodeURIComponent(CODE_MENU_OPERATEUR[operator])}`}>
-            <Smartphone className="size-3.5" aria-hidden="true" />
-            {t("mp.ouvrir_menu", { code: CODE_MENU_OPERATEUR[operator], operateur: account.operator_display })}
-          </a>
-        </Button>
+        <p className="mt-2 text-xs text-muted-foreground">
+          {codeMarchand
+            ? t("mp.verifie_marchand", { nom: account.account_name, prix: formatAmount(montant) })
+            : t("mp.beneficiaire", { nom: account.account_name })}
+        </p>
+        {sequence ? (
+          <>
+            {/* Compte marchand avec la séquence du kit de l'opérateur : code et montant déjà dedans. Pas de risque
+                d'envoi au mauvais endroit sans le voir : l'opérateur affiche le nom du commerce et le montant avant
+                le code secret, et la ligne au-dessus demande de les vérifier. */}
+            <div className="mt-3.5 flex items-center justify-between gap-3 rounded-lg border border-border bg-background/70 px-3.5 py-2.5">
+              <div className="min-w-0">
+                <p className="text-xs text-muted-foreground">{t("mp.sequence")}</p>
+                <p className="break-all font-mono text-base font-semibold">{sequence}</p>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleCopySequence} className="shrink-0">
+                {copiedSequence ? <Check className="size-3.5 text-success" /> : <Copy className="size-3.5" />}
+                {copiedSequence ? t("mp.copie") : t("mp.copier")}
+              </Button>
+            </div>
+            <Button asChild variant="secondary" size="sm" className="mt-3 w-full sm:hidden">
+              <a href={`tel:${encodeURIComponent(sequence)}`}>
+                <Smartphone className="size-3.5" aria-hidden="true" />
+                {t("mp.composer_sequence")}
+              </a>
+            </Button>
+          </>
+        ) : (
+          <>
+            {codeMarchand && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                {t("mp.marchand_menu", { operateur: account.operator_display })}
+              </p>
+            )}
+            {/* Sur un téléphone, un toucher ouvre le menu Mobile Money de l'opérateur : celui qui paie n'a pas à
+                quitter la page pour retrouver le code. Le menu seulement (codes publics des opérateurs), jamais un
+                transfert pré-rempli : le montant et le numéro se saisissent dans le menu, sous les yeux de celui qui
+                paie. */}
+            <Button asChild variant="secondary" size="sm" className="mt-3 w-full sm:hidden">
+              <a href={`tel:${encodeURIComponent(CODE_MENU_OPERATEUR[operator])}`}>
+                <Smartphone className="size-3.5" aria-hidden="true" />
+                {t("mp.ouvrir_menu", { code: CODE_MENU_OPERATEUR[operator], operateur: account.operator_display })}
+              </a>
+            </Button>
+          </>
+        )}
 
         <p className="mt-3.5 flex items-start gap-1.5 text-xs text-muted-foreground">
           <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />

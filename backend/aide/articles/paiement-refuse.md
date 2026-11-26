@@ -30,7 +30,7 @@ Quand le transfert manuel est proposé et que tu en as déclaré un, le **motif*
 - **Montant incorrect** : le montant transféré n'est pas le total affiché sur l'écran de paiement (le prix du mois multiplié par le nombre de mois choisi).
 - **Mauvais opérateur** : l'opérateur déclaré (Orange ou MTN) n'est pas celui qui a servi au transfert.
 - **Transaction déjà utilisée** : cette transaction a déjà servi pour un autre accès.
-- **Paiement non reçu** : le transfert n'est pas arrivé sur notre numéro. Vérifie que tu as bien envoyé au numéro affiché.
+- **Paiement non reçu** : le paiement n'est pas arrivé sur notre compte. Vérifie que tu as bien payé au numéro ou au code marchand affiché.
 
 Corrige ce qui est en cause et **déclare à nouveau** ta transaction depuis la page de paiement.
 

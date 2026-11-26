@@ -32,7 +32,7 @@ Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **en une fo
 Ce mode n'est pas toujours disponible : c'est l'écran de paiement qui te dit s'il l'est.
 
 1. Sur l'écran de paiement, choisis Orange Money ou MTN MoMo.
-2. Envoie le **montant exact** au numéro affiché. Le nom du bénéficiaire est affiché aussi : vérifie-le avant d'envoyer.
+2. Envoie le **montant exact** au numéro affiché, ou paie-le au **code marchand** si c'est un code qui s'affiche. Le nom du bénéficiaire est affiché aussi : vérifie que ton opérateur montre ce nom avant de taper ton code secret.
 3. Garde le SMS de confirmation de ton opérateur.
 4. Reviens sur l'écran de paiement, appuie sur « J'ai effectué le paiement », puis **déclare ton paiement** : le numéro qui a payé et le **numéro de transaction** écrit dans le SMS de ton opérateur.
 5. Notre équipe vérifie ton transfert, généralement sous {{delai_verification}}, puis ton accès s'active. Tu reçois un SMS de confirmation.

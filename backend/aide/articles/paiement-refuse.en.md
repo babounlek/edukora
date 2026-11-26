@@ -27,7 +27,7 @@ When manual transfer is offered and you declared one, the **reason** for the ref
 - **Wrong amount**: the transferred amount is not the total shown on the payment screen (the monthly price times the number of months chosen).
 - **Wrong operator**: the declared operator (Orange or MTN) is not the one used for the transfer.
 - **Transaction already used**: this transaction was already used for another access.
-- **Payment not received**: the transfer did not reach our number. Check that you sent it to the number shown.
+- **Payment not received**: the payment did not reach our account. Check that you paid the number or merchant code shown.
 
 Fix the cause and **declare your transaction again** from the payment page.
 

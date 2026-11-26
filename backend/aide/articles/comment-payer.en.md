@@ -28,7 +28,7 @@ Payment is by **Mobile Money** (Orange Money or MTN MoMo), **in one go** for the
 This method is not always available: the payment screen tells you whether it is.
 
 1. On the payment screen, choose Orange Money or MTN MoMo.
-2. Send the **exact amount** to the number shown. The beneficiary's name is shown too: check it before sending.
+2. Send the **exact amount** to the number shown, or pay it to the **merchant code** if a code is shown instead. The beneficiary's name is shown too: check that your operator displays this name before entering your PIN.
 3. Keep your operator's confirmation SMS.
 4. Come back to the payment screen, press "I've made the payment", then **declare your payment**: the number that paid and the **transaction number** written in your operator's SMS.
 5. Our team checks your transfer, usually within {{delai_verification}}, then your access is activated. You receive a confirmation SMS.

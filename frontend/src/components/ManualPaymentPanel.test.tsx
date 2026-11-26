@@ -52,6 +52,42 @@ describe("ManualPaymentPanel : ouvrir le menu Mobile Money depuis le téléphone
   })
 })
 
+describe("ManualPaymentPanel : compte marchand payé par code", () => {
+  const compteMarchand = {
+    operator: "ORANGE", operator_display: "Orange Money", phone_number: "", merchant_code: "654321",
+    account_name: "EduKora SARL",
+  }
+
+  beforeEach(() => {
+    getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })
+  })
+
+  it("montre le code marchand à la place du numéro et demande de vérifier le nom", async () => {
+    listManualPaymentMethods.mockResolvedValue([{ ...compteMarchand, ussd_template: "" }])
+    render(<ManualPaymentPanel plan={plan} mois={1} montant={2000} operator="ORANGE" onDeclared={vi.fn()} />)
+
+    expect(await screen.findByText("Code marchand")).toBeInTheDocument()
+    expect(screen.getByText("654321")).toBeInTheDocument()
+    expect(screen.queryByText("Numéro à créditer")).not.toBeInTheDocument()
+    expect(screen.getByText(/vérifie que ton opérateur affiche bien EduKora SARL et 2.000 FCFA/)).toBeInTheDocument()
+    // Sans séquence saisie dans l'admin : le menu de l'opérateur, et l'élève y choisit le paiement marchand.
+    expect(screen.getByText(/choisis le paiement marchand/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Composer #150# pour ouvrir Orange Money" })).toBeInTheDocument()
+  })
+
+  it("compose la séquence du kit de l'opérateur avec le code et le montant", async () => {
+    listManualPaymentMethods.mockResolvedValue([{ ...compteMarchand, ussd_template: "#150*47*{code}*{montant}#" }])
+    render(<ManualPaymentPanel plan={plan} mois={3} montant={6000} operator="ORANGE" onDeclared={vi.fn()} />)
+
+    expect(await screen.findByText("#150*47*654321*6000#")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Composer le paiement" })).toHaveAttribute(
+      "href",
+      "tel:%23150*47*654321*6000%23",
+    )
+    expect(screen.queryByRole("link", { name: /pour ouvrir Orange Money/ })).not.toBeInTheDocument()
+  })
+})
+
 describe("ManualPaymentPanel : paiement avancé par le revendeur", () => {
   it("n'affiche pas la case sans revendeur rattaché", async () => {
     getRattachementRevendeur.mockResolvedValue({ peut_saisir_code: true, revendeur: null })
