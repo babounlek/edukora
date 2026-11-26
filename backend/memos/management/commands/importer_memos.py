@@ -20,6 +20,8 @@ class Command(BaseCommand):
             raise CommandError(str(exc))
         for titre in bilan["epreuves_absentes"]:
             self.stdout.write(self.style.WARNING(f"Épreuve introuvable : {titre}"))
+        for nom in bilan["themes_absents"]:
+            self.stdout.write(self.style.WARNING(f"Thème introuvable : {nom}"))
         self.stdout.write(self.style.SUCCESS(
             f"{bilan['creees']} créée(s), {bilan['completees']} complétée(s), {bilan['mises_a_jour']} mise(s) à jour, "
             f"{bilan['ignorees']} ignorée(s) faute d'épreuve."

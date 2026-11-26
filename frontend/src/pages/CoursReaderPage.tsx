@@ -319,7 +319,7 @@ export function CoursReaderPage() {
       {isAuthenticated && slug && <CartesDuCours slug={slug} />}
       <EtapeSuivante />
       {cours && <SuiteDuCours cours={cours} />}
-      {cours && <LienFiches cursusId={cursusDesFiches} matiereCode={cours.subject.code} className="mx-auto mt-6 max-w-3xl" />}
+      {cours && <LienFiches cursusId={cursusDesFiches} source="cours" matiereCode={cours.subject.code} className="mx-auto mt-6 max-w-3xl" />}
       {cours && <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mx-auto mt-6 max-w-3xl" />}
 
       {cours && (

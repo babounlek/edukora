@@ -4,7 +4,7 @@ from django.http import Http404, HttpResponse
 from aide.models import ArticleAide
 from inedit.models import EpreuveInedite
 
-from . import pages_examen
+from . import pages_examen, pages_statiques
 from .models import Cours, Country, Langue, Lesson, StatutContenu
 from .segments_url import chemin_public
 
@@ -79,6 +79,10 @@ def _all_entries():
     entries = []
     for path, priority, changefreq in _STATIC_PAGES:
         entries.extend(_entries(base, path, True, priority=priority, changefreq=changefreq))
+
+    # La page des fiches, en français seulement et dès qu'une fiche gratuite est publiée (voir pages_statiques).
+    if pages_statiques.fiches_publiques().exists():
+        entries.extend(_entries(base, "/fiches-edukora", False, priority="0.7", changefreq="weekly"))
 
     for country_code in Country.objects.filter(actif=True).values_list("code", flat=True):
         code = country_code.lower()

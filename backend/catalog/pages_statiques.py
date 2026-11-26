@@ -15,6 +15,7 @@ from pathlib import Path
 from django.conf import settings
 
 from aide.models import ArticleAide
+from memos.models import Memo, StatutMemo
 
 from . import pages_examen
 from .models import Country, Langue
@@ -22,7 +23,7 @@ from .segments_url import chemin_public
 
 # Le chemin INTERNE (français, sans « / » aux extrémités ni préfixe /en) : « », « cm », « cm/epreuves », « tarifs ».
 CHEMIN_RE = re.compile(
-    r"^(?:(?P<pays>[a-z]{2})(?:/(?P<liste>epreuves|cours|themes-frequents))?|(?P<page>tarifs|a-propos|aide))?$"
+    r"^(?:(?P<pays>[a-z]{2})(?:/(?P<liste>epreuves|cours|themes-frequents))?|(?P<page>tarifs|a-propos|aide|fiches-edukora))?$"
 )
 
 NOMS_PAYS_EN = {"CM": "Cameroon"}
@@ -73,6 +74,12 @@ TEXTES = {
             "thèmes les plus posés à ton examen. Accessible depuis un simple téléphone, payable en Mobile Money, sans carte "
             "bancaire ni engagement caché."
         ),
+        "fiches_titre": "Fiches de révision : l'essentiel et les méthodes",
+        "fiches_description": (
+            "L'essentiel et les méthodes, une fiche à la fois, avec les années où c'est tombé à l'examen. Des fiches "
+            "{site} sont à lire gratuitement."
+        ),
+        "fiches_intro": "Des fiches courtes à revoir avant l'examen. Celles qui suivent se lisent gratuitement.",
         "aide_titre": "Centre d'aide",
         "aide_description": "Les réponses aux questions sur {site} : connexion, paiement Mobile Money, cours, quiz, annales et comptes parents.",
         "aide_intro": "Les réponses à tes questions : compte, paiement, cours, quiz.",
@@ -140,8 +147,24 @@ TEXTES = {
     },
 }
 
-CLES_PAGE = {"tarifs": "tarifs", "a-propos": "apropos", "aide": "aide"}
+CLES_PAGE = {"tarifs": "tarifs", "a-propos": "apropos", "aide": "aide", "fiches-edukora": "fiches"}
 CLES_LISTE = {None: "accueil", "epreuves": "epreuves", "cours": "cours", "themes-frequents": "themes"}
+
+
+def fiches_publiques():
+    """Les fiches qu'un moteur peut lire : gratuites ET publiées. Un brouillon ne leur est jamais servi, même en
+    développement où le site l'affiche (MEMOS_MONTRER_BROUILLONS)."""
+    return Memo.objects.filter(statut=StatutMemo.PUBLIE, gratuit=True, subject__country__actif=True)
+
+
+def _corps_des_fiches():
+    lignes, matiere = [], None
+    for memo in fiches_publiques().select_related("subject").order_by("subject__label", "subject_id", "ordre", "terme"):
+        if memo.subject_id != matiere:
+            matiere = memo.subject_id
+            lignes += ["", f"## {memo.subject.label}"]
+        lignes += ["", f"### {memo.terme}", "", memo.definition]
+    return lignes
 
 
 def _pays_par_defaut():
@@ -184,6 +207,10 @@ def page_statique(interne, langue):
     textes = TEXTES[langue]
     site = "EduKora"
     faq = []
+    # Les fiches sont écrites en français : la page n'a pas de version anglaise, et n'existe que s'il y a de quoi la lire.
+    fiches = m.group("page") == "fiches-edukora"
+    if fiches and (langue != "fr" or not fiches_publiques().exists()):
+        return None
     if m.group("page"):
         cle = CLES_PAGE[m.group("page")]
         chemin = f"/{m.group('page')}"
@@ -193,6 +220,8 @@ def page_statique(interne, langue):
         corps = [textes[f"{cle}_intro"].format(site=site)]
         if cle == "tarifs":
             corps += ["", f"## {textes['inclus']}", ""] + [f"- {ligne}" for ligne in textes["tarifs_inclus"]]
+        if fiches:
+            corps += _corps_des_fiches()
         if cle == "aide":
             articles = ArticleAide.objects.filter(publie=True).order_by("categorie", "id")
             anglais = langue == "en"
@@ -234,7 +263,8 @@ def page_statique(interne, langue):
         "titre": textes[f"{cle}_titre"].format(**valeurs),
         "description": textes[f"{cle}_description"].format(**valeurs),
         "interne": chemin,
-        "bilingue": True,  # les pages d'ensemble existent dans les deux langues (comme au sitemap)
+        # Les pages d'ensemble existent dans les deux langues (comme au sitemap), sauf les fiches.
+        "bilingue": not fiches,
         # Leur texte est écrit dans la langue de la page : sans cette clé, `bilingue` faisait annoncer <html lang="en">
         # à la version française (voir prerendu.prerendu), accueil compris.
         "langue_texte": langue,

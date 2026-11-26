@@ -467,7 +467,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
 
       {/* Les Fiches EduKora de l’examen choisi, nommées haut dans la page : elles n’apparaissaient qu’en aperçu, tout en
           bas. Rien sans examen déclaré, ou si cet examen n’en a pas. */}
-      <LienFiches cursusId={cursusDesFiches} className="mx-4 mt-6 sm:mx-auto sm:max-w-[61rem]" />
+      <LienFiches cursusId={cursusDesFiches} source="accueil" className="mx-4 mt-6 sm:mx-auto sm:max-w-[61rem]" />
 
       {/* Le visiteur qui revient après une séance gratuite : garder le site sur son téléphone est le rappel le moins
           cher qui soit, et rien d'autre ne le fait revenir (ni compte, ni rappel). L'invitation n'existait que sur le

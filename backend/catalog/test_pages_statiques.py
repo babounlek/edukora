@@ -9,6 +9,7 @@ from django.test import TestCase
 
 from aide.models import ArticleAide, CategorieAide
 
+from memos.models import Memo, StatutMemo
 from .apercu_partage import infos_page
 from .models import Country, Cursus, Examen, Lesson, LessonType, StatutContenu, Subject
 
@@ -106,6 +107,22 @@ class PagesStatiquesTests(TestCase):
         html = self.get("en/cm/past-papers").content.decode()
         self.assertEqual(self._titre(html), "Past papers and solutions - Cameroon | EduKora")
         self.assertEqual(self._canonical(html), f"{self.base}/en/cm/past-papers")
+
+    def test_la_page_des_fiches_ne_montre_aux_moteurs_que_les_fiches_gratuites_publiees(self):
+        self.assertEqual(self.get("fiches-edukora").status_code, 404)  # rien de publié : pas de page
+        matiere = Subject.objects.filter(country__actif=True).first()
+        for terme, gratuit, relue in [("Fiche offerte", True, True), ("Fiche réservée", False, True), ("Fiche brouillon", True, False)]:
+            Memo.objects.create(
+                subject=matiere, terme=terme, definition=f"Texte de {terme}.", gratuit=gratuit, relu_par_enseignant=relue,
+                statut=StatutMemo.PUBLIE if relue else StatutMemo.BROUILLON,
+            )
+        with self.settings(MEMOS_MONTRER_BROUILLONS=True):
+            html = self.get("fiches-edukora").content.decode()
+        self.assertEqual(self._titre(html), "Fiches de révision : l&#x27;essentiel et les méthodes | EduKora")
+        self.assertIn("Texte de Fiche offerte.", html)
+        self.assertNotIn("Fiche réservée", html)
+        self.assertNotIn("Fiche brouillon", html)
+        self.assertEqual(self.get("en/fiches-edukora").status_code, 404)
 
     def test_tarifs_a_propos_et_aide(self):
         tarifs = self.get("tarifs").content.decode()

@@ -9,7 +9,7 @@ lues sur les épreuves nommées. Comme les fiches extraites, elles naissent BROU
 import json
 from pathlib import Path
 
-from catalog.models import Lesson, Subject
+from catalog.models import Lesson, Subject, Tag
 
 from .extraction import _cle
 from .gratuites import assurer_gratuites, fusionner_sessions
@@ -37,7 +37,7 @@ def _facultatifs(notion):
 
 
 def importer(donnees, dry_run=False):
-    """{"creees", "completees", "mises_a_jour", "epreuves_absentes", "ignorees"}."""
+    """{"creees", "completees", "mises_a_jour", "epreuves_absentes", "themes_absents", "ignorees"}."""
     subject = Subject.objects.filter(country__code__iexact=donnees["pays"], code=donnees["matiere"]).first()
     if subject is None:
         raise FichierInvalide("Matière introuvable pour ce pays.")
@@ -48,6 +48,10 @@ def importer(donnees, dry_run=False):
     }
     bilan = {"creees": 0, "completees": 0, "mises_a_jour": 0, "ignorees": 0,
              "epreuves_absentes": sorted(donnees["epreuves"][a] for a, l in epreuves.items() if not l)}
+    # Le thème d'une fiche est nommé dans le fichier ; il n'est jamais créé ici : un thème inconnu ne mènerait à rien.
+    noms = {n["theme"] for n in donnees["notions"] if n.get("theme")}
+    themes = {tag.name: tag for tag in Tag.objects.filter(name__in=noms)}
+    bilan["themes_absents"] = sorted(noms - set(themes))
     existantes = {_cle(m.terme): m for m in Memo.objects.filter(subject=subject)}
     for rang, notion in enumerate(donnees["notions"]):
         inconnus = [a for a in notion["epreuves"] if a not in donnees["epreuves"]]
@@ -71,7 +75,8 @@ def importer(donnees, dry_run=False):
         if memo is None:
             memo = Memo.objects.create(
                 subject=subject, terme=notion["terme"], definition=notion["definition"],
-                sessions=sessions, ordre=1000 + rang * 10, statut=StatutMemo.BROUILLON, **_facultatifs(notion),
+                sessions=sessions, ordre=1000 + rang * 10, statut=StatutMemo.BROUILLON,
+                theme=themes.get(notion.get("theme")), **_facultatifs(notion),
             )
             existantes[_cle(notion["terme"])] = memo
             bilan["creees"] += 1
@@ -87,6 +92,9 @@ def importer(donnees, dry_run=False):
             else:
                 bilan["completees"] += 1
             memo.sessions = fusionner_sessions(memo.sessions, sessions)
+            # Le rattachement n'est pas du texte relu : il complète aussi une fiche publiée, sans jamais remplacer un thème posé.
+            if memo.theme_id is None:
+                memo.theme = themes.get(notion.get("theme"))
             memo.save()
         memo.cursus.add(*cursus_ids)
         memo.sources.add(*lessons)

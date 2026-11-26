@@ -109,6 +109,9 @@ class EventName(models.TextChoices):
     # Fiches EduKora : une matière ouverte (`matiere_id`, `cursus_id`) et une fiche gardée dans les notes (`fiche_id`).
     FICHE_LUE = "fiche_lue", "Fiches EduKora : matière ouverte"
     FICHE_GARDEE = "fiche_gardee", "Fiche EduKora gardée dans les notes"
+    # D'où l'on vient vers les fiches (`source` : accueil, cours, corrige, quiz ; `cursus_id`, `matiere_id` hors accueil) :
+    # de quoi savoir lesquels des liens servent.
+    FICHE_LIEN_CLIC = "fiche_lien_clic", "Lien vers les Fiches EduKora cliqué"
 
 
 class AnalyticsEvent(models.Model):

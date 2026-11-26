@@ -245,7 +245,7 @@
     # du HTML vide de la SPA (voir backend/catalog/pages_statiques.py). `/`, `/en` et `/cm` y sont compris.
     @robots_moteurs_statique {
         header_regexp User-Agent (?i)(googlebot|google-inspectiontool|bingbot|bingpreview|duckduckbot|yandexbot|baiduspider|applebot/)
-        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|a-propos|about|aide|help)?/?$
+        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|fiches-edukora|a-propos|about|aide|help)?/?$
     }
     handle @robots_moteurs_statique {
         rewrite * /prerendu{path}
@@ -292,7 +292,7 @@
     # Aperçu des pages sans identifiant (accueil du pays, listes, tarifs, à propos, aide) : titre et description propres.
     @robots_apercu_statique {
         header_regexp User-Agent (?i)(whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|discordbot|skypeuripreview|pinterest)
-        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|a-propos|about|aide|help)?/?$
+        path_regexp ^/(en/)?(([a-z]{2})(/(epreuves|past-papers|cours|lessons|themes-frequents|frequent-topics))?|tarifs|pricing|fiches-edukora|a-propos|about|aide|help)?/?$
     }
     handle @robots_apercu_statique {
         rewrite * /partage-apercu{path}

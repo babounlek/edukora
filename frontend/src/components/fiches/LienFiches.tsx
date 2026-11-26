@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
 import { ArrowRight, Layers } from "lucide-react"
 
+import { trackEvent } from "@/lib/analytics"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
-import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
+import { useFicheDUnTheme, useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -25,20 +26,26 @@ export function useCursusDesFiches(examensDuContenu: { id: number }[] | undefine
  * null = matière inconnue, rien. Sans fiche publiée, rien n'est affiché.
  */
 export function LienFiches({
-  cursusId, matiereCode, className,
+  cursusId, matiereCode, source, themes, className,
 }: {
   cursusId: number | null | undefined
+  /** D'où part le clic, pour la mesure. */
+  source: "accueil" | "cours" | "corrige" | "quiz"
   matiereCode?: string | null
+  /** Les thèmes à retravailler, le plus fragile d'abord : le lien ouvre alors la fiche de l'un d'eux, s'il y en a une. */
+  themes?: number[]
   className?: string
 }) {
   useI18n()
   const { matieres, total, noms } = useFichesDeLExamen(cursusId)
   const matiere = matiereCode ? matieres.find((m) => m.matiere_code === matiereCode) : undefined
+  const fiche = useFicheDUnTheme(cursusId, matiere?.matiere_id, themes ?? [])
   if (matiereCode === undefined ? total === 0 : !matiere) return null
-  const cible = `/fiches-edukora?cursus=${cursusId}${matiere ? `&matiere=${matiere.matiere_id}` : ""}`
+  const cible = `/fiches-edukora?cursus=${cursusId}${matiere ? `&matiere=${matiere.matiere_id}` : ""}${fiche ? `&fiche=${fiche.id}` : ""}`
   return (
     <Link
       to={cible}
+      onClick={() => trackEvent("fiche_lien_clic", { source, cursus_id: cursusId, matiere_id: matiere?.matiere_id })}
       className={cn(
         "group flex items-center gap-3 rounded-2xl border border-gold/40 bg-gold/[0.07] px-5 py-4 transition-colors hover:border-gold/70 print:hidden",
         className,
@@ -49,9 +56,9 @@ export function LienFiches({
       </span>
       <span className="min-w-0 flex-1">
         <span className="block font-display font-semibold">
-          {matiere ? tn("fl.matiere", matiere.total, { matiere: matiere.matiere }) : tn("fl.examen", total)}
+          {fiche ? t("fl.fiche") : matiere ? tn("fl.matiere", matiere.total, { matiere: matiere.matiere }) : tn("fl.examen", total)}
         </span>
-        <span className="block text-sm text-muted-foreground">{matiere ? t("fl.matiere_texte") : noms}</span>
+        <span className="block text-sm text-muted-foreground">{fiche ? fiche.terme : matiere ? t("fl.matiere_texte") : noms}</span>
       </span>
       <ArrowRight className="size-4 shrink-0 text-primary transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
     </Link>

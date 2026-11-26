@@ -392,7 +392,7 @@ export function EpreuveReaderPage() {
       <EtapeSuivante />
 
       {slug && content && <QuizSurCesThemes slug={slug} className="mt-8" />}
-      {epreuve && content && <LienFiches cursusId={cursusDesFiches} matiereCode={epreuve.subject.code} className="mt-4" />}
+      {epreuve && content && <LienFiches cursusId={cursusDesFiches} source="corrige" matiereCode={epreuve.subject.code} className="mt-4" />}
 
       {epreuve && (
         <RelatedEpreuves

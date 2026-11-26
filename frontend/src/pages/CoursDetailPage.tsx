@@ -203,7 +203,7 @@ export function CoursDetailPage() {
           </div>
         </div>
 
-        <LienFiches cursusId={cursusDesFiches} matiereCode={cours.subject.code} className="mt-6" />
+        <LienFiches cursusId={cursusDesFiches} source="cours" matiereCode={cours.subject.code} className="mt-6" />
 
         <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mt-6" />
 

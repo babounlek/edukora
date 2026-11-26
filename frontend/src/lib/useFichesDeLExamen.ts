@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getFichesMatieres } from "@/api/endpoints"
+import { getFiches, getFichesMatieres } from "@/api/endpoints"
 import { useAuth } from "@/context/AuthContext"
 
 /**
@@ -22,4 +22,23 @@ export function useFichesDeLExamen(cursusId: number | null | undefined) {
     total: matieres.reduce((somme, m) => somme + m.total, 0),
     noms: matieres.map((m) => m.matiere).join(", "),
   }
+}
+
+/**
+ * La fiche du premier thème de la liste qui en a une (les thèmes du plus fragile au plus solide), parmi celles d'une
+ * matière. Rien tant qu'aucun thème n'est demandé : les fiches ne sont alors pas chargées.
+ */
+export function useFicheDUnTheme(cursusId: number | null | undefined, matiereId: number | undefined, themes: number[]) {
+  const { isAuthenticated } = useAuth()
+  const { data } = useQuery({
+    queryKey: ["fiches-edukora", "fiches", cursusId ?? null, matiereId ?? null, isAuthenticated],
+    queryFn: ({ signal }) => getFiches(cursusId as number, matiereId as number, signal),
+    enabled: Boolean(cursusId && matiereId && themes.length),
+    staleTime: 5 * 60 * 1000,
+  })
+  for (const theme of themes) {
+    const fiche = data?.fiches?.find((f) => f.theme?.id === theme)
+    if (fiche) return fiche
+  }
+  return undefined
 }

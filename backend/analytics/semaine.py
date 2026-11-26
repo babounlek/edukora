@@ -74,6 +74,15 @@ def signalements_a_traiter():
     return {"total": qs.count(), "lignes": lignes}
 
 
+SOURCES_DES_FICHES = (("accueil", "l'accueil"), ("cours", "un cours"), ("corrige", "un corrigé"), ("quiz", "un résultat de quiz"))
+
+
+def clics_vers_les_fiches(depuis):
+    """Les clics sur les liens vers les fiches, par endroit d'où ils partent ; une source inconnue n'est pas comptée."""
+    clics = AnalyticsEvent.objects.filter(name=EventName.FICHE_LIEN_CLIC, created_at__gte=depuis)
+    return [{"depuis": libelle, "nombre": clics.filter(properties__source=source).count()} for source, libelle in SOURCES_DES_FICHES]
+
+
 def point_de_la_semaine(maintenant=None):
     maintenant = maintenant or timezone.now()
     semaine = maintenant - timedelta(days=7)
@@ -88,5 +97,6 @@ def point_de_la_semaine(maintenant=None):
         "fiches": {
             "lectures": AnalyticsEvent.objects.filter(name=EventName.FICHE_LUE, created_at__gte=semaine).count(),
             "gardees": AnalyticsEvent.objects.filter(name=EventName.FICHE_GARDEE, created_at__gte=semaine).count(),
+            "clics": clics_vers_les_fiches(semaine),
         },
     }

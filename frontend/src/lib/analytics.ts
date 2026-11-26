@@ -65,6 +65,8 @@ export type AnalyticsEventName =
   | "seance_avis"
   // Fiches EduKora : une matière ouverte (`fiche_gardee` est enregistré par le serveur).
   | "fiche_lue"
+  // Un lien vers les fiches cliqué (`source` : accueil, cours, corrige, quiz).
+  | "fiche_lien_clic"
 
 /**
  * Fire-and-forget : voir l'audit UX, reco 5.3. Ne doit jamais faire échouer ni

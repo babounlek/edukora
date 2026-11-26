@@ -23,6 +23,7 @@ import { grouperParRubrique } from "@/lib/rubriquesFiches"
 import { CLE_NOTES_DUES } from "@/lib/notesDues"
 import { subjectIcon } from "@/lib/subjectIcon"
 import { useSeo } from "@/lib/seo"
+import { SITE_NAME } from "@/lib/site"
 import { cn } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -81,7 +82,7 @@ function PassagesDeLaFiche({ fiche, cursus, pays }: { fiche: FicheEdukora; cursu
  */
 export function FichesEdukoraPage() {
   useI18n()
-  useSeo({ title: t("fe.titre"), description: t("fe.texte") })
+  useSeo({ title: t("fe.seo_titre"), description: t("fe.seo_description", { site: SITE_NAME }) })
   const queryClient = useQueryClient()
   const { isAuthenticated, isLoading: authLoading } = useAuth()
   const { country } = useCountry()
@@ -217,7 +218,7 @@ export function FichesEdukoraPage() {
       ) : (
         <>
           {/* Les matières qui ont des fiches. */}
-          <nav aria-label={t("fe.matieres_aria")} className="-mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0">
+          <nav aria-label={t("fe.matieres_aria")} className="no-scrollbar -mx-4 mt-6 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
             {matieres.map((m) => {
               const actif = m.matiere_id === matiereId
               return (

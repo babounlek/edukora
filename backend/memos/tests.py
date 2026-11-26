@@ -7,7 +7,7 @@ from django.utils import timezone
 from rest_framework.test import APIClient, APITestCase
 
 from access.models import NoteLibre
-from catalog.models import Cursus, Examen, Exercise, Lesson, LessonType, Question, StatutContenu, Subject
+from catalog.models import Cursus, Examen, Exercise, Lesson, LessonType, Question, StatutContenu, Subject, Tag
 from subscriptions.models import Subscription
 from users.models import User
 
@@ -191,6 +191,27 @@ class RedactionTests(_Base):
         self.assertEqual(redaction.importer(self._donnees([
             {"terme": "Dictature", "definition": "Un régime qui concentre tous les pouvoirs.", "epreuves": ["A"]},
         ]))["creees"], 0)
+
+    def test_a_theme_named_in_the_file_attaches_published_cards_too_and_never_replaces_one(self):
+        self._epreuve("Épreuve A", 2019, self.cursus)
+        thales = Tag.objects.create(name="thème de test A")
+        deja_pose = Tag.objects.create(name="thème de test B")
+        publiee = self.memo("Publiée sans thème", definition="Texte déjà relu.")
+        rattachee = self.memo("Déjà rattachée", definition="Texte déjà relu.", theme=deja_pose)
+        bilan = redaction.importer(self._donnees([
+            {"terme": terme, "theme": theme, "definition": "Une définition assez longue.", "epreuves": ["A"]}
+            for terme, theme in [
+                ("Publiée sans thème", thales.name), ("Déjà rattachée", thales.name),
+                ("Neuve", thales.name), ("Orpheline", "thème qui n'existe pas"),
+            ]
+        ]))
+        self.assertEqual(bilan["themes_absents"], ["thème qui n'existe pas"])
+        publiee.refresh_from_db()
+        rattachee.refresh_from_db()
+        self.assertEqual((publiee.theme, publiee.statut, publiee.definition), (thales, StatutMemo.PUBLIE, "Texte déjà relu."))
+        self.assertEqual(rattachee.theme, deja_pose)
+        self.assertEqual(Memo.objects.get(terme="Neuve").theme, thales)
+        self.assertIsNone(Memo.objects.get(terme="Orpheline").theme)
 
     def test_the_shipped_file_is_consistent(self):
         donnees = redaction.lire("education_civique_lycee")
