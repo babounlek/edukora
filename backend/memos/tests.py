@@ -267,14 +267,22 @@ class ExtractionTests(_Base):
                 self.assertEqual(extraction._cle(retouche.get("terme", cle)), cle)
 
     def test_the_shipped_method_cards_are_complete_and_fit_in_a_note(self):
-        notions = redaction.lire("maths_bepc_methodes")["notions"]
-        self.assertEqual(len({n["terme"] for n in notions}), len(notions))
-        for n in notions:
-            for champ in ("definition", "exemple", "piege", "exercice", "reponse"):
-                self.assertTrue(n.get(champ), f"{n['terme']} : {champ}")
-            self.assertIn(n["rubrique"], {"Calcul", "Géométrie", "Repère", "Statistiques"})
-            note = f"{n['definition']}\n\n{n['exemple']}\n\n**Piège** : {n['piege']}"
-            self.assertLessEqual(len(note), 2000, n["terme"])
+        fichiers = {
+            "maths_bepc_methodes": {"Calcul", "Géométrie", "Repère", "Statistiques"},
+            "pct_bepc": {"Chimie", "Physique", "Technologie"},
+            "info_bepc": {"Matériel et réseaux", "Données et fichiers", "Algorithmique", "Usages du numérique"},
+        }
+        for nom, rubriques in fichiers.items():
+            donnees = redaction.lire(nom)
+            notions = donnees["notions"]
+            self.assertEqual(len({n["terme"] for n in notions}), len(notions), nom)
+            for n in notions:
+                for champ in ("definition", "exemple", "piege", "exercice", "reponse"):
+                    self.assertTrue(n.get(champ), f"{n['terme']} : {champ}")
+                self.assertIn(n["rubrique"], rubriques)
+                self.assertTrue(set(n["epreuves"]) <= set(donnees["epreuves"]), n["terme"])
+                note = f"{n['definition']}\n\n{n['exemple']}\n\n**Piège** : {n['piege']}"
+                self.assertLessEqual(len(note), 2000, n["terme"])
 
     @override_settings(MEMOS_MONTRER_BROUILLONS=True)
     def test_in_development_drafts_show_flagged_as_to_review(self):
