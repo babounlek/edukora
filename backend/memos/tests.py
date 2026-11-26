@@ -272,6 +272,7 @@ class ExtractionTests(_Base):
             "pct_bepc": {"Chimie", "Physique", "Technologie"},
             "info_bepc": {"Matériel et réseaux", "Données et fichiers", "Algorithmique", "Usages du numérique"},
             "svt_bepc": {"Génétique", "Microbes, maladies et défense", "Fonctionnement du corps", "Environnement et géologie"},
+            "histoire_bepc": {"Cameroun", "Conquête et colonisation", "Décolonisation", "Le monde au XIXe siècle", "Guerres et crises"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
