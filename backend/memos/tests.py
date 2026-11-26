@@ -271,6 +271,7 @@ class ExtractionTests(_Base):
             "maths_bepc_methodes": {"Calcul", "Géométrie", "Repère", "Statistiques"},
             "pct_bepc": {"Chimie", "Physique", "Technologie"},
             "info_bepc": {"Matériel et réseaux", "Données et fichiers", "Algorithmique", "Usages du numérique"},
+            "svt_bepc": {"Génétique", "Microbes, maladies et défense", "Fonctionnement du corps", "Environnement et géologie"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
