@@ -4,7 +4,7 @@ ordre: 46
 pages: /fiches-edukora
 titre: Les Fiches EduKora : l'essentiel à savoir par cœur
 resume: Des fiches toutes faites, notion par notion, avec les années où elles sont tombées ; garde-les dans tes notes pour les réviser.
-mots_cles: fiches, fiche, fiches edukora, fiche de révision, définition, définitions, notion, par cœur, tombé, session, éducation civique, ecm, garder dans mes notes, mémo, résumé
+mots_cles: fiches, fiche, fiches edukora, fiche de révision, définition, définitions, notion, par cœur, tombé, session, éducation civique, ecm, garder dans mes notes, mémo, résumé, erreur, signaler
 ---
 ## C'est quoi, une Fiche EduKora ?
 
@@ -45,4 +45,8 @@ Quelques fiches par matière se lisent **sans abonnement**. Pour les autres, tu 
 
 ## Pourquoi ma matière n'a pas de fiches ?
 
-Elles arrivent **matière par matière** : chaque fiche est relue par un enseignant avant d'être publiée.
+Elles arrivent **matière par matière**, et toutes les matières n'en ont pas encore.
+
+## Tu as repéré une erreur dans une fiche ?
+
+Écris-nous sur WhatsApp au {{whatsapp}} en donnant la matière et le nom de la notion. Nous vérifions la fiche et la corrigeons si besoin.

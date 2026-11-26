@@ -33,6 +33,20 @@ const LIGNES: Ligne[] = [
   { libelle: "comparatif.maj", detail: "comparatif.maj_detail", fascicule: "non" },
 ]
 
+/**
+ * Les Fiches EduKora (2026-11-26) : seulement quand l'examen choisi en a (le GCE n'en a pas), même règle que la ligne
+ * « Fiches EduKora » de l'offre. Pas « fiches de révision » tout court : beaucoup de fascicules ont des résumés ou des
+ * rappels de cours, d'où « rarement ». Ce qu'ils n'ont presque jamais : les années où chaque notion est tombée, et la
+ * fiche qui entre dans la révision de Mes notes.
+ */
+const LIGNE_FICHES: Ligne = { libelle: "comparatif.fiches", detail: "comparatif.fiches_detail", fascicule: "rarement" }
+
+function lignesDuComparatif(avecFiches: boolean): Ligne[] {
+  if (!avecFiches) return LIGNES
+  const apres = LIGNES.findIndex((ligne) => ligne.libelle === "comparatif.cours") + 1
+  return [...LIGNES.slice(0, apres), LIGNE_FICHES, ...LIGNES.slice(apres)]
+}
+
 const LIBELLE_VALEUR: Record<Valeur, Parameters<typeof t>[0]> = {
   oui: "comparatif.oui",
   non: "comparatif.non",
@@ -58,7 +72,8 @@ function Cellule({ valeur }: { valeur: Valeur }) {
   )
 }
 
-export function ComparatifFascicule() {
+export function ComparatifFascicule({ avecFiches = false }: { avecFiches?: boolean }) {
+  const lignes = lignesDuComparatif(avecFiches)
   return (
     <section className="mt-12 border-t border-border pt-10" aria-labelledby="comparatif-titre">
       <h2 id="comparatif-titre" className="font-display text-xl font-semibold">
@@ -69,7 +84,7 @@ export function ComparatifFascicule() {
       {/* Mobile : une carte par fonction plutôt qu'un tableau de 420 px mini, dont la 3e colonne
           sortait de l'écran (« Un fa… », « Ra… ») sans rien signaler. */}
       <ul role="list" className="mt-5 divide-y divide-border rounded-xl border border-border sm:hidden">
-        {LIGNES.map((ligne) => (
+        {lignes.map((ligne) => (
           <li key={ligne.libelle} className="px-4 py-3">
             <p className="text-sm font-medium">{t(ligne.libelle)}</p>
             <p className="text-xs text-muted-foreground">{t(ligne.detail)}</p>
@@ -107,7 +122,7 @@ export function ComparatifFascicule() {
             </tr>
           </thead>
           <tbody>
-            {LIGNES.map((ligne) => (
+            {lignes.map((ligne) => (
               <tr key={ligne.libelle} className="border-b border-border last:border-b-0">
                 <th scope="row" className="px-4 py-3 text-left font-normal">
                   {t(ligne.libelle)}
@@ -127,7 +142,10 @@ export function ComparatifFascicule() {
         </table>
       </div>
 
-      <p className="mt-3 max-w-2xl text-xs text-muted-foreground">{t("comparatif.note", { site: SITE_NAME })}</p>
+      <p className="mt-3 max-w-2xl text-xs text-muted-foreground">
+        {/* Chaque matière qui a des fiches en a au moins 5 gratuites par examen (memos/gratuites.py). */}
+        {t(avecFiches ? "comparatif.note_avec_fiches" : "comparatif.note", { site: SITE_NAME })}
+      </p>
     </section>
   )
 }

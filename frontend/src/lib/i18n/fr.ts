@@ -413,6 +413,8 @@ export const fr = {
   "comparatif.corriges_detail": "Rédigés pas à pas, à lire sur téléphone.",
   "comparatif.cours": "Cours et exercices d'application corrigés",
   "comparatif.cours_detail": "Des exercices progressifs après chaque cours, avec leurs solutions.",
+  "comparatif.fiches": "Des fiches à savoir par cœur",
+  "comparatif.fiches_detail": "Avec les années où chaque notion est tombée. Garde-les dans tes notes : on te les redemande pour que tu les retiennes.",
   "comparatif.quiz": "Un quiz qui repère tes lacunes",
   "comparatif.quiz_detail": "Il te repropose les notions mal maîtrisées au bon moment.",
   "comparatif.themes": "Les thèmes qui reviennent le plus",
@@ -422,6 +424,7 @@ export const fr = {
   "comparatif.maj": "Du contenu qui s'enrichit",
   "comparatif.maj_detail": "De nouvelles épreuves et de nouveaux cours sont ajoutés pendant l'année.",
   "comparatif.note": "Comparaison avec un fascicule de corrigés ou un PDF gratuit « type » : un document figé. Chaque document est différent ; vérifie ce que contient celui que tu compares. Sur {site} aussi, les sujets, les cours et une partie des corrigés se lisent gratuitement : l'abonnement ajoute tout le reste.",
+  "comparatif.note_avec_fiches": "Comparaison avec un fascicule de corrigés ou un PDF gratuit « type » : un document figé. Chaque document est différent ; vérifie ce que contient celui que tu compares. Sur {site} aussi, les sujets, les cours, une partie des corrigés et quelques fiches par matière se lisent gratuitement : l'abonnement ajoute tout le reste.",
   "prix.objet_tarifs": "les tarifs",
   "prix.formule":
     "Abonnement au mois",

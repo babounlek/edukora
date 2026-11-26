@@ -407,6 +407,8 @@ export const en: Partial<Record<CleI18n, string>> = {
   "comparatif.corriges_detail": "Worked step by step, readable on your phone.",
   "comparatif.cours": "Lessons and worked practice exercises",
   "comparatif.cours_detail": "Graded exercises after every lesson, with their solutions.",
+  "comparatif.fiches": "Sheets of what to learn by heart",
+  "comparatif.fiches_detail": "With the years each topic came up. Keep them in your notes: we ask you about them again so they stick.",
   "comparatif.quiz": "A quiz that spots your gaps",
   "comparatif.quiz_detail": "It brings back the topics you haven't mastered at the right time.",
   "comparatif.themes": "The topics that come up most",
@@ -416,6 +418,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "comparatif.maj": "Content that keeps growing",
   "comparatif.maj_detail": "New papers and lessons are added during the year.",
   "comparatif.note": "Compared with a typical booklet of solutions or free PDF: a fixed document. Every document is different; check what the one you are comparing contains. On {site} too, the papers, the lessons and some of the solutions are free to read: the subscription adds everything else.",
+  "comparatif.note_avec_fiches": "Compared with a typical booklet of solutions or free PDF: a fixed document. Every document is different; check what the one you are comparing contains. On {site} too, the papers, the lessons, some of the solutions and a few sheets per subject are free to read: the subscription adds everything else.",
   "prix.objet_tarifs": "the pricing",
   "prix.formule":
     "Monthly subscription",

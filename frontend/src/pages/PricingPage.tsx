@@ -806,7 +806,7 @@ export function PricingPage() {
         </section>
       )}
 
-      <ComparatifFascicule />
+      <ComparatifFascicule avecFiches={fiches.total > 0} />
 
       {/* Preuve sociale réelle (voir l'audit UX, reco 8.3) juste après les prix, avant la FAQ qui traite les
           dernières objections - de vrais témoignages publiés depuis l'admin (jamais générés). Disparaît

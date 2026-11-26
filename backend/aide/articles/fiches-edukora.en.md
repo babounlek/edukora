@@ -1,7 +1,7 @@
 ---
 titre: EduKora sheets: what you must know by heart
 resume: Ready-made sheets, one notion at a time, with the years they came up; keep them in your notes to review them.
-mots_cles: sheets, sheet, edukora sheets, revision sheet, definition, definitions, notion, by heart, came up, session, citizenship, keep in my notes, memo, summary
+mots_cles: sheets, sheet, edukora sheets, revision sheet, definition, definitions, notion, by heart, came up, session, citizenship, keep in my notes, memo, summary, mistake, error, report
 ---
 ## What is an EduKora sheet?
 
@@ -42,4 +42,8 @@ A few sheets per subject can be read **without a subscription**. For the others,
 
 ## Why does my subject have no sheets?
 
-They arrive **subject by subject**: each sheet is reviewed by a teacher before it is published.
+They arrive **subject by subject**, and not every subject has them yet.
+
+## Spotted a mistake in a sheet?
+
+Write to us on WhatsApp at {{whatsapp}} with the subject and the name of the notion. We check the sheet and correct it if needed.
