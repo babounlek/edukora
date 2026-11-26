@@ -299,6 +299,7 @@ class ExtractionTests(_Base):
             "eps_bepc": {"Athlétisme", "Gymnastique"},
             "anglais_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Rédaction"},
             "dessin_bepc": {"Couleurs", "Dessin à consignes"},
+            "allemand_bepc": {"Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
