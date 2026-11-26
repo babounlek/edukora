@@ -10,7 +10,7 @@ import { texteRiche } from "@/lib/texteRiche"
 
 // Date de la dernière révision de fond de ces conditions - jamais « aujourd'hui » : une date
 // qui change toute seule laisserait croire à une mise à jour qui n'a pas eu lieu.
-const MISE_A_JOUR = "2026-10-15"
+const MISE_A_JOUR = "2026-11-26"
 
 // Construites au rendu (et non au chargement du module) pour suivre la langue courante.
 function sections(): SectionLegale[] {

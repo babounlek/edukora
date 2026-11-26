@@ -24,6 +24,7 @@ import { codeSerieAffiche } from "@/lib/cursus"
 import { useAuth } from "@/context/AuthContext"
 import { memoriserCursusPrepareEnAttente } from "@/lib/cursusPrepare"
 import { useCountry } from "@/context/CountryContext"
+import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { useCursusDeclare } from "@/lib/cursusAccueil"
 import { BandeauCampagne } from "@/components/BandeauCampagne"
 import { BandeauEnfantVise } from "@/components/BandeauEnfantVise"
@@ -353,6 +354,8 @@ export function PricingPage() {
     setSelectedCursus(id)
     if (!isAuthenticated && cursusDeclare === null && Number(id) > 0) memoriserCursusPrepareEnAttente(Number(id))
   }
+  // Les fiches de l'examen choisi : elles n'entrent dans « ce que contient l'abonnement » que s'il en a.
+  const fiches = useFichesDeLExamen(Number(selectedCursus) || null)
   const cursusRef = useRef<HTMLDivElement>(null)
   // Bloc du bouton principal : la barre d'action mobile ne s'affiche que lorsqu'il est hors écran.
   const ctaRef = useRef<HTMLDivElement>(null)
@@ -746,6 +749,17 @@ export function PricingPage() {
               </span>
             </li>
           ))}
+          {fiches.total > 0 && (
+            <li className="flex items-start gap-3 rounded-xl border border-border bg-card p-4 sm:col-span-2 lg:col-span-6">
+              <Check className="mt-0.5 size-4 shrink-0 text-success" aria-hidden />
+              <span className="text-sm">
+                <span className="font-medium">{t("prix.inclus_fiches_titre")}</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  {tn("prix.inclus_fiches_texte", fiches.total, { matieres: fiches.noms })}
+                </span>
+              </span>
+            </li>
+          )}
         </ul>
       </section>
 

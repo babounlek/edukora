@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query"
-import { BookOpen, BrainCircuit, FileCheck2, Layers, Sparkles, type LucideIcon } from "lucide-react"
+import { BookOpen, BrainCircuit, FileCheck2, Layers, NotebookPen, Sparkles, type LucideIcon } from "lucide-react"
 
 import { getCursusContenu } from "@/api/endpoints"
 import { Card, CardContent } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { formatAmount } from "@/lib/utils"
 import { t, tn, useI18n } from "@/lib/i18n"
 
@@ -35,11 +36,14 @@ export function ContenuDebloque({ cursusId, inclutInedit }: ContenuDebloqueProps
     staleTime: 10 * 60 * 1000,
   })
 
+  const fiches = useFichesDeLExamen(cursusId)
+
   if (!data) return null
 
   const lignes: Ligne[] = [
     { icone: FileCheck2, valeur: data.corriges, libelle: tn("cd.corriges", data.corriges) },
     { icone: BookOpen, valeur: data.cours, libelle: tn("cd.cours", data.cours) },
+    { icone: NotebookPen, valeur: fiches.total, libelle: tn("cd.fiches", fiches.total) },
     { icone: BrainCircuit, valeur: data.questions_quiz, libelle: tn("cd.quiz", data.questions_quiz) },
     ...(inclutInedit
       ? [{ icone: Sparkles, valeur: data.epreuves_inedites, libelle: tn("cd.inedites", data.epreuves_inedites) }]

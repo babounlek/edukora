@@ -1,13 +1,14 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowRight, BookOpen, CalendarCheck, Check, Crown, ListChecks, type LucideIcon } from "lucide-react"
+import { ArrowRight, BookOpen, CalendarCheck, Check, Crown, Layers, ListChecks, type LucideIcon } from "lucide-react"
 
 import { getPlanDuJour, getPriorites, startQuizSession } from "@/api/endpoints"
 import { ApiError } from "@/api/client"
 import { InterrupteurBilanParent } from "@/components/RappelsEmail"
 import { Button } from "@/components/ui/button"
 import { trackEvent } from "@/lib/analytics"
+import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { cn } from "@/lib/utils"
 import { t, useI18n } from "@/lib/i18n"
 
@@ -40,6 +41,7 @@ export function BienvenueAbonne({
 }) {
   useI18n()
   const navigate = useNavigate()
+  const fiches = useFichesDeLExamen(cursusId)
   const [demarrage, setDemarrage] = useState(false)
   const [erreur, setErreur] = useState("")
 
@@ -92,6 +94,7 @@ export function BienvenueAbonne({
           <Debloque icone={BookOpen} texte={t("bv.corriges")} />
           <Debloque icone={CalendarCheck} texte={t("bv.seance")} />
           <Debloque icone={ListChecks} texte={t("bv.quiz")} />
+          {fiches.total > 0 && <Debloque icone={Layers} texte={t("bv.fiches")} />}
           {inclutInedit && <Debloque icone={Crown} texte={t("bv.inedites")} />}
         </ul>
       )}

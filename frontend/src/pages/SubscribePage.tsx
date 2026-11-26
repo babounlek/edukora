@@ -36,6 +36,7 @@ import { ManualPaymentPanel } from "@/components/ManualPaymentPanel"
 import { LienAide } from "@/components/aide/LienAide"
 import { lienContactAide } from "@/lib/aide/contact"
 import { delaiVerificationPaiementAffiche } from "@/lib/delaiVerificationPaiement"
+import { useFichesDeLExamen } from "@/lib/useFichesDeLExamen"
 import { langueCourante, t, tn, useI18n } from "@/lib/i18n"
 import { chiffresNumeroLocal } from "@/lib/telephone"
 
@@ -174,6 +175,7 @@ export function SubscribePage() {
   const [searchParams] = useSearchParams()
   const recapChoix = (useLocation().state as { recap?: string } | null)?.recap
   const cursusId = searchParams.get("cursus")
+  const fiches = useFichesDeLExamen(Number(cursusId) || null)
   // Garde-fou pour le CTA "Débloquer l'add-on Fiches" (voir FichesPage.tsx) -
   // ADDON_REPETITEUR est un product_type à part entière (pas un booléen sur un Plan
   // ABONNEMENT comme inclut_inedit), donc le filtre porte directement sur
@@ -596,7 +598,7 @@ export function SubscribePage() {
           </p>
           <span className="flex items-center gap-1 text-xs font-medium text-gold-text">
             <Sparkles className="size-3" aria-hidden />
-            {t("sb.tout_inclus")}
+            {t(fiches.total > 0 ? "sb.tout_inclus_fiches" : "sb.tout_inclus")}
           </span>
         </div>
         {/* La durée a déjà été choisie sur la page des prix : on ne la redemande pas, on la rappelle, et un bouton

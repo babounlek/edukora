@@ -40,6 +40,7 @@ import { ExerciceNav } from "@/components/ExerciceNav"
 import { QcmDExercice } from "@/components/QcmDExercice"
 import { FicheReader } from "@/components/FicheReader"
 import { RelatedEpreuves } from "@/components/RelatedEpreuves"
+import { LienFiches, useCursusDesFiches } from "@/components/fiches/LienFiches"
 import { QuizSurCesThemes } from "@/components/QuizSurCesThemes"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { PartReussie } from "@/components/PartReussie"
@@ -65,6 +66,7 @@ export function EpreuveReaderPage() {
   const [content, setContent] = useState<EpreuveContent | null>(null)
   const [epreuve, setEpreuve] = useState<Epreuve | null>(null)
   const [epreuveFailed, setEpreuveFailed] = useState(false)
+  const cursusDesFiches = useCursusDesFiches(epreuve?.cursus)
   const [error, setError] = useState<string | null>(null)
   const [accesRefuse, setAccesRefuse] = useState(false)
 
@@ -390,6 +392,7 @@ export function EpreuveReaderPage() {
       <EtapeSuivante />
 
       {slug && content && <QuizSurCesThemes slug={slug} className="mt-8" />}
+      {epreuve && content && <LienFiches cursusId={cursusDesFiches} matiereCode={epreuve.subject.code} className="mt-4" />}
 
       {epreuve && (
         <RelatedEpreuves

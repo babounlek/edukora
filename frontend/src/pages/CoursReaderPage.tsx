@@ -28,6 +28,7 @@ import { CountryBadge } from "@/components/CountryBadge"
 import { EtapeSuivante } from "@/components/BarreSeance"
 import { RelatedCours } from "@/components/RelatedCours"
 import { SuiteDuCours } from "@/components/SuiteDuCours"
+import { LienFiches, useCursusDesFiches } from "@/components/fiches/LienFiches"
 import { OuTombe } from "@/components/OuTombe"
 import { libelleSerieEntete } from "@/lib/cursus"
 import { lienAbonnement } from "@/lib/retourAchat"
@@ -63,6 +64,7 @@ export function CoursReaderPage() {
   // l'effet ci-dessous) avant de décider de rediriger ou non vers la connexion.
   const [cours, setCours] = useState<Cours | null>(null)
   const [coursFailed, setCoursFailed] = useState(false)
+  const cursusDesFiches = useCursusDesFiches(cours?.cursus)
 
   useSeo({ title: content?.title ?? t("co.seo_cours") })
   useDeclarerLangueContenu(cours?.subject.langue)
@@ -317,6 +319,7 @@ export function CoursReaderPage() {
       {isAuthenticated && slug && <CartesDuCours slug={slug} />}
       <EtapeSuivante />
       {cours && <SuiteDuCours cours={cours} />}
+      {cours && <LienFiches cursusId={cursusDesFiches} matiereCode={cours.subject.code} className="mx-auto mt-6 max-w-3xl" />}
       {cours && <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mx-auto mt-6 max-w-3xl" />}
 
       {cours && (

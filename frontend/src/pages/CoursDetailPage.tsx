@@ -16,6 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { EpreuveMarkdown } from "@/components/EpreuveMarkdown"
 import { CoursSection } from "@/components/CoursSection"
 import { RelatedCours } from "@/components/RelatedCours"
+import { LienFiches, useCursusDesFiches } from "@/components/fiches/LienFiches"
 import { OuTombe } from "@/components/OuTombe"
 import { CountryBadge } from "@/components/CountryBadge"
 import { BoutonPartager } from "@/components/BoutonPartager"
@@ -31,6 +32,7 @@ export function CoursDetailPage() {
   const { isAuthenticated, isLoading: authLoading } = useAuth()
 
   const [cours, setCours] = useState<Cours | null>(null)
+  const cursusDesFiches = useCursusDesFiches(cours?.cursus)
   const [preview, setPreview] = useState<CoursPreview | null>(null)
   const [error, setError] = useState("")
 
@@ -200,6 +202,8 @@ export function CoursDetailPage() {
             </div>
           </div>
         </div>
+
+        <LienFiches cursusId={cursusDesFiches} matiereCode={cours.subject.code} className="mt-6" />
 
         <OuTombe slug={cours.slug} pays={cours.subject.country.code.toLowerCase()} className="mt-6" />
 

@@ -71,6 +71,6 @@ describe("l'éditeur : Kora SARL", () => {
 
   it("la date de mise à jour est celle de cette révision", () => {
     const { container } = afficher("cgu")
-    expect(container.textContent).toMatch(/15 octobre 2026/)
+    expect(container.textContent).toMatch(/26 novembre 2026/)
   })
 })

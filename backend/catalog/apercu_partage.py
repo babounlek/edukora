@@ -42,7 +42,7 @@ TEXTES = {
     "fr": {
         "defaut_description": (
             "Chaque jour, on te dit quoi réviser pour le BEPC, le Probatoire et le BAC : "
-            "corrigés d'annales et quiz rédigés par des enseignants."
+            "corrigés d'annales et quiz rédigés par des enseignants, et des fiches."
         ),
         "defaut_titre_page": "Corrigés BEPC, Probatoire et BAC",
         "defaut_titre_image": "Chaque jour, on te dit quoi réviser",

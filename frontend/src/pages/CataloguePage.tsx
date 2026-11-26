@@ -39,11 +39,12 @@ import { Button } from "@/components/ui/button"
 import { SocialProofSection } from "@/components/SocialProofSection"
 import { AccueilDecouverte } from "@/components/AccueilDecouverte"
 import { SectionNotesAccueil } from "@/components/ApercuFiches"
+import { LienFiches } from "@/components/fiches/LienFiches"
 import { BarreCommencer } from "@/components/BarreCommencer"
 import { InviteInstallation } from "@/components/InviteInstallation"
 import { AccueilEleve } from "@/components/AccueilEleve"
 import { InviteAutreSousSystemeDuPays } from "@/components/InviteAutreSousSysteme"
-import { requeteInedites, useCursusAccueil, useInedites } from "@/lib/cursusAccueil"
+import { requeteInedites, useCursusAccueil, useCursusDeclare, useInedites } from "@/lib/cursusAccueil"
 import { PremiereSeance } from "@/components/PremiereSeance"
 import { BandePreuves } from "@/components/BandePreuves"
 import { CadreTelephone } from "@/components/CadreTelephone"
@@ -264,6 +265,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
   // un GCE en anglais - et l'examen déclaré quand une mathématique gratuite existe pour lui (BAC C, D, E).
   // Le slug fait partie de la clé de cache, donc un changement de langue ou d'examen recharge.
   const cursusAccueil = useCursusAccueil(country ?? "")
+  const cursusDesFiches = useCursusDeclare()
   const examenServi = cursusList?.find((c) => c.id === cursusAccueil)
   // Toujours un corrigé de l'examen déclaré, ou rien : null tant que la liste des examens charge (sinon l'exemple par
   // défaut, celui d'un autre examen, clignoterait avant le bon) et pour un examen sans épreuve gratuite.
@@ -462,6 +464,10 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
           pour un élève connecté : il a déjà essayé, et sa carte porte le prix et « Montrer à mes parents ». */}
       {!decouverte && <BandePreuves chiffres={chiffresPreuves} />}
       {!decouverte && <LigneConfiance />}
+
+      {/* Les Fiches EduKora de l’examen choisi, nommées haut dans la page : elles n’apparaissaient qu’en aperçu, tout en
+          bas. Rien sans examen déclaré, ou si cet examen n’en a pas. */}
+      <LienFiches cursusId={cursusDesFiches} className="mx-4 mt-6 sm:mx-auto sm:max-w-[61rem]" />
 
       {/* Le visiteur qui revient après une séance gratuite : garder le site sur son téléphone est le rappel le moins
           cher qui soit, et rien d'autre ne le fait revenir (ni compte, ni rappel). L'invitation n'existait que sur le

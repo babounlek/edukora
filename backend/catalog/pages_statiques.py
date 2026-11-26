@@ -42,7 +42,7 @@ TEXTES = {
         "accueil_titre": "Corrigés {examens} - {pays}",
         "accueil_description": (
             "{pays} : chaque jour, on te dit quoi réviser pour {examens_prose}. Les thèmes qui tombent vraiment, avec "
-            "corrigés d'annales, cours et quiz."
+            "corrigés d'annales, cours, quiz et fiches."
         ),
         "accueil_intro": (
             "Chaque jour, EduKora te dit quoi réviser : une séance de 25 minutes sur un thème qui tombe vraiment à ton "

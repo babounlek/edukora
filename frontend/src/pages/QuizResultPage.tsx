@@ -8,6 +8,7 @@ import { completeQuizSession, listQuizEssais, refaireLesRatees, rejouerQuiz, sta
 import { ApiError } from "@/api/client"
 import type { QuizResult, QuizThemeScore, SerieDeJours } from "@/api/types"
 import { oublierAccueilEnCache } from "@/lib/accueilCache"
+import { LienFiches } from "@/components/fiches/LienFiches"
 import { ProgressionNiveau } from "@/components/JaugeNiveau"
 import { epreuveInediteDetailPath, themeExercicesPath } from "@/lib/countryPath"
 import { BoutonPartager } from "@/components/BoutonPartager"
@@ -473,6 +474,8 @@ export function QuizResultPage() {
   const issueDefi = defi && result.questions_repondues > 0 ? comparerDefi(defi, result.score, result.questions_repondues) : null
   // Par le code de la matière du premier thème : `result.subject` est vide quand le quiz a été lancé par thème (« encore 5 questions »).
   const codeMatiere = result.par_theme[0]?.subject_code
+  // Les fiches ne se proposent que pour un quiz d'une seule matière : un diagnostic en mêle plusieurs.
+  const matiereDesFiches = result.par_theme.every((theme) => theme.subject_code === codeMatiere) ? (codeMatiere ?? null) : null
   const essaiDuDefi = codeMatiere ? (essais ?? []).find((e) => e.cursus === result.cursus && e.subject_code === codeMatiere) : undefined
   // Le thème où l'élève a le plus à gagner : c'est sur lui que repart « encore 5 questions ».
   const pireTheme = [...result.par_theme].sort((a, b) => a.reussies / a.total - b.reussies / b.total)[0]
@@ -744,6 +747,8 @@ export function QuizResultPage() {
           {erreurQuizCible && <p role="alert" className="mt-2 text-sm text-destructive">{erreurQuizCible}</p>}
         </section>
       )}
+
+      <LienFiches cursusId={result.cursus} matiereCode={matiereDesFiches} className="mb-6" />
 
       <div className="mb-6 hidden sm:block">
         <QuizFichePdfButtons sessionId={Number(id)} cursus={result.cursus} />
