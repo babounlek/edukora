@@ -1903,6 +1903,30 @@ class CoursSectionsFormePlateTests(TestCase):
         items = cours_sections_breakdown(self.cours)[0]["items"]
         self.assertEqual([i["enonce_markdown"] for i in items], ["Calculer m.", "Expliquer n."])
 
+    def test_exercices_sous_d_autres_noms_de_champ(self):
+        self.cours.sections_raw = [{"type": "exercices_application", "items": [
+            {"enonce": "Q1 ?", "correction": "R1."},
+            {"enonce_markdown": "Q2 ?", "correction_markdown": "R2."},
+            {"enonce_markdown": "Q3 ?", "reponse_attendue_markdown": "R3."},
+        ]}]
+        items = cours_sections_breakdown(self.cours)[0]["items"]
+        self.assertEqual([(i["enonce_markdown"], i["solution_markdown"]) for i in items], [("Q1 ?", "R1."), ("Q2 ?", "R2."), ("Q3 ?", "R3.")])
+
+    def test_marqueur_verrouille_compte_les_corriges(self):
+        self.cours.sections_raw = [{"type": "exercices_application", "items": ["Sans solution.", {"enonce": "Q", "solution": "R"}]}]
+        section = cours_sections_breakdown(self.cours, verrouiller_payantes=True)[0]
+        self.assertEqual((section["nb_exercices"], section["nb_corriges"]), (2, 1))
+
+    def test_exemple_resolu_vide_masque(self):
+        self.cours.sections_raw = [{"type": "exemple_resolu"}]
+        self.assertEqual(cours_sections_breakdown(self.cours), [])
+
+    def test_section_rangee_dans_elle_meme_est_deballee(self):
+        self.cours.sections_raw = [{"type": "exercices_application", "items": {
+            "type": "exercices_application", "items": [{"enonce_markdown": "Q", "solution_markdown": "R"}]}}]
+        items = cours_sections_breakdown(self.cours)[0]["items"]
+        self.assertEqual([(i["enonce_markdown"], i["solution_markdown"]) for i in items], [("Q", "R")])
+
     def test_section_deja_structuree_inchangee(self):
         self.cours.sections_raw = [{"type": "erreurs_classiques", "contenu_markdown": "Ignoré.", "items": ["Vraie erreur."]}]
         items = cours_sections_breakdown(self.cours)[0]["items"]

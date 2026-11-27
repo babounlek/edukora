@@ -839,7 +839,7 @@ export interface CoursSectionExercicesApplication {
    * exercices) - tout cours est libre en lecture, ses exercices d'application seuls sont payants.
    */
   verrouille?: boolean
-  nb_exercices?: number
+  nb_exercices?: number; nb_corriges?: number
   difficultes?: string[]
 }
 

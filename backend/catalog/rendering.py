@@ -1553,11 +1553,26 @@ def _section_normalisee(section):
     Une section qui porte déjà ses champs propres est rendue telle quelle (même objet). Lue par tous les rendus
     d'une section (Markdown compilé, lecture en ligne, section verrouillée, compteur d'exercices des cartes).
     """
-    section = _section_forme_attendue(section)
+    section = _section_forme_attendue(_section_deballee(section))
     if isinstance(section, dict) and section.get("type") == "exercices_application" and section.get("items"):
         items = [_exercice_normalise(item) for item in section["items"]]
         if any(apres is not avant for apres, avant in zip(items, section["items"])):
             section = {**section, "items": items}
+    return section
+
+
+def _section_deballee(section):
+    """
+    Section rangée une seconde fois dans son propre champ de liste (`items` ou `items_markdown` contient la section
+    entière) : le rendu parcourait les CLÉS de ce dictionnaire et affichait « type » et « items » à la place des
+    erreurs, des exercices et de la synthèse (18 cours de physique de Première, constaté le 2026-11-27).
+    """
+    if not isinstance(section, dict):
+        return section
+    for cle in ("items", "items_markdown"):
+        interne = section.get(cle)
+        if isinstance(interne, dict) and interne.get("type") == section.get("type") and interne.get(cle):
+            return {**section, **interne}
     return section
 
 
@@ -1882,8 +1897,10 @@ def _section_verrouillee(section):
     """
     items = [item for item in _section_normalisee(section).get("items") or [] if item]
     difficultes = [item.get("difficulte") for item in items if isinstance(item, dict) and item.get("difficulte")]
+    # Le lecteur n'annonce « corrigés » que si chaque exercice a sa solution.
+    nb_corriges = sum(1 for item in items if isinstance(item, dict) and _exercice_application_solution(item).strip())
     return {
-        "type": section.get("type"), "verrouille": True, "nb_exercices": len(items),
+        "type": section.get("type"), "verrouille": True, "nb_exercices": len(items), "nb_corriges": nb_corriges,
         "difficultes": difficultes, "items": [],
     }
 

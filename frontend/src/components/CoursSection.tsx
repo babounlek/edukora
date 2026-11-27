@@ -66,12 +66,12 @@ function Accroche({ markdown }: { markdown: string }) {
  * Section « exercices d'application » d'un lecteur sans abonnement : le serveur ne l'a pas envoyée, il l'a remplacée par
  * un marqueur (nombre d'exercices et niveaux). La carte dit ce qui attend l'abonné sans en montrer une ligne.
  */
-function ExercicesVerrouilles({ nb, difficultes, lienAbonnement }: { nb: number; difficultes: string[]; lienAbonnement: string }) {
+function ExercicesVerrouilles({ nb, corriges, difficultes, lienAbonnement }: { nb: number; corriges: boolean; difficultes: string[]; lienAbonnement: string }) {
   return (
     <div className="flex flex-col items-start gap-3 rounded-lg border border-dashed border-border bg-muted/40 p-4">
       <p className="flex items-center gap-2 font-medium">
         <Lock className="size-4 text-muted-foreground" aria-hidden="true" />
-        {tn("cs.verrou", nb)}
+        {tn(corriges ? "cs.verrou" : "cs.verrou_sans", nb)}
       </p>
       {difficultes.length > 0 && (
         <div className="flex flex-wrap gap-2">
@@ -80,7 +80,7 @@ function ExercicesVerrouilles({ nb, difficultes, lienAbonnement }: { nb: number;
           ))}
         </div>
       )}
-      <p className="text-sm text-muted-foreground">{t("cs.verrou_texte")}</p>
+      <p className="text-sm text-muted-foreground">{t(corriges ? "cs.verrou_texte" : "cs.verrou_texte_sans")}</p>
       <div className="flex flex-wrap items-center gap-2">
         <Button asChild size="sm">
           <Link to={lienAbonnement}>{t("prix.sabonner")}</Link>
@@ -165,7 +165,7 @@ export function CoursSection({ section, pied, lienAbonnement = "/tarifs" }: { se
       )}
 
       {section.type === "exercices_application" && section.verrouille && (
-        <ExercicesVerrouilles nb={section.nb_exercices ?? 0} difficultes={section.difficultes ?? []} lienAbonnement={lienAbonnement} />
+        <ExercicesVerrouilles nb={section.nb_exercices ?? 0} corriges={(section.nb_corriges ?? section.nb_exercices ?? 0) >= (section.nb_exercices ?? 0)} difficultes={section.difficultes ?? []} lienAbonnement={lienAbonnement} />
       )}
 
       {section.type === "exercices_application" && !section.verrouille && (

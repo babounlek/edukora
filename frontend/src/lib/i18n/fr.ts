@@ -1732,6 +1732,9 @@ export const fr = {
   "cs.exercices_long": "Exercices d'application",
   "cs.verrou_one": "{n} exercice d'application corrigé",
   "cs.verrou_other": "{n} exercices d'application corrigés",
+  "cs.verrou_sans_one": "{n} exercice d'application",
+  "cs.verrou_sans_other": "{n} exercices d'application",
+  "cs.verrou_texte_sans": "Le cours est gratuit. Les exercices d'application sont réservés aux abonnés.",
   "cs.verrou_texte": "Le cours est gratuit. Les exercices d'application, avec leurs solutions pas à pas, sont réservés aux abonnés.",
   // Niveau d'un exercice d'application (CoursSectionExerciceItem.difficulte) : les trois codes du skill et leurs variantes.
   "cs.niv_facile": "Facile",
