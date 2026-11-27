@@ -69,6 +69,22 @@ racine carrée, 5, pas 25. »
 
 La question oriente sans donner la définition : elle ne contient aucun mot clé de la réponse.
 
+## Semaines GCE (en anglais)
+
+Même ton, en anglais simple : des élèves de Form 5 au Cameroun anglophone, « you ». Les nombres gardent le point
+décimal des fiches (0.4 kg), les unités s'écrivent comme au GCE (J kg⁻¹ K⁻¹). Exemple (Physics O Level, jour 3) :
+
+> A hot metal is dropped into cold water. Which temperature change goes with the metal, and which goes with the water?
+
+Le soir : « The answer: heat gained by the water = 0.2 × 4200 × (30 − 20) = 8400 J. […] The heat lost by the metal is the
+heat gained by the water, and each body has its own temperature change: 70 K for the metal, 10 K for the water. »
+
+## TikTok
+
+`legendes-tiktok.md` reprend l'accroche et les hashtags du matin, et ajoute `#ApprendreSurTikTok`. Relis-le : sur
+TikTok, une accroche plus courte marche mieux. Si celle du matin dépasse deux lignes sur un téléphone, raccourcis-la
+dans `legendes-tiktok.md` seulement. Pas de lien cliquable : « edukora.africa » en clair, déjà écrit.
+
 ## Avant de rendre
 
 - Plus aucun `⟦` dans le fichier (`construire.mjs … --verifier` le contrôle).

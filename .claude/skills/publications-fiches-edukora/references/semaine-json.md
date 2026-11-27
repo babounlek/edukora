@@ -16,10 +16,12 @@ rien d'autre : les textes viennent du site.
 | `matiere_nom` | oui | Le nom dans une phrase, en minuscules sauf sigle : `"maths"`, `"PCT"`, `"éducation civique"`, `"SVT"`. Le moteur fait l'élision (« d'éducation civique »). |
 | `hashtags` | oui | Ceux de l'examen et de la matière, en tête : `["#Probatoire", "#ProbatoireD", "#Maths"]`. Le moteur ajoute ceux du jour et `#Cameroun #Révisions #EduKora #FichesEduKora`. |
 | `fiches` | oui | `[]` pour lister les gratuites ; puis 5 objets `{ "id", "cle", "court" }` dans l'ordre de la semaine. |
+| `langue` | non | `"en"` pour une semaine GCE : images, vidéos et lignes publiées des légendes en anglais. Défaut : français. |
+| `source` | non | `"http://localhost"` pour lire des fiches encore en brouillon (serveur local). À retirer avant de publier, voir la section GCE de la compétence. |
 | `lien_cursus` | non | La série visée par le lien des fiches quand il y en a plusieurs (défaut : la première de `cursus`). Prendre D quand elle en fait partie. |
 | `preuve` | non | Phrase de la carte du lundi au vendredi (format methode), avec `{n}`, `{debut}`, `{fin}`. Défaut : `Demandée dans <b>{n} sujets</b> du <examen> entre {debut} et {fin}`. Le nom de l'examen n'y est jamais coupé (le moteur s'en charge). |
-| `defi` | non | « Le défi du dimanche : 5 … » : `"questions"` (défaut) ou `"exercices"`. |
-| `sans_coupure` | non | Bouts de titre à ne pas couper en fin de ligne, écrits avec des espaces ordinaires : `["est-il"]`, `["MA² + MB²"]`. Le moteur prévient si un bout ne se trouve dans aucun titre. |
+| `defi` | non | « Le défi du dimanche : 5 … » : `"questions"` (défaut) ou `"exercices"` ; en anglais, `"exercises"`. |
+| `sans_coupure` | non | Bouts de titre à ne pas couper en fin de ligne, écrits avec des espaces ordinaires : `["MA² + MB²"]`. Rarement utile : les mots à trait d'union (« est-il », « 2,4-diméthylhexane »), un nombre et son unité, un mot et la formule en « = » qui le suit ne se coupent déjà plus. Le moteur prévient si un bout ne se trouve dans aucun titre. |
 | `reprise` | non | `true` pour une semaine qui reprend exprès des fiches déjà publiées (quand la réserve sera vide). Sinon le moteur refuse une fiche déjà prise. |
 | `ordre_devine` | non | (definition) ordre des 5 clés le samedi, pour ne pas suivre celui de la semaine. Défaut : 4e, 1re, 5e, 3e, 2e. |
 | `indices` | non | (definition) `{ "cle": "texte" }` : la définition reformulée sans le mot à trouver. |
@@ -104,7 +106,11 @@ coupe une précision qui le contient. Il ne doit pas devenir plus facile ni plus
 | `images/4x5/`, `images/9x16/` | Les PNG (1080 × 1350 et 1080 × 1920). Une image qui n'est plus produite est supprimée. |
 | `a-montrer-a-l-enseignant.pdf` | Les vues 4:5, deux par ligne. |
 | `legendes.md` | Brouillon avec passages `⟦…⟧`, seulement s'il n'existe pas. |
-| `../../planning.csv` | 18 lignes « À relire », seulement si la semaine n'y est pas. |
+| `legendes-tiktok.md` | Tiré de `legendes.md` une fois celui-ci écrit (accroche et hashtags du matin), seulement s'il n'existe pas. |
+| `sources/videos.html` | Les vidéos TikTok, scène par scène, avant tournage (`filmer.py`). |
+| `videos/` | (filmer.py) Une vidéo MP4 par fiche, 1080 × 1920, muette, et un `.jpg` de couverture. |
+| `sources/planche-<vidéo>.png` | (filmer.py) 10 images prises dans la vidéo, pour la regarder d'un coup d'œil. |
+| `../../planning.csv` | 23 lignes « À relire » (dont 5 TikTok) ; seules les lignes qui manquent à la semaine sont ajoutées. |
 
 Format methode, par fiche : 6 vues 4:5 (question, méthode ou « à retenir », exemple, piège, à toi, réponse du soir) et
 3 vues 9:16 (à toi, piège, réponse) ; samedi les 5 pièges ; dimanche le défi et ses réponses. Une fiche dont la
@@ -112,6 +118,11 @@ définition commence par `**À retenir**` est annoncée « Fiche à retenir », 
 
 Format definition, par fiche : le mot le matin, la définition le soir (4:5 et 9:16) ; samedi « Quel est le mot ? » ;
 dimanche les 5 définitions à garder.
+
+Vidéo TikTok, format methode : la question (fond vert), la méthode ou « À retenir » (le contenu de l'image 2, formules
+comprises, 6 à 14 s), le piège, « À toi » et l'exercice avec un compte à rebours de 5 s, la réponse, l'appel vers le
+site. Format definition : le mot, « Dis-le avec tes mots » et le compte à rebours, la
+définition, l'appel. La durée de chaque scène suit la longueur de son texte.
 
 L'invitation des images et des légendes dépend des essais de quiz : s'il y en a un dans la matière pour chaque série,
 « Essaie un quiz… » ; sinon « Essaie un quiz gratuit dans une autre matière… ».

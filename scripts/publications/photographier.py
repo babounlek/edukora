@@ -21,9 +21,22 @@ SORTIE = SEMAINE / "images"
 AJUSTER = """el => {
   const main = el.querySelector('main'), c = el.querySelector('.contenu')
   const dispo = () => main.clientHeight - 56
+  // Un bout de texte (formule, ponctuation qui la suit) qui dépasse le contenu ou l'encadré qui le contient.
+  // On mesure le texte visible seulement : la copie MathML des formules (pour les lecteurs d'écran) est hors champ.
+  const depasse = (boite, limite) => {
+    const w = document.createTreeWalker(boite, NodeFilter.SHOW_TEXT), r = document.createRange()
+    for (let n = w.nextNode(); n; n = w.nextNode()) {
+      if (!n.textContent.trim() || n.parentElement.closest('.katex-mathml')) continue
+      r.selectNodeContents(n)
+      for (const x of r.getClientRects()) if (x.width > 0 && x.right > limite + 2) return true
+    }
+    return false
+  }
+  const interieur = b => b.getBoundingClientRect().right - parseFloat(getComputedStyle(b).paddingRight)
   const deborde = () => c.offsetHeight > dispo() ||
     [...c.querySelectorAll('*')].some(n => !n.closest('.katex') && n.scrollWidth > n.clientWidth + 2 && n.clientWidth > 0) ||
-    [...c.querySelectorAll('.katex')].some(k => k.getBoundingClientRect().right > c.getBoundingClientRect().right + 2)
+    depasse(c, c.getBoundingClientRect().right) ||
+    [...c.querySelectorAll('.reponse, .piege, .invitation')].some(b => depasse(b, interieur(b)))
   let t = 44
   // Une vue peu remplie grossit un peu, une vue chargée rétrécit.
   while (t < 54 && c.offsetHeight < dispo() * 0.7) { c.style.fontSize = (++t) + 'px' }
@@ -40,10 +53,21 @@ with sync_playwright() as p:
     onglet.evaluate("document.fonts.ready")
     onglet.wait_for_load_state("networkidle")
     vues = onglet.query_selector_all("section.page")
-    petites, faites = [], set()
+    # Les vues de rechange (data-variante-de) passent après : on ne les prend que si la vue qu'elles remplacent est trop
+    # chargée (texte qui déborde ou sous 30 px) ; celle-ci n'est alors pas gardée.
+    vues = sorted(vues, key=lambda v: v.get_attribute("data-variante-de") is not None)
+    petites, faites, coupees = [], set(), set()
     for vue in vues:
         nom = vue.get_attribute("data-nom")
+        parent = vue.get_attribute("data-variante-de")
+        if parent is not None and parent not in coupees:
+            continue
         etat = vue.evaluate(AJUSTER)
+        if parent is None and vue.evaluate("el => !!document.querySelector(`[data-variante-de='${el.dataset.nom}']`)") \
+                and (etat["deborde"] or etat["taille"] < 30):
+            coupees.add(nom)
+            petites.append((nom, {"coupee_en_deux": True}))
+            continue
         if etat["deborde"] or etat["taille"] < 36 or etat["bandeau_sur_deux_lignes"]:
             petites.append((nom, {k: v for k, v in etat.items() if v}))
         cible = SORTIE / f"{nom}.png"
@@ -64,7 +88,7 @@ with sync_playwright() as p:
     obsoletes = [i for i in SORTIE.rglob("*.png") if i.resolve() not in faites]
     for i in obsoletes:
         i.unlink()
-    print(len(vues), "images ;", len(obsoletes), "obsolètes supprimées ; à surveiller :", petites or "aucune")
+    print(len(faites), "images ;", len(obsoletes), "obsolètes supprimées ; à surveiller :", petites or "aucune")
     print("  (à surveiller = texte sous 36 px, qui déborde, ou bandeau sur deux lignes : regarder l'image ;"
           " sous 36 px sans débordement, c'est souvent lisible ; un bandeau sur deux lignes se raccourcit dans semaine.json)")
 

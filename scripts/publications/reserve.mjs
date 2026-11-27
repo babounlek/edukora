@@ -14,13 +14,20 @@ if (!existsSync(resolve(publications, "semaines"))) {
 const lire = async (u) => { const r = await fetch(SITE + u); if (!r.ok) throw new Error(`${u} : ${r.status}`); return r.json() }
 
 // Les semaines déjà préparées : fiche id -> semaine.
+// Un semaine.json en cours d'écriture (autre préparation en parallèle) est ignoré, avec un message.
+const lireSemaine = (nom) => {
+  try { return { nom, ...JSON.parse(readFileSync(resolve(publications, "semaines", nom, "semaine.json"), "utf8")) } }
+  catch { console.log(`(${nom}/semaine.json illisible pour l'instant : ignoré)`); return null }
+}
 const semaines = readdirSync(resolve(publications, "semaines"), { withFileTypes: true })
   .filter((d) => d.isDirectory() && existsSync(resolve(publications, "semaines", d.name, "semaine.json")))
-  .map((d) => ({ nom: d.name, ...JSON.parse(readFileSync(resolve(publications, "semaines", d.name, "semaine.json"), "utf8")) }))
+  .map((d) => lireSemaine(d.name)).filter((s) => s && s.lundi && Array.isArray(s.fiches))
   .sort((a, b) => a.lundi.localeCompare(b.lundi))
 const utilisee = new Map()
 const termesUtilises = new Map()
-for (const s of semaines) for (const f of s.fiches) utilisee.set(f.id, s.nom)
+// Une semaine lue sur le serveur local ("source", fiches GCE en brouillon) a des ids locaux : elle ne marque rien ici.
+for (const s of semaines) if (!s.source) for (const f of s.fiches) utilisee.set(f.id, s.nom)
+const locales = semaines.filter((s) => s.source)
 
 // Tous les examens, francophones et anglophones (GCE) : une semaine GCE se publie en anglais.
 const NOMS = { GCE_OL: "GCE O Level", GCE_AL: "GCE A Level" }
@@ -96,3 +103,5 @@ for (const c of cursus.filter((c) => !toutes.some((l) => l.cursus.includes(c.id)
 const doublons = toutes.filter((l) => l.remarque)
 if (doublons.length) console.log("Notions déjà publiées sous un autre examen :", doublons.map((l) => `${l.terme} (${l.examen})`).join(", "))
 console.log("\nSemaines préparées :", semaines.map((s) => `${s.nom}`).join(", ") || "aucune")
+if (locales.length)
+  console.log("Préparées sur des fiches en brouillon (serveur local, pas encore en ligne) :", locales.map((s) => s.nom).join(", "))
