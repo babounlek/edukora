@@ -303,6 +303,10 @@ class ExtractionTests(_Base):
             "espagnol_bepc": {"Conjugaison", "Grammaire", "Vocabulaire", "Compréhension", "Traduction", "Rédaction"},
             "maths_probatoire_d": {"Trigonométrie", "Géométrie", "Fonctions", "Algèbre", "Suites", "Statistiques", "Dénombrement"},
             "chimie_probatoire_cde": {"Chimie organique", "Oxydoréduction et piles", "Dosages et expériences", "Engrais"},
+            "svt_probatoire_d": {"Cellule et génétique", "Enzymes", "Santé et immunité", "Énergie et métabolisme", "Écologie et cycles", "Énergie solaire et climat", "Géologie"},
+            "physique_probatoire_d_ti": {"Optique", "Énergie électrique", "Électromagnétisme", "Électrostatique", "Énergie mécanique", "Chaleur et rayonnement", "Mesures et démarche"},
+            "anglais_probatoire": {"Grammaire", "Vocabulaire", "Phrases à compléter", "Compréhension", "Rédaction"},
+            "education_civique_bepc": {"Symboles et patrie", "État et exécutif", "Parlement", "Justice et diplomatie", "Élections et démocratie", "Économie et vie associative", "Méthode"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
