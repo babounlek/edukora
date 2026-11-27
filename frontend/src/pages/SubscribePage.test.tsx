@@ -411,6 +411,7 @@ describe("SubscribePage : la demande de paiement sur le téléphone (audit du tu
     afficher("/abonnement?cursus=4&mois=1")
 
     expect(await screen.findByText("Paiement par CamPay, notre prestataire Mobile Money")).toBeInTheDocument()
+    expect(screen.getByText(/la demande s'affiche au nom de TAKWID GROUP, la société qui exploite CamPay/)).toBeInTheDocument()
     expect(screen.getByText(/tu ne le tapes que sur ton téléphone : ni .+ ni CamPay ne le voient/)).toBeInTheDocument()
     expect(screen.getByText(/Rien n'est débité sans ta validation/)).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /Qui est CamPay \? Mon paiement est-il sûr \?/ })).toHaveAttribute(
@@ -425,7 +426,7 @@ describe("SubscribePage : la demande de paiement sur le téléphone (audit du tu
     await payer()
 
     expect(await screen.findByText(/Une demande de 2 000 FCFA a été envoyée au 677123456/)).toBeInTheDocument()
-    expect(screen.getByText(/Elle vient de CamPay, notre prestataire de paiement/)).toBeInTheDocument()
+    expect(screen.getByText(/Elle s'affiche au nom de TAKWID GROUP/)).toBeInTheDocument()
     expect(screen.getByText(/Compose #150\*50# \(Orange Money\)/)).toBeInTheDocument()
     expect(screen.queryByText(/\*126#/)).not.toBeInTheDocument()
   })

@@ -5,7 +5,7 @@ populaire: oui
 pages: /tarifs,/abonnement
 titre: Comment payer mon abonnement (Orange Money, MTN MoMo)
 resume: Tu choisis ton nombre de mois sur la page des prix, tu entres ton numéro Mobile Money, puis tu valides la demande de paiement sur ton téléphone.
-mots_cles: payer, paiement, mobile money, orange money, mtn momo, momo, campay, transfert, abonnement, comment payer, acheter, prix, continuer, nombre de mois, numéro de transaction, déclarer, code secret, demande de paiement, *126#, #150*50#
+mots_cles: payer, paiement, mobile money, orange money, mtn momo, momo, campay, takwid group, transfert, abonnement, comment payer, acheter, prix, continuer, nombre de mois, numéro de transaction, déclarer, code secret, demande de paiement, *126#, #150*50#
 ---
 Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **en une fois** pour le nombre de mois que tu as choisi. Il n'y a ni carte bancaire, ni prélèvement automatique, ni renouvellement : rien ne se redéclenche sans que tu le fasses toi-même.
 
@@ -20,7 +20,7 @@ Le paiement se fait par **Mobile Money** (Orange Money ou MTN MoMo), **en une fo
 ## Payer : la demande arrive sur ton téléphone
 
 1. Sur l'écran de paiement, entre le **numéro Orange ou MTN qui va payer** (9 chiffres, il commence par 6), puis appuie sur « Payer ».
-2. Une **demande de paiement arrive sur ce téléphone**, avec le montant. Elle est envoyée par **CamPay**, notre prestataire de paiement Mobile Money : son nom peut y apparaître, c'est normal. Vérifie le montant, puis valide avec ton **code secret Mobile Money**. Ce code, tu ne le tapes que sur ton téléphone : voir [Mon paiement est-il sûr ? Qui est CamPay ?](/aide/paiement-securise).
+2. Une **demande de paiement arrive sur ce téléphone**, avec le montant. Elle est envoyée par **CamPay**, notre prestataire de paiement Mobile Money, et s'affiche **au nom de TAKWID GROUP**, la société qui exploite CamPay : c'est normal. Vérifie le montant, puis valide avec ton **code secret Mobile Money**. Ce code, tu ne le tapes que sur ton téléphone : voir [Mon paiement est-il sûr ? Qui sont CamPay et TAKWID GROUP ?](/aide/paiement-securise).
 3. Ton accès s'ouvre dès que l'opérateur confirme, en général en quelques secondes. Tu reçois un SMS de confirmation, et le paiement apparaît dans [Mes paiements](/mes-paiements).
 
 **Rien ne s'affiche sur ton téléphone ?** Compose **\*126#** sur MTN ou **#150\*50#** sur Orange : tu y retrouves la demande en attente et tu la valides. Le code à composer est aussi rappelé sur l'écran de paiement.

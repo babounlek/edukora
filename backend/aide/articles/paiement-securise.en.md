@@ -1,19 +1,19 @@
 ---
-titre: Is my payment safe? Who is CamPay?
-resume: CamPay is the Mobile Money payment service that sends the request to your phone on behalf of {{site}}. Your PIN stays on your phone, and nothing is charged unless you approve.
-mots_cles: campay, who is campay, safe, secure, security, trust, scam, fraud, PIN, provider, takwid, payment request, unknown name, amount, proof of payment, parent, mobile money, orange money, mtn momo
+titre: Is my payment safe? Who are CamPay and TAKWID GROUP?
+resume: CamPay is the Mobile Money payment service that sends the request to your phone on behalf of {{site}}. It shows the name TAKWID GROUP, the company that runs CamPay. Your PIN stays on your phone, and nothing is charged unless you approve.
+mots_cles: campay, who is campay, safe, secure, security, trust, scam, fraud, PIN, provider, takwid, takwid group, name on the phone, payment request, unknown name, amount, proof of payment, parent, mobile money, orange money, mtn momo
 ---
 When you pay with the request that arrives on your phone, the payment goes through **CamPay**, our Mobile Money payment provider. Here is who they are, and what protects your money.
 
 ## Who is CamPay?
 
-CamPay is a Cameroonian online payment service, connected to **MTN Mobile Money** and **Orange Money**. It is run by the company Takwid Group and has been operating in Cameroon since 2021.
+CamPay is a Cameroonian online payment service, connected to **MTN Mobile Money** and **Orange Money**. It is run by the company **TAKWID GROUP**, operating in Cameroon since 2021.
 
 {{site}} uses CamPay because it sends the payment request straight to your phone: your access opens as soon as your operator confirms, without waiting for someone to check your payment.
 
 ## What you see on your phone
 
-After you press "Pay", a request arrives on the phone of the number you entered. CamPay sends it on behalf of {{site}}: depending on your operator, **CamPay's name may appear** instead of ours. That is normal.
+After you press "Pay", a request arrives on the phone of the number you entered. CamPay sends it on behalf of {{site}}, so the request shows **the name TAKWID GROUP**, the company that runs CamPay, not ours. That is normal: it is the payment for your subscription.
 
 Before approving, check that the **amount** in the request is the total shown on the payment screen. If it is different, do not approve it and write to us.
 

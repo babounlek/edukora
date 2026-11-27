@@ -3,21 +3,21 @@ categorie: paiement
 ordre: 15
 populaire: oui
 pages: /tarifs,/abonnement,/mes-paiements
-titre: Mon paiement est-il sûr ? Qui est CamPay ?
-resume: CamPay est le service de paiement Mobile Money qui envoie la demande sur ton téléphone quand tu paies ton abonnement {{site}}. Ton code secret reste sur ton téléphone, et rien n'est débité sans ta validation.
-mots_cles: campay, qui est campay, sûr, sécurisé, sécurité, confiance, arnaque, fraude, escroquerie, code secret, prestataire, takwid, demande de paiement, nom inconnu, montant, preuve de paiement, parent, mobile money, orange money, mtn momo
+titre: Mon paiement est-il sûr ? Qui sont CamPay et TAKWID GROUP ?
+resume: CamPay est le service de paiement Mobile Money qui envoie la demande sur ton téléphone quand tu paies ton abonnement {{site}}. Elle s'affiche au nom de TAKWID GROUP, la société qui exploite CamPay. Ton code secret reste sur ton téléphone, et rien n'est débité sans ta validation.
+mots_cles: campay, qui est campay, sûr, sécurisé, sécurité, confiance, arnaque, fraude, escroquerie, code secret, prestataire, takwid, takwid group, tawkid, nom sur le téléphone, demande de paiement, nom inconnu, montant, preuve de paiement, parent, mobile money, orange money, mtn momo
 ---
 Quand tu paies par la demande qui arrive sur ton téléphone, le paiement passe par **CamPay**, notre prestataire de paiement Mobile Money. Voici qui il est, et ce qui protège ton argent.
 
 ## Qui est CamPay ?
 
-CamPay est un service camerounais de paiement en ligne, relié à **MTN Mobile Money** et à **Orange Money**. C'est un service de la société Takwid Group, en activité au Cameroun depuis 2021.
+CamPay est un service camerounais de paiement en ligne, relié à **MTN Mobile Money** et à **Orange Money**. Il est exploité par la société **TAKWID GROUP**, en activité au Cameroun depuis 2021.
 
 {{site}} passe par CamPay parce qu'il envoie la demande de paiement directement sur ton téléphone : ton accès s'ouvre dès que ton opérateur confirme, sans attendre qu'une personne vérifie ton paiement.
 
 ## Ce que tu vois sur ton téléphone
 
-Après avoir appuyé sur « Payer », une demande arrive sur le téléphone du numéro que tu as saisi. CamPay l'envoie à notre place : selon ton opérateur, **le nom de CamPay peut y apparaître** à la place du nôtre. C'est normal.
+Après avoir appuyé sur « Payer », une demande arrive sur le téléphone du numéro que tu as saisi. CamPay l'envoie à notre place : la demande s'affiche donc **au nom de TAKWID GROUP**, la société qui exploite CamPay, et pas au nôtre. C'est normal : c'est bien le paiement de ton abonnement.
 
 Avant de valider, vérifie que le **montant** de la demande est bien le total affiché sur l'écran de paiement. S'il est différent, ne valide pas et écris-nous.
 

@@ -454,7 +454,7 @@ export const fr = {
   "prix.faq5_r":
     "Ton accès s'arrête à la date affichée avant le paiement. Rien n'est renouvelé automatiquement : tu prolonges quand tu veux, et les nouveaux mois s'ajoutent à la suite de ceux en cours.",
   "prix.faq_sur_q": "Le paiement est-il sûr ? Qui est CamPay ?",
-  "prix.faq_sur_r": "Le paiement passe par CamPay, un service camerounais de paiement Mobile Money relié à MTN et Orange. La demande arrive sur ton téléphone, parfois au nom de CamPay, et tu la valides avec ton code secret : tu ne le tapes que sur ton téléphone, ni {site} ni CamPay ne le voient. Rien n'est débité sans ta validation, et ton opérateur t'envoie un SMS qui prouve ton paiement.",
+  "prix.faq_sur_r": "Le paiement passe par CamPay, un service camerounais de paiement Mobile Money relié à MTN et Orange. La demande arrive sur ton téléphone au nom de TAKWID GROUP, la société qui exploite CamPay, et tu la valides avec ton code secret : tu ne le tapes que sur ton téléphone, ni {site} ni CamPay ne le voient. Rien n'est débité sans ta validation, et ton opérateur t'envoie un SMS qui prouve ton paiement.",
   "prix.faq7_q": "Puis-je être remboursé ?",
   "prix.faq7_r": "Un paiement confirmé est ferme : il n'est pas remboursé, sauf si un dysfonctionnement technique avéré de la plateforme t'empêche d'accéder à ce que tu as payé. Dans ce cas, écris-nous. Les sujets, les cours et une partie des corrigés sont gratuits : essaie avant de payer.",
   "prix.faq6_q":
@@ -1941,7 +1941,7 @@ export const fr = {
   "sb.campay_texte":
     "Paiement Mobile Money automatique par CamPay - confirmation en quelques secondes, accès débloqué immédiatement.",
   "sb.confiance_titre": "Paiement par CamPay, notre prestataire Mobile Money",
-  "sb.confiance_nom": "CamPay envoie la demande sur ton téléphone pour le compte d'{site} : son nom peut s'y afficher.",
+  "sb.confiance_nom": "Sur ton téléphone, la demande s'affiche au nom de TAKWID GROUP, la société qui exploite CamPay : c'est bien ton paiement {site}.",
   "sb.confiance_code": "Ton code secret, tu ne le tapes que sur ton téléphone : ni {site} ni CamPay ne le voient.",
   "sb.confiance_debit": "Rien n'est débité sans ta validation, et rien ne se renouvelle tout seul.",
   "sb.confiance_lien": "Qui est CamPay ? Mon paiement est-il sûr ?",
@@ -1970,7 +1970,7 @@ export const fr = {
   "sb.nouvelle_demande": "Envoyer une nouvelle demande",
   "sb.nouvelle_demande_aide": "Ne valide qu'une seule demande : chaque demande validée est débitée.",
   "sb.confirme_texte": "Une demande de {montant} FCFA a été envoyée au {phone}. Valide-la avec ton code secret Mobile Money : cette page se met à jour toute seule.",
-  "sb.confirme_campay": "Elle vient de CamPay, notre prestataire de paiement : son nom peut s'afficher à la place du nôtre.",
+  "sb.confirme_campay": "Elle s'affiche au nom de TAKWID GROUP, la société qui exploite CamPay, notre prestataire de paiement : c'est normal.",
   "sb.revenir_formulaire": "Revenir au formulaire",
   "sb.deja_valide": "Si tu as déjà validé le paiement, ton accès s'activera quand même.",
   "sb.timeout_titre": "La confirmation prend plus de temps que prévu",

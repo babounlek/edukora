@@ -448,7 +448,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "prix.faq5_r":
     "Your access stops on the date shown before you pay. Nothing is renewed automatically: you extend whenever you like, and the new months are added after the current ones.",
   "prix.faq_sur_q": "Is the payment safe? Who is CamPay?",
-  "prix.faq_sur_r": "The payment goes through CamPay, a Cameroonian Mobile Money payment service connected to MTN and Orange. The request arrives on your phone, sometimes under CamPay's name, and you approve it with your PIN: you type it only on your phone, neither {site} nor CamPay sees it. Nothing is charged unless you approve, and your operator sends you an SMS that proves your payment.",
+  "prix.faq_sur_r": "The payment goes through CamPay, a Cameroonian Mobile Money payment service connected to MTN and Orange. The request arrives on your phone under the name TAKWID GROUP, the company that runs CamPay, and you approve it with your PIN: you type it only on your phone, neither {site} nor CamPay sees it. Nothing is charged unless you approve, and your operator sends you an SMS that proves your payment.",
   "prix.faq7_q": "Can I get a refund?",
   "prix.faq7_r": "A confirmed payment is final: it is not refunded, unless a proven technical fault on the platform stops you from accessing what you paid for. In that case, write to us. The papers, the lessons and some of the solutions are free: try before you pay.",
   "prix.faq6_q":
@@ -1933,7 +1933,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.campay_texte":
     "Automatic Mobile Money payment through CamPay - confirmation within seconds, access unlocked immediately.",
   "sb.confiance_titre": "Payment through CamPay, our Mobile Money provider",
-  "sb.confiance_nom": "CamPay sends the request to your phone on behalf of {site}: its name may appear there.",
+  "sb.confiance_nom": "On your phone, the request shows the name TAKWID GROUP, the company that runs CamPay: it is your {site} payment.",
   "sb.confiance_code": "You type your PIN only on your phone: neither {site} nor CamPay sees it.",
   "sb.confiance_debit": "Nothing is charged unless you approve, and nothing renews by itself.",
   "sb.confiance_lien": "Who is CamPay? Is my payment safe?",
@@ -1962,7 +1962,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "sb.nouvelle_demande": "Send a new request",
   "sb.nouvelle_demande_aide": "Approve only one request: every approved request is charged.",
   "sb.confirme_texte": "A request for {montant} FCFA was sent to {phone}. Approve it with your Mobile Money PIN: this page updates by itself.",
-  "sb.confirme_campay": "It comes from CamPay, our payment provider: its name may appear instead of ours.",
+  "sb.confirme_campay": "It shows the name TAKWID GROUP, the company that runs CamPay, our payment provider: that is normal.",
   "sb.revenir_formulaire": "Back to the form",
   "sb.deja_valide": "If you've already approved the payment, your access will still activate.",
   "sb.timeout_titre": "The confirmation is taking longer than expected",
