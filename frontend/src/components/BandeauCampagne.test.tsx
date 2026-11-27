@@ -51,6 +51,15 @@ describe("BandeauCampagne", () => {
 
     expect(screen.getByText("Plus que 2 jours")).toBeInTheDocument()
   })
+
+  it("prend des couleurs claires sur fond foncé (bande vert profond de l'accueil)", () => {
+    render(<BandeauCampagne campagne={campagne(2 * JOUR - 1000)} prix={1600} prixReference={2000} surFonce />)
+
+    expect(screen.getByText(/sur l'abonnement/)).toHaveClass("text-gold")
+    expect(screen.getByText(/sur l'abonnement/)).not.toHaveClass("text-gold-text")
+    expect(screen.getByText(/^Prix promotionnel/)).toHaveClass("text-brand-deep-foreground")
+    expect(screen.getByText("Plus que 2 jours")).toHaveClass("text-gold")
+  })
 })
 
 describe("nomCampagne", () => {

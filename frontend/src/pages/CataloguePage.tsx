@@ -755,6 +755,7 @@ function CatalogueVitrine({ decouverte = false }: { decouverte?: boolean }) {
               campagne={campagne}
               prix={campagne.prix}
               prixReference={campagne.prix_reference}
+              surFonce
               className="mx-auto mt-5 max-w-xl justify-center text-left"
             />
           )}
