@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import sys
 import tempfile
 from datetime import timedelta
+from email.utils import formataddr, parseaddr
 from pathlib import Path
 from decouple import config, Csv
 
@@ -277,6 +278,11 @@ EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=10, cast=int)
 # atterrissent en indésirables chez Gmail - c'est-à-dire un utilisateur bloqué qui n'a
 # aucun moyen de comprendre pourquoi, le pire mode de panne pour une authentification.
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default=f"{SITE_NAME} <no-reply@edukora.africa>")
+# Une adresse seule (« contact@edukora.africa », cas du .env de production le 2026-11-27) s'affiche sans nom dans la
+# boîte de réception : un reçu de paiement d'un inconnu ressemble à de l'hameçonnage. On y ajoute le nom du site.
+_nom_expediteur, _adresse_expediteur = parseaddr(DEFAULT_FROM_EMAIL)
+if _adresse_expediteur and not _nom_expediteur:
+    DEFAULT_FROM_EMAIL = formataddr((SITE_NAME, _adresse_expediteur))
 
 # Boîte surveillée où atterrit une réponse à un e-mail transactionnel (no-reply@ ne
 # l'est jamais) - voir users.email_service.request_email_code.
