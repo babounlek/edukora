@@ -1516,25 +1516,59 @@ def _items_depuis_contenu(contenu):
     return items
 
 
+# Autres noms donnés à l'énoncé et à la solution d'un exercice d'application que `enonce_markdown` /
+# `solution_markdown` (relevé du 2026-11-27 : 103 exercices de cours publiés dont l'énoncé ou la solution, bien
+# présents, ne s'affichaient pas - l'abonné voyait un exercice vide, sans bouton « Solution »).
+_ALIAS_ENONCE_EXERCICE = ("enonce",)
+_ALIAS_SOLUTION_EXERCICE = (
+    "solution", "correction_markdown", "correction", "corrige_markdown", "corrige", "reponse_attendue_markdown",
+)
+
+
+def _exercice_normalise(item):
+    """Un exercice d'application dont l'énoncé ou la solution porte un autre nom (voir les alias ci-dessus), ramené
+    à `enonce_markdown` / `solution_markdown`. Un exercice à sous-questions (`questions`) est laissé tel quel."""
+    if not isinstance(item, dict) or item.get("questions"):
+        return item
+    ajouts = {}
+    for cible, alias in (("enonce_markdown", _ALIAS_ENONCE_EXERCICE), ("solution_markdown", _ALIAS_SOLUTION_EXERCICE)):
+        if not item.get(cible):
+            valeur = next((item[cle] for cle in alias if isinstance(item.get(cle), str) and item[cle].strip()), None)
+            if valeur:
+                ajouts[cible] = valeur
+    return {**item, **ajouts} if ajouts else item
+
+
 def _section_normalisee(section):
     """
-    `section` ramenée aux champs que lit son type, quand elle arrive sous une forme « plate » : un seul
-    `contenu_markdown` (texte ou liste) au lieu de `items` (prérequis, erreurs classiques, exercices),
-    `enonce_markdown`/`etapes` (exemple résolu) ou `items_markdown` (synthèse) ; ou des exercices sous
-    `exercices: [{enonce, solution}]` au lieu de `items`. Constatée le 2026-11-27 sur 96 cours publiés (BEPC
-    informatique/PCT/ECM, Probatoire géographie et chimie...) : sans elle, tout sauf l'accroche et la règle
-    disparaissait de la page, sans aucune erreur (signalé sur /cours/la-structure-alternative-en-algorithmique-...).
+    `section` ramenée aux champs que lit son type. Deux écarts rattrapés, tous deux constatés le 2026-11-27 :
 
-    Une section qui porte déjà ses champs propres est rendue telle quelle. Lue par tous les rendus d'une section
-    (Markdown compilé, lecture en ligne, section verrouillée, compteur d'exercices des cartes de cours).
+    - forme « plate » : un seul `contenu_markdown` (texte ou liste) au lieu de `items` (prérequis, erreurs
+      classiques, exercices), `enonce_markdown`/`etapes` (exemple résolu) ou `items_markdown` (synthèse) ; ou des
+      exercices sous `exercices` au lieu de `items`. 96 cours publiés (BEPC informatique/PCT/ECM, Probatoire
+      géographie et chimie...) : tout sauf l'accroche et la règle disparaissait de la page, sans aucune erreur
+      (signalé sur /cours/la-structure-alternative-en-algorithmique-...) ;
+    - exercices dont l'énoncé ou la solution porte un autre nom (voir _exercice_normalise).
+
+    Une section qui porte déjà ses champs propres est rendue telle quelle (même objet). Lue par tous les rendus
+    d'une section (Markdown compilé, lecture en ligne, section verrouillée, compteur d'exercices des cartes).
     """
+    section = _section_forme_attendue(section)
+    if isinstance(section, dict) and section.get("type") == "exercices_application" and section.get("items"):
+        items = [_exercice_normalise(item) for item in section["items"]]
+        if any(apres is not avant for apres, avant in zip(items, section["items"])):
+            section = {**section, "items": items}
+    return section
+
+
+def _section_forme_attendue(section):
+    """Forme « plate » ramenée aux champs du type de la section - voir _section_normalisee."""
     if not isinstance(section, dict):
         return section
     section_type = section.get("type")
     if section_type == "exercices_application" and not section.get("items") and section.get("exercices"):
         items = [
-            {"numero": rang, "enonce_markdown": ex.get("enonce") or "", "solution_markdown": ex.get("solution") or ""}
-            if isinstance(ex, dict) else ex
+            {"numero": rang, **ex} if isinstance(ex, dict) else ex
             for rang, ex in enumerate(section["exercices"], start=1)
         ]
         return {**section, "items": items}
@@ -1552,6 +1586,13 @@ def _section_normalisee(section):
         titre = _TITRE_EXEMPLE_GENERIQUE_RE.sub("", section.get("titre") or "", count=1).strip()
         return {**section, "enonce_markdown": f"**{titre}**\n\n{enonce}" if titre else enonce}
     return section
+
+
+def exemple_resolu_vide(section):
+    """Section « exemple résolu » sans énoncé, sans étape ni conclusion (11 cours publiés le 2026-11-27) : on ne
+    l'affiche pas, et la carte du cours n'annonce pas d'exemple, plutôt qu'un titre suivi de rien."""
+    section = _section_normalisee(section)
+    return not any(section.get(cle) for cle in ("enonce_markdown", "etapes", "conclusion_markdown"))
 
 
 def _render_cours_section(cours, section):
@@ -1601,6 +1642,8 @@ def _render_cours_section(cours, section):
         return "\n\n".join(p for p in parts if p)
 
     if section_type == "exemple_resolu":
+        if exemple_resolu_vide(section):
+            return ""
         parts = ["## Exemple résolu", section.get("enonce_markdown", "")]
         for etape in section.get("etapes") or []:
             # Même tolérance texte-brut que pour erreurs_classiques/exercices_application
@@ -1817,7 +1860,7 @@ def _build_cours_section_data(cours, section):
     if section_type == "regle":
         return _build_regle_section_data(section)
     if section_type == "exemple_resolu":
-        return _build_exemple_resolu_section_data(section)
+        return None if exemple_resolu_vide(section) else _build_exemple_resolu_section_data(section)
     if section_type == "erreurs_classiques":
         return _build_erreurs_classiques_section_data(section)
     if section_type == "exercices_application":

@@ -18,7 +18,7 @@ from .models import (
     Tag,
     Temoignage,
 )
-from .rendering import _section_normalisee
+from .rendering import _section_normalisee, exemple_resolu_vide
 
 
 class CountrySerializer(serializers.ModelSerializer):
@@ -237,7 +237,7 @@ def _cours_content_summary(sections_raw):
     exercices_count = 0
     for section in sections_raw:
         section_type = section.get("type")
-        if section_type == "exemple_resolu":
+        if section_type == "exemple_resolu" and not exemple_resolu_vide(section):
             has_exemple_resolu = True
         elif section_type == "exercices_application":
             # Normalisée : des exercices sous forme plate (`contenu_markdown`, `exercices`) comptent aussi.
