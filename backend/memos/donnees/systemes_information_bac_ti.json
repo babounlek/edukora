@@ -1,0 +1,159 @@
+{
+  "pays": "CM",
+  "matiere": "SYSTEMES_INFORMATION",
+  "_commentaire": "13 fiches de Systèmes d'Information, BAC TI (Cameroun), RÉDIGÉES par l'assistant. À RELIRE par un enseignant avant publication. Une session n'est citée que si une question de l'épreuve demandait cette notion (seuil : 3 sessions ; 7 sujets officiels, 2017-2025 ; le sujet sans année dans son titre est celui de 2025). Les sujets 2017 et 2020 (PHP, réseaux, maintenance) ne sont pas cités. Exercices « d'après ».",
+  "epreuves": {
+    "TI2017": "Systèmes d'Information BAC TI 2017",
+    "TI2018": "Systèmes d'Information BAC TI 2018",
+    "TI2020": "Systèmes d'Information BAC TI 2020",
+    "TI2022": "Systèmes d'Information BAC TI 2022",
+    "TI2023": "Systèmes d'Information BAC TI 2023",
+    "TI2024": "Systèmes d'Information BAC TI 2024",
+    "TI2025": "Systèmes d'Information BAC TI"
+  },
+  "notions": [
+    {
+      "terme": "Qu'est-ce qu'UML, et à quoi servent ses principaux diagrammes ?",
+      "theme": "UML",
+      "rubrique": "Modélisation",
+      "definition": "**À retenir** :\n- **UML** (Unified Modeling Language) : langage de modélisation unifié, fait de diagrammes. C'est un langage, pas une méthode.\n- **MERISE** : méthode française de conception des systèmes d'information, qui sépare les données et les traitements.\n- **Cas d'utilisation** : montre les fonctions du système et les acteurs qui les utilisent.\n- **Classes** : montre les classes et leurs relations (vue statique).\n- **Objets** : montre des objets et leurs liens à un instant donné.\n- **Séquence** : montre les messages échangés entre acteurs et objets, dans l'ordre du temps (vue dynamique).\n- **Message** : communication envoyée par un participant à un autre.\n- **Outils** : StarUML, ArgoUML, Visual Paradigm, Enterprise Architect.",
+      "exemple": "**Exemple** : pour un guichet bancaire, le diagramme de cas d'utilisation dit que le client peut retirer de l'argent. Le diagramme de séquence montre l'ordre des échanges : insérer la carte, demander le code, saisir le code, délivrer les billets.",
+      "piege": "Dans un diagramme de séquence, le temps se lit de haut en bas. N'y confonds pas un message (une flèche entre deux lignes de vie) avec un cas d'utilisation.",
+      "exercice": "(d'après le BAC TI 2025) Donne le rôle du diagramme de séquences et cite deux logiciels qui permettent de le représenter.",
+      "reponse": "Il décrit un scénario : les messages échangés entre les acteurs et les éléments du système, dans l'ordre chronologique. Deux logiciels : StarUML et Visual Paradigm (ou ArgoUML).",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment trouver les acteurs et les cas d'utilisation dans un texte ?",
+      "theme": "acteur",
+      "rubrique": "Modélisation",
+      "definition": "**Quand ?** Le sujet décrit une activité et demande les acteurs, les cas d'utilisation ou leur diagramme.\n\n**La méthode**\n1. Définition : un **acteur** est un rôle joué par une personne ou un système extérieur qui interagit avec le système étudié.\n2. Un **cas d'utilisation** est une fonction du système qui rend un service à un acteur.\n3. Relève les personnes et services extérieurs qui agissent : nomme leur rôle, pas leur nom propre.\n4. Pour chacun, relève ses actions et écris-les avec un verbe à l'infinitif (Réserver, Consulter).\n5. L'**acteur primaire** déclenche le cas et en attend le résultat. L'**acteur secondaire** est sollicité par le système pour l'aider.\n6. Au diagramme : acteurs hors du rectangle du système, cas en ovales dedans, un trait entre chaque acteur et ses cas.",
+      "exemple": "**Exemple** : « à la cantine, les élèves commandent un repas ; le cuisinier consulte les commandes ». Acteurs : Élève, Cuisinier. Cas : Commander un repas (lié à Élève), Consulter les commandes (lié à Cuisinier).",
+      "piege": "Le système étudié n'est pas un acteur de lui-même. Un cas d'utilisation n'est pas une donnée : « Facture » est un nom d'objet, « Établir la facture » est un cas.",
+      "exercice": "(d'après le BAC TI 2024) L'employé adresse une demande de formation ; le responsable formation l'inscrit auprès de l'organisme de formation ; la facture est transmise au comptable. Cite quatre acteurs.",
+      "reponse": "L'employé, le responsable formation, l'organisme de formation et le comptable. Chacun joue un rôle et échange avec le processus de formation.",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment décrire une classe et un objet en UML (attributs, opérations, visibilité) ?",
+      "theme": "diagramme de classes",
+      "rubrique": "Modélisation",
+      "definition": "**Quand ?** On demande de définir, d'identifier ou de représenter une classe ou un objet.\n\n**La méthode**\n1. **Classe** : modèle qui décrit des objets ayant les mêmes attributs et les mêmes opérations.\n2. **Objet** : instance d'une classe. Il a une **identité**, un **état** (les valeurs de ses attributs) et un **comportement** (ses opérations).\n3. Représente la classe par un rectangle à trois cases : nom, attributs, opérations (ou méthodes).\n4. Les attributs sont les données ; les opérations sont les traitements, notés avec des parenthèses.\n5. La **visibilité** dit qui peut accéder à un élément. `+` public : tous. `-` privé : la classe seule. `#` protégé : la classe et ses sous-classes.",
+      "exemple": "**Exemple** : classe Livre.\nAttributs : `- code`, `- titre`.\nOpérations : `+ emprunter()`, `+ rendre()`.\nObjet : le livre de code L12. Son état : titre « Réseaux ». Son comportement : il peut être emprunté puis rendu.",
+      "piege": "Une classe est un modèle (Employé) ; un objet est un cas précis (l'employé de matricule E07). L'état d'un objet donne des valeurs, pas seulement des noms d'attributs.",
+      "exercice": "(d'après le BAC TI 2018) L'employé Mbassa Jonathan, matricule 017Z, ingénieur embauché en 2010, gère le service de location du matériel. Décris cet objet par son identifiant, son état et un comportement.",
+      "reponse": "Objet de la classe Employé. Identifiant : matricule 017Z. État : nom Mbassa Jonathan, qualification ingénieur, année d'embauche 2010, poste responsable du service location du matériel. Comportement : éditer le récapitulatif des locations de son service.",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment distinguer association, agrégation, composition, héritage et classe-association ?",
+      "theme": "composition",
+      "rubrique": "Modélisation",
+      "definition": "**À retenir** :\n- **Association** : lien entre des classes (un client réserve une chambre). Trait simple.\n- **Agrégation** : relation « tout et partie » faible. La partie peut exister sans le tout. Losange **vide** du côté du tout.\n- **Composition** : relation « tout et partie » forte. La partie dépend du tout : si le tout est détruit, ses parties le sont aussi. Losange **plein** du côté du tout.\n- **Héritage** (généralisation et spécialisation) : la sous-classe reprend les attributs, opérations et relations de la classe mère et peut en ajouter. Flèche à **triangle vide** vers la mère. Test : « est un ».\n- **Classe-association** : classe attachée par un trait en pointillés à une association ; elle porte des informations propres au lien (une date, une quantité).",
+      "exemple": "**Exemple** : une équipe agrège des joueurs, qui existent encore si l'équipe est dissoute. Un livre est composé de ses chapitres. Un roman est un livre : héritage de Roman vers Livre.",
+      "piege": "Le losange se place du côté du tout, jamais du côté de la partie. La flèche d'héritage va de la classe fille vers la classe mère.",
+      "exercice": "(d'après le BAC TI 2025) Explique la différence entre une agrégation et une composition.",
+      "reponse": "Dans les deux cas une classe est le tout et l'autre la partie. Agrégation : lien faible, la partie peut vivre sans le tout (losange vide). Composition : lien fort, la partie appartient à un seul tout et disparaît avec lui (losange plein).",
+      "epreuves": ["TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment construire un diagramme de classes à partir d'un texte et fixer les multiplicités ?",
+      "theme": "multiplicités",
+      "rubrique": "Modélisation",
+      "definition": "**Quand ?** Le sujet donne des règles de gestion et demande le diagramme de classes, ou le sens d'un diagramme.\n\n**La méthode**\n1. Chaque nom d'objet que l'on décrit par des informations devient une classe.\n2. Range dans chaque classe ses attributs et ses opérations.\n3. Les verbes qui relient deux classes deviennent des relations ; « sortes de » donne un héritage, « contient » peut donner une composition.\n4. Pour la multiplicité à écrire près de B, demande : pour **un** objet A, combien d'objets B au minimum et au maximum ?\n5. Écris `1` (exactement un), `0..1`, `*` ou `0..*` (zéro ou plusieurs), `1..*` (au moins un).\n6. Pour énoncer une règle de gestion, relis une relation dans une phrase, dans les deux sens.",
+      "exemple": "**Exemple** : « une classe compte au moins un élève ; un élève est dans une seule classe ». On écrit `1..*` du côté Élève et `1` du côté Classe.",
+      "piege": "En UML, la multiplicité se lit du côté opposé : celle écrite près de Élève compte les élèves d'une classe. C'est l'inverse du placement des cardinalités de MERISE.",
+      "exercice": "(d'après le BAC TI 2023) « Un client peut réserver plusieurs suites. Une suite reçoit un client. Il existe des suites VIP et des suites A. » Donne les classes, les relations et les multiplicités de la réservation.",
+      "reponse": "Classes : Client, Suite, SuiteVIP, SuiteA. SuiteVIP et SuiteA héritent de Suite. Association « réserver » entre Client et Suite : `0..*` près de Suite et, en lisant qu'une suite reçoit au plus un client, `0..1` près de Client.",
+      "epreuves": ["TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Qu'est-ce qu'un système d'information et quel est son rôle dans une organisation ?",
+      "theme": "système d'information",
+      "rubrique": "Système d'information",
+      "definition": "**À retenir** :\n- **Système** : ensemble d'éléments en interaction, organisés pour atteindre un but.\n- **Système d'information (SI)** : ensemble organisé de ressources qui permet de collecter, mémoriser, traiter et diffuser l'information d'une organisation.\n- **Rôle** : fournir à chacun la bonne information au bon moment, relier ceux qui décident à ceux qui exécutent, garder la mémoire de l'activité et aider à la décision.\n- **Ressources** : humaines (utilisateurs, informaticiens), matérielles (ordinateurs, réseau), logicielles, données, procédures.\n- Pour **identifier** les ressources d'un texte, cite les personnes, appareils, logiciels et documents qui y figurent, et classe-les.",
+      "exemple": "**Exemple** : dans une pharmacie, le vendeur (ressource humaine) saisit chaque vente sur un ordinateur (matériel) avec un logiciel de caisse (logiciel). Le gérant lit l'état du stock et décide de la prochaine commande.",
+      "piege": "Un SI ne se réduit pas à des ordinateurs : les personnes et les procédures en font partie. Une ressource demandée « à partir du texte » doit venir du texte.",
+      "exercice": "(d'après le BAC TI 2023) Définis le système d'information et donne son rôle dans une organisation.",
+      "reponse": "C'est l'ensemble organisé de ressources (personnes, matériels, logiciels, données, procédures) qui collecte, stocke, traite et diffuse l'information. Il met à la disposition des acteurs les informations utiles pour réaliser leur travail, se coordonner et décider.",
+      "epreuves": ["TI2018", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment analyser une organisation à partir d'un texte avant de modéliser son SI ?",
+      "theme": "analyse de l'existant",
+      "rubrique": "Système d'information",
+      "definition": "**Quand ?** Le sujet présente une entreprise et demande son activité, les composantes de son système organisationnel ou la façon de recueillir les informations.\n\n**La méthode**\n1. **Activité** : dis ce que fait l'entreprise. **Secteur** : primaire (tirer des ressources de la nature), secondaire (fabriquer, construire), tertiaire (services, commerce).\n2. **Système de pilotage** : il fixe les objectifs et décide.\n3. **Système opérant** : il réalise le travail de production ou de service.\n4. **Système d'information** : il fait circuler et conserve l'information entre les deux et avec l'extérieur.\n5. Range les acteurs du texte selon ce qu'ils font : décider, exécuter, enregistrer et transmettre.\n6. **Collecte des données** : entretien, questionnaire, observation sur le terrain, étude des documents. Dis qui l'on vise et pourquoi.",
+      "exemple": "**Exemple** : pour un hôpital, on fait un entretien avec le directeur, on distribue un questionnaire aux nombreux infirmiers, on observe l'accueil des malades et on étudie les fiches déjà utilisées.",
+      "piege": "« Décrire » une méthode de collecte demande plus que son nom : dis comment elle se déroule et pourquoi elle convient au cas du sujet.",
+      "exercice": "(d'après le BAC TI 2018) SOCOPRO loue des espaces et du matériel. Quelle est son activité et son secteur d'activité ?",
+      "reponse": "Activité : la location d'espaces (salles de fêtes, aires de spectacles) et de matériel (chaises, tables, tentes). Elle rend un service : secteur tertiaire.",
+      "epreuves": ["TI2018", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment présenter un SGBD : sigle, rôle, caractéristiques et exemples ?",
+      "theme": "SGBD",
+      "rubrique": "Bases de données",
+      "definition": "**À retenir** :\n- **SGBD** : Système de Gestion de Bases de Données.\n- **Rôle** : créer la base, y ajouter, modifier, supprimer et chercher des données, et la protéger.\n- **Caractéristiques** : il manipule les données sans que l'utilisateur connaisse leur rangement physique ; il contrôle leur intégrité ; il gère les droits d'accès ; il permet les accès simultanés ; il aide à sauvegarder et à restaurer après une panne.\n- **Relationnel** : les données sont rangées en tables liées par des clés. Exemples : MySQL, PostgreSQL, Oracle, MS Access, SQL Server.\n- **SQL** : langage de requêtes structuré pour dialoguer avec le SGBD.\n- **Environnement d'implantation** : une machine (souvent un serveur) avec son système d'exploitation, un SGBD installé et les postes clients qui y accèdent.",
+      "exemple": "**Exemple** : une mairie installe PostgreSQL sur un serveur. Les agents, depuis leurs postes reliés au réseau, saisissent les actes. Le SGBD refuse deux actes portant le même numéro quand ce numéro est la clé primaire.",
+      "piege": "La base de données n'est pas le SGBD : la base contient les données, le SGBD est le logiciel qui la gère. Un tableur ou un navigateur n'est pas un SGBD relationnel.",
+      "exercice": "(d'après le BAC TI 2022) Dans la liste : MS Excel, MySQL, Chrome, Oracle, PostgreSQL, MS Access, choisis deux SGBD relationnels.",
+      "reponse": "Par exemple MySQL et PostgreSQL. Oracle et MS Access conviennent aussi. MS Excel est un tableur et Chrome un navigateur.",
+      "epreuves": ["TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment écrire en SQL la création d'une table et modifier sa structure ?",
+      "theme": "CREATE TABLE",
+      "rubrique": "SQL",
+      "definition": "**Quand ?** Le sujet donne une table, un schéma ou un dictionnaire de données et demande de la créer ou d'ajouter ou retirer une colonne.\n\n**La méthode**\n1. Base : `CREATE DATABASE nom;`\n2. Table : `CREATE TABLE nom (...);` avec une colonne et son type, séparées par des virgules.\n3. Traduis les types : texte de n caractères, `VARCHAR(n)` ; nombre entier, `INT` ; montant, `DECIMAL` ou `FLOAT` ; date, `DATE`.\n4. Ajoute `PRIMARY KEY` à la clé primaire.\n5. Clé étrangère : `FOREIGN KEY (col) REFERENCES AutreTable(cle)`.\n6. Crée d'abord la table référencée.\n7. Ajouter une colonne : `ALTER TABLE t ADD col TYPE;` (en MySQL, `AFTER autre` fixe sa place).\n8. Retirer une colonne : `ALTER TABLE t DROP COLUMN col;`",
+      "exemple": "**Exemple** :\n`CREATE TABLE Classe (CodeC VARCHAR(5) PRIMARY KEY, Nom VARCHAR(30));`\n`CREATE TABLE Eleve (Mat VARCHAR(8) PRIMARY KEY, CodeC VARCHAR(5),`\n`FOREIGN KEY (CodeC) REFERENCES Classe(CodeC));`",
+      "piege": "La clé étrangère doit avoir le même type que la clé primaire qu'elle reprend. Ne mets pas de virgule après la dernière définition avant la parenthèse fermante.",
+      "exercice": "(d'après le BAC TI 2023) Crée Fournisseur : CodeF (texte 6, clé primaire), NomF (texte 30), Domiciliation (texte 32), CA (numérique), Sexe (texte 1).",
+      "reponse": "`CREATE TABLE Fournisseur (`\n`CodeF VARCHAR(6) PRIMARY KEY,`\n`NomF VARCHAR(30),`\n`Domiciliation VARCHAR(32),`\n`CA DECIMAL(15,2),`\n`Sexe CHAR(1));`",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2024"]
+    },
+    {
+      "terme": "Comment choisir entre INSERT, UPDATE, DELETE et DROP, et classer ces commandes ?",
+      "theme": "LMD",
+      "rubrique": "SQL",
+      "definition": "**Quand ?** Le sujet raconte un changement à faire dans la base, ou demande la différence entre deux commandes.\n\n**La méthode**\n1. **Définition des données** (LDD) : agit sur la structure. `CREATE`, `ALTER`, `DROP`.\n2. **Manipulation des données** (LMD) : agit sur le contenu. `INSERT`, `UPDATE`, `DELETE` ; on y range aussi souvent `SELECT`.\n3. Nouvelle ligne : `INSERT INTO t (c1, c2) VALUES (v1, v2);`\n4. Valeur à corriger : `UPDATE t SET col = valeur WHERE condition;`\n5. Lignes à retirer : `DELETE FROM t WHERE condition;`\n6. `DROP TABLE t;` supprime la table entière, structure comprise. `DELETE` ne retire que des lignes : la table reste.\n7. `BETWEEN a AND b` inclut les deux bornes.\n8. Remise de p % : multiplie le prix par (100 - p) / 100.",
+      "exemple": "**Exemple** : `DELETE FROM Agent WHERE Age BETWEEN 50 AND 60;` supprime les agents de 50 à 60 ans, 50 et 60 compris.\nRemise de 10 % : `UPDATE Article SET Prix = Prix * 0.90 WHERE Code = 'A1';`",
+      "piege": "Sans `WHERE`, `UPDATE` change toutes les lignes et `DELETE` les efface toutes. Si l'identifiant est automatique, nomme les autres colonnes dans `INSERT`.",
+      "exercice": "(d'après le BAC TI 2024) Fais une remise de 5 % sur les plats du client « CL0436 ». On suppose la table `plat(IDplat, nom, description, prix, #IDclient)`.",
+      "reponse": "`UPDATE plat SET prix = prix * 0.95`\n`WHERE IDclient = 'CL0436';`\nUn plat à 3 500 passe à 3 325, car la remise vaut 175.",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2024"]
+    },
+    {
+      "terme": "Comment bâtir une requête de consultation avec filtre, tri ou deux tables ?",
+      "theme": "SELECT",
+      "rubrique": "SQL",
+      "definition": "**Quand ?** Le sujet demande d'« afficher » ou d'« obtenir » des informations.\n\n**La méthode**\n1. `SELECT` : les colonnes demandées, et elles seules (`*` pour toutes).\n2. `FROM` : la ou les tables qui contiennent ces colonnes et celles des conditions.\n3. `WHERE` : les conditions. Texte entre apostrophes, nombre sans.\n4. `AND` si toutes les conditions sont exigées, `OR` si une seule suffit.\n5. Deux tables : ajoute dans `WHERE` la **jointure**, clé étrangère = clé primaire. Préfixe les colonnes (`Client.Num`).\n6. Tri : `ORDER BY col ASC` (croissant, ordre alphabétique) ou `DESC`.\n7. Ordre d'écriture : `SELECT`, `FROM`, `WHERE`, `ORDER BY`.",
+      "exemple": "**Exemple** : titres et auteurs des livres de Douala de plus de 2 000 F, par titre.\n`SELECT Titre, NomA FROM Livre, Auteur`\n`WHERE Livre.CodeA = Auteur.CodeA`\n`AND Ville = 'Douala' AND Prix > 2000`\n`ORDER BY Titre;`",
+      "piege": "Sans la condition de jointure, chaque ligne d'une table est associée à toutes les lignes de l'autre. « Supérieur à » s'écrit `>`, sans la valeur limite.",
+      "exercice": "(d'après le BAC TI 2023) Table `Fournisseur(CodeF, NomF, Domiciliation, CA, Sexe)`. Affiche le nom et le CA des fournisseurs de Yaoundé dont le CA dépasse 40 000 000.",
+      "reponse": "`SELECT NomF, CA FROM Fournisseur`\n`WHERE Domiciliation = 'Yaoundé' AND CA > 40000000;`\nSur la table du sujet : DENGUE (65 000 000) et EBAMINA (50 000 000). AKOK, à 40 000 000 exactement, n'est pas affiché.",
+      "epreuves": ["TI2018", "TI2022", "TI2023", "TI2025"]
+    },
+    {
+      "terme": "Comment choisir entre inclusion, extension et héritage dans un diagramme de cas d'utilisation ?",
+      "theme": "include",
+      "rubrique": "Modélisation",
+      "definition": "**Quand ?** On demande la relation entre deux cas d'utilisation, ou entre deux acteurs.\n\n**La méthode**\n1. **Inclusion** `<<include>>` : le cas de base exécute **obligatoirement** l'autre. Flèche en pointillés du cas de base **vers** le cas inclus.\n2. **Extension** `<<extend>>` : l'autre cas s'ajoute **parfois**, sous condition. Flèche en pointillés du cas qui étend **vers** le cas de base.\n3. **Héritage** entre cas : un cas est une forme particulière d'un autre. Flèche à triangle vide vers le cas général.\n4. Héritage entre acteurs : l'acteur spécialisé fait tout ce que fait l'acteur général, et parfois davantage. Triangle vers le général.\n5. Cherche les indices : « obligatoirement », « avant tout » ; « on peut », « éventuellement » ; « est une sorte de ».",
+      "exemple": "**Exemple** : « tout retrait exige une authentification » : Retirer inclut S'authentifier. « on peut imprimer un reçu » : Imprimer un reçu étend Retirer. « retrait au guichet ou au distributeur » : deux cas qui héritent de Retirer.",
+      "piege": "Les deux flèches en pointillés n'ont pas le même sens : avec include elle part du cas de base, avec extend elle arrive sur le cas de base.",
+      "exercice": "(d'après le BAC TI 2023) « On peut ne pas payer la note au moment de la réservation. Le client distant réserve par Internet, le client local au guichet. » Quelles relations ?",
+      "reponse": "« Payer la note » étend « Réserver la chambre », car le paiement à la réservation est facultatif. « Réserver par Internet » et « Réserver au guichet » héritent de « Réserver la chambre » : ce sont deux façons de réserver.",
+      "epreuves": ["TI2018", "TI2022", "TI2023"]
+    },
+    {
+      "terme": "Comment repérer la clé primaire et la clé qui lie deux tables d'un schéma ?",
+      "theme": "clé étrangère",
+      "rubrique": "Bases de données",
+      "definition": "**Quand ?** Le sujet donne une table ou un schéma relationnel et demande une clé ou le lien entre les tables.\n\n**La méthode**\n1. Une ligne de table s'appelle un **tuple** (ou enregistrement) ; une colonne, un attribut.\n2. **Clé primaire** : attribut, ou groupe d'attributs, qui identifie chaque tuple de façon unique. Valeur jamais vide ni répétée.\n3. Choisis un code ou un matricule plutôt qu'un nom, un âge ou une date, qui peuvent se répéter.\n4. Dans un schéma écrit, la clé primaire est soulignée (souvent écrite en premier).\n5. **Clé étrangère** : attribut qui reprend la clé primaire d'une table liée ; elle est souvent précédée de `#`.\n6. L'attribut qui lie deux tables est cette clé étrangère.\n7. Justifie en disant à quelle clé primaire elle renvoie.",
+      "exemple": "**Exemple** : `Auteur(CodeA, NomA)` et `Livre(Cote, Titre, #CodeA)`.\nClés primaires : CodeA dans Auteur, Cote dans Livre.\nCodeA dans Livre est une clé étrangère : elle renvoie à Auteur et lie les deux tables.",
+      "piege": "Le même nom d'attribut est clé primaire dans une table et clé étrangère dans l'autre : précise toujours la table.",
+      "exercice": "(d'après le BAC TI 2023) `Fournisseur(CodeF, NomF, Domiciliation, CA, Sexe)` et `Produit(CodeBarre, Désignation, Qte, PU, #CodeF)`. Quel attribut lie les deux tables ? Justifie.",
+      "reponse": "CodeF. C'est la clé primaire de Fournisseur, reprise comme clé étrangère dans Produit : elle indique le fournisseur de chaque produit.",
+      "epreuves": ["TI2018", "TI2022", "TI2023"]
+    }
+  ]
+}

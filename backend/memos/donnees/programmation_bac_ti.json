@@ -1,0 +1,157 @@
+{
+  "pays": "CM",
+  "matiere": "PROGRAMMATION",
+  "_commentaire": "13 fiches de Programmation, BAC TI (Cameroun), RÉDIGÉES par l'assistant. À RELIRE par un enseignant avant publication. Une session n'est citée que si une question de l'épreuve demandait cette notion (seuil : 3 sessions ; 5 sujets officiels, 2021-2025). Les codes PHP gardent leurs dollars entre accents graves : hors du code, un dollar ouvrirait une formule.",
+  "epreuves": {
+    "TI2021": "Programmation BAC TI 2021",
+    "TI2022": "Programmation BAC TI 2022",
+    "TI2023": "Programmation BAC TI 2023",
+    "TI2024": "Programmation BAC TI 2024",
+    "TI2025": "Programmation BAC TI 2025"
+  },
+  "notions": [
+    {
+      "terme": "Comment présenter la trace d'exécution d'un programme C ?",
+      "theme": "trace d'exécution",
+      "rubrique": "Algorithmique",
+      "definition": "**Quand ?** Le sujet donne un programme et des valeurs, et demande de l'exécuter pas à pas.\n\n**La méthode**\n1. Note les valeurs saisies et les valeurs de départ des variables.\n2. Prépare un tableau sur ta copie : une colonne par variable, plus une pour le test.\n3. Écris une ligne par tour de boucle ou par appel de fonction.\n4. Évalue la condition avant d'exécuter le bloc ; note vrai ou faux.\n5. Entre deux entiers, `/` donne un quotient entier : (0+3)/2 vaut 1.\n6. Pour une fonction récursive (qui s'appelle elle-même), descends jusqu'au cas d'arrêt, puis remonte en calculant les retours.\n7. Écris le dernier test, celui qui arrête la boucle.\n8. Termine par le résultat affiché.",
+      "exemple": "**Exemple** : `s = 0; i = 1;`\n`while (i <= 3) { s = s + i * i; i++; }`\nTour 1 : s = 1, i = 2. Tour 2 : s = 5, i = 3. Tour 3 : s = 14, i = 4. Le test 4 <= 3 est faux : résultat 14.",
+      "piege": "Utilise toujours la dernière valeur de chaque variable. En récursivité, compte aussi le premier appel fait depuis `main`.",
+      "exercice": "(d'après le BAC TI 2021) `f(a)` retourne 1 si a vaut 1, sinon a fois `f(a-1)`. Trace `f(6)` et compte les appels.",
+      "reponse": "Descente : f(6), f(5), f(4), f(3), f(2), f(1). Retours : f(1) = 1, f(2) = 2, f(3) = 6, f(4) = 24, f(5) = 120, f(6) = 720. La fonction est appelée 6 fois ; elle est récursive.",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Quel est le rôle des bibliothèques et des directives placées en tête d'un programme C ?",
+      "theme": "bibliothèque standard",
+      "rubrique": "Langage C",
+      "definition": "**À retenir** :\n- `#include` insère un fichier d'en-tête avant la compilation : il déclare des fonctions prêtes à l'emploi.\n- `stdio.h` : entrées et sorties standard (`printf`, `scanf`, `puts`).\n- `stdlib.h` : fonctions générales (`exit`, `malloc`, `rand`, `atoi`) et constantes comme `EXIT_SUCCESS`.\n- `math.h` : fonctions mathématiques (`sqrt`, `pow`).\n- `string.h` : chaînes de caractères (`strlen`, `strcpy`, `strcmp`).\n- `#define NOM valeur` : définit une constante symbolique. Le préprocesseur remplace NOM par la valeur avant la compilation.\n- Pour savoir si une bibliothèque est utile, cherche dans le code au moins un élément qu'elle fournit.",
+      "exemple": "**Exemple** : avec `#define N 10`, la ligne `float note[N];` déclare un tableau de 10 réels. Pour passer à 30 notes, on change seulement la ligne du `#define`.",
+      "piege": "Une ligne `#define` ne se termine pas par un point-virgule et ne crée pas de variable. Décrire une bibliothèque, c'est donner son rôle et une fonction utilisée.",
+      "exercice": "(d'après le BAC TI 2025) Un programme inclut `stdio.h`, `stdlib.h` et `string.h`. Il n'utilise que `printf` et `scanf`, des tableaux et des structures. Quelles bibliothèques sont inutiles ?",
+      "reponse": "`stdlib.h` et `string.h` : aucune de leurs fonctions ou constantes n'est employée. `stdio.h` est nécessaire pour `printf` et `scanf`.",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment lire une ligne printf ou scanf : rôle, format et adresse ?",
+      "theme": "scanf",
+      "rubrique": "Langage C",
+      "definition": "**Quand ?** Le sujet demande le rôle d'une ligne de saisie ou d'affichage, ou de la corriger.\n\n**La méthode**\n1. `printf` affiche à l'écran ; `scanf` lit au clavier ; `puts` affiche un texte puis passe à la ligne.\n2. Le premier argument est la chaîne de format ; les suivants sont les valeurs ou les adresses, dans le même ordre.\n3. Formats : `%d` entier `int`, `%u` entier non signé, `%f` réel `float`, `%c` caractère, `%s` chaîne.\n4. Avec `scanf`, mets `&` devant une variable simple : il donne son adresse.\n5. Pour une chaîne (tableau de `char`), pas de `&` : le nom du tableau donne déjà l'adresse.\n6. `\\n` provoque un retour à la ligne, `\\t` une tabulation.\n7. Prévois un format par valeur.",
+      "exemple": "**Exemple** :\n`scanf(\"%d\", &age);` lit un entier et le range à l'adresse de `age`.\n`scanf(\"%s\", nom);` lit un mot dans le tableau `nom`.\n`printf(\"%s : %d ans\\n\", nom, age);` affiche les deux, puis va à la ligne.",
+      "piege": "Oublier `&` devant un `int` ou un `float` dans `scanf` est une erreur. Le compilateur peut seulement la signaler par un avertissement, mais le programme se comporte mal.",
+      "exercice": "(d'après le BAC TI 2023) Donne le rôle de `scanf(\"%d\", &N);` et explique ses paramètres.",
+      "reponse": "La ligne lit au clavier un entier et le range dans N. `\"%d\"` est le format : on attend un entier en base dix. `&N` est l'adresse de la variable N, où `scanf` écrit la valeur lue.",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment distinguer une variable globale, une variable locale et un paramètre ?",
+      "theme": "Portée des variables",
+      "rubrique": "Langage C",
+      "definition": "**Quand ?** Le sujet demande la différence entre deux variables, ou d'en relever une de chaque sorte.\n\n**La méthode**\n1. Regarde l'endroit de la déclaration.\n2. **Globale** : déclarée hors de toutes les fonctions. Elle est utilisable par les fonctions écrites après sa déclaration et existe pendant tout le programme.\n3. **Locale** : déclarée dans une fonction ou un bloc. Elle n'est connue que là. Une locale ordinaire disparaît à la sortie du bloc.\n4. **Paramètre formel** : nom écrit entre les parenthèses de la définition de la fonction. Il se comporte comme une variable locale.\n5. Le **paramètre effectif** est la valeur donnée à l'appel.\n6. En C, le paramètre reçoit une **copie** de cette valeur.",
+      "exemple": "**Exemple** :\n`int total = 0;`\n`void ajouter(int n) {`\n`int double_n = 2 * n;`\n`total = total + double_n; }`\n`total` est globale, `double_n` locale, `n` paramètre formel.",
+      "piege": "Une variable déclarée dans `main` est locale à `main`, pas globale. Modifier un paramètre simple dans la fonction ne change pas la variable de l'appelant.",
+      "exercice": "(d'après le BAC TI 2021) `x` est déclarée avant `main` ; `a` est écrit dans `unsigned int factorielle(unsigned int a)`. Quelle est la différence fondamentale ?",
+      "reponse": "`x` est une variable globale : elle est visible dans les fonctions qui suivent sa déclaration. `a` est un paramètre formel de `factorielle` : il n'existe que dans cette fonction et reçoit une copie de la valeur passée à l'appel.",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment écrire en HTML un formulaire rangé dans un tableau ?",
+      "theme": "Formulaire HTML",
+      "rubrique": "Web et JavaScript",
+      "definition": "**Quand ?** Le sujet montre une interface et demande son code, ou donne un code et demande l'interface.\n\n**La méthode**\n1. Encadre tout par `<form action=\"page.php\" method=\"post\">` et `</form>`.\n2. Tableau : `<table>`, une ligne `<tr>` par rangée, une cellule `<td>` par case.\n3. Texte : `<input type=\"text\" name=\"nom\" id=\"nom\">`. Mot de passe : `type=\"password\"`.\n4. Choix unique : des `type=\"radio\"` avec le même `name`.\n5. Liste : `<select name=\"v\">` avec des `<option value=\"x\">Texte</option>`.\n6. Boutons : `type=\"submit\"` envoie, `type=\"reset\"` efface.\n7. `<fieldset>` encadre un groupe, `<legend>` lui donne un titre.\n8. Ferme les balises dans l'ordre inverse de leur ouverture.",
+      "exemple": "**Exemple** :\n`<form action=\"ajout.php\" method=\"post\">`\n`<table>`\n`<tr><td>Ville :</td><td><input type=\"text\" name=\"ville\"></td></tr>`\n`<tr><td></td><td><input type=\"submit\" value=\"OK\"></td></tr>`\n`</table></form>`",
+      "piege": "Sans attribut `name`, la valeur d'un champ n'est pas envoyée au serveur. L'attribut `id` sert à retrouver le champ en JavaScript.",
+      "exercice": "(d'après le BAC TI 2024) Écris les deux champs d'un formulaire envoyé en GET à connecter.php : nom d'utilisateur (`login`) et mot de passe (`pwd`).",
+      "reponse": "`<form action=\"connecter.php\" method=\"get\">`\n`Nom : <input type=\"text\" id=\"login\" name=\"login\"><br>`\n`Passe : <input type=\"password\" id=\"pwd\" name=\"pwd\"><br>`\n`<input type=\"submit\" value=\"Connexion\">`\n`</form>`",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment contrôler la saisie d'un formulaire en JavaScript ?",
+      "theme": "Validation de formulaire",
+      "rubrique": "Web et JavaScript",
+      "definition": "**Quand ?** Le sujet demande de vérifier un champ avant l'envoi et d'afficher un message.\n\n**La méthode**\n1. Écris la fonction dans `<script>` et `</script>`.\n2. Lis le champ : `var v = document.getElementById(\"id\").value;`\n3. Champ vide : teste `v.trim() == \"\"`.\n4. Longueur exacte : `v.length != 9`. Nombre entier : `Number.isInteger(Number(v))`, après avoir écarté le vide.\n5. Si la saisie est fausse : `alert(\"message\");` puis `return false;`.\n6. À la fin : `return true;`.\n7. Branche-la sur le formulaire : `onsubmit=\"return verif();\"`. L'événement `onclick` d'un bouton s'écrit de même avec `return`.\n8. JavaScript s'exécute dans le navigateur, sans attendre le serveur.",
+      "exemple": "**Exemple**, code entier :\n`function verif() {`\n`var c = document.getElementById(\"code\").value;`\n`if (c.trim() == \"\" || !Number.isInteger(Number(c))) {`\n`alert(\"code incorrect\"); return false; }`\n`return true; }`",
+      "piege": "Sans `return` dans `onsubmit` ou `onclick`, le formulaire part même si la fonction retourne `false`. Compare avec `==`, pas avec `=`.",
+      "exercice": "(d'après le BAC TI 2023) Écris la fonction `verification()` qui contrôle que le champ d'identifiant `Tel` contient 9 caractères.",
+      "reponse": "`function verification() {`\n`var t = document.getElementById(\"Tel\").value;`\n`if (t.length != 9) {`\n`alert(\"Le numéro doit contenir 9 caractères\");`\n`return false; }`\n`return true; }`\nAppel : `onsubmit=\"return verification();\"`",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Quels sont les composants d'un environnement de développement web comme WAMP ?",
+      "theme": "WAMP",
+      "rubrique": "Web et JavaScript",
+      "definition": "**À retenir** :\n- **Environnement de développement web** : ensemble de logiciels qui permet de créer et de tester un site dynamique sur son ordinateur.\n- **Serveur web** (Apache) : reçoit les requêtes HTTP du navigateur et renvoie les pages.\n- **Préprocesseur** (PHP) : exécute les scripts côté serveur et produit du code HTML.\n- **Serveur de données** (MySQL ou MariaDB) : stocke les données et répond aux requêtes SQL.\n- **Exemples** : WAMP (Windows), XAMPP, LAMP (Linux), MAMP, EasyPHP.\n- **Répertoire racine** : dossier où l'on place les fichiers du site pour que le serveur web les publie (`www` pour WAMP, `htdocs` pour XAMPP).\n- On teste en local avec `http://localhost/` ou l'adresse 127.0.0.1.",
+      "exemple": "**Exemple** : avec XAMPP, on enregistre `test.php` dans `htdocs/ecole/`, puis on ouvre `http://localhost/ecole/test.php`. Apache reçoit la demande, PHP exécute le script et le navigateur affiche le résultat.",
+      "piege": "Ouvrir un fichier PHP par un double clic ne l'exécute pas : il faut passer par le serveur, avec une adresse qui commence par `http://localhost`.",
+      "exercice": "(d'après le BAC TI 2024) Cite deux environnements intégrés de développement web, puis leurs trois composants essentiels.",
+      "reponse": "WAMP et XAMPP. Composants : un serveur web (Apache), un serveur de données (MySQL ou MariaDB) et l'interpréteur du langage côté serveur (PHP).",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment récupérer en PHP les données d'un formulaire envoyé en GET ou en POST ?",
+      "theme": "Méthodes GET/POST",
+      "rubrique": "Web et JavaScript",
+      "definition": "**Quand ?** Le sujet demande de lire les champs ou de comparer les deux méthodes.\n\n**La méthode**\n1. Lis l'attribut `method` de `<form>`.\n2. Avec `get`, utilise le tableau `$_GET` ; avec `post`, `$_POST`. Ce sont des variables superglobales, accessibles partout.\n3. L'indice est l'attribut `name` du champ : `$ville = $_POST['ville'];`\n4. Teste la présence : `isset($_POST['ville'])` ; une valeur non vide : `!empty(...)`.\n5. **GET** : données visibles dans l'adresse, gardées dans l'historique, taille limitée.\n6. **POST** : données dans le corps de la requête, absentes de l'adresse, adaptées aux gros envois.",
+      "exemple": "**Exemple** : champ `name=\"age\"`, formulaire en POST.\n`if (!empty($_POST['age'])) {`\n`$age = intval($_POST['age']);`\n`echo $age; }`",
+      "piege": "POST ne chiffre pas les données : sans HTTPS, elles restent lisibles sur le réseau. N'envoie jamais un mot de passe en GET sur un vrai site.",
+      "exercice": "(d'après le BAC TI 2025) Un formulaire en `method=\"get\"` a les champs `faute` et `matricule`. Récupère-les et donne un risque de cette méthode.",
+      "reponse": "`$faute = $_GET['faute'];`\n`$matricule = $_GET['matricule'];`\nRisque : les valeurs apparaissent dans l'adresse. On peut les lire (historique, écran) ou les modifier à la main.",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment relier PHP à une base MySQL et lire le résultat d'une requête ?",
+      "theme": "mysqli",
+      "rubrique": "Web et JavaScript",
+      "definition": "**La méthode**\n1. Connexion : `$c = mysqli_connect(serveur, utilisateur, motDePasse, base);` (ou `new mysqli(...)`, même ordre).\n2. Choisir la base après coup : `mysqli_select_db($c, \"base\");`\n3. Exécuter : `$r = mysqli_query($c, $req);` ou `$c->query($req)`.\n4. Lire une ligne : `mysqli_fetch_assoc($r)` donne un tableau indicé par les noms de colonnes ; `fetch_row()`, par les numéros 0, 1, 2.\n5. `num_rows` : nombre de lignes ; `field_count` : nombre de colonnes ; `fetch_fields()` : description des colonnes ; `insert_id` : dernier identifiant automatique créé.\n6. Fermer : `$r->close();` libère le résultat, `mysqli_close($c);` ferme la connexion.",
+      "exemple": "**Exemple** :\n`$r = mysqli_query($c, \"SELECT nom FROM eleve\");`\n`while ($ligne = mysqli_fetch_assoc($r)) {`\n`echo $ligne['nom']; }`\nLa boucle s'arrête quand il n'y a plus de ligne.",
+      "piege": "Une valeur saisie, collée telle quelle dans la requête, permet une injection SQL : protège-la (requête préparée ou `mysqli_real_escape_string`).",
+      "exercice": "(d'après le BAC TI 2024) Connecte-toi à localhost (utilisateur root, mot de passe 1234), puis choisis la base BD_USERS.",
+      "reponse": "`$c = mysqli_connect(\"localhost\", \"root\", \"1234\");`\n`if (!$c) { die(\"Echec de connexion\"); }`\n`mysqli_select_db($c, \"BD_USERS\");`",
+      "epreuves": ["TI2021", "TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment utiliser un tableau et une structure en C ?",
+      "theme": "tableau de structures",
+      "rubrique": "Structures de données",
+      "definition": "**À retenir** :\n- **Tableau** : suite d'éléments **de même type**, repérés par un indice qui commence à 0. `int t[50];` a les cases `t[0]` à `t[49]`.\n- **Structure** : regroupe des champs qui peuvent être de **types différents**, repérés par leur nom.\n- Définition : `struct point { float x; float y; };`\n- Variable : `struct point p;`\n- `typedef struct { float x; float y; } Point;` permet d'écrire ensuite `Point p;`.\n- Accès à un champ : `p.x`.\n- **Tableau de structures** : `struct point liste[4];` réserve 4 points. Le champ x du deuxième s'écrit `liste[1].x`.\n- Une boucle `for` sur l'indice permet de saisir ou de parcourir tous les éléments.",
+      "exemple": "**Exemple** :\n`struct article { char nom[20]; int qte; };`\n`struct article stock[3];`\n`stock[0].qte = 8;`\n`scanf(\"%d\", &stock[1].qte);`\n`stock` est un tableau de 3 structures.",
+      "piege": "L'indice se place après le nom du tableau, avant le point : `stock[2].qte`. Dans un tableau de taille N, l'indice N n'existe pas.",
+      "exercice": "(d'après le BAC TI 2024) Définis le type `complexe` : une partie réelle et une partie imaginaire, toutes deux réelles. Les champs se nomment `reel` et `imaginaire`.",
+      "reponse": "`typedef struct {`\n`float reel;`\n`float imaginaire;`\n`} complexe;`\nOn déclare ensuite un tableau par `complexe z[5];`.",
+      "epreuves": ["TI2022", "TI2023", "TI2024", "TI2025"]
+    },
+    {
+      "terme": "Comment convertir en C ou en PHP une boucle for, while ou do while ?",
+      "theme": "Équivalence for/while",
+      "rubrique": "Algorithmique",
+      "definition": "**Quand ?** Le sujet demande de réécrire un bloc de code avec une autre boucle.\n\n**La méthode**\n1. Dans `for (init; test; pas)`, repère les trois parties.\n2. Vers `while` : écris `init;` avant la boucle, puis `while (test) {`, le corps, et `pas;` en dernière instruction.\n3. Vers `do while` : `do {`, le corps, puis `} while (test);` avec un point-virgule.\n4. La condition reste la **même** entre `while` et `do while` : on continue tant qu'elle est vraie.\n5. `do while` exécute le corps au moins une fois. Si la condition peut être fausse au départ, entoure-le d'un `if (test)`.\n6. Avec des boucles imbriquées, réinitialise le compteur intérieur à chaque tour extérieur.\n7. Avec `break`, la sortie de boucle reste possible.",
+      "exemple": "**Exemple** : `for (i = 0; i < 5; i++) { printf(\"%d\", i); }` devient :\n`i = 0;`\n`while (i < 5) {`\n`printf(\"%d\", i);`\n`i++; }`",
+      "piege": "Oublier le pas crée une boucle sans fin. Mettre l'initialisation du compteur à l'intérieur de la boucle aussi.",
+      "exercice": "(d'après le BAC TI 2023) Réécris avec `do ... while` :\n`while ((INF <= SUP) && (POS == -1)) { chercher(); }`\nIci, `chercher();` représente le corps de la boucle.",
+      "reponse": "`if ((INF <= SUP) && (POS == -1)) {`\n`do { chercher(); }`\n`while ((INF <= SUP) && (POS == -1)); }`\nPour un tableau non vide, la condition est vraie au départ ; le `if` protège le cas d'un tableau vide.",
+      "epreuves": ["TI2022", "TI2023", "TI2025"]
+    },
+    {
+      "terme": "Comment écrire et reconnaître une fonction en C : prototype, appel et retour ?",
+      "theme": "prototype de fonction",
+      "rubrique": "Langage C",
+      "definition": "**Quand ?** On demande le rôle d'une ligne, un prototype, ou le code d'une fonction ou d'une procédure.\n\n**La méthode**\n1. **Prototype** : `type nom(types des paramètres);` Il annonce la fonction au compilateur avant son utilisation.\n2. Place-le après les `#include` et les types, avant `main`.\n3. **Définition** : l'en-tête sans point-virgule, suivi du corps entre accolades.\n4. **Appel** : `r = nom(valeurs);`\n5. `return v;` termine la fonction et renvoie v à l'appelant. Dans `main`, `return 0;` signale une fin normale.\n6. Une **procédure** est en C une fonction de type `void` : elle ne renvoie aucune valeur.\n7. Pour modifier des variables de l'appelant, passe leurs adresses : paramètres pointeurs (`int *a`) et appel avec `&`.",
+      "exemple": "**Exemple** :\n`void echanger(int *a, int *b) {`\n`int t = *a;`\n`*a = *b;`\n`*b = t; }`\nAppel : `echanger(&x, &y);` Si x = 2 et y = 7, on obtient x = 7 et y = 2.",
+      "piege": "Avec `void echanger(int a, int b)`, seules des copies sont échangées : les variables de départ ne changent pas.",
+      "exercice": "(d'après le BAC TI 2024) Le type `complexe` est défini. Écris la procédure `permuter` qui échange réellement deux complexes, et son appel sur `z[tmp]` et `z[taille]`.",
+      "reponse": "`void permuter(complexe *a, complexe *b) {`\n`complexe t = *a;`\n`*a = *b;`\n`*b = t; }`\nAppel : `permuter(&z[tmp], &z[taille]);`\nLes adresses sont nécessaires pour modifier le tableau.",
+      "epreuves": ["TI2021", "TI2022", "TI2024"]
+    },
+    {
+      "terme": "Comment reconnaître une recherche dichotomique ou un tri par sélection ?",
+      "theme": "tri par sélection",
+      "rubrique": "Structures de données",
+      "definition": "**Quand ?** Le sujet demande ce que fait un programme sur un tableau, ou le résultat après un bloc de code.\n\n**La méthode**\n1. **Recherche dichotomique** : bornes `inf` et `sup`, milieu `(inf+sup)/2`, puis on garde une seule moitié (`sup = mil-1` ou `inf = mil+1`).\n2. Elle donne la position d'une valeur, et exige un tableau **déjà trié**.\n3. **Tri par sélection** : une boucle repère l'indice du plus petit (ou du plus grand) élément restant, puis un échange le met à sa place.\n4. Pour connaître l'ordre : lis le test et l'endroit où l'élément est placé. Le plus petit mis au début, ou le plus grand mis à la fin, donne un ordre croissant.\n5. Dans la réponse, dis sur quel critère on trie ou cherche.\n6. Un échange demande une variable temporaire.",
+      "exemple": "**Exemple** : tri de 9, 2, 5 en plaçant le plus petit au début.\nPassage 1 : le plus petit est 2, on l'échange avec 9 : 2, 9, 5.\nPassage 2 : le plus petit du reste est 5 : 2, 5, 9.",
+      "piege": "Sur un tableau non trié, la dichotomie peut conclure qu'une valeur est absente alors qu'elle est présente.",
+      "exercice": "(d'après le BAC TI 2025) Trois élèves : TE1 (8,50), TE2 (13), TE3 (4). On les trie par sélection, moyennes croissantes, avec un échange correct. Donne l'ordre obtenu.",
+      "reponse": "Passage 1 : la plus petite moyenne est 4 ; TE3 et TE1 s'échangent : TE3, TE2, TE1. Passage 2 : entre 13 et 8,50, c'est 8,50 : TE3, TE1, TE2. Résultat : 4 ; 8,50 ; 13. Chaque élève garde sa moyenne.",
+      "epreuves": ["TI2023", "TI2024", "TI2025"]
+    }
+  ]
+}
