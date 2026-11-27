@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             name="ussd_template",
             field=models.CharField(
                 blank=True,
-                help_text="Facultatif. Séquence de paiement marchand recopiée du kit de l'opérateur, avec {code} et {montant} à la place du code marchand et du montant, par exemple #150*47*{code}*{montant}# (à vérifier). Vide : l'élève ouvre le menu de l'opérateur et saisit le code lui-même.",
+                help_text="Facultatif. Séquence de paiement marchand recopiée du kit de l'opérateur, avec {code} et {montant} à la place du code marchand et du montant. MTN (page officielle mtn.cm) : *126*4*{code}*{montant}#. Orange : séquence non confirmée, laisser vide tant que le kit d'Orange ne la donne pas. Vide : l'élève ouvre le menu de l'opérateur et saisit le code lui-même.",
                 max_length=60,
                 validators=[payments.models.sequence_ussd_validator],
                 verbose_name="séquence USSD",
