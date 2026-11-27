@@ -52,7 +52,7 @@ class ComposerTests(BilanParentTestCase):
         self.seance(user, 3, ordre=2)
         JourXP.objects.create(profil=user.profils.first(), jour=DIMANCHE.date() - timedelta(days=1), xp=40, objectif=20, atteint=True)
 
-        sujet, corps = bilan_parent.composer_bilan_parent(user, DIMANCHE)
+        sujet, corps, _html = bilan_parent.composer_bilan_parent(user, DIMANCHE)
 
         self.assertEqual(sujet, "Bilan de la semaine de Awa")
         self.assertIn("2 jours de révision sur 7", corps)
@@ -64,7 +64,7 @@ class ComposerTests(BilanParentTestCase):
     def test_une_semaine_sans_revision_est_dite_simplement(self):
         user = self.parent()
         self.activer_abonnement_a(user)
-        _, corps = bilan_parent.composer_bilan_parent(user, DIMANCHE)
+        _, corps, _html = bilan_parent.composer_bilan_parent(user, DIMANCHE)
         self.assertIn("n'a pas révisé cette semaine", corps)
         self.assertIn("25 minutes", corps)
         self.assertNotIn("jours de révision sur 7", corps)
@@ -78,7 +78,7 @@ class ComposerTests(BilanParentTestCase):
             user=user, profil=second, cursus=self.cursus,
             created_at=DIMANCHE - timedelta(days=60), expires_at=DIMANCHE + timedelta(days=30),
         )
-        sujet, corps = bilan_parent.composer_bilan_parent(user, DIMANCHE)
+        sujet, corps, _html = bilan_parent.composer_bilan_parent(user, DIMANCHE)
         self.assertEqual(sujet, "Bilan de la semaine de tes enfants")
         self.assertIn("■ Junior", corps)
         self.assertIn("Junior n'a pas révisé", corps)
@@ -95,7 +95,7 @@ class ComposerTests(BilanParentTestCase):
             "themes_consolides": [{"theme": "Suites", "subject_label": "Maths"}], "xp": 0, "serie": 4,
         }
         with mock.patch("relances.bilan_parent.bilan_du_profil", return_value=bilan):
-            _, corps = bilan_parent.composer_bilan_parent(user, DIMANCHE)
+            _, corps, _html = bilan_parent.composer_bilan_parent(user, DIMANCHE)
         self.assertIn("Thèmes devenus solides : Suites (Maths).", corps)
         self.assertIn("Série en cours : 4 jours de suite.", corps)
         self.assertIn("20 questions (80 % de réussite)", corps)
@@ -110,6 +110,8 @@ class EnvoiTests(BilanParentTestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, [user.email])
         self.assertTrue(RelanceEnvoyee.objects.filter(type=TypeRelance.BILAN_PARENT, reference="2026-W39").exists())
+        html = self.assert_aux_couleurs(mail.outbox[0], bilan_parent.lien_desabonnement_bilan(user))
+        self.assertIn("Le bilan de la semaine", html)
 
     def test_la_semaine_suivante_il_repart(self):
         user = self.parent()

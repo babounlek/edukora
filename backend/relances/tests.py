@@ -6,6 +6,7 @@ from unittest import mock
 from django.core import mail
 from django.test import TestCase
 from django.utils import timezone
+from django.utils.html import escape
 
 from catalog.models import Cursus
 from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
@@ -39,6 +40,18 @@ class RelancesTestCase(TestCase):
                 expires_at=self.maintenant + timedelta(days=30),
             )
         return user
+
+    def assert_aux_couleurs(self, message, *liens):
+        """Le message part avec sa version HTML au gabarit commun (voir edtech_cm.courriel) : logo, liens, contact."""
+        html, type_mime = message.alternatives[0]
+        self.assertEqual(type_mime, "text/html")
+        self.assertIn(f'src="{services.settings.FRONTEND_URL}/pwa-192.png"', html)
+        self.assertIn(f"mailto:{services.settings.SUPPORT_EMAIL}", html)
+        self.assertEqual(message.reply_to, [services.settings.SUPPORT_EMAIL])
+        for lien in liens:
+            self.assertIn(escape(lien), html)
+            self.assertIn(lien, message.body)
+        return html
 
     def transaction(self, user, statut, age):
         transaction = Transaction.objects.create(
@@ -168,6 +181,51 @@ class RelancePaiementTests(RelancesTestCase):
             {TypeRelance.PAIEMENT_ABANDONNE_1, TypeRelance.PAIEMENT_ABANDONNE_2},
         )
         self.assertEqual(RelanceEnvoyee.objects.filter(reference=str(transaction.pk)).count(), 2)
+
+    def test_les_deux_messages_sont_aux_couleurs_d_edukora(self):
+        user = self.eleve(abonne=False, rappels=False)
+        self.transaction(user, StatutTransaction.FAILED, timedelta(hours=3))
+
+        services.envoyer_relances_paiement(self.maintenant)
+        services.envoyer_relances_paiement(self.maintenant + timedelta(hours=80))
+
+        lien = f"{services.settings.FRONTEND_URL}/abonnement?cursus={self.plan.cursus_id}"
+        for message in mail.outbox:
+            html = self.assert_aux_couleurs(message, lien)
+            self.assertIn("Reprendre mon paiement", html)
+            self.assertIn("5 000 FCFA", message.body)
+            self.assertIn("5 000 FCFA", html)
+        self.assertEqual(len(mail.outbox), 2)
+
+    def test_le_dernier_message_ne_promet_plus_l_acces_jusqu_a_l_examen(self):
+        # L'abonnement se paie au mois depuis le 11 novembre 2026 : un paiement d'un mois n'ouvre pas l'accès jusqu'à
+        # l'examen.
+        user = self.eleve(abonne=False, rappels=False)
+        transaction = self.transaction(user, StatutTransaction.FAILED, timedelta(hours=80))
+
+        sujet, corps, html = services.composer_relance_paiement(user, transaction, 2)
+
+        self.assertEqual(sujet, "Ton accès t'attend toujours")
+        for texte in (corps, html):
+            self.assertNotIn("jusqu'à ton examen", texte)
+            self.assertNotIn("jusqu&#x27;à ton examen", texte)
+            self.assertIn("tu choisis le nombre de mois", texte)
+        self.assertIn("C'est notre dernier message à ce sujet.", corps)
+
+    def test_en_anglais_pour_un_compte_en_anglais(self):
+        user = self.eleve(abonne=False, rappels=False)
+        User.objects.filter(pk=user.pk).update(langue="en")
+        user.refresh_from_db()
+        transaction = self.transaction(user, StatutTransaction.FAILED, timedelta(hours=3))
+
+        sujet, corps, html = services.composer_relance_paiement(user, transaction, 1)
+
+        self.assertEqual(sujet, "Your payment did not go through")
+        self.assertIn("Hello Awa,", corps)
+        self.assertIn("Your payment of 5 000 FCFA", corps)
+        self.assertIn("Resume my payment", html)
+        self.assertIn('lang="en"', html)
+        self.assertNotIn("Bonjour", corps)
 
     def test_pas_de_relance_trop_tot(self):
         user = self.eleve(abonne=False, rappels=False)

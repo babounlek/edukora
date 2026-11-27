@@ -2,13 +2,15 @@ import logging
 import re
 import uuid
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.core.validators import RegexValidator
 from django.db import connection, models
 from django.db import transaction as db_transaction
 from django.utils import timezone
 
+from edtech_cm import courriel
 from subscriptions.models import (
     Campagne,
     InscriptionInedite,
@@ -280,6 +282,7 @@ class Transaction(models.Model):
             self.user,
             f"Edukora : {montant}. Ton accès « {_libelle_achat(self.plan, self.mois)} » est actif.",
             numero_payeur=self.phone_number,
+            titre="Ton accès est actif", bouton=("Commencer à réviser", settings.FRONTEND_URL),
         )
         return self
 
@@ -399,7 +402,20 @@ def _notifier_utilisateur(phone_number, message):
     get_sms_backend().send(phone_number, message)
 
 
-def _prevenir_du_paiement(user, message, *, numero_payeur=""):
+def _courriel_de_paiement(user, message, *, titre, bouton=None):
+    """Le reçu par e-mail : le texte du SMS, sans son préfixe « Edukora : » (le bandeau porte déjà le nom), dans le
+    gabarit commun (voir edtech_cm.courriel)."""
+    texte = message.removeprefix("Edukora : ")
+    texte = texte[:1].upper() + texte[1:]
+    texte = re.sub(r"\b(\d{4,}) FCFA", lambda m: f"{courriel.montant_fcfa(m.group(1))} FCFA", texte)
+    return courriel.Courriel(
+        courriel.FR, salutation=courriel.salutation(user), titre=titre, apercu=texte,
+        bouton=bouton or (f"Ouvrir {settings.SITE_NAME}", settings.FRONTEND_URL),
+        raison=f"Tu reçois ce message pour suivre un paiement fait depuis ton compte {settings.SITE_NAME}.",
+    ).paragraphe(texte)
+
+
+def _prevenir_du_paiement(user, message, *, numero_payeur="", titre="Ton paiement", bouton=None):
     """
     Prévient le payeur d'une étape de son paiement (déclaration reçue, validée, rejetée, paiement confirmé).
 
@@ -419,9 +435,13 @@ def _prevenir_du_paiement(user, message, *, numero_payeur=""):
             logger.exception("SMS de paiement non envoyé au compte %s", user.pk)
     if user.email and getattr(user, "email_verified", False):
         try:
-            send_mail(
-                "Ton paiement EduKora", message, None, [user.email], fail_silently=False,
+            recu = _courriel_de_paiement(user, message, titre=titre, bouton=bouton)
+            email = EmailMultiAlternatives(
+                f"Ton paiement {settings.SITE_NAME}", recu.texte(), None, [user.email],
+                reply_to=[settings.SUPPORT_EMAIL],
             )
+            email.attach_alternative(recu.html(), "text/html")
+            email.send(fail_silently=False)
         except Exception:
             logger.exception("E-mail de paiement non envoyé au compte %s", user.pk)
 
@@ -456,6 +476,7 @@ class ManualPaymentManager(models.Manager):
             f"Edukora : ta déclaration de paiement de {payment.amount_declared} FCFA ({_libelle_achat(plan, mois)}) "
             "a bien été enregistrée. Elle est en cours de vérification par notre équipe.",
             numero_payeur=payment.payer_phone_number,
+            titre="Déclaration de paiement reçue",
         )
         return payment
 
@@ -609,6 +630,7 @@ class ManualPayment(models.Model):
             f"Edukora : ton paiement de {locked.amount_declared} FCFA est validé ! "
             f"Ton accès « {_libelle_achat(locked.plan, locked.mois)} » est actif.",
             numero_payeur=locked.payer_phone_number,
+            titre="Ton paiement est validé", bouton=("Commencer à réviser", settings.FRONTEND_URL),
         )
         return locked
 
@@ -638,5 +660,9 @@ class ManualPayment(models.Model):
             f"a été rejeté ({locked.get_rejection_reason_display()}). "
             "Tu peux déclarer un nouveau paiement.",
             numero_payeur=locked.payer_phone_number,
+            titre="Paiement non validé",
+            bouton=(
+                "Déclarer un nouveau paiement", f"{settings.FRONTEND_URL}/abonnement?cursus={locked.plan.cursus_id}",
+            ),
         )
         return locked

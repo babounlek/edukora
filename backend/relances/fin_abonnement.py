@@ -26,6 +26,7 @@ from django.conf import settings
 from django.utils import timezone
 
 from catalog.models import ExamSession
+from edtech_cm import courriel
 from payments.models import ManualPayment, ManualPaymentStatus
 from quiz import textes
 from quiz.models import SeanceJournaliere, StatutSeance
@@ -65,8 +66,8 @@ def reference_de(abonnement):
 
 
 def composer_relance_fin_abonnement(abonnement, type_):
-    """(sujet, corps) en texte brut, dans la langue du compte. Les seuls faits cités sont en base : la date de fin, l'examen,
-    le prénom du profil, le nombre de séances terminées."""
+    """(sujet, corps, html) dans la langue du compte. Les seuls faits cités sont en base : la date de fin, l'examen, le
+    prénom du profil, le nombre de séances terminées."""
     user, profil, cursus = abonnement.user, abonnement.profil, abonnement.cursus
     langue = langue_du_compte(user)
     anglais = langue == textes.EN
@@ -86,27 +87,29 @@ def composer_relance_fin_abonnement(abonnement, type_):
             f"{qui} to {settings.SITE_NAME} ({cursus}) ends today, {date}." if dernier
             else f"{qui} to {settings.SITE_NAME} ({cursus}) ends on {date}."
         )
-        lignes = [_salutation(user, langue), "", echeance]
+        message = courriel.Courriel(
+            langue, salutation=_salutation(user, langue),
+            titre="The access is coming to an end" if not dernier else "The last day of the access",
+            apercu=echeance, bouton=("Extend the access", lien),
+            raison=f"You receive this message because you hold {settings.SITE_NAME} access.",
+        )
+        message.paragraphe(echeance, gras=date)
         if seances:
-            lignes.append(
+            message.paragraphe(
                 f"{seances} session{'s' if seances > 1 else ''} completed so far. Progress, revision topics and mistakes "
                 "to redo are kept, and are there again as soon as the access is extended."
             )
-        lignes += [
-            "",
-            f"Extend the access: {lien}",
+        message.apres_bouton += [
             "You choose the number of months and pay by Mobile Money (Orange Money or MTN MoMo).",
-            "",
             "Nothing is charged automatically: if you do nothing, the access simply stops on that date.",
         ]
         if dernier:
-            lignes.append("This is our last message about it.")
-        lignes += ["", "A question? Just reply to this message."]
+            message.apres_bouton.append("This is our last message about it.")
         sujet = (
             f"Last day of your {settings.SITE_NAME} access" if dernier
             else f"Your {settings.SITE_NAME} access ends on {date}"
         )
-        return sujet, "\n".join(lignes)
+        return sujet, message.texte(), message.html()
 
     # « d'Awa », « de Guyguy ».
     de = "d'" if prenom[:1].casefold() in "aeiouyhàâéèêëîïôöùûü" else "de "
@@ -115,27 +118,29 @@ def composer_relance_fin_abonnement(abonnement, type_):
         f"{qui} à {settings.SITE_NAME} ({cursus}) se termine aujourd'hui, le {date}." if dernier
         else f"{qui} à {settings.SITE_NAME} ({cursus}) se termine le {date}."
     )
-    lignes = [_salutation(user, langue), "", echeance]
+    message = courriel.Courriel(
+        langue, salutation=_salutation(user, langue),
+        titre="L'accès arrive à son terme" if not dernier else "Le dernier jour de l'accès",
+        apercu=echeance, bouton=("Prolonger l'accès", lien),
+        raison=f"Tu reçois ce message parce que tu as un accès {settings.SITE_NAME}.",
+    )
+    message.paragraphe(echeance, gras=date)
     if seances:
-        lignes.append(
+        message.paragraphe(
             f"{seances} séance{'s' if seances > 1 else ''} terminée{'s' if seances > 1 else ''} jusqu'ici. La progression, "
             "les thèmes en révision et les erreurs à refaire sont gardés, et reviennent dès que l'accès est prolongé."
         )
-    lignes += [
-        "",
-        f"Prolonger l'accès : {lien}",
+    message.apres_bouton += [
         "Tu choisis le nombre de mois et tu paies par Mobile Money (Orange Money ou MTN MoMo).",
-        "",
         "Rien n'est prélevé automatiquement : sans action de ta part, l'accès s'arrête simplement à cette date.",
     ]
     if dernier:
-        lignes.append("C'est notre dernier message à ce sujet.")
-    lignes += ["", "Une question ? Réponds simplement à ce message."]
+        message.apres_bouton.append("C'est notre dernier message à ce sujet.")
     sujet = (
         f"Dernier jour de ton accès {settings.SITE_NAME}" if dernier
         else f"Ton accès {settings.SITE_NAME} se termine le {date}"
     )
-    return sujet, "\n".join(lignes)
+    return sujet, message.texte(), message.html()
 
 
 def _examen_passe(cursus):
@@ -200,11 +205,11 @@ def envoyer_relances_fin_abonnement(maintenant=None, *, dry_run=False):
             continue
         user = abonnement.user
         try:
-            sujet, corps = composer_relance_fin_abonnement(abonnement, type_)
+            message = composer_relance_fin_abonnement(abonnement, type_)
             if not _tracer(user, type_, reference):
                 continue
             try:
-                _envoyer_email(user, sujet, corps)
+                _envoyer_email(user, *message)
             except Exception:
                 # Un envoi raté ne doit pas rester marqué « fait » : le tour suivant le retentera, dans sa fenêtre.
                 RelanceEnvoyee.objects.filter(user=user, type=type_, reference=reference).delete()

@@ -15,9 +15,9 @@ seulement pour l'instant.
 import logging
 
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.utils import timezone
 
+from edtech_cm import courriel
 from quiz import textes
 from quiz.services import revisions_dues
 from users.models import User
@@ -39,86 +39,56 @@ FENETRES = (
 _TEXTES = {
     TypeRelance.ABSENCE_1: {
         textes.FR: {
-            "lang": "fr",
             "sujet": "On reprend ? 25 minutes suffisent",
-            "slogan": "Réussis ton examen",
             "titre": "On reprend où tu en étais",
             "intro": "Deux jours sans séance : rien de grave. Une séance d'environ 25 minutes suffit pour reprendre le fil, "
                      "et ta progression est gardée.",
-            "intro_avant": "Deux jours sans séance : rien de grave. Une séance d'environ",
-            "intro_duree": "25 minutes",
-            "intro_apres": " suffit pour reprendre le fil, et ta progression est gardée.",
             "apercu": "Deux jours sans séance : rien de grave, on reprend où tu en étais.",
             "bouton": "Reprendre ma préparation",
-            "secours": "Le bouton ne s'affiche pas ? Copie ce lien dans ton navigateur :",
             "raison": "Tu reçois ce message parce que tu as activé les rappels. Nous ne t'écrirons pas tous les jours "
                       "pendant ton absence.",
             "arret": "Les arrêter en un clic",
-            "question": "Une question ? Réponds simplement à ce message ou écris à",
         },
         textes.EN: {
-            "lang": "en",
             "sujet": "Shall we pick it up again? 25 minutes is enough",
-            "slogan": "Pass your exam",
             "titre": "Pick up where you left off",
             "intro": "Two days without a session: no big deal. One session of about 25 minutes is enough to get back on "
                      "track, and your progress is saved.",
-            "intro_avant": "Two days without a session: no big deal. One session of about",
-            "intro_duree": "25 minutes",
-            "intro_apres": " is enough to get back on track, and your progress is saved.",
             "apercu": "Two days without a session: no big deal, pick up where you left off.",
             "bouton": "Resume my preparation",
-            "secours": "Can't see the button? Copy this link into your browser:",
             "raison": "You receive this message because you turned on reminders. We won't write to you every day while "
                       "you are away.",
             "arret": "Stop them in one click",
-            "question": "A question? Just reply to this message or write to",
         },
     },
     TypeRelance.ABSENCE_2: {
         textes.FR: {
-            "lang": "fr",
             "sujet": "Notre dernier rappel : ta préparation t'attend",
-            "slogan": "Réussis ton examen",
             "titre": "Ta préparation t'attend",
             "intro": "Une semaine sans séance. C'est notre dernier message : nous ne t'écrirons plus tant que tu n'es pas "
                      "revenu. Rien n'est perdu, tu reprends où tu en étais, en environ 25 minutes.",
-            "intro_avant": "Une semaine sans séance. C'est notre dernier message : nous ne t'écrirons plus tant que tu "
-                           "n'es pas revenu. Rien n'est perdu, tu reprends où tu en étais, en environ",
-            "intro_duree": "25 minutes",
-            "intro_apres": ".",
             "apercu": "Notre dernier message : rien n'est perdu, tu reprends où tu en étais.",
             "bouton": "Reprendre ma préparation",
-            "secours": "Le bouton ne s'affiche pas ? Copie ce lien dans ton navigateur :",
             "raison": "Tu reçois ce message parce que tu as activé les rappels. C'est le dernier avant ton retour.",
             "arret": "Les arrêter en un clic",
-            "question": "Une question ? Réponds simplement à ce message ou écris à",
         },
         textes.EN: {
-            "lang": "en",
             "sujet": "Our last reminder: your preparation is waiting",
-            "slogan": "Pass your exam",
             "titre": "Your preparation is waiting",
             "intro": "A week without a session. This is our last message: we won't write again until you come back. "
                      "Nothing is lost, you pick up where you left off, in about 25 minutes.",
-            "intro_avant": "A week without a session. This is our last message: we won't write again until you come "
-                           "back. Nothing is lost, you pick up where you left off, in about",
-            "intro_duree": "25 minutes",
-            "intro_apres": ".",
             "apercu": "Our last message: nothing is lost, you pick up where you left off.",
             "bouton": "Resume my preparation",
-            "secours": "Can't see the button? Copy this link into your browser:",
             "raison": "You receive this message because you turned on reminders. It is the last one until you come back.",
             "arret": "Stop them in one click",
-            "question": "A question? Just reply to this message or write to",
         },
     },
 }
 
 
 def composer_relance_absence(user, type_):
-    """(sujet, corps, html) d'une relance d'absence. Comme le rappel quotidien : rien n'est créé au nom de l'élève, le texte
-    brut est le message de référence et le HTML (même gabarit) en reprend les mêmes faits."""
+    """(sujet, corps, html) d'une relance d'absence. Comme le rappel quotidien : rien n'est créé au nom de l'élève, et le
+    texte brut et le HTML sont tirés du même Courriel (voir edtech_cm.courriel)."""
     profil = user.profils.first()
     cursus = user.cursus_prepare
     langue = langue_du_compte(user)
@@ -138,18 +108,12 @@ def composer_relance_absence(user, type_):
 
     pays = cursus.country.code.lower()
     lien = f"{settings.FRONTEND_URL}/en/{pays}" if anglais else f"{settings.FRONTEND_URL}/{pays}"
-    lien_arret = lien_desabonnement(user)
-    salutation = _salutation(user, langue)
-    texte = [salutation, "", t["intro"], *faits, "", f"{t['bouton']} : {lien}", "", t["raison"], f"{t['arret']} : {lien_arret}"]
-    html = render_to_string(
-        "relances/emails/rappel_seance.html",
-        {
-            "site_name": settings.SITE_NAME, "salutation": salutation, "faits": faits, "lien": lien,
-            "lien_desabonnement": lien_arret, "apercu": t["apercu"], "t": t,
-            "site_url": settings.FRONTEND_URL, "support_email": settings.SUPPORT_EMAIL,
-        },
+    message = courriel.Courriel(
+        langue, salutation=_salutation(user, langue), titre=t["titre"], apercu=t["apercu"],
+        bouton=(t["bouton"], lien), raison=t["raison"], arret=(t["arret"], lien_desabonnement(user)),
     )
-    return t["sujet"], "\n".join(texte), html
+    message.paragraphe(t["intro"], gras="25 minutes").encart(faits)
+    return t["sujet"], message.texte(), message.html()
 
 
 def relances_absence_dues(maintenant=None):

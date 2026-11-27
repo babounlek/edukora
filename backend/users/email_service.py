@@ -13,8 +13,9 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
 from django.utils import timezone
+
+from edtech_cm import courriel
 
 from .erreurs_envoi import (
     CODE_ENVOI_INDISPONIBLE, CODE_RENVOI_TROP_TOT, CODE_TROP_DE_DEMANDES, ErreurEnvoiCode,
@@ -135,29 +136,28 @@ def request_email_code(email, ip_address=None):
     #
     # Texte brut TOUJOURS fourni en alternative (pas seulement le HTML) : certains
     # clients (vieux Outlook, lecteurs d'écran, aperçus de notification) l'affichent en
-    # priorité, ou seul - un message purement HTML y apparaîtrait vide.
-    texte_brut = (
-        f"Ton code de connexion {settings.SITE_NAME} est {code}.\n\n"
+    # priorité, ou seul - un message purement HTML y apparaîtrait vide. Les deux sont tirés
+    # du gabarit commun des e-mails (voir edtech_cm.courriel).
+    validite = (
         f"Il est valable {EMAIL_CODE_VALIDITY_MINUTES} minutes. Si tu n'es pas à "
         f"l'origine de cette demande, ignore ce message."
     )
+    contenu = courriel.Courriel(
+        courriel.FR, titre="Ton code de connexion", question=False,
+        apercu=f"Ton code : {code}. {validite}",
+    )
+    contenu.paragraphe(f"Recopie ce code dans {settings.SITE_NAME} pour te connecter :").code(code).paragraphe(validite)
     try:
         message = EmailMultiAlternatives(
             subject=f"Ton code {settings.SITE_NAME} : {code}",
-            body=texte_brut,
+            body=contenu.texte(),
             from_email=None,  # repli sur settings.DEFAULT_FROM_EMAIL
             to=[email],
             # no-reply@ n'est jamais relevée : une réponse doit atterrir sur une boîte
             # surveillée plutôt que dans le vide.
             reply_to=[settings.SUPPORT_EMAIL],
         )
-        message.attach_alternative(
-            render_to_string(
-                "users/emails/code_connexion.html",
-                {"code": code, "site_name": settings.SITE_NAME, "validity_minutes": EMAIL_CODE_VALIDITY_MINUTES},
-            ),
-            "text/html",
-        )
+        message.attach_alternative(contenu.html(), "text/html")
         message.send()
     except Exception as exc:
         logger.exception("Envoi du code e-mail échoué pour %s", email)

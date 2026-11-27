@@ -142,6 +142,14 @@ class RecuTests(TestCase):
         self.assertIn("2000 FCFA", sms.call_args.args[1])
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, ["parent@example.com"])
+        # Le reçu par e-mail est aux couleurs d'EduKora (voir edtech_cm.courriel), sans le préfixe du SMS.
+        recu = mail.outbox[0]
+        html, type_mime = recu.alternatives[0]
+        self.assertEqual(type_mime, "text/html")
+        self.assertIn("/pwa-192.png", html)
+        self.assertIn("Ton accès est actif", html)
+        self.assertIn("Ton paiement de 2 000 FCFA est confirmé", recu.body)
+        self.assertNotIn("Edukora :", recu.body)
 
     @patch("payments.models._notifier_utilisateur", side_effect=RuntimeError("fournisseur SMS en panne"))
     def test_une_panne_de_sms_ne_fait_pas_echouer_la_declaration(self, _sms):

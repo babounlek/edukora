@@ -117,7 +117,7 @@ class BilanDuParentTests(NotationAPITestCase):
         self.client.post(self.url("noter", self.ouverte), {"points_obtenus": 2}, format="json")
         self.client.post(self.url("completer"))
 
-        _sujet, corps = composer_bilan_parent(self.user)
+        _sujet, corps, _html = composer_bilan_parent(self.user)
 
         self.assertIn("Examens blancs", corps)
         self.assertIn(self.epreuve.titre, corps)

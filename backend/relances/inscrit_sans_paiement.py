@@ -34,6 +34,7 @@ from django.utils import timezone
 
 from analytics.models import AnalyticsEvent, EventName
 from catalog.models import Cursus
+from edtech_cm import courriel
 from quiz import textes
 from subscriptions.models import DureeMode, Plan, ProductType
 from users.models import User
@@ -113,7 +114,7 @@ def prix_du_mois(cursus):
 
 
 def _montant(prix):
-    return f"{prix:,}".replace(",", " ")
+    return courriel.montant_fcfa(prix)
 
 
 def _profil_pour(user, cursus):
@@ -125,95 +126,83 @@ def _profil_pour(user, cursus):
     return profils[0] if profils else None
 
 
+_TEXTES = {
+    textes.FR: {
+        "ouverture_1": "Tu as ouvert la page d'abonnement à {site} ({cursus}) sans aller jusqu'au paiement. Au cas où cela "
+                       "t'aide, voici ce que l'abonnement ouvre :",
+        "ouverture_2": "Il y a quelques jours, tu as ouvert la page d'abonnement à {site} ({cursus}). C'est notre dernier "
+                       "message à ce sujet.",
+        "ouvre": "L'abonnement ouvre :",
+        "contenu": [
+            "les corrigés détaillés des épreuves ;",
+            "les exercices d'application ;",
+            "les quiz ;",
+            "les épreuves inédites.",
+        ],
+        "prix": "Il coûte {montant} FCFA par mois.",
+        "mois": "Tu choisis le nombre de mois et tu paies par Mobile Money (Orange Money ou MTN MoMo).",
+        "sans_prelevement": "Aucun prélèvement automatique : l'accès s'arrête simplement à la fin des mois payés.",
+        "bouton": "Revenir à la page d'abonnement",
+        "raison": "Tu reçois ce message parce que tu as ouvert la page d'abonnement.",
+        "arret": "Ne plus recevoir ces messages, en un clic",
+        "titre_1": "Ce qu'ouvre l'abonnement",
+        "titre_2": "Un dernier mot sur l'abonnement",
+        "apercu": "Les corrigés détaillés, les exercices, les quiz et les épreuves inédites.",
+        "sujet_1": "Ce qu'ouvre l'abonnement {site}",
+        "sujet_2": "Un dernier mot sur l'abonnement {site}",
+    },
+    textes.EN: {
+        "ouverture_1": "You opened the {site} subscription page ({cursus}) and stopped before paying. In case it helps, "
+                       "here is what the subscription opens:",
+        "ouverture_2": "A few days ago you opened the {site} subscription page ({cursus}). This is our last message about "
+                       "it.",
+        "ouvre": "The subscription opens:",
+        "contenu": [
+            "the detailed solutions to past papers;",
+            "the practice exercises;",
+            "the quizzes;",
+            "the original mock papers.",
+        ],
+        "prix": "It costs {montant} FCFA per month.",
+        "mois": "You choose the number of months and pay by Mobile Money (Orange Money or MTN MoMo).",
+        "sans_prelevement": "No automatic charge: the access simply stops at the end of the months you paid for.",
+        "bouton": "Back to the subscription page",
+        "raison": "You receive this message because you opened the subscription page.",
+        "arret": "Stop these messages in one click",
+        "titre_1": "What the subscription opens",
+        "titre_2": "A last word about the subscription",
+        "apercu": "Detailed solutions, practice exercises, quizzes and original mock papers.",
+        "sujet_1": "What the {site} subscription opens",
+        "sujet_2": "A last word about the {site} subscription",
+    },
+}
+
+
 def composer_relance_inscrit(user, cursus, type_):
-    """(sujet, corps) en texte brut, dans la langue du compte. Les seuls faits cités sont en base : l'examen, le prix du
-    mois quand il est connu. Aucune date, aucun compte à rebours."""
+    """(sujet, corps, html) dans la langue du compte. Les seuls faits cités sont en base : l'examen, le prix du mois
+    quand il est connu. Aucune date, aucun compte à rebours."""
     langue = langue_du_compte(user)
-    dernier = type_ == TypeRelance.INSCRIT_SANS_PAIEMENT_2
+    t = _TEXTES[langue]
+    etape = 2 if type_ == TypeRelance.INSCRIT_SANS_PAIEMENT_2 else 1
     prix = prix_du_mois(cursus)
     profil = _profil_pour(user, cursus)
     lien = f"{settings.FRONTEND_URL}/abonnement?cursus={cursus.pk}"
     if profil is not None:
         lien += f"&profil={profil.pk}"
 
-    if langue == textes.EN:
-        if dernier:
-            ouverture = [
-                f"A few days ago you opened the {settings.SITE_NAME} subscription page ({cursus}). This is our last "
-                "message about it.",
-            ]
-        else:
-            ouverture = [
-                f"You opened the {settings.SITE_NAME} subscription page ({cursus}) and stopped before paying. In case "
-                "it helps, here is what the subscription opens:",
-            ]
-        lignes = [_salutation(user, langue), "", *ouverture]
-        if dernier:
-            lignes += ["", "The subscription opens:"]
-        lignes += [
-            "- the detailed solutions to past papers;",
-            "- the practice exercises;",
-            "- the quizzes;",
-            "- the original mock papers.",
-            "",
-        ]
-        if prix is not None:
-            lignes.append(f"It costs {_montant(prix)} FCFA per month.")
-        lignes += [
-            "You choose the number of months and pay by Mobile Money (Orange Money or MTN MoMo).",
-            "No automatic charge: the access simply stops at the end of the months you paid for.",
-            "",
-            f"Back to the subscription page: {lien}",
-            "",
-            "A question? Just reply to this message.",
-            "",
-            "You receive this message because you opened the subscription page.",
-            f"Stop these messages in one click: {lien_arret(user)}",
-        ]
-        sujet = (
-            f"A last word about the {settings.SITE_NAME} subscription" if dernier
-            else f"What the {settings.SITE_NAME} subscription opens"
-        )
-        return sujet, "\n".join(lignes)
-
-    if dernier:
-        ouverture = [
-            f"Il y a quelques jours, tu as ouvert la page d'abonnement à {settings.SITE_NAME} ({cursus}). C'est notre "
-            "dernier message à ce sujet.",
-        ]
-    else:
-        ouverture = [
-            f"Tu as ouvert la page d'abonnement à {settings.SITE_NAME} ({cursus}) sans aller jusqu'au paiement. Au cas "
-            "où cela t'aide, voici ce que l'abonnement ouvre :",
-        ]
-    lignes = [_salutation(user, langue), "", *ouverture]
-    if dernier:
-        lignes += ["", "L'abonnement ouvre :"]
-    lignes += [
-        "- les corrigés détaillés des épreuves ;",
-        "- les exercices d'application ;",
-        "- les quiz ;",
-        "- les épreuves inédites.",
-        "",
-    ]
-    if prix is not None:
-        lignes.append(f"Il coûte {_montant(prix)} FCFA par mois.")
-    lignes += [
-        "Tu choisis le nombre de mois et tu paies par Mobile Money (Orange Money ou MTN MoMo).",
-        "Aucun prélèvement automatique : l'accès s'arrête simplement à la fin des mois payés.",
-        "",
-        f"Revenir à la page d'abonnement : {lien}",
-        "",
-        "Une question ? Réponds simplement à ce message.",
-        "",
-        "Tu reçois ce message parce que tu as ouvert la page d'abonnement.",
-        f"Ne plus recevoir ces messages, en un clic : {lien_arret(user)}",
-    ]
-    sujet = (
-        f"Un dernier mot sur l'abonnement {settings.SITE_NAME}" if dernier
-        else f"Ce qu'ouvre l'abonnement {settings.SITE_NAME}"
+    message = courriel.Courriel(
+        langue, salutation=_salutation(user, langue), titre=t[f"titre_{etape}"], apercu=t["apercu"],
+        bouton=(t["bouton"], lien), raison=t["raison"], arret=(t["arret"], lien_arret(user)),
     )
-    return sujet, "\n".join(lignes)
+    message.paragraphe(t[f"ouverture_{etape}"].format(site=settings.SITE_NAME, cursus=cursus))
+    if etape == 2:
+        message.paragraphe(t["ouvre"])
+    message.liste(t["contenu"])
+    if prix is not None:
+        montant = _montant(prix)
+        message.paragraphe(t["prix"].format(montant=montant), gras=f"{montant} FCFA")
+    message.paragraphe(t["mois"]).paragraphe(t["sans_prelevement"])
+    return t[f"sujet_{etape}"].format(site=settings.SITE_NAME), message.texte(), message.html()
 
 
 # --------------------------------------------------------------------------- sélection
@@ -318,11 +307,11 @@ def envoyer_relances_inscrit_sans_paiement(maintenant=None, *, dry_run=False):
             envoyes += 1
             continue
         try:
-            sujet, corps = composer_relance_inscrit(user, cursus, type_)
+            message = composer_relance_inscrit(user, cursus, type_)
             if not _tracer(user, type_, reference):
                 continue
             try:
-                _envoyer_email(user, sujet, corps)
+                _envoyer_email(user, *message)
             except Exception:
                 # Un envoi raté ne doit pas rester marqué « fait » : le tour suivant le retentera, dans sa fenêtre.
                 RelanceEnvoyee.objects.filter(user=user, type=type_, reference=reference).delete()

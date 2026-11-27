@@ -21,10 +21,10 @@ from django.conf import settings
 from django.core import signing
 from django.core.mail import EmailMultiAlternatives
 from django.db import IntegrityError
-from django.template.loader import render_to_string
 from django.utils import timezone
 
 from catalog.models import ExamSession
+from edtech_cm import courriel
 from payments.models import ManualPayment, ManualPaymentStatus, StatutTransaction, Transaction
 from quiz import textes
 from quiz.models import JourXP, SeanceJournaliere, StatutSeance
@@ -71,8 +71,7 @@ def lien_desabonnement(user):
 
 
 def _prenom(user):
-    nom = (user.full_name or user.pseudo or "").strip()
-    return nom.split()[0] if nom else ""
+    return courriel.prenom(user)
 
 
 def langue_du_compte(user):
@@ -85,15 +84,12 @@ def langue_du_compte(user):
 
 
 def _salutation(user, langue=textes.FR):
-    prenom = _prenom(user)
-    if langue == textes.EN:
-        return f"Hello {prenom}," if prenom else "Hello,"
-    return f"Bonjour {prenom}," if prenom else "Bonjour,"
+    return courriel.salutation(user, langue)
 
 
 def _envoyer_email(user, sujet, corps, html=None):
-    # Texte brut toujours fourni, HTML en alternative (voir users.email_service). Reply-To sur la boîte surveillée :
-    # « réponds simplement à ce message » ne doit pas tomber dans une adresse d'expédition jamais relevée.
+    # Texte brut toujours fourni, HTML en alternative, tous deux tirés d'un même edtech_cm.courriel.Courriel. Reply-To
+    # sur la boîte surveillée : « réponds simplement à ce message » ne doit pas tomber dans une adresse jamais relevée.
     message = EmailMultiAlternatives(sujet, corps, None, [user.email], reply_to=[settings.SUPPORT_EMAIL])
     if html:
         message.attach_alternative(html, "text/html")
@@ -131,40 +127,28 @@ def _formule_examen(cursus, langue=textes.FR):
     return f"Il reste {jours} jour{'s' if jours > 1 else ''} avant ton examen ({libelle})."
 
 
-# Les textes fixes du rappel quotidien, dans les deux langues : le texte brut et le gabarit HTML
-# (relances/emails/rappel_seance.html) lisent les mêmes.
+# Les textes fixes du rappel quotidien, dans les deux langues. `gras` : l'extrait de l'introduction mis en gras dans le
+# HTML.
 _TEXTES_RAPPEL = {
     textes.FR: {
-        "lang": "fr",
         "sujet": "Ta séance du jour est prête",
-        "slogan": "Réussis ton examen",
         "titre": "Ta séance du jour t'attend",
-        "intro": "Ta séance du jour t'attend : environ 25 minutes, choisie pour toi.",
-        "intro_avant": "Environ",
-        "intro_duree": "25 minutes",
-        "intro_apres": ", choisies pour toi parmi ce qui te fera le plus progresser aujourd'hui.",
+        "intro": "Environ 25 minutes, choisies pour toi parmi ce qui te fera le plus progresser aujourd'hui.",
+        "gras": "25 minutes",
         "apercu": "Environ 25 minutes, choisies pour toi.",
         "bouton": "Ouvrir ma séance",
-        "secours": "Le bouton ne s'affiche pas ? Copie ce lien dans ton navigateur :",
         "raison": "Tu reçois ce message parce que tu as activé les rappels quotidiens.",
         "arret": "Les arrêter en un clic",
-        "question": "Une question ? Réponds simplement à ce message ou écris à",
     },
     textes.EN: {
-        "lang": "en",
         "sujet": "Your daily session is ready",
-        "slogan": "Pass your exam",
         "titre": "Your daily session is waiting",
-        "intro": "Your daily session is waiting: about 25 minutes, chosen for you.",
-        "intro_avant": "About",
-        "intro_duree": "25 minutes",
-        "intro_apres": ", chosen for you from what will move you forward the most today.",
+        "intro": "About 25 minutes, chosen for you from what will move you forward the most today.",
+        "gras": "25 minutes",
         "apercu": "About 25 minutes, chosen for you.",
         "bouton": "Open my session",
-        "secours": "Can't see the button? Copy this link into your browser:",
         "raison": "You receive this message because you turned on daily reminders.",
         "arret": "Stop them in one click",
-        "question": "A question? Just reply to this message or write to",
     },
 }
 
@@ -172,8 +156,8 @@ _TEXTES_RAPPEL = {
 def composer_rappel_seance(user):
     """(sujet, corps, html) du rappel quotidien - sans jamais créer la séance elle-même :
     ouvrir l'application la crée, l'envoi d'un e-mail ne doit rien inscrire au nom de
-    l'élève (ni fausser ce que mesure l'entonnoir d'acquisition). Le texte brut reste le
-    message de référence ; le HTML en reprend exactement les mêmes faits."""
+    l'élève (ni fausser ce que mesure l'entonnoir d'acquisition). Le texte brut et le HTML
+    sont tirés du même Courriel (voir edtech_cm.courriel)."""
     # Même repli que users.profils.profil_actif : chaque compte n'a aujourd'hui qu'un
     # seul profil, la vraie bascule (JWT claim) n'étant pas branchée sur ce canal
     # hors requête HTTP.
@@ -215,20 +199,12 @@ def composer_rappel_seance(user):
 
     pays = cursus.country.code.lower()
     lien = f"{settings.FRONTEND_URL}/en/{pays}" if anglais else f"{settings.FRONTEND_URL}/{pays}"
-    lien_arret = lien_desabonnement(user)
-    salutation = _salutation(user, langue)
-
-    texte = [salutation, "", t["intro"], *faits]
-    texte += ["", f"{t['bouton']} : {lien}", "", t["raison"], f"{t['arret']} : {lien_arret}"]
-    html = render_to_string(
-        "relances/emails/rappel_seance.html",
-        {
-            "site_name": settings.SITE_NAME, "salutation": salutation, "faits": faits, "lien": lien,
-            "lien_desabonnement": lien_arret, "apercu": t["apercu"], "t": t,
-            "site_url": settings.FRONTEND_URL, "support_email": settings.SUPPORT_EMAIL,
-        },
+    message = courriel.Courriel(
+        langue, salutation=_salutation(user, langue), titre=t["titre"], apercu=t["apercu"],
+        bouton=(t["bouton"], lien), raison=t["raison"], arret=(t["arret"], lien_desabonnement(user)),
     )
-    return t["sujet"], "\n".join(texte), html
+    message.paragraphe(t["intro"], gras=t["gras"]).encart(faits)
+    return t["sujet"], message.texte(), message.html()
 
 
 def destinataires_rappel_seance(maintenant=None):
@@ -332,23 +308,66 @@ def paiement_a_reprendre(user, maintenant=None):
     return derniere
 
 
+_TEXTES_PAIEMENT = {
+    textes.FR: {
+        "echoue": "n'a pas abouti",
+        "non_confirme": "n'a pas été confirmé",
+        "constat": "Ton paiement de {montant} FCFA ({cursus}) {verbe}.",
+        "reprise_manuelle": "Rien n'a été débité pour un accès que tu n'as pas reçu : tu peux réessayer, ou payer par "
+                            "transfert manuel (Orange Money ou MTN MoMo) sans rien perdre de ta sélection.",
+        "reprise": "Rien n'a été débité pour un accès que tu n'as pas reçu : tu peux réessayer.",
+        # L'abonnement se paie au mois depuis le 11 novembre 2026 : l'ancien « Ton abonnement court jusqu'à ton examen »
+        # promettait à un paiement de 2 000 F (un mois) un accès jusqu'à l'examen.
+        "dernier": "C'est notre dernier message à ce sujet. Sur la page d'abonnement, tu choisis le nombre de mois, et "
+                   "l'accès s'ouvre dès que le paiement passe.",
+        "sujet_1": "Ton paiement n'a pas abouti",
+        "sujet_2": "Ton accès t'attend toujours",
+        "titre_1": "Reprends ton paiement quand tu veux",
+        "titre_2": "Ton accès t'attend toujours",
+        "apercu_1": "Rien n'a été débité : tu peux réessayer.",
+        "apercu_2": "Notre dernier message à ce sujet.",
+        "bouton": "Reprendre mon paiement",
+        "raison": "Tu reçois ce message parce qu'un paiement a été lancé depuis ton compte {site}.",
+    },
+    textes.EN: {
+        "echoue": "did not go through",
+        "non_confirme": "was not confirmed",
+        "constat": "Your payment of {montant} FCFA ({cursus}) {verbe}.",
+        "reprise_manuelle": "Nothing was charged for access you did not receive: you can try again, or pay by manual "
+                            "transfer (Orange Money or MTN MoMo) without losing your selection.",
+        "reprise": "Nothing was charged for access you did not receive: you can try again.",
+        "dernier": "This is our last message about it. On the subscription page, you choose the number of months, and "
+                   "the access opens as soon as the payment goes through.",
+        "sujet_1": "Your payment did not go through",
+        "sujet_2": "Your access is still waiting",
+        "titre_1": "Resume your payment whenever you like",
+        "titre_2": "Your access is still waiting",
+        "apercu_1": "Nothing was charged: you can try again.",
+        "apercu_2": "Our last message about it.",
+        "bouton": "Resume my payment",
+        "raison": "You receive this message because a payment was started from your {site} account.",
+    },
+}
+
+
 def composer_relance_paiement(user, transaction, etape):
-    """(sujet, corps) : `etape` vaut 1 (premier message) ou 2 (dernier)."""
-    verbe = "n'a pas abouti" if transaction.status == StatutTransaction.FAILED else "n'a pas été confirmé"
+    """(sujet, corps, html) dans la langue du compte : `etape` vaut 1 (premier message) ou 2 (dernier)."""
+    langue = langue_du_compte(user)
+    t = _TEXTES_PAIEMENT[langue]
+    verbe = t["echoue"] if transaction.status == StatutTransaction.FAILED else t["non_confirme"]
     lien = f"{settings.FRONTEND_URL}/abonnement?cursus={transaction.plan.cursus_id}"
-    lignes = [_salutation(user), "", f"Ton paiement de {transaction.amount} FCFA {verbe}."]
+    message = courriel.Courriel(
+        langue, salutation=_salutation(user, langue), titre=t[f"titre_{etape}"], apercu=t[f"apercu_{etape}"],
+        bouton=(t["bouton"], lien), raison=t["raison"].format(site=settings.SITE_NAME),
+    )
+    message.paragraphe(t["constat"].format(
+        montant=courriel.montant_fcfa(transaction.amount), cursus=transaction.plan.cursus, verbe=verbe,
+    ))
     if etape == 1:
-        reprise = ("tu peux réessayer, ou payer par transfert manuel (Orange Money ou MTN MoMo) sans rien perdre "
-                   "de ta sélection." if settings.MANUAL_PAYMENT_ACTIVE else "tu peux réessayer.")
-        lignes += [f"Rien n'a été débité pour un accès que tu n'as pas reçu : {reprise}"]
+        message.paragraphe(t["reprise_manuelle"] if settings.MANUAL_PAYMENT_ACTIVE else t["reprise"])
     else:
-        lignes += [
-            "C'est notre dernier message à ce sujet. Ton abonnement court jusqu'à ton examen : plus tôt tu "
-            "l'actives, plus tu as de semaines de révision.",
-        ]
-    lignes += ["", f"Reprendre mon paiement : {lien}", "", "Une question ? Réponds simplement à ce message."]
-    sujet = "Ton paiement n'a pas abouti" if etape == 1 else "Ton accès t'attend toujours"
-    return sujet, "\n".join(lignes)
+        message.paragraphe(t["dernier"])
+    return t[f"sujet_{etape}"], message.texte(), message.html()
 
 
 def _etape_due(user, transaction, maintenant):
@@ -386,8 +405,7 @@ def envoyer_relances_paiement(maintenant=None, *, dry_run=False):
             if not _tracer(user, type_, str(transaction.pk)):
                 continue
             try:
-                sujet, corps = composer_relance_paiement(user, transaction, numero)
-                _envoyer_email(user, sujet, corps)
+                _envoyer_email(user, *composer_relance_paiement(user, transaction, numero))
             except Exception:
                 RelanceEnvoyee.objects.filter(user=user, type=type_, reference=str(transaction.pk)).delete()
                 raise

@@ -78,6 +78,12 @@ class SelectionTests(InscritSansPaiementTestCase):
         self.assertIn("/relances/desabonner-offre/", message.body)
         self.assertNotIn("dernier message", message.body)
         self.assertEqual(message.reply_to, [services.settings.SUPPORT_EMAIL])
+        html = self.assert_aux_couleurs(
+            message,
+            f"{services.settings.FRONTEND_URL}/abonnement?cursus={self.cursus.pk}&profil={user.profils.first().pk}",
+            inscrit_sans_paiement.lien_arret(user),
+        )
+        self.assertIn("les épreuves inédites.", html)
         # La trace porte la date de l'envoi, pas l'évènement ni l'examen.
         self.assertEqual(self.traces(user), [(TypeRelance.INSCRIT_SANS_PAIEMENT_1, "2026-12-10")])
 
@@ -330,7 +336,7 @@ class CursusViseTests(InscritSansPaiementTestCase):
         user = self.inscrit()
         enfant = user.profils.create(prenom="Guyguy", cursus_prepare=self.autre)
 
-        _sujet, corps = inscrit_sans_paiement.composer_relance_inscrit(
+        _sujet, corps, _html = inscrit_sans_paiement.composer_relance_inscrit(
             user, self.autre, TypeRelance.INSCRIT_SANS_PAIEMENT_1,
         )
 
@@ -370,7 +376,7 @@ class EnvoiTests(InscritSansPaiementTestCase):
 
 class TexteTests(InscritSansPaiementTestCase):
     def composer(self, user, type_):
-        return inscrit_sans_paiement.composer_relance_inscrit(user, self.cursus, type_)
+        return inscrit_sans_paiement.composer_relance_inscrit(user, self.cursus, type_)[:2]
 
     def test_le_premier_message_dit_ce_que_l_abonnement_ouvre(self):
         user = self.inscrit()

@@ -82,7 +82,7 @@ class LangueDuCompteTests(RelancesTestCase):
     def test_le_bilan_du_parent_suit_la_langue_du_compte(self):
         user = self._eleve_gce()
 
-        sujet, corps = bilan_parent.composer_bilan_parent(user)
+        sujet, corps, _html = bilan_parent.composer_bilan_parent(user)
 
         self.assertEqual(sujet, "Awa's week")
         self.assertIn("Here is the week that just ended:", corps)

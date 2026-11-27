@@ -23,6 +23,7 @@ from django.conf import settings
 from django.core import signing
 from django.utils import timezone
 
+from edtech_cm import courriel
 from quiz.bilan import bilan_de_periode
 from quiz.copies import copies_rendues
 from quiz.models import JourXP
@@ -150,9 +151,9 @@ def _lignes_examens(examens, langue=textes.FR):
         return []
     anglais = langue == textes.EN
     lignes = [
-        "  Mock exams (marked against the scheme; written answers are self-marked):"
+        "Mock exams (marked against the scheme; written answers are self-marked):"
         if anglais else
-        "  Examens blancs (notés sur le barème ; les réponses rédigées sont notées par l'élève) :"
+        "Examens blancs (notés sur le barème ; les réponses rédigées sont notées par l'élève) :"
     ]
     for copie in examens:
         conditions = (
@@ -160,9 +161,9 @@ def _lignes_examens(examens, langue=textes.FR):
             if anglais else
             ("en conditions d'examen" if copie["conditions_reelles"] else "en entraînement")
         )
-        ligne = f"  - {copie['titre']} : {_note(copie, langue)} ({conditions})"
+        ligne = f"- {copie['titre']} : {_note(copie, langue)} ({conditions})"
         if anglais:
-            ligne = f"  - {copie['titre']}: {_note(copie, langue)} ({conditions})"
+            ligne = f"- {copie['titre']}: {_note(copie, langue)} ({conditions})"
         if copie["precedente"]:
             avant = _note(copie["precedente"], langue)
             ligne += (
@@ -174,12 +175,12 @@ def _lignes_examens(examens, langue=textes.FR):
 
 
 def _bloc_profil(prenom, bilan, langue=textes.FR):
+    """Les lignes du bloc d'un profil, sous son prénom (que le composeur pose en intertitre)."""
     if langue == textes.EN:
         return _bloc_profil_en(prenom, bilan)
     if not bilan["a_de_l_activite"] and bilan["xp"] == 0:
         return [
-            f"■ {prenom}",
-            f"  {prenom} n'a pas révisé cette semaine. Une séance du jour dure environ 25 minutes : "
+            f"{prenom} n'a pas révisé cette semaine. Une séance du jour dure environ 25 minutes : "
             "le plan est prêt dans l'application.",
         ]
     faits = [
@@ -190,13 +191,13 @@ def _bloc_profil(prenom, bilan, langue=textes.FR):
     ]
     if bilan["xp"]:
         faits.append(f"{bilan['xp']} points")
-    lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
+    lignes = [", ".join(faits) + "."]
     lignes += _lignes_examens(bilan.get("examens"))
     if bilan["themes_consolides"]:
         citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])
-        lignes.append(f"  Thèmes devenus solides : {citations}.")
+        lignes.append(f"Thèmes devenus solides : {citations}.")
     if bilan["serie"] >= 2:
-        lignes.append(f"  Série en cours : {bilan['serie']} jours de suite.")
+        lignes.append(f"Série en cours : {bilan['serie']} jours de suite.")
     return lignes
 
 
@@ -204,8 +205,7 @@ def _bloc_profil_en(prenom, bilan):
     """Le même bloc, mêmes faits et même ton, pour un compte en anglais (familles du GCE)."""
     if not bilan["a_de_l_activite"] and bilan["xp"] == 0:
         return [
-            f"■ {prenom}",
-            f"  {prenom} did not revise this week. A daily session takes about 25 minutes: "
+            f"{prenom} did not revise this week. A daily session takes about 25 minutes: "
             "the plan is ready in the app.",
         ]
     faits = [
@@ -216,54 +216,54 @@ def _bloc_profil_en(prenom, bilan):
     ]
     if bilan["xp"]:
         faits.append(f"{bilan['xp']} points")
-    lignes = [f"■ {prenom}", "  " + ", ".join(faits) + "."]
+    lignes = [", ".join(faits) + "."]
     lignes += _lignes_examens(bilan.get("examens"), textes.EN)
     if bilan["themes_consolides"]:
         citations = ", ".join(f"{t['theme']} ({t['subject_label']})" for t in bilan["themes_consolides"])
-        lignes.append(f"  Topics now solid: {citations}.")
+        lignes.append(f"Topics now solid: {citations}.")
     if bilan["serie"] >= 2:
-        lignes.append(f"  Current streak: {bilan['serie']} days in a row.")
+        lignes.append(f"Current streak: {bilan['serie']} days in a row.")
     return lignes
 
 
 def composer_bilan_parent(user, maintenant=None):
-    """(sujet, corps) du bilan de la semaine pour tous les profils abonnés du compte, ou None s'il
-    n'y en a aucun - un compte sans abonnement actif n'a rien à raconter. Dans la langue du compte
-    (voir relances.services.langue_du_compte)."""
+    """(sujet, corps, html) du bilan de la semaine pour tous les profils abonnés du compte, ou None
+    s'il n'y en a aucun - un compte sans abonnement actif n'a rien à raconter. Dans la langue du
+    compte (voir relances.services.langue_du_compte)."""
     langue = langue_du_compte(user)
     blocs = []
-    prenoms = []
     for profil in user.profils.all():
         bilan = bilan_du_profil(profil, maintenant)
         if bilan is None:
             continue
         prenom = _prenom_profil(profil, user, langue)
-        prenoms.append(prenom)
-        blocs.append(_bloc_profil(prenom, bilan, langue))
+        blocs.append((prenom, _bloc_profil(prenom, bilan, langue)))
     if not blocs:
         return None
 
     anglais = langue == textes.EN
-    lignes = [_salutation(user, langue), "", "Here is the week that just ended:" if anglais else "Voici la semaine qui vient de s'écouler :", ""]
-    for bloc in blocs:
-        lignes += bloc + [""]
+    prenoms = [prenom for prenom, _lignes in blocs]
     if anglais:
-        lignes += [
-            f"Open {settings.SITE_NAME}: {settings.FRONTEND_URL}/en",
-            "",
-            "You receive this message because you turned on the weekly report.",
-            f"Stop it in one click: {lien_desabonnement_bilan(user)}",
-        ]
+        message = courriel.Courriel(
+            langue, salutation=_salutation(user, langue), titre="Your weekly report",
+            apercu=f"{prenoms[0]}: {blocs[0][1][0]}", bouton=(f"Open {settings.SITE_NAME}", f"{settings.FRONTEND_URL}/en"),
+            raison="You receive this message because you turned on the weekly report.",
+            arret=("Stop it in one click", lien_desabonnement_bilan(user)),
+        )
+        message.paragraphe("Here is the week that just ended:")
         sujet = f"{prenoms[0]}'s week" if len(prenoms) == 1 else "Your children's week"
     else:
-        lignes += [
-            f"Ouvrir {settings.SITE_NAME} : {settings.FRONTEND_URL}",
-            "",
-            "Tu reçois ce message parce que tu as activé le bilan de la semaine.",
-            f"L'arrêter en un clic : {lien_desabonnement_bilan(user)}",
-        ]
+        message = courriel.Courriel(
+            langue, salutation=_salutation(user, langue), titre="Le bilan de la semaine",
+            apercu=f"{prenoms[0]} : {blocs[0][1][0]}", bouton=(f"Ouvrir {settings.SITE_NAME}", settings.FRONTEND_URL),
+            raison="Tu reçois ce message parce que tu as activé le bilan de la semaine.",
+            arret=("L'arrêter en un clic", lien_desabonnement_bilan(user)),
+        )
+        message.paragraphe("Voici la semaine qui vient de s'écouler :")
         sujet = f"Bilan de la semaine de {prenoms[0]}" if len(prenoms) == 1 else "Bilan de la semaine de tes enfants"
-    return sujet, "\n".join(lignes)
+    for prenom, lignes in blocs:
+        message.intertitre(prenom).encart(lignes)
+    return sujet, message.texte(), message.html()
 
 
 # --------------------------------------------------------------------------- envoi

@@ -46,6 +46,10 @@ class SelectionTests(FinAbonnementTestCase):
         self.assertIn("Rien n'est prélevé automatiquement", message.body)
         self.assertNotIn("dernier message", message.body)
         self.assertEqual(self.types_envoyes(user), [TypeRelance.FIN_ABONNEMENT_1])
+        html = self.assert_aux_couleurs(
+            message, f"{fin_abonnement.settings.FRONTEND_URL}/abonnement?cursus={self.cursus.pk}&profil={abonnement.profil_id}",
+        )
+        self.assertIn("<strong>13 décembre 2026</strong>", html)
 
     def test_rien_avant_la_fenetre_et_une_seule_fois_dedans(self):
         user, _ = self.abonne_jusqua(SOIR + timedelta(days=4))
@@ -145,7 +149,7 @@ class TexteTests(FinAbonnementTestCase):
             )
         abonnement.refresh_from_db()
 
-        _sujet, corps = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
+        _sujet, corps, _html = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
 
         self.assertIn("L'accès de Guyguy à EduKora", corps)
         self.assertIn("2 séances terminées jusqu'ici.", corps)
@@ -155,7 +159,7 @@ class TexteTests(FinAbonnementTestCase):
         Profil.objects.filter(pk=abonnement.profil_id).update(prenom="Étienne")
         abonnement.refresh_from_db()
 
-        _sujet, corps = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
+        _sujet, corps, _html = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
 
         self.assertIn("L'accès d'Étienne à EduKora", corps)
 
@@ -164,7 +168,7 @@ class TexteTests(FinAbonnementTestCase):
         Profil.objects.filter(pk=abonnement.profil_id).update(prenom="Awa")
         abonnement.refresh_from_db()
 
-        _sujet, corps = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
+        _sujet, corps, _html = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
 
         self.assertIn("Ton accès à EduKora", corps)
         self.assertNotIn("L'accès d'Awa", corps)
@@ -176,7 +180,7 @@ class TexteTests(FinAbonnementTestCase):
         type(user).objects.filter(pk=user.pk).update(langue="en")
         abonnement.refresh_from_db()
 
-        sujet, corps = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
+        sujet, corps, _html = fin_abonnement.composer_relance_fin_abonnement(abonnement, TypeRelance.FIN_ABONNEMENT_1)
 
         self.assertEqual(sujet, "Your EduKora access ends on 13 December 2026")
         self.assertIn("Hello Awa,", corps)
