@@ -313,6 +313,11 @@ class ExtractionTests(_Base):
             "gce_biology_o_level": {"Cells and transport", "Nutrition", "Transport", "Respiration and excretion", "Coordination and response", "Reproduction and genetics", "Ecology", "Practical biology"},
             "gce_human_biology_o_level": {"Cells and genetics", "Nutrition and digestion", "Blood and circulation", "Breathing and excretion", "Coordination and support", "Reproduction", "Health and hygiene"},
             "gce_english_o_level": {"Grammar", "Vocabulary and idioms", "Sounds and spelling", "Comprehension", "Writing"},
+            "gce_computer_science_o_level": {"Data representation", "Hardware", "Software and operating systems", "Algorithms and programming", "Networks and security", "Applications", "Systems development"},
+            "gce_geography_o_level": {"Map reading", "Physical geography", "Weather and climate", "Agriculture and resources", "Population and settlement", "Industry, transport and trade", "Environment and hazards"},
+            "gce_additional_maths_o_level": {"Algebra", "Functions and graphs", "Trigonometry", "Calculus", "Vectors and matrices", "Statistics and probability", "Mechanics"},
+            "gce_history_o_level": {"Colonial Cameroon", "Independent Cameroon", "Africa", "Europe and the world wars", "International organisations"},
+            "gce_economics_o_level": {"Basic concepts", "Demand, supply and prices", "Production and business", "Money and banking", "Public finance", "National income and development", "International trade"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
