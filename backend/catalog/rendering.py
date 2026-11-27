@@ -1484,7 +1484,78 @@ def _match_cours_by_title(item, exclude_pk):
     )
 
 
+# Puce ou numéro en tête de ligne d'une liste Markdown ("- ", "* ", "• ", "1. ", "2) ").
+_PUCE_RE = re.compile(r"^(?:[-*•]|\d+[.)])\s+")
+
+# "Exemple résolu" en tête du titre d'un exemple : déjà le titre de la section, on ne le répète pas.
+_TITRE_EXEMPLE_GENERIQUE_RE = re.compile(r"^\s*exemple(?:\s+r[ée]solu)?\s*[:\-–]?\s*", re.IGNORECASE)
+
+
+def _items_depuis_contenu(contenu):
+    """
+    Items d'une section de forme plate (voir _section_normalisee) : une liste telle quelle ; une liste Markdown
+    découpée puce par puce, marqueur retiré (une ligne en retrait prolonge la puce d'avant) ; tout autre texte
+    (prose, ou liste précédée d'une phrase d'introduction) en un seul item, pour ne rien couper au mauvais endroit.
+    """
+    if isinstance(contenu, list):
+        return [item for item in contenu if item]
+    texte = (contenu or "").strip()
+    if not texte:
+        return []
+    items = []
+    for ligne in texte.splitlines():
+        if not ligne.strip():
+            continue
+        puce = _PUCE_RE.match(ligne)
+        if puce:
+            items.append(ligne[puce.end():].strip())
+        elif items and ligne[:1].isspace():
+            items[-1] += "\n" + ligne.strip()
+        else:
+            return [texte]
+    return items
+
+
+def _section_normalisee(section):
+    """
+    `section` ramenée aux champs que lit son type, quand elle arrive sous une forme « plate » : un seul
+    `contenu_markdown` (texte ou liste) au lieu de `items` (prérequis, erreurs classiques, exercices),
+    `enonce_markdown`/`etapes` (exemple résolu) ou `items_markdown` (synthèse) ; ou des exercices sous
+    `exercices: [{enonce, solution}]` au lieu de `items`. Constatée le 2026-11-27 sur 96 cours publiés (BEPC
+    informatique/PCT/ECM, Probatoire géographie et chimie...) : sans elle, tout sauf l'accroche et la règle
+    disparaissait de la page, sans aucune erreur (signalé sur /cours/la-structure-alternative-en-algorithmique-...).
+
+    Une section qui porte déjà ses champs propres est rendue telle quelle. Lue par tous les rendus d'une section
+    (Markdown compilé, lecture en ligne, section verrouillée, compteur d'exercices des cartes de cours).
+    """
+    if not isinstance(section, dict):
+        return section
+    section_type = section.get("type")
+    if section_type == "exercices_application" and not section.get("items") and section.get("exercices"):
+        items = [
+            {"numero": rang, "enonce_markdown": ex.get("enonce") or "", "solution_markdown": ex.get("solution") or ""}
+            if isinstance(ex, dict) else ex
+            for rang, ex in enumerate(section["exercices"], start=1)
+        ]
+        return {**section, "items": items}
+    contenu = section.get("contenu_markdown")
+    if not contenu:
+        return section
+    if section_type == "prerequis" and not (section.get("items") or section.get("items_markdown")):
+        return {**section, "items": _items_depuis_contenu(contenu)}
+    if section_type in ("erreurs_classiques", "exercices_application") and not section.get("items"):
+        return {**section, "items": _items_depuis_contenu(contenu)}
+    if section_type == "synthese" and not section.get("items_markdown"):
+        return {**section, "items_markdown": contenu}
+    if section_type == "exemple_resolu" and not (section.get("enonce_markdown") or section.get("etapes")):
+        enonce = contenu if isinstance(contenu, str) else "\n\n".join(str(c) for c in contenu if c)
+        titre = _TITRE_EXEMPLE_GENERIQUE_RE.sub("", section.get("titre") or "", count=1).strip()
+        return {**section, "enonce_markdown": f"**{titre}**\n\n{enonce}" if titre else enonce}
+    return section
+
+
 def _render_cours_section(cours, section):
+    section = _section_normalisee(section)
     section_type = section.get("type")
 
     if section_type == "accroche":
@@ -1581,11 +1652,13 @@ def _render_cours_section(cours, section):
             if isinstance(item, str):
                 parts.append(f"### Exercice\n\n{item}")
                 continue
-            parts.append(
-                f"### Exercice {item.get('numero', '')} ({item.get('difficulte', '')})\n\n"
-                f"{_exercice_application_enonce(item)}",
-            )
-            parts.append(f"### Solution\n\n{_exercice_application_solution(item)}")
+            titre = " ".join(p for p in ("Exercice", str(item.get("numero") or "")) if p)
+            if item.get("difficulte"):
+                titre += f" ({item['difficulte']})"
+            parts.append(f"### {titre}\n\n{_exercice_application_enonce(item)}")
+            solution = _exercice_application_solution(item)
+            if solution:
+                parts.append(f"### Solution\n\n{solution}")
         return "\n\n".join(parts)
 
     if section_type == "synthese":
@@ -1733,6 +1806,7 @@ def _build_prerequis_section_data(cours, section):
 
 
 def _build_cours_section_data(cours, section):
+    section = _section_normalisee(section)
     section_type = section.get("type")
 
     if section_type == "accroche":
@@ -1763,7 +1837,7 @@ def _section_verrouillee(section):
     Remplace une section payante par un marqueur sans contenu : le lecteur sait qu'elle existe, combien
     d'exercices elle compte et leur niveau, jamais leur texte. Garde sa place dans l'ordre du cours.
     """
-    items = [item for item in section.get("items") or [] if item]
+    items = [item for item in _section_normalisee(section).get("items") or [] if item]
     difficultes = [item.get("difficulte") for item in items if isinstance(item, dict) and item.get("difficulte")]
     return {
         "type": section.get("type"), "verrouille": True, "nb_exercices": len(items),

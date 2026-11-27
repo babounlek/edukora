@@ -1818,6 +1818,97 @@ class CoursErreursClassiquesSectionTests(TestCase):
         self.assertIn("Confondre saponification et hydrolyse acide d'un ester.", rendered)
 
 
+class CoursSectionsFormePlateTests(TestCase):
+    """
+    Sections de forme « plate » (un seul `contenu_markdown`, ou `exercices: [{enonce, solution}]`) au lieu des
+    champs propres à leur type - voir rendering._section_normalisee. Reproduit le cours signalé le 2026-11-27
+    (/cours/la-structure-alternative-en-algorithmique-si-alors-sinon-finsi), dont l'exemple résolu, les prérequis,
+    les erreurs classiques, les exercices et la synthèse n'apparaissaient nulle part.
+    """
+
+    SECTIONS = [
+        {"type": "accroche", "contenu_markdown": "Comment calculer un tarif ?"},
+        {"type": "prerequis", "contenu_markdown": "Connaître les variables et l'affectation."},
+        {"type": "regle", "contenu_markdown": "La structure alternative choisit entre deux blocs."},
+        {"type": "exemple_resolu", "contenu_markdown": "```\nSi (Quantité <=10) alors\n    Montant ← Quantité*2000 ;\nFinsi\n```\n\nPour Quantité = 20 : branche Sinon."},
+        {"type": "erreurs_classiques", "contenu_markdown": "- Confondre le sens de l'inégalité.\n- Exécuter les deux branches."},
+        {"type": "exercices_application", "contenu_markdown": "1. Modifier le seuil.\n2. Dérouler pour Quantité = 8.\n3. Dessiner l'algorigramme."},
+        {"type": "synthese", "contenu_markdown": "Un seul des deux blocs s'exécute."},
+    ]
+
+    def setUp(self):
+        subject = Subject.objects.get(country__code="CM", code="MATHS")
+        self.cours = Cours.objects.create(
+            external_id="test-forme-plate", titre="Structure alternative", subject=subject,
+            statut=StatutContenu.VALIDE, sections_raw=self.SECTIONS,
+        )
+
+    def _par_type(self, **kwargs):
+        return {s["type"]: s for s in cours_sections_breakdown(self.cours, **kwargs)}
+
+    def test_lecture_en_ligne_montre_toutes_les_sections(self):
+        sections = self._par_type()
+
+        self.assertIn("Pour Quantité = 20 : branche Sinon.", sections["exemple_resolu"]["enonce_markdown"])
+        self.assertEqual(sections["prerequis"]["items"], [{"label": "Connaître les variables et l'affectation.", "cours_slug": None}])
+        self.assertEqual(
+            [i["erreur_markdown"] for i in sections["erreurs_classiques"]["items"]],
+            ["Confondre le sens de l'inégalité.", "Exécuter les deux branches."],
+        )
+        self.assertEqual(
+            [i["enonce_markdown"] for i in sections["exercices_application"]["items"]],
+            ["Modifier le seuil.", "Dérouler pour Quantité = 8.", "Dessiner l'algorigramme."],
+        )
+        self.assertEqual(sections["synthese"]["body_markdown"], "Un seul des deux blocs s'exécute.")
+
+    def test_markdown_compile_porte_l_exemple_et_les_erreurs(self):
+        self.cours.compile_from_sections()
+
+        self.assertIn("## Exemple résolu\n\n```\nSi (Quantité <=10) alors", self.cours.content_markdown)
+        self.assertIn("## Prérequis\n\n- Connaître les variables", self.cours.content_markdown)
+        self.assertIn("### Erreur\n\nExécuter les deux branches.", self.cours.content_markdown)
+        self.assertIn("## Ce qu'il faut retenir\n\nUn seul des deux blocs", self.cours.content_markdown)
+        self.assertIn("### Exercice\n\nDessiner l'algorigramme.", self.cours.content_markdown)
+
+    def test_section_verrouillee_compte_les_exercices(self):
+        sections = self._par_type(verrouiller_payantes=True)
+        self.assertEqual(sections["exercices_application"]["nb_exercices"], 3)
+        self.assertEqual(sections["exercices_application"]["items"], [])
+
+    def test_liste_precedee_d_une_phrase_reste_un_seul_item(self):
+        # Ne jamais couper un texte qui n'est pas une liste pure : la phrase d'introduction perdrait ses puces.
+        self.cours.sections_raw = [{"type": "erreurs_classiques", "contenu_markdown": "Deux pièges :\n- l'un ;\n- l'autre."}]
+        items = cours_sections_breakdown(self.cours)[0]["items"]
+        self.assertEqual([i["erreur_markdown"] for i in items], ["Deux pièges :\n- l'un ;\n- l'autre."])
+
+    def test_exemple_garde_son_titre_propre_mais_pas_le_titre_generique(self):
+        self.cours.sections_raw = [
+            {"type": "exemple_resolu", "titre": "Exemple résolu : les alcynes en $C_5H_8$", "contenu_markdown": "Corps."},
+            {"type": "exemple_resolu", "titre": "Exemple résolu", "contenu_markdown": "Autre corps."},
+        ]
+        enonces = [s["enonce_markdown"] for s in cours_sections_breakdown(self.cours)]
+        self.assertEqual(enonces, ["**les alcynes en $C_5H_8$**\n\nCorps.", "Autre corps."])
+
+    def test_exercices_sous_la_cle_exercices_avec_leur_solution(self):
+        self.cours.sections_raw = [{"type": "exercices_application", "titre": "À toi de jouer", "contenu_markdown": None, "exercices": [
+            {"enonce": "Quel type d'isomérie ?", "solution": "Isomérie de chaîne."},
+        ]}]
+        item = cours_sections_breakdown(self.cours)[0]["items"][0]
+        self.assertEqual((item["numero"], item["enonce_markdown"], item["solution_markdown"]), (1, "Quel type d'isomérie ?", "Isomérie de chaîne."))
+        self.cours.compile_from_sections()
+        self.assertIn("### Exercice 1\n\nQuel type d'isomérie ?\n\n### Solution\n\nIsomérie de chaîne.", self.cours.content_markdown)
+
+    def test_contenu_en_liste_de_chaines(self):
+        self.cours.sections_raw = [{"type": "exercices_application", "contenu_markdown": ["Calculer m.", "Expliquer n."]}]
+        items = cours_sections_breakdown(self.cours)[0]["items"]
+        self.assertEqual([i["enonce_markdown"] for i in items], ["Calculer m.", "Expliquer n."])
+
+    def test_section_deja_structuree_inchangee(self):
+        self.cours.sections_raw = [{"type": "erreurs_classiques", "contenu_markdown": "Ignoré.", "items": ["Vraie erreur."]}]
+        items = cours_sections_breakdown(self.cours)[0]["items"]
+        self.assertEqual([i["erreur_markdown"] for i in items], ["Vraie erreur."])
+
+
 class CoursSectionsBreakdownTests(TestCase):
     """cours_sections_breakdown() - version structurée (dicts) des sections, pour la
     lecture en ligne (voir CoursReaderPage) - même tolérance str-vs-objet que

@@ -54,7 +54,8 @@ VARIANTES = (LIBRE, COMPLET)
 
 # À incrémenter quand le gabarit ou le rendu change : toutes les empreintes changent, les PDF déjà en cache ne sont
 # plus servis.
-VERSION_GABARIT = "3"
+# 4 (2026-11-27) : sections de forme plate enfin rendues (catalog.rendering._section_normalisee).
+VERSION_GABARIT = "4"
 
 # Chromium est lourd : au plus ce nombre de générations en même temps, quel que soit le nombre de visiteurs.
 MAX_GENERATIONS_SIMULTANEES = 2
