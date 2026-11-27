@@ -307,6 +307,9 @@ class ExtractionTests(_Base):
             "physique_probatoire_d_ti": {"Optique", "Énergie électrique", "Électromagnétisme", "Électrostatique", "Énergie mécanique", "Chaleur et rayonnement", "Mesures et démarche"},
             "anglais_probatoire": {"Grammaire", "Vocabulaire", "Phrases à compléter", "Compréhension", "Rédaction"},
             "education_civique_bepc": {"Symboles et patrie", "État et exécutif", "Parlement", "Justice et diplomatie", "Élections et démocratie", "Économie et vie associative", "Méthode"},
+            "gce_maths_o_level": {"Number", "Algebra", "Sets and logic", "Graphs and functions", "Geometry and trigonometry", "Statistics and probability", "Vectors and matrices"},
+            "gce_physics_o_level": {"Mechanics", "Thermal physics", "Waves and optics", "Electricity and magnetism", "Atomic physics"},
+            "gce_chemistry_o_level": {"Atoms and bonding", "Moles and equations", "Acids, bases and salts", "Electrolysis and redox", "Organic chemistry", "Rates and energy", "Practical chemistry"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
@@ -355,3 +358,23 @@ class FicheDeMethodeTests(_Base):
         self.assertIn("**Piège** : Oublier les parenthèses.", note)
         self.assertNotIn("Factorise", note)
         self.assertNotIn("(x - 1)(x + 1)", note)
+
+    def test_a_gce_card_kept_in_the_notes_names_its_trap_in_english(self):
+        fiche = self.memo("How do you factorise?", gratuit=True, **self.BLOCS)
+        fiche.cursus.set([Cursus.objects.get(examen=Examen.GCE_OL, country=self.subject.country, series=None)])
+        self.client.post(f"/memos/fiches/{fiche.pk}/garder/")
+        note = NoteLibre.objects.get().note
+        self.assertIn("**The trap**: Oublier les parenthèses.", note)
+        self.assertNotIn("Piège", note)
+
+    def test_two_papers_of_the_same_year_are_told_apart_by_their_number(self):
+        fiche = self.memo("Gratuite", gratuit=True)
+        for numero in (1, 2):
+            lesson = Lesson.objects.create(
+                title=f"Maths 2024 - Paper {numero}", subject=self.subject, year=2024, numero_paper=numero,
+                lesson_type=LessonType.CORR, statut=StatutContenu.VALIDE,
+            )
+            lesson.cursus.add(self.cursus)
+            fiche.sources.add(lesson)
+        sources = self.fiches()[0]["sources"]
+        self.assertEqual(sorted((s["annee"], s["paper"]) for s in sources), [(2024, 1), (2024, 2)])

@@ -1547,7 +1547,7 @@ export const en: Partial<Record<CleI18n, string>> = {
   "fe.vide": "No sheets for your exam yet",
   "fe.vide_texte": "They arrive subject by subject, after review by a teacher.",
   "fe.choisir_examen": "Tell us which exam you are preparing",
-  "fe.choisir_examen_texte": "Sheets are made for a specific exam: BEPC, Probatoire, BAC…",
+  "fe.choisir_examen_texte": "Sheets are made for a specific exam: GCE O Level, GCE A Level, BEPC…",
   "fe.choisir_examen_bouton": "Choose my exam",
   "imp.surtitre": "My notes",
   "imp.case": "Tick the box when you know the note by heart.",

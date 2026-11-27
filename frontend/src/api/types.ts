@@ -2365,7 +2365,8 @@ export interface FicheEdukora {
   /** Le thème de la notion, avec ce qu'il a derrière lui (absent d'une réponse gardée en cache). */
   theme?: { id: number; nom: string; a_quiz: boolean; a_cours: boolean } | null
   /** Les épreuves publiées dont la fiche est tirée. */
-  sources?: { slug: string; titre: string; annee: number | null }[]
+  /** `paper` : le numéro du sujet au GCE (Paper 1, Paper 2), vide ailleurs. */
+  sources?: { slug: string; titre: string; annee: number | null; paper?: number | null }[]
 }
 /** Une fiche gratuite montrée en aperçu (accueil, Mes notes) : avec sa matière et l'examen qu'elle prépare. */
 export interface FicheApercu extends FicheEdukora {

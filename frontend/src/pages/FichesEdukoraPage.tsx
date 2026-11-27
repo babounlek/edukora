@@ -57,17 +57,21 @@ function PassagesDeLaFiche({ fiche, cursus, pays }: { fiche: FicheEdukora; cursu
       {sources.length > 0 && (
         <span className="flex flex-wrap items-center gap-x-2 text-muted-foreground">
           {t("fe.sujets")}
-          {sources.map((s) => (
-            <Link
-              key={s.slug}
-              to={epreuveDetailPath(pays, s.slug)}
-              className={lien}
-              title={s.titre}
-              aria-label={t("fe.voir_sujet", { annee: s.annee ?? s.titre })}
-            >
-              {s.annee ?? s.titre}
-            </Link>
-          ))}
+          {sources.map((s) => {
+            // Au GCE, une même année a deux sujets (Paper 1 et Paper 2) : « 2024 P1 », « 2024 P2 », pas « 2024 2024 ».
+            const nom = s.annee ? `${s.annee}${s.paper ? ` P${s.paper}` : ""}` : s.titre
+            return (
+              <Link
+                key={s.slug}
+                to={epreuveDetailPath(pays, s.slug)}
+                className={lien}
+                title={s.titre}
+                aria-label={t("fe.voir_sujet", { annee: nom })}
+              >
+                {nom}
+              </Link>
+            )
+          })}
         </span>
       )}
     </div>

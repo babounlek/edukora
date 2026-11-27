@@ -54,11 +54,13 @@ def liens_des_fiches(memos, cursus):
         Memo.sources.through.objects.filter(
             memo_id__in=[m.pk for m in memos], lesson__statut=StatutContenu.VALIDE, lesson__cursus=cursus,
         )
-        .values_list("memo_id", "lesson__slug", "lesson__title", "lesson__year")
+        .values_list("memo_id", "lesson__slug", "lesson__title", "lesson__year", "lesson__numero_paper")
         .order_by("-lesson__year", "lesson__title")
     )
-    for memo_id, slug, titre, annee in lignes:
-        sources.setdefault(memo_id, []).append({"slug": slug, "titre": titre, "annee": annee})
+    # Le numéro du paper distingue les deux sujets d'une même année au GCE (Paper 1 et Paper 2) : sans lui, la fiche
+    # affichait « 2024 2024 ».
+    for memo_id, slug, titre, annee, paper in lignes:
+        sources.setdefault(memo_id, []).append({"slug": slug, "titre": titre, "annee": annee, "paper": paper})
     return {
         m.pk: {
             "theme": (
@@ -108,7 +110,9 @@ def garder_dans_les_notes(profil, memo):
     if memo.exemple:
         texte += f"\n\n{memo.exemple}"
     if memo.piege:
-        texte += f"\n\n**Piège** : {memo.piege}"
+        # Une fiche du GCE est écrite en anglais : l'étiquette de sa note aussi.
+        anglaise = any(c.langue == "en" for c in memo.cursus.all())
+        texte += f"\n\n**The trap**: {memo.piege}" if anglaise else f"\n\n**Piège** : {memo.piege}"
     note = NoteLibre.objects.create(
         profil=profil, subject=memo.subject, note=texte[:2000], citation=memo.terme, origine=ORIGINE_FICHE,
         source=source_de(memo), theme=memo.theme,
