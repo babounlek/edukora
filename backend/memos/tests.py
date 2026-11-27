@@ -318,6 +318,14 @@ class ExtractionTests(_Base):
             "gce_additional_maths_o_level": {"Algebra", "Functions and graphs", "Trigonometry", "Calculus", "Vectors and matrices", "Statistics and probability", "Mechanics"},
             "gce_history_o_level": {"Colonial Cameroon", "Independent Cameroon", "Africa", "Europe and the world wars", "International organisations"},
             "gce_economics_o_level": {"Basic concepts", "Demand, supply and prices", "Production and business", "Money and banking", "Public finance", "National income and development", "International trade"},
+            "maths_bac_cd": {"Nombres complexes", "Suites", "Analyse", "Géométrie", "Algèbre linéaire", "Probabilités et statistiques", "Arithmétique"},
+            "physique_bac_cd": {"Physique nucléaire et quantique", "Ondes et optique", "Mécanique", "Oscillations", "Électricité", "Mesures et incertitudes", "Champs et particules"},
+            "chimie_bac_cd": {"Chimie organique", "Dosages et expériences", "Cinétique", "Chimie générale", "Acides et bases"},
+            "svt_bac_cd": {"Génétique", "Neurophysiologie et régulations", "Cellule et métabolisme", "Reproduction", "Immunologie", "Méthode", "Géologie et évolution"},
+            "anglais_bac": {"Rédaction", "Grammaire", "Vocabulaire", "Phrases à compléter", "Compréhension"},
+            "philosophie_bac": {"Méthode", "L'homme et la conscience", "La connaissance et la science", "La morale et la politique", "La culture et la société"},
+            "informatique_bac": {"Réseaux et sécurité", "Bases de données", "Applications", "Systèmes et matériel", "Algorithmique et programmation", "Données et codage"},
+            "maths_bac_a": {"Probabilités", "Statistiques", "Algèbre", "Analyse", "Suites"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
