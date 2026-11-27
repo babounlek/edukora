@@ -312,6 +312,7 @@ class ExtractionTests(_Base):
             "gce_chemistry_o_level": {"Atoms and bonding", "Moles and equations", "Acids, bases and salts", "Electrolysis and redox", "Organic chemistry", "Rates and energy", "Practical chemistry"},
             "gce_biology_o_level": {"Cells and transport", "Nutrition", "Transport", "Respiration and excretion", "Coordination and response", "Reproduction and genetics", "Ecology", "Practical biology"},
             "gce_human_biology_o_level": {"Cells and genetics", "Nutrition and digestion", "Blood and circulation", "Breathing and excretion", "Coordination and support", "Reproduction", "Health and hygiene"},
+            "gce_english_o_level": {"Grammar", "Vocabulary and idioms", "Sounds and spelling", "Comprehension", "Writing"},
         }
         for nom, rubriques in fichiers.items():
             donnees = redaction.lire(nom)
